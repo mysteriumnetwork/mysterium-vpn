@@ -12,9 +12,7 @@ part 'network_statistics_store.g.dart';
 class NetworkStatisticsStore = _NetworkStatisticsStore with _$NetworkStatisticsStore;
 
 abstract class _NetworkStatisticsStore with Store {
-  _NetworkStatisticsStore(
-    this._wireguardService,
-  ) {
+  _NetworkStatisticsStore(this._wireguardService) {
     // Start the tunnel statistics stream
     _getTunnelStatistics();
   }

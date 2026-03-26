@@ -6,33 +6,25 @@ import 'package:mysterium_vpn/views/login/login_view.dart';
 import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 
 class LoginPage extends HookConsumerWidget {
-  const LoginPage({
-    super.key,
-  });
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
 
-    useReaction(
-      () => authSessionStore.authShown,
-      (authShown) {
-        if (authShown) {
-          return;
-        }
-        Future.microtask(() async {
-          authSessionStore.authShown = true;
-        });
-      },
-      fireImmediately: true,
-    );
+    useReaction(() => authSessionStore.authShown, (authShown) {
+      if (authShown) {
+        return;
+      }
+      Future.microtask(() async {
+        authSessionStore.authShown = true;
+      });
+    }, fireImmediately: true);
 
     return UnauthenticatedPageView(
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        body: const SafeArea(
-          child: SignInView(),
-        ),
+        body: const SafeArea(child: SignInView()),
       ),
     );
   }

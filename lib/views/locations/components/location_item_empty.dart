@@ -31,11 +31,7 @@ class LocationItemEmpty extends StatelessWidget {
               width: 30,
               height: 30,
               alignment: Alignment.centerRight,
-              child: SvgIcon(
-                height: 30,
-                width: 30,
-                asset: Asset.icons.fix(context),
-              ),
+              child: SvgIcon(height: 30, width: 30, asset: Asset.icons.fix(context)),
             ),
             Expanded(
               child: EasyText(

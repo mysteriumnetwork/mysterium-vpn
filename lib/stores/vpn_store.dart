@@ -47,29 +47,29 @@ abstract class _VpnStore extends VpnGuard with Store {
     required OpenVpnRepository openVpnRepository,
     required ConnectionDecisionStore connectionDecisionStore,
     required VpnProtocolStore protocolStore,
-  })  : _externalApiService = externalApiService,
-        _mqtt = mqtt,
-        _locationsStore = locationsStore,
-        _connectionsLimitStore = connectionsLimitStore,
-        _analyticsStore = analyticsStore,
-        _remoteConfigStore = remoteConfigStore,
-        _authSessionStore = authSessionStore,
-        _realIPInfo = realIPInfo,
-        _logger = logger,
-        _dnsStore = dnsStore,
-        _refreshIPStore = refreshIPStore,
-        _recentLocationsStore = recentLocationsStore,
-        _locationsService = locationsService,
-        _locationsQueryStore = locationsQueryStore,
-        _unavailableLocationsStore = unavailableLocationsStore,
-        _userIntentsStore = userIntentsStore,
-        _protocolStore = protocolStore,
-        _wireguardRepository = wireguardRepository,
-        _openVpnRepository = openVpnRepository,
-        _vpnRepository = protocolStore.protocol == ProtocolType.wireguard
-            ? wireguardRepository
-            : openVpnRepository,
-        _connectionDecisionStore = connectionDecisionStore {
+  }) : _externalApiService = externalApiService,
+       _mqtt = mqtt,
+       _locationsStore = locationsStore,
+       _connectionsLimitStore = connectionsLimitStore,
+       _analyticsStore = analyticsStore,
+       _remoteConfigStore = remoteConfigStore,
+       _authSessionStore = authSessionStore,
+       _realIPInfo = realIPInfo,
+       _logger = logger,
+       _dnsStore = dnsStore,
+       _refreshIPStore = refreshIPStore,
+       _recentLocationsStore = recentLocationsStore,
+       _locationsService = locationsService,
+       _locationsQueryStore = locationsQueryStore,
+       _unavailableLocationsStore = unavailableLocationsStore,
+       _userIntentsStore = userIntentsStore,
+       _protocolStore = protocolStore,
+       _wireguardRepository = wireguardRepository,
+       _openVpnRepository = openVpnRepository,
+       _vpnRepository = protocolStore.protocol == ProtocolType.wireguard
+           ? wireguardRepository
+           : openVpnRepository,
+       _connectionDecisionStore = connectionDecisionStore {
     _init();
   }
 
@@ -204,8 +204,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     _logger.info('Protocol changed to: ${protocol.name}');
 
     // Update the repository based on the new protocol
-    final newRepository =
-        protocol == ProtocolType.wireguard ? _wireguardRepository : _openVpnRepository;
+    final newRepository = protocol == ProtocolType.wireguard
+        ? _wireguardRepository
+        : _openVpnRepository;
 
     // If currently connected, disconnect before switching
     if (isConnected || isLoading) {
@@ -363,10 +364,7 @@ abstract class _VpnStore extends VpnGuard with Store {
         break;
 
       case ConnectionAction.refreshIP:
-        await _startConnection(
-          refreshIP: true,
-          location: _vpnConnection?.location,
-        );
+        await _startConnection(refreshIP: true, location: _vpnConnection?.location);
         break;
     }
   }
@@ -413,11 +411,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   @action
-  Future<void> _prepareConnection(
-    VPNLocation? location,
-    UserIntent? intent,
-    bool refreshIP,
-  ) async {
+  Future<void> _prepareConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) async {
     _userIntentsStore.userIntent = intent;
 
     _connectingLocation = _connectionDecisionStore.determineConnectingLocation(
@@ -433,9 +427,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   Future<void> _resolveClosestLocation() async {
-    _fetchLocationFuture = ObservableFuture(
-      _locationsStore.findClosest(IPType.datacenter),
-    );
+    _fetchLocationFuture = ObservableFuture(_locationsStore.findClosest(IPType.datacenter));
     final location = await _fetchLocationFuture;
     if (location != null) {
       _connectingLocation = location;
@@ -461,11 +453,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       ..reset()
       ..start();
 
-    await _completeConnection(
-      _connectingLocation,
-      _userIntentsStore.userIntent,
-      refreshIP,
-    );
+    await _completeConnection(_connectingLocation, _userIntentsStore.userIntent, refreshIP);
   }
 
   void _logConnectionSuccess(bool refreshIP) {
@@ -524,20 +512,19 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   int _extractErrorCode(Object e) => switch (e) {
-        VpnConnectException(:final code) => code,
-        ApiException(:final code) => code,
-        _ => 1113,
-      };
+    VpnConnectException(:final code) => code,
+    ApiException(:final code) => code,
+    _ => 1113,
+  };
 
   String? _buildErrorMessage(Object e, int errorCode) => switch (e) {
-        UnavailableLocationException() => null,
-        DeviceLimitReachedException() => null,
-        _ => errorCode == 4029
-            ? LocaleKeys.toManyRequestsErrorMsg.tr()
-            : LocaleKeys.failedToConnectError.tr(
-                namedArgs: {'errorCode': errorCode.toString()},
-              ),
-      };
+    UnavailableLocationException() => null,
+    DeviceLimitReachedException() => null,
+    _ =>
+      errorCode == 4029
+          ? LocaleKeys.toManyRequestsErrorMsg.tr()
+          : LocaleKeys.failedToConnectError.tr(namedArgs: {'errorCode': errorCode.toString()}),
+  };
 
   // ==================== Connection Completion ====================
 
@@ -548,8 +535,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     bool refreshIP,
   ) async {
     try {
-      _vpnConfig =
-          await fetchVpnConfiguration(location: location, intent: intent, refreshIP: refreshIP);
+      _vpnConfig = await fetchVpnConfiguration(
+        location: location,
+        intent: intent,
+        refreshIP: refreshIP,
+      );
       await _recentLocationsStore.future;
 
       final connectedLocation = await _resolveConnectedLocation(location);
@@ -571,9 +561,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     required bool refreshIP,
   }) async {
     final closestRegion = (intent?.requiresCluster ?? false)
-        ? await _locationsService.closestRegion(
-            location?.ipType ?? IPType.datacenter,
-          )
+        ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
         : null;
 
     final realIpInfo = await _realIPInfo.infoFuture;
@@ -619,11 +607,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       location?.ipType ??
       (intent == UserIntent.nearestLocation ? _locationsQueryStore.ipType : null);
 
-  String? _determineCountry(
-    VPNLocation? location,
-    UserIntent? intent,
-    IPInfo? realIpInfo,
-  ) =>
+  String? _determineCountry(VPNLocation? location, UserIntent? intent, IPInfo? realIpInfo) =>
       intent == UserIntent.nearestLocation ? realIpInfo?.country : location?.countryCode;
 
   String? _determineCity(VPNLocation? location, UserIntent? intent) {
@@ -641,8 +625,9 @@ abstract class _VpnStore extends VpnGuard with Store {
 
     if (locationId != null) {
       final countryCode = _vpnConfig?.country;
-      final ipType =
-          _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!);
+      final ipType = _vpnConfig?.ipType == null
+          ? IPType.datacenter
+          : IPType.fromKey(_vpnConfig!.ipType!);
 
       final match = await _locationsStore.findById(
         locationId,
@@ -692,9 +677,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   Future<void> _updateConnectionIP(VPNLocation connectedLocation) async {
     if (_vpnConfig?.exitIp != null) {
-      _vpnConnection = _vpnConnection?.copyWith(
-        connectionIP: _vpnConfig!.exitIp!,
-      );
+      _vpnConnection = _vpnConnection?.copyWith(connectionIP: _vpnConfig!.exitIp!);
       return;
     }
     await _resolveIPAddress(connectedLocation);
@@ -747,9 +730,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   @action
   Future<void> disconnectAllDevices() async {
     try {
-      _disconnectAllDevicesFuture = ObservableFuture(
-        _vpnRepository.disconnectAllDevices(),
-      );
+      _disconnectAllDevicesFuture = ObservableFuture(_vpnRepository.disconnectAllDevices());
       await disconnectTunnel();
       await _disconnectAllDevicesFuture;
     } catch (e) {
@@ -762,8 +743,9 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   Future<void> _subscribeConnectionChanges(String connectionID) async {
     try {
-      _connectionDataSub =
-          _mqtt.subscribe('mysterium-vpn/connection/$connectionID').listen(_handleConnectionUpdate);
+      _connectionDataSub = _mqtt
+          .subscribe('mysterium-vpn/connection/$connectionID')
+          .listen(_handleConnectionUpdate);
 
       _connectionKilledSub = _mqtt
           .subscribe('mysterium-vpn/connection/$connectionID/killed')
@@ -779,15 +761,11 @@ abstract class _VpnStore extends VpnGuard with Store {
       return;
     }
 
-    final update = ConnectionMessage.fromJson(
-      json.decode(event) as Map<String, dynamic>,
-    );
+    final update = ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
 
     _vpnConnection = connection.copyWith(
       connectionIP: update.location.ip,
-      location: connection.location.copyWith(
-        id: update.location.country,
-      ),
+      location: connection.location.copyWith(id: update.location.country),
     );
 
     _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
@@ -806,10 +784,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     try {
       await _vpnRepository.udpBlockedCheck();
     } catch (e) {
-      _analyticsStore.logEvent(
-        AnalyticsEvent.udpBlocked,
-        parameters: {'error': e.toString()},
-      );
+      _analyticsStore.logEvent(AnalyticsEvent.udpBlocked, parameters: {'error': e.toString()});
     }
   }
 

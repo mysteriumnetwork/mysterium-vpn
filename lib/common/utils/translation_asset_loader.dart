@@ -16,9 +16,6 @@ class TranslationAssetLoader extends AssetLoader {
     await _textsStore.configFuture;
     final overrides = _textsStore.texts[locale.languageCode];
 
-    return {
-      ...?all,
-      ...?overrides,
-    };
+    return {...?all, ...?overrides};
   }
 }

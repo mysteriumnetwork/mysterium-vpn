@@ -7,11 +7,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:window_manager/window_manager.dart';
 
 class CustomPlatformMenu extends ConsumerWidget {
-  const CustomPlatformMenu({
-    required this.child,
-    required this.appName,
-    super.key,
-  });
+  const CustomPlatformMenu({required this.child, required this.appName, super.key});
   final Widget child;
   final String appName;
   @override
@@ -26,9 +22,7 @@ class CustomPlatformMenu extends ConsumerWidget {
                   PlatformMenuItemGroup(
                     members: <PlatformMenuItem>[
                       if (PlatformProvidedMenuItem.hasMenu(PlatformProvidedMenuItemType.about))
-                        const PlatformProvidedMenuItem(
-                          type: PlatformProvidedMenuItemType.about,
-                        ),
+                        const PlatformProvidedMenuItem(type: PlatformProvidedMenuItemType.about),
                     ],
                   ),
                   PlatformMenuItemGroup(
@@ -109,9 +103,7 @@ class CustomPlatformMenu extends ConsumerWidget {
                         label: 'Paste',
                         shortcut: SingleActivator(LogicalKeyboardKey.keyV, meta: true),
                       ),
-                      PlatformMenuItem(
-                        label: 'Delete',
-                      ),
+                      PlatformMenuItem(label: 'Delete'),
                     ],
                   ),
                   const PlatformMenuItemGroup(
@@ -233,8 +225,6 @@ class CustomPlatformMenu extends ConsumerWidget {
             ],
             child: child,
           )
-        : SizedBox(
-            child: child,
-          );
+        : SizedBox(child: child);
   }
 }

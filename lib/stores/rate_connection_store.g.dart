@@ -12,29 +12,33 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
   Computed<bool>? _$isLikeModeComputed;
 
   @override
-  bool get isLikeMode => (_$isLikeModeComputed ??=
-          Computed<bool>(() => super.isLikeMode, name: '_RateConnectionStore.isLikeMode'))
-      .value;
+  bool get isLikeMode => (_$isLikeModeComputed ??= Computed<bool>(
+    () => super.isLikeMode,
+    name: '_RateConnectionStore.isLikeMode',
+  )).value;
   Computed<bool>? _$isDislikeModeComputed;
 
   @override
-  bool get isDislikeMode => (_$isDislikeModeComputed ??=
-          Computed<bool>(() => super.isDislikeMode, name: '_RateConnectionStore.isDislikeMode'))
-      .value;
+  bool get isDislikeMode => (_$isDislikeModeComputed ??= Computed<bool>(
+    () => super.isDislikeMode,
+    name: '_RateConnectionStore.isDislikeMode',
+  )).value;
   Computed<List<RateConnectionReason>>? _$selectedReasonsComputed;
 
   @override
-  List<RateConnectionReason> get selectedReasons => (_$selectedReasonsComputed ??=
-          Computed<List<RateConnectionReason>>(() => super.selectedReasons,
-              name: '_RateConnectionStore.selectedReasons'))
-      .value;
+  List<RateConnectionReason> get selectedReasons =>
+      (_$selectedReasonsComputed ??= Computed<List<RateConnectionReason>>(
+        () => super.selectedReasons,
+        name: '_RateConnectionStore.selectedReasons',
+      )).value;
   Computed<List<RateConnectionReason>>? _$showReasonsComputed;
 
   @override
   List<RateConnectionReason> get showReasons =>
-      (_$showReasonsComputed ??= Computed<List<RateConnectionReason>>(() => super.showReasons,
-              name: '_RateConnectionStore.showReasons'))
-          .value;
+      (_$showReasonsComputed ??= Computed<List<RateConnectionReason>>(
+        () => super.showReasons,
+        name: '_RateConnectionStore.showReasons',
+      )).value;
 
   late final _$feedbackAtom = Atom(name: '_RateConnectionStore.feedback', context: context);
 
@@ -51,21 +55,26 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
     });
   }
 
-  late final _$submitRateConnectionAsyncAction =
-      AsyncAction('_RateConnectionStore.submitRateConnection', context: context);
+  late final _$submitRateConnectionAsyncAction = AsyncAction(
+    '_RateConnectionStore.submitRateConnection',
+    context: context,
+  );
 
   @override
   Future<void> submitRateConnection() {
     return _$submitRateConnectionAsyncAction.run(() => super.submitRateConnection());
   }
 
-  late final _$_RateConnectionStoreActionController =
-      ActionController(name: '_RateConnectionStore', context: context);
+  late final _$_RateConnectionStoreActionController = ActionController(
+    name: '_RateConnectionStore',
+    context: context,
+  );
 
   @override
   void toggleRateConnectionReason(RateConnectionReason reason) {
     final _$actionInfo = _$_RateConnectionStoreActionController.startAction(
-        name: '_RateConnectionStore.toggleRateConnectionReason');
+      name: '_RateConnectionStore.toggleRateConnectionReason',
+    );
     try {
       return super.toggleRateConnectionReason(reason);
     } finally {
@@ -76,7 +85,8 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
   @override
   void cancelRateConnection() {
     final _$actionInfo = _$_RateConnectionStoreActionController.startAction(
-        name: '_RateConnectionStore.cancelRateConnection');
+      name: '_RateConnectionStore.cancelRateConnection',
+    );
     try {
       return super.cancelRateConnection();
     } finally {

@@ -44,9 +44,7 @@ class SecureStorageService {
     if (!await _securedStorage.containsKey(key: key)) {
       throw KeyDoesntExistsException();
     }
-    final result = await _securedStorage.read(
-      key: key,
-    );
+    final result = await _securedStorage.read(key: key);
     if (result == null) {
       throw KeyDoesntExistsException();
     } else {
@@ -58,9 +56,7 @@ class SecureStorageService {
     if (!await checkExistance(key)) {
       return null;
     }
-    final result = await _securedStorage.read(
-      key: key,
-    );
+    final result = await _securedStorage.read(key: key);
     if (result == null) {
       return null;
     } else {
@@ -100,11 +96,7 @@ class SecureStorageService {
   }
 
   Future<void> write(String key, String value) async {
-    await retry(
-      () => _write(key, value),
-      maxAttempts: 3,
-      maxDelay: const Duration(seconds: 3),
-    );
+    await retry(() => _write(key, value), maxAttempts: 3, maxDelay: const Duration(seconds: 3));
   }
 
   /// in case it fails to write, we try to delete first and then write again. Based on:
@@ -174,19 +166,13 @@ class SecureStorageService {
     try {
       final codeChallenge = await read(StorageKeys.codeChallenge.name);
       final codeVerifier = await read(StorageKeys.codeVerifier.name);
-      return PkcePair.fromStorage(
-        codeChallenge: codeChallenge,
-        codeVerifier: codeVerifier,
-      );
+      return PkcePair.fromStorage(codeChallenge: codeChallenge, codeVerifier: codeVerifier);
     } catch (e) {
       return null;
     }
   }
 
-  Future<void> savePkcePair({
-    required String codeChallenge,
-    required String codeVerifier,
-  }) async {
+  Future<void> savePkcePair({required String codeChallenge, required String codeVerifier}) async {
     await write(StorageKeys.codeChallenge.name, codeChallenge);
     await write(StorageKeys.codeVerifier.name, codeVerifier);
   }
@@ -203,10 +189,7 @@ class SecureStorageService {
     if (activeUntil == null) {
       return;
     }
-    final value = {
-      'email': email,
-      'activeUntil': activeUntil.toIso8601String(),
-    };
+    final value = {'email': email, 'activeUntil': activeUntil.toIso8601String()};
     await write(StorageKeys.subscriptionPaymentInfo.name, jsonEncode(value));
   }
 

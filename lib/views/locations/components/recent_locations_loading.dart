@@ -6,10 +6,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RecentLocationsLoading extends StatelessWidget {
-  const RecentLocationsLoading({
-    this.placeholderCount = 10,
-    super.key,
-  });
+  const RecentLocationsLoading({this.placeholderCount = 10, super.key});
 
   final int placeholderCount;
 
@@ -25,13 +22,7 @@ class RecentLocationsLoading extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 200,
-                height: 24,
-                color: Colors.grey[300],
-              ),
-            ],
+            children: [Container(width: 200, height: 24, color: Colors.grey[300])],
           ),
         ).width(100),
         const SizedBox(height: 12),
@@ -42,8 +33,8 @@ class RecentLocationsLoading extends StatelessWidget {
             clipBehavior: Clip.none,
             scrollDirection: Axis.horizontal,
             itemCount: placeholderCount,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
-            itemBuilder: (_, __) => const LocationItemLoading(),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            itemBuilder: (_, _) => const LocationItemLoading(),
           ),
         ),
       ],

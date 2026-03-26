@@ -7,10 +7,7 @@ import 'package:vpn_api/vpn_api.dart';
 
 import 'rate_connection_store_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<AnalyticsStore>(),
-  MockSpec<VpnStore>(),
-])
+@GenerateNiceMocks([MockSpec<AnalyticsStore>(), MockSpec<VpnStore>()])
 void main() {
   late RateConnectionStore likeModeStore;
   late RateConnectionStore dislikeModeStore;
@@ -138,8 +135,9 @@ void main() {
 
     test('cancelRateConnection logs analytics event', () {
       likeModeStore.cancelRateConnection();
-      verify(mockAnalyticsStore.logRateConnectionCancel(RateConnectionRequestModeEnum.like))
-          .called(1);
+      verify(
+        mockAnalyticsStore.logRateConnectionCancel(RateConnectionRequestModeEnum.like),
+      ).called(1);
     });
   });
 }

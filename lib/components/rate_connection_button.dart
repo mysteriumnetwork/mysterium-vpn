@@ -54,10 +54,7 @@ class RateConnection extends ConsumerWidget {
 }
 
 class _RateConnectionIconBtn extends StatelessWidget {
-  const _RateConnectionIconBtn({
-    required this.connectionRated,
-    required this.rateConnectionMode,
-  });
+  const _RateConnectionIconBtn({required this.connectionRated, required this.rateConnectionMode});
 
   final RateConnectionRequestModeEnum rateConnectionMode;
   final RateConnectionRequestModeEnum? connectionRated;

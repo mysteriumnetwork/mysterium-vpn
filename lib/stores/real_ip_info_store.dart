@@ -13,12 +13,7 @@ part 'real_ip_info_store.g.dart';
 class RealIPInfoStore = _RealIPInfoStore with _$RealIPInfoStore;
 
 abstract class _RealIPInfoStore with Store {
-  _RealIPInfoStore(
-    this._api,
-    this._preferences,
-    this._wireguardService,
-    this._analyticsStore,
-  ) {
+  _RealIPInfoStore(this._api, this._preferences, this._wireguardService, this._analyticsStore) {
     infoFuture = ObservableFuture(_fetch());
   }
   final ExternalApiService _api;

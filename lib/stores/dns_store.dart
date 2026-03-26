@@ -51,12 +51,14 @@ abstract class _DNSStore with Store {
       notSafeContentBlockerFuture.value ?? _initialNotSafeContentBlockerValue;
 
   @observable
-  ObservableFuture<bool> malwareContentBlockerFuture =
-      ObservableFuture.value(_initialMalwareBlockerValue);
+  ObservableFuture<bool> malwareContentBlockerFuture = ObservableFuture.value(
+    _initialMalwareBlockerValue,
+  );
 
   @observable
-  ObservableFuture<bool> notSafeContentBlockerFuture =
-      ObservableFuture.value(_initialNotSafeContentBlockerValue);
+  ObservableFuture<bool> notSafeContentBlockerFuture = ObservableFuture.value(
+    _initialNotSafeContentBlockerValue,
+  );
 
   @computed
   bool get hideNotSafeContentBlocker =>
@@ -108,9 +110,7 @@ abstract class _DNSStore with Store {
 
   @action
   Future<void> toggleMalwareBlocker() async {
-    await _localDBService.setMalwareContentBlocker(
-      value: !malwareContentBlocker,
-    );
+    await _localDBService.setMalwareContentBlocker(value: !malwareContentBlocker);
     malwareContentBlockerFuture = ObservableFuture.value(!malwareContentBlocker);
   }
 
@@ -121,9 +121,7 @@ abstract class _DNSStore with Store {
       await _localDBService.setMalwareContentBlocker(value: value);
       malwareContentBlockerFuture = ObservableFuture.value(value);
     }
-    await _localDBService.setNotSafeContentBlocker(
-      value: value,
-    );
+    await _localDBService.setNotSafeContentBlocker(value: value);
     notSafeContentBlockerFuture = ObservableFuture.value(value);
   }
 

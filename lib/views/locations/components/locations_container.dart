@@ -24,10 +24,7 @@ class LocationsContainer extends StatelessWidget {
         bottomLeft: const Radius.circular(12),
         bottomRight: const Radius.circular(12),
       ),
-      child: Padding(
-        padding: padding,
-        child: child,
-      ),
+      child: Padding(padding: padding, child: child),
     );
   }
 }

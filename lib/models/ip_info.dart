@@ -7,11 +7,8 @@ part 'ip_info.g.dart';
 
 @freezed
 abstract class IPInfo with _$IPInfo {
-  const factory IPInfo({
-    required String ip,
-    required String country,
-    required String city,
-  }) = _IPInfo;
+  const factory IPInfo({required String ip, required String country, required String city}) =
+      _IPInfo;
 
   const IPInfo._();
 

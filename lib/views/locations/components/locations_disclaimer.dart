@@ -9,21 +9,17 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 class LocationsDisclaimer extends HookConsumerWidget {
-  const LocationsDisclaimer({
-    required this.text,
-    required this.bannerType,
-    super.key,
-  });
+  const LocationsDisclaimer({required this.text, required this.bannerType, super.key});
 
   factory LocationsDisclaimer.residential() => LocationsDisclaimer(
-        text: LocaleKeys.ipTypeResidentialDisclaimer.tr(),
-        bannerType: BannerType.residentialIPs,
-      );
+    text: LocaleKeys.ipTypeResidentialDisclaimer.tr(),
+    bannerType: BannerType.residentialIPs,
+  );
 
   factory LocationsDisclaimer.dataCenter() => LocationsDisclaimer(
-        text: LocaleKeys.ipTypeDataCenterDisclaimer.tr(),
-        bannerType: BannerType.highSpeedIPs,
-      );
+    text: LocaleKeys.ipTypeDataCenterDisclaimer.tr(),
+    bannerType: BannerType.highSpeedIPs,
+  );
 
   final String text;
   final BannerType bannerType;
@@ -59,12 +55,7 @@ class LocationsDisclaimer extends HookConsumerWidget {
             onDismiss: handleDismiss,
             title: SizedBox(
               width: double.infinity,
-              child: EasyText(
-                text,
-                fontSize: 12,
-                maxLines: 2,
-                textAlign: TextAlign.left,
-              ),
+              child: EasyText(text, fontSize: 12, maxLines: 2, textAlign: TextAlign.left),
             ),
             mainBanner: false,
           ),

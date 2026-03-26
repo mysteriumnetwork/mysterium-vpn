@@ -186,11 +186,10 @@ void main() {
 
     test('setupTunnel calls repository and listens to status', () async {
       when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
-      when(mockWireguardRepo.currentStatus())
-          .thenAnswer((_) async => VpnConnectionStatus.disconnected);
-      when(mockRecentLocations.future).thenAnswer(
-        (_) => ObservableFuture.value(<VPNLocation>[]),
-      );
+      when(
+        mockWireguardRepo.currentStatus(),
+      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
 
       await vpnStore.setupTunnel();
 
@@ -395,68 +394,67 @@ void main() {
       });
 
       test(
-          'fetchVpnConfiguration throws UnavailableLocationException and disables location on ApiException 2332',
-          () async {
-        const location = VPNLocation(
-          id: 'NY',
-          ipType: IPType.datacenter,
-          translations: {},
-          countryCode: 'US',
-        );
+        'fetchVpnConfiguration throws UnavailableLocationException and disables location on ApiException 2332',
+        () async {
+          const location = VPNLocation(
+            id: 'NY',
+            ipType: IPType.datacenter,
+            translations: {},
+            countryCode: 'US',
+          );
 
-        const intent = UserIntent.bestSpeed;
+          const intent = UserIntent.bestSpeed;
 
-        when(mockRealIPInfo.infoFuture).thenAnswer(
-          (_) => ObservableFuture.value(
-            const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1'),
-          ),
-        );
+          when(mockRealIPInfo.infoFuture).thenAnswer(
+            (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
+          );
 
-        when(
-          mockWireguardRepo.fetchVpnConfig(
-            countryOriginate: anyNamed('countryOriginate'),
-            country: anyNamed('country'),
-            city: anyNamed('city'),
-            ipType: anyNamed('ipType'),
-            resetConnection: anyNamed('resetConnection'),
-            userIntent: anyNamed('userIntent'),
-            cluster: anyNamed('cluster'),
-            dnsAddress: anyNamed('dnsAddress'),
-          ),
-        ).thenAnswer(
-          (_) async => throw ApiException(
-            RequestOptions(),
-            'Location unavailable',
-            code: 2332,
-            identifier: 'LocationUnavailable',
-            endpoint: '/config',
-            severity: ExceptionSeverity.low,
-          ),
-        );
-
-        await expectLater(
-          () async => vpnStore.fetchVpnConfiguration(
-            location: location,
-            intent: intent,
-            refreshIP: false,
-          ),
-          throwsA(isA<UnavailableLocationException>()),
-        );
-
-        verify(
-          mockUnavailableLocations.toggleAvailability(
-            argThat(
-              predicate<VPNLocation>(
-                (loc) =>
-                    loc.id == location.id &&
-                    loc.ipType == location.ipType &&
-                    loc.countryCode == location.countryCode,
-              ),
+          when(
+            mockWireguardRepo.fetchVpnConfig(
+              countryOriginate: anyNamed('countryOriginate'),
+              country: anyNamed('country'),
+              city: anyNamed('city'),
+              ipType: anyNamed('ipType'),
+              resetConnection: anyNamed('resetConnection'),
+              userIntent: anyNamed('userIntent'),
+              cluster: anyNamed('cluster'),
+              dnsAddress: anyNamed('dnsAddress'),
             ),
-            availability: false,
-          ),
-        ).called(1);
-      });
+          ).thenAnswer(
+            (_) async => throw ApiException(
+              RequestOptions(),
+              'Location unavailable',
+              code: 2332,
+              identifier: 'LocationUnavailable',
+              endpoint: '/config',
+              severity: ExceptionSeverity.low,
+            ),
+          );
+
+          await expectLater(
+            () async => vpnStore.fetchVpnConfiguration(
+              location: location,
+              intent: intent,
+              refreshIP: false,
+            ),
+            throwsA(isA<UnavailableLocationException>()),
+          );
+
+          verify(
+            mockUnavailableLocations.toggleAvailability(
+              argThat(
+                predicate<VPNLocation>(
+                  (loc) =>
+                      loc.id == location.id &&
+                      loc.ipType == location.ipType &&
+                      loc.countryCode == location.countryCode,
+                ),
+              ),
+              availability: false,
+            ),
+          ).called(1);
+        },
+      );
 
       test('rethrows other ApiException', () async {
         when(mockRealIPInfo.infoFuture).thenAnswer(
@@ -531,8 +529,9 @@ void main() {
       test('connects using WireGuard repository', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
         when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
-        when(mockWireguardRepo.currentStatus())
-            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
 
         // Verify WireGuard repo is being used
         await vpnStore.checkTunnelStatus();
@@ -567,8 +566,9 @@ void main() {
           protocolStore: mockVpnProtocolStore,
         );
 
-        when(mockOpenVpnRepo.currentStatus())
-            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(
+          mockOpenVpnRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
 
         // Verify OpenVPN repo is being used
         await storeWithOpenVpn.checkTunnelStatus();

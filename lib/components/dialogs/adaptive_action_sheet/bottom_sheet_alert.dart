@@ -16,10 +16,7 @@ Future<T?> showAdaptiveActionSheet<T>({
   double? androidBorderRadius,
   bool isDismissible = true,
 }) async {
-  assert(
-    barrierColor != Colors.transparent,
-    'The barrier color cannot be transparent.',
-  );
+  assert(barrierColor != Colors.transparent, 'The barrier color cannot be transparent.');
 
   return _show<T>(
     context,
@@ -71,44 +68,40 @@ Future<T?> _showCupertinoBottomSheet<T>(
   List<BottomSheetAction> actions,
   CancelAction? cancelAction, {
   bool isDismissible = true,
-}) =>
-    showCupertinoModalPopup(
-      context: context,
-      barrierDismissible: isDismissible,
-      builder: (BuildContext coxt) => CupertinoActionSheet(
-        title: title,
-        actions: actions
-            .map(
-              (action) => CupertinoActionSheetAction(
-                onPressed: () {
-                  action.onPressed(coxt);
-                  Beamer.of(coxt).popRoute();
-                },
-                child: Text(
-                  action.title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
-                ),
-              ),
-            )
-            .toList(),
-        cancelButton: cancelAction != null
-            ? CupertinoActionSheetAction(
-                onPressed: () {
-                  if (cancelAction.onPressed != null) {
-                    cancelAction.onPressed!(coxt);
-                  } else {
-                    Beamer.of(coxt).popRoute();
-                  }
-                },
-                child: Text(
-                  textAlign: TextAlign.center,
-                  cancelAction.title,
-                ),
-              )
-            : null,
-      ),
-    );
+}) => showCupertinoModalPopup(
+  context: context,
+  barrierDismissible: isDismissible,
+  builder: (BuildContext coxt) => CupertinoActionSheet(
+    title: title,
+    actions: actions
+        .map(
+          (action) => CupertinoActionSheetAction(
+            onPressed: () {
+              action.onPressed(coxt);
+              Beamer.of(coxt).popRoute();
+            },
+            child: Text(
+              action.title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
+            ),
+          ),
+        )
+        .toList(),
+    cancelButton: cancelAction != null
+        ? CupertinoActionSheetAction(
+            onPressed: () {
+              if (cancelAction.onPressed != null) {
+                cancelAction.onPressed!(coxt);
+              } else {
+                Beamer.of(coxt).popRoute();
+              }
+            },
+            child: Text(textAlign: TextAlign.center, cancelAction.title),
+          )
+        : null,
+  ),
+);
 
 Future<T?> _showMaterialBottomSheet<T>(
   BuildContext context,
@@ -141,9 +134,7 @@ Future<T?> _showMaterialBottomSheet<T>(
       return PopScope(
         canPop: isDismissible,
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: screenHeight - (screenHeight / 10),
-          ),
+          constraints: BoxConstraints(maxHeight: screenHeight - (screenHeight / 10)),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -183,10 +174,7 @@ Future<T?> _showMaterialBottomSheet<T>(
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16),
-                        child: Text(
-                          cancelAction.title,
-                          textAlign: TextAlign.center,
-                        ),
+                        child: Text(cancelAction.title, textAlign: TextAlign.center),
                       ),
                     ),
                   ),

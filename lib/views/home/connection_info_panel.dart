@@ -44,9 +44,7 @@ class ConnectionInfoPanel extends HookConsumerWidget {
         ).card(
           color: Palette.black,
           elevation: 0,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
         );
       },
     );
@@ -68,22 +66,20 @@ class _InfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          SvgIcon(
-            asset: icon,
-          ).padding(bottom: 20),
-          EasyText(
-            label,
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
-            color: isConnected ? Palette.white : Palette.lightBlack,
-          ).padding(bottom: 16),
-          EasyText(
-            text,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: isConnected ? Palette.white : Palette.lightBlack,
-          ),
-        ],
-      ).padding(vertical: 20);
+    children: [
+      SvgIcon(asset: icon).padding(bottom: 20),
+      EasyText(
+        label,
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        color: isConnected ? Palette.white : Palette.lightBlack,
+      ).padding(bottom: 16),
+      EasyText(
+        text,
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: isConnected ? Palette.white : Palette.lightBlack,
+      ),
+    ],
+  ).padding(vertical: 20);
 }

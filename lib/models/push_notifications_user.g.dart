@@ -10,9 +10,7 @@ _PushNotificationsUser _$PushNotificationsUserFromJson(Map<String, dynamic> json
     _PushNotificationsUser(
       pushNotificationsId: json['pushNotificationsId'] as String?,
       userId: json['userId'] as String?,
-      tags: (json['tags'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as String),
-      ),
+      tags: (json['tags'] as Map<String, dynamic>?)?.map((k, e) => MapEntry(k, e as String)),
     );
 
 Map<String, dynamic> _$PushNotificationsUserToJson(_PushNotificationsUser instance) =>

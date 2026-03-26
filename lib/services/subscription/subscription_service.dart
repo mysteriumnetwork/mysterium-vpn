@@ -30,8 +30,5 @@ abstract class SubscriptionService {
 
   Future<bool> isEligibleForIntroOffer(String productId);
 
-  Future<void> manageSubscription({
-    required ProductDetails productDetails,
-    required String userId,
-  });
+  Future<void> manageSubscription({required ProductDetails productDetails, required String userId});
 }

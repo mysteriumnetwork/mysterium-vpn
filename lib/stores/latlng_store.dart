@@ -15,8 +15,9 @@ abstract class _LatLngStore with Store {
   final AssetsService _assetsService;
 
   @readonly
-  late ObservableFuture<Map<String, LatLng>> _countryCoordinatesFuture =
-      ObservableFuture(_assetsService.getCoordinates());
+  late ObservableFuture<Map<String, LatLng>> _countryCoordinatesFuture = ObservableFuture(
+    _assetsService.getCoordinates(),
+  );
 
   @action
   LatLng? coordinatesForCountry(String countryCode) =>

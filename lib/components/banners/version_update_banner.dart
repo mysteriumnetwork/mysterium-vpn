@@ -35,10 +35,7 @@ class AppVersionUpdateBanner extends HookConsumerWidget {
         text: LocaleKeys.appUpdateAvailableTitle.tr(),
       ),
       body: BannerBody(text: LocaleKeys.appUpdateAvailableDesc.tr()),
-      cta: BannerCTA(
-        text: LocaleKeys.updateBtn.tr(),
-        onPressed: handlePressed,
-      ),
+      cta: BannerCTA(text: LocaleKeys.updateBtn.tr(), onPressed: handlePressed),
       onPressed: handlePressed,
       onDismiss: handleDismiss,
     );

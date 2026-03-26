@@ -6,10 +6,7 @@ import 'package:talker/talker.dart';
 Future<void> Function()? refreshTokenCallback;
 
 class RefreshTokenInterceptor extends Interceptor {
-  RefreshTokenInterceptor({
-    required this.dio,
-    required this.logger,
-  });
+  RefreshTokenInterceptor({required this.dio, required this.logger});
 
   final Dio dio;
   final Talker logger;
@@ -56,12 +53,7 @@ class RefreshTokenInterceptor extends Interceptor {
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     // Create a new `RequestOptions` object with the same method, path, data, and query parameters as the original request.
-    final options = Options(
-      method: requestOptions.method,
-      headers: {
-        'Retry': 'Yes',
-      },
-    );
+    final options = Options(method: requestOptions.method, headers: {'Retry': 'Yes'});
 
     // Retry the request with the new `RequestOptions` object.
     return dio.request<dynamic>(

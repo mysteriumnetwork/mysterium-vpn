@@ -34,44 +34,42 @@ Future<void> showRateConnectionDialog(
 }
 
 class _ConfirmDialog extends HookConsumerWidget {
-  const _ConfirmDialog(
-    this.rateConnectionMode,
-  );
+  const _ConfirmDialog(this.rateConnectionMode);
 
   final RateConnectionRequestModeEnum rateConnectionMode;
 
   Color getDialogBackgroundColor(Brightness brightness) => switch (brightness) {
-        Brightness.light => Palette.white,
-        Brightness.dark => Palette.darkIndigo,
-      };
+    Brightness.light => Palette.white,
+    Brightness.dark => Palette.darkIndigo,
+  };
 
   Color getDialogTextColor(Brightness brightness) => switch (brightness) {
-        Brightness.light => Palette.darkIndigo,
-        Brightness.dark => Palette.white,
-      };
+    Brightness.light => Palette.darkIndigo,
+    Brightness.dark => Palette.white,
+  };
 
   Color cancelButtonColor(Brightness brightness) => switch (brightness) {
-        Brightness.light => Palette.lightBlack,
-        Brightness.dark => Palette.lightBlue,
-      };
+    Brightness.light => Palette.lightBlack,
+    Brightness.dark => Palette.lightBlue,
+  };
 
   Color tileTextColor(Brightness brightness) => switch (brightness) {
-        Brightness.light => Palette.darkIndigo,
-        Brightness.dark => Palette.black,
-      };
+    Brightness.light => Palette.darkIndigo,
+    Brightness.dark => Palette.black,
+  };
 
   String _stringifyReason(RateConnectionReason reason) => switch (reason) {
-        RateConnectionReason.accessToSites => LocaleKeys.bypassRestrictionsReason.tr(),
-        RateConnectionReason.unstableSpeed => LocaleKeys.unstableSpeedReason.tr(),
-        RateConnectionReason.stableConnection => LocaleKeys.stableConnectionReason.tr(),
-        RateConnectionReason.other => LocaleKeys.otherReason.tr(),
-        RateConnectionReason.frequentDisconnects => LocaleKeys.frequentDisconnectsReason.tr(),
-        RateConnectionReason.lowLatency => LocaleKeys.lowLatencyReason.tr(),
-        RateConnectionReason.highLatency => LocaleKeys.highLatencyReason.tr(),
-        RateConnectionReason.consistentSpeed => LocaleKeys.consistentSpeedReason.tr(),
-        RateConnectionReason.geoBlockedSites => LocaleKeys.accessBlockedSitesReason.tr(),
-        RateConnectionReason.incorrectLocation => LocaleKeys.incorrectLocationReason.tr(),
-      };
+    RateConnectionReason.accessToSites => LocaleKeys.bypassRestrictionsReason.tr(),
+    RateConnectionReason.unstableSpeed => LocaleKeys.unstableSpeedReason.tr(),
+    RateConnectionReason.stableConnection => LocaleKeys.stableConnectionReason.tr(),
+    RateConnectionReason.other => LocaleKeys.otherReason.tr(),
+    RateConnectionReason.frequentDisconnects => LocaleKeys.frequentDisconnectsReason.tr(),
+    RateConnectionReason.lowLatency => LocaleKeys.lowLatencyReason.tr(),
+    RateConnectionReason.highLatency => LocaleKeys.highLatencyReason.tr(),
+    RateConnectionReason.consistentSpeed => LocaleKeys.consistentSpeedReason.tr(),
+    RateConnectionReason.geoBlockedSites => LocaleKeys.accessBlockedSitesReason.tr(),
+    RateConnectionReason.incorrectLocation => LocaleKeys.incorrectLocationReason.tr(),
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,9 +99,7 @@ class _ConfirmDialog extends HookConsumerWidget {
         scrollable: true,
         buttonPadding: EdgeInsets.zero,
         actionsPadding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         titlePadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         contentPadding: EdgeInsets.zero,
         insetPadding: const EdgeInsets.symmetric(horizontal: 15),
@@ -124,17 +120,12 @@ class _ConfirmDialog extends HookConsumerWidget {
         actions: [
           TextButton(
             style: ButtonStyle(
-              foregroundColor: WidgetStateProperty.all(
-                cancelButtonColor(brightness),
-              ),
+              foregroundColor: WidgetStateProperty.all(cancelButtonColor(brightness)),
             ),
             onPressed: handleCancel,
             child: Text(
               LocaleKeys.cancelBtn.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700),
             ),
           ),
           VerticalDivider(
@@ -142,16 +133,11 @@ class _ConfirmDialog extends HookConsumerWidget {
             color: getDialogTextColor(brightness).withValues(alpha: .2),
           ).height(80),
           TextButton(
-            style: ButtonStyle(
-              foregroundColor: WidgetStateProperty.all(Palette.purple),
-            ),
+            style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Palette.purple)),
             onPressed: handleSubmit,
             child: Text(
               LocaleKeys.submitBtn.tr(),
-              style: GoogleFonts.montserrat(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700),
             ),
           ),
         ],
@@ -171,20 +157,16 @@ class _ConfirmDialog extends HookConsumerWidget {
                       side: BorderSide(
                         color: Theme.of(context).tabBarTheme.indicatorColor ?? Palette.purple,
                       ),
-                      checkboxShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+                      checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                       value: rateConnectionStore.selectedReasons.contains(
                         rateConnectionStore.showReasons[i],
                       ),
-                      fillColor: WidgetStateProperty.resolveWith(
-                        (states) {
-                          if (states.contains(WidgetState.selected)) {
-                            return Palette.purple;
-                          }
-                          return Palette.lightBlue;
-                        },
-                      ),
+                      fillColor: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return Palette.purple;
+                        }
+                        return Palette.lightBlue;
+                      }),
                       controlAffinity: ListTileControlAffinity.leading,
                       onChanged: (_) {
                         rateConnectionStore.toggleRateConnectionReason(
@@ -192,12 +174,8 @@ class _ConfirmDialog extends HookConsumerWidget {
                         );
                       },
                       title: Text(
-                        _stringifyReason(
-                          rateConnectionStore.showReasons[i],
-                        ),
-                        style: GoogleFonts.montserrat(
-                          color: getDialogTextColor(brightness),
-                        ),
+                        _stringifyReason(rateConnectionStore.showReasons[i]),
+                        style: GoogleFonts.montserrat(color: getDialogTextColor(brightness)),
                       ),
                     ),
                   ),
@@ -222,10 +200,7 @@ class _ConfirmDialog extends HookConsumerWidget {
                     ),
                   ),
                 ],
-              ).padding(
-                left: 20,
-                right: 20,
-              ),
+              ).padding(left: 20, right: 20),
               Divider(
                 height: 1,
                 color: getDialogTextColor(brightness).withValues(alpha: .2),

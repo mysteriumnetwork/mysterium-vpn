@@ -18,10 +18,7 @@ class HomeDesktopView extends HookConsumerWidget {
           padding: EdgeInsets.only(left: sidebarWidth),
           child: HomeDesktopRightPanel(),
         ),
-        SizedBox(
-          width: sidebarWidth,
-          child: HomeDesktopLeftPanel(),
-        ),
+        SizedBox(width: sidebarWidth, child: HomeDesktopLeftPanel()),
       ],
     );
   }

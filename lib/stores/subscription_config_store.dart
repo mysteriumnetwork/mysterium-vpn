@@ -16,22 +16,14 @@ part 'subscription_config_store.g.dart';
 class SubscriptionConfigStore = _SubscriptionConfigStore with _$SubscriptionConfigStore;
 
 abstract class _SubscriptionConfigStore with Store, Disposeable {
-  _SubscriptionConfigStore(
-    this._authSessionStore,
-    this._service,
-    this._analyticsStore,
-  ) {
+  _SubscriptionConfigStore(this._authSessionStore, this._service, this._analyticsStore) {
     _reactions = [
-      reaction(
-        (_) => _authSessionStore.accessToken,
-        (token) {
-          if (token != null) {
-            _future = ObservableFuture(_fetch());
-            _subscriptionFuture = ObservableFuture(_fetchSubscription());
-          }
-        },
-        fireImmediately: true,
-      ),
+      reaction((_) => _authSessionStore.accessToken, (token) {
+        if (token != null) {
+          _future = ObservableFuture(_fetch());
+          _subscriptionFuture = ObservableFuture(_fetchSubscription());
+        }
+      }, fireImmediately: true),
       reaction((_) => _subscriptionFuture.value?.planId, (plan) {
         _subscriptionPlanFuture = ObservableFuture(_service.fetchSubscriptionPlan());
       }),
@@ -51,8 +43,9 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
 
   @readonly
-  late ObservableFuture<GetPlanResponse> _subscriptionPlanFuture =
-      ObservableFuture(_service.fetchSubscriptionPlan());
+  late ObservableFuture<GetPlanResponse> _subscriptionPlanFuture = ObservableFuture(
+    _service.fetchSubscriptionPlan(),
+  );
 
   Future<SubscriptionConfigResponse?> _fetch() async {
     if (Platform.isWindows) {
@@ -80,8 +73,8 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
     final userStatus = subscription.active
         ? 'paid'
         : (subscription.expired ?? false)
-            ? 'expired_paid'
-            : 'not_paid';
+        ? 'expired_paid'
+        : 'not_paid';
     _analyticsStore
       ..setUserProperty(
         AnalyticsUserProperty.fromEnum(
@@ -96,10 +89,7 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
         ),
       )
       ..setUserProperty(
-        AnalyticsUserProperty.fromEnum(
-          name: AnalyticsUserPropName.userStatus,
-          value: userStatus,
-        ),
+        AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.userStatus, value: userStatus),
       );
   }
 

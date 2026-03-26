@@ -6,9 +6,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'promotional_content_store_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<RemoteConfigStore>(),
-])
+@GenerateNiceMocks([MockSpec<RemoteConfigStore>()])
 void main() {
   late MockRemoteConfigStore mockRemoteConfigStore;
   late PromotionalContentStore store;
@@ -18,10 +16,7 @@ void main() {
 
   setUp(() {
     mockRemoteConfigStore = MockRemoteConfigStore();
-    store = PromotionalContentStore(
-      mockRemoteConfigStore,
-      getCurrentTime: () => fixedDate,
-    );
+    store = PromotionalContentStore(mockRemoteConfigStore, getCurrentTime: () => fixedDate);
   });
 
   group('activeBanner', () {
@@ -32,10 +27,7 @@ void main() {
     });
 
     test('returns banner when no date constraints', () {
-      final banner = PromotionalBanner(
-        id: '1',
-        title: 'Test Banner',
-      );
+      final banner = PromotionalBanner(id: '1', title: 'Test Banner');
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
       expect(store.activeBanner, equals(banner));
@@ -122,22 +114,14 @@ void main() {
     });
 
     test('returns banner when startDate equals current time', () {
-      final banner = PromotionalBanner(
-        id: '1',
-        title: 'Test Banner',
-        startDate: fixedDate,
-      );
+      final banner = PromotionalBanner(id: '1', title: 'Test Banner', startDate: fixedDate);
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
       expect(store.activeBanner, equals(banner));
     });
 
     test('returns null when endDate equals current time', () {
-      final banner = PromotionalBanner(
-        id: '1',
-        title: 'Test Banner',
-        endDate: fixedDate,
-      );
+      final banner = PromotionalBanner(id: '1', title: 'Test Banner', endDate: fixedDate);
       when(mockRemoteConfigStore.promotionalBanner).thenReturn(banner);
 
       expect(store.activeBanner, isNull);

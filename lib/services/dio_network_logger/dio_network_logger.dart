@@ -42,11 +42,8 @@ class NetworkLoggerOverlay extends StatefulWidget {
   }) {
     // create overlay entry
     final entry = OverlayEntry(
-      builder: (context) => NetworkLoggerOverlay._(
-        bottom: bottom,
-        right: right,
-        draggable: draggable,
-      ),
+      builder: (context) =>
+          NetworkLoggerOverlay._(bottom: bottom, right: right, draggable: draggable),
     );
     // insert on next frame
     Future.delayed(Duration.zero, () {
@@ -54,10 +51,12 @@ class NetworkLoggerOverlay extends StatefulWidget {
       final overlay = Overlay.maybeOf(context, rootOverlay: rootOverlay);
 
       if (overlay == null) {
-        throw FlutterError('FlutterNetworkLogger:  No Overlay widget found. '
-            'The most common way to add an Overlay to an application is to '
-            'include a MaterialApp or Navigator above widget that calls '
-            'NetworkLoggerOverlay.attachTo()');
+        throw FlutterError(
+          'FlutterNetworkLogger:  No Overlay widget found. '
+          'The most common way to add an Overlay to an application is to '
+          'include a MaterialApp or Navigator above widget that calls '
+          'NetworkLoggerOverlay.attachTo()',
+        );
       }
 
       overlay.insert(entry);
@@ -229,9 +228,7 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
             onPressed: _press,
             backgroundColor: widget.color,
             child: isLoading
-                ? const LoadingIndicator(
-                    indicatorColor: Colors.white,
-                  )
+                ? const LoadingIndicator(indicatorColor: Colors.white)
                 : const Icon(Icons.cloud, color: Colors.white),
           ),
         );
@@ -243,23 +240,19 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
 /// Screen that displays log entries list.
 class NetworkLoggerScreen extends StatefulWidget {
   NetworkLoggerScreen({super.key, NetworkEventList? eventList})
-      : eventList = eventList ?? DioNetworkLogger.instance;
+    : eventList = eventList ?? DioNetworkLogger.instance;
 
   /// Event list to listen for event changes.
   final NetworkEventList eventList;
 
   /// Opens screen.
-  static Future<void> open(
-    BuildContext context, {
-    NetworkEventList? eventList,
-  }) =>
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          settings: const RouteSettings(name: 'network_logger'),
-          builder: (context) => NetworkLoggerScreen(eventList: eventList),
-        ),
-      );
+  static Future<void> open(BuildContext context, {NetworkEventList? eventList}) => Navigator.push(
+    context,
+    MaterialPageRoute(
+      settings: const RouteSettings(name: 'network_logger'),
+      builder: (context) => NetworkLoggerScreen(eventList: eventList),
+    ),
+  );
 
   @override
   State<NetworkLoggerScreen> createState() => _NetworkLoggerScreenState();
@@ -275,8 +268,8 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
     final events = _query.isEmpty
         ? widget.eventList.events
         : widget.eventList.events
-            .where((it) => it.request.uri.toLowerCase().contains(_query))
-            .toList();
+              .where((it) => it.request.uri.toLowerCase().contains(_query))
+              .toList();
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -286,16 +279,11 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
           color: Theme.of(context).textTheme.bodyLarge?.color,
         ),
         forceMaterialTransparency: true,
-        title: const EasyText(
-          'Network Logs',
-        ),
+        title: const EasyText('Network Logs'),
         actions: <Widget>[
           _ActionButton(
             onTap: () => _ConfigPage.show(context: context),
-            child: const Icon(
-              Icons.settings,
-              color: Colors.amber,
-            ),
+            child: const Icon(Icons.settings, color: Colors.amber),
           ),
           _ActionButton(
             onTap: () => _DeviceInfo.show(context: context),
@@ -346,10 +334,7 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
                     key: ValueKey(item.request),
                     title: Row(
                       children: [
-                        EasyText(
-                          item.request.method,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        EasyText(item.request.method, fontWeight: FontWeight.bold),
                         const SizedBox(width: 4),
                         _AutoUpdate(
                           duration: const Duration(seconds: 1),
@@ -385,15 +370,8 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
                         ),
                       ],
                     ),
-                    subtitle: EasyText(
-                      item.request.uri,
-                      maxLines: 10,
-                    ),
-                    onTap: () => NetworkLoggerEventScreen.open(
-                      context,
-                      item,
-                      widget.eventList,
-                    ),
+                    subtitle: EasyText(item.request.uri, maxLines: 10),
+                    onTap: () => NetworkLoggerEventScreen.open(context, item, widget.eventList),
                   ),
                 ),
               ),
@@ -420,10 +398,7 @@ String _timeDifference(DateTime time, [DateTime? origin]) {
 const _jsonEncoder = JsonEncoder.withIndent('  ');
 
 class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.child,
-    required this.onTap,
-  });
+  const _ActionButton({required this.child, required this.onTap});
 
   final Widget child;
   final VoidCallback onTap;
@@ -432,23 +407,17 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        behavior: hitTestBehavior,
-        onTap: onTap,
-        child: Padding(
-          padding: padding,
-          child: child,
-        ),
-      );
+    behavior: hitTestBehavior,
+    onTap: onTap,
+    child: Padding(padding: padding, child: child),
+  );
 }
 
 /// Screen that displays log entry details.
 class NetworkLoggerEventScreen extends StatelessWidget {
   const NetworkLoggerEventScreen({required this.event, super.key});
 
-  static Route<void> route({
-    required NetworkEvent event,
-    required NetworkEventList eventList,
-  }) =>
+  static Route<void> route({required NetworkEvent event, required NetworkEventList eventList}) =>
       MaterialPageRoute(
         settings: const RouteSettings(name: 'network_logger'),
         builder: (context) => StreamBuilder(
@@ -458,11 +427,7 @@ class NetworkLoggerEventScreen extends StatelessWidget {
       );
 
   /// Opens screen.
-  static void open(
-    BuildContext context,
-    NetworkEvent event,
-    NetworkEventList eventList,
-  ) {
+  static void open(BuildContext context, NetworkEvent event, NetworkEventList eventList) {
     // Use Future.delayed to ensure navigation happens after current frame completes
     Future.delayed(Duration.zero, () {
       if (!context.mounted) {
@@ -497,17 +462,11 @@ class NetworkLoggerEventScreen extends StatelessWidget {
           ),
         );
       },
-      child: EasyText(
-        text.replaceAll('","', '"\n"'),
-        maxLines: 100,
-      ),
+      child: EasyText(text.replaceAll('","', '"\n"'), maxLines: 100),
     );
   }
 
-  Widget buildHeadersViewer(
-    BuildContext context,
-    List<MapEntry<String, String>> headers,
-  ) =>
+  Widget buildHeadersViewer(BuildContext context, List<MapEntry<String, String>> headers) =>
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -546,113 +505,73 @@ class NetworkLoggerEventScreen extends StatelessWidget {
       );
 
   Widget buildRequestView(BuildContext context) => ListView(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
-            child: EasyText('URL'),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                EasyText(
-                  event.request.method,
+    padding: const EdgeInsets.symmetric(vertical: 15),
+    children: <Widget>[
+      const Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 5), child: EasyText('URL')),
+      const SizedBox(height: 5),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            EasyText(event.request.method),
+            const SizedBox(width: 15),
+            Expanded(
+              child: SelectableText(
+                event.request.uri,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
                 ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: SelectableText(
-                    event.request.uri,
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-            child: EasyText(
-              'TIMESTAMP',
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: EasyText(event.startTime.toString()),
-          ),
-          if (event.request.headers.isNotEmpty) ...[
-            const Padding(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-              child: EasyText(
-                'HEADERS',
-              ),
-            ),
-            buildHeadersViewer(context, event.request.headers.entries),
-          ],
-          if (event.error != null) ...[
-            const Padding(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-              child: EasyText(
-                'ERROR',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: EasyText(
-                event.error.toString(),
-                color: Palette.pink,
-                maxLines: 100,
               ),
             ),
           ],
-          const Padding(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-            child: EasyText('BODY'),
-          ),
-          buildBodyViewer(context, event.request.data),
-        ],
-      );
+        ),
+      ),
+      const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('TIMESTAMP')),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: EasyText(event.startTime.toString()),
+      ),
+      if (event.request.headers.isNotEmpty) ...[
+        const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('HEADERS')),
+        buildHeadersViewer(context, event.request.headers.entries),
+      ],
+      if (event.error != null) ...[
+        const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('ERROR')),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: EasyText(event.error.toString(), color: Palette.pink, maxLines: 100),
+        ),
+      ],
+      const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('BODY')),
+      buildBodyViewer(context, event.request.data),
+    ],
+  );
 
   Widget buildResponseView(BuildContext context) => ListView(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
-            child: EasyText('RESULT'),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                EasyText(
-                  event.response!.statusCode.toString(),
-                ),
-                const SizedBox(width: 15),
-                Expanded(child: EasyText(event.response!.statusMessage)),
-              ],
-            ),
-          ),
-          if (event.response?.headers.isNotEmpty ?? false) ...[
-            const Padding(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-              child: EasyText(
-                'HEADERS',
-              ),
-            ),
-            buildHeadersViewer(context, event.response?.headers.entries ?? []),
+    padding: const EdgeInsets.symmetric(vertical: 15),
+    children: <Widget>[
+      const Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 5), child: EasyText('RESULT')),
+      const SizedBox(height: 5),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            EasyText(event.response!.statusCode.toString()),
+            const SizedBox(width: 15),
+            Expanded(child: EasyText(event.response!.statusMessage)),
           ],
-          const Padding(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-            child: EasyText('BODY'),
-          ),
-          buildBodyViewer(context, event.response?.data),
-        ],
-      );
+        ),
+      ),
+      if (event.response?.headers.isNotEmpty ?? false) ...[
+        const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('HEADERS')),
+        buildHeadersViewer(context, event.response?.headers.entries ?? []),
+      ],
+      const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('BODY')),
+      buildBodyViewer(context, event.response?.data),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -664,12 +583,8 @@ class NetworkLoggerEventScreen extends StatelessWidget {
         labelColor: Palette.purple,
         unselectedLabelColor: Theme.of(context).textTheme.bodyLarge?.color,
         tabs: const [
-          Tab(
-            text: 'Request',
-          ),
-          Tab(
-            text: 'Response',
-          ),
+          Tab(text: 'Request'),
+          Tab(text: 'Response'),
         ],
       );
     }
@@ -837,7 +752,7 @@ class Headers {
   Headers(Iterable<MapEntry<String, String>> entries) : entries = entries.toList();
 
   Headers.fromMap(Map<String, String> map)
-      : entries = map.entries as List<MapEntry<String, String>>;
+    : entries = map.entries as List<MapEntry<String, String>>;
 
   final List<MapEntry<String, String>> entries;
 
@@ -851,12 +766,7 @@ class Headers {
 
 /// Http request details.
 class Request {
-  Request({
-    required this.uri,
-    required this.method,
-    required this.headers,
-    this.data,
-  });
+  Request({required this.uri, required this.method, required this.headers, this.data});
 
   final String uri;
   final String method;
@@ -903,24 +813,18 @@ extension DioNetworkLoggerX on dio.Dio {
 
 class DioNetworkLoggerInterceptor extends dio.Interceptor {
   DioNetworkLoggerInterceptor({NetworkEventList? eventList})
-      : eventList = eventList ?? DioNetworkLogger.instance;
+    : eventList = eventList ?? DioNetworkLogger.instance;
   final NetworkEventList eventList;
   final _requests = <dio.RequestOptions, NetworkEvent>{};
 
   @override
-  Future<void> onRequest(
-    dio.RequestOptions options,
-    dio.RequestInterceptorHandler handler,
-  ) async {
+  Future<void> onRequest(dio.RequestOptions options, dio.RequestInterceptorHandler handler) async {
     super.onRequest(options, handler);
     eventList.add(_requests[options] = NetworkEvent(request: options.toRequest()));
   }
 
   @override
-  void onResponse(
-    dio.Response<dynamic> response,
-    dio.ResponseInterceptorHandler handler,
-  ) {
+  void onResponse(dio.Response<dynamic> response, dio.ResponseInterceptorHandler handler) {
     super.onResponse(response, handler);
     final event = _requests.remove(response.requestOptions);
     if (event != null) {
@@ -937,11 +841,7 @@ class DioNetworkLoggerInterceptor extends dio.Interceptor {
     final event = _requests.remove(err.requestOptions);
     if (event != null) {
       eventList.updated(
-        event
-          ..completed(
-            err: err.toNetworkError(),
-            res: err.response?.toResponse(),
-          ),
+        event..completed(err: err.toNetworkError(), res: err.response?.toResponse()),
       );
     }
   }
@@ -949,27 +849,25 @@ class DioNetworkLoggerInterceptor extends dio.Interceptor {
 
 extension _RequestOptionsX on dio.RequestOptions {
   Request toRequest() => Request(
-        uri: uri.toString(),
-        data: data,
-        method: method,
-        headers: Headers(
-          headers.entries.map((kv) => MapEntry(kv.key, '${kv.value}')),
-        ),
-      );
+    uri: uri.toString(),
+    data: data,
+    method: method,
+    headers: Headers(headers.entries.map((kv) => MapEntry(kv.key, '${kv.value}'))),
+  );
 }
 
 extension _ResponseX on dio.Response<dynamic> {
   Response toResponse() => Response(
-        data: data,
-        statusCode: statusCode ?? -1,
-        statusMessage: statusMessage ?? 'unkown',
-        headers: Headers(
-          headers.map.entries.fold<List<MapEntry<String, String>>>(
-            [],
-            (p, e) => p..addAll(e.value.map((v) => MapEntry(e.key, v))),
-          ),
-        ),
-      );
+    data: data,
+    statusCode: statusCode ?? -1,
+    statusMessage: statusMessage ?? 'unkown',
+    headers: Headers(
+      headers.map.entries.fold<List<MapEntry<String, String>>>(
+        [],
+        (p, e) => p..addAll(e.value.map((v) => MapEntry(e.key, v))),
+      ),
+    ),
+  );
 }
 
 extension _DioErrorX on dio.DioException {
@@ -979,9 +877,7 @@ extension _DioErrorX on dio.DioException {
 class _ConfigPage extends ConsumerWidget {
   const _ConfigPage._();
 
-  static void show({
-    required BuildContext context,
-  }) {
+  static void show({required BuildContext context}) {
     Future.delayed(Duration.zero, () {
       if (!context.mounted) {
         return;
@@ -1018,55 +914,32 @@ class _ConfigPage extends ConsumerWidget {
             builder: (context) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const EasyText(
-                  'Environment: ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
-                ),
-                EasyText(
-                  Env.stringify(),
-                  maxLines: 20,
-                ),
+                const EasyText('Environment: ', fontWeight: FontWeight.bold, color: Palette.purple),
+                EasyText(Env.stringify(), maxLines: 20),
                 const SizedBox(height: 8),
                 const EasyText(
                   'Remote Configs: ',
                   fontWeight: FontWeight.bold,
                   color: Palette.purple,
                 ),
-                EasyText(
-                  remoteConfigs.asUserProperties.toString(),
-                  maxLines: 20,
-                ),
+                EasyText(remoteConfigs.asUserProperties.toString(), maxLines: 20),
                 const SizedBox(height: 8),
                 const EasyText(
                   'ConfigCat User: ',
                   fontWeight: FontWeight.bold,
                   color: Palette.purple,
                 ),
-                EasyText(
-                  configcatUser.user ?? 'Loading...',
-                  maxLines: 100,
-                ),
+                EasyText(configcatUser.user ?? 'Loading...', maxLines: 100),
                 const SizedBox(height: 8),
                 const EasyText(
                   'Push Notifications User: ',
                   fontWeight: FontWeight.bold,
                   color: Palette.purple,
                 ),
-                EasyText(
-                  pushNotificationStore.user ?? 'Loading...',
-                  maxLines: 100,
-                ),
+                EasyText(pushNotificationStore.user ?? 'Loading...', maxLines: 100),
                 const SizedBox(height: 8),
-                const EasyText(
-                  'AB Testing: ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
-                ),
-                EasyText(
-                  abTesting.asUserProperties.toString(),
-                  maxLines: 20,
-                ),
+                const EasyText('AB Testing: ', fontWeight: FontWeight.bold, color: Palette.purple),
+                EasyText(abTesting.asUserProperties.toString(), maxLines: 20),
               ],
             ),
           ),
@@ -1079,9 +952,7 @@ class _ConfigPage extends ConsumerWidget {
 class _DeviceInfo extends ConsumerWidget {
   const _DeviceInfo._();
 
-  static void show({
-    required BuildContext context,
-  }) {
+  static void show({required BuildContext context}) {
     Future.delayed(Duration.zero, () {
       if (!context.mounted) {
         return;
@@ -1120,23 +991,13 @@ class _DeviceInfo extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                   color: Palette.purple,
                 ),
-                EasyText(
-                  deviceIDStore.deviceId,
-                  maxLines: 20,
-                ),
-                const EasyText(
-                  'Device info: ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
-                ),
+                EasyText(deviceIDStore.deviceId, maxLines: 20),
+                const EasyText('Device info: ', fontWeight: FontWeight.bold, color: Palette.purple),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ...Env.deviceInfo.data.entries.map(
-                      (e) => EasyText(
-                        '${e.key}: ${e.value}',
-                        maxLines: 20,
-                      ),
+                      (e) => EasyText('${e.key}: ${e.value}', maxLines: 20),
                     ),
                   ],
                 ),
@@ -1152,9 +1013,7 @@ class _DeviceInfo extends ConsumerWidget {
 class _SecuredStorageValues extends ConsumerWidget {
   const _SecuredStorageValues._();
 
-  static void show({
-    required BuildContext context,
-  }) {
+  static void show({required BuildContext context}) {
     Future.delayed(Duration.zero, () {
       if (!context.mounted) {
         return;
@@ -1170,59 +1029,56 @@ class _SecuredStorageValues extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: Navigator.of(context).pop,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
-          ),
-          forceMaterialTransparency: true,
-          title: const EasyText('Secured stored keys'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SingleChildScrollView(
-            child: FutureBuilder<Map<String, dynamic>>(
-              future: SecureStorageService.instance.readAll(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...data.entries.map(
-                        (e) => RichText(
-                          maxLines: 20,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${e.key}: ',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              TextSpan(
-                                text: '${e.value}',
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
+    appBar: AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: Navigator.of(context).pop,
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+      ),
+      forceMaterialTransparency: true,
+      title: const EasyText('Secured stored keys'),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(8),
+      child: SingleChildScrollView(
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: SecureStorageService.instance.readAll(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final data = snapshot.data!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...data.entries.map(
+                    (e) => RichText(
+                      maxLines: 20,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${e.key}: ',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepPurple,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
+                          TextSpan(
+                            text: '${e.value}',
+                            style: const TextStyle(color: Colors.black87, fontSize: 14),
+                          ),
+                        ],
                       ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return EasyText('Error: ${snapshot.error}');
-                }
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
+                    ),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return EasyText('Error: ${snapshot.error}');
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
         ),
-      );
+      ),
+    ),
+  );
 }

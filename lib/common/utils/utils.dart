@@ -49,10 +49,7 @@ double getWindowHeight() =>
     MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first).size.height;
 
 /// Returns the [ScreenType] that the application is currently running on
-ScreenType getScreenType(
-  Size size, [
-  ScreenBreakpoint? breakpoint,
-]) {
+ScreenType getScreenType(Size size, [ScreenBreakpoint? breakpoint]) {
   var deviceWidth = size.width;
 
   if (kIsWeb || isDesktop()) {
@@ -91,10 +88,7 @@ ScreenType getScreenType(
 }
 
 /// Returns the [SizeType] for each device that the application is currently running on
-SizeType getSizeType(
-  Size size, {
-  ScreenSizeBreakpoint? screenSizeBreakpoint,
-}) {
+SizeType getSizeType(Size size, {ScreenSizeBreakpoint? screenSizeBreakpoint}) {
   final deviceScreenType = getScreenType(size);
   final deviceWidth = size.width;
 
@@ -321,9 +315,7 @@ void showSnackbar(
 }) {
   final snackBar = SnackBar(
     elevation: 8,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     behavior: SnackBarBehavior.floating,
     backgroundColor: switch (type) {
       MessageType.error => Palette.pink,
@@ -375,9 +367,7 @@ FutureOr<void> handleOnBillingPage({
     if (gateway != getPlatformGateway()) {
       showSnackbar(
         LocaleKeys.activeSubsPaidVia.tr(
-          namedArgs: {
-            'store': Platform.isIOS ? 'Google Play Store' : 'Apple App Store',
-          },
+          namedArgs: {'store': Platform.isIOS ? 'Google Play Store' : 'Apple App Store'},
         ),
       );
       return;
@@ -391,29 +381,20 @@ FutureOr<void> handleOnBillingPage({
     return;
   }
 
-  final uri = Uri.parse(
-    manageSubscription ? manageSubscriptionPage : upgradeSubscriptionPage,
-  );
+  final uri = Uri.parse(manageSubscription ? manageSubscriptionPage : upgradeSubscriptionPage);
   final httpsUri = Uri(
     scheme: uri.scheme,
     host: uri.host,
     path: uri.path,
-    queryParameters: {
-      'access_token': accessToken ?? '',
-    },
+    queryParameters: {'access_token': accessToken ?? ''},
   );
 
   await openUrlLink(httpsUri);
 }
 
-void handleOnSupportPage({
-  required BuildContext context,
-  required AnalyticsStore analyticsStore,
-}) {
+void handleOnSupportPage({required BuildContext context, required AnalyticsStore analyticsStore}) {
   analyticsStore.logEvent(AnalyticsEvent.openSupport);
-  openUrlLink(
-    Uri.parse('https://help.mysteriumvpn.com/'),
-  );
+  openUrlLink(Uri.parse('https://help.mysteriumvpn.com/'));
 }
 
 /// Opens a URL link in the default browser.
@@ -435,12 +416,9 @@ Future<void> openUrlLink(Uri url, {LaunchMode mode = LaunchMode.platformDefault}
       action: SnackBarAction(
         textColor: Palette.purple,
         label: LocaleKeys.copyBtn.tr(),
-        onPressed: () => FlutterClipboard.copy(url.toString()).then(
-          (value) => showSnackbar(
-            LocaleKeys.linkCopied.tr(),
-            type: MessageType.success,
-          ),
-        ),
+        onPressed: () => FlutterClipboard.copy(
+          url.toString(),
+        ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: MessageType.success)),
       ),
       type: MessageType.info,
     );

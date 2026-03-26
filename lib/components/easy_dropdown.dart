@@ -20,28 +20,27 @@ class EasyDropdown<T> extends StatelessWidget {
   bool get isDisabled => onChanged == null;
 
   @override
-  Widget build(BuildContext context) => DropdownButton<T>(
-        isExpanded: true,
-        value: value,
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
-        ),
-        disabledHint: Text(
-          value.toString(),
-          style: TextStyle(
-            color: Palette.lightBlack.withValues(alpha: .3),
-          ),
-        ),
-        style: TextStyle(
-          color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        underline: const SizedBox.shrink(),
-        onChanged: onChanged,
-        onTap: onTap,
-        items: items,
-      )
+  Widget build(BuildContext context) =>
+      DropdownButton<T>(
+            isExpanded: true,
+            value: value,
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
+            ),
+            disabledHint: Text(
+              value.toString(),
+              style: TextStyle(color: Palette.lightBlack.withValues(alpha: .3)),
+            ),
+            style: TextStyle(
+              color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            underline: const SizedBox.shrink(),
+            onChanged: onChanged,
+            onTap: onTap,
+            items: items,
+          )
           .width(checkMediaWidth(context, 750) ? double.infinity : 220)
           .height(36)
           .padding(horizontal: 10)

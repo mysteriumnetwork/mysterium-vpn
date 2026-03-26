@@ -9,12 +9,10 @@ import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 class RestApiService extends ApiService {
-  RestApiService({
-    required VpnApi api,
-    required Talker logger,
-  })  : _apiConnection = api.getConnection(),
-        _apiEmailMarketing = api.getEmailMarketing(),
-        _logger = logger;
+  RestApiService({required VpnApi api, required Talker logger})
+    : _apiConnection = api.getConnection(),
+      _apiEmailMarketing = api.getEmailMarketing(),
+      _logger = logger;
 
   final Connection _apiConnection;
   final EmailMarketing _apiEmailMarketing;
@@ -104,21 +102,15 @@ class RestApiService extends ApiService {
         }
       });
     } catch (e) {
-      _logger.info(
-        'Error resolving domain: $e',
-      );
+      _logger.info('Error resolving domain: $e');
       rethrow;
     }
   }
 
   @override
-  Future<void> rateConnection({
-    required RateConnectionRequest request,
-  }) async {
+  Future<void> rateConnection({required RateConnectionRequest request}) async {
     try {
-      await _apiConnection.rateConnection(
-        rateConnectionRequest: request,
-      );
+      await _apiConnection.rateConnection(rateConnectionRequest: request);
       _logger.info('Connection rated successfully');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -130,9 +122,7 @@ class RestApiService extends ApiService {
   Future<void> createMarketingContact({required String? country}) async {
     try {
       await _apiEmailMarketing.createContactRequest(
-        createContactRequest: CreateContactRequest(
-          country: country,
-        ),
+        createContactRequest: CreateContactRequest(country: country),
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
@@ -144,9 +134,7 @@ class RestApiService extends ApiService {
   Future<void> disconnect() async {
     try {
       await _apiConnection.disconnect();
-      _logger.info(
-        'Disconnected successfully',
-      );
+      _logger.info('Disconnected successfully');
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
@@ -168,9 +156,7 @@ class RestApiService extends ApiService {
   Future<void> updateMarketingContact({required bool consent}) {
     try {
       return _apiEmailMarketing.updateContactRequest(
-        updateContactRequest: UpdateContactRequest(
-          consent: consent,
-        ),
+        updateContactRequest: UpdateContactRequest(consent: consent),
       );
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);

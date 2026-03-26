@@ -10,11 +10,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 
 class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const HomeAppBar({
-    required this.supportIcon,
-    required this.settingsIcon,
-    super.key,
-  });
+  const HomeAppBar({required this.supportIcon, required this.settingsIcon, super.key});
 
   final SvgGenImage supportIcon;
   final SvgGenImage settingsIcon;
@@ -37,10 +33,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               spacing: 4,
               children: [
                 Expanded(
-                  child: Asset.logo.logo(context).svg(
-                        height: 24,
-                        alignment: Alignment.centerLeft,
-                      ),
+                  child: Asset.logo.logo(context).svg(height: 24, alignment: Alignment.centerLeft),
                 ),
                 SvgIconButton(
                   onPressed: () => handleOnSupportPage(

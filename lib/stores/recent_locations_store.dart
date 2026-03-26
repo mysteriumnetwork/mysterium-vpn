@@ -22,11 +22,9 @@ abstract class _RecentLocationsStore with Store {
     this._locations,
     this._locale,
   ) {
-    _dbChangesSubscription = _db.watchRecentLocations().listen(
-      (locations) {
-        _future = _future.replaceOrReset(Future.value(locations));
-      },
-    );
+    _dbChangesSubscription = _db.watchRecentLocations().listen((locations) {
+      _future = _future.replaceOrReset(Future.value(locations));
+    });
   }
 
   final LocalDBService _db;

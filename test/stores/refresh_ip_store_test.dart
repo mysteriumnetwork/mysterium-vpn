@@ -8,11 +8,7 @@ import 'package:talker/talker.dart';
 
 import 'refresh_ip_store_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<LocalDBService>(),
-  MockSpec<Talker>(),
-  MockSpec<AuthSessionStore>(),
-])
+@GenerateNiceMocks([MockSpec<LocalDBService>(), MockSpec<Talker>(), MockSpec<AuthSessionStore>()])
 void main() {
   late MockLocalDBService mockLocalDBService;
   late MockTalker mockLogger;
@@ -25,11 +21,7 @@ void main() {
     mockAuthSessionStore = MockAuthSessionStore();
     when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
 
-    store = RefreshIPStore(
-      mockLocalDBService,
-      mockLogger,
-      mockAuthSessionStore,
-    );
+    store = RefreshIPStore(mockLocalDBService, mockLogger, mockAuthSessionStore);
   });
 
   group('getRefreshIPConnection', () {
@@ -50,8 +42,9 @@ void main() {
 
   group('toggleRefreshIPWhenConnecting', () {
     test('toggles refreshIPConnection and saves to localDB', () async {
-      when(mockLocalDBService.setRefreshIPConnection(refreshIPConnection: false))
-          .thenAnswer((_) async => {});
+      when(
+        mockLocalDBService.setRefreshIPConnection(refreshIPConnection: false),
+      ).thenAnswer((_) async => {});
       await store.toggleRefreshIPWhenConnecting();
       expect(store.refreshIPConnection, isTrue);
 

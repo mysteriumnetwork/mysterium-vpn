@@ -31,10 +31,7 @@ class WireguradKeyService {
           },
         );
         final key = await _generateWireguradKey();
-        await _saveWireguardKey(
-          publicKey: key.publicKey,
-          privateKey: key.privateKey,
-        );
+        await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
         return key;
       }
     } catch (_) {
@@ -45,10 +42,7 @@ class WireguradKeyService {
   Future<KeyPair> regenerateWireguardKeys() async {
     try {
       final key = await _generateWireguradKey();
-      await _saveWireguardKey(
-        publicKey: key.publicKey,
-        privateKey: key.privateKey,
-      );
+      await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
       return key;
     } catch (_) {
       rethrow;
@@ -68,9 +62,7 @@ class WireguradKeyService {
       Sentry.captureException(
         e,
         stackTrace: s,
-        hint: Hint.withMap({
-          'message': 'Failed to get Wireguard keys from storage',
-        }),
+        hint: Hint.withMap({'message': 'Failed to get Wireguard keys from storage'}),
       );
       analyticsStore.logEvent(
         AnalyticsEvent.getWireguradKeyError,
@@ -84,10 +76,7 @@ class WireguradKeyService {
     }
   }
 
-  Future<void> _saveWireguardKey({
-    required String publicKey,
-    required String privateKey,
-  }) async {
+  Future<void> _saveWireguardKey({required String publicKey, required String privateKey}) async {
     try {
       await secureStorageService.saveWireguardPublicKey(publicKey: publicKey);
       await secureStorageService.saveWireguardPrivateKey(privateKey: privateKey);
@@ -107,9 +96,7 @@ class WireguradKeyService {
         await secureStorageService.removeWireguardPublicKey();
         analyticsStore.logEvent(
           AnalyticsEvent.wireguardKeysDoNotMatch,
-          parameters: {
-            'description': 'Stored Wireguard keys do not match the provided keys',
-          },
+          parameters: {'description': 'Stored Wireguard keys do not match the provided keys'},
         );
       }
     } catch (e, s) {
@@ -132,9 +119,7 @@ class WireguradKeyService {
       Sentry.captureException(
         e,
         stackTrace: s,
-        hint: Hint.withMap({
-          'message': 'Failed to get Wireguard keys',
-        }),
+        hint: Hint.withMap({'message': 'Failed to get Wireguard keys'}),
       );
       rethrow;
     }

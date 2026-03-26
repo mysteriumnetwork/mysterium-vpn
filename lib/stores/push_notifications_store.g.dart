@@ -12,26 +12,31 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
   Computed<String?>? _$userComputed;
 
   @override
-  String? get user =>
-      (_$userComputed ??= Computed<String?>(() => super.user, name: '_PushNotificationsStore.user'))
-          .value;
+  String? get user => (_$userComputed ??= Computed<String?>(
+    () => super.user,
+    name: '_PushNotificationsStore.user',
+  )).value;
   Computed<bool>? _$pushNotificationsPermissionGrantedComputed;
 
   @override
-  bool get pushNotificationsPermissionGranted => (_$pushNotificationsPermissionGrantedComputed ??=
-          Computed<bool>(() => super.pushNotificationsPermissionGranted,
-              name: '_PushNotificationsStore.pushNotificationsPermissionGranted'))
-      .value;
+  bool get pushNotificationsPermissionGranted =>
+      (_$pushNotificationsPermissionGrantedComputed ??= Computed<bool>(
+        () => super.pushNotificationsPermissionGranted,
+        name: '_PushNotificationsStore.pushNotificationsPermissionGranted',
+      )).value;
   Computed<PushNotification?>? _$lastNotificationComputed;
 
   @override
   PushNotification? get lastNotification =>
-      (_$lastNotificationComputed ??= Computed<PushNotification?>(() => super.lastNotification,
-              name: '_PushNotificationsStore.lastNotification'))
-          .value;
+      (_$lastNotificationComputed ??= Computed<PushNotification?>(
+        () => super.lastNotification,
+        name: '_PushNotificationsStore.lastNotification',
+      )).value;
 
-  late final _$_pushNotificationsUserAtom =
-      Atom(name: '_PushNotificationsStore._pushNotificationsUser', context: context);
+  late final _$_pushNotificationsUserAtom = Atom(
+    name: '_PushNotificationsStore._pushNotificationsUser',
+    context: context,
+  );
 
   ObservableStream<PushNotificationsUser> get pushNotificationsUser {
     _$_pushNotificationsUserAtom.reportRead();
@@ -46,14 +51,19 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
   @override
   set _pushNotificationsUser(ObservableStream<PushNotificationsUser> value) {
     _$_pushNotificationsUserAtom.reportWrite(
-        value, __pushNotificationsUserIsInitialized ? super._pushNotificationsUser : null, () {
-      super._pushNotificationsUser = value;
-      __pushNotificationsUserIsInitialized = true;
-    });
+      value,
+      __pushNotificationsUserIsInitialized ? super._pushNotificationsUser : null,
+      () {
+        super._pushNotificationsUser = value;
+        __pushNotificationsUserIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_pushNotificationsPermissionStreamAtom =
-      Atom(name: '_PushNotificationsStore._pushNotificationsPermissionStream', context: context);
+  late final _$_pushNotificationsPermissionStreamAtom = Atom(
+    name: '_PushNotificationsStore._pushNotificationsPermissionStream',
+    context: context,
+  );
 
   ObservableStream<bool> get pushNotificationsPermissionStream {
     _$_pushNotificationsPermissionStreamAtom.reportRead();
@@ -69,17 +79,21 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
   @override
   set _pushNotificationsPermissionStream(ObservableStream<bool> value) {
     _$_pushNotificationsPermissionStreamAtom.reportWrite(
-        value,
-        __pushNotificationsPermissionStreamIsInitialized
-            ? super._pushNotificationsPermissionStream
-            : null, () {
-      super._pushNotificationsPermissionStream = value;
-      __pushNotificationsPermissionStreamIsInitialized = true;
-    });
+      value,
+      __pushNotificationsPermissionStreamIsInitialized
+          ? super._pushNotificationsPermissionStream
+          : null,
+      () {
+        super._pushNotificationsPermissionStream = value;
+        __pushNotificationsPermissionStreamIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_notificationsStreamAtom =
-      Atom(name: '_PushNotificationsStore._notificationsStream', context: context);
+  late final _$_notificationsStreamAtom = Atom(
+    name: '_PushNotificationsStore._notificationsStream',
+    context: context,
+  );
 
   ObservableStream<PushNotification> get notificationsStream {
     _$_notificationsStreamAtom.reportRead();
@@ -94,38 +108,49 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
   @override
   set _notificationsStream(ObservableStream<PushNotification> value) {
     _$_notificationsStreamAtom.reportWrite(
-        value, __notificationsStreamIsInitialized ? super._notificationsStream : null, () {
-      super._notificationsStream = value;
-      __notificationsStreamIsInitialized = true;
-    });
+      value,
+      __notificationsStreamIsInitialized ? super._notificationsStream : null,
+      () {
+        super._notificationsStream = value;
+        __notificationsStreamIsInitialized = true;
+      },
+    );
   }
 
-  late final _$updatePushNotificationsPermissionsAsyncAction =
-      AsyncAction('_PushNotificationsStore.updatePushNotificationsPermissions', context: context);
+  late final _$updatePushNotificationsPermissionsAsyncAction = AsyncAction(
+    '_PushNotificationsStore.updatePushNotificationsPermissions',
+    context: context,
+  );
 
   @override
   Future<void> updatePushNotificationsPermissions() {
-    return _$updatePushNotificationsPermissionsAsyncAction
-        .run(() => super.updatePushNotificationsPermissions());
+    return _$updatePushNotificationsPermissionsAsyncAction.run(
+      () => super.updatePushNotificationsPermissions(),
+    );
   }
 
-  late final _$setPushNotificationsShownAsyncAction =
-      AsyncAction('_PushNotificationsStore.setPushNotificationsShown', context: context);
+  late final _$setPushNotificationsShownAsyncAction = AsyncAction(
+    '_PushNotificationsStore.setPushNotificationsShown',
+    context: context,
+  );
 
   @override
   Future<void> setPushNotificationsShown({required bool userAllowed}) {
-    return _$setPushNotificationsShownAsyncAction
-        .run(() => super.setPushNotificationsShown(userAllowed: userAllowed));
+    return _$setPushNotificationsShownAsyncAction.run(
+      () => super.setPushNotificationsShown(userAllowed: userAllowed),
+    );
   }
 
   late final _$shouldShowPushNotificationsPermissionPromptAsyncAction = AsyncAction(
-      '_PushNotificationsStore.shouldShowPushNotificationsPermissionPrompt',
-      context: context);
+    '_PushNotificationsStore.shouldShowPushNotificationsPermissionPrompt',
+    context: context,
+  );
 
   @override
   Future<bool> shouldShowPushNotificationsPermissionPrompt() {
-    return _$shouldShowPushNotificationsPermissionPromptAsyncAction
-        .run(() => super.shouldShowPushNotificationsPermissionPrompt());
+    return _$shouldShowPushNotificationsPermissionPromptAsyncAction.run(
+      () => super.shouldShowPushNotificationsPermissionPrompt(),
+    );
   }
 
   @override

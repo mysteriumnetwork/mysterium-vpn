@@ -19,27 +19,27 @@ abstract class VpnConfig with _$VpnConfig {
 
   /// Factory to map WireguardConnectResponse to VpnConfig
   factory VpnConfig.fromWireguard(WireguardConnectResponse wg) => VpnConfig(
-        id: wg.id,
-        config: wg.wgConfig,
-        hash: wg.hash,
-        exitIp: wg.exitIp,
-        limitExceeded: wg.limitExceeded,
-        ipType: wg.ipType,
-        country: wg.country,
-        city: wg.city,
-        type: 'wireguard',
-      );
+    id: wg.id,
+    config: wg.wgConfig,
+    hash: wg.hash,
+    exitIp: wg.exitIp,
+    limitExceeded: wg.limitExceeded,
+    ipType: wg.ipType,
+    country: wg.country,
+    city: wg.city,
+    type: 'wireguard',
+  );
 
   /// Factory to map OpenVpnConnectResponse to VpnConfig
   factory VpnConfig.fromOpenVpn(OpenVpnConnectResponse ovpn) => VpnConfig(
-        id: ovpn.id,
-        config: ovpn.ovpnConfig,
-        hash: ovpn.hash,
-        exitIp: ovpn.exitIp,
-        limitExceeded: ovpn.limitExceeded,
-        ipType: ovpn.ipType,
-        country: ovpn.country,
-        city: ovpn.city,
-        type: 'openvpn',
-      );
+    id: ovpn.id,
+    config: ovpn.ovpnConfig,
+    hash: ovpn.hash,
+    exitIp: ovpn.exitIp,
+    limitExceeded: ovpn.limitExceeded,
+    ipType: ovpn.ipType,
+    country: ovpn.country,
+    city: ovpn.city,
+    type: 'openvpn',
+  );
 }

@@ -26,7 +26,7 @@ on:
 jobs:
   release:
     name: Build & Publish (App Store Only)
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - uses: actions/checkout@v5
@@ -40,7 +40,7 @@ jobs:
         run: bash .github/scripts/materialize-envs.sh
 
       - name: Set up Xcode
-        run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
+        run: sudo xcode-select --switch /Applications/Xcode_26.3.app
 
       - name: Setup Flutter Version Management CLI
         uses: flutter-actions/setup-fvm@v1.0

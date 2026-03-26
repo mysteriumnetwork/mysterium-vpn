@@ -19,9 +19,9 @@ abstract class _DeviceIDStore with Store {
     SecureStorageService? secureStorageService,
     DeviceInfoPlugin? deviceInfoPlugin,
     Future<String> Function()? flutterUdid,
-  })  : _secureStorageService = secureStorageService ?? SecureStorageService.instance,
-        _deviceInfoPlugin = deviceInfoPlugin ?? DeviceInfoPlugin(),
-        _flutterUdid = flutterUdid {
+  }) : _secureStorageService = secureStorageService ?? SecureStorageService.instance,
+       _deviceInfoPlugin = deviceInfoPlugin ?? DeviceInfoPlugin(),
+       _flutterUdid = flutterUdid {
     deviceIdFuture = ObservableFuture(getDeviceId());
   }
 
@@ -52,12 +52,10 @@ abstract class _DeviceIDStore with Store {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'platform': defaultTargetPlatform.name,
-            'hint': 'Failed to get device ID from device info',
-          },
-        ),
+        hint: Hint.withMap({
+          'platform': defaultTargetPlatform.name,
+          'hint': 'Failed to get device ID from device info',
+        }),
       );
       return deviceId;
     }
@@ -78,12 +76,10 @@ abstract class _DeviceIDStore with Store {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'platform': defaultTargetPlatform.name,
-            'hint': 'Failed to save device ID',
-          },
-        ),
+        hint: Hint.withMap({
+          'platform': defaultTargetPlatform.name,
+          'hint': 'Failed to save device ID',
+        }),
       );
     }
   }
@@ -95,12 +91,10 @@ abstract class _DeviceIDStore with Store {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'platform': defaultTargetPlatform.name,
-            'hint': 'Failed to retrieve device ID from storage',
-          },
-        ),
+        hint: Hint.withMap({
+          'platform': defaultTargetPlatform.name,
+          'hint': 'Failed to retrieve device ID from storage',
+        }),
       );
     }
     return null;
@@ -139,12 +133,10 @@ abstract class _DeviceIDStore with Store {
       Sentry.captureException(
         e,
         stackTrace: StackTrace.current,
-        hint: Hint.withMap(
-          {
-            'platform': platform?.name ?? 'unknown',
-            'hint': 'Failed to get device ID from device info',
-          },
-        ),
+        hint: Hint.withMap({
+          'platform': platform?.name ?? 'unknown',
+          'hint': 'Failed to get device ID from device info',
+        }),
       );
       return _generateSha256(null);
     }

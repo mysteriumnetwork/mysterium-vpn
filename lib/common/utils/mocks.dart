@@ -60,10 +60,7 @@ sealed class Mocks {
     countryCode: 'NL',
   );
 
-  static VPNLocation createInvalidCountry({
-    IPType? ipType,
-    int cityCount = 5,
-  }) {
+  static VPNLocation createInvalidCountry({IPType? ipType, int cityCount = 5}) {
     final random = Random();
     ipType ??= random.nextBool() ? IPType.datacenter : IPType.residential;
     return VPNLocation(
@@ -71,9 +68,7 @@ sealed class Mocks {
       ipType: ipType,
       translations: {'en': 'Invalid Country'},
       countryCode: 'XX',
-      children: [
-        for (var i = 0; i < cityCount; i++) createInvalidCity(ipType: ipType),
-      ],
+      children: [for (var i = 0; i < cityCount; i++) createInvalidCity(ipType: ipType)],
     );
   }
 

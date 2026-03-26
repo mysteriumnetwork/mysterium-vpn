@@ -33,9 +33,7 @@ Map<String, String> _parseDotEnvFile() {
   return out;
 }
 
-@GenerateNiceMocks([
-  MockSpec<DeviceInfoPlugin>(),
-])
+@GenerateNiceMocks([MockSpec<DeviceInfoPlugin>()])
 void main() {
   group('env file parsing', () {
     final file = _parseDotEnvFile();

@@ -36,17 +36,9 @@ class LocationItemLoading extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 160,
-                  height: 16,
-                  color: Colors.grey[300],
-                ),
+                Container(width: 160, height: 16, color: Colors.grey[300]),
                 const SizedBox(height: 8),
-                Container(
-                  width: 80,
-                  height: 10,
-                  color: Colors.grey[300],
-                ),
+                Container(width: 80, height: 10, color: Colors.grey[300]),
               ],
             ),
           ],

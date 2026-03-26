@@ -23,8 +23,8 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     required String measurementId,
     required String apiSecret,
     required DeviceIDStore deviceIDStore,
-  })  : _deviceIDStore = deviceIDStore,
-        _session = AnalyticsSession(measurementId, apiSecret) {
+  }) : _deviceIDStore = deviceIDStore,
+       _session = AnalyticsSession(measurementId, apiSecret) {
     logAppLaunchEvent();
     setDeviceInfo();
   }
@@ -42,16 +42,13 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   List<NavigatorObserver> navigationObservers() => [
-        WindowsAnalyticsObserver(ambilytics: _session),
-        MystNavigationObserver(analyticsStore: this),
-      ];
+    WindowsAnalyticsObserver(ambilytics: _session),
+    MystNavigationObserver(analyticsStore: this),
+  ];
 
   @override
   @action
-  Future<void> logEvent(
-    AnalyticsEvent event, {
-    Map<String, dynamic>? parameters,
-  }) async {
+  Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) async {
     _session.logEvent(event.formattedName, parameters);
     super.logEvent(event, parameters: parameters).ignore();
   }
@@ -64,18 +61,12 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 
   @override
   @action
-  Future<void> setUserProperty(
-    AnalyticsUserProperty property,
-  ) async {
+  Future<void> setUserProperty(AnalyticsUserProperty property) async {
     _session.userProperties[property.name24chars] = {
       'value': property.value36chars,
       'timestamp_micros': DateTime.now().microsecondsSinceEpoch,
     };
-    super
-        .setUserProperty(
-          property,
-        )
-        .ignore();
+    super.setUserProperty(property).ignore();
   }
 
   @override
@@ -108,10 +99,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
         debugPrint('Device model: ${Env.deviceModel}');
       }
       await setUserProperty(
-        AnalyticsUserProperty.fromEnum(
-          name: AnalyticsUserPropName.deviceId,
-          value: deviceId,
-        ),
+        AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.deviceId, value: deviceId),
       );
       await setUserProperty(
         AnalyticsUserProperty.fromEnum(
@@ -138,10 +126,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 }
 
 class AnalyticsSession {
-  AnalyticsSession(
-    this.measurementId,
-    this.apiSecret,
-  ) {
+  AnalyticsSession(this.measurementId, this.apiSecret) {
     _sessionId = sessionStarted.toIso8601String();
   }
 
@@ -165,10 +150,7 @@ class AnalyticsSession {
     ),
   );
 
-  Future<void> logEvent(
-    String eventName, [
-    Map<String, Object?>? params,
-  ]) async {
+  Future<void> logEvent(String eventName, [Map<String, Object?>? params]) async {
     assert(
       !reservedGa4Events.contains(eventName),
       'Event name $eventName is reserved by GA4 $eventName',
@@ -203,10 +185,7 @@ class AnalyticsSession {
     });
 
     try {
-      await dio.post(
-        '/mp/collect?measurement_id=$measurementId&api_secret=$apiSecret',
-        data: body,
-      );
+      await dio.post('/mp/collect?measurement_id=$measurementId&api_secret=$apiSecret', data: body);
     } catch (e) {
       debugPrint(e.toString());
     }

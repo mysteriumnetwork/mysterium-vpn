@@ -29,8 +29,10 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
     });
   }
 
-  late final _$_subscriptionFutureAtom =
-      Atom(name: '_SubscriptionConfigStore._subscriptionFuture', context: context);
+  late final _$_subscriptionFutureAtom = Atom(
+    name: '_SubscriptionConfigStore._subscriptionFuture',
+    context: context,
+  );
 
   ObservableFuture<Subscription> get subscriptionFuture {
     _$_subscriptionFutureAtom.reportRead();
@@ -45,14 +47,19 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
   @override
   set _subscriptionFuture(ObservableFuture<Subscription> value) {
     _$_subscriptionFutureAtom.reportWrite(
-        value, __subscriptionFutureIsInitialized ? super._subscriptionFuture : null, () {
-      super._subscriptionFuture = value;
-      __subscriptionFutureIsInitialized = true;
-    });
+      value,
+      __subscriptionFutureIsInitialized ? super._subscriptionFuture : null,
+      () {
+        super._subscriptionFuture = value;
+        __subscriptionFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_subscriptionPlanFutureAtom =
-      Atom(name: '_SubscriptionConfigStore._subscriptionPlanFuture', context: context);
+  late final _$_subscriptionPlanFutureAtom = Atom(
+    name: '_SubscriptionConfigStore._subscriptionPlanFuture',
+    context: context,
+  );
 
   ObservableFuture<GetPlanResponse> get subscriptionPlanFuture {
     _$_subscriptionPlanFutureAtom.reportRead();
@@ -67,10 +74,13 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
   @override
   set _subscriptionPlanFuture(ObservableFuture<GetPlanResponse> value) {
     _$_subscriptionPlanFutureAtom.reportWrite(
-        value, __subscriptionPlanFutureIsInitialized ? super._subscriptionPlanFuture : null, () {
-      super._subscriptionPlanFuture = value;
-      __subscriptionPlanFutureIsInitialized = true;
-    });
+      value,
+      __subscriptionPlanFutureIsInitialized ? super._subscriptionPlanFuture : null,
+      () {
+        super._subscriptionPlanFuture = value;
+        __subscriptionPlanFutureIsInitialized = true;
+      },
+    );
   }
 
   @override

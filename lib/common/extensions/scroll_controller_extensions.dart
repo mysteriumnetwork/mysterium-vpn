@@ -6,11 +6,7 @@ extension ScrollControllerExtensions on ScrollController {
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
   }) async {
-    await animateTo(
-      value,
-      duration: duration,
-      curve: curve,
-    );
+    await animateTo(value, duration: duration, curve: curve);
   }
 
   Future<void> scrollToKey(
@@ -20,18 +16,10 @@ extension ScrollControllerExtensions on ScrollController {
   }) async {
     final ctx = key.currentContext;
     if (ctx == null) {
-      await animateTo(
-        position.maxScrollExtent,
-        duration: duration,
-        curve: curve,
-      );
+      await animateTo(position.maxScrollExtent, duration: duration, curve: curve);
       return;
     }
 
-    await Scrollable.ensureVisible(
-      ctx,
-      duration: duration,
-      curve: curve,
-    );
+    await Scrollable.ensureVisible(ctx, duration: duration, curve: curve);
   }
 }

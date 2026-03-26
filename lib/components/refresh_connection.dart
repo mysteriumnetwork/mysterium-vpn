@@ -20,9 +20,7 @@ class RefreshConnection extends HookConsumerWidget {
     return Observer(
       builder: (context) => Visibility(
         visible: vpnStore.isConnected,
-        replacement: SizedBox.fromSize(
-          size: const Size.fromHeight(36),
-        ),
+        replacement: SizedBox.fromSize(size: const Size.fromHeight(36)),
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             backgroundColor: Palette.blue,
@@ -36,11 +34,7 @@ class RefreshConnection extends HookConsumerWidget {
             ref.read(selectedLocationStorePOD).value = null;
             await vpnStore.manageConnection(refreshIP: true);
           },
-          label: EasyText(
-            LocaleKeys.refreshIP.tr(),
-            fontSize: 12,
-            color: Palette.white,
-          ),
+          label: EasyText(LocaleKeys.refreshIP.tr(), fontSize: 12, color: Palette.white),
           icon: SvgIcon(asset: Asset.icons.refresh),
         ),
       ),

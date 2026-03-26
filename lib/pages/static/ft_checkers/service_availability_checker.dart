@@ -25,17 +25,11 @@ class ServiceAvailabilityChecker extends ConsumerWidget {
           return Scaffold(
             backgroundColor: Palette.darkBlue,
             body: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 40,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgIcon(
-                    asset: Asset.logo.splashLogo,
-                    width: 150,
-                  ),
+                  SvgIcon(asset: Asset.logo.splashLogo, width: 150),
                   const SizedBox(height: 40),
                   Expanded(
                     child: Center(

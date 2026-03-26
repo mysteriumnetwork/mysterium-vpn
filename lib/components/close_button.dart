@@ -4,11 +4,7 @@ import 'package:mysterium_vpn/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class CloseButton extends StatelessWidget {
-  const CloseButton({
-    this.onPressed,
-    this.implicit = true,
-    super.key,
-  });
+  const CloseButton({this.onPressed, this.implicit = true, super.key});
 
   final VoidCallback? onPressed;
   final bool implicit;
@@ -26,12 +22,7 @@ class CloseButton extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SvgIconButton(
-            asset: Asset.icons.closeDark,
-            onPressed: onPressed,
-          ),
-        ],
+        children: [SvgIconButton(asset: Asset.icons.closeDark, onPressed: onPressed)],
       ),
     );
   }

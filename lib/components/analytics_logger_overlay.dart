@@ -10,10 +10,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsLoggerOverlay extends HookConsumerWidget {
-  const AnalyticsLoggerOverlay({
-    required this.onDismissPressed,
-    super.key,
-  });
+  const AnalyticsLoggerOverlay({required this.onDismissPressed, super.key});
 
   final VoidCallback onDismissPressed;
 
@@ -26,9 +23,7 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
       entry = null;
     }
 
-    entry ??= OverlayEntry(
-      builder: (_) => AnalyticsLoggerOverlay(onDismissPressed: handleDismiss),
-    );
+    entry ??= OverlayEntry(builder: (_) => AnalyticsLoggerOverlay(onDismissPressed: handleDismiss));
 
     overlay.insert(entry!);
   }
@@ -44,18 +39,14 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
         slivers: [
           SliverStack(
             children: [
-              SliverPositioned.fill(
-                child: ColoredBox(color: theme.palette.backgroundColor),
-              ),
+              SliverPositioned.fill(child: ColoredBox(color: theme.palette.backgroundColor)),
               SliverSafeArea(
                 bottom: false,
                 sliver: SliverPadding(
                   padding: const EdgeInsets.only(top: 24),
                   sliver: SliverPinnedHeader(
                     child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: theme.palette.backgroundColor,
-                      ),
+                      decoration: BoxDecoration(color: theme.palette.backgroundColor),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         child: Row(
@@ -89,9 +80,7 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
                 _LogsList(items: logs),
                 const SliverSafeArea(
                   top: false,
-                  sliver: SliverToBoxAdapter(
-                    child: SizedBox(height: 32),
-                  ),
+                  sliver: SliverToBoxAdapter(child: SizedBox(height: 32)),
                 ),
               ],
             ),
@@ -105,24 +94,18 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
 List<AnalyticsLogEntry> _useAnalyticsLogs(Iterable<AnalyticsLogType> types) {
   final context = useContext();
   final logs = useState<List<AnalyticsLogEntry>>([]);
-  useEffect(
-    () {
-      final ref = ProviderScope.containerOf(context, listen: false);
-      return ref.read(analyticsStorePOD).watchLogs().listen((entry) {
-        logs.value = [...logs.value, entry];
-      }).cancel;
-    },
-    [logs, context],
-  );
+  useEffect(() {
+    final ref = ProviderScope.containerOf(context, listen: false);
+    return ref.read(analyticsStorePOD).watchLogs().listen((entry) {
+      logs.value = [...logs.value, entry];
+    }).cancel;
+  }, [logs, context]);
 
   return logs.value.where((it) => types.contains(it.type)).toList().reversed.toList();
 }
 
 class _TypePicker extends StatelessWidget {
-  const _TypePicker({
-    required this.selected,
-    required this.onChanged,
-  });
+  const _TypePicker({required this.selected, required this.onChanged});
 
   final Set<AnalyticsLogType> selected;
   final ValueChanged<Set<AnalyticsLogType>> onChanged;
@@ -155,11 +138,7 @@ class _TypePicker extends StatelessWidget {
 }
 
 class _TypeItem extends StatelessWidget {
-  const _TypeItem({
-    required this.item,
-    required this.selected,
-    required this.onTap,
-  });
+  const _TypeItem({required this.item, required this.selected, required this.onTap});
 
   final AnalyticsLogType item;
   final bool selected;
@@ -167,30 +146,30 @@ class _TypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: Row(
-            spacing: 4,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IgnorePointer(
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: Checkbox(
-                    value: selected,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    onChanged: (_) {},
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ),
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        spacing: 4,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IgnorePointer(
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: Checkbox(
+                value: selected,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (_) {},
+                visualDensity: VisualDensity.compact,
               ),
-              Flexible(child: EasyText(item.label, fontSize: 12, fontWeight: FontWeight.w700)),
-            ],
+            ),
           ),
-        ),
-      );
+          Flexible(child: EasyText(item.label, fontSize: 12, fontWeight: FontWeight.w700)),
+        ],
+      ),
+    ),
+  );
 }
 
 class _LogsList extends StatelessWidget {
@@ -200,17 +179,13 @@ class _LogsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverList.separated(
-        itemCount: items.length,
-        separatorBuilder: (_, __) => const Divider(
-          thickness: 0.5,
-          color: Palette.lightBlue,
-          height: 0,
-        ),
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return _LogListItem(value: item);
-        },
-      );
+    itemCount: items.length,
+    separatorBuilder: (_, _) => const Divider(thickness: 0.5, color: Palette.lightBlue, height: 0),
+    itemBuilder: (context, index) {
+      final item = items[index];
+      return _LogListItem(value: item);
+    },
+  );
 }
 
 class _LogListItem extends StatelessWidget {

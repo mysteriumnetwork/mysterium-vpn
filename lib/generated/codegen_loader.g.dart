@@ -505,7 +505,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"},
     "switchToLocationBtn": "切换到 {switchLocation}",
     "redeemDiscountCode": "兑换折扣码",
-    "couponCodeCopied": "优惠券代码已复制到剪贴板！"
+    "couponCodeCopied": "优惠券代码已复制到剪贴板！",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1046,7 +1046,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"},
     "switchToLocationBtn": "{switchLocation} konumuna geçin",
     "redeemDiscountCode": "İndirim kodunu kullanın",
-    "couponCodeCopied": "{couponCode} panoya kopyalandı!"
+    "couponCodeCopied": "{couponCode} panoya kopyalandı!",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1546,7 +1546,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
     "switchToLocationBtn": "{switchLocation}に切り替える",
     "redeemDiscountCode": "割引コードを引き換える",
-    "couponCodeCopied": ""
+    "couponCodeCopied": "",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2116,7 +2116,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"},
     "switchToLocationBtn": "Wechseln Sie zu {switchLocation}",
     "redeemDiscountCode": "Gutscheincode einlösen",
-    "couponCodeCopied": "{couponCode} wurde in die Zwischenablage kopiert!"
+    "couponCodeCopied": "{couponCode} wurde in die Zwischenablage kopiert!",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2481,7 +2481,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Enviar novamente",
       "other": "Enviar novamente ({})",
-      "zero": "Enviar novamente"
+      "zero": "Enviar novamente",
     },
     "sendToUs": "Enviar comentários",
     "serviceUnavailableError":
@@ -2676,7 +2676,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
     "switchToLocationBtn": "Alternar para {switchLocation}",
     "redeemDiscountCode": "Resgatar código de desconto",
-    "couponCodeCopied": "{couponCode} copiado para a área de transferência!"
+    "couponCodeCopied": "{couponCode} copiado para a área de transferência!",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3223,7 +3223,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"},
     "switchToLocationBtn": "Switch to {switchLocation}",
     "redeemDiscountCode": "Redeem discount code",
-    "couponCodeCopied": "{couponCode} copied to clipboard!"
+    "couponCodeCopied": "{couponCode} copied to clipboard!",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3591,7 +3591,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Invia di nuovo",
       "other": "Invia di nuovo ({})",
-      "zero": "Invia di nuovo"
+      "zero": "Invia di nuovo",
     },
     "sendToUs": "Invia feedback",
     "serviceUnavailableError":
@@ -3785,7 +3785,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"},
     "switchToLocationBtn": "Passa a {switchLocation}",
     "redeemDiscountCode": "Riscatta il codice sconto",
-    "couponCodeCopied": "{couponCode} copiato negli appunti!"
+    "couponCodeCopied": "{couponCode} copiato negli appunti!",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4158,7 +4158,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Envoyer à nouveau",
       "other": "Envoyer à nouveau ({})",
-      "zero": "Envoyer à nouveau"
+      "zero": "Envoyer à nouveau",
     },
     "sendToUs": "Envoyer des commentaires",
     "serviceUnavailableError":
@@ -4355,7 +4355,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"},
     "switchToLocationBtn": "Passer à {switchLocation}",
     "redeemDiscountCode": "Utilisez le code de réduction",
-    "couponCodeCopied": "{couponCode} copié dans le presse-papiers !"
+    "couponCodeCopied": "{couponCode} copié dans le presse-papiers !",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4904,11 +4904,11 @@ class CodegenLoader extends AssetLoader {
     "connectToTooltip": "Terhubung ke {countryNum}",
     "locationItemStatesCount": {
       "one": "{statesNum} Negara Bagian",
-      "other": "{statesNum} Negara Bagian"
+      "other": "{statesNum} Negara Bagian",
     },
     "switchToLocationBtn": "Beralih ke {switchLocation}",
     "redeemDiscountCode": "Tukarkan kode diskon",
-    "couponCodeCopied": "{Kode kupon} disalin ke papan klip!"
+    "couponCodeCopied": "{Kode kupon} disalin ke papan klip!",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5276,7 +5276,7 @@ class CodegenLoader extends AssetLoader {
     "sendAgain": {
       "one": "Enviar de nuevo",
       "other": "Enviar de nuevo ({})",
-      "zero": "Enviar de nuevo"
+      "zero": "Enviar de nuevo",
     },
     "sendToUs": "Enviar comentarios",
     "serviceUnavailableError":
@@ -5471,7 +5471,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
     "switchToLocationBtn": "Cambiar a {ubicación del switch}",
     "redeemDiscountCode": "Canjea el código de descuento",
-    "couponCodeCopied": "¡El código de cupón se copió al portapapeles!"
+    "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6005,7 +6005,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
     "switchToLocationBtn": "انتقل إلى {switchLocation}",
     "redeemDiscountCode": "استخدم رمز الخصم",
-    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!"
+    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
@@ -6018,6 +6018,6 @@ class CodegenLoader extends AssetLoader {
     "fr": _fr,
     "id": _id,
     "es": _es,
-    "ar": _ar
+    "ar": _ar,
   };
 }

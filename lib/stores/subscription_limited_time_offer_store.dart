@@ -17,12 +17,10 @@ class SubscriptionLimitedTimeOfferStore = _SubscriptionLimitedTimeOfferStore
 
 abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
   _SubscriptionLimitedTimeOfferStore(this._plansStore, this._remoteConfigStore) {
-    _disposers.addAll(
-      [
-        reaction((_) => _remoteConfigStore.limitedTimeOfferId, (_) => _refresh()),
-        reaction((_) => _remoteConfigStore.limitedTimeOfferExpiryDate, (_) => _refresh()),
-      ],
-    );
+    _disposers.addAll([
+      reaction((_) => _remoteConfigStore.limitedTimeOfferId, (_) => _refresh()),
+      reaction((_) => _remoteConfigStore.limitedTimeOfferExpiryDate, (_) => _refresh()),
+    ]);
   }
 
   final SubscriptionPlansStore _plansStore;
@@ -49,8 +47,9 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
       return null;
     }
 
-    final products =
-        (await _plansStore.future).sortedByCompare((it) => it.duration, compareNums).reversed;
+    final products = (await _plansStore.future)
+        .sortedByCompare((it) => it.duration, compareNums)
+        .reversed;
     for (final product in products) {
       final matching = product.offers
           .where((it) => it.id == offerId)
@@ -58,11 +57,7 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
           .firstOrNull;
 
       if (matching != null) {
-        return (
-          product: product,
-          offer: matching,
-          expiryDate: expiryDate,
-        );
+        return (product: product, offer: matching, expiryDate: expiryDate);
       }
     }
     return null;
@@ -78,19 +73,17 @@ abstract class _SubscriptionLimitedTimeOfferStore with Store, Disposeable {
   @action
   Future<void> mockOffer() async {
     final product = (await _plansStore.future).first;
-    _future = ObservableFuture.value(
-      (
-        product: product,
-        offer: ProductOffer(
-          id: 'mock_offer',
-          price: 49.99,
-          durationUnit: OfferDuration.month,
-          durationValue: 1,
-          fullPrice: 200,
-        ),
-        expiryDate: DateTime.now().add(const Duration(days: 7)),
+    _future = ObservableFuture.value((
+      product: product,
+      offer: ProductOffer(
+        id: 'mock_offer',
+        price: 49.99,
+        durationUnit: OfferDuration.month,
+        durationValue: 1,
+        fullPrice: 200,
       ),
-    );
+      expiryDate: DateTime.now().add(const Duration(days: 7)),
+    ));
   }
 }
 

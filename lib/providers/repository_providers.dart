@@ -23,7 +23,5 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
 final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>(
   (ref) => isDesktop()
       ? DesktopNotificationsRepository()
-      : OnesignalNotificationsRepository(
-          logger: ref.watch(loggerPOD),
-        ),
+      : OnesignalNotificationsRepository(logger: ref.watch(loggerPOD)),
 );

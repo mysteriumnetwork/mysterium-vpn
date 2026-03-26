@@ -40,20 +40,17 @@ class Tooltip extends HookConsumerWidget {
       }
     }
 
-    useEffect(
-      () {
-        if (visibility.value) {
-          autoHideTimer.value?.cancel();
-          final duration = autoDismissDuration;
-          if (duration != null) {
-            autoHideTimer.value = Timer(duration, () => visibility.value = false);
-          }
+    useEffect(() {
+      if (visibility.value) {
+        autoHideTimer.value?.cancel();
+        final duration = autoDismissDuration;
+        if (duration != null) {
+          autoHideTimer.value = Timer(duration, () => visibility.value = false);
         }
+      }
 
-        return null;
-      },
-      [visibility.value, autoHideTimer, autoDismissDuration],
-    );
+      return null;
+    }, [visibility.value, autoHideTimer, autoDismissDuration]);
 
     return PortalTarget(
       visible: visibility.value,
@@ -69,10 +66,7 @@ class Tooltip extends HookConsumerWidget {
           offset: Offset(14, 3),
           shiftToWithinBound: AxisFlag(x: true),
         ),
-        portalFollower: _TooltipController(
-          visible: visibility,
-          child: buildEntry(context),
-        ),
+        portalFollower: _TooltipController(visible: visibility, child: buildEntry(context)),
         child: MouseRegion(
           onEnter: (_) => visibility.value = true,
           onExit: (_) => visibility.value = false,
@@ -114,10 +108,7 @@ class TooltipEntry extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () => controller.value = false,
-            child: Padding(
-              padding: padding,
-              child: child,
-            ),
+            child: Padding(padding: padding, child: child),
           ),
         ),
       ),
@@ -139,35 +130,27 @@ class TooltipTextEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TooltipEntry(
-        constraints: constraints,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            EasyText(
-              title,
-              color: Palette.white,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
-            const SizedBox(height: 4),
-            EasyText(
-              message,
-              color: Palette.lightBlue,
-              fontSize: 8,
-              fontWeight: FontWeight.w400,
-              maxLines: 6,
-            ),
-          ],
+    constraints: constraints,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        EasyText(title, color: Palette.white, fontSize: 12, fontWeight: FontWeight.w500),
+        const SizedBox(height: 4),
+        EasyText(
+          message,
+          color: Palette.lightBlue,
+          fontSize: 8,
+          fontWeight: FontWeight.w400,
+          maxLines: 6,
         ),
-      );
+      ],
+    ),
+  );
 }
 
 class _TooltipController extends InheritedWidget {
-  const _TooltipController({
-    required this.visible,
-    required super.child,
-  });
+  const _TooltipController({required this.visible, required super.child});
 
   final ValueNotifier<bool> visible;
 

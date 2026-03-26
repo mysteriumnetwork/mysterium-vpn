@@ -61,35 +61,32 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   }
 
   void _setupStreamListeners() {
-    _subscriptions.addAll([
-      _createPermissionListener(),
-      _createNotificationClickListener(),
-    ]);
+    _subscriptions.addAll([_createPermissionListener(), _createNotificationClickListener()]);
   }
 
   StreamSubscription<bool> _createPermissionListener() => _pushNotificationsPermissionStream.listen(
-        (granted) {
-          try {
-            _analyticsStore
-              ..setUserProperty(
-                AnalyticsUserProperty.fromEnum(
-                  name: AnalyticsUserPropName.pnPermissionStatus,
-                  value: granted.toString(),
-                ),
-              )
-              ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
-          } catch (e, stack) {
-            _logger.handle(e, stack, 'Error tracking push notifications permission change');
-          }
-        },
-        onError: (error, [stackTrace]) {
-          _logger.handle(
-            error.toString(),
-            stackTrace as StackTrace?,
-            'Error in push notifications permission status stream',
-          );
-        },
+    (granted) {
+      try {
+        _analyticsStore
+          ..setUserProperty(
+            AnalyticsUserProperty.fromEnum(
+              name: AnalyticsUserPropName.pnPermissionStatus,
+              value: granted.toString(),
+            ),
+          )
+          ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
+      } catch (e, stack) {
+        _logger.handle(e, stack, 'Error tracking push notifications permission change');
+      }
+    },
+    onError: (error, [stackTrace]) {
+      _logger.handle(
+        error.toString(),
+        stackTrace as StackTrace?,
+        'Error in push notifications permission status stream',
       );
+    },
+  );
 
   StreamSubscription<PushNotification> _createNotificationClickListener() =>
       _notificationsStream.listen(
@@ -125,38 +122,32 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     ]);
   }
 
-  ReactionDisposer _createAuthReaction() => reaction(
-        (_) => _authSessionStore.userFuture.value.toUserData(),
-        (data) async {
-          if (_authSessionStore.userFuture.value == null) {
-            await _handleLogout();
-            return;
-          }
+  ReactionDisposer _createAuthReaction() =>
+      reaction((_) => _authSessionStore.userFuture.value.toUserData(), (data) async {
+        if (_authSessionStore.userFuture.value == null) {
+          await _handleLogout();
+          return;
+        }
 
-          await _handleLogin(data);
-        },
-        fireImmediately: true,
-      );
+        await _handleLogin(data);
+      }, fireImmediately: true);
 
-  ReactionDisposer _createLocationReaction() => reaction(
-        (_) => _ipInfoStore.infoFuture.value.toLocationData(),
-        (data) async {
-          await _updateLocationTags(data);
-        },
-        fireImmediately: true,
-      );
+  ReactionDisposer _createLocationReaction() =>
+      reaction((_) => _ipInfoStore.infoFuture.value.toLocationData(), (data) async {
+        await _updateLocationTags(data);
+      }, fireImmediately: true);
 
   ReactionDisposer _createSubscriptionReaction() => reaction(
-        (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
-        (data) async {
-          // Only update subscription tags if user is authenticated
-          if (!_authSessionStore.isAuthenticated) {
-            return;
-          }
-          await _updateSubscriptionTags(data);
-        },
-        fireImmediately: true,
-      );
+    (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
+    (data) async {
+      // Only update subscription tags if user is authenticated
+      if (!_authSessionStore.isAuthenticated) {
+        return;
+      }
+      await _updateSubscriptionTags(data);
+    },
+    fireImmediately: true,
+  );
 
   Future<void> _handleLogout() async {
     try {
@@ -170,10 +161,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   Future<void> _handleLogin(UserData data) async {
     try {
-      await _notificationsRepository.login(
-        userId: data.id,
-        userEmail: data.email,
-      );
+      await _notificationsRepository.login(userId: data.id, userEmail: data.email);
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error logging in to push notifications');
     }
@@ -181,10 +169,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   Future<void> _updateLocationTags(LocationData data) async {
     try {
-      final tags = <String, String>{
-        'country': data.country,
-        'city': data.city,
-      };
+      final tags = <String, String>{'country': data.country, 'city': data.city};
       await _notificationsRepository.setTags(tags);
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error setting location tags');
@@ -210,8 +195,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   }
 
   @readonly
-  late ObservableStream<PushNotificationsUser> _pushNotificationsUser =
-      ObservableStream(_notificationsRepository.getUser());
+  late ObservableStream<PushNotificationsUser> _pushNotificationsUser = ObservableStream(
+    _notificationsRepository.getUser(),
+  );
 
   @readonly
   late ObservableStream<bool> _pushNotificationsPermissionStream = ObservableStream(

@@ -21,10 +21,7 @@ class LoadingIndicator extends StatelessWidget {
       ? Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SpinKitSpinningLines(
-              color: indicatorColor,
-              size: radius,
-            ),
+            SpinKitSpinningLines(color: indicatorColor, size: radius),
             if (message != null)
               EasyText(
                 message!,
@@ -36,8 +33,8 @@ class LoadingIndicator extends StatelessWidget {
               ).padding(top: 10),
           ],
         ).center()
-      : SpinKitSpinningLines(color: indicatorColor, size: radius).constrained(
-          maxHeight: radius,
-          maxWidth: radius,
-        );
+      : SpinKitSpinningLines(
+          color: indicatorColor,
+          size: radius,
+        ).constrained(maxHeight: radius, maxWidth: radius);
 }

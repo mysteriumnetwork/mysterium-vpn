@@ -19,11 +19,7 @@ class RecentLocationsList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasIndicator = useResponsiveValue(
-      false,
-      desktop: true,
-      tablet: true,
-    );
+    final hasIndicator = useResponsiveValue(false, desktop: true, tablet: true);
 
     final scrollController = useScrollController();
 
@@ -36,10 +32,7 @@ class RecentLocationsList extends HookWidget {
     );
 
     if (hasIndicator) {
-      return HorizontalScrollIndicator(
-        controller: scrollController,
-        child: child,
-      );
+      return HorizontalScrollIndicator(controller: scrollController, child: child);
     }
 
     return child;
@@ -63,23 +56,20 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
-        constraints: constraints,
-        child: ListView.separated(
-          controller: scrollController,
-          itemCount: items.length,
-          scrollDirection: Axis.horizontal,
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
-          clipBehavior: clipBehavior,
-          itemBuilder: (_, index) {
-            final item = items[index];
-            return Align(
-              alignment: Alignment.topLeft,
-              child: RecentLocationItem(
-                location: item,
-                onTap: () => onItemPressed(item),
-              ),
-            );
-          },
-        ),
-      );
+    constraints: constraints,
+    child: ListView.separated(
+      controller: scrollController,
+      itemCount: items.length,
+      scrollDirection: Axis.horizontal,
+      separatorBuilder: (_, _) => const SizedBox(width: 12),
+      clipBehavior: clipBehavior,
+      itemBuilder: (_, index) {
+        final item = items[index];
+        return Align(
+          alignment: Alignment.topLeft,
+          child: RecentLocationItem(location: item, onTap: () => onItemPressed(item)),
+        );
+      },
+    ),
+  );
 }

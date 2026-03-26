@@ -29,7 +29,5 @@ Map<String, String?>? authorizationToJson(String? authorization) {
   if (authorization == null) {
     return null;
   }
-  return {
-    'id_token': authorization,
-  };
+  return {'id_token': authorization};
 }

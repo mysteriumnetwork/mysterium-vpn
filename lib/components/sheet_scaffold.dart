@@ -56,7 +56,7 @@ class SheetScaffold extends HookWidget {
                 backgroundColor: scaffoldColor,
                 flexibleSpace: Container(color: scaffoldColor),
               ),
-              if (subheaderSliver != null) subheaderSliver!,
+              ?subheaderSliver,
               // Content below the header
               DecoratedSliver(
                 decoration: BoxDecoration(
@@ -66,10 +66,7 @@ class SheetScaffold extends HookWidget {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                sliver: SliverPadding(
-                  padding: const EdgeInsets.only(top: 20),
-                  sliver: sliver,
-                ),
+                sliver: SliverPadding(padding: const EdgeInsets.only(top: 20), sliver: sliver),
               ),
             ],
           ),
@@ -80,10 +77,7 @@ class SheetScaffold extends HookWidget {
 }
 
 class _ColoredScrollGapFiller extends HookWidget {
-  const _ColoredScrollGapFiller({
-    required this.color,
-    required this.controller,
-  });
+  const _ColoredScrollGapFiller({required this.color, required this.controller});
 
   final Color color;
   final ScrollController controller;
@@ -99,10 +93,6 @@ class _ColoredScrollGapFiller extends HookWidget {
       return max(0, position.pixels - position.maxScrollExtent);
     });
 
-    return Container(
-      height: offset + 4,
-      width: double.infinity,
-      color: color,
-    );
+    return Container(height: offset + 4, width: double.infinity, color: color);
   }
 }

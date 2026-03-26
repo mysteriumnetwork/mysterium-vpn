@@ -12,33 +12,38 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
   Computed<bool>? _$isAuthenticatedComputed;
 
   @override
-  bool get isAuthenticated => (_$isAuthenticatedComputed ??=
-          Computed<bool>(() => super.isAuthenticated, name: '_AuthSessionStore.isAuthenticated'))
-      .value;
+  bool get isAuthenticated => (_$isAuthenticatedComputed ??= Computed<bool>(
+    () => super.isAuthenticated,
+    name: '_AuthSessionStore.isAuthenticated',
+  )).value;
   Computed<String?>? _$accessTokenComputed;
 
   @override
-  String? get accessToken => (_$accessTokenComputed ??=
-          Computed<String?>(() => super.accessToken, name: '_AuthSessionStore.accessToken'))
-      .value;
+  String? get accessToken => (_$accessTokenComputed ??= Computed<String?>(
+    () => super.accessToken,
+    name: '_AuthSessionStore.accessToken',
+  )).value;
   Computed<String?>? _$refreshTokenComputed;
 
   @override
-  String? get refreshToken => (_$refreshTokenComputed ??=
-          Computed<String?>(() => super.refreshToken, name: '_AuthSessionStore.refreshToken'))
-      .value;
+  String? get refreshToken => (_$refreshTokenComputed ??= Computed<String?>(
+    () => super.refreshToken,
+    name: '_AuthSessionStore.refreshToken',
+  )).value;
   Computed<AuthUser?>? _$userComputed;
 
   @override
-  AuthUser? get user =>
-      (_$userComputed ??= Computed<AuthUser?>(() => super.user, name: '_AuthSessionStore.user'))
-          .value;
+  AuthUser? get user => (_$userComputed ??= Computed<AuthUser?>(
+    () => super.user,
+    name: '_AuthSessionStore.user',
+  )).value;
   Computed<bool>? _$canBrowseAppComputed;
 
   @override
-  bool get canBrowseApp => (_$canBrowseAppComputed ??=
-          Computed<bool>(() => super.canBrowseApp, name: '_AuthSessionStore.canBrowseApp'))
-      .value;
+  bool get canBrowseApp => (_$canBrowseAppComputed ??= Computed<bool>(
+    () => super.canBrowseApp,
+    name: '_AuthSessionStore.canBrowseApp',
+  )).value;
 
   late final _$statusAtom = Atom(name: '_AuthSessionStore.status', context: context);
 
@@ -70,8 +75,10 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     });
   }
 
-  late final _$_accessTokenFutureAtom =
-      Atom(name: '_AuthSessionStore._accessTokenFuture', context: context);
+  late final _$_accessTokenFutureAtom = Atom(
+    name: '_AuthSessionStore._accessTokenFuture',
+    context: context,
+  );
 
   ObservableFuture<String?> get accessTokenFuture {
     _$_accessTokenFutureAtom.reportRead();
@@ -85,15 +92,20 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
 
   @override
   set _accessTokenFuture(ObservableFuture<String?> value) {
-    _$_accessTokenFutureAtom
-        .reportWrite(value, __accessTokenFutureIsInitialized ? super._accessTokenFuture : null, () {
-      super._accessTokenFuture = value;
-      __accessTokenFutureIsInitialized = true;
-    });
+    _$_accessTokenFutureAtom.reportWrite(
+      value,
+      __accessTokenFutureIsInitialized ? super._accessTokenFuture : null,
+      () {
+        super._accessTokenFuture = value;
+        __accessTokenFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$_refreshTokenFutureAtom =
-      Atom(name: '_AuthSessionStore._refreshTokenFuture', context: context);
+  late final _$_refreshTokenFutureAtom = Atom(
+    name: '_AuthSessionStore._refreshTokenFuture',
+    context: context,
+  );
 
   ObservableFuture<String?> get refreshTokenFuture {
     _$_refreshTokenFutureAtom.reportRead();
@@ -108,10 +120,13 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
   @override
   set _refreshTokenFuture(ObservableFuture<String?> value) {
     _$_refreshTokenFutureAtom.reportWrite(
-        value, __refreshTokenFutureIsInitialized ? super._refreshTokenFuture : null, () {
-      super._refreshTokenFuture = value;
-      __refreshTokenFutureIsInitialized = true;
-    });
+      value,
+      __refreshTokenFutureIsInitialized ? super._refreshTokenFuture : null,
+      () {
+        super._refreshTokenFuture = value;
+        __refreshTokenFutureIsInitialized = true;
+      },
+    );
   }
 
   late final _$_userFutureAtom = Atom(name: '_AuthSessionStore._userFuture', context: context);
@@ -141,25 +156,32 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     return _$initStoreAsyncAction.run(() => super.initStore());
   }
 
-  late final _$setAuthenticatedAsyncAction =
-      AsyncAction('_AuthSessionStore.setAuthenticated', context: context);
+  late final _$setAuthenticatedAsyncAction = AsyncAction(
+    '_AuthSessionStore.setAuthenticated',
+    context: context,
+  );
 
   @override
   Future<void> setAuthenticated(String accessToken, String? refreshToken) {
-    return _$setAuthenticatedAsyncAction
-        .run(() => super.setAuthenticated(accessToken, refreshToken));
+    return _$setAuthenticatedAsyncAction.run(
+      () => super.setAuthenticated(accessToken, refreshToken),
+    );
   }
 
-  late final _$setAuthenticatedUserAsyncAction =
-      AsyncAction('_AuthSessionStore.setAuthenticatedUser', context: context);
+  late final _$setAuthenticatedUserAsyncAction = AsyncAction(
+    '_AuthSessionStore.setAuthenticatedUser',
+    context: context,
+  );
 
   @override
   Future<void> setAuthenticatedUser(AuthUser user) {
     return _$setAuthenticatedUserAsyncAction.run(() => super.setAuthenticatedUser(user));
   }
 
-  late final _$setUnauthenticatedAsyncAction =
-      AsyncAction('_AuthSessionStore.setUnauthenticated', context: context);
+  late final _$setUnauthenticatedAsyncAction = AsyncAction(
+    '_AuthSessionStore.setUnauthenticated',
+    context: context,
+  );
 
   @override
   Future<void> setUnauthenticated() {

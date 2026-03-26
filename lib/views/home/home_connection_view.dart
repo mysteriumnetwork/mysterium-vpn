@@ -8,9 +8,7 @@ import 'package:mysterium_vpn/views/home/home_banner.dart';
 import 'package:mysterium_vpn/views/home/home_map.dart';
 
 class HomeConnectionView extends HookConsumerWidget {
-  const HomeConnectionView({
-    super.key,
-  });
+  const HomeConnectionView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -18,10 +18,6 @@ class PlatformLayoutBuilder extends StatelessWidget {
   final ScreenSizeBreakpoint? screenSizeBreakpoints;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-        builder: (context, boxConstraints) => builder(
-          context,
-          getPlatform(),
-        ),
-      );
+  Widget build(BuildContext context) =>
+      LayoutBuilder(builder: (context, boxConstraints) => builder(context, getPlatform()));
 }

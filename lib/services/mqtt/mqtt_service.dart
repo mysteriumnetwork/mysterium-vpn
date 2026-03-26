@@ -15,11 +15,11 @@ class MQTTService {
     String clientID,
     Talker logger,
     RemoteConfigStore remoteConfigStore,
-  )   : _mqtt = MqttServerClient(url, clientID, maxConnectionAttempts: 2),
-        _username = username,
-        _password = password,
-        _logger = logger,
-        _remoteConfigStore = remoteConfigStore {
+  ) : _mqtt = MqttServerClient(url, clientID, maxConnectionAttempts: 2),
+      _username = username,
+      _password = password,
+      _logger = logger,
+      _remoteConfigStore = remoteConfigStore {
     final uri = Uri.parse(url);
 
     // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
@@ -137,9 +137,7 @@ class MQTTService {
           // map the messages to the payload
           .map(
             (messages) => messages
-                .where(
-                  (message) => message.topic == topic && message.payload is MqttPublishMessage,
-                )
+                .where((message) => message.topic == topic && message.payload is MqttPublishMessage)
                 .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
                 .nonNulls
                 .toList(),

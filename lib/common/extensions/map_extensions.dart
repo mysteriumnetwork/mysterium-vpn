@@ -3,10 +3,10 @@ import 'package:latlong2/latlong.dart';
 
 extension MapCameraExtensions on MapCamera {
   Map<String, dynamic> toMap() => {
-        'center': center.toShortString(),
-        'zoom': zoom.toStringAsFixed(2),
-        'bounds': visibleBounds.toShortString(),
-      };
+    'center': center.toShortString(),
+    'zoom': zoom.toStringAsFixed(2),
+    'bounds': visibleBounds.toShortString(),
+  };
 }
 
 extension LatLngExtensions on LatLng {

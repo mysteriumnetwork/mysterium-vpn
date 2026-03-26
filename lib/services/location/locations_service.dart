@@ -44,8 +44,7 @@ class LocationsService {
         IPType.residential => 'residential',
         _ => null,
       },
-    ))
-        .data!;
+    )).data!;
     if (connectionConfigRegions.regions.isEmpty) {
       return null;
     }

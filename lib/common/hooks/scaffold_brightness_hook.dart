@@ -58,8 +58,8 @@ class _ScaffoldBrightnessHookState extends HookState<Brightness?, _ScaffoldBrigh
 
 extension _ColorBrightnessExtension on Color? {
   Brightness? get brightness => switch (this) {
-        Palette.white => Brightness.light,
-        Palette.darkBlue => Brightness.dark,
-        _ => null,
-      };
+    Palette.white => Brightness.light,
+    Palette.darkBlue => Brightness.dark,
+    _ => null,
+  };
 }

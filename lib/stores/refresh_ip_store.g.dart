@@ -12,13 +12,15 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
   Computed<bool>? _$refreshIPConnectionComputed;
 
   @override
-  bool get refreshIPConnection =>
-      (_$refreshIPConnectionComputed ??= Computed<bool>(() => super.refreshIPConnection,
-              name: '_RefreshIPStore.refreshIPConnection'))
-          .value;
+  bool get refreshIPConnection => (_$refreshIPConnectionComputed ??= Computed<bool>(
+    () => super.refreshIPConnection,
+    name: '_RefreshIPStore.refreshIPConnection',
+  )).value;
 
-  late final _$refreshIPFutureAtom =
-      Atom(name: '_RefreshIPStore.refreshIPFuture', context: context);
+  late final _$refreshIPFutureAtom = Atom(
+    name: '_RefreshIPStore.refreshIPFuture',
+    context: context,
+  );
 
   @override
   ObservableFuture<bool> get refreshIPFuture {
@@ -33,31 +35,40 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
     });
   }
 
-  late final _$_getAndSetRefreshIPConnectionAsyncAction =
-      AsyncAction('_RefreshIPStore._getAndSetRefreshIPConnection', context: context);
+  late final _$_getAndSetRefreshIPConnectionAsyncAction = AsyncAction(
+    '_RefreshIPStore._getAndSetRefreshIPConnection',
+    context: context,
+  );
 
   @override
   Future<bool> _getAndSetRefreshIPConnection() {
-    return _$_getAndSetRefreshIPConnectionAsyncAction
-        .run(() => super._getAndSetRefreshIPConnection());
+    return _$_getAndSetRefreshIPConnectionAsyncAction.run(
+      () => super._getAndSetRefreshIPConnection(),
+    );
   }
 
-  late final _$toggleRefreshIPWhenConnectingAsyncAction =
-      AsyncAction('_RefreshIPStore.toggleRefreshIPWhenConnecting', context: context);
+  late final _$toggleRefreshIPWhenConnectingAsyncAction = AsyncAction(
+    '_RefreshIPStore.toggleRefreshIPWhenConnecting',
+    context: context,
+  );
 
   @override
   Future<void> toggleRefreshIPWhenConnecting() {
-    return _$toggleRefreshIPWhenConnectingAsyncAction
-        .run(() => super.toggleRefreshIPWhenConnecting());
+    return _$toggleRefreshIPWhenConnectingAsyncAction.run(
+      () => super.toggleRefreshIPWhenConnecting(),
+    );
   }
 
-  late final _$_RefreshIPStoreActionController =
-      ActionController(name: '_RefreshIPStore', context: context);
+  late final _$_RefreshIPStoreActionController = ActionController(
+    name: '_RefreshIPStore',
+    context: context,
+  );
 
   @override
   Future<bool> getRefreshIPConnection() {
     final _$actionInfo = _$_RefreshIPStoreActionController.startAction(
-        name: '_RefreshIPStore.getRefreshIPConnection');
+      name: '_RefreshIPStore.getRefreshIPConnection',
+    );
     try {
       return super.getRefreshIPConnection();
     } finally {

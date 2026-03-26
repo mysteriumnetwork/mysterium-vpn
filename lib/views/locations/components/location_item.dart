@@ -20,11 +20,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 /// Simple, non-expandable location item. No expansion hooks or state tracking.
 /// Used for top locations where cities/states are never shown.
 class LocationItem extends HookConsumerWidget {
-  const LocationItem({
-    required this.location,
-    required this.onTap,
-    super.key,
-  });
+  const LocationItem({required this.location, required this.onTap, super.key});
 
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
@@ -93,39 +89,31 @@ class ExpandableLocationItem extends HookConsumerWidget {
     final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
     final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
 
-    final isExpanded = useMemoized(
-      () {
-        if (!showCitiesAndStates) {
-          return false;
-        }
-
-        // Rule 1: search match always expands
-        final matchesQuery = query.isNotEmpty &&
-            children.any((it) => it.queried(query, context.locale.languageCode) != null);
-        if (matchesQuery) {
-          return true;
-        }
-
-        // Rule 2: explicit user toggle (managed by parent, survives recycling)
-        if (expansionOverride != null) {
-          return expansionOverride!;
-        }
-
-        // Rule 3: auto-expand the selected/connected country, collapse the rest
-        if (mapSelectedCountryCode != null) {
-          return mapSelectedCountryCode == location.countryCode;
-        }
-
+    final isExpanded = useMemoized(() {
+      if (!showCitiesAndStates) {
         return false;
-      },
-      [
-        query,
-        mapSelectedCountryCode,
-        expansionOverride,
-        showCitiesAndStates,
-        children,
-      ],
-    );
+      }
+
+      // Rule 1: search match always expands
+      final matchesQuery =
+          query.isNotEmpty &&
+          children.any((it) => it.queried(query, context.locale.languageCode) != null);
+      if (matchesQuery) {
+        return true;
+      }
+
+      // Rule 2: explicit user toggle (managed by parent, survives recycling)
+      if (expansionOverride != null) {
+        return expansionOverride!;
+      }
+
+      // Rule 3: auto-expand the selected/connected country, collapse the rest
+      if (mapSelectedCountryCode != null) {
+        return mapSelectedCountryCode == location.countryCode;
+      }
+
+      return false;
+    }, [query, mapSelectedCountryCode, expansionOverride, showCitiesAndStates, children]);
 
     void handleToggleExpanded() {
       onExpansionChanged?.call(!isExpanded);
@@ -149,11 +137,11 @@ class ExpandableLocationItem extends HookConsumerWidget {
             onToggleConnectionTap: onTapComputed == null ? null : () => onTapComputed(location),
             label: showCitiesAndStates
                 ? locationHasStates
-                    ? LocaleKeys.locationItemStatesCount.plural(
-                        children.length,
-                        namedArgs: {'statesNum': children.length.toString()},
-                      )
-                    : LocaleKeys.locationItemCityCount.plural(children.length)
+                      ? LocaleKeys.locationItemStatesCount.plural(
+                          children.length,
+                          namedArgs: {'statesNum': children.length.toString()},
+                        )
+                      : LocaleKeys.locationItemCityCount.plural(children.length)
                 : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0),
             isExpanded: isExpanded,
             flag: location.countryCode,
@@ -173,11 +161,7 @@ class ExpandableLocationItem extends HookConsumerWidget {
 }
 
 class _ChildLocationItem extends StatelessWidget {
-  const _ChildLocationItem({
-    required this.value,
-    required this.onTap,
-    required this.query,
-  });
+  const _ChildLocationItem({required this.value, required this.onTap, required this.query});
 
   final VPNLocation value;
   final VoidCallback? onTap;
@@ -221,8 +205,9 @@ class _LocationTile extends HookWidget {
     final title = location.getName(context);
     final isConnected = useIsLocationConnected(location);
 
-    final queryMatchIndex =
-        query.isEmpty ? -1 : title.trim().toLowerCase().indexOf(query.trim().toLowerCase());
+    final queryMatchIndex = query.isEmpty
+        ? -1
+        : title.trim().toLowerCase().indexOf(query.trim().toLowerCase());
 
     return RawMaterialButton(
       fillColor: theme.colorScheme.primaryContainer,
@@ -291,21 +276,14 @@ class _LocationTile extends HookWidget {
                               ),
                             ],
                           ),
-                    style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
+                    style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 14),
                     maxLines: title.hasMultipleWords ? 2 : 1,
                   ),
                   Row(
                     spacing: 8,
                     children: [
                       Flexible(
-                        child: EasyText(
-                          label,
-                          fontSize: 12,
-                          color: theme.palette.subtitleColor,
-                        ),
+                        child: EasyText(label, fontSize: 12, color: theme.palette.subtitleColor),
                       ),
                       if (isExpanded != null)
                         AnimatedRotation(

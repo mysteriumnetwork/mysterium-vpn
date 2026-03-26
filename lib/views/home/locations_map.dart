@@ -76,7 +76,7 @@ class LocationsMap extends HookConsumerWidget {
       [this.locations],
     );
 
-    useValueChanged<LatLng?, void>(position, (_, __) {
+    useValueChanged<LatLng?, void>(position, (_, _) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final center = position;
         if (center == null || center == controller.camera.center) {
@@ -107,7 +107,7 @@ class LocationsMap extends HookConsumerWidget {
         backgroundColor: theme.palette.mapBackgroundColor,
         minZoom: mapConfig.zoomLevels.min.toDouble(),
         maxZoom: mapConfig.zoomLevels.max.toDouble(),
-        onTap: (_, __) => onTapOutside?.call(),
+        onTap: (_, _) => onTapOutside?.call(),
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         ),

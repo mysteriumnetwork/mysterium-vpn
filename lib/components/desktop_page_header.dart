@@ -42,18 +42,11 @@ class DesktopPageHeader extends ConsumerWidget {
               onPressed: () {
                 onNavigationButtonPressed(context, analyticsStore);
               },
-              child: EasyText(
-                LocaleKeys.back.tr(),
-                fontSize: 14,
-              ),
+              child: EasyText(LocaleKeys.back.tr(), fontSize: 14),
             ),
           ],
         ),
-        if (showNavigationButton)
-          SvgIconButton(
-            onPressed: onPressed,
-            asset: asset,
-          ),
+        if (showNavigationButton) SvgIconButton(onPressed: onPressed, asset: asset),
       ],
     );
   }

@@ -18,13 +18,12 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 part 'cancel_subscription_survey_dialog/form.dart';
-
 part 'cancel_subscription_survey_dialog/reasons_field.dart';
 
 Future<bool?> showCancelSubscriptionSurveyDialog(BuildContext context) => showDialog<bool?>(
-      context: context,
-      builder: (context) => const CancelSubscriptionSurveyDialog(),
-    );
+  context: context,
+  builder: (context) => const CancelSubscriptionSurveyDialog(),
+);
 
 class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
   const CancelSubscriptionSurveyDialog({super.key});
@@ -34,13 +33,11 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
     final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
-    final reasons = useComputedValue(
-      () {
-        final keys = remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled();
-        keys?.remove(kCancelReasonOther);
-        return {...?keys, kCancelReasonOther};
-      },
-    );
+    final reasons = useComputedValue(() {
+      final keys = remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled();
+      keys?.remove(kCancelReasonOther);
+      return {...?keys, kCancelReasonOther};
+    });
 
     final form = _useForm();
     final submitFuture = useState<Future<void>?>(null);
@@ -68,7 +65,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
       }();
     }
 
-    useValueChanged<ConnectionState, void>(submitState.connectionState, (_, __) {
+    useValueChanged<ConnectionState, void>(submitState.connectionState, (_, _) {
       if (submitState.connectionState == ConnectionState.done) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (submitState.hasError) {
@@ -84,10 +81,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
 
     return AppAlertDialog(
       titleText: LocaleKeys.cancelSurveyTitle.tr(),
-      content: _Form(
-        form: form,
-        items: reasons,
-      ),
+      content: _Form(form: form, items: reasons),
       actions: [
         TextButton(
           onPressed: handleCancel,

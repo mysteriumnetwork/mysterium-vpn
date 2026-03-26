@@ -12,9 +12,7 @@ String? useEffectivePriorityCountryCode(WidgetRef ref) {
 
   final selectedLocation = useComputedValue(() => selectedLocationStore.value);
   final connectingLocation = useComputedValue(() => vpnStore.connectingLocation);
-  final connectedLocation = useComputedValue(
-    () => vpnStore.isConnected ? vpnStore.location : null,
-  );
+  final connectedLocation = useComputedValue(() => vpnStore.isConnected ? vpnStore.location : null);
 
   // Active priority: from explicit selection or active connection attempt.
   // Connected location is excluded so that deselecting doesn't immediately

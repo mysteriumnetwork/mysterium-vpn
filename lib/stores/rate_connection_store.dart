@@ -9,11 +9,7 @@ part 'rate_connection_store.g.dart';
 class RateConnectionStore = _RateConnectionStore with _$RateConnectionStore;
 
 abstract class _RateConnectionStore with Store {
-  _RateConnectionStore(
-    this._rateConnectionMode,
-    this._analyticsStore,
-    this._vpnStore,
-  );
+  _RateConnectionStore(this._rateConnectionMode, this._analyticsStore, this._vpnStore);
 
   final AnalyticsStore _analyticsStore;
   final VpnStore _vpnStore;

@@ -66,16 +66,10 @@ void main() {
       await repository.init();
 
       when(mockService.connect(cfg: anyNamed('cfg'))).thenAnswer(
-        (_) => Future.delayed(
-          const Duration(seconds: 2),
-          () => throw TimeoutException('timeout'),
-        ),
+        (_) => Future.delayed(const Duration(seconds: 2), () => throw TimeoutException('timeout')),
       );
 
-      await expectLater(
-        repository.connect(config: config),
-        throwsA(isA<TimeoutException>()),
-      );
+      await expectLater(repository.connect(config: config), throwsA(isA<TimeoutException>()));
       verify(mockLogger.handle(any, any)).called(1);
     });
 
@@ -166,9 +160,7 @@ void main() {
     });
 
     test('currentStatus returns mapped VpnConnectionStatus', () async {
-      when(mockService.status()).thenAnswer(
-        (_) async => ConnectionStatus.connected,
-      );
+      when(mockService.status()).thenAnswer((_) async => ConnectionStatus.connected);
 
       final status = await repository.currentStatus();
 
@@ -184,15 +176,12 @@ void main() {
     });
 
     test('fetchVpnConfig calls apiService.fetchVpnConfig', () async {
-      final response = WireguardConnectResponse(
-        wgConfig: 'cfg',
-        hash: 'hash',
-        id: 'id',
-      );
+      final response = WireguardConnectResponse(wgConfig: 'cfg', hash: 'hash', id: 'id');
       await repository.init();
 
-      when(mockApiService.fetchVpnConfig(request: anyNamed('request')))
-          .thenAnswer((_) async => response);
+      when(
+        mockApiService.fetchVpnConfig(request: anyNamed('request')),
+      ).thenAnswer((_) async => response);
 
       final config = await repository.fetchVpnConfig(
         countryOriginate: 'US',

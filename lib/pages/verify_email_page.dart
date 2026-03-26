@@ -6,9 +6,7 @@ import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn/views/verify_email_view.dart';
 
 class VerifyEmailPage extends HookConsumerWidget {
-  const VerifyEmailPage({
-    super.key,
-  });
+  const VerifyEmailPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

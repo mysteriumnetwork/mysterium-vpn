@@ -18,7 +18,7 @@ on:
 jobs:
   integration_tests:
     name: Run Integration Tests
-    runs-on: macos-14
+    runs-on: macos-15
 
     permissions:
       contents: 'read'
@@ -99,7 +99,7 @@ jobs:
           curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
 
       - name: Set up XCode
-        run: sudo xcode-select --switch /Applications/Xcode_16.1.0.app
+        run: sudo xcode-select --switch /Applications/Xcode_26.3.app
 
       - name: Install Codemagic CLI tools
         run: |

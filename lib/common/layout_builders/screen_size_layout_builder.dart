@@ -27,38 +27,38 @@ class ScreenSizeLayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ResponsiveLayoutBuilder(
-        screenSizeBreakpoints: screenSizeBreakpoint,
-        builder: (context, screenSizeConfiguration) {
-          // If we're at extra large size
-          if (screenSizeConfiguration.sizeType == SizeType.extraLarge) {
-            // If we have supplied the extra large layout then display that
-            if (extraLarge != null) {
-              return extraLarge!(context);
-            }
-            // If no extra large layout is supplied we want to check if we have the size below it and display that
-            if (large != null) {
-              return large!(context);
-            }
-          }
+    screenSizeBreakpoints: screenSizeBreakpoint,
+    builder: (context, screenSizeConfiguration) {
+      // If we're at extra large size
+      if (screenSizeConfiguration.sizeType == SizeType.extraLarge) {
+        // If we have supplied the extra large layout then display that
+        if (extraLarge != null) {
+          return extraLarge!(context);
+        }
+        // If no extra large layout is supplied we want to check if we have the size below it and display that
+        if (large != null) {
+          return large!(context);
+        }
+      }
 
-          if (screenSizeConfiguration.sizeType == SizeType.large) {
-            // If we have supplied the large layout then display that
-            if (large != null) {
-              return large!(context);
-            }
-            // If no large layout is supplied we want to check if we have the size below it and display that
-            return normal(context);
-          }
+      if (screenSizeConfiguration.sizeType == SizeType.large) {
+        // If we have supplied the large layout then display that
+        if (large != null) {
+          return large!(context);
+        }
+        // If no large layout is supplied we want to check if we have the size below it and display that
+        return normal(context);
+      }
 
-          if (screenSizeConfiguration.sizeType == SizeType.small) {
-            // If we have supplied the small layout then display that
-            if (small != null) {
-              return small!(context);
-            }
-          }
+      if (screenSizeConfiguration.sizeType == SizeType.small) {
+        // If we have supplied the small layout then display that
+        if (small != null) {
+          return small!(context);
+        }
+      }
 
-          // If none of the layouts above are supplied or we're on the small size layout then we show the small layout
-          return normal(context);
-        },
-      );
+      // If none of the layouts above are supplied or we're on the small size layout then we show the small layout
+      return normal(context);
+    },
+  );
 }

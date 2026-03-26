@@ -112,15 +112,17 @@ void main() {
   });
 
   group('dnsAddress', () {
-    test('returns notSafeContentBlockerDnsAddress if not safe content blocker is enabled',
-        () async {
-      when(mockSubscriptionFeaturesStore.malwareBlockingAllowed).thenReturn(true);
-      when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(false);
-      when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.3');
-      when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
-      await store.getNotSafeContentBlocker();
-      expect(store.dnsAddress, '1.1.1.3');
-    });
+    test(
+      'returns notSafeContentBlockerDnsAddress if not safe content blocker is enabled',
+      () async {
+        when(mockSubscriptionFeaturesStore.malwareBlockingAllowed).thenReturn(true);
+        when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(false);
+        when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.3');
+        when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
+        await store.getNotSafeContentBlocker();
+        expect(store.dnsAddress, '1.1.1.3');
+      },
+    );
 
     test('returns malwareBlockerDnsAddress if malware blocker is enabled', () async {
       when(mockSubscriptionFeaturesStore.malwareBlockingAllowed).thenReturn(true);

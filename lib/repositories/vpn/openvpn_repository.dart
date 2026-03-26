@@ -39,18 +39,13 @@ class OpenVpnRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<void> connect({
-    required String config,
-  }) async {
+  Future<void> connect({required String config}) async {
     try {
       var finalConfig = config;
       if (Platform.isWindows) {
         // Remove 'client-cert-not-required' for Windows as it causes issues
         // Windows OpenVPN client doesn't support 'client-cert-not-required' directive
-        finalConfig = config.replaceAll(
-          'client-cert-not-required',
-          '',
-        );
+        finalConfig = config.replaceAll('client-cert-not-required', '');
 
         // Fix cipher negotiation - replace CBC-only ciphers with GCM ciphers
         // Modern OpenVPN servers require AEAD ciphers (GCM) for security
@@ -63,14 +58,16 @@ class OpenVpnRepository extends BaseVpnRepository {
           'data-ciphers AES-256-GCM:AES-128-GCM:CHACHA20-POLY1305',
         );
       }
-      await _service.connect(finalConfig).timeout(
-        const Duration(seconds: vpnConnectionTimeoutSeconds),
-        onTimeout: () {
-          throw TimeoutException(
-            'OpenVPN connection timed out after $vpnConnectionTimeoutSeconds seconds',
+      await _service
+          .connect(finalConfig)
+          .timeout(
+            const Duration(seconds: vpnConnectionTimeoutSeconds),
+            onTimeout: () {
+              throw TimeoutException(
+                'OpenVPN connection timed out after $vpnConnectionTimeoutSeconds seconds',
+              );
+            },
           );
-        },
-      );
     } on TimeoutException catch (e, stackTrace) {
       logger.handle(e, stackTrace);
       rethrow;
@@ -94,9 +91,8 @@ class OpenVpnRepository extends BaseVpnRepository {
   Future<bool> isTunnelConfigured() => _service.checkTunnelConfiguration();
 
   @override
-  Stream<VpnConnectionStatus> statusStream() => _service.statusStream().map(
-        (status) => VpnConnectionStatus.fromString(status.name),
-      );
+  Stream<VpnConnectionStatus> statusStream() =>
+      _service.statusStream().map((status) => VpnConnectionStatus.fromString(status.name));
 
   @override
   Future<VpnConnectionStatus> currentStatus() async {

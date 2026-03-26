@@ -15,11 +15,7 @@ part 'subscription_plans_store.g.dart';
 class SubscriptionPlansStore = _SubscriptionPlansStore with _$SubscriptionPlansStore;
 
 abstract class _SubscriptionPlansStore with Store, Disposeable {
-  _SubscriptionPlansStore(
-    this._service,
-    this._subscriptionStore,
-    this._remoteConfigStore,
-  ) {
+  _SubscriptionPlansStore(this._service, this._subscriptionStore, this._remoteConfigStore) {
     _reactions = [
       reaction(
         (_) => _subscriptionStore.subscriptionFuture.value?.planId,
@@ -82,8 +78,9 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
 
   @action
   SubscriptionPlanFeatures findConfig(PurchasableProduct product) {
-    final config =
-        _remoteConfigStore.planFeatures.firstWhereOrNull((it) => it.planIds.contains(product.id));
+    final config = _remoteConfigStore.planFeatures.firstWhereOrNull(
+      (it) => it.planIds.contains(product.id),
+    );
     if (config == null) {
       throw StateError('No plan features found for product id: ${product.id}');
     }

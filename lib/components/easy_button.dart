@@ -46,12 +46,7 @@ class EasyButton extends ConsumerWidget {
           disabledForegroundColor: disabledForegroundColor,
         ),
         child: text != null
-            ? EasyText(
-                text!,
-                color: Palette.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              )
+            ? EasyText(text!, color: Palette.white, fontSize: 16, fontWeight: FontWeight.w700)
             : child,
       ),
     );

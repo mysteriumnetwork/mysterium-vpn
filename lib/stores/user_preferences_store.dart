@@ -9,11 +9,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_preferences_store.g.dart';
 
-enum UserPromptType {
-  none,
-  marketingConsent,
-  pushNotifications,
-}
+enum UserPromptType { none, marketingConsent, pushNotifications }
 
 // ignore: library_private_types_in_public_api
 class UserPreferencesStore = _UserPreferencesStore with _$UserPreferencesStore;
@@ -26,12 +22,12 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     required LocalDBService localDBService,
     required PushNotificationsStore pushNotificationsStore,
     required AuthSessionStore authSessionStore,
-  })  : _apiService = apiService,
-        _analyticsStore = analyticsStore,
-        _realIPInfo = realIPInfo,
-        localDb = localDBService,
-        _pushNotificationsStore = pushNotificationsStore,
-        _authSessionStore = authSessionStore {
+  }) : _apiService = apiService,
+       _analyticsStore = analyticsStore,
+       _realIPInfo = realIPInfo,
+       localDb = localDBService,
+       _pushNotificationsStore = pushNotificationsStore,
+       _authSessionStore = authSessionStore {
     _authReactionDisposer = reaction<bool>(
       (_) => _authSessionStore.isAuthenticated,
       (status) async {
@@ -111,8 +107,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   @action
   Future<void> evaluatePromptToShow() async {
-    final pushPromptShown =
-        await _pushNotificationsStore.shouldShowPushNotificationsPermissionPrompt();
+    final pushPromptShown = await _pushNotificationsStore
+        .shouldShowPushNotificationsPermissionPrompt();
     final marketingConsentShown = await shouldShowMarketingConsent();
 
     if (marketingConsentShown) {
@@ -141,15 +137,13 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   }
 
   // Create a marketing contact in Omnisend
-// Will be called after login/signup and API will decide if the user is already subscribed
+  // Will be called after login/signup and API will decide if the user is already subscribed
   @action
   Future<void> createMarketingContact() async {
     try {
       final country = (await _realIPInfo.infoFuture)?.country;
       await _apiService.createMarketingContact(country: country);
-      _analyticsStore.logEvent(
-        AnalyticsEvent.createMarketingContactSuccess,
-      );
+      _analyticsStore.logEvent(AnalyticsEvent.createMarketingContactSuccess);
     } catch (e) {
       _analyticsStore.logEvent(
         AnalyticsEvent.createMarketingContactError,
@@ -159,17 +153,13 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   }
 
   @action
-  Future<void> updateMarketingContact({
-    required bool consent,
-    bool fromPopup = false,
-  }) async {
+  Future<void> updateMarketingContact({required bool consent, bool fromPopup = false}) async {
     try {
-      updateMarketingConsentFuture =
-          ObservableFuture(_apiService.updateMarketingContact(consent: consent));
-      await updateMarketingConsentFuture;
-      _analyticsStore.logEvent(
-        AnalyticsEvent.updateMarketingContactSuccess,
+      updateMarketingConsentFuture = ObservableFuture(
+        _apiService.updateMarketingContact(consent: consent),
       );
+      await updateMarketingConsentFuture;
+      _analyticsStore.logEvent(AnalyticsEvent.updateMarketingContactSuccess);
       getMarketingConsentFuture = ObservableFuture.value(consent);
       if (fromPopup) {
         setMarketingConsentShown();
@@ -199,9 +189,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
             value: consent.toString(),
           ),
         )
-        ..logEvent(
-          AnalyticsEvent.getMarketingContactSuccess,
-        );
+        ..logEvent(AnalyticsEvent.getMarketingContactSuccess);
       return consent;
     } catch (e) {
       _analyticsStore.logEvent(

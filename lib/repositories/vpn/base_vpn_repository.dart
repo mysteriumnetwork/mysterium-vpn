@@ -5,10 +5,7 @@ import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 abstract class BaseVpnRepository implements VpnRepository {
-  BaseVpnRepository({
-    required this.logger,
-    required this.apiService,
-  });
+  BaseVpnRepository({required this.logger, required this.apiService});
 
   final Talker logger;
   final ApiService apiService;
@@ -66,9 +63,7 @@ abstract class BaseVpnRepository implements VpnRepository {
   Future<void> udpBlockedCheck() async {
     try {
       await apiService.udpBlockedCheck();
-      logger.info(
-        'UDP block check completed in less than 2sec and it is not blocked',
-      );
+      logger.info('UDP block check completed in less than 2sec and it is not blocked');
     } catch (e) {
       logger.handle(e);
       Sentry.captureException(e);

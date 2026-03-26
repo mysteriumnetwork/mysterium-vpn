@@ -22,9 +22,7 @@ class SettingsMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final remoteConfig = ref.watch(remoteConfigStorePOD);
-    final enableQaHelpers = useComputedValue(
-      () => remoteConfig.enableQaHelpers,
-    );
+    final enableQaHelpers = useComputedValue(() => remoteConfig.enableQaHelpers);
     return SheetScaffold(
       headerTitle: LocaleKeys.settings.tr(),
       subheaderSliver: const SliverPinnedHeader(child: PromoBanner()),
@@ -36,42 +34,36 @@ class SettingsMobileView extends HookConsumerWidget {
               color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
             ),
             sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  const AppVersionUpdateSetting(),
-                  _HeaderTitle(title: LocaleKeys.connection.tr()),
-                  const ConnectionSettings(),
-                  _HeaderTitle(title: LocaleKeys.application.tr()),
-                  const ApplicationSettings(),
-                  _HeaderTitle(title: LocaleKeys.account.tr()),
-                  const AccountSettings(),
-                  if (enableQaHelpers) ...[
-                    const _HeaderTitle(title: 'QA Toolbox'),
-                    const QAToolbox(),
-                  ],
+              delegate: SliverChildListDelegate([
+                const AppVersionUpdateSetting(),
+                _HeaderTitle(title: LocaleKeys.connection.tr()),
+                const ConnectionSettings(),
+                _HeaderTitle(title: LocaleKeys.application.tr()),
+                const ApplicationSettings(),
+                _HeaderTitle(title: LocaleKeys.account.tr()),
+                const AccountSettings(),
+                if (enableQaHelpers) ...[
+                  const _HeaderTitle(title: 'QA Toolbox'),
+                  const QAToolbox(),
                 ],
-              ),
+              ]),
             ),
           ),
         ),
       ),
-    ).backgroundColor(
-      context.c.isDarkMode ? Palette.darkBlue : Palette.white,
-    );
+    ).backgroundColor(context.c.isDarkMode ? Palette.darkBlue : Palette.white);
   }
 }
 
 class _HeaderTitle extends StatelessWidget {
-  const _HeaderTitle({
-    required this.title,
-  });
+  const _HeaderTitle({required this.title});
 
   final String title;
 
   @override
   Widget build(BuildContext context) => EasyText(
-        title,
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-      ).padding(vertical: 16, horizontal: 20);
+    title,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  ).padding(vertical: 16, horizontal: 20);
 }

@@ -9,10 +9,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
-  const AnalyticsUserPropertiesOverlay({
-    required this.onDismissPressed,
-    super.key,
-  });
+  const AnalyticsUserPropertiesOverlay({required this.onDismissPressed, super.key});
 
   final VoidCallback onDismissPressed;
 
@@ -42,18 +39,14 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
         slivers: [
           SliverStack(
             children: [
-              SliverPositioned.fill(
-                child: ColoredBox(color: theme.palette.backgroundColor),
-              ),
+              SliverPositioned.fill(child: ColoredBox(color: theme.palette.backgroundColor)),
               SliverSafeArea(
                 bottom: false,
                 sliver: SliverPadding(
                   padding: const EdgeInsets.only(top: 24),
                   sliver: SliverPinnedHeader(
                     child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: theme.palette.backgroundColor,
-                      ),
+                      decoration: BoxDecoration(color: theme.palette.backgroundColor),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         child: Row(
@@ -87,9 +80,7 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
                 _UserPropertiesList(items: userProperties),
                 const SliverSafeArea(
                   top: false,
-                  sliver: SliverToBoxAdapter(
-                    child: SizedBox(height: 32),
-                  ),
+                  sliver: SliverToBoxAdapter(child: SizedBox(height: 32)),
                 ),
               ],
             ),
@@ -103,15 +94,12 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
 List<AnalyticsUserProperty> _useAnalyticsUserProperties() {
   final context = useContext();
   final properties = useState<List<AnalyticsUserProperty>>([]);
-  useEffect(
-    () {
-      final ref = ProviderScope.containerOf(context, listen: false);
-      return ref.read(analyticsStorePOD).watchUserProperties().listen((entry) {
-        properties.value = [...properties.value, entry];
-      }).cancel;
-    },
-    [properties, context],
-  );
+  useEffect(() {
+    final ref = ProviderScope.containerOf(context, listen: false);
+    return ref.read(analyticsStorePOD).watchUserProperties().listen((entry) {
+      properties.value = [...properties.value, entry];
+    }).cancel;
+  }, [properties, context]);
 
   return properties.value;
 }
@@ -123,17 +111,13 @@ class _UserPropertiesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverList.separated(
-        itemCount: items.length,
-        separatorBuilder: (_, __) => const Divider(
-          thickness: 0.5,
-          color: Palette.lightBlue,
-          height: 0,
-        ),
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return _UserPropertyListItem(property: item);
-        },
-      );
+    itemCount: items.length,
+    separatorBuilder: (_, _) => const Divider(thickness: 0.5, color: Palette.lightBlue, height: 0),
+    itemBuilder: (context, index) {
+      final item = items[index];
+      return _UserPropertyListItem(property: item);
+    },
+  );
 }
 
 class _UserPropertyListItem extends StatelessWidget {

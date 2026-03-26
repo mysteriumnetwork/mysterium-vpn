@@ -23,10 +23,7 @@ import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends HookConsumerWidget {
-  const SubscriptionStatusContainer({
-    required this.child,
-    super.key,
-  });
+  const SubscriptionStatusContainer({required this.child, super.key});
 
   final Widget child;
 
@@ -38,37 +35,28 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
 
     Future<void> refreshAll() async {
-      await Future.wait([
-        subscriptionStore.refreshAll(),
-        plansStore.refresh(),
-      ]);
+      await Future.wait([subscriptionStore.refreshAll(), plansStore.refresh()]);
     }
 
-    useEffect(
-      () {
-        final ref = ProviderScope.containerOf(context, listen: false);
-        final plansStore = ref.read(subscriptionPlansStorePOD);
-        final subscriptionStore = ref.read(subscriptionStorePOD);
-        Future.microtask(() async {
-          final products = await plansStore.future;
-          if (products.isEmpty) {
-            await subscriptionStore.refreshSubscriptionConfig();
-            await plansStore.refresh();
-          }
-        });
+    useEffect(() {
+      final ref = ProviderScope.containerOf(context, listen: false);
+      final plansStore = ref.read(subscriptionPlansStorePOD);
+      final subscriptionStore = ref.read(subscriptionStorePOD);
+      Future.microtask(() async {
+        final products = await plansStore.future;
+        if (products.isEmpty) {
+          await subscriptionStore.refreshSubscriptionConfig();
+          await plansStore.refresh();
+        }
+      });
 
-        return null;
-      },
-      [],
-    );
+      return null;
+    }, []);
 
-    useEffect(
-      () {
-        _checkForExistingSubscription(subscriptionStore, context, ref);
-        return null;
-      },
-      [ref, subscriptionStore, context],
-    );
+    useEffect(() {
+      _checkForExistingSubscription(subscriptionStore, context, ref);
+      return null;
+    }, [ref, subscriptionStore, context]);
 
     return Observer(
       builder: (context) {
@@ -80,10 +68,10 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
         final barrierContentColor = switch (Theme.of(context).brightness) {
           Brightness.dark => Palette.white,
           Brightness.light => Palette.purple,
-        }
-            .withValues(alpha: .8);
+        }.withValues(alpha: .8);
 
-        final isLoading = storeState == StoreState.loading ||
+        final isLoading =
+            storeState == StoreState.loading ||
             subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
             plansStore.future.status == FutureStatus.pending ||
             subscriptionStore.subscriptionStatus == SubscriptionStatus.pending;
@@ -142,16 +130,11 @@ void _subscriptionStatusReaction(
 ) {
   if (context.mounted) {
     if (status == SubscriptionStatus.purchased) {
-      showSnackbar(
-        LocaleKeys.subscriptionActive.tr(),
-        type: MessageType.success,
-      );
+      showSnackbar(LocaleKeys.subscriptionActive.tr(), type: MessageType.success);
       context.beamToReplacementNamed(Routes.main.path);
     } else if (store.subscriptionConfigFuture.error is ApiException &&
         (store.subscriptionConfigFuture.error as ApiException).code == 409) {
-      showSnackbar(
-        (store.subscriptionConfigFuture.error as ApiException).message,
-      );
+      showSnackbar((store.subscriptionConfigFuture.error as ApiException).message);
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
       showRetryDialog(
@@ -177,15 +160,11 @@ void _subscriptionStatusReaction(
     showSnackbar(LocaleKeys.subscriptionProcessCanceled.tr());
   }
   if (status == SubscriptionStatus.error) {
-    showSnackbar(
-      LocaleKeys.failedToSubscribe.tr(),
-    );
+    showSnackbar(LocaleKeys.failedToSubscribe.tr());
   }
 
   if (status == SubscriptionStatus.pendingTransaction) {
-    showSnackbar(
-      LocaleKeys.pendingTransactionMessage.tr(),
-    );
+    showSnackbar(LocaleKeys.pendingTransactionMessage.tr());
   }
 }
 
@@ -208,11 +187,7 @@ Future<void> _checkForExistingSubscription(
       icon: SvgIcon(asset: Asset.icons.warning),
       content: Text(
         LocaleKeys.existingSubscriptionTitle.tr(),
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: Palette.black,
-        ),
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
         maxLines: 2,
         textAlign: TextAlign.center,
       ),

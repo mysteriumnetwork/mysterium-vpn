@@ -64,36 +64,36 @@ void main() {
       Mocks.locationResidentialNL,
     ];
 
-    when(mockLocations.dcLocationsFuture).thenAnswer(
-      (_) => ObservableFuture.value(VPNLocations(locations: dcLocations)),
-    );
-    when(mockLocations.residentialLocationsFuture).thenAnswer(
-      (_) => ObservableFuture.value(VPNLocations(locations: residentialLocations)),
-    );
+    when(
+      mockLocations.dcLocationsFuture,
+    ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: dcLocations)));
+    when(
+      mockLocations.residentialLocationsFuture,
+    ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: residentialLocations)));
     when(mockQuery.searchTrimmed).thenReturn('');
   });
 
   group('value', () {
     test('returns empty list when future value is null', () {
       when(mockDB.getRecentLocations()).thenAnswer((_) async => []);
-      when(mockLocations.dcLocationsFuture).thenAnswer(
-        (_) => ObservableFuture<VPNLocations>.error(''),
-      );
-      when(mockLocations.residentialLocationsFuture).thenAnswer(
-        (_) => ObservableFuture<VPNLocations>.error(''),
-      );
+      when(
+        mockLocations.dcLocationsFuture,
+      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
+      when(
+        mockLocations.residentialLocationsFuture,
+      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
 
       expect(store.value, isEmpty);
     });
 
     test('returns empty list when future value is empty', () {
       when(mockDB.getRecentLocations()).thenAnswer((_) async => []);
-      when(mockLocations.dcLocationsFuture).thenAnswer(
-        (_) => ObservableFuture<VPNLocations>.error(''),
-      );
-      when(mockLocations.residentialLocationsFuture).thenAnswer(
-        (_) => ObservableFuture<VPNLocations>.error(''),
-      );
+      when(
+        mockLocations.dcLocationsFuture,
+      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
+      when(
+        mockLocations.residentialLocationsFuture,
+      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
 
       expect(store.value, isEmpty);
     });
@@ -103,11 +103,7 @@ void main() {
 
       when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
       when(
-        mockFilter.filterLocations(
-          any,
-          keyword: anyNamed('keyword'),
-          locale: anyNamed('locale'),
-        ),
+        mockFilter.filterLocations(any, keyword: anyNamed('keyword'), locale: anyNamed('locale')),
       ).thenReturn(recentLocations);
 
       await store.future;
@@ -123,10 +119,7 @@ void main() {
         Mocks.locationDatacenterUS,
       ];
 
-      final availableDCLocations = [
-        Mocks.locationDatacenterGB,
-        Mocks.locationDatacenterUS,
-      ];
+      final availableDCLocations = [Mocks.locationDatacenterGB, Mocks.locationDatacenterUS];
 
       final availableResidentialLocations = [
         Mocks.locationResidentialGB,
@@ -134,9 +127,9 @@ void main() {
       ];
 
       when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
-      when(mockLocations.dcLocationsFuture).thenAnswer(
-        (_) => ObservableFuture.value(VPNLocations(locations: availableDCLocations)),
-      );
+      when(
+        mockLocations.dcLocationsFuture,
+      ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: availableDCLocations)));
       when(mockLocations.residentialLocationsFuture).thenAnswer(
         (_) => ObservableFuture.value(VPNLocations(locations: availableResidentialLocations)),
       );
@@ -162,10 +155,7 @@ void main() {
     });
 
     test('does not add location when already in recents', () async {
-      final recentLocations = [
-        Mocks.locationDatacenterDE,
-        Mocks.locationDatacenterGB,
-      ];
+      final recentLocations = [Mocks.locationDatacenterDE, Mocks.locationDatacenterGB];
 
       when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
 
@@ -176,20 +166,14 @@ void main() {
     });
 
     test('adds location to the start of the list', () async {
-      final recentLocations = [
-        Mocks.locationDatacenterDE,
-        Mocks.locationDatacenterGB,
-      ];
+      final recentLocations = [Mocks.locationDatacenterDE, Mocks.locationDatacenterGB];
 
       when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
 
       await store.add(Mocks.locationDatacenterUS);
 
       final captured = verify(mockDB.setRecentLocations(captureAny)).captured.single;
-      expect(
-        captured,
-        equals([Mocks.locationDatacenterUS, ...recentLocations]),
-      );
+      expect(captured, equals([Mocks.locationDatacenterUS, ...recentLocations]));
     });
   });
 }
