@@ -115,7 +115,7 @@ List<Marker> _useLocationMarkers({
                   label: hasLabel ? it.getName(context) : null,
                   onPressed: () => onLocationPressedRef.value?.call(it, point),
                   onDoubleTap: onLocationDoubleTappedRef.value != null
-                      ? () => onLocationDoubleTappedRef.value!.call(it, point)
+                      ? () => onLocationDoubleTappedRef.value?.call(it, point)
                       : null,
                 ),
               ),
