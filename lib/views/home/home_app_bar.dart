@@ -23,7 +23,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       bottom: false,
       minimum: const EdgeInsets.only(top: 12),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 24),
+        padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16),
         child: Column(
           spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.stretch,

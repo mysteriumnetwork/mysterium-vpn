@@ -1,14 +1,15 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class HomeDesktopLeftPanel extends HookConsumerWidget {
@@ -22,18 +23,18 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     final brightness = useScaffoldBrightness();
 
     ref.read(homeStateProvider).scrollController = scrollController;
-
+    final pallete = Theme.of(context).palette;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Scaffold.maybeOf(context)?.widget.backgroundColor,
+        color: pallete.bgSidePanel,
         boxShadow: [
           switch (brightness) {
             Brightness.dark => BoxShadow(
-              color: const Color(0xFF090064).withValues(alpha: .2),
+              color: pallete.bgPrimary.withValues(alpha: .2),
               blurRadius: 100,
             ),
             Brightness.light => BoxShadow(
-              color: Palette.lightBlack.withValues(alpha: .04),
+              color: pallete.bgPrimary.withValues(alpha: .04),
               blurRadius: 16,
               offset: const Offset(4, -4),
             ),
@@ -44,16 +45,40 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
         controller: scrollController,
         slivers: [
           SliverPinnedHeader(
-            child: HomeAppBar(
-              supportIcon: Asset.icons.supportDesktop(context),
-              settingsIcon: Asset.icons.settingsDesktop(context),
+            child: DecoratedBox(
+              decoration: BoxDecoration(color: pallete.bgSidePanel),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Header.logo(
+                    backgroundColor: pallete.bgSidePanel,
+                    actions: [
+                      IconButton(
+                        icon: const Icon(UntitledUI.message_question_square),
+                        onPressed: () => handleOnSupportPage(
+                          context: context,
+                          analyticsStore: ref.read(analyticsStorePOD),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(UntitledUI.settings_01),
+                        onPressed: () {
+                          analyticsStore.logEvent(AnalyticsEvent.openSettings);
+                          context.beamToNamed(Routes.settings.path);
+                        },
+                      ),
+                    ],
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(32, 0, 32, 16),
+                    child: LocationsSearch(),
+                  ),
+                ],
+              ),
             ),
           ),
           const SliverClip(
-            child: SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 14),
-              sliver: LocationsSliverView(),
-            ),
+            child: SliverPadding(padding: EdgeInsets.zero, sliver: LocationsSliverView()),
           ),
         ],
       ),
