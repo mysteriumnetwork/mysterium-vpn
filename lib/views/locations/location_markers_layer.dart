@@ -5,10 +5,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/components/location_marker.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/location_tooltip_card.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationMarkersLayer extends HookWidget {
   const LocationMarkersLayer({
@@ -70,7 +69,9 @@ List<Marker> _useLocationMarkers({
         ...data.where(
           (it) =>
               it.isCountry &&
-              cities.none((city) => city.countryCode.toUpperCase() == it.countryCode.toUpperCase()),
+              cities.none(
+                (city) => city.countryCode.toUpperCase() == it.countryCode.toUpperCase(),
+              ),
         ),
       };
 
@@ -85,7 +86,7 @@ List<Marker> _useLocationMarkers({
         if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
       };
 
-      final markers = sorted
+      return sorted
           .map((it) {
             final point = it.isCountry
                 ? latLngStore.coordinatesForCountry(it.countryCode)
@@ -97,51 +98,31 @@ List<Marker> _useLocationMarkers({
 
             final isConnected = connectedLocation?.id == it.id;
             final isSelected = selectedLocation?.id == it.id;
-            final size = isConnected || isSelected ? const Size.square(60) : const Size.square(20);
+            final isActive = isConnected || isSelected;
+            // Connected location is never labelled even if also selected.
+            final hasLabel = isSelected && !isConnected;
 
             return Marker(
               point: point,
-              height: size.height,
-              width: size.width,
-              child: LocationMarker(
-                size: size,
-                isConnected: isConnected,
-                isSelected: isSelected,
-                onPressed: () => onLocationPressedRef.value?.call(it, point),
-                onDoubleTap: onLocationDoubleTappedRef.value != null
-                    ? () => onLocationDoubleTappedRef.value?.call(it, point)
-                    : null,
+              width: hasLabel ? 200 : (isActive ? 60 : 20),
+              height: hasLabel ? 80 : (isActive ? 60 : 20),
+              alignment: hasLabel ? Alignment.bottomCenter : Alignment.center,
+              // Builder provides a live context for locale-aware getName().
+              child: Builder(
+                builder: (context) => MapLocationMarker(
+                  isConnected: isConnected,
+                  isSelected: isSelected,
+                  label: hasLabel ? it.getName(context) : null,
+                  onPressed: () => onLocationPressedRef.value?.call(it, point),
+                  onDoubleTap: onLocationDoubleTappedRef.value != null
+                      ? () => onLocationDoubleTappedRef.value!.call(it, point)
+                      : null,
+                ),
               ),
             );
           })
           .nonNulls
           .toList();
-
-      // Add tooltip marker for selected location
-      if (selectedLocation != null) {
-        final tooltipPoint = selectedLocation.isCountry
-            ? latLngStore.coordinatesForCountry(selectedLocation.countryCode)
-            : latLngStore.coordinatesForCity(selectedLocation);
-
-        if (tooltipPoint != null) {
-          markers.add(
-            Marker(
-              point: tooltipPoint,
-              width: 400,
-              height: 70,
-              alignment: Alignment.topCenter,
-              child: IgnorePointer(
-                child: LocationTooltipCard(
-                  location: selectedLocation,
-                  connectedLocation: connectedLocation,
-                ),
-              ),
-            ),
-          );
-        }
-      }
-
-      return markers;
     },
     [
       onLocationPressedRef,
