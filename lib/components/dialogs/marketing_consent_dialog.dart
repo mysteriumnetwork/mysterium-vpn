@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
@@ -28,6 +29,7 @@ class _DialogContent extends HookConsumerWidget {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     final screenType = useScreenType();
     final palette = Theme.of(context).palette;
+    final lastClickedConsent = useState<bool?>(null);
     return Observer(
       builder: (context) {
         final isLoading =
@@ -45,25 +47,31 @@ class _DialogContent extends HookConsumerWidget {
           image: Asset.images.emailConsent(context).image(),
           title: LocaleKeys.marketingConsentPopupTitle.tr(),
           subtitle: LocaleKeys.marketingConsentPopupDesc.tr(),
-          primaryButton: isLoading
-              ? const Center(child: LoadingIndicator())
-              : ButtonPrimary(
-                  key: Keys.marketingConsentAcceptButton,
-                  onPressed: () => _updateMarketingConsent(context, consent: true),
-                  child: Text(LocaleKeys.allowNotificationsBtn.tr()),
-                ),
-          secondaryButton: isLoading
-              ? null
-              : ButtonSecondary(
-                  key: Keys.marketingConsentDeclineButton,
-                  onPressed: () => _updateMarketingConsent(context, consent: false),
-                  decoration: ButtonDecoration(
-                    borderColor: palette.borderBrandSecondary,
-                    foregroundColor: palette.textSecondary,
-                    decorationColor: Palette.white,
-                  ),
-                  child: Text(LocaleKeys.notNowBtn.tr()),
-                ),
+          primaryButton: ButtonPrimary(
+            key: Keys.marketingConsentAcceptButton,
+            onPressed: () {
+              lastClickedConsent.value = true;
+              _updateMarketingConsent(context, consent: true);
+            },
+            loading: isLoading && (lastClickedConsent.value ?? false)
+                ? const ButtonLoading()
+                : null,
+            child: Text(LocaleKeys.allowNotificationsBtn.tr()),
+          ),
+          secondaryButton: ButtonSecondary(
+            key: Keys.marketingConsentDeclineButton,
+            onPressed: () {
+              lastClickedConsent.value = false;
+              _updateMarketingConsent(context, consent: false);
+            },
+            decoration: ButtonDecoration(
+              borderColor: palette.borderBrandSecondary,
+              foregroundColor: palette.textSecondary,
+              decorationColor: Palette.white,
+            ),
+            loading: isLoading && lastClickedConsent.value == false ? const ButtonLoading() : null,
+            child: Text(LocaleKeys.notNowBtn.tr()),
+          ),
         );
       },
     );
