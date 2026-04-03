@@ -69,9 +69,7 @@ List<Marker> _useLocationMarkers({
         ...data.where(
           (it) =>
               it.isCountry &&
-              cities.none(
-                (city) => city.countryCode.toUpperCase() == it.countryCode.toUpperCase(),
-              ),
+              cities.none((city) => city.countryCode.toUpperCase() == it.countryCode.toUpperCase()),
         ),
       };
 
@@ -86,43 +84,65 @@ List<Marker> _useLocationMarkers({
         if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
       };
 
-      return sorted
-          .map((it) {
-            final point = it.isCountry
-                ? latLngStore.coordinatesForCountry(it.countryCode)
-                : latLngStore.coordinatesForCity(it);
+      final markers = <Marker>[];
 
-            if (point == null) {
-              return null;
-            }
+      for (final it in sorted) {
+        final point = it.isCountry
+            ? latLngStore.coordinatesForCountry(it.countryCode)
+            : latLngStore.coordinatesForCity(it);
 
-            final isConnected = connectedLocation?.id == it.id;
-            final isSelected = selectedLocation?.id == it.id;
-            final isActive = isConnected || isSelected;
-            // Connected location is never labelled even if also selected.
-            final hasLabel = isSelected && !isConnected;
+        if (point == null) {
+          continue;
+        }
 
-            return Marker(
+        final isConnected = connectedLocation?.id == it.id;
+        final isSelected = selectedLocation?.id == it.id;
+        final isActive = isConnected || isSelected;
+        // Connected location is never labelled even if also selected.
+        final hasLabel = isSelected && !isConnected;
+
+        markers.add(
+          Marker(
+            point: point,
+            width: isActive ? 60 : 20,
+            height: isActive ? 60 : 20,
+            alignment: Alignment.center,
+            child: MapLocationMarker(
+              isConnected: isConnected,
+              isSelected: isSelected,
+              onPressed: () => onLocationPressedRef.value?.call(it, point),
+              onDoubleTap: onLocationDoubleTappedRef.value != null
+                  ? () => onLocationDoubleTappedRef.value?.call(it, point)
+                  : null,
+            ),
+          ),
+        );
+
+        if (hasLabel) {
+          markers.add(
+            Marker(
               point: point,
-              width: hasLabel ? 200 : (isActive ? 60 : 20),
-              height: hasLabel ? 80 : (isActive ? 60 : 20),
-              alignment: hasLabel ? Alignment.bottomCenter : Alignment.center,
-              // Builder provides a live context for locale-aware getName().
-              child: Builder(
-                builder: (context) => MapLocationMarker(
-                  isConnected: isConnected,
-                  isSelected: isSelected,
-                  label: hasLabel ? it.getName(context) : null,
-                  onPressed: () => onLocationPressedRef.value?.call(it, point),
-                  onDoubleTap: onLocationDoubleTappedRef.value != null
-                      ? () => onLocationDoubleTappedRef.value?.call(it, point)
-                      : null,
+              width: 400,
+              height: 45,
+              alignment: Alignment.topCenter,
+              child: IgnorePointer(
+                child: Builder(
+                  builder: (context) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IntrinsicWidth(child: MapLocationTooltip(label: it.getName(context))),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
-            );
-          })
-          .nonNulls
-          .toList();
+            ),
+          );
+        }
+      }
+
+      return markers;
     },
     [
       onLocationPressedRef,
