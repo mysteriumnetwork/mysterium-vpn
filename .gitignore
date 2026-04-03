@@ -87,3 +87,4 @@ scripts/outputs
 
 .env
 .env.*
+.claude/settings.json
