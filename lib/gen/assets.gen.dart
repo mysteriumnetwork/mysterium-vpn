@@ -716,29 +716,29 @@ class $AssetsImagesGen {
   SvgGenImage get devicesLimit =>
       const SvgGenImage('assets/images/devices_limit.svg', size: Size(149.0, 101.0));
 
-  /// File path: assets/images/marketing_consent_dark.png
-  AssetGenImage get marketingConsentDark => const AssetGenImage(
-    'assets/images/marketing_consent_dark.png',
-    size: const Size(576.0, 576.0),
+  /// File path: assets/images/email_permissions_dark.png
+  AssetGenImage get emailPermissionsDark => const AssetGenImage(
+    'assets/images/email_permissions_dark.png',
+    size: const Size(103.0, 79.0),
   );
 
-  /// File path: assets/images/marketing_consent_light.png
-  AssetGenImage get marketingConsentLight => const AssetGenImage(
-    'assets/images/marketing_consent_light.png',
-    size: const Size(576.0, 576.0),
+  /// File path: assets/images/email_permissions_light.png
+  AssetGenImage get emailPermissionsLight => const AssetGenImage(
+    'assets/images/email_permissions_light.png',
+    size: const Size(103.0, 79.0),
   );
 
   /// File path: assets/images/notifications.svg
   SvgGenImage get notifications =>
       const SvgGenImage('assets/images/notifications.svg', size: Size(150.0, 121.0));
 
-  /// File path: assets/images/pn_consent_dark.png
-  AssetGenImage get pnConsentDark =>
-      const AssetGenImage('assets/images/pn_consent_dark.png', size: const Size(168.0, 168.0));
+  /// File path: assets/images/pn_permissions_dark.png
+  AssetGenImage get pnPermissionsDark =>
+      const AssetGenImage('assets/images/pn_permissions_dark.png', size: const Size(90.0, 89.0));
 
-  /// File path: assets/images/pn_consent_light.png
-  AssetGenImage get pnConsentLight =>
-      const AssetGenImage('assets/images/pn_consent_light.png', size: const Size(168.0, 168.0));
+  /// File path: assets/images/pn_permissions_light.png
+  AssetGenImage get pnPermissionsLight =>
+      const AssetGenImage('assets/images/pn_permissions_light.png', size: const Size(90.0, 89.0));
 
   /// File path: assets/images/purchase_promo.png
   AssetGenImage get purchasePromo =>
@@ -766,11 +766,11 @@ class $AssetsImagesGen {
   List<dynamic> get values => [
     checkEmail,
     devicesLimit,
-    marketingConsentDark,
-    marketingConsentLight,
+    emailPermissionsDark,
+    emailPermissionsLight,
     notifications,
-    pnConsentDark,
-    pnConsentLight,
+    pnPermissionsDark,
+    pnPermissionsLight,
     purchasePromo,
     reportDark,
     reportLight,
