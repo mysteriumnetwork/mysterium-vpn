@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/connection_tile.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeDesktopRightPanel extends HookConsumerWidget {
   const HomeDesktopRightPanel({super.key});
@@ -10,7 +10,7 @@ class HomeDesktopRightPanel extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => LayoutBuilder(
     builder: (context, constraints) => DecoratedBox(
-      decoration: const BoxDecoration(color: Palette.darkBlue),
+      decoration: BoxDecoration(color: Theme.of(context).palette.bgPrimary),
       child: Stack(
         children: [
           const HomeConnectionView(),
