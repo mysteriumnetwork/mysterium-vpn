@@ -5,18 +5,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 class LocationsHorizontalList extends HookWidget {
   const LocationsHorizontalList({
     required this.title,
     required this.items,
     required this.onItemPressed,
-    this.listConstraints = const BoxConstraints(maxHeight: 64),
+    this.listConstraints = const BoxConstraints(maxHeight: 66),
     super.key,
   });
 
@@ -39,7 +38,14 @@ class LocationsHorizontalList extends HookWidget {
         separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (_, index) {
           final item = items[index];
-          return _Item(value: item, onPressed: () => onItemPressed(item));
+          return LocationCard(
+            icon: CircleFlag(item.countryCode, size: 24),
+            name: item.getName(context),
+            subtitle: item.ipType == IPType.datacenter
+                ? LocaleKeys.highSpeed.tr()
+                : LocaleKeys.residential.tr(),
+            onTap: () => onItemPressed(item),
+          );
         },
       ),
     );
@@ -72,62 +78,16 @@ class _Container extends HookWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 14,
+      spacing: 16,
       children: [
-        EasyText(title, fontSize: 16, fontWeight: FontWeight.w600),
+        Text(
+          title,
+          style: Theme.of(
+            context,
+          ).textStyles.textMd.semibold.copyWith(color: Theme.of(context).palette.textTertiary),
+        ),
         child,
       ],
-    );
-  }
-}
-
-class _Item extends HookWidget {
-  const _Item({required this.value, required this.onPressed});
-
-  final VPNLocation value;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return RawMaterialButton(
-      onPressed: onPressed,
-      elevation: 0,
-      focusElevation: 0,
-      highlightElevation: 0,
-      hoverElevation: 0,
-      clipBehavior: Clip.hardEdge,
-      constraints: BoxConstraints.tight(const Size(210, 64)),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-      fillColor: theme.colorScheme.tertiaryContainer,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        spacing: 8,
-        children: [
-          CircleFlag(
-            value.countryCode,
-            size: 24,
-            shape: const CircleBorder(
-              side: BorderSide(color: Palette.white, strokeAlign: BorderSide.strokeAlignOutside),
-            ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                EasyText(value.getName(context), fontSize: 14, fontWeight: FontWeight.w500),
-                if (value.ipType == IPType.datacenter)
-                  EasyText(
-                    LocaleKeys.highSpeed.tr(),
-                    fontSize: 12,
-                    color: theme.palette.subtitleColor,
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -8,7 +8,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/retry_widget.dart';
 import 'package:mysterium_vpn/components/user_intent_picker.dart';
@@ -26,6 +26,7 @@ import 'package:mysterium_vpn/views/locations/components/locations_horizontal_li
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliverView extends HookConsumerWidget {
@@ -115,22 +116,43 @@ class _Body extends HookConsumerWidget {
           (userIntentsStore.intents.isNotEmpty ||
               userIntentsStore.intentsFuture.status == FutureStatus.pending),
     );
+    final theme = Theme.of(context);
+    final horizontalPadding = useResponsiveValue<double>(
+      0,
+      desktop: theme.spacing.xl3,
+      tablet: theme.spacing.xl3,
+    );
+    final sectionGap = useResponsiveValue<double>(
+      theme.spacing.md,
+      desktop: theme.spacing.xl3,
+      tablet: theme.spacing.xl3,
+    );
 
     if (future.value != null) {
       return MultiSliver(
         children: [
-          if (showUserIntents) const _UserIntent(),
-          if (showUserIntents) const SizedBox(height: 24),
           if (isAuthenticated && recentsFutureStatus == FutureStatus.pending) ...[
-            const RecentLocationsLoading(),
-            const SizedBox(height: 24),
-          ] else if (recentLocations.isNotEmpty) ...[
-            _RecentLocations(
-              recentLocations: recentLocations,
-              onLocationTapped: onRecentLocationTapped,
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              sliver: const RecentLocationsLoading(),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: sectionGap),
+          ] else if (recentLocations.isNotEmpty) ...[
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              sliver: _RecentLocations(
+                recentLocations: recentLocations,
+                onLocationTapped: onRecentLocationTapped,
+              ),
+            ),
+            SizedBox(height: sectionGap),
           ],
+          if (showUserIntents)
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              sliver: const _UserIntent(),
+            ),
+          if (showUserIntents) const SizedBox(height: 20),
           _Locations(
             locations: locations,
             topLocations: topLocations,
@@ -180,25 +202,23 @@ class _UserIntent extends HookConsumerWidget {
     final intents = useComputedValue(() => userIntentsStore.intentsFuture.value);
     final selected = useComputedValue(() => userIntentsStore.userIntent);
     final handleToggleConnection = useHandleToggleConnection();
-
+    final theme = Theme.of(context);
     return MultiSliver(
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          spacing: 8,
+          spacing: theme.spacing.s,
           children: [
             Flexible(
-              child: EasyText(
+              child: Text(
                 LocaleKeys.userIntentLabel.tr(),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+                style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textTertiary),
               ),
             ),
             const UserIntentTooltip(),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: theme.spacing.md),
         UserIntentPicker(
           items: intents?.toList(),
           onChanged: isLoading || (locationsEmpty ?? true)
@@ -251,6 +271,7 @@ class _Locations extends HookConsumerWidget {
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
+    final innerHorizontalPadding = useResponsiveValue<double>(0, desktop: 32, tablet: 32);
 
     useAutoSelectIPType();
 
@@ -280,20 +301,13 @@ class _Locations extends HookConsumerWidget {
                 child: LocationsContainer(key: locationsKey, locationType: locationType),
               ),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: innerHorizontalPadding, vertical: 20),
                 sliver: MultiSliver(
                   children: [
                     switch (locationType) {
                       IPType.datacenter => LocationsDisclaimer.dataCenter(),
                       _ => LocationsDisclaimer.residential(),
                     },
-                    if (topLocations.isNotEmpty)
-                      LocationsSliverList(items: topLocations, onItemPressed: onLocationTapped),
-                    if (topLocations.isNotEmpty && locations.isNotEmpty)
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                        child: Divider(thickness: 0.5, color: Palette.lightBlue),
-                      ),
                     ScrollableLocationsSliverList(
                       items: locations,
                       onItemPressed: onLocationTapped,
