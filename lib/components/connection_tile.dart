@@ -1,31 +1,22 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
-import 'package:mysterium_vpn/common/hooks/connection_status_color_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/connect_text_button.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/rate_connection_button.dart';
-import 'package:mysterium_vpn/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:styled_widget/styled_widget.dart';
+import 'package:vpn_api/vpn_api.dart';
 
 class ConnectionTile extends HookConsumerWidget {
-  const ConnectionTile({this.textConnect, this.showConnectedOnly = false, super.key});
-
-  final String? textConnect;
-  final bool showConnectedOnly;
+  const ConnectionTile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,6 +25,8 @@ class ConnectionTile extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final vpnProtocol = ref.watch(vpnProtocolStorePOD);
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
+    final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
 
     final handleToggleConnection = useHandleToggleConnection();
 
@@ -45,272 +38,196 @@ class ConnectionTile extends HookConsumerWidget {
 
     return Observer(
       builder: (context) {
-        final location = showConnectedOnly
-            ? (vpnStore.location == VPNLocation.closest ? null : vpnStore.location)
-            : connectionDisplayStore.displayLocation;
-        final parent = showConnectedOnly ? location : connectionDisplayStore.parentLocation;
-        final targetLocation = connectionDisplayStore.targetLocation;
-        // When showing the connected location, it's always available — the
-        // availability check only applies to the selected/display location.
-        final isLocationAvailable = showConnectedOnly || connectionDisplayStore.isLocationAvailable;
-        final ipInfo = connectionDisplayStore.connectionIP;
+        final selectedLocation = selectedLocationStore.value;
+        final connectedLocation = vpnStore.location;
+        final isConnected = vpnStore.isConnected;
         final isLoading = connectionDisplayStore.isLoading;
+        final ipInfo = connectionDisplayStore.connectionIP;
+        final targetLocation = connectionDisplayStore.targetLocation;
         final intent = connectionDisplayStore.connectionIntent;
-        final isConnected = connectionDisplayStore.isConnected;
 
-        final onTap = isLoading
+        final hasDifferentSelection = _isDifferentFromConnected(
+          selected: selectedLocation,
+          connected: connectedLocation,
+          isConnected: isConnected,
+        );
+
+        final MainIpCardStatus status;
+        var noConnectionTitle = LocaleKeys.connectBestServer.tr();
+        var noConnectionDescription = LocaleKeys.orSelectCountryManually.tr();
+        var connectLabel = LocaleKeys.connect.tr();
+        var disconnectLabel = LocaleKeys.disconnect.tr();
+
+        if (hasDifferentSelection) {
+          // Connected and a different location is selected.
+          final connected = connectedLocation!;
+          final connectedParent = locationsStore.findParent(connected);
+          final connectedCountry = connectedParent?.getName(context) ?? connected.getName(context);
+          final connectedCity = connectedParent != null ? connected.getName(context) : '';
+          final connectedServiceQuality = connected.ipType == IPType.residential
+              ? LocaleKeys.residential.tr()
+              : LocaleKeys.highSpeed.tr();
+          final connectedIpPoolCount = connected.nodeCount ?? 0;
+
+          final isSelectedUnavailable = unavailableLocationsStore.unavailableLocations.contains(
+            selectedLocation,
+          );
+          final switchLabel = isSelectedUnavailable
+              ? LocaleKeys.locationUnavailableAction.tr()
+              : LocaleKeys.switchToLocationBtn.tr(
+                  namedArgs: {'switchLocation': selectedLocation!.getName(context)},
+                );
+
+          final isMobile = ScreenType.of(context) <= ScreenType.mobile;
+
+          if (isMobile) {
+            // Mobile: preview bar (selected) above the connected card.
+            status = MainIpCardNewIpPreview(
+              country: connectedCountry,
+              countryIcon: CircleFlag(connected.countryCode, size: 32),
+              city: connectedCity,
+              ipAddress: ipInfo ?? '',
+              serviceQuality: connectedServiceQuality,
+              ipPoolCount: connectedIpPoolCount,
+              previewCountry: selectedLocation!.getName(context),
+              previewCountryIcon: CircleFlag(selectedLocation.countryCode, size: 32),
+              switchLabel: switchLabel,
+            );
+          } else {
+            // Desktop/Tablet: connected card showing the selected country's
+            // identity with the current connection's IP / refresh / pool data.
+            // disconnectLabel is overridden to the switch label so the button
+            // reads "Switch to Poland" with the same ButtonSecondary style.
+            final selectedParent = locationsStore.findParent(selectedLocation!);
+            final selectedCountry =
+                selectedParent?.getName(context) ?? selectedLocation.getName(context);
+            final selectedCity = selectedParent != null ? selectedLocation.getName(context) : '';
+
+            status = MainIpCardConnected(
+              country: selectedCountry,
+              countryIcon: CircleFlag(selectedLocation.countryCode, size: 32),
+              city: selectedCity,
+              ipAddress: ipInfo ?? '',
+              serviceQuality: connectedServiceQuality,
+              ipPoolCount: connectedIpPoolCount,
+            );
+            disconnectLabel = switchLabel;
+          }
+        } else {
+          final location = connectionDisplayStore.displayLocation;
+          final parent = connectionDisplayStore.parentLocation;
+          final isLocationAvailable = connectionDisplayStore.isLocationAvailable;
+
+          final country = parent?.getName(context) ?? location?.getName(context) ?? '';
+          final city = parent != null ? location?.getName(context) ?? '' : '';
+          final ipType = location?.ipType;
+          final ipPoolCount =
+              (isConnected ? connectedLocation?.nodeCount : location?.nodeCount) ?? 0;
+          final countryIcon = location != null
+              ? CircleFlag(location.countryCode, size: 32)
+              : const SizedBox(width: 32, height: 32);
+          final serviceQuality = ipType == IPType.residential
+              ? LocaleKeys.residential.tr()
+              : LocaleKeys.highSpeed.tr();
+
+          if (location == null) {
+            status = const MainIpCardNotConnected();
+          } else if (!isLocationAvailable) {
+            status = const MainIpCardNotConnected();
+          } else if (isConnected) {
+            status = MainIpCardConnected(
+              country: country,
+              countryIcon: countryIcon,
+              city: city,
+              ipAddress: ipInfo ?? '',
+              serviceQuality: serviceQuality,
+              ipPoolCount: ipPoolCount,
+            );
+          } else if (isLoading) {
+            status = MainIpCardConnecting(
+              country: country,
+              countryIcon: countryIcon,
+              serviceQuality: serviceQuality,
+            );
+          } else {
+            status = MainIpCardLocationSelected(
+              country: country,
+              countryIcon: countryIcon,
+              serviceQuality: serviceQuality,
+            );
+          }
+
+          if (location != null && !isLocationAvailable) {
+            noConnectionTitle = LocaleKeys.locationUnavailableTitle.tr(
+              args: [location.getName(context)],
+            );
+            noConnectionDescription = LocaleKeys.locationUnavailableSubtitle.tr();
+            connectLabel = LocaleKeys.locationUnavailableAction.tr();
+          }
+        }
+
+        final onToggle = isLoading
             ? null
             : () => handleToggleConnection(location: targetLocation, intent: intent);
 
-        return _Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (location == null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: _Placeholder(
-                    title: LocaleKeys.connectBestServer.tr(),
-                    subtitle: LocaleKeys.orSelectCountryManually.tr(),
-                    icon: Asset.icons.connectPrompt(context),
-                  ),
-                )
-              else if (!isLocationAvailable)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: _Placeholder(
-                    title: LocaleKeys.locationUnavailableTitle.tr(
-                      args: [location.getName(context)],
-                    ),
-                    subtitle: LocaleKeys.locationUnavailableSubtitle.tr(),
-                    icon: Asset.icons.fix(context),
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: _Location(
-                    location: location,
-                    parent: parent,
-                    ip: ipInfo,
-                    onRefreshIPPressed: handleRefreshIP,
-                    isLocationConnected: isConnected,
-                    ipPoolCount:
-                        (isConnected ? vpnStore.location?.nodeCount : location.nodeCount) ?? 0,
-                  ),
-                ),
-              ConnectTextButton(
-                onPressed: onTap,
-                location: showConnectedOnly ? location : targetLocation,
-                size: const Size(double.infinity, 42),
-                textConnect:
-                    textConnect ??
-                    (targetLocation != location ? LocaleKeys.locationUnavailableAction.tr() : null),
-                textDisconnect: showConnectedOnly ? textConnect : null,
-              ),
-              if (isConnected) const SizedBox(height: 16),
-              if (isConnected) const RateConnection(),
-              if (Env.flavor.isDev)
-                Text(
+        return Column(
+          children: [
+            MainIpCard(
+              status: status,
+              connectLabel: connectLabel,
+              disconnectLabel: disconnectLabel,
+              connectingLabel: LocaleKeys.connecting.tr(),
+              noConnectionTitle: noConnectionTitle,
+              noConnectionDescription: noConnectionDescription,
+              connectionRatingLabel: LocaleKeys.rateConnection.tr(),
+              onConnect: onToggle,
+              onDisconnect: onToggle,
+              onRefreshIp: handleRefreshIP,
+              onThumbsUp: () =>
+                  showRateConnectionDialog(context, RateConnectionRequestModeEnum.like),
+              onThumbsDown: () =>
+                  showRateConnectionDialog(context, RateConnectionRequestModeEnum.dislike),
+              onDismissPreview: () => selectedLocationStore.value = null,
+              onSwitchCountry: onToggle,
+              refreshIpTooltip: LocaleKeys.refreshIP.tr(),
+            ),
+            if (Env.flavor.isDev)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
                   'Protocol: ${vpnProtocol.protocol.name}',
                   style: const TextStyle(
                     fontSize: 8,
-                    color: Palette.pink,
-                    fontWeight: FontWeight.bold,
+                    color: Palette.warning,
+                    fontWeight: FontWeight.w800,
                   ),
-                ),
-            ],
-          ),
+                ).padding(left: 12),
+              ),
+          ],
         );
       },
     );
   }
-}
 
-class _Card extends HookWidget {
-  const _Card({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final borderColor = useConnectionStatusColor();
-
-    return Material(
-      color: theme.palette.connectionTileBackgroundColor,
-      shadowColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: borderColor),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Padding(padding: const EdgeInsets.all(16), child: child),
-    );
-  }
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder({required this.title, required this.subtitle, required this.icon});
-
-  final String title;
-  final String subtitle;
-  final SvgGenImage icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
-      children: [
-        icon.svg(width: 38, height: 38),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: 2,
-            children: [
-              EasyText(title, fontSize: 18, fontWeight: FontWeight.w500),
-              EasyText(subtitle, fontSize: 12, color: theme.palette.subtitleColor),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _Location extends StatelessWidget {
-  const _Location({
-    required this.location,
-    required this.parent,
-    required this.ip,
-    required this.onRefreshIPPressed,
-    required this.isLocationConnected,
-    required this.ipPoolCount,
-  });
-
-  final VPNLocation location;
-  final VPNLocation? parent;
-  final String? ip;
-  final VoidCallback onRefreshIPPressed;
-  final bool isLocationConnected;
-  final int ipPoolCount;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final ipType = location.ipType;
-    final title = parent?.getName(context) ?? location.getName(context);
-    final subtitle = parent != null ? location.getName(context) : null;
-
-    final extras = [
-      if (ip != null && isLocationConnected) ip!,
-      if (ipType == IPType.residential)
-        LocaleKeys.residential.tr()
-      else if (ipType == IPType.datacenter)
-        LocaleKeys.highSpeed.tr(),
-    ];
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
-      children: [
-        CircleFlag(location.countryCode, size: 38),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              EasyText(title, fontSize: 18, fontWeight: FontWeight.w500),
-              if (subtitle != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: EasyText(subtitle, fontSize: 12, color: theme.palette.subtitleColor),
-                      ),
-                      if (ip != null && isLocationConnected)
-                        _RefreshIpButton(enabled: ipPoolCount >= 2, onPressed: onRefreshIPPressed),
-                    ],
-                  ),
-                ),
-              ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 32),
-                child: Row(
-                  spacing: 16,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        spacing: 8,
-                        children: [
-                          ...extras
-                              .map<Widget>(
-                                (it) => Flexible(
-                                  child: EasyText(
-                                    it,
-                                    fontSize: 12,
-                                    color: theme.palette.subtitleColor,
-                                  ),
-                                ),
-                              )
-                              .separateWith(
-                                Container(color: theme.palette.subtitleColor, width: 1, height: 20),
-                              ),
-                        ],
-                      ),
-                    ),
-                    if (ip != null && isLocationConnected)
-                      Row(
-                        spacing: 8,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          EasyText(
-                            LocaleKeys.ipPoolLabel.tr(namedArgs: {'ips': '$ipPoolCount'}),
-                            fontSize: 12,
-                            color: ipPoolCount >= 2
-                                ? theme.palette.ipPoolEnabledColor
-                                : theme.palette.ipPoolDisabledColor,
-                          ),
-                          if (subtitle == null)
-                            _RefreshIpButton(
-                              enabled: ipPoolCount >= 2,
-                              onPressed: onRefreshIPPressed,
-                            ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _RefreshIpButton extends StatelessWidget {
-  const _RefreshIpButton({required this.enabled, required this.onPressed});
-
-  final bool enabled;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SizedBox(
-      width: 18,
-      height: 18,
-      child: SvgIconButton(
-        asset: Asset.icons.refresh,
-        size: 16,
-        color: enabled ? theme.palette.ipPoolEnabledColor : theme.palette.ipPoolDisabledColor,
-        visualDensity: VisualDensity.compact,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        onPressed: enabled ? onPressed : null,
-      ),
-    );
+  /// Returns true when the user has selected a location that differs from
+  /// the currently connected one (i.e. a "switch" scenario).
+  static bool _isDifferentFromConnected({
+    required VPNLocation? selected,
+    required VPNLocation? connected,
+    required bool isConnected,
+  }) {
+    if (!isConnected || selected == null || connected == null) {
+      return false;
+    }
+    if (connected == VPNLocation.closest) {
+      return false;
+    }
+    if (selected.id == connected.id) {
+      return false;
+    }
+    if (selected.isCountry && selected.countryCode == connected.countryCode) {
+      return false;
+    }
+    return true;
   }
 }
