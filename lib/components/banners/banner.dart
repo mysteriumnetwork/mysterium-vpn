@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class Banner extends StatelessWidget {
@@ -10,7 +10,7 @@ class Banner extends StatelessWidget {
     this.body,
     this.onDismiss,
     this.mainBanner = true,
-    this.style = BannerStyle.info,
+    this.style,
     super.key,
   });
 
@@ -21,24 +21,28 @@ class Banner extends StatelessWidget {
 
   final VoidCallback? onDismiss;
   final VoidCallback? onPressed;
-  final BannerStyle style;
+  final BannerStyle? style;
 
   @override
   Widget build(BuildContext context) {
     final canDismiss = onDismiss != null;
+    final effectiveStyle = style ?? BannerStyle.info;
 
     return _DefaultBannerStyle(
-      style: style,
+      style: effectiveStyle,
       child: RawMaterialButton(
         onPressed: onPressed,
         elevation: 0,
-        fillColor: style.backgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: style.borderRadius, side: style.border),
+        fillColor: effectiveStyle.backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: effectiveStyle.borderRadius,
+          side: effectiveStyle.border,
+        ),
         child: Stack(
           children: [
             Center(
               child: Padding(
-                padding: style.padding,
+                padding: effectiveStyle.padding,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -68,6 +72,7 @@ class _DismissButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = Theme.of(context).palette;
     final bannerStyle = BannerStyle.of(context);
 
     return mainBanner
@@ -82,7 +87,7 @@ class _DismissButton extends StatelessWidget {
                 iconSize: 16,
                 padding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                style: IconButton.styleFrom(backgroundColor: Palette.lightBlack),
+                style: IconButton.styleFrom(backgroundColor: palette.iconTertiary),
                 onPressed: onPressed,
                 icon: const Icon(Icons.close_sharp),
               ),
@@ -94,7 +99,7 @@ class _DismissButton extends StatelessWidget {
             child: IconButton(
               color: bannerStyle.foregroundColor,
               style: IconButton.styleFrom(
-                backgroundColor: context.c.isDarkMode ? Palette.mediumBlack : Palette.lightBlack,
+                backgroundColor: palette.bgQuaternary,
                 splashFactory: NoSplash.splashFactory,
                 iconSize: 12,
                 padding: EdgeInsets.zero,
@@ -140,34 +145,34 @@ class BannerStyle {
     return inherited?.style ?? BannerStyle.info;
   }
 
-  static const BannerStyle info = BannerStyle(
-    backgroundColor: Palette.mediumBlack,
+  static final BannerStyle info = BannerStyle(
+    backgroundColor: Palette.grayPurple.shade800,
     foregroundColor: Palette.white,
-    ctaBackgroundColor: Palette.purple,
+    ctaBackgroundColor: Palette.brand,
     ctaForegroundColor: Palette.white,
-    border: BorderSide(color: Palette.purple, width: 1.5),
-    borderRadius: BorderRadius.all(Radius.circular(20)),
-    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+    border: const BorderSide(color: Palette.brand, width: 1.5),
+    borderRadius: const BorderRadius.all(Radius.kM),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
   );
 
-  static const BannerStyle warningLight = BannerStyle(
-    backgroundColor: Palette.paleYellow,
-    foregroundColor: Palette.yellow,
-    ctaBackgroundColor: Palette.yellow,
+  static final BannerStyle warningLight = BannerStyle(
+    backgroundColor: Palette.warning.shade100,
+    foregroundColor: Palette.warning.shade600,
+    ctaBackgroundColor: Palette.warning.shade600,
     ctaForegroundColor: Palette.white,
-    border: BorderSide(color: Palette.yellow, width: 1.5),
-    borderRadius: BorderRadius.all(Radius.circular(20)),
-    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+    border: BorderSide(color: Palette.warning.shade600, width: 1.5),
+    borderRadius: const BorderRadius.all(Radius.kM),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
   );
 
-  static const BannerStyle warningDark = BannerStyle(
-    backgroundColor: Palette.darkOliveBrown,
+  static final BannerStyle warningDark = BannerStyle(
+    backgroundColor: Palette.warning.shade950,
     foregroundColor: Palette.white,
-    ctaBackgroundColor: Palette.yellow,
+    ctaBackgroundColor: Palette.warning.shade600,
     ctaForegroundColor: Palette.white,
-    border: BorderSide(color: Palette.yellow, width: 1.5),
-    borderRadius: BorderRadius.all(Radius.circular(20)),
-    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+    border: BorderSide(color: Palette.warning.shade600, width: 1.5),
+    borderRadius: const BorderRadius.all(Radius.kM),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
   );
 
   final Color backgroundColor;
