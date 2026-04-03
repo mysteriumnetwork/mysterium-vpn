@@ -161,9 +161,7 @@
   "installVpnProfile": "لبدء استخدام Mysterium VPN ، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
   "internetConnectionRestored": "تمت استعادة اتصالك بالإنترنت.",
   "ipTypeDataCenter": "عناوين IP عالية السرعة",
-  "ipTypeDataCenterDisclaimer": "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة.",
   "ipTypeResidential": "عناوين IP المنزلية",
-  "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN.",
   "isThisYou": "هل هذا انت ؟",
   "it": "ايطالي",
   "italy": "إيطاليا",
@@ -206,8 +204,6 @@
   "manageBtn": "إدارة الاشتراك",
   "manageSubsDesc": "يمكنك التبديل إلى خطة مختلفة أو إلغاء خطتك.",
   "manageSubsTittle": "إدارة اشتراكك",
-  "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات البريد الإلكتروني ونصائح الخصوصية والعروض الخاصة من شبكة Mysterium؟",
-  "marketingConsentPopupTitle": "ابق على اطلاع",
   "maybeLaterBtn": "ربما في وقت لاحق",
   "mk": "المقدونية",
   "monitorStatus": "راقب حالة VPN الخاصة بك",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "انتقل إلى {switchLocation}",
   "redeemDiscountCode": "استخدم رمز الخصم",
-  "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!"
+  "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
+  "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
+  "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
+  "allowNotificationsBtn": "السماح بالإشعارات",
+  "ipTypeDataCenterDisclaimer": "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة - اختر هذا الخيار للحصول على اتصالات مستقرة",
+  "ipTypeResidentialDisclaimer": "عناوين IP سكنية من منازل حقيقية. يصعب اكتشافها تقريبًا، لكنها أقل استقرارًا، لذا قد يتغير عنوان IP الذي تحصل عليه.",
+  "ipTypeResidentialTooltipTitle": "لماذا فُقد الرابط؟",
+  "ipTypeResidentialTooltipBody": "تعتمد عناوين IP المنزلية على أشخاص حقيقيين. في حال انقطاع اتصالهم، ستتم إعادة توصيلك فورًا بأقرب عنوان IP متاح. وللحصول على اتصال مستقر، اختر عناوين IP عالية السرعة."
 }

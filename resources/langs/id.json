@@ -161,9 +161,7 @@
   "installVpnProfile": "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang Profil VPN.",
   "internetConnectionRestored": "Koneksi internet Anda telah dipulihkan.",
   "ipTypeDataCenter": "IP Kecepatan Tinggi",
-  "ipTypeDataCenterDisclaimer": "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
   "ipTypeResidential": "IP Residensial",
-  "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN.",
   "isThisYou": "Apakah ini Anda ?",
   "it": "Italia",
   "italy": "Italia",
@@ -206,8 +204,6 @@
   "manageBtn": "Kelola Langganan",
   "manageSubsDesc": "Anda dapat beralih ke paket lain atau membatalkan paket Anda.",
   "manageSubsTittle": "Kelola langganan Anda",
-  "marketingConsentPopupDesc": "Apakah Anda ingin menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
-  "marketingConsentPopupTitle": "Tetap terhubung",
   "maybeLaterBtn": "mungkin nanti",
   "mk": "Makedonia",
   "monitorStatus": "Pantau status VPN Anda",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "Beralih ke {switchLocation}",
   "redeemDiscountCode": "Tukarkan kode diskon",
-  "couponCodeCopied": "{Kode kupon} disalin ke papan klip!"
+  "couponCodeCopied": "{Kode kupon} disalin ke papan klip!",
+  "marketingConsentPopupTitle": "Tetap dapatkan informasi terbaru melalui email.",
+  "marketingConsentPopupDesc": "Apakah Anda ingin menerima pembaruan email, kiat privasi, dan penawaran khusus dari Mysterium Network?",
+  "allowNotificationsBtn": "Izinkan notifikasi",
+  "ipTypeDataCenterDisclaimer": "IP yang dihosting di server cepat dan efisien untuk kebutuhan VPN yang cepat - pilih ini untuk koneksi yang stabil.",
+  "ipTypeResidentialDisclaimer": "IP residensial dari rumah tangga sungguhan. Hampir tidak terdeteksi tetapi kurang stabil, jadi IP yang Anda dapatkan mungkin berubah.",
+  "ipTypeResidentialTooltipTitle": "Mengapa tautannya hilang?",
+  "ipTypeResidentialTooltipBody": "IP rumah tangga bergantung pada orang sungguhan. Jika koneksi mereka terputus, Anda akan langsung terhubung kembali ke IP terdekat yang tersedia. Untuk koneksi yang stabil, pilih IP berkecepatan tinggi."
 }

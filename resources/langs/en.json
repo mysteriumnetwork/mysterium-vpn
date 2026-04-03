@@ -161,9 +161,7 @@
   "installVpnProfile": "To start using Mysterium VPN, we need your permission to install a VPN Profile.",
   "internetConnectionRestored": "Your internet connection has been restored.",
   "ipTypeDataCenter": "High-speed IPs",
-  "ipTypeDataCenterDisclaimer": "IPs hosted on fast and efficient servers for quick VPN needs.",
   "ipTypeResidential": "Residential IPs",
-  "ipTypeResidentialDisclaimer": "IPs tied to actual households for decreased VPN detection.",
   "isThisYou": "Is this you ?",
   "it": "Italian",
   "italy": "Italy",
@@ -206,8 +204,6 @@
   "manageBtn": "Manage Subscription",
   "manageSubsDesc": "You can switch to a different plan or cancel your plan.",
   "manageSubsTittle": "Manage your subscription",
-  "marketingConsentPopupDesc": "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
-  "marketingConsentPopupTitle": "Stay in the Loop",
   "maybeLaterBtn": "Maybe later",
   "mk": "Macedonian",
   "monitorStatus": "Monitor your VPN status",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "Switch to {switchLocation}",
   "redeemDiscountCode": "Redeem discount code",
-  "couponCodeCopied": "{couponCode} copied to clipboard!"
+  "couponCodeCopied": "{couponCode} copied to clipboard!",
+  "marketingConsentPopupTitle": "Stay updated by email",
+  "marketingConsentPopupDesc": "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
+  "allowNotificationsBtn": "Allow notifications",
+  "ipTypeDataCenterDisclaimer": "IPs hosted on fast and efficient servers for quick VPN needs - choose this for stable connections",
+  "ipTypeResidentialDisclaimer": "Residential IPs from real households. Nearly undetectable but less stable, so the IP you get might change'",
+  "ipTypeResidentialTooltipTitle": "Why the link is lost?",
+  "ipTypeResidentialTooltipBody": "Household IPs depend on real people. If their link is lost, you'll be instantly reconnected to the nearest available IP. For a stable connection, choose high-speed IPs."
 }
