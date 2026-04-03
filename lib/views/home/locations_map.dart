@@ -10,12 +10,12 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/world_map_tiles_layer.dart';
 import 'package:mysterium_vpn/views/locations/location_markers_layer.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 class LocationsMap extends HookConsumerWidget {
   const LocationsMap({
@@ -104,7 +104,7 @@ class LocationsMap extends HookConsumerWidget {
         initialZoom: mapConfig.initialZoom.toDouble(),
         initialCenter: position ?? const LatLng(0, 0),
         cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
-        backgroundColor: theme.palette.mapBackgroundColor,
+        backgroundColor: theme.palette.bgMapCountries,
         minZoom: mapConfig.zoomLevels.min.toDouble(),
         maxZoom: mapConfig.zoomLevels.max.toDouble(),
         onTap: (_, _) => onTapOutside?.call(),

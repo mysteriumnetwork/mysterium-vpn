@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LocationItemLoading extends StatelessWidget {
@@ -8,37 +9,34 @@ class LocationItemLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = theme.colorScheme.secondary;
+    final color = theme.palette.bgPrimary;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      constraints: const BoxConstraints(maxWidth: 360, minHeight: 82),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.tertiaryContainer,
-        borderRadius: BorderRadius.circular(20),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      constraints: const BoxConstraints(maxWidth: 360, maxHeight: 40),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(8)),
       child: Shimmer.fromColors(
         baseColor: color,
         highlightColor: color.darken(20),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 30,
-              height: 30,
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: color.darken(20).withValues(alpha: 150),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
             const SizedBox(width: 12),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(width: 160, height: 16, color: Colors.grey[300]),
-                const SizedBox(height: 8),
-                Container(width: 80, height: 10, color: Colors.grey[300]),
+                Container(width: 160, height: 16, color: color.darken(20).withValues(alpha: 150)),
+                const SizedBox(height: 4),
+                Container(width: 90, height: 8, color: color.darken(20).withValues(alpha: 150)),
               ],
             ),
           ],

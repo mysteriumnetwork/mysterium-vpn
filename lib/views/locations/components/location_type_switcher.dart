@@ -1,12 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
-class LocationTypeSwitcher extends StatelessWidget {
+class LocationTypeSwitcher extends StatefulWidget {
   const LocationTypeSwitcher({
     required this.value,
     required this.onChanged,
@@ -19,82 +16,66 @@ class LocationTypeSwitcher extends StatelessWidget {
   final ValueChanged<IPType> onChanged;
 
   @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      for (final value in options)
-        Expanded(
-          child: _Item(
-            alignment: MainAxisAlignment.center,
-            onTap: options.length > 1 ? () => onChanged(value) : null,
-            label: switch (value) {
-              IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-              _ =>
-                options.length > 1
-                    ? LocaleKeys.ipTypeResidential.tr()
-                    : LocaleKeys.allLocations.tr(),
-            },
-            icon: switch (value) {
-              IPType.datacenter => SvgIcon(asset: Asset.icons.speed, height: 20),
-              _ => null,
-            },
-            selected: value == this.value,
-          ),
-        ),
-      if (options.length == 1) const Spacer(),
-    ],
-  );
+  State<LocationTypeSwitcher> createState() => _LocationTypeSwitcherState();
 }
 
-class _Item extends StatelessWidget {
-  const _Item({
-    required this.label,
-    required this.icon,
-    required this.selected,
-    required this.onTap,
-    required this.alignment,
-  });
-
-  final String label;
-  final Widget? icon;
-  final bool selected;
-  final MainAxisAlignment alignment;
-  final VoidCallback? onTap;
+class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with TickerProviderStateMixin {
+  late TabController _controller;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return RawMaterialButton(
-      elevation: 0,
-      focusElevation: 0,
-      highlightElevation: 0,
-      splashColor: Colors.transparent,
-      hoverElevation: 0,
-      constraints: const BoxConstraints(minHeight: 56),
-      visualDensity: VisualDensity.compact,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      ),
-      fillColor: selected ? theme.colorScheme.tertiaryContainer : Colors.transparent,
-      onPressed: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: Row(
-          mainAxisAlignment: alignment,
-          children: [
-            Flexible(
-              child: EasyText(
-                label,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                fontSize: 16,
-                textDecoration: !selected ? null : TextDecoration.underline,
-                colorDecoration: theme.textTheme.bodyMedium?.color,
-              ),
-            ),
-            if (icon != null) Padding(padding: const EdgeInsets.only(left: 6), child: icon),
-          ],
-        ),
-      ),
+  void initState() {
+    super.initState();
+    _controller = TabController(
+      length: widget.options.length,
+      vsync: this,
+      initialIndex: _indexOfValue(widget.value),
     );
   }
+
+  @override
+  void didUpdateWidget(covariant LocationTypeSwitcher oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.options.length != oldWidget.options.length) {
+      _controller.dispose();
+      _controller = TabController(
+        length: widget.options.length,
+        vsync: this,
+        initialIndex: _indexOfValue(widget.value),
+      );
+    } else {
+      final newIndex = _indexOfValue(widget.value);
+      if (_controller.index != newIndex) {
+        _controller.index = newIndex;
+      }
+    }
+  }
+
+  int _indexOfValue(IPType type) {
+    final index = widget.options.indexOf(type);
+    return index == -1 ? 0 : index;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => TabBar(
+    controller: _controller,
+    onTap: (index) => widget.onChanged(widget.options[index]),
+    tabs: [
+      for (final option in widget.options)
+        Tab(
+          text: switch (option) {
+            IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
+            _ =>
+              widget.options.length > 1
+                  ? LocaleKeys.ipTypeResidential.tr()
+                  : LocaleKeys.allLocations.tr(),
+          },
+        ),
+    ],
+  );
 }
