@@ -190,6 +190,11 @@ class ConnectionTile extends HookConsumerWidget {
               onDismissPreview: () => selectedLocationStore.value = null,
               onSwitchCountry: onToggle,
               refreshIpTooltip: LocaleKeys.refreshIP.tr(),
+              connectionRating: switch (connectionDisplayStore.connectionRated) {
+                RateConnectionRequestModeEnum.like => ConnectionRating.thumbsUp,
+                RateConnectionRequestModeEnum.dislike => ConnectionRating.thumbsDown,
+                _ => ConnectionRating.none,
+              },
             ),
             if (Env.flavor.isDev)
               Align(
