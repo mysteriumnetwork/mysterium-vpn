@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SettingActionButton extends HookWidget {
@@ -33,7 +33,7 @@ class SettingActionButton extends HookWidget {
     }
 
     return Theme(
-      data: Theme.of(context).designSystem,
+      data: DesignSystemTheme.of(context),
       child: ButtonPrimary(
         decoration: ButtonDecoration(
           decorationColor: backgroundColor,
