@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -37,12 +38,17 @@ class ExpandableLocationItem extends HookConsumerWidget {
   /// Called when the user manually toggles expansion.
   final ValueChanged<bool>? onExpansionChanged;
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
+    final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final query = useComputedValue(() => locationsQueryStore.searchTrimmed);
+    final handleUpgradePlan = useHandleUpgradePlan();
 
     final children = location.children ?? const <VPNLocation>[];
     final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
@@ -76,16 +82,29 @@ class ExpandableLocationItem extends HookConsumerWidget {
 
     final onTapComputed = useComputedValue(() => vpnStore.isLoading ? null : onTap, [onTap]);
 
-    final countryStatus = useComputedValue(() {
-      if (vpnStore.isLoading &&
-          (location == vpnStore.location || location == vpnStore.connectingLocation)) {
-        return IpCardStatus.connecting;
-      }
-      if (vpnStore.isConnected && location == vpnStore.location) {
-        return IpCardStatus.connected;
-      }
-      return IpCardStatus.idle;
-    }, [location]);
+    final locationMode = useComputedValue(
+      () => _LocationMode.from(
+        location: location,
+        residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+        unavailableLocations: unavailableLocationsStore.unavailableLocations,
+        subscription: subscriptionStore.subscriptionFuture.value,
+        isConnected: vpnStore.isConnected,
+        isLoading: vpnStore.isLoading,
+        vpnLocation: vpnStore.location,
+        connectingLocation: vpnStore.connectingLocation,
+      ),
+      [location],
+    );
+
+    final countryStatus = useComputedValue(
+      () => switch (locationMode) {
+        _LocationMode.connecting => IpCardStatus.connecting,
+        _LocationMode.connected => IpCardStatus.connected,
+        _LocationMode.unavailable => IpCardStatus.disabled,
+        _ => IpCardStatus.idle,
+      },
+      [locationMode],
+    );
 
     final subtitle = showCitiesAndStates
         ? locationHasStates
@@ -96,28 +115,47 @@ class ExpandableLocationItem extends HookConsumerWidget {
               : LocaleKeys.locationItemCityCount.plural(children.length)
         : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0);
 
+    final subscription = useComputedValue(
+      () => subscriptionStore.subscriptionFuture.value,
+    );
+
     final items = useComputedValue(() {
       if (!showCitiesAndStates) {
         return <IpCardItem>[];
       }
       return children.map((child) {
-        IpCardStatus status;
-        if (vpnStore.isLoading &&
-            (child == vpnStore.location || child == vpnStore.connectingLocation)) {
-          status = IpCardStatus.connecting;
-        } else if (vpnStore.isConnected && child == vpnStore.location) {
-          status = IpCardStatus.selected;
-        } else {
-          status = IpCardStatus.idle;
-        }
+        final childMode = _LocationMode.from(
+          location: child,
+          residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+          unavailableLocations: unavailableLocationsStore.unavailableLocations,
+          subscription: subscription,
+          isConnected: vpnStore.isConnected,
+          isLoading: vpnStore.isLoading,
+          vpnLocation: vpnStore.location,
+          connectingLocation: vpnStore.connectingLocation,
+        );
+        final childPlusUpgrade = childMode == _LocationMode.unsupportedByPlan;
+        final status = switch (childMode) {
+          _LocationMode.connecting => IpCardStatus.connecting,
+          _LocationMode.connected => IpCardStatus.selected,
+          _LocationMode.unavailable => IpCardStatus.disabled,
+          _ => IpCardStatus.idle,
+        };
         return IpCardItem(
           name: child.getName(context),
           subtitle: LocaleKeys.locationItemNodeCount.plural(child.nodeCount ?? 0),
           status: status,
-          onTap: vpnStore.isLoading ? null : () => onTap(child),
+          plusUpgrade: childPlusUpgrade,
+          onTap: switch (childMode) {
+            _LocationMode.unsupportedByPlan => handleUpgradePlan,
+            _LocationMode.unavailable || _LocationMode.connecting => null,
+            _ => vpnStore.isLoading ? null : () => onTap(child),
+          },
         );
       }).toList();
-    }, [children, showCitiesAndStates, onTap]);
+    }, [children, showCitiesAndStates, onTap, subscription, locationMode]);
+
+    final needsUpgrade = locationMode == _LocationMode.unsupportedByPlan;
 
     return ExpandableIpCard(
       name: location.getName(context),
@@ -125,9 +163,53 @@ class ExpandableLocationItem extends HookConsumerWidget {
       countryIcon: CircleFlag(location.countryCode, size: 24),
       items: items,
       status: countryStatus,
+      plusUpgrade: needsUpgrade,
       expanded: isExpanded,
       onExpansionChanged: onExpansionChanged,
-      onConnect: onTapComputed == null ? null : () => onTapComputed(location),
+      onConnect: switch (locationMode) {
+        _LocationMode.unsupportedByPlan => handleUpgradePlan,
+        _LocationMode.unavailable || _LocationMode.connecting => null,
+        _ => onTapComputed == null ? null : () => onTapComputed(location),
+      },
     );
+  }
+}
+
+enum _LocationMode {
+  connecting,
+  connected,
+  available,
+  unavailable,
+  unsubscribed,
+  unsupportedByPlan;
+
+  static _LocationMode from({
+    required VPNLocation location,
+    required bool residentialIPsAllowed,
+    required Iterable<VPNLocation> unavailableLocations,
+    required Subscription? subscription,
+    required bool isConnected,
+    required bool isLoading,
+    required VPNLocation? vpnLocation,
+    required VPNLocation? connectingLocation,
+  }) {
+    if (isLoading && (location == vpnLocation || location == connectingLocation)) {
+      return _LocationMode.connecting;
+    }
+    if (isConnected && location == vpnLocation) {
+      return _LocationMode.connected;
+    }
+    if (subscription == null || !subscription.active) {
+      return _LocationMode.unsubscribed;
+    }
+    if (location.ipType == IPType.residential) {
+      if (!residentialIPsAllowed || !location.isAvailable) {
+        return _LocationMode.unsupportedByPlan;
+      }
+    }
+    if (unavailableLocations.contains(location) || !location.isAvailable) {
+      return _LocationMode.unavailable;
+    }
+    return _LocationMode.available;
   }
 }
