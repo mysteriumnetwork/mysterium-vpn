@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
 import 'package:mysterium_vpn/components/circle_box.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
@@ -36,10 +35,6 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
               SettingCategory.preferences => const ApplicationSettings(),
               SettingCategory.account => const AccountSettings(),
               SettingCategory.qaToolbox => const QAToolbox(),
-              SettingCategory.campaign => SizedBox(
-                height: getMediaHeight(context),
-                child: const CampaignWebViewScreen(),
-              ),
             },
           ],
         )
