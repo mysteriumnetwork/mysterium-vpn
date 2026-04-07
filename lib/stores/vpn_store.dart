@@ -308,8 +308,12 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   void _listenToConnectionStatusChanges() {
     final stream = _vpnRepository.statusStream();
-    _connectionStatusStream = stream.listen((_) async {
-      final status = await _vpnRepository.currentStatus();
+    _connectionStatusStream = stream.listen((status) async {
+      final checkStatus = await _vpnRepository.currentStatus();
+      if (checkStatus == VpnConnectionStatus.connected) {
+        _connectionStatus = checkStatus;
+        return;
+      }
       if (status == VpnConnectionStatus.disconnecting) {
         _clearConnectionData();
       }
