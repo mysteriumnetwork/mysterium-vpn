@@ -258,7 +258,11 @@ class QAToolbox extends HookConsumerWidget {
             label: 'Marketing Consent',
             onPressed: () => showMarketingConsentDialog(context),
           ),
-          _QAActionButton(label: 'Web campaign', onPressed: () => showCampaignDialog(context)),
+          _QAActionButton(
+            label: 'Web campaign',
+            onPressed: () =>
+                showCampaignDialog(context, Uri.parse('http://localhost:3000/campaign')),
+          ),
           _QAActionButton(
             label: 'Retry Subscription Verification',
             onPressed: () => showRetryDialog(
