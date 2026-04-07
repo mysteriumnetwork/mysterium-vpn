@@ -12,16 +12,20 @@ import 'package:webview_flutter/webview_flutter.dart';
 // Import for iOS/macOS features.
 //import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-Future<void> showCampaignDialog(BuildContext context) async {
+Future<void> showCampaignDialog(BuildContext context, Uri campaignUri) async {
   await showModal<void>(
     context,
-    builder: (_) =>
-        Theme(data: DesignSystemTheme.of(context), child: const CampaignWebViewScreen()),
+    builder: (_) => Theme(
+      data: DesignSystemTheme.of(context),
+      child: CampaignWebViewScreen(campaignUri: campaignUri),
+    ),
   );
 }
 
 class CampaignWebViewScreen extends StatefulHookConsumerWidget {
-  const CampaignWebViewScreen({super.key});
+  const CampaignWebViewScreen({required this.campaignUri, super.key});
+
+  final Uri campaignUri;
 
   @override
   ConsumerState<CampaignWebViewScreen> createState() => _WebViewScreenState();
@@ -52,8 +56,7 @@ class _WebViewScreenState extends ConsumerState<CampaignWebViewScreen> {
         ),
       )
       ..addJavaScriptChannel('CampaignBridge', onMessageReceived: _onJsMessage)
-      //..loadRequest(Uri.parse('https://www.mysteriumvpn.com/features'))
-      ..loadRequest(Uri.parse('http://localhost:3000/campaign'));
+      ..loadRequest(widget.campaignUri);
     super.initState();
   }
 
