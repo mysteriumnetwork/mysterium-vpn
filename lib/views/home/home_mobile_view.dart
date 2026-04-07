@@ -97,6 +97,8 @@ class HomeMobileView extends HookConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Header.logo(
+                              showBackButton: false,
+                              automaticallyImplyLeading: false,
                               actions: [
                                 IconButton(
                                   icon: const Icon(UntitledUI.message_question_square),
