@@ -176,7 +176,9 @@ class ConnectionTile extends HookConsumerWidget {
               status: status,
               connectLabel: connectLabel,
               disconnectLabel: disconnectLabel,
-              connectingLabel: LocaleKeys.connecting.tr(),
+              connectingLabel: vpnStore.vpnStatus == VpnConnectionStatus.disconnecting
+                  ? LocaleKeys.disconnecting.tr()
+                  : LocaleKeys.connecting.tr(),
               noConnectionTitle: noConnectionTitle,
               noConnectionDescription: noConnectionDescription,
               connectionRatingLabel: LocaleKeys.rateConnection.tr(),

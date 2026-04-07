@@ -15,6 +15,7 @@ class LocationsHorizontalList extends HookWidget {
     required this.title,
     required this.items,
     required this.onItemPressed,
+    this.connectedLocation,
     this.listConstraints = const BoxConstraints(maxHeight: 66),
     super.key,
   });
@@ -22,6 +23,7 @@ class LocationsHorizontalList extends HookWidget {
   final String title;
   final List<VPNLocation> items;
   final void Function(VPNLocation) onItemPressed;
+  final VPNLocation? connectedLocation;
   final BoxConstraints listConstraints;
 
   @override
@@ -38,6 +40,7 @@ class LocationsHorizontalList extends HookWidget {
         separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (_, index) {
           final item = items[index];
+          final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
           return LocationCard(
             icon: CircleFlag(item.countryCode, size: 24),
             name: item.getName(context),
@@ -45,6 +48,7 @@ class LocationsHorizontalList extends HookWidget {
                 ? LocaleKeys.highSpeed.tr()
                 : LocaleKeys.residential.tr(),
             onTap: () => onItemPressed(item),
+            status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
           );
         },
       ),
