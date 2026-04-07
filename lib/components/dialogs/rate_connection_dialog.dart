@@ -1,31 +1,49 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:vpn_api/vpn_api.dart';
 
 Future<void> showRateConnectionDialog(
   BuildContext context,
   RateConnectionRequestModeEnum mode,
 ) async {
-  final future = await showDialog<Future<void>>(
-    context: context,
-    builder: (context) => _ConfirmDialog(mode),
+  final container = ProviderScope.containerOf(context, listen: false);
+  final store = RateConnectionStore(
+    mode,
+    container.read(analyticsStorePOD),
+    container.read(vpnStorePOD),
   );
 
+  final future = await showBottomSheetDialog<Future<void>>(
+    context,
+    mobileConstraints: BoxConstraints(maxHeight: getMediaHeight(context) * 0.95),
+    builder: (ctx) => BottomSheetDialog(
+      title: mode == RateConnectionRequestModeEnum.like
+          ? LocaleKeys.rateConnectionLike.tr()
+          : LocaleKeys.rateConnectionDislike.tr(),
+      body: _RateConnectionBody(store: store),
+      primaryButton: ButtonPrimary(
+        onPressed: () => Navigator.of(ctx).pop(store.submitRateConnection()),
+        child: Text(LocaleKeys.submitBtn.tr()),
+      ),
+      secondaryButton: ButtonSecondary(
+        onPressed: () {
+          store.cancelRateConnection();
+          Navigator.of(ctx).pop();
+        },
+        child: Text(LocaleKeys.cancelBtn.tr()),
+      ),
+    ),
+  );
   try {
     await future;
   } catch (_) {
@@ -33,30 +51,10 @@ Future<void> showRateConnectionDialog(
   }
 }
 
-class _ConfirmDialog extends HookConsumerWidget {
-  const _ConfirmDialog(this.rateConnectionMode);
+class _RateConnectionBody extends StatelessWidget {
+  const _RateConnectionBody({required this.store});
 
-  final RateConnectionRequestModeEnum rateConnectionMode;
-
-  Color getDialogBackgroundColor(Brightness brightness) => switch (brightness) {
-    Brightness.light => Palette.white,
-    Brightness.dark => Palette.darkIndigo,
-  };
-
-  Color getDialogTextColor(Brightness brightness) => switch (brightness) {
-    Brightness.light => Palette.darkIndigo,
-    Brightness.dark => Palette.white,
-  };
-
-  Color cancelButtonColor(Brightness brightness) => switch (brightness) {
-    Brightness.light => Palette.lightBlack,
-    Brightness.dark => Palette.lightBlue,
-  };
-
-  Color tileTextColor(Brightness brightness) => switch (brightness) {
-    Brightness.light => Palette.darkIndigo,
-    Brightness.dark => Palette.black,
-  };
+  final RateConnectionStore store;
 
   String _stringifyReason(RateConnectionReason reason) => switch (reason) {
     RateConnectionReason.accessToSites => LocaleKeys.bypassRestrictionsReason.tr(),
@@ -72,143 +70,65 @@ class _ConfirmDialog extends HookConsumerWidget {
   };
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final rateConnectionStore = useMemoized(
-      () => RateConnectionStore(
-        rateConnectionMode,
-        ref.read(analyticsStorePOD),
-        ref.read(vpnStorePOD),
-      ),
-    );
-    final brightness = Theme.of(context).brightness;
-    final screenType = useScreenType();
-    final submitFuture = useState<Future<void>?>(null);
-
-    void handleSubmit() {
-      submitFuture.value = rateConnectionStore.submitRateConnection();
-      Navigator.of(context).pop(submitFuture.value);
-    }
-
-    void handleCancel() {
-      rateConnectionStore.cancelRateConnection();
-      Navigator.of(context).pop();
-    }
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
 
     return Observer(
-      builder: (context) => AlertDialog(
-        scrollable: true,
-        buttonPadding: EdgeInsets.zero,
-        actionsPadding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        titlePadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        contentPadding: EdgeInsets.zero,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 15),
-        iconPadding: const EdgeInsets.only(top: 30, bottom: 20),
-        backgroundColor: getDialogBackgroundColor(brightness),
-        actionsAlignment: MainAxisAlignment.spaceEvenly,
-        title: Text(
-          rateConnectionStore.isLikeMode
-              ? LocaleKeys.rateConnectionLike.tr()
-              : LocaleKeys.rateConnectionDislike.tr(),
-          style: GoogleFonts.montserrat(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: getDialogTextColor(brightness),
-          ),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: WidgetStateProperty.all(cancelButtonColor(brightness)),
+      builder: (context) {
+        final selectedReasons = store.selectedReasons;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: ScreenType.of(context) >= ScreenType.tablet ? 2 : 1,
+                mainAxisExtent: 60,
+              ),
+              itemCount: store.showReasons.length,
+              itemBuilder: (context, index) {
+                final reason = store.showReasons[index];
+                return CheckboxListTile(
+                  minVerticalPadding: 0,
+                  visualDensity: VisualDensity.compact,
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  value: selectedReasons.contains(reason),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (_) => store.toggleRateConnectionReason(reason),
+                  title: Text(_stringifyReason(reason), style: theme.textStyles.textMd.medium),
+                );
+              },
             ),
-            onPressed: handleCancel,
-            child: Text(
-              LocaleKeys.cancelBtn.tr(),
-              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700),
-            ),
-          ),
-          VerticalDivider(
-            width: 1,
-            color: getDialogTextColor(brightness).withValues(alpha: .2),
-          ).height(80),
-          TextButton(
-            style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Palette.purple)),
-            onPressed: handleSubmit,
-            child: Text(
-              LocaleKeys.submitBtn.tr(),
-              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-        content: SizedBox(
-          width: switch (screenType) {
-            ScreenType.mobile => getMediaWidth(context) > 335 ? 335 : double.infinity,
-            _ => 335,
-          },
-          child: Column(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ...rateConnectionStore.showReasons.mapIndexed(
-                    (i, element) => CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      side: BorderSide(
-                        color: Theme.of(context).tabBarTheme.indicatorColor ?? Palette.purple,
-                      ),
-                      checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                      value: rateConnectionStore.selectedReasons.contains(
-                        rateConnectionStore.showReasons[i],
-                      ),
-                      fillColor: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return Palette.purple;
-                        }
-                        return Palette.lightBlue;
-                      }),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (_) {
-                        rateConnectionStore.toggleRateConnectionReason(
-                          rateConnectionStore.showReasons[i],
-                        );
-                      },
-                      title: Text(
-                        _stringifyReason(rateConnectionStore.showReasons[i]),
-                        style: GoogleFonts.montserrat(color: getDialogTextColor(brightness)),
-                      ),
-                    ),
+            Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 32),
+              child: TextField(
+                maxLines: 4,
+                onChanged: (value) => store.feedback = value,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: palette.bgPrimary,
+                  contentPadding: const EdgeInsets.all(14),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: palette.borderPrimary),
                   ),
-                  TextField(
-                    maxLines: 2,
-                    cursorColor: Palette.purple,
-                    onChanged: (value) {
-                      rateConnectionStore.feedback = value;
-                    },
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                      fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                      contentPadding: const EdgeInsets.all(12),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide.none,
-                      ),
-                      hintText: LocaleKeys.typeFeedback.tr(),
-                      hintStyle: GoogleFonts.montserrat(
-                        color: getDialogTextColor(brightness).withValues(alpha: .5),
-                      ),
-                    ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: palette.borderBrand),
                   ),
-                ],
-              ).padding(left: 20, right: 20),
-              Divider(
-                height: 1,
-                color: getDialogTextColor(brightness).withValues(alpha: .2),
-              ).padding(top: 30),
-            ],
-          ),
-        ),
-      ),
+                  hintText: LocaleKeys.typeFeedback.tr(),
+                  hintStyle: theme.textStyles.textMd.regular.copyWith(color: palette.textTertiary),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

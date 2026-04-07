@@ -19,7 +19,9 @@ class _ReasonsField extends HookWidget {
       onSelectionChanged(selection.toggle(value));
     }
 
-    return SliverGrid.builder(
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: axisCount,
         mainAxisExtent: 60,
@@ -47,26 +49,14 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ListTile(
-      onTap: onPressed,
-      leading: IgnorePointer(
-        child: Checkbox(
-          value: isChecked,
-          onChanged: (_) {},
-          fillColor: WidgetStateProperty.resolveWith(
-            (states) => states.contains(WidgetState.selected)
-                ? Palette.purple
-                : theme.palette.secondaryColor.withValues(alpha: .2),
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          side: BorderSide(
-            color: theme.palette.secondaryColor,
-            strokeAlign: BorderSide.strokeAlignCenter,
-          ),
-        ),
-      ),
-      title: EasyText(value.tr(), maxLines: 2, fontSize: 14),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+    return CheckboxListTile(
+      visualDensity: VisualDensity.compact,
+      dense: true,
+      contentPadding: EdgeInsets.zero,
+      value: isChecked,
+      controlAffinity: ListTileControlAffinity.leading,
+      onChanged: (_) => onPressed(),
+      title: Text(value.tr(), style: theme.textStyles.textMd.medium, maxLines: 2),
     );
   }
 }
