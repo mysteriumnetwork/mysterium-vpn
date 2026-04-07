@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 
 class QAToolbox extends HookConsumerWidget {
@@ -257,6 +258,7 @@ class QAToolbox extends HookConsumerWidget {
             label: 'Marketing Consent',
             onPressed: () => showMarketingConsentDialog(context),
           ),
+          _QAActionButton(label: 'Web campaign', onPressed: () => showCampaignDialog(context)),
           _QAActionButton(
             label: 'Retry Subscription Verification',
             onPressed: () => showRetryDialog(

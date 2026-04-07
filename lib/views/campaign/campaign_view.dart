@@ -4,11 +4,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
 //import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS/macOS features.
 //import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
+Future<void> showCampaignDialog(BuildContext context) async {
+  await showModal<void>(
+    context,
+    builder: (_) =>
+        Theme(data: DesignSystemTheme.of(context), child: const CampaignWebViewScreen()),
+  );
+}
 
 class CampaignWebViewScreen extends StatefulHookConsumerWidget {
   const CampaignWebViewScreen({super.key});
@@ -56,7 +66,10 @@ class _WebViewScreenState extends ConsumerState<CampaignWebViewScreen> {
   Widget build(BuildContext context) {
     _handleSubscribe = useHandleSubscribe();
 
-    return Scaffold(
+    return ModalScaffold(
+      autoApplyPadding: false,
+      showGradient: false,
+      showCloseButton: false,
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),
