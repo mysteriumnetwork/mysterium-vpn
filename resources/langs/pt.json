@@ -501,7 +501,7 @@
   "marketingConsentPopupDesc": "Deseja receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
   "allowNotificationsBtn": "Permitir notificações",
   "ipTypeDataCenterDisclaimer": "IPs hospedados em servidores rápidos e eficientes para necessidades de VPN imediatas - escolha esta opção para conexões estáveis.",
-  "ipTypeResidentialDisclaimer": "IPs residenciais de casas reais. Quase indetectáveis, mas menos estáveis, portanto o IP que você receber pode mudar.",
+  "ipTypeResidentialDisclaimer": "IPs residenciais de casas reais. Quase indetectáveis, mas menos estáveis, portanto o IP que você obtiver pode mudar.",
   "ipTypeResidentialTooltipTitle": "Por que o link foi perdido?",
   "ipTypeResidentialTooltipBody": "Os IPs residenciais dependem de pessoas reais. Se a conexão com elas for perdida, você será reconectado instantaneamente ao IP disponível mais próximo. Para uma conexão estável, escolha IPs de alta velocidade."
 }

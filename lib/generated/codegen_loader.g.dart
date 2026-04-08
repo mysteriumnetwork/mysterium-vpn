@@ -483,7 +483,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+    "subscriptionPlanCityLevelDesc": "与大多数 VPN 相比，它能提供更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
@@ -1024,7 +1024,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc":
         "Normal bir ev kullanıcısı gibi görünerek, yayın hizmetlerine erişmenizi ve VPN tespitinden kaçınmanızı sağlar.",
     "subscriptionPlanCityLevelDesc":
-        "Çoğu VPN'in aksine, konumunuzu daha hassas bir şekilde kontrol etmenizi sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
+        "Çoğu VPN'in aksine, daha hassas konum kontrolü sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
     "subscriptionPlanMalwareBlockerDesc":
         "Cihazınıza ulaşmadan önce tehditleri durdurarak onu korur, sizi rahatsız etmeden arka planda sessizce çalışır.",
     "notNowBtn": "Şimdi değil",
@@ -1327,7 +1327,7 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
     "productUpdates": "製品のアップデートを入手",
     "protocol": "プロトコル",
-    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再度接続する必要があります。",
+    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再接続する必要があります。",
     "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
     "pt": "ポルトガル語",
     "purchased": "購入した",
@@ -1549,7 +1549,7 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IPプール: {ips}",
     "connectToTooltip": "{countryNum}に接続します",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
-    "switchToLocationBtn": "{switchLocation} に切り替える",
+    "switchToLocationBtn": "{switchLocation}に切り替える",
     "redeemDiscountCode": "割引コードを引き換える",
     "couponCodeCopied": "",
     "marketingConsentPopupTitle": "メールで最新情報を受け取る",
@@ -1557,7 +1557,8 @@ class CodegenLoader extends AssetLoader {
     "allowNotificationsBtn": "通知を許可する",
     "ipTypeDataCenterDisclaimer":
         "高速かつ効率的なサーバーでホストされているIPアドレスは、迅速なVPN接続のニーズに対応します。安定した接続をお求めの場合は、こちらをお選びください。",
-    "ipTypeResidentialDisclaimer": "実際の家庭から取得した居住用IPアドレス。ほぼ検出不可能だが安定性が低いため、取得するIPアドレスが変わる可能性がある。",
+    "ipTypeResidentialDisclaimer":
+        "実際の家庭から取得した居住用IPアドレス。ほぼ検出不可能ですが、安定性が低いため、取得するIPアドレスが変わる可能性があります。",
     "ipTypeResidentialTooltipTitle": "なぜリンクが切れたのですか？",
     "ipTypeResidentialTooltipBody":
         "家庭用IPアドレスは、実際のユーザーによって割り当てられます。接続が切断された場合、すぐに最寄りの利用可能なIPアドレスに再接続されます。安定した接続をご希望の場合は、高速IPアドレスをお選びください。",
@@ -2105,7 +2106,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanCityLevelDesc":
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
     "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
@@ -2695,7 +2696,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "IPs hospedados em servidores rápidos e eficientes para necessidades de VPN imediatas - escolha esta opção para conexões estáveis.",
     "ipTypeResidentialDisclaimer":
-        "IPs residenciais de casas reais. Quase indetectáveis, mas menos estáveis, portanto o IP que você receber pode mudar.",
+        "IPs residenciais de casas reais. Quase indetectáveis, mas menos estáveis, portanto o IP que você obtiver pode mudar.",
     "ipTypeResidentialTooltipTitle": "Por que o link foi perdido?",
     "ipTypeResidentialTooltipBody":
         "Os IPs residenciais dependem de pessoas reais. Se a conexão com elas for perdida, você será reconectado instantaneamente ao IP disponível mais próximo. Para uma conexão estável, escolha IPs de alta velocidade.",
@@ -3248,7 +3249,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "IPs hosted on fast and efficient servers for quick VPN needs - choose this for stable connections",
     "ipTypeResidentialDisclaimer":
-        "Residential IPs from real households. Nearly undetectable but less stable, so the IP you get might change'",
+        "Residential IPs from real households. Nearly undetectable but less stable, so the IP you get might change",
     "ipTypeResidentialTooltipTitle": "Why the link is lost?",
     "ipTypeResidentialTooltipBody":
         "Household IPs depend on real people. If their link is lost, you'll be instantly reconnected to the nearest available IP. For a stable connection, choose high-speed IPs.",
@@ -3746,18 +3747,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi fino a 6 dispositivi contemporaneamente.",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "protocollo VPN",
+    "subscriptionPlanPF4Basic": "Protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi contemporaneamente",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
     "subscriptionPlanPF4Plus": "Oltre 7.500 indirizzi IP residenziali",
-    "subscriptionPlanPF5Plus": "protocollo VPN",
+    "subscriptionPlanPF5Plus": "Protocollo VPN",
     "subscriptionPlanPF6Plus": "Scelte a livello cittadino",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso entro 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti immediatamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "protocollo VPN",
+    "subscriptionPlanWireGuard": "Protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello cittadino",
@@ -3815,7 +3816,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
     "ipTypeResidentialDisclaimer":
-        "Indirizzi IP residenziali di abitazioni reali. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+        "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
     "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
     "ipTypeResidentialTooltipBody":
         "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
@@ -4356,7 +4357,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -4390,7 +4391,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "Adresses IP hébergées sur des serveurs rapides et performants pour des besoins VPN rapides : choisissez cette option pour des connexions stables.",
     "ipTypeResidentialDisclaimer":
-        "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevez peut donc changer.",
+        "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevrez peut donc changer.",
     "ipTypeResidentialTooltipTitle": "Pourquoi le lien est-il perdu ?",
     "ipTypeResidentialTooltipBody":
         "Les adresses IP domestiques dépendent de personnes réelles. En cas de perte de connexion, vous serez instantanément reconnecté à l'adresse IP disponible la plus proche. Pour une connexion stable, choisissez une adresse IP haut débit.",
@@ -4907,7 +4908,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5515,7 +5516,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "Direcciones IP alojadas en servidores rápidos y eficientes para necesidades VPN rápidas: elija esta opción para conexiones estables.",
     "ipTypeResidentialDisclaimer":
-        "Direcciones IP residenciales de hogares reales. Casi indetectables, pero menos estables, por lo que la IP que obtenga podría cambiar.",
+        "Direcciones IP residenciales de hogares reales. Casi indetectables pero menos estables, por lo que la IP que obtenga podría cambiar.",
     "ipTypeResidentialTooltipTitle": "¿Por qué se perdió el enlace?",
     "ipTypeResidentialTooltipBody":
         "Las direcciones IP domésticas dependen de usuarios reales. Si se pierde la conexión, se te reconectará instantáneamente a la IP disponible más cercana. Para una conexión estable, elige direcciones IP de alta velocidad.",
@@ -6052,7 +6053,7 @@ class CodegenLoader extends AssetLoader {
         "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
     "allowNotificationsBtn": "السماح بالإشعارات",
     "ipTypeDataCenterDisclaimer":
-        "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة - اختر هذا الخيار للحصول على اتصالات مستقرة",
+        "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة - اختر هذا للحصول على اتصالات مستقرة",
     "ipTypeResidentialDisclaimer":
         "عناوين IP سكنية من منازل حقيقية. يصعب اكتشافها تقريبًا، لكنها أقل استقرارًا، لذا قد يتغير عنوان IP الذي تحصل عليه.",
     "ipTypeResidentialTooltipTitle": "لماذا فُقد الرابط؟",

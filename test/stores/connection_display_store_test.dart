@@ -96,18 +96,15 @@ void main() {
         expect(store.hasDifferentSelection, isFalse);
       });
 
-      test(
-        'returns false when selected is a country matching connected countryCode',
-        () {
-          // locationDE has id == countryCode == 'DE', so isCountry is true.
-          // cityDE has countryCode 'DE' but a different id.
-          when(mockVpnStore.isConnected).thenReturn(true);
-          when(mockSelectedLocationStore.value).thenReturn(locationDE);
-          when(mockVpnStore.location).thenReturn(cityDE);
+      test('returns false when selected is a country matching connected countryCode', () {
+        // locationDE has id == countryCode == 'DE', so isCountry is true.
+        // cityDE has countryCode 'DE' but a different id.
+        when(mockVpnStore.isConnected).thenReturn(true);
+        when(mockSelectedLocationStore.value).thenReturn(locationDE);
+        when(mockVpnStore.location).thenReturn(cityDE);
 
-          expect(store.hasDifferentSelection, isFalse);
-        },
-      );
+        expect(store.hasDifferentSelection, isFalse);
+      });
 
       test('returns true when selected differs from connected', () {
         when(mockVpnStore.isConnected).thenReturn(true);

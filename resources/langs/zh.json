@@ -475,7 +475,7 @@
   "subscriptionPlanWireGuardDesc": "WireGuard——速度快，最适合游戏和流媒体播放\n\nOpenVPN——高度可配置的协议，在其他协议失效的情况下也能正常工作（Android 系统不支持）。",
   "subscriptionPlanDoubleVPNDesc": "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
   "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-  "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+  "subscriptionPlanCityLevelDesc": "与大多数 VPN 相比，它能提供更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
   "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
   "notNowBtn": "现在不要",
   "viewAllFeaturesBtn": "查看所有功能",

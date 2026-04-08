@@ -49,9 +49,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final intent = useComputedValue(() => connectionDisplayStore.connectionIntent);
   final displayLocation = useComputedValue(() => connectionDisplayStore.displayLocation);
   final parentLocation = useComputedValue(() => connectionDisplayStore.parentLocation);
-  final isLocationAvailable = useComputedValue(
-    () => connectionDisplayStore.isLocationAvailable,
-  );
+  final isLocationAvailable = useComputedValue(() => connectionDisplayStore.isLocationAvailable);
   final connectionRated = useComputedValue(() => connectionDisplayStore.connectionRated);
   final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
 
@@ -96,8 +94,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
       );
     } else {
       final selectedParent = locationsStore.findParent(selectedLocation!);
-      final selectedCountry =
-          selectedParent?.getName(context) ?? selectedLocation.getName(context);
+      final selectedCountry = selectedParent?.getName(context) ?? selectedLocation.getName(context);
       final selectedCity = selectedParent != null ? selectedLocation.getName(context) : '';
 
       status = MainIpCardConnected(
