@@ -210,11 +210,7 @@ void main() {
 // ---------------------------------------------------------------------------
 
 class _HookHarness extends HookConsumerWidget {
-  const _HookHarness({
-    required this.location,
-    required this.onTap,
-    required this.onState,
-  });
+  const _HookHarness({required this.location, required this.onTap, required this.onState});
 
   final VPNLocation location;
   final void Function(VPNLocation) onTap;

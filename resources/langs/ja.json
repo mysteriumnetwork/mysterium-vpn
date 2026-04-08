@@ -272,7 +272,7 @@
   "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
   "productUpdates": "製品のアップデートを入手",
   "protocol": "プロトコル",
-  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再度接続する必要があります。",
+  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再接続する必要があります。",
   "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
   "pt": "ポルトガル語",
   "purchased": "購入した",
@@ -494,14 +494,14 @@
     "one": "{statesNum} 州",
     "other": "{statesNum} 州"
   },
-  "switchToLocationBtn": "{switchLocation} に切り替える",
+  "switchToLocationBtn": "{switchLocation}に切り替える",
   "redeemDiscountCode": "割引コードを引き換える",
   "couponCodeCopied": "",
   "marketingConsentPopupTitle": "メールで最新情報を受け取る",
   "marketingConsentPopupDesc": "Mysterium Networkからのメールによる最新情報、プライバシーに関するヒント、および特別オファーを受け取りますか？",
   "allowNotificationsBtn": "通知を許可する",
   "ipTypeDataCenterDisclaimer": "高速かつ効率的なサーバーでホストされているIPアドレスは、迅速なVPN接続のニーズに対応します。安定した接続をお求めの場合は、こちらをお選びください。",
-  "ipTypeResidentialDisclaimer": "実際の家庭から取得した居住用IPアドレス。ほぼ検出不可能だが安定性が低いため、取得するIPアドレスが変わる可能性がある。",
+  "ipTypeResidentialDisclaimer": "実際の家庭から取得した居住用IPアドレス。ほぼ検出不可能ですが、安定性が低いため、取得するIPアドレスが変わる可能性があります。",
   "ipTypeResidentialTooltipTitle": "なぜリンクが切れたのですか？",
   "ipTypeResidentialTooltipBody": "家庭用IPアドレスは、実際のユーザーによって割り当てられます。接続が切断された場合、すぐに最寄りの利用可能なIPアドレスに再接続されます。安定した接続をご希望の場合は、高速IPアドレスをお選びください。"
 }

@@ -26,7 +26,9 @@ class ConnectionTile extends HookConsumerWidget {
       :onThumbsUp,
       :onThumbsDown,
       :connectionRating,
-    ) = useConnectionTileState(ref);
+    ) = useConnectionTileState(
+      ref,
+    );
 
     return Column(
       children: [
@@ -64,11 +66,7 @@ class _DevProtocolLabel extends HookConsumerWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         'Protocol: ${vpnProtocol.protocol.name}',
-        style: const TextStyle(
-          fontSize: 8,
-          color: Palette.warning,
-          fontWeight: FontWeight.w800,
-        ),
+        style: const TextStyle(fontSize: 8, color: Palette.warning, fontWeight: FontWeight.w800),
       ).padding(left: 12),
     );
   }

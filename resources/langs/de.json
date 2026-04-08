@@ -476,7 +476,7 @@
   "subscriptionPlanDoubleVPNDesc": "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
   "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
   "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
-  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
   "notNowBtn": "Nicht jetzt.",
   "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
   "viewLessBtn": "Weniger anzeigen",
