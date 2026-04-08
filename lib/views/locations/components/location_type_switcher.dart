@@ -64,7 +64,13 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
   @override
   Widget build(BuildContext context) => TabBar(
     controller: _controller,
-    onTap: (index) => widget.onChanged(widget.options[index]),
+    onTap: widget.options.length <= 1
+        ? null
+        : (index) {
+            if (widget.options[index] != widget.value) {
+              widget.onChanged(widget.options[index]);
+            }
+          },
     tabs: [
       for (final option in widget.options)
         Tab(
