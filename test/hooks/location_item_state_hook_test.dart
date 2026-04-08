@@ -114,7 +114,6 @@ void main() {
               location: location,
               onTap: (_) {},
               onState: (state) => capturedState = state,
-              ref: ref,
             ),
           ),
         ),
@@ -215,14 +214,11 @@ class _HookHarness extends HookConsumerWidget {
     required this.location,
     required this.onTap,
     required this.onState,
-    required this.ref,
   });
 
   final VPNLocation location;
   final void Function(VPNLocation) onTap;
   final void Function(LocationItemState) onState;
-  // ignore: library_private_types_in_public_api
-  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

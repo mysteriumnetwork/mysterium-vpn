@@ -104,9 +104,11 @@ LocationItemState useLocationItemState({
         },
       );
     }).toList();
-    // onTap is intentionally excluded from keys — it's not a MobX observable,
-    // so excluding it avoids forcing a Computed recreation on every rebuild.
-  }, [children, showCitiesAndStates, subscription, locationMode]);
+    // onTap and locationMode are intentionally excluded from keys: onTap is not
+    // a MobX observable, and locationMode would cause unnecessary Computed churn
+    // on every parent-mode change (child modes are re-derived independently and
+    // tracked by MobX inside the closure).
+  }, [children, showCitiesAndStates, subscription]);
 
   final needsUpgrade = locationMode == LocationMode.unsupportedByPlan;
 
