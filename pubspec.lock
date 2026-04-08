@@ -854,10 +854,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: "517b20870220c48752eafa0ba1a797a092fb22df0d89535fd9991e86ee2cdd9c"
+      sha256: db9df7a5898d894eeda4c78143f35c30a243558be439518972366880b80bf88e
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.2"
+    version: "8.0.2"
   google_identity_services_web:
     dependency: transitive
     description:
@@ -1323,8 +1323,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.6"
-      resolved-ref: e7d5f621401420216ce5cc9081cbe65d2cf59b0c
+      ref: home-page-design
+      resolved-ref: "052b6ec61a2aa7219a663e72ffd797fa33f217f8"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
