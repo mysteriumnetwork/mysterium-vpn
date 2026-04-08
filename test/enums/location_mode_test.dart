@@ -66,6 +66,21 @@ void main() {
       );
       expect(result, isNot(LocationMode.connecting));
     });
+
+    test('does NOT return connecting when isLoading but both vpnLocation and connectingLocation are null', () {
+      final location = makeLocation();
+      final result = LocationMode.from(
+        location: location,
+        residentialIPsAllowed: true,
+        unavailableLocations: const [],
+        subscription: activeSubscription,
+        isConnected: false,
+        isLoading: true,
+        vpnLocation: null,
+        connectingLocation: null,
+      );
+      expect(result, isNot(LocationMode.connecting));
+    });
   });
 
   group('LocationMode.from — connected', () {
