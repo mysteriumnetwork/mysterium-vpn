@@ -15,6 +15,7 @@ typedef LocationItemState = ({
   List<IpCardItem> items,
   String subtitle,
   bool needsUpgrade,
+  bool showCitiesAndStates,
   VoidCallback? onConnect,
 });
 
@@ -123,6 +124,7 @@ LocationItemState useLocationItemState({
     items: items,
     subtitle: subtitle,
     needsUpgrade: needsUpgrade,
+    showCitiesAndStates: showCitiesAndStates,
     onConnect: onConnect,
   );
 }
