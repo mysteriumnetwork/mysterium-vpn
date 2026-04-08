@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 const _kItemHeight = 64.0;
 
 /// Separator between items in the SliverList.
-const _kSeparatorHeight = 12.0;
+const _kSeparatorHeight = 8.0;
 
 /// Combined stride per collapsed item (item + separator).
 const _kItemStride = _kItemHeight + _kSeparatorHeight;

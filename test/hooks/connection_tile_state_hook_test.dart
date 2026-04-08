@@ -112,19 +112,16 @@ void main() {
           final delegate = BeamerDelegate(
             locationBuilder: RoutesLocationBuilder(
               routes: {'/': (_, a, b) => const SizedBox.shrink()},
-            ),
+            ).call,
           );
           return BeamerProvider(
             routerDelegate: delegate,
             child: MaterialApp(
               locale: EasyLocalization.of(ctx)?.locale,
               localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-              supportedLocales:
-                  EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
+              supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
               home: Consumer(
-                builder: (_, ref, child) => _HookHarness(
-                  onState: (state) => capturedState = state,
-                ),
+                builder: (_, ref, child) => _HookHarness(onState: (state) => capturedState = state),
               ),
             ),
           );
@@ -206,9 +203,9 @@ void main() {
     });
 
     testWidgets('connectionRating maps like → thumbsUp', (tester) async {
-      when(mockConnectionDisplayStore.connectionRated).thenReturn(
-        RateConnectionRequestModeEnum.like,
-      );
+      when(
+        mockConnectionDisplayStore.connectionRated,
+      ).thenReturn(RateConnectionRequestModeEnum.like);
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();
