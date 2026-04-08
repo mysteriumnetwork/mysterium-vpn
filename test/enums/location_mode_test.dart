@@ -67,20 +67,23 @@ void main() {
       expect(result, isNot(LocationMode.connecting));
     });
 
-    test('does NOT return connecting when isLoading but both vpnLocation and connectingLocation are null', () {
-      final location = makeLocation();
-      final result = LocationMode.from(
-        location: location,
-        residentialIPsAllowed: true,
-        unavailableLocations: const [],
-        subscription: activeSubscription,
-        isConnected: false,
-        isLoading: true,
-        vpnLocation: null,
-        connectingLocation: null,
-      );
-      expect(result, isNot(LocationMode.connecting));
-    });
+    test(
+      'does NOT return connecting when isLoading but both vpnLocation and connectingLocation are null',
+      () {
+        final location = makeLocation();
+        final result = LocationMode.from(
+          location: location,
+          residentialIPsAllowed: true,
+          unavailableLocations: const [],
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: true,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, isNot(LocationMode.connecting));
+      },
+    );
   });
 
   group('LocationMode.from — connected', () {
@@ -149,21 +152,23 @@ void main() {
   });
 
   group('LocationMode.from — unsupportedByPlan', () {
-    test('returns unsupportedByPlan for residential location when residentialIPsAllowed is false',
-        () {
-      final location = makeLocation(ipType: IPType.residential);
-      final result = LocationMode.from(
-        location: location,
-        residentialIPsAllowed: false,
-        unavailableLocations: const [],
-        subscription: activeSubscription,
-        isConnected: false,
-        isLoading: false,
-        vpnLocation: null,
-        connectingLocation: null,
-      );
-      expect(result, LocationMode.unsupportedByPlan);
-    });
+    test(
+      'returns unsupportedByPlan for residential location when residentialIPsAllowed is false',
+      () {
+        final location = makeLocation(ipType: IPType.residential);
+        final result = LocationMode.from(
+          location: location,
+          residentialIPsAllowed: false,
+          unavailableLocations: const [],
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: false,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, LocationMode.unsupportedByPlan);
+      },
+    );
 
     test('returns unsupportedByPlan for residential location that is not available', () {
       final location = makeLocation(ipType: IPType.residential, isAvailable: false);
@@ -229,21 +234,23 @@ void main() {
       expect(result, LocationMode.available);
     });
 
-    test('returns available for residential location when residentialIPsAllowed and isAvailable',
-        () {
-      final location = makeLocation(ipType: IPType.residential);
-      final result = LocationMode.from(
-        location: location,
-        residentialIPsAllowed: true,
-        unavailableLocations: const [],
-        subscription: activeSubscription,
-        isConnected: false,
-        isLoading: false,
-        vpnLocation: null,
-        connectingLocation: null,
-      );
-      expect(result, LocationMode.available);
-    });
+    test(
+      'returns available for residential location when residentialIPsAllowed and isAvailable',
+      () {
+        final location = makeLocation(ipType: IPType.residential);
+        final result = LocationMode.from(
+          location: location,
+          residentialIPsAllowed: true,
+          unavailableLocations: const [],
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: false,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, LocationMode.available);
+      },
+    );
   });
 
   group('LocationMode.from — priority ordering', () {

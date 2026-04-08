@@ -38,7 +38,6 @@ class ExpandableLocationItem extends HookConsumerWidget {
   /// Called when the user manually toggles expansion.
   final ValueChanged<bool>? onExpansionChanged;
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
@@ -115,9 +114,7 @@ class ExpandableLocationItem extends HookConsumerWidget {
               : LocaleKeys.locationItemCityCount.plural(children.length)
         : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0);
 
-    final subscription = useComputedValue(
-      () => subscriptionStore.subscriptionFuture.value,
-    );
+    final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
 
     final items = useComputedValue(() {
       if (!showCitiesAndStates) {

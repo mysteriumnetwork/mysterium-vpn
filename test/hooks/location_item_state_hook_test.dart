@@ -11,7 +11,6 @@ import 'package:mysterium_vpn/common/hooks/location_item_state_hook.dart';
 import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
@@ -80,9 +79,7 @@ void main() {
 
     when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(true);
 
-    when(
-      mockUnavailableLocationsStore.unavailableLocations,
-    ).thenReturn(const <VPNLocation>{});
+    when(mockUnavailableLocationsStore.unavailableLocations).thenReturn(const <VPNLocation>{});
 
     when(mockRemoteConfigStore.showCitiesAndStates).thenReturn(false);
     when(mockRemoteConfigStore.countriesWithStates).thenReturn(const <String>{});
@@ -92,41 +89,38 @@ void main() {
   // Harness widget
   // ---------------------------------------------------------------------------
 
-  Widget buildHarness(VPNLocation location) {
-    return ProviderScope(
-      overrides: [
-        vpnStorePOD.overrideWithValue(mockVpnStore),
-        subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
-        subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
-        unavailableLocationsStorePOD.overrideWithValue(mockUnavailableLocationsStore),
-        remoteConfigStorePOD.overrideWithValue(mockRemoteConfigStore),
-      ],
-      child: EasyLocalization(
-        supportedLocales: const [Locale('en'), Locale('en', 'US')],
-        path: 'resources/langs',
-        fallbackLocale: const Locale('en'),
-        startLocale: const Locale('en'),
-        useOnlyLangCode: true,
-        assetLoader: const CodegenLoader(),
-        child: Builder(
-          builder: (ctx) => MaterialApp(
-            locale: EasyLocalization.of(ctx)?.locale,
-            localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-            supportedLocales:
-                EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
-            home: Consumer(
-              builder: (ctx, ref, _) => _HookHarness(
-                location: location,
-                onTap: (_) {},
-                onState: (state) => capturedState = state,
-                ref: ref,
-              ),
+  Widget buildHarness(VPNLocation location) => ProviderScope(
+    overrides: [
+      vpnStorePOD.overrideWithValue(mockVpnStore),
+      subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
+      subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
+      unavailableLocationsStorePOD.overrideWithValue(mockUnavailableLocationsStore),
+      remoteConfigStorePOD.overrideWithValue(mockRemoteConfigStore),
+    ],
+    child: EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('en', 'US')],
+      path: 'resources/langs',
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('en'),
+      useOnlyLangCode: true,
+      assetLoader: const CodegenLoader(),
+      child: Builder(
+        builder: (ctx) => MaterialApp(
+          locale: EasyLocalization.of(ctx)?.locale,
+          localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
+          supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
+          home: Consumer(
+            builder: (ctx, ref, _) => _HookHarness(
+              location: location,
+              onTap: (_) {},
+              onState: (state) => capturedState = state,
+              ref: ref,
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 
   // ---------------------------------------------------------------------------
   // Test cases
@@ -160,9 +154,7 @@ void main() {
     testWidgets('disabled for unavailable location', (tester) async {
       final location = makeLocation();
 
-      when(
-        mockUnavailableLocationsStore.unavailableLocations,
-      ).thenReturn({location});
+      when(mockUnavailableLocationsStore.unavailableLocations).thenReturn({location});
 
       await tester.pumpWidget(buildHarness(location));
       await tester.pump();
@@ -196,10 +188,11 @@ void main() {
       expect(capturedState!.items, isEmpty);
     });
 
-    testWidgets('items built for location with two children when showCitiesAndStates is true',
-        (tester) async {
-      final child1 = makeLocation(id: 'Berlin', countryCode: 'DE', nodeCount: 5);
-      final child2 = makeLocation(id: 'Munich', countryCode: 'DE', nodeCount: 3);
+    testWidgets('items built for location with two children when showCitiesAndStates is true', (
+      tester,
+    ) async {
+      final child1 = makeLocation(id: 'Berlin', nodeCount: 5);
+      final child2 = makeLocation(id: 'Munich', nodeCount: 3);
       final location = makeLocation(children: [child1, child2]);
 
       when(mockRemoteConfigStore.showCitiesAndStates).thenReturn(true);

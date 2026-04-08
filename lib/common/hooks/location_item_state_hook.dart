@@ -104,8 +104,8 @@ LocationItemState useLocationItemState({
         },
       );
     }).toList();
-  // onTap is intentionally excluded from keys — it's not a MobX observable,
-  // so excluding it avoids forcing a Computed recreation on every rebuild.
+    // onTap is intentionally excluded from keys — it's not a MobX observable,
+    // so excluding it avoids forcing a Computed recreation on every rebuild.
   }, [children, showCitiesAndStates, subscription, locationMode]);
 
   final needsUpgrade = locationMode == LocationMode.unsupportedByPlan;
