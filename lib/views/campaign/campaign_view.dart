@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
@@ -12,20 +13,21 @@ import 'package:webview_flutter/webview_flutter.dart';
 // Import for iOS/macOS features.
 //import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-Future<void> showCampaignDialog(BuildContext context, Uri campaignUri) async {
+Future<void> showCampaignDialog(BuildContext context, Uri campaignUri, String? couponCode) async {
   await showModal<void>(
     context,
     builder: (_) => Theme(
       data: DesignSystemTheme.of(context),
-      child: CampaignWebViewScreen(campaignUri: campaignUri),
+      child: CampaignWebViewScreen(campaignUri: campaignUri, couponCode: couponCode),
     ),
   );
 }
 
 class CampaignWebViewScreen extends StatefulHookConsumerWidget {
-  const CampaignWebViewScreen({required this.campaignUri, super.key});
+  const CampaignWebViewScreen({required this.campaignUri, this.couponCode, super.key});
 
   final Uri campaignUri;
+  final String? couponCode;
 
   @override
   ConsumerState<CampaignWebViewScreen> createState() => _WebViewScreenState();
@@ -89,27 +91,62 @@ class _WebViewScreenState extends ConsumerState<CampaignWebViewScreen> {
         host.endsWith('localhost');
   }
 
-  void _onJsMessage(JavaScriptMessage message) {
-    final data = jsonDecode(message.message) as Map<String, dynamic>;
-    final type = data['type'] as String?;
-
-    switch (type) {
-      case 'DEBUG_PING':
-        break;
-      case 'SUBSCRIBE':
+  void _onJsMessage(JavaScriptMessage jsMessage) {
+    final message = _Message.fromJson(jsonDecode(jsMessage.message) as Map<String, dynamic>);
+    switch (message.type) {
+      case _MessageType.subscribe:
+        final _ = _SubscribePayload.fromJson(message.payload ?? {});
         _handleSubscribe();
         break;
-      case 'DISCOUNT_VALIDATE':
-        //_handleDiscountValidate(data['payload'] as Map<String, dynamic>?);
+      case _MessageType.subscriptionUpgrade:
+        showSubscriptionUpgradeModalPage(context);
         break;
-      case 'OPEN_INTERCOM':
-        //_handleOpenIntercom(data['payload'] as Map<String, dynamic>?);
-        break;
-      case 'CLOSE_LS':
-        //_handleClose();
-        break;
-      default:
-        break;
+      case _MessageType.unknown:
+        throw Exception('Unknown message type: ${message.type}');
     }
   }
+}
+
+enum _MessageType {
+  subscribe,
+  subscriptionUpgrade,
+  unknown;
+
+  static _MessageType fromString(String? raw) {
+    if (raw == null) {
+      return _MessageType.unknown;
+    }
+    switch (raw) {
+      case 'subscribe':
+        return _MessageType.subscribe;
+      case 'subscription_upgrade':
+        return _MessageType.subscriptionUpgrade;
+      default:
+        return _MessageType.unknown;
+    }
+  }
+}
+
+class _Message {
+  _Message({required this.type, required this.payload});
+
+  factory _Message.fromJson(Map<String, dynamic> json) => _Message(
+    type: _MessageType.fromString(json['type'] as String?),
+    payload: json['payload'] as Map<String, dynamic>?,
+  );
+
+  final _MessageType type;
+  final Map<String, dynamic>? payload;
+}
+
+class _SubscribePayload {
+  _SubscribePayload({required this.planId, required this.couponCode});
+
+  factory _SubscribePayload.fromJson(Map<String, dynamic> json) => _SubscribePayload(
+    planId: json['planId'] as String? ?? '',
+    couponCode: json['couponCode'] as String? ?? '',
+  );
+
+  final String planId;
+  final String couponCode;
 }

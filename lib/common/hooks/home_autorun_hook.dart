@@ -90,7 +90,12 @@ void useHomeAutorun() {
               if (campaignUrl is! String || campaignUrl.isEmpty) {
                 return;
               }
-              showCampaignDialog(context, Uri.parse(campaignUrl));
+              final couponCode = notification.additionalData!['coupon_code'];
+              if (couponCode is! String || couponCode.isEmpty) {
+                return;
+              }
+
+              showCampaignDialog(context, Uri.parse(campaignUrl), couponCode);
             } else if (notification.additionalData!.containsKey('coupon_code')) {
               final couponCode = notification.additionalData!['coupon_code'];
               if (couponCode is! String || couponCode.isEmpty) {

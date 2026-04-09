@@ -261,7 +261,7 @@ class QAToolbox extends HookConsumerWidget {
           _QAActionButton(
             label: 'Web campaign',
             onPressed: () =>
-                showCampaignDialog(context, Uri.parse('http://localhost:3000/campaign')),
+                showCampaignDialog(context, Uri.parse('http://localhost:3000/campaign'), ''),
           ),
           _QAActionButton(
             label: 'Retry Subscription Verification',
