@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -12,8 +13,9 @@ import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
-import 'package:vpn_api/vpn_api.dart';
+import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 import 'connection_tile_state_hook_test.mocks.dart';
 
@@ -25,6 +27,8 @@ import 'connection_tile_state_hook_test.mocks.dart';
   MockSpec<LocationsStore>(),
   MockSpec<UnavailableLocationsStore>(),
   MockSpec<ABTestingStore>(),
+  MockSpec<SubscriptionStore>(),
+  MockSpec<SubscriptionFeaturesStore>(),
 ])
 void main() {
   // ---------------------------------------------------------------------------
@@ -38,6 +42,8 @@ void main() {
     countryCode: 'DE',
   );
 
+  final activeSubscription = Subscription(active: true, expired: false, recurring: false);
+
   // State captured by _HookHarness — reset before each test.
   ConnectionTileState? capturedState;
 
@@ -49,6 +55,8 @@ void main() {
   late MockLocationsStore mockLocationsStore;
   late MockUnavailableLocationsStore mockUnavailableLocationsStore;
   late MockABTestingStore mockAbTestingStore;
+  late MockSubscriptionStore mockSubscriptionStore;
+  late MockSubscriptionFeaturesStore mockSubscriptionFeaturesStore;
 
   setUp(() {
     capturedState = null;
@@ -60,6 +68,8 @@ void main() {
     mockLocationsStore = MockLocationsStore();
     mockUnavailableLocationsStore = MockUnavailableLocationsStore();
     mockAbTestingStore = MockABTestingStore();
+    mockSubscriptionStore = MockSubscriptionStore();
+    mockSubscriptionFeaturesStore = MockSubscriptionFeaturesStore();
 
     // Default stubs — individual tests may override these.
     when(mockConnectionDisplayStore.hasDifferentSelection).thenReturn(false);
@@ -84,6 +94,12 @@ void main() {
     when(mockLocationsStore.findParent(any)).thenReturn(null);
 
     when(mockUnavailableLocationsStore.unavailableLocations).thenReturn(const {});
+
+    when(
+      mockSubscriptionStore.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+
+    when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -99,6 +115,8 @@ void main() {
       locationsStorePOD.overrideWithValue(mockLocationsStore),
       unavailableLocationsStorePOD.overrideWithValue(mockUnavailableLocationsStore),
       abTestingStorePOD.overrideWithValue(mockAbTestingStore),
+      subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
+      subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
     ],
     child: EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('en', 'US')],
@@ -198,7 +216,6 @@ void main() {
       await tester.pump();
 
       expect(capturedState, isNotNull);
-      // The label should contain "Disconnecting" (locale key: disconnecting)
       expect(capturedState!.connectingLabel.toLowerCase(), contains('disconnecting'));
     });
 
@@ -213,6 +230,28 @@ void main() {
       expect(capturedState, isNotNull);
       expect(capturedState!.connectionRating, ConnectionRating.thumbsUp);
     });
+
+    testWidgets(
+      'onToggle is handleUpgradePlan for residential location without residentialIPsAllowed',
+      (tester) async {
+        const residentialLocation = VPNLocation(
+          id: 'DE-RES',
+          ipType: IPType.residential,
+          translations: {'en': 'Germany Residential'},
+          countryCode: 'DE',
+        );
+        when(mockConnectionDisplayStore.displayLocation).thenReturn(residentialLocation);
+        when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+        when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(false);
+
+        await tester.pumpWidget(buildHarness());
+        await tester.pump();
+
+        expect(capturedState, isNotNull);
+        // onToggle should be non-null (upgrade callback), not null (loading guard)
+        expect(capturedState!.onToggle, isNotNull);
+      },
+    );
   });
 }
 
