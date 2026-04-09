@@ -78,8 +78,10 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final MainIpCardStatus status;
   var noConnectionTitle = LocaleKeys.connectBestServer.tr();
   var noConnectionDescription = LocaleKeys.orSelectCountryManually.tr();
-  var connectLabel = LocaleKeys.connect.tr();
-  var disconnectLabel = LocaleKeys.disconnect.tr();
+  var connectLabel = needsUpgrade ? LocaleKeys.subscriptionUpgrade.tr() : LocaleKeys.connect.tr();
+  var disconnectLabel = needsUpgrade
+      ? LocaleKeys.subscriptionUpgrade.tr()
+      : LocaleKeys.disconnect.tr();
 
   if (hasDifferentSelection) {
     final connected = connectedLocation!;
@@ -125,7 +127,9 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
         serviceQuality: connectedServiceQuality,
         ipPoolCount: connectedIpPoolCount,
       );
-      disconnectLabel = switchLabel;
+      if (!needsUpgrade) {
+        disconnectLabel = switchLabel;
+      }
     }
   } else {
     final country = parentLocation?.getName(context) ?? displayLocation?.getName(context) ?? '';
