@@ -104,7 +104,7 @@ class LocationsMap extends HookConsumerWidget {
         initialZoom: mapConfig.initialZoom.toDouble(),
         initialCenter: position ?? const LatLng(0, 0),
         cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
-        backgroundColor: theme.palette.bgMapCountries,
+        backgroundColor: theme.palette.bgMapBackground,
         minZoom: mapConfig.zoomLevels.min.toDouble(),
         maxZoom: mapConfig.zoomLevels.max.toDouble(),
         onTap: (_, _) => onTapOutside?.call(),
