@@ -35,7 +35,10 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final selectedLocationStore = ref.watch(selectedLocationStorePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
+  final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
   final handleToggleConnection = useHandleToggleConnection();
+  final handleUpgradePlan = useHandleUpgradePlan();
 
   final hasDifferentSelection = useComputedValue(
     () => connectionDisplayStore.hasDifferentSelection,
@@ -52,6 +55,23 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final isLocationAvailable = useComputedValue(() => connectionDisplayStore.isLocationAvailable);
   final connectionRated = useComputedValue(() => connectionDisplayStore.connectionRated);
   final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
+  final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
+
+  // The location the user intends to connect to: selected (switch scenario) or display.
+  final intentLocation = hasDifferentSelection ? selectedLocation : displayLocation;
+  final needsUpgrade =
+      intentLocation != null &&
+      LocationMode.from(
+            location: intentLocation,
+            residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+            unavailableLocations: unavailableLocationsStore.unavailableLocations,
+            subscription: subscription,
+            isConnected: isConnected,
+            isLoading: isLoading,
+            vpnLocation: connectedLocation,
+            connectingLocation: null,
+          ) ==
+          LocationMode.unsupportedByPlan;
 
   final isMobile = ScreenType.of(context) <= ScreenType.mobile;
 
@@ -158,6 +178,8 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
 
   final onToggle = isLoading
       ? null
+      : needsUpgrade
+      ? handleUpgradePlan
       : () => handleToggleConnection(location: targetLocation, intent: intent);
 
   final onRefreshIP = useCallback(() async {
