@@ -35,7 +35,6 @@ dependencies:
   firebase_performance: 0.11.1+5
   flutter:
     sdk: flutter
-  flutter_hooks: 0.21.3+1
   flutter_launcher_icons: 0.13.1
   flutter_localizations:
     sdk: flutter
@@ -59,7 +58,7 @@ dependencies:
   google_sign_in: 7.2.0
   hive_ce: 2.19.3
   hive_ce_flutter: 2.3.4
-  hooks_riverpod: 3.3.1
+  get_it: ^9.1.0
   in_app_purchase: 3.2.3
   in_app_purchase_android: ^0.4.0+8
   in_app_purchase_storekit: 0.4.5
