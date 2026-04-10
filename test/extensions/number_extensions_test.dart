@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
 
 void main() {
   group('NumberExtensions', () {

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/core/constants/constants.dart';
+import 'package:mysterium_vpn/core/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';

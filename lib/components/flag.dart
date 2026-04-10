@@ -1,6 +1,6 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/core/styles/style.dart';
 
 class Flag extends StatelessWidget {
   const Flag({required this.countryCode, this.size = 20, super.key});

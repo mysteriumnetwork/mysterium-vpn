@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class LocationTypeSwitcher extends StatefulWidget {

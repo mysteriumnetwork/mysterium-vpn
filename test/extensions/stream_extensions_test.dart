@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/common/extensions/stream_extensions.dart';
+import 'package:mysterium_vpn/core/extensions/stream_extensions.dart';
 
 void main() {
   group('StreamExtensions', () {

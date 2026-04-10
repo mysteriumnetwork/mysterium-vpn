@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item_loading.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shimmer/shimmer.dart';

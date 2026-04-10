@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:store_checker_windows/store_checker_windows.dart';
 

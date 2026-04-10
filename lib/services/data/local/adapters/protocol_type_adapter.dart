@@ -1,5 +1,5 @@
 import 'package:hive_ce/hive.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 
 class ProtocolTypeAdapter extends TypeAdapter<ProtocolType> {
   const ProtocolTypeAdapter({required this.typeId});

@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart';
 

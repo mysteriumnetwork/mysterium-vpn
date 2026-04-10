@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
 
 part 'subscription.freezed.dart';
 

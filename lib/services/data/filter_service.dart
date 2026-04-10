@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 class FilterService {

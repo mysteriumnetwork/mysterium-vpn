@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/core/extensions/asset.dart';
+import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 Future<T?> showModalPage<T>(BuildContext context, {required WidgetBuilder builder}) async {

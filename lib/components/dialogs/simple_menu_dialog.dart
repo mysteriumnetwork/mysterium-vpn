@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/styles/palette.dart';
 
 Future<void> showSimpleMenu(BuildContext context, {required List<SimpleMenuItem> items}) async {
   final screenType = ScreenType.of(context);

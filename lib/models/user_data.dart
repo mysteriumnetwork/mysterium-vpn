@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 part 'user_data.g.dart';

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';

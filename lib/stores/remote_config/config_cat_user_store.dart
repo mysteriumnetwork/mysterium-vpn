@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/core/extensions/extensions.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/config_cat_user_custom.dart';
 import 'package:mysterium_vpn/stores/stores.dart';

@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/auth_status.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
+import 'package:mysterium_vpn/core/enums/auth_status.dart';
+import 'package:mysterium_vpn/core/enums/screen_type.dart';
+import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/setting_item.dart';

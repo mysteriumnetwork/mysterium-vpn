@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:in_app_update/in_app_update.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';

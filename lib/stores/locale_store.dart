@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
 // Include generated file

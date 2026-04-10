@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
+import 'package:mysterium_vpn/core/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/settings_mobile_view.dart';

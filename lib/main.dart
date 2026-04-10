@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';

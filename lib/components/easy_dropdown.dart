@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EasyDropdown<T> extends StatelessWidget {

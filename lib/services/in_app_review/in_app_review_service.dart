@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:in_app_review/in_app_review.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/services/services.dart';
 

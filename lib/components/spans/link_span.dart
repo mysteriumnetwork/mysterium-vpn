@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/core/styles/style.dart';
 
 class LinkSpan extends TextSpan {
   LinkSpan({required String text, required VoidCallback onTap, TextStyle? style})
