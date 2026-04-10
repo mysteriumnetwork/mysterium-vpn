@@ -52,15 +52,12 @@ LocationItemState useLocationItemState({
     [location, subscription],
   );
 
-  final countryStatus = useComputedValue(
-    () => switch (locationMode) {
-      LocationMode.connecting => IpCardStatus.connecting,
-      LocationMode.connected => IpCardStatus.connected,
-      LocationMode.unavailable => IpCardStatus.disabled,
-      _ => IpCardStatus.idle,
-    },
-    [locationMode],
-  );
+  final countryStatus = switch (locationMode) {
+    LocationMode.connecting => IpCardStatus.connecting,
+    LocationMode.connected => IpCardStatus.connected,
+    LocationMode.unavailable => IpCardStatus.disabled,
+    _ => IpCardStatus.idle,
+  };
 
   final subtitle = showCitiesAndStates
       ? locationHasStates

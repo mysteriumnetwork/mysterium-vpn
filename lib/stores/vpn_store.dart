@@ -309,6 +309,10 @@ abstract class _VpnStore extends VpnGuard with Store {
   void _listenToConnectionStatusChanges() {
     final stream = _vpnRepository.statusStream();
     _connectionStatusStream = stream.listen((status) async {
+      // The stream can deliver a stale non-connected event while the tunnel is
+      // already connected (race between the connect handshake and the status
+      // stream). Poll the real status and short-circuit so we don't clobber
+      // the connected state with a delayed transitional event.
       final checkStatus = await _vpnRepository.currentStatus();
       if (checkStatus == VpnConnectionStatus.connected) {
         _connectionStatus = checkStatus;
