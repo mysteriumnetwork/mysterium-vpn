@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_config_store.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 part 'subscription_features_store.g.dart';

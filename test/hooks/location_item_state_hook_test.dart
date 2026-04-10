@@ -11,8 +11,11 @@ import 'package:mysterium_vpn/common/hooks/location_item_state_hook.dart';
 import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
+import 'package:mysterium_vpn/features/locations/store/unavailable_locations_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_features_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 import 'location_item_state_hook_test.mocks.dart';

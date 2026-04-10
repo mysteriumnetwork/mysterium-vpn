@@ -2,7 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
+import 'package:mysterium_vpn/features/locations/store/recent_locations_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/user_intents_store.dart';
 
 part 'connection_decision_store.g.dart';
 

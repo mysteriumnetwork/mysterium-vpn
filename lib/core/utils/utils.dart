@@ -16,7 +16,7 @@ import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 

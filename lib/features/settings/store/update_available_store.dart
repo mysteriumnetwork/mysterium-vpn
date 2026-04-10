@@ -4,10 +4,10 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-part 'update_availabe_store.g.dart';
+part 'update_available_store.g.dart';
 
 // ignore: library_private_types_in_public_api
 class UpdateAvailableStore = _UpdateAvailableStore with _$UpdateAvailableStore;

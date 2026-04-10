@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 

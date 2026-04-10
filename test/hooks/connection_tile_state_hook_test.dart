@@ -12,8 +12,15 @@ import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
 import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
+import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
+import 'package:mysterium_vpn/features/locations/store/unavailable_locations_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/connection_display_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_features_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 

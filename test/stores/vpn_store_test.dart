@@ -8,7 +8,22 @@ import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_query_store.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
+import 'package:mysterium_vpn/features/locations/store/recent_locations_store.dart';
+import 'package:mysterium_vpn/features/locations/store/unavailable_locations_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/connection_decision_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/connections_limit_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/dns_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/real_ip_info_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/refresh_ip_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/user_intents_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_protocol_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:talker/talker.dart';
 
 @GenerateNiceMocks([

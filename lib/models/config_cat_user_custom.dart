@@ -1,6 +1,6 @@
 import 'package:configcat_client/configcat_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_user_store.dart';
 
 part 'config_cat_user_custom.freezed.dart';
 part 'config_cat_user_custom.g.dart';

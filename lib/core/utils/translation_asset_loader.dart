@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/texts_store.dart';
 
 class TranslationAssetLoader extends AssetLoader {
   const TranslationAssetLoader(this._textsStore);

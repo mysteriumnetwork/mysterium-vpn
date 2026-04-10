@@ -4,7 +4,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
+import 'package:mysterium_vpn/features/locations/store/recent_locations_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/connection_decision_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/user_intents_store.dart';
 
 import 'connection_decision_store_test.mocks.dart';
 

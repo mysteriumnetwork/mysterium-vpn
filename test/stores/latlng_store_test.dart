@@ -5,7 +5,8 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/locations/store/latlng_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 
 import 'latlng_store_test.mocks.dart';
 

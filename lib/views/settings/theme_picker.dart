@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/core/theme/theme_store.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 
 class ThemePicker extends StatelessWidget {
   const ThemePicker({required this.store, required this.analyticsStore, super.key});

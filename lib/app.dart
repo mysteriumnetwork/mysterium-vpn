@@ -24,7 +24,8 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/app_deferred_init.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/vpn/store/dns_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class MyApp extends HookConsumerWidget {

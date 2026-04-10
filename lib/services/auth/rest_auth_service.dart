@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';

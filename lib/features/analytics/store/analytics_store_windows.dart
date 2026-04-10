@@ -10,8 +10,9 @@ import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/observers/navigator_observer.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/stores/analytics/constants.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/constants.dart';
+import 'package:mysterium_vpn/core/device/device_id_store.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 
 part 'analytics_store_windows.g.dart';
 

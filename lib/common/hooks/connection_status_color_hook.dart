@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/core/enums/vpn_connection_status.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/core/styles/palette.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 
 Color useConnectionStatusColor() {
   final vpnStore = useProvider<VpnStore>(vpnStorePOD);

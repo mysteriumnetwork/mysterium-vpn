@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/core/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_store.dart';
 
 part 'remote_config_store.g.dart';
 

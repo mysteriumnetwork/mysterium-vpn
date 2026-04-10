@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.

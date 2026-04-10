@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 
 part 'promotional_content_store.g.dart';
 

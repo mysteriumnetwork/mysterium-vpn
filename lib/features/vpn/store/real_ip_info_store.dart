@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 part 'real_ip_info_store.g.dart';

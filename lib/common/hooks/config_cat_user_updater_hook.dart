@@ -2,8 +2,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_user_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/texts_store.dart';
 
 void useConfigCatUserUpdater() {
   final remoteConfigStore = useProvider<RemoteConfigStore>(remoteConfigStorePOD);

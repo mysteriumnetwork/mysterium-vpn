@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_user_store.dart';
 import 'package:talker/talker.dart';
 
 abstract class ConfigCatStore with Store {

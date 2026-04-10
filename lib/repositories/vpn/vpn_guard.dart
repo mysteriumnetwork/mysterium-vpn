@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 
 abstract class VpnGuard {
   VpnGuard({

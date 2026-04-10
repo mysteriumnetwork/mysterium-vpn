@@ -16,7 +16,10 @@ import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart'
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/notifications/store/push_notifications_store.dart';
+import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 
 void useHomeAutorun() {
   final context = useContext();

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:talker/talker.dart';
 
 class CrashlitycsLoggerObserver extends TalkerObserver {

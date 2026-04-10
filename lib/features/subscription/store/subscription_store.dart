@@ -11,7 +11,9 @@ import 'package:mysterium_vpn/core/extensions/observable_future_extensions.dart'
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 // Include generated file

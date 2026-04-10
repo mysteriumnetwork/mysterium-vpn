@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_store.dart';
 import 'package:talker/talker.dart';
 
 part 'texts_store.g.dart';

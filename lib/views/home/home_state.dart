@@ -8,7 +8,7 @@ import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 
 class _HomeState extends ChangeNotifier {
   _HomeState(this._prefs, this._analytics) {

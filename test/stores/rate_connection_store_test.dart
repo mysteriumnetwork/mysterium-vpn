@@ -2,7 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/rate_connection_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 import 'rate_connection_store_test.mocks.dart';
