@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
+import 'package:mysterium_vpn/features/notifications/repositories/notifications_repository.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:talker/talker.dart';
 

@@ -12,7 +12,7 @@ import 'package:mysterium_vpn/core/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/features/vpn/repositories/vpn.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';

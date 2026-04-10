@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/features/vpn/repositories/vpn.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';

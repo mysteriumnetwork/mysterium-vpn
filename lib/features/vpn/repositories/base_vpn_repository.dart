@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/repositories/vpn/vpn_repository.dart';
+import 'package:mysterium_vpn/features/vpn/repositories/vpn_repository.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';

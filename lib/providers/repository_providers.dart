@@ -1,7 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/notifications/repositories/notifications.dart';
+import 'package:mysterium_vpn/features/vpn/repositories/vpn.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
-import 'package:mysterium_vpn/repositories/repositories.dart';
 
 final wireguardRepositoryPOD = Provider<WireguardRepository>(
   (ref) => WireguardRepository(
