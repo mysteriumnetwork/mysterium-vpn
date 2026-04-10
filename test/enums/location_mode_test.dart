@@ -26,7 +26,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: true,
@@ -41,7 +41,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: true,
@@ -57,7 +57,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: true,
@@ -74,7 +74,7 @@ void main() {
         final result = LocationMode.from(
           location: location,
           residentialIPsAllowed: true,
-          unavailableLocations: const [],
+          unavailableLocations: const {},
           subscription: activeSubscription,
           isConnected: false,
           isLoading: true,
@@ -92,7 +92,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: true,
         isLoading: false,
@@ -108,7 +108,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: true,
         isLoading: false,
@@ -125,7 +125,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: null,
         isConnected: false,
         isLoading: false,
@@ -140,7 +140,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: inactiveSubscription,
         isConnected: false,
         isLoading: false,
@@ -159,7 +159,7 @@ void main() {
         final result = LocationMode.from(
           location: location,
           residentialIPsAllowed: false,
-          unavailableLocations: const [],
+          unavailableLocations: const {},
           subscription: activeSubscription,
           isConnected: false,
           isLoading: false,
@@ -175,7 +175,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: false,
@@ -192,7 +192,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: [location],
+        unavailableLocations: {location},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: false,
@@ -207,7 +207,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: false,
@@ -224,7 +224,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: false,
         isLoading: false,
@@ -241,7 +241,7 @@ void main() {
         final result = LocationMode.from(
           location: location,
           residentialIPsAllowed: true,
-          unavailableLocations: const [],
+          unavailableLocations: const {},
           subscription: activeSubscription,
           isConnected: false,
           isLoading: false,
@@ -259,7 +259,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: activeSubscription,
         isConnected: true,
         isLoading: true,
@@ -275,7 +275,7 @@ void main() {
       final result = LocationMode.from(
         location: location,
         residentialIPsAllowed: true,
-        unavailableLocations: const [],
+        unavailableLocations: const {},
         subscription: null,
         isConnected: true,
         isLoading: false,
