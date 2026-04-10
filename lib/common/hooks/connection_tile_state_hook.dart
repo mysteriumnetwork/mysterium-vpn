@@ -57,31 +57,31 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
 
-  // The location the user intends to connect to: selected (switch scenario) or display.
-  final intentLocation = hasDifferentSelection ? selectedLocation : displayLocation;
-  final needsUpgrade =
-      intentLocation != null &&
-      LocationMode.from(
-            location: intentLocation,
-            residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
-            unavailableLocations: unavailableLocationsStore.unavailableLocations,
-            subscription: subscription,
-            isConnected: isConnected,
-            isLoading: isLoading,
-            vpnLocation: connectedLocation,
-            connectingLocation: null,
-          ) ==
-          LocationMode.unsupportedByPlan;
+  final needsUpgrade = useComputedValue(() {
+    // The location the user intends to connect to: selected (switch scenario) or display.
+    final intentLocation = hasDifferentSelection ? selectedLocation : displayLocation;
+    return intentLocation != null &&
+        LocationMode.from(
+              location: intentLocation,
+              residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+              unavailableLocations: unavailableLocationsStore.unavailableLocations,
+              subscription: subscription,
+              isConnected: isConnected,
+              isLoading: isLoading,
+              vpnLocation: connectedLocation,
+              connectingLocation: null,
+            ) ==
+            LocationMode.unsupportedByPlan;
+  });
 
   final isMobile = ScreenType.of(context) <= ScreenType.mobile;
 
   final MainIpCardStatus status;
   var noConnectionTitle = LocaleKeys.connectBestServer.tr();
   var noConnectionDescription = LocaleKeys.orSelectCountryManually.tr();
-  var connectLabel = needsUpgrade ? LocaleKeys.subscriptionUpgrade.tr() : LocaleKeys.connect.tr();
-  var disconnectLabel = needsUpgrade
-      ? LocaleKeys.subscriptionUpgrade.tr()
-      : LocaleKeys.disconnect.tr();
+  final upgradeLabel = needsUpgrade ? LocaleKeys.subscriptionUpgrade.tr() : null;
+  var connectLabel = upgradeLabel ?? LocaleKeys.connect.tr();
+  var disconnectLabel = upgradeLabel ?? LocaleKeys.disconnect.tr();
 
   if (hasDifferentSelection) {
     final connected = connectedLocation!;
