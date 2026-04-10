@@ -12,7 +12,7 @@ enum LocationMode {
   static LocationMode from({
     required VPNLocation location,
     required bool residentialIPsAllowed,
-    required Iterable<VPNLocation> unavailableLocations,
+    required Set<VPNLocation> unavailableLocations,
     required Subscription? subscription,
     required bool isConnected,
     required bool isLoading,
