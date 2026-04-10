@@ -57,6 +57,11 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
                     title: SettingCategory.qaToolbox.trKey,
                     onTap: () => updateSelectedCategory(ref, SettingCategory.qaToolbox),
                   ),
+                CategoryItem(
+                  isSelected: settingCategory == SettingCategory.campaign,
+                  title: SettingCategory.campaign.trKey,
+                  onTap: () => updateSelectedCategory(ref, SettingCategory.campaign),
+                ),
               ],
             ).expanded(),
             AppVersion(headerText: LocaleKeys.appVersion.tr()),

@@ -23,7 +23,8 @@ enum SettingCategory {
   connection(LocaleKeys.connection),
   account(LocaleKeys.account),
   preferences(LocaleKeys.preferences),
-  qaToolbox('QA Toolbox');
+  qaToolbox('QA Toolbox'),
+  campaign('Campaign');
 
   const SettingCategory(this.trKey);
   final String trKey;
