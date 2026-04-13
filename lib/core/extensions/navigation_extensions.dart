@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
-import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_plans_modal_page.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
 
 extension NavigationExtensions on BeamerDelegate {
   /// Navigates based on the given [url], handling internal routes and external links.

@@ -10,7 +10,7 @@ import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {

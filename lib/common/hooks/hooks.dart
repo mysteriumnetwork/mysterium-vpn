@@ -11,7 +11,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/components/dialogs/request_tunnel_permissions_dialog.dart';
+import 'package:mysterium_vpn/shared/components/dialogs/request_tunnel_permissions_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
