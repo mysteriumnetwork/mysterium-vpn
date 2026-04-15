@@ -73,6 +73,13 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
         () => super.connectionRated,
         name: '_ConnectionDisplayStore.connectionRated',
       )).value;
+  Computed<bool>? _$hasDifferentSelectionComputed;
+
+  @override
+  bool get hasDifferentSelection => (_$hasDifferentSelectionComputed ??= Computed<bool>(
+    () => super.hasDifferentSelection,
+    name: '_ConnectionDisplayStore.hasDifferentSelection',
+  )).value;
 
   @override
   String toString() {
@@ -85,7 +92,8 @@ connectionIP: ${connectionIP},
 isLoading: ${isLoading},
 isConnected: ${isConnected},
 connectionIntent: ${connectionIntent},
-connectionRated: ${connectionRated}
+connectionRated: ${connectionRated},
+hasDifferentSelection: ${hasDifferentSelection}
     ''';
   }
 }

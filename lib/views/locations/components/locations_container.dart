@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsContainer extends StatelessWidget {
   const LocationsContainer({
@@ -17,12 +18,12 @@ class LocationsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Material(
-      color: theme.colorScheme.tertiaryContainer,
+      color: theme.palette.bgSidePanel,
       borderRadius: BorderRadius.only(
-        topLeft: locationType == IPType.datacenter ? Radius.zero : const Radius.circular(12),
-        topRight: locationType == IPType.residential ? Radius.zero : const Radius.circular(12),
-        bottomLeft: const Radius.circular(12),
-        bottomRight: const Radius.circular(12),
+        topLeft: locationType == IPType.datacenter ? Radius.kNone : Radius.kS,
+        topRight: locationType == IPType.residential ? Radius.kNone : Radius.kS,
+        bottomLeft: Radius.kM,
+        bottomRight: Radius.kM,
       ),
       child: Padding(padding: padding, child: child),
     );

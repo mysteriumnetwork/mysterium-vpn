@@ -161,9 +161,7 @@
   "installVpnProfile": "Mysterium VPN'i kullanmaya başlamak için VPN Profili kurma izninize ihtiyacımız var.",
   "internetConnectionRestored": "İnternet bağlantınız geri yüklendi.",
   "ipTypeDataCenter": "Yüksek hızlı IP'ler",
-  "ipTypeDataCenterDisclaimer": "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
   "ipTypeResidential": "Rezidans IP'leri",
-  "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır.",
   "isThisYou": "Bu sen misin ?",
   "it": "İtalyan",
   "italy": "İtalya",
@@ -206,8 +204,6 @@
   "manageBtn": "Aboneliği Yönet",
   "manageSubsDesc": "Farklı bir plana geçebilir veya planınızı iptal edebilirsiniz.",
   "manageSubsTittle": "Aboneliğinizi Yönetin",
-  "marketingConsentPopupDesc": "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
-  "marketingConsentPopupTitle": "Güncel kal",
   "maybeLaterBtn": "Belki sonra",
   "mk": "Makedonca",
   "monitorStatus": "VPN durumunuzu izleyin",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "{switchLocation} konumuna geçin",
   "redeemDiscountCode": "İndirim kodunu kullanın",
-  "couponCodeCopied": "{couponCode} panoya kopyalandı!"
+  "couponCodeCopied": "{couponCode} panoya kopyalandı!",
+  "marketingConsentPopupTitle": "E-posta yoluyla gelişmelerden haberdar olun.",
+  "marketingConsentPopupDesc": "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
+  "allowNotificationsBtn": "Bildirimlere izin ver",
+  "ipTypeDataCenterDisclaimer": "Hızlı ve verimli sunucularda barındırılan IP adresleri, hızlı VPN ihtiyaçları için idealdir - istikrarlı bağlantılar için bunu tercih edin.",
+  "ipTypeResidentialDisclaimer": "Gerçek evlerden alınan konut IP adresleri. Neredeyse tespit edilemez ancak daha az kararlıdır, bu nedenle aldığınız IP adresi değişebilir.",
+  "ipTypeResidentialTooltipTitle": "Bağlantı neden kesildi?",
+  "ipTypeResidentialTooltipBody": "Ev IP adresleri gerçek kişilere bağlıdır. Bağlantıları kesilirse, en yakın kullanılabilir IP adresine anında yeniden bağlanırsınız. İstikrarlı bir bağlantı için yüksek hızlı IP adreslerini tercih edin."
 }

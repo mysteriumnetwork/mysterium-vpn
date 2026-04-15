@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_refresh_button.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationItemEmpty extends StatelessWidget {
   const LocationItemEmpty({super.key});
@@ -14,7 +15,7 @@ class LocationItemEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return RawMaterialButton(
-      fillColor: theme.colorScheme.primaryContainer,
+      fillColor: theme.palette.bgPrimary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 0,
       focusElevation: 0,

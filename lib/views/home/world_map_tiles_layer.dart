@@ -15,14 +15,16 @@ class WorldMapTilesLayer extends HookConsumerWidget {
     final theme = Theme.of(context);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final mapConfig = useComputedValue(() => remoteConfig.mapConfig);
-    final url = mapConfig.tileUrlTemplates[theme.brightness];
+    final brightnessName = theme.brightness.name;
+    final url =
+        mapConfig.tileUrlTemplates['$brightnessName-new'] ??
+        mapConfig.tileUrlTemplates[brightnessName];
     final cacheProvider = useMemoized(BuiltInMapCachingProvider.getOrCreateInstance);
-
     return Stack(
       children: [
         // fallback, local tiles layer
         TileLayer(
-          urlTemplate: 'assets/map_tiles/${theme.brightness.name}/{z}/{x}/{y}.png',
+          urlTemplate: 'assets/map_tiles/$brightnessName/{z}/{x}/{y}.png',
           tileProvider: AssetTileProvider(),
           minNativeZoom: 4,
           maxNativeZoom: 4,

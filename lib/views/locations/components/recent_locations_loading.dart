@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item_loading.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -13,7 +14,7 @@ class RecentLocationsLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = theme.colorScheme.secondary;
+    final color = theme.palette.bgPrimary;
     return MultiSliver(
       children: [
         Shimmer.fromColors(
@@ -27,7 +28,7 @@ class RecentLocationsLoading extends StatelessWidget {
         ).width(100),
         const SizedBox(height: 12),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 82),
+          constraints: const BoxConstraints(maxHeight: 62),
           child: ListView.separated(
             shrinkWrap: true,
             clipBehavior: Clip.none,
