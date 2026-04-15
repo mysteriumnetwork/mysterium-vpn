@@ -161,9 +161,7 @@
   "installVpnProfile": "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
   "internetConnectionRestored": "La tua connessione Internet è stata ripristinata.",
   "ipTypeDataCenter": "IP ad alta velocità",
-  "ipTypeDataCenterDisclaimer": "IP ospitati su server veloci ed efficienti per esigenze VPN rapide.",
   "ipTypeResidential": "IP residenziali",
-  "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN.",
   "isThisYou": "Sei tu ?",
   "it": "Italiano",
   "italy": "Italia",
@@ -206,8 +204,6 @@
   "manageBtn": "Gestisci abbonamento",
   "manageSubsDesc": "Puoi passare a un piano diverso o annullare il tuo piano.",
   "manageSubsTittle": "Gestisci il tuo abbonamento",
-  "marketingConsentPopupDesc": "Vuoi ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
-  "marketingConsentPopupTitle": "Resta aggiornato",
   "maybeLaterBtn": "Forse più tardi",
   "mk": "Macedone",
   "monitorStatus": "Monitora lo stato della tua VPN",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "Passa a {switchLocation}",
   "redeemDiscountCode": "Riscatta il codice sconto",
-  "couponCodeCopied": "{couponCode} copiato negli appunti!"
+  "couponCodeCopied": "{couponCode} copiato negli appunti!",
+  "marketingConsentPopupTitle": "Rimani aggiornato tramite email",
+  "marketingConsentPopupDesc": "Desideri ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
+  "allowNotificationsBtn": "Consenti le notifiche",
+  "ipTypeDataCenterDisclaimer": "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
+  "ipTypeResidentialDisclaimer": "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+  "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
+  "ipTypeResidentialTooltipBody": "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità."
 }

@@ -15,26 +15,10 @@ import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 const _kItemHeight = 64.0;
 
 /// Separator between items in the SliverList.
-const _kSeparatorHeight = 12.0;
+const _kSeparatorHeight = 8.0;
 
 /// Combined stride per collapsed item (item + separator).
 const _kItemStride = _kItemHeight + _kSeparatorHeight;
-
-/// Lightweight location list without scroll-to-selected or expansion logic.
-/// Used for top locations which are never expandable.
-class LocationsSliverList extends StatelessWidget {
-  const LocationsSliverList({required this.items, required this.onItemPressed, super.key});
-
-  final List<VPNLocation> items;
-  final void Function(VPNLocation item) onItemPressed;
-
-  @override
-  Widget build(BuildContext context) => SliverList.separated(
-    itemCount: items.length,
-    separatorBuilder: (_, _) => const SizedBox(height: 12),
-    itemBuilder: (_, index) => LocationItem(location: items[index], onTap: onItemPressed),
-  );
-}
 
 /// Full-featured location list with scroll-to-selected support.
 ///

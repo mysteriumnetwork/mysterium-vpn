@@ -7,46 +7,45 @@ class _Form extends StatelessWidget {
   final Set<String> items;
 
   @override
-  Widget build(BuildContext context) => ReactiveForm(
-    formGroup: form,
-    child: SizedBox(
-      width: double.maxFinite,
-      child: CustomScrollView(
-        shrinkWrap: true,
-        slivers: [
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ReactiveForm(
+      formGroup: form,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           _ReactiveReasonsField(formControlName: 'reasons', items: items),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 32),
-              child: ReactiveTextField(
-                formControlName: 'feedback',
-                decoration: InputDecoration(
-                  hintText: LocaleKeys.cancelSurveyFeedbackHint.tr(),
-                  hintMaxLines: 3,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  fillColor: ColorScheme.of(context).secondaryContainer,
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 32),
+            child: ReactiveTextField(
+              formControlName: 'feedback',
+              maxLines: 5,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: theme.palette.bgPrimary,
+                contentPadding: const EdgeInsets.all(14),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: theme.palette.borderPrimary),
                 ),
-                minLines: 3,
-                maxLines: 3,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: theme.palette.borderBrand),
+                ),
+                hintText: LocaleKeys.cancelSurveyFeedbackHint.tr(),
+                hintMaxLines: 3,
+                hintStyle: theme.textStyles.textMd.regular.copyWith(
+                  color: theme.palette.textTertiary,
+                ),
               ),
             ),
           ),
         ],
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _FormGroup extends FormGroup {

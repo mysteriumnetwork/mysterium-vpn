@@ -1,1 +1,0 @@
-enum TooltipType { killSwitch, userIntent }

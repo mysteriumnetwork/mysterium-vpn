@@ -1,72 +1,58 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
-  await showModal(
-    context,
-    builder: (_) => Theme(data: DesignSystemTheme.of(context), child: const _DialogContent()),
-  );
+  await showModal(context, builder: (_) => const _DialogContent());
 }
 
-class _DialogContent extends ConsumerWidget {
+class _DialogContent extends HookConsumerWidget {
   const _DialogContent();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    return ModalScaffold(
-      showGradient: false,
-      showCloseButton: false,
-      autoApplyPadding: false,
-      body: Padding(
-        padding: ModalPadding.insets(
+    final screenType = useScreenType();
+    final palette = Theme.of(context).palette;
+    return PromptDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: screenType == ScreenType.mobile ? 24 : 144),
+      buttonsPadding: EdgeInsets.fromLTRB(
+        screenType == ScreenType.mobile ? 16 : 144,
+        0,
+        screenType == ScreenType.mobile ? 16 : 144,
+        50,
+      ),
+      image: Asset.images.pnConsent(context).image(),
+      title: LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
+      subtitle: LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
+      primaryButton: ButtonPrimary(
+        onPressed: () => _completePushNotificationsFlow(
           context,
-          add: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+          userPreferencesStore: userPreferencesStore,
+          userAllowed: true,
         ),
-        child: Column(
-          children: [
-            const Spacer(),
-            Asset.images.pnConsent(context).image(width: 150, height: 150),
-            const SizedBox(height: 12),
-            Text(
-              LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
-              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
-              style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400),
-              textAlign: TextAlign.center,
-            ).padding(bottom: 24, top: 12),
-            const Spacer(),
-            ButtonPrimary(
-              onPressed: () => _completePushNotificationsFlow(
-                context,
-                userPreferencesStore: userPreferencesStore,
-                userAllowed: true,
-              ),
-              child: Text(LocaleKeys.allowPushNotificationsBtn.tr()),
-            ).width(double.infinity),
-            ButtonSecondary(
-              onPressed: () => _completePushNotificationsFlow(
-                context,
-                userPreferencesStore: userPreferencesStore,
-                userAllowed: false,
-              ),
-              child: Text(LocaleKeys.notNowBtn.tr()),
-            ).padding(top: 16).width(double.infinity),
-          ],
+        child: Text(LocaleKeys.allowPushNotificationsBtn.tr()),
+      ),
+      secondaryButton: ButtonSecondary(
+        decoration: ButtonDecoration(
+          borderColor: palette.borderBrandSecondary,
+          foregroundColor: palette.textSecondary,
+          decorationColor: Palette.white,
         ),
+        onPressed: () => _completePushNotificationsFlow(
+          context,
+          userPreferencesStore: userPreferencesStore,
+          userAllowed: false,
+        ),
+        child: Text(LocaleKeys.notNowBtn.tr()),
       ),
     );
   }

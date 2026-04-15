@@ -2,7 +2,7 @@ name: mysterium_vpn
 description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: "none"
-version: 2.4.2-dev
+version: 2.4.3-dev
 
 environment:
   sdk: ">=3.9.0 <4.0.0"
@@ -55,7 +55,7 @@ dependencies:
       url: https://github.com/mysteriumnetwork/flutter_udid.git
       ref: 1.0.1
   freezed_annotation: 3.1.0
-  google_fonts: 6.3.2
+  google_fonts: 8.0.2
   google_sign_in: 7.2.0
   hive_ce: 2.19.3
   hive_ce_flutter: 2.3.4
@@ -76,7 +76,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.6
+      ref: 0.0.8
   onesignal_flutter: 5.4.5
   open_mail_app:
     git:
@@ -178,15 +178,7 @@ flutter:
     - assets/map_tiles/light/4/13/
     - assets/map_tiles/light/4/5/
     - assets/map_tiles/light/4/14/
-    - assets/map_tiles/light/3/
-    - assets/map_tiles/light/3/0/
-    - assets/map_tiles/light/3/7/
-    - assets/map_tiles/light/3/6/
-    - assets/map_tiles/light/3/1/
-    - assets/map_tiles/light/3/4/
-    - assets/map_tiles/light/3/3/
-    - assets/map_tiles/light/3/2/
-    - assets/map_tiles/light/3/5/
+    - assets/map_tiles/light/4/15/
     - assets/map_tiles/dark/
     - assets/map_tiles/dark/4/
     - assets/map_tiles/dark/4/9/
@@ -205,15 +197,7 @@ flutter:
     - assets/map_tiles/dark/4/13/
     - assets/map_tiles/dark/4/5/
     - assets/map_tiles/dark/4/14/
-    - assets/map_tiles/dark/3/
-    - assets/map_tiles/dark/3/0/
-    - assets/map_tiles/dark/3/7/
-    - assets/map_tiles/dark/3/6/
-    - assets/map_tiles/dark/3/1/
-    - assets/map_tiles/dark/3/4/
-    - assets/map_tiles/dark/3/3/
-    - assets/map_tiles/dark/3/2/
-    - assets/map_tiles/dark/3/5/
+    - assets/map_tiles/dark/4/15/
     # END auto-generated assets
 
 patrol:

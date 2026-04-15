@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MapConfig {
 
- List<num> get zoomLevels; List<num> get tileZoomLevels; num get initialZoom; Map<Brightness, String> get tileUrlTemplates;
+ List<num> get zoomLevels; List<num> get tileZoomLevels; num get initialZoom; Map<String, String> get tileUrlTemplates;
 /// Create a copy of MapConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $MapConfigCopyWith<$Res>  {
   factory $MapConfigCopyWith(MapConfig value, $Res Function(MapConfig) _then) = _$MapConfigCopyWithImpl;
 @useResult
 $Res call({
- List<num> zoomLevels, List<num> tileZoomLevels, num initialZoom, Map<Brightness, String> tileUrlTemplates
+ List<num> zoomLevels, List<num> tileZoomLevels, num initialZoom, Map<String, String> tileUrlTemplates
 });
 
 
@@ -69,7 +69,7 @@ zoomLevels: null == zoomLevels ? _self.zoomLevels : zoomLevels // ignore: cast_n
 as List<num>,tileZoomLevels: null == tileZoomLevels ? _self.tileZoomLevels : tileZoomLevels // ignore: cast_nullable_to_non_nullable
 as List<num>,initialZoom: null == initialZoom ? _self.initialZoom : initialZoom // ignore: cast_nullable_to_non_nullable
 as num,tileUrlTemplates: null == tileUrlTemplates ? _self.tileUrlTemplates : tileUrlTemplates // ignore: cast_nullable_to_non_nullable
-as Map<Brightness, String>,
+as Map<String, String>,
   ));
 }
 

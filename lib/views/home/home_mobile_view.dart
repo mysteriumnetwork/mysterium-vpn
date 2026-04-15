@@ -1,21 +1,21 @@
 import 'dart:math';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' hide PanelState;
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/home_app_bar.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 import 'package:mysterium_vpn/views/locations/locations_slider_mobile_view.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeMobileView extends HookConsumerWidget {
   const HomeMobileView({super.key});
@@ -28,7 +28,8 @@ class HomeMobileView extends HookConsumerWidget {
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
-    final topSectionHeight = appBarHeight + 40;
+    final topSectionHeight = appBarHeight;
+    final analyticsStore = ref.read(analyticsStorePOD);
 
     useReaction(() => vpnStore.connectionStatus, (status) {
       if (status != VpnConnectionStatus.connected) {
@@ -73,7 +74,7 @@ class HomeMobileView extends HookConsumerWidget {
                 maxHeight: constraints.maxHeight,
                 minHeight: constraints.minHeight,
                 controller: homeState.panelController,
-                color: theme.primaryColor,
+                color: theme.palette.bgSidePanel,
                 snapPoint: PanelState.snap.extent,
                 isDraggable: isMobile(),
                 panelBuilder: (sc) => HookBuilder(
@@ -82,10 +83,7 @@ class HomeMobileView extends HookConsumerWidget {
                     return LocationsSliderMobileView(constraints: constraints, controller: sc);
                   },
                 ),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+                borderRadius: const BorderRadius.only(topLeft: Radius.kM, topRight: Radius.kM),
                 onPanelSlide: homeState.onPanelSlide,
                 onPanelClosed: homeState.onPanelSlide,
                 onPanelOpened: homeState.onPanelSlide,
@@ -93,11 +91,36 @@ class HomeMobileView extends HookConsumerWidget {
                   builder: (context, ref, _) => Column(
                     children: [
                       DecoratedBox(
-                        decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest),
-                        child: HomeAppBar(
-                          key: appBarKey,
-                          supportIcon: Asset.icons.support(context),
-                          settingsIcon: Asset.icons.settingsAdaptive(context),
+                        key: appBarKey,
+                        decoration: BoxDecoration(color: theme.palette.bgPrimary),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Header.logo(
+                              showBackButton: false,
+                              automaticallyImplyLeading: false,
+                              actions: [
+                                IconButton(
+                                  icon: const Icon(UntitledUI.message_question_square),
+                                  onPressed: () => handleOnSupportPage(
+                                    context: context,
+                                    analyticsStore: ref.read(analyticsStorePOD),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(UntitledUI.settings_01),
+                                  onPressed: () {
+                                    analyticsStore.logEvent(AnalyticsEvent.openSettings);
+                                    context.beamToNamed(Routes.settings.path);
+                                  },
+                                ),
+                              ],
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
+                              child: LocationsSearch(),
+                            ),
+                          ],
                         ),
                       ),
                       const Expanded(child: HomeConnectionView()),
