@@ -14,7 +14,7 @@ class ConnectionStatusBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final vpnStore = getIt<VpnStore>();
     return Observer(
-      builder: (_) => ConnectionBar(
+      builder: (context) => ConnectionBar(
         label: _statusText(vpnStore.vpnStatus, vpnStore.isFetchingConfig),
         killSwitchLabel: LocaleKeys.killSwitchTooltipTitle.tr(),
         killSwitchDescription: LocaleKeys.killSwitchTooltipMessage.tr(),

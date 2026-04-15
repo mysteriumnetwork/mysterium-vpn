@@ -106,6 +106,8 @@ void _registerNetworking() {
   getIt
     ..registerLazySingleton<BaseOptions>(
       () => BaseOptions(
+        // ignore: avoid_redundant_argument_values
+        baseUrl: Env.baseUrl,
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json',
