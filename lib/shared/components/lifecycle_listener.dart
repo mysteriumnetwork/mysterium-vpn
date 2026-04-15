@@ -138,8 +138,6 @@ class _LifecycleDesktop extends StatefulWidget {
 
 class __LifecycleDesktopState extends State<_LifecycleDesktop>
     with WindowListener, TrayListener, WidgetsBindingObserver {
-  final _vpnStore = getIt<VpnStore>();
-
   @override
   void initState() {
     super.initState();
@@ -200,7 +198,7 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop>
         trayManager.popUpContextMenu();
       }
     } else if (menuItem.key == 'exit_app') {
-      _vpnStore.disposeStore().whenComplete(() async {
+      getIt<VpnStore>().disposeStore().whenComplete(() async {
         await trayManager.destroy();
         exit(0);
       });
