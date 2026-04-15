@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/core/enums/auth_status.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/models/auth_user.dart';

@@ -36,40 +36,38 @@ class ApplicationSettings extends StatelessWidget {
     final screenType = getScreenType(MediaQuery.of(context).size);
     final isMobile = screenType == ScreenType.mobile;
 
-    return Observer(
-      builder: (context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SettingItem(
-            asset: Asset.icons.language(context),
-            title: LocaleKeys.appLang.tr(),
-            actionWidget: LanguagePicker(store: localeStore, analyticsStore: analyticsStore),
-          ),
-          SettingItem(
-            asset: Asset.icons.theme(context),
-            title: LocaleKeys.theme.tr(),
-            actionWidget: ThemePicker(store: themeStore, analyticsStore: analyticsStore),
-          ),
-          Builder(
-            builder: (context) {
-              final notificationsTitleVisible =
-                  (userPreferencesStore.marketingConsent != null ||
-                      pushNotificationsStore.supportsPushNotifications) &&
-                  authSessionStore.status == AuthStatus.authenticated;
-              return Visibility(
-                visible: notificationsTitleVisible,
-                child: EasyText(
-                  LocaleKeys.notificationsSettingTitle.tr(),
-                  fontSize: isMobile ? 16 : 14,
-                  fontWeight: isMobile ? FontWeight.w600 : FontWeight.w400,
-                ).padding(bottom: 16, left: 20, top: isMobile ? 16 : 30, right: 0),
-              );
-            },
-          ),
-          const PushNotificationsSetting(),
-          const EmailMarketingSetting(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SettingItem(
+          asset: Asset.icons.language(context),
+          title: LocaleKeys.appLang.tr(),
+          actionWidget: LanguagePicker(store: localeStore, analyticsStore: analyticsStore),
+        ),
+        SettingItem(
+          asset: Asset.icons.theme(context),
+          title: LocaleKeys.theme.tr(),
+          actionWidget: ThemePicker(store: themeStore, analyticsStore: analyticsStore),
+        ),
+        Observer(
+          builder: (context) {
+            final notificationsTitleVisible =
+                (userPreferencesStore.marketingConsent != null ||
+                    pushNotificationsStore.supportsPushNotifications) &&
+                authSessionStore.status == AuthStatus.authenticated;
+            return Visibility(
+              visible: notificationsTitleVisible,
+              child: EasyText(
+                LocaleKeys.notificationsSettingTitle.tr(),
+                fontSize: isMobile ? 16 : 14,
+                fontWeight: isMobile ? FontWeight.w600 : FontWeight.w400,
+              ).padding(bottom: 16, left: 20, top: isMobile ? 16 : 30, right: 0),
+            );
+          },
+        ),
+        const PushNotificationsSetting(),
+        const EmailMarketingSetting(),
+      ],
     );
   }
 }
