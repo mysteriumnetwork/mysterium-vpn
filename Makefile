@@ -31,7 +31,6 @@ fetch-localization:
 
 fetch-and-generate-localization: fetch-localization generate-localization
 
-
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
 

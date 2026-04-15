@@ -180,21 +180,25 @@ class _Email extends StatelessWidget {
   }
 }
 
-class _Excerpt extends StatelessWidget {
+class _Excerpt extends StatefulWidget {
   const _Excerpt({required this.items});
 
   final List<String> items;
 
   @override
-  Widget build(BuildContext context) {
-    final sizeGroup = AutoSizeGroup();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      spacing: 8,
-      children: [for (final item in items) _BulletItem(text: item, sizeGroup: sizeGroup)],
-    );
-  }
+  State<_Excerpt> createState() => _ExcerptState();
+}
+
+class _ExcerptState extends State<_Excerpt> {
+  final _sizeGroup = AutoSizeGroup();
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    mainAxisSize: MainAxisSize.min,
+    spacing: 8,
+    children: [for (final item in widget.items) _BulletItem(text: item, sizeGroup: _sizeGroup)],
+  );
 }
 
 class _BulletItem extends StatelessWidget {

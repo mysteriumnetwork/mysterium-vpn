@@ -50,6 +50,15 @@ class _HorizontalScrollIndicatorState extends State<HorizontalScrollIndicator> {
   }
 
   @override
+  void didUpdateWidget(HorizontalScrollIndicator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_onScroll);
+      widget.controller.addListener(_onScroll);
+    }
+  }
+
+  @override
   void dispose() {
     widget.controller.removeListener(_onScroll);
     super.dispose();

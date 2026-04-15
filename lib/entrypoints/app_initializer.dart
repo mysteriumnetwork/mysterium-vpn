@@ -60,11 +60,12 @@ class AppInitializer {
 
     try {
       await setupServiceLocator();
+      if (getIt.isRegistered<Talker>()) {
+        logger = getIt<Talker>();
+      }
     } catch (e, st) {
       logger.log('Service locator init failed: $e\n$st');
     }
-
-    logger = getIt<Talker>();
   }
 
   // ─── Firebase SDK ─────────────────────────────────────────────────────────────

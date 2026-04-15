@@ -43,10 +43,12 @@ class _LocationsSliderMobileViewState extends State<LocationsSliderMobileView> {
       // list always starts fresh when the panel is reopened.
       if (panelState != _lastPanelState) {
         _lastPanelState = panelState;
-        if (panelState != PanelState.open &&
-            widget.controller.hasClients &&
-            widget.controller.offset != 0) {
-          widget.controller.jumpTo(0);
+        if (panelState != PanelState.open) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && widget.controller.hasClients && widget.controller.offset != 0) {
+              widget.controller.jumpTo(0);
+            }
+          });
         }
       }
 

@@ -18,8 +18,11 @@ class HomeStateScope extends InheritedNotifier<HomeState> {
   }
 
   /// Non-reactive: use in callbacks.
-  static HomeState read(BuildContext context) =>
-      context.findAncestorWidgetOfExactType<HomeStateScope>()!.notifier!;
+  static HomeState read(BuildContext context) {
+    final scope = context.findAncestorWidgetOfExactType<HomeStateScope>();
+    assert(scope != null, 'No HomeStateScope found in context');
+    return scope!.notifier!;
+  }
 }
 
 class HomeState extends ChangeNotifier {
