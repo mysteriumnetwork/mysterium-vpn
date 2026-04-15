@@ -161,9 +161,7 @@
   "installVpnProfile": "Para comenzar a usar Mysterium VPN, necesitamos tu permiso para instalar un perfil de VPN.",
   "internetConnectionRestored": "Tu conexión a Internet ha sido restaurada.",
   "ipTypeDataCenter": "IPs de alta velocidad",
-  "ipTypeDataCenterDisclaimer": "IPs alojadas en servidores rápidos y eficientes para necesidades rápidas de VPN.",
   "ipTypeResidential": "IPs residenciales",
-  "ipTypeResidentialDisclaimer": "IPs vinculadas a hogares reales para reducir la detección de VPN.",
   "isThisYou": "Este Eres tu ?",
   "it": "Italiano",
   "italy": "Italia",
@@ -206,8 +204,6 @@
   "manageBtn": "Administrar suscripción",
   "manageSubsDesc": "Puedes cambiar a un plan diferente o cancelar tu plan.",
   "manageSubsTittle": "Administra tu suscripción",
-  "marketingConsentPopupDesc": "¿Te gustaría recibir actualizaciones por correo electrónico, consejos de privacidad y ofertas especiales de Mysterium Network?",
-  "marketingConsentPopupTitle": "Mantente al tanto",
   "maybeLaterBtn": "Quizás más tarde",
   "mk": "Macedónio",
   "monitorStatus": "Supervisa el estado de su VPN",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "Cambiar a {ubicación del switch}",
   "redeemDiscountCode": "Canjea el código de descuento",
-  "couponCodeCopied": "¡El código de cupón se copió al portapapeles!"
+  "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
+  "marketingConsentPopupTitle": "Manténgase informado por correo electrónico.",
+  "marketingConsentPopupDesc": "¿Te gustaría recibir actualizaciones por correo electrónico, consejos sobre privacidad y ofertas especiales de Mysterium Network?",
+  "allowNotificationsBtn": "Permitir notificaciones",
+  "ipTypeDataCenterDisclaimer": "Direcciones IP alojadas en servidores rápidos y eficientes para necesidades VPN rápidas: elija esta opción para conexiones estables.",
+  "ipTypeResidentialDisclaimer": "Direcciones IP residenciales de hogares reales. Casi indetectables pero menos estables, por lo que la IP que obtenga podría cambiar.",
+  "ipTypeResidentialTooltipTitle": "¿Por qué se perdió el enlace?",
+  "ipTypeResidentialTooltipBody": "Las direcciones IP domésticas dependen de usuarios reales. Si se pierde la conexión, se te reconectará instantáneamente a la IP disponible más cercana. Para una conexión estable, elige direcciones IP de alta velocidad."
 }

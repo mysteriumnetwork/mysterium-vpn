@@ -1,30 +1,28 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/screen_type.dart';
+import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> showDeviceLimitDialog(BuildContext context) async {
-  await showModal(
-    context,
-    builder: (_) => Theme(data: DesignSystemTheme.of(context), child: const _DialogContent()),
-  );
+  await showModal(context, builder: (_) => const _DialogContent());
 }
 
-class _DialogContent extends ConsumerWidget {
+class _DialogContent extends HookConsumerWidget {
   const _DialogContent();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final sessionStore = ref.watch(authSessionStorePOD);
-
+    final palette = Theme.of(context).palette;
+    final screenType = useScreenType();
     void handleOpenDashboard() {
       final uri = Uri.parse(Env.manageDevicesPage);
       final accessToken = sessionStore.accessToken;
@@ -40,38 +38,29 @@ class _DialogContent extends ConsumerWidget {
       openUrlLink(targetUri, mode: LaunchMode.externalApplication);
     }
 
-    return ModalScaffold(
-      autoApplyPadding: false,
-      showGradient: false,
-      body: Padding(
-        padding: ModalPadding.insets(
-          context,
-          add: EdgeInsets.symmetric(vertical: theme.spacing.xl, horizontal: theme.spacing.md),
+    return PromptDialog(
+      image: Asset.images.devicesLimit.svg(),
+      title: LocaleKeys.deviceLimitReachedTitle.tr(),
+      subtitle: LocaleKeys.deviceLimitReachedDesc.tr(),
+      contentPadding: EdgeInsets.symmetric(horizontal: screenType == ScreenType.mobile ? 24 : 144),
+      buttonsPadding: EdgeInsets.fromLTRB(
+        screenType == ScreenType.mobile ? 16 : 144,
+        0,
+        screenType == ScreenType.mobile ? 16 : 144,
+        50,
+      ),
+      primaryButton: ButtonPrimary(
+        onPressed: handleOpenDashboard,
+        child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
+      ),
+      secondaryButton: ButtonSecondary(
+        decoration: ButtonDecoration(
+          borderColor: palette.borderBrandSecondary,
+          foregroundColor: palette.textSecondary,
+          decorationColor: Palette.white,
         ),
-        child: Column(
-          children: [
-            const Spacer(),
-            Center(child: Asset.images.devicesLimit.svg(width: 150, height: 150)),
-            Text(
-              LocaleKeys.deviceLimitReachedTitle.tr(),
-              textAlign: TextAlign.center,
-              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 40, top: 16),
-              child: Text(
-                LocaleKeys.deviceLimitReachedDesc.tr(),
-                textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-            ),
-            const Spacer(),
-            ButtonPrimary(
-              onPressed: handleOpenDashboard,
-              child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
-            ),
-          ],
-        ),
+        onPressed: () => Navigator.of(context).pop(),
+        child: Text(LocaleKeys.closeBtn.tr()),
       ),
     );
   }

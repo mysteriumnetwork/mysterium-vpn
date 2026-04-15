@@ -194,11 +194,6 @@ mixin AnalyticsStore {
     );
   }
 
-  Future<void> logTooltipClick(TooltipType tooltip) async {
-    final type = tooltip.name.toSnakeCase;
-    logEvent(AnalyticsEvent.tooltipClick, parameters: {'type': type});
-  }
-
   Future<void> logAppLaunchEvent() async {
     final params = {'platform': defaultTargetPlatform.name};
     logEvent(AnalyticsEvent.appLaunch, parameters: params);

@@ -96,11 +96,11 @@ extension $AssetsIconsGenExtensions on $AssetsIconsGen {
 }
 
 extension $AssetsImagesGenExtensions on $AssetsImagesGen {
-  AssetGenImage marketingConsent(BuildContext context) =>
-      _withBrightness(context, light: marketingConsentLight, dark: marketingConsentDark);
+  AssetGenImage emailConsent(BuildContext context) =>
+      _withBrightness(context, light: emailPermissionsLight, dark: emailPermissionsDark);
 
   AssetGenImage pnConsent(BuildContext context) =>
-      _withBrightness(context, light: pnConsentLight, dark: pnConsentDark);
+      _withBrightness(context, light: pnPermissionsLight, dark: pnPermissionsDark);
 }
 
 extension $AssetsLogoGenExtensions on $AssetsLogoGen {

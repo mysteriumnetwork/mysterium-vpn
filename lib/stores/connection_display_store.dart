@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -85,4 +86,25 @@ abstract class _ConnectionDisplayStore with Store {
   /// The current connection rating
   @computed
   RateConnectionRequestModeEnum? get connectionRated => _vpnStore.connectionRated;
+
+  /// Whether the user has selected a location that differs from the currently
+  /// connected one — i.e. a "switch" scenario.
+  @computed
+  bool get hasDifferentSelection {
+    final selected = _selectedLocationStore.value;
+    final connected = _vpnStore.location;
+    if (!_vpnStore.isConnected || selected == null || connected == null) {
+      return false;
+    }
+    if (connected == VPNLocation.closest) {
+      return false;
+    }
+    if (selected.id == connected.id) {
+      return false;
+    }
+    if (selected.isCountry && selected.countryCode == connected.countryCode) {
+      return false;
+    }
+    return true;
+  }
 }

@@ -177,9 +177,7 @@ class CodegenLoader extends AssetLoader {
     "installVpnProfile": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
     "internetConnectionRestored": "您的互联网连接已恢复。",
     "ipTypeDataCenter": "高速IP",
-    "ipTypeDataCenterDisclaimer": "托管在快速高效服务器上的IP，适用于快速VPN需求。",
     "ipTypeResidential": "住宅IP",
-    "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。",
     "isThisYou": "这是你吗 ？",
     "it": "意大利语",
     "italy": "意大利",
@@ -216,8 +214,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "管理订阅",
     "manageSubsDesc": "您可以切换到其他计划或取消您的计划。",
     "manageSubsTittle": "管理您的订阅",
-    "marketingConsentPopupDesc": "您是否希望收到来自Mysterium Network的电子邮件更新、隐私提示和特别优惠？",
-    "marketingConsentPopupTitle": "保持关注",
     "maybeLaterBtn": "也许稍后",
     "mk": "马其顿语",
     "monitorStatus": "监控您的 VPN 状态",
@@ -506,6 +502,14 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "切换到 {switchLocation}",
     "redeemDiscountCode": "兑换折扣码",
     "couponCodeCopied": "优惠券代码已复制到剪贴板！",
+    "marketingConsentPopupTitle": "通过电子邮件获取最新信息",
+    "marketingConsentPopupDesc": "您是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私提示和特别优惠？",
+    "allowNotificationsBtn": "允许通知",
+    "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
+    "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
+    "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
+    "ipTypeResidentialTooltipBody":
+        "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -688,10 +692,7 @@ class CodegenLoader extends AssetLoader {
         "Mysterium VPN'i kullanmaya başlamak için VPN Profili kurma izninize ihtiyacımız var.",
     "internetConnectionRestored": "İnternet bağlantınız geri yüklendi.",
     "ipTypeDataCenter": "Yüksek hızlı IP'ler",
-    "ipTypeDataCenterDisclaimer":
-        "Hızlı VPN ihtiyaçları için hızlı ve verimli sunucularda barındırılan IP'ler.",
     "ipTypeResidential": "Rezidans IP'leri",
-    "ipTypeResidentialDisclaimer": "Gerçek evlere bağlı IP'ler, VPN algılamasını azaltır.",
     "isThisYou": "Bu sen misin ?",
     "it": "İtalyan",
     "italy": "İtalya",
@@ -732,9 +733,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Aboneliği Yönet",
     "manageSubsDesc": "Farklı bir plana geçebilir veya planınızı iptal edebilirsiniz.",
     "manageSubsTittle": "Aboneliğinizi Yönetin",
-    "marketingConsentPopupDesc":
-        "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
-    "marketingConsentPopupTitle": "Güncel kal",
     "maybeLaterBtn": "Belki sonra",
     "mk": "Makedonca",
     "monitorStatus": "VPN durumunuzu izleyin",
@@ -1047,6 +1045,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "{switchLocation} konumuna geçin",
     "redeemDiscountCode": "İndirim kodunu kullanın",
     "couponCodeCopied": "{couponCode} panoya kopyalandı!",
+    "marketingConsentPopupTitle": "E-posta yoluyla gelişmelerden haberdar olun.",
+    "marketingConsentPopupDesc":
+        "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
+    "allowNotificationsBtn": "Bildirimlere izin ver",
+    "ipTypeDataCenterDisclaimer":
+        "Hızlı ve verimli sunucularda barındırılan IP adresleri, hızlı VPN ihtiyaçları için idealdir - istikrarlı bağlantılar için bunu tercih edin.",
+    "ipTypeResidentialDisclaimer":
+        "Gerçek evlerden alınan konut IP adresleri. Neredeyse tespit edilemez ancak daha az kararlıdır, bu nedenle aldığınız IP adresi değişebilir.",
+    "ipTypeResidentialTooltipTitle": "Bağlantı neden kesildi?",
+    "ipTypeResidentialTooltipBody":
+        "Ev IP adresleri gerçek kişilere bağlıdır. Bağlantıları kesilirse, en yakın kullanılabilir IP adresine anında yeniden bağlanırsınız. İstikrarlı bir bağlantı için yüksek hızlı IP adreslerini tercih edin.",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1212,9 +1221,7 @@ class CodegenLoader extends AssetLoader {
     "installVpnProfile": "Mysterium VPN の使用を開始するには、VPN プロファイルをインストールする許可が必要です。",
     "internetConnectionRestored": "インターネット接続が復元されました。",
     "ipTypeDataCenter": "高速IP",
-    "ipTypeDataCenterDisclaimer": "迅速なVPNニーズに対応する高速で効率的なサーバー上にホストされるIP。",
     "ipTypeResidential": "住宅用IP",
-    "ipTypeResidentialDisclaimer": "実際の家庭に関連付けられたIPでVPN検出を減少。",
     "isThisYou": "あなたですが ？",
     "it": "イタリアの",
     "italy": "イタリア",
@@ -1252,8 +1259,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "サブスクリプションの管理",
     "manageSubsDesc": "別のプランに切り替えたり、プランをキャンセルしたりできます。",
     "manageSubsTittle": "サブスクリプションを管理",
-    "marketingConsentPopupDesc": "Mysterium Networkからメールの更新、プライバシーのヒント、特別オファーを受け取りたいですか？",
-    "marketingConsentPopupTitle": "最新情報を受け取る",
     "maybeLaterBtn": "たぶん後で",
     "mk": "マケドニアの",
     "monitorStatus": "VPN ステータスを監視",
@@ -1547,6 +1552,16 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "{switchLocation}に切り替える",
     "redeemDiscountCode": "割引コードを引き換える",
     "couponCodeCopied": "",
+    "marketingConsentPopupTitle": "メールで最新情報を受け取る",
+    "marketingConsentPopupDesc": "Mysterium Networkからのメールによる最新情報、プライバシーに関するヒント、および特別オファーを受け取りますか？",
+    "allowNotificationsBtn": "通知を許可する",
+    "ipTypeDataCenterDisclaimer":
+        "高速かつ効率的なサーバーでホストされているIPアドレスは、迅速なVPN接続のニーズに対応します。安定した接続をお求めの場合は、こちらをお選びください。",
+    "ipTypeResidentialDisclaimer":
+        "実際の家庭から取得した居住用IPアドレス。ほぼ検出不可能ですが、安定性が低いため、取得するIPアドレスが変わる可能性があります。",
+    "ipTypeResidentialTooltipTitle": "なぜリンクが切れたのですか？",
+    "ipTypeResidentialTooltipBody":
+        "家庭用IPアドレスは、実際のユーザーによって割り当てられます。接続が切断された場合、すぐに最寄りの利用可能なIPアドレスに再接続されます。安定した接続をご希望の場合は、高速IPアドレスをお選びください。",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1743,11 +1758,7 @@ class CodegenLoader extends AssetLoader {
         "Um Mysterium VPN nutzen zu können, benötigen wir Ihre Erlaubnis zur Installation eines VPN-Profils.",
     "internetConnectionRestored": "Ihre Internetverbindung wurde wiederhergestellt.",
     "ipTypeDataCenter": "Hochgeschwindigkeits-IPs",
-    "ipTypeDataCenterDisclaimer":
-        "IPs, die auf schnellen und effizienten Servern für schnelle VPN-Anforderungen gehostet werden.",
     "ipTypeResidential": "Wohn-IPs",
-    "ipTypeResidentialDisclaimer":
-        "IPs, die an tatsächliche Haushalte gebunden sind, um VPN-Erkennung zu reduzieren.",
     "isThisYou": "Bist du das ?",
     "it": "Italienisch",
     "italy": "Italien",
@@ -1789,9 +1800,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Abonnement verwalten",
     "manageSubsDesc": "Sie können zu einem anderen Abo wechseln oder Ihr Abo kündigen.",
     "manageSubsTittle": "Verwalten Sie Ihr Abonnement",
-    "marketingConsentPopupDesc":
-        "Möchten Sie E-Mail-Updates, Datenschutz-Tipps und Sonderangebote von Mysterium Network erhalten?",
-    "marketingConsentPopupTitle": "Bleib auf dem Laufenden",
     "maybeLaterBtn": "Vielleicht später",
     "mk": "Mazedonisch",
     "monitorStatus": "Überwachen Sie Ihren VPN-Status",
@@ -2058,7 +2066,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
     "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
     "subscriptionPlanPF3Plus": "100 Server",
-    "subscriptionPlanPF4Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
+    "subscriptionPlanPF4Plus": "Mehr als 7.500 Wohn-IPs",
     "subscriptionPlanPF5Plus": "VPN-Protokoll",
     "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
@@ -2094,7 +2102,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
     "subscriptionPlanCityLevelDesc":
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2117,6 +2125,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Wechseln Sie zu {switchLocation}",
     "redeemDiscountCode": "Gutscheincode einlösen",
     "couponCodeCopied": "{couponCode} wurde in die Zwischenablage kopiert!",
+    "marketingConsentPopupTitle": "Bleiben Sie per E-Mail auf dem Laufenden",
+    "marketingConsentPopupDesc":
+        "Möchten Sie E-Mail-Updates, Datenschutztipps und Sonderangebote von Mysterium Network erhalten?",
+    "allowNotificationsBtn": "Benachrichtigungen zulassen",
+    "ipTypeDataCenterDisclaimer":
+        "IPs auf schnellen und effizienten Servern für schnelle VPN-Verbindungen – wählen Sie diese Option für stabile Verbindungen.",
+    "ipTypeResidentialDisclaimer":
+        "IP-Adressen von echten Haushalten. Nahezu unauffindbar, aber weniger stabil, daher kann sich die Ihnen zugewiesene IP-Adresse ändern.",
+    "ipTypeResidentialTooltipTitle": "Warum ist die Verbindung unterbrochen?",
+    "ipTypeResidentialTooltipBody":
+        "Die IP-Adressen von Haushalten hängen von echten Personen ab. Sollte die Verbindung unterbrochen werden, werden Sie automatisch mit der nächstgelegenen verfügbaren IP-Adresse verbunden. Für eine stabile Verbindung wählen Sie bitte eine Hochgeschwindigkeits-IP-Adresse.",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2305,11 +2324,7 @@ class CodegenLoader extends AssetLoader {
         "Para começar a usar o Mysterium VPN, precisamos da sua permissão para instalar um perfil VPN.",
     "internetConnectionRestored": "Sua conexão com a Internet foi restaurada.",
     "ipTypeDataCenter": "IPs de alta velocidade",
-    "ipTypeDataCenterDisclaimer":
-        "IPs hospedados em servidores rápidos e eficientes para necessidades rápidas de VPN.",
     "ipTypeResidential": "IPs residenciais",
-    "ipTypeResidentialDisclaimer":
-        "IPs vinculados a residências reais para reduzir a detecção de VPN.",
     "isThisYou": "Este é você?",
     "it": "Italiano",
     "italy": "Itália",
@@ -2351,9 +2366,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Gerenciar assinatura",
     "manageSubsDesc": "Você pode mudar para um plano diferente ou cancelar seu plano.",
     "manageSubsTittle": "Gerencie sua assinatura",
-    "marketingConsentPopupDesc":
-        "Gostaria de receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
-    "marketingConsentPopupTitle": "Fique por dentro",
     "maybeLaterBtn": "Talvez mais tarde",
     "mk": "Macedônio",
     "monitorStatus": "Monitore seu status de VPN",
@@ -2654,7 +2666,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
-        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
+        "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
     "subscriptionPlanCityLevelDesc":
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2677,6 +2689,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Alternar para {switchLocation}",
     "redeemDiscountCode": "Resgatar código de desconto",
     "couponCodeCopied": "{couponCode} copiado para a área de transferência!",
+    "marketingConsentPopupTitle": "Mantenha-se atualizado por e-mail",
+    "marketingConsentPopupDesc":
+        "Deseja receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
+    "allowNotificationsBtn": "Permitir notificações",
+    "ipTypeDataCenterDisclaimer":
+        "IPs hospedados em servidores rápidos e eficientes para necessidades de VPN imediatas - escolha esta opção para conexões estáveis.",
+    "ipTypeResidentialDisclaimer":
+        "IPs residenciais de casas reais. Quase indetectáveis, mas menos estáveis, portanto o IP que você obtiver pode mudar.",
+    "ipTypeResidentialTooltipTitle": "Por que o link foi perdido?",
+    "ipTypeResidentialTooltipBody":
+        "Os IPs residenciais dependem de pessoas reais. Se a conexão com elas for perdida, você será reconectado instantaneamente ao IP disponível mais próximo. Para uma conexão estável, escolha IPs de alta velocidade.",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2861,9 +2884,7 @@ class CodegenLoader extends AssetLoader {
         "To start using Mysterium VPN, we need your permission to install a VPN Profile.",
     "internetConnectionRestored": "Your internet connection has been restored.",
     "ipTypeDataCenter": "High-speed IPs",
-    "ipTypeDataCenterDisclaimer": "IPs hosted on fast and efficient servers for quick VPN needs.",
     "ipTypeResidential": "Residential IPs",
-    "ipTypeResidentialDisclaimer": "IPs tied to actual households for decreased VPN detection.",
     "isThisYou": "Is this you ?",
     "it": "Italian",
     "italy": "Italy",
@@ -2904,9 +2925,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Manage Subscription",
     "manageSubsDesc": "You can switch to a different plan or cancel your plan.",
     "manageSubsTittle": "Manage your subscription",
-    "marketingConsentPopupDesc":
-        "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
-    "marketingConsentPopupTitle": "Stay in the Loop",
     "maybeLaterBtn": "Maybe later",
     "mk": "Macedonian",
     "monitorStatus": "Monitor your VPN status",
@@ -3224,6 +3242,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Switch to {switchLocation}",
     "redeemDiscountCode": "Redeem discount code",
     "couponCodeCopied": "{couponCode} copied to clipboard!",
+    "marketingConsentPopupTitle": "Stay updated by email",
+    "marketingConsentPopupDesc":
+        "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
+    "allowNotificationsBtn": "Allow notifications",
+    "ipTypeDataCenterDisclaimer":
+        "IPs hosted on fast and efficient servers for quick VPN needs - choose this for stable connections",
+    "ipTypeResidentialDisclaimer":
+        "Residential IPs from real households. Nearly undetectable but less stable, so the IP you get might change",
+    "ipTypeResidentialTooltipTitle": "Why the link is lost?",
+    "ipTypeResidentialTooltipBody":
+        "Household IPs depend on real people. If their link is lost, you'll be instantly reconnected to the nearest available IP. For a stable connection, choose high-speed IPs.",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3416,10 +3445,7 @@ class CodegenLoader extends AssetLoader {
         "Per iniziare a utilizzare Mysterium VPN, abbiamo bisogno della tua autorizzazione per installare un profilo VPN.",
     "internetConnectionRestored": "La tua connessione Internet è stata ripristinata.",
     "ipTypeDataCenter": "IP ad alta velocità",
-    "ipTypeDataCenterDisclaimer":
-        "IP ospitati su server veloci ed efficienti per esigenze VPN rapide.",
     "ipTypeResidential": "IP residenziali",
-    "ipTypeResidentialDisclaimer": "IP collegati a case reali per ridurre il rilevamento VPN.",
     "isThisYou": "Sei tu ?",
     "it": "Italiano",
     "italy": "Italia",
@@ -3461,9 +3487,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Gestisci abbonamento",
     "manageSubsDesc": "Puoi passare a un piano diverso o annullare il tuo piano.",
     "manageSubsTittle": "Gestisci il tuo abbonamento",
-    "marketingConsentPopupDesc":
-        "Vuoi ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
-    "marketingConsentPopupTitle": "Resta aggiornato",
     "maybeLaterBtn": "Forse più tardi",
     "mk": "Macedone",
     "monitorStatus": "Monitora lo stato della tua VPN",
@@ -3786,6 +3809,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Passa a {switchLocation}",
     "redeemDiscountCode": "Riscatta il codice sconto",
     "couponCodeCopied": "{couponCode} copiato negli appunti!",
+    "marketingConsentPopupTitle": "Rimani aggiornato tramite email",
+    "marketingConsentPopupDesc":
+        "Desideri ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
+    "allowNotificationsBtn": "Consenti le notifiche",
+    "ipTypeDataCenterDisclaimer":
+        "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
+    "ipTypeResidentialDisclaimer":
+        "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+    "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
+    "ipTypeResidentialTooltipBody":
+        "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -3981,10 +4015,7 @@ class CodegenLoader extends AssetLoader {
         "Pour commencer à utiliser Mysterium VPN, nous avons besoin de votre permission pour installer un profil VPN.",
     "internetConnectionRestored": "Votre connexion Internet a été restaurée.",
     "ipTypeDataCenter": "IPs à haute vitesse",
-    "ipTypeDataCenterDisclaimer":
-        "IPs hébergées sur des serveurs rapides et efficaces pour des besoins VPN rapides.",
     "ipTypeResidential": "IPs résidentielles",
-    "ipTypeResidentialDisclaimer": "IPs liées à des foyers réels pour réduire la détection VPN.",
     "isThisYou": "Est-ce toi ?",
     "it": "Italien",
     "italy": "Italie",
@@ -4027,9 +4058,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Gérer l'abonnement",
     "manageSubsDesc": "Vous pouvez passer à un autre plan ou annuler votre plan.",
     "manageSubsTittle": "Gérez Votre Abonnement",
-    "marketingConsentPopupDesc":
-        "Souhaitez-vous recevoir des mises à jour par e-mail, des conseils de confidentialité et des offres spéciales de Mysterium Network ?",
-    "marketingConsentPopupTitle": "Restez informé",
     "maybeLaterBtn": "Peut-être plus tard",
     "mk": "Macédonien",
     "monitorStatus": "Surveillez votre statut VPN",
@@ -4329,7 +4357,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -4356,6 +4384,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Passer à {switchLocation}",
     "redeemDiscountCode": "Utilisez le code de réduction",
     "couponCodeCopied": "{couponCode} copié dans le presse-papiers !",
+    "marketingConsentPopupTitle": "Restez informé par e-mail",
+    "marketingConsentPopupDesc":
+        "Souhaitez-vous recevoir par courriel des mises à jour, des conseils en matière de confidentialité et des offres spéciales de Mysterium Network ?",
+    "allowNotificationsBtn": "Autoriser les notifications",
+    "ipTypeDataCenterDisclaimer":
+        "Adresses IP hébergées sur des serveurs rapides et performants pour des besoins VPN rapides : choisissez cette option pour des connexions stables.",
+    "ipTypeResidentialDisclaimer":
+        "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevrez peut donc changer.",
+    "ipTypeResidentialTooltipTitle": "Pourquoi le lien est-il perdu ?",
+    "ipTypeResidentialTooltipBody":
+        "Les adresses IP domestiques dépendent de personnes réelles. En cas de perte de connexion, vous serez instantanément reconnecté à l'adresse IP disponible la plus proche. Pour une connexion stable, choisissez une adresse IP haut débit.",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4541,10 +4580,7 @@ class CodegenLoader extends AssetLoader {
         "Untuk mulai menggunakan Mysterium VPN, kami memerlukan izin Anda untuk memasang Profil VPN.",
     "internetConnectionRestored": "Koneksi internet Anda telah dipulihkan.",
     "ipTypeDataCenter": "IP Kecepatan Tinggi",
-    "ipTypeDataCenterDisclaimer":
-        "IP yang di-host di server cepat dan efisien untuk kebutuhan VPN cepat.",
     "ipTypeResidential": "IP Residensial",
-    "ipTypeResidentialDisclaimer": "IP yang terhubung ke rumah asli untuk mengurangi deteksi VPN.",
     "isThisYou": "Apakah ini Anda ?",
     "it": "Italia",
     "italy": "Italia",
@@ -4585,9 +4621,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Kelola Langganan",
     "manageSubsDesc": "Anda dapat beralih ke paket lain atau membatalkan paket Anda.",
     "manageSubsTittle": "Kelola langganan Anda",
-    "marketingConsentPopupDesc":
-        "Apakah Anda ingin menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
-    "marketingConsentPopupTitle": "Tetap terhubung",
     "maybeLaterBtn": "mungkin nanti",
     "mk": "Makedonia",
     "monitorStatus": "Pantau status VPN Anda",
@@ -4875,7 +4908,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -4909,6 +4942,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Beralih ke {switchLocation}",
     "redeemDiscountCode": "Tukarkan kode diskon",
     "couponCodeCopied": "{Kode kupon} disalin ke papan klip!",
+    "marketingConsentPopupTitle": "Tetap dapatkan informasi terbaru melalui email.",
+    "marketingConsentPopupDesc":
+        "Apakah Anda ingin menerima pembaruan email, kiat privasi, dan penawaran khusus dari Mysterium Network?",
+    "allowNotificationsBtn": "Izinkan notifikasi",
+    "ipTypeDataCenterDisclaimer":
+        "IP yang dihosting di server cepat dan efisien untuk kebutuhan VPN yang cepat - pilih ini untuk koneksi yang stabil.",
+    "ipTypeResidentialDisclaimer":
+        "IP residensial dari rumah tangga sungguhan. Hampir tidak terdeteksi tetapi kurang stabil, jadi IP yang Anda dapatkan mungkin berubah.",
+    "ipTypeResidentialTooltipTitle": "Mengapa tautannya hilang?",
+    "ipTypeResidentialTooltipBody":
+        "IP rumah tangga bergantung pada orang sungguhan. Jika koneksi mereka terputus, Anda akan langsung terhubung kembali ke IP terdekat yang tersedia. Untuk koneksi yang stabil, pilih IP berkecepatan tinggi.",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5100,11 +5144,7 @@ class CodegenLoader extends AssetLoader {
         "Para comenzar a usar Mysterium VPN, necesitamos tu permiso para instalar un perfil de VPN.",
     "internetConnectionRestored": "Tu conexión a Internet ha sido restaurada.",
     "ipTypeDataCenter": "IPs de alta velocidad",
-    "ipTypeDataCenterDisclaimer":
-        "IPs alojadas en servidores rápidos y eficientes para necesidades rápidas de VPN.",
     "ipTypeResidential": "IPs residenciales",
-    "ipTypeResidentialDisclaimer":
-        "IPs vinculadas a hogares reales para reducir la detección de VPN.",
     "isThisYou": "Este Eres tu ?",
     "it": "Italiano",
     "italy": "Italia",
@@ -5146,9 +5186,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "Administrar suscripción",
     "manageSubsDesc": "Puedes cambiar a un plan diferente o cancelar tu plan.",
     "manageSubsTittle": "Administra tu suscripción",
-    "marketingConsentPopupDesc":
-        "¿Te gustaría recibir actualizaciones por correo electrónico, consejos de privacidad y ofertas especiales de Mysterium Network?",
-    "marketingConsentPopupTitle": "Mantente al tanto",
     "maybeLaterBtn": "Quizás más tarde",
     "mk": "Macedónio",
     "monitorStatus": "Supervisa el estado de su VPN",
@@ -5472,6 +5509,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "Cambiar a {ubicación del switch}",
     "redeemDiscountCode": "Canjea el código de descuento",
     "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
+    "marketingConsentPopupTitle": "Manténgase informado por correo electrónico.",
+    "marketingConsentPopupDesc":
+        "¿Te gustaría recibir actualizaciones por correo electrónico, consejos sobre privacidad y ofertas especiales de Mysterium Network?",
+    "allowNotificationsBtn": "Permitir notificaciones",
+    "ipTypeDataCenterDisclaimer":
+        "Direcciones IP alojadas en servidores rápidos y eficientes para necesidades VPN rápidas: elija esta opción para conexiones estables.",
+    "ipTypeResidentialDisclaimer":
+        "Direcciones IP residenciales de hogares reales. Casi indetectables pero menos estables, por lo que la IP que obtenga podría cambiar.",
+    "ipTypeResidentialTooltipTitle": "¿Por qué se perdió el enlace?",
+    "ipTypeResidentialTooltipBody":
+        "Las direcciones IP domésticas dependen de usuarios reales. Si se pierde la conexión, se te reconectará instantáneamente a la IP disponible más cercana. Para una conexión estable, elige direcciones IP de alta velocidad.",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5650,10 +5698,7 @@ class CodegenLoader extends AssetLoader {
     "installVpnProfile": "لبدء استخدام Mysterium VPN ، نحتاج إلى إذنك لتثبيت ملف تعريف VPN.",
     "internetConnectionRestored": "تمت استعادة اتصالك بالإنترنت.",
     "ipTypeDataCenter": "عناوين IP عالية السرعة",
-    "ipTypeDataCenterDisclaimer":
-        "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة.",
     "ipTypeResidential": "عناوين IP المنزلية",
-    "ipTypeResidentialDisclaimer": "عناوين IP مرتبطة بمنازل حقيقية لتقليل اكتشاف VPN.",
     "isThisYou": "هل هذا انت ؟",
     "it": "ايطالي",
     "italy": "إيطاليا",
@@ -5693,9 +5738,6 @@ class CodegenLoader extends AssetLoader {
     "manageBtn": "إدارة الاشتراك",
     "manageSubsDesc": "يمكنك التبديل إلى خطة مختلفة أو إلغاء خطتك.",
     "manageSubsTittle": "إدارة اشتراكك",
-    "marketingConsentPopupDesc":
-        "هل ترغب في تلقي تحديثات البريد الإلكتروني ونصائح الخصوصية والعروض الخاصة من شبكة Mysterium؟",
-    "marketingConsentPopupTitle": "ابق على اطلاع",
     "maybeLaterBtn": "ربما في وقت لاحق",
     "mk": "المقدونية",
     "monitorStatus": "راقب حالة VPN الخاصة بك",
@@ -6006,6 +6048,17 @@ class CodegenLoader extends AssetLoader {
     "switchToLocationBtn": "انتقل إلى {switchLocation}",
     "redeemDiscountCode": "استخدم رمز الخصم",
     "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
+    "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
+    "marketingConsentPopupDesc":
+        "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
+    "allowNotificationsBtn": "السماح بالإشعارات",
+    "ipTypeDataCenterDisclaimer":
+        "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة - اختر هذا للحصول على اتصالات مستقرة",
+    "ipTypeResidentialDisclaimer":
+        "عناوين IP سكنية من منازل حقيقية. يصعب اكتشافها تقريبًا، لكنها أقل استقرارًا، لذا قد يتغير عنوان IP الذي تحصل عليه.",
+    "ipTypeResidentialTooltipTitle": "لماذا فُقد الرابط؟",
+    "ipTypeResidentialTooltipBody":
+        "تعتمد عناوين IP المنزلية على أشخاص حقيقيين. في حال انقطاع اتصالهم، ستتم إعادة توصيلك فورًا بأقرب عنوان IP متاح. وللحصول على اتصال مستقر، اختر عناوين IP عالية السرعة.",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

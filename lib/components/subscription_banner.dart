@@ -4,16 +4,15 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
 import 'package:mysterium_vpn/components/banners/banner_title.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SubscriptionBanner extends HookConsumerWidget {
   const SubscriptionBanner({super.key = K.subscriptionBanner});
@@ -22,11 +21,12 @@ class SubscriptionBanner extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final handleSubscribe = useHandleSubscribe();
     final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final theme = Theme.of(context);
     return Observer(
       builder: (context) => switch (subscriptionStore.subscriptionFuture.status) {
         FutureStatus.pending => Banner(
           title: BannerTitle(
-            icon: const LoadingIndicator(radius: 16),
+            icon: const LoadingIndicator(size: 16),
             text: LocaleKeys.checkSubsStatusTitle.tr(),
           ),
           body: BannerBody(text: LocaleKeys.checkSubsStatusDesc.tr()),
@@ -42,7 +42,9 @@ class SubscriptionBanner extends HookConsumerWidget {
             onPressed: subscriptionStore.refreshSubscription,
           ),
           onPressed: subscriptionStore.refreshSubscription,
-          style: context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight,
+          style: theme.brightness == Brightness.dark
+              ? BannerStyle.warningDark
+              : BannerStyle.warningLight,
         ),
         FutureStatus.fulfilled => Banner(
           title: BannerTitle(text: LocaleKeys.noSubscriptionTitle.tr()),

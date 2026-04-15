@@ -161,9 +161,7 @@
   "installVpnProfile": "要开始使用 Mysterium VPN，我们需要您的许可才能安装 VPN 配置文件。",
   "internetConnectionRestored": "您的互联网连接已恢复。",
   "ipTypeDataCenter": "高速IP",
-  "ipTypeDataCenterDisclaimer": "托管在快速高效服务器上的IP，适用于快速VPN需求。",
   "ipTypeResidential": "住宅IP",
-  "ipTypeResidentialDisclaimer": "绑定到实际家庭的IP，以减少VPN检测。",
   "isThisYou": "这是你吗 ？",
   "it": "意大利语",
   "italy": "意大利",
@@ -206,8 +204,6 @@
   "manageBtn": "管理订阅",
   "manageSubsDesc": "您可以切换到其他计划或取消您的计划。",
   "manageSubsTittle": "管理您的订阅",
-  "marketingConsentPopupDesc": "您是否希望收到来自Mysterium Network的电子邮件更新、隐私提示和特别优惠？",
-  "marketingConsentPopupTitle": "保持关注",
   "maybeLaterBtn": "也许稍后",
   "mk": "马其顿语",
   "monitorStatus": "监控您的 VPN 状态",
@@ -500,5 +496,12 @@
   },
   "switchToLocationBtn": "切换到 {switchLocation}",
   "redeemDiscountCode": "兑换折扣码",
-  "couponCodeCopied": "优惠券代码已复制到剪贴板！"
+  "couponCodeCopied": "优惠券代码已复制到剪贴板！",
+  "marketingConsentPopupTitle": "通过电子邮件获取最新信息",
+  "marketingConsentPopupDesc": "您是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私提示和特别优惠？",
+  "allowNotificationsBtn": "允许通知",
+  "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
+  "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
+  "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
+  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。"
 }
