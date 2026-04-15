@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_mixin
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
@@ -7,6 +8,11 @@ import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
+
+abstract final class TrayMenuKeys {
+  static const showWindow = 'show_window';
+  static const exitApp = 'exit_app';
+}
 
 class LifecycleListener extends StatelessWidget {
   const LifecycleListener({
@@ -182,7 +188,7 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop>
 
   @override
   Future<void> onTrayIconMouseDown() async {
-    windowManager.show();
+    unawaited(windowManager.show());
   }
 
   @override
@@ -192,23 +198,20 @@ class __LifecycleDesktopState extends State<_LifecycleDesktop>
 
   @override
   Future<void> onTrayMenuItemClick(MenuItem menuItem) async {
-    if (menuItem.key == 'show_window') {
-      if (!await windowManager.isVisible()) {
-        windowManager.show();
-        trayManager.popUpContextMenu();
-      }
-    } else if (menuItem.key == 'exit_app') {
-      getIt<VpnStore>().disposeStore().whenComplete(() async {
-        await trayManager.destroy();
-        exit(0);
-      });
+    switch (menuItem.key) {
+      case TrayMenuKeys.showWindow:
+        if (!await windowManager.isVisible()) {
+          unawaited(windowManager.show());
+          trayManager.popUpContextMenu();
+        }
+      case TrayMenuKeys.exitApp:
+        try {
+          await getIt<VpnStore>().disposeStore();
+          await trayManager.destroy();
+        } finally {
+          exit(0);
+        }
     }
-  }
-
-  @override
-  void onWindowEvent(String eventType) {
-    // isAppWindowFocused was a Riverpod provider — no direct MobX equivalent.
-    // If needed, wire up a store for window focus state.
   }
 
   @override
