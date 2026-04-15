@@ -186,7 +186,9 @@ class _BillingActionWidgetState extends State<_BillingActionWidget> {
   AsyncSnapshot<void> _subscribeStatus = const AsyncSnapshot.nothing();
 
   void _updateSubscribeStatus(AsyncSnapshot<void> newStatus) {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     final oldStatus = _subscribeStatus;
     setState(() => _subscribeStatus = newStatus);
     if (newStatus.hasError && !oldStatus.hasError) {
@@ -257,10 +259,7 @@ class _BillingActionWidgetState extends State<_BillingActionWidget> {
                 await _onSubscribePress();
               }
             },
-            child: EasyText(
-              LocaleKeys.cancelSubscriptionBtn.tr(),
-              color: Palette.white,
-            ),
+            child: EasyText(LocaleKeys.cancelSubscriptionBtn.tr(), color: Palette.white),
           ),
         ],
       ),

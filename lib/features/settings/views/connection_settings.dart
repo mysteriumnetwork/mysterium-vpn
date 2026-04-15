@@ -60,14 +60,18 @@ class ConnectionSettings extends StatelessWidget {
           Beamer.of(context).beamToNamed(Routes.platformLogin.path);
         }
       } on SubscriptionRequiredException catch (_) {
-        if (!context.mounted) return;
+        if (!context.mounted) {
+          return;
+        }
         final subscriptionStore = getIt<SubscriptionStore>();
         final subscriptionPurchaseStore = getIt<SubscriptionPurchaseStore>();
         final remoteConfig = getIt<RemoteConfigStore>();
         final sessionStore = getIt<AuthSessionStore>();
         try {
           final subscription = await subscriptionStore.subscriptionFuture;
-          if (!context.mounted) return;
+          if (!context.mounted) {
+            return;
+          }
           await handleOnBillingPage(
             context: context,
             manageSubscriptionPage: remoteConfig.manageSubscriptionPage,
@@ -80,7 +84,9 @@ class ConnectionSettings extends StatelessWidget {
           );
         } catch (_) {}
       } on TunnelSetupRequiredException catch (_) {
-        if (!context.mounted) return;
+        if (!context.mounted) {
+          return;
+        }
         final abTestingStore = getIt<ABTestingStore>();
         final permissionsGranted = await showRequestTunnelPermissionsDialog(
           context,

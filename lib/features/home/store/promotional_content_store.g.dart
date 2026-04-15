@@ -12,11 +12,10 @@ mixin _$PromotionalContentStore on _PromotionalContentStore, Store {
   Computed<PromotionalBanner?>? _$activeBannerComputed;
 
   @override
-  PromotionalBanner? get activeBanner =>
-      (_$activeBannerComputed ??= Computed<PromotionalBanner?>(
-        () => super.activeBanner,
-        name: '_PromotionalContentStore.activeBanner',
-      )).value;
+  PromotionalBanner? get activeBanner => (_$activeBannerComputed ??= Computed<PromotionalBanner?>(
+    () => super.activeBanner,
+    name: '_PromotionalContentStore.activeBanner',
+  )).value;
 
   @override
   String toString() {

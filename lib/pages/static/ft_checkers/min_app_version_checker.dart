@@ -32,66 +32,66 @@ class _MinAppVersionCheckerState extends State<MinAppVersionChecker> {
 
   @override
   Widget build(BuildContext context) => Observer(
-      builder: (context) {
-        final currentBuildVersion = Env.buildInfo.buildVersion;
-        final minAppBuildNumber = _getMinAppBuildNumber(
-          remoteConfigStore: _remoteConfigStore,
-          installerStore: Env.buildInfo.installerStore,
-        );
-        if (!isCurrentVersionBehind(
-              currentAppVersion: currentBuildVersion,
-              comparisonVersion: minAppBuildNumber,
-            ) ||
-            _canContinue) {
-          return widget.child;
-        } else {
-          return Scaffold(
-            backgroundColor: Palette.darkBlue,
-            body: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 64),
-                    SvgIcon(asset: Asset.logo.splashLogo),
-                    const Spacer(),
-                    EasyText(
-                      LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
-                      textAlign: TextAlign.center,
-                      color: Palette.white,
-                      maxLines: 4,
-                      fontSize: 18,
-                    ),
-                    const SizedBox(height: 40),
-                    EasyButton(
-                      onPressed: () async {
-                        try {
-                          if (Env.buildInfo.installerStore?.toLowerCase().contains(
-                                    windowsStandAloneProductId.toLowerCase(),
-                                  ) ??
-                              false) {
-                            await openUrlLink(Uri.parse(windowsGithubDownloadLink));
-                          } else {
-                            await openAppStorePage();
-                          }
-                        } catch (e) {
-                          // Unable to open the store, unblock the user
-                          setState(() => _canContinue = true);
+    builder: (context) {
+      final currentBuildVersion = Env.buildInfo.buildVersion;
+      final minAppBuildNumber = _getMinAppBuildNumber(
+        remoteConfigStore: _remoteConfigStore,
+        installerStore: Env.buildInfo.installerStore,
+      );
+      if (!isCurrentVersionBehind(
+            currentAppVersion: currentBuildVersion,
+            comparisonVersion: minAppBuildNumber,
+          ) ||
+          _canContinue) {
+        return widget.child;
+      } else {
+        return Scaffold(
+          backgroundColor: Palette.darkBlue,
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 64),
+                  SvgIcon(asset: Asset.logo.splashLogo),
+                  const Spacer(),
+                  EasyText(
+                    LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
+                    textAlign: TextAlign.center,
+                    color: Palette.white,
+                    maxLines: 4,
+                    fontSize: 18,
+                  ),
+                  const SizedBox(height: 40),
+                  EasyButton(
+                    onPressed: () async {
+                      try {
+                        if (Env.buildInfo.installerStore?.toLowerCase().contains(
+                              windowsStandAloneProductId.toLowerCase(),
+                            ) ??
+                            false) {
+                          await openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                        } else {
+                          await openAppStorePage();
                         }
-                      },
-                      text: LocaleKeys.buttonUpdateApp.tr(),
-                    ),
-                    const Spacer(),
-                    SizedBox(height: MediaQuery.of(context).padding.bottom),
-                  ],
-                ),
+                      } catch (e) {
+                        // Unable to open the store, unblock the user
+                        setState(() => _canContinue = true);
+                      }
+                    },
+                    text: LocaleKeys.buttonUpdateApp.tr(),
+                  ),
+                  const Spacer(),
+                  SizedBox(height: MediaQuery.of(context).padding.bottom),
+                ],
               ),
             ),
-          );
-        }
-      },
-    );
+          ),
+        );
+      }
+    },
+  );
 
   String _getMinAppBuildNumber({
     required RemoteConfigStore remoteConfigStore,

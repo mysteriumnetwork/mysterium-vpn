@@ -103,10 +103,8 @@ class _HomeDesktopLeftPanelState extends State<HomeDesktopLeftPanel> with Widget
                     actions: [
                       IconButton(
                         icon: const Icon(UntitledUI.message_question_square),
-                        onPressed: () => handleOnSupportPage(
-                          context: context,
-                          analyticsStore: _analyticsStore,
-                        ),
+                        onPressed: () =>
+                            handleOnSupportPage(context: context, analyticsStore: _analyticsStore),
                       ),
                       IconButton(
                         icon: const Icon(UntitledUI.settings_01),

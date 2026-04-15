@@ -61,17 +61,23 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
     _purchaseReactionDisposer = reaction((_) => _purchaseStore.subscriptionStatus, (
       SubscriptionStatus? status,
     ) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() => _isLoading = status?.isLoading ?? false);
       if (status?.isError ?? false) {
         showError(_purchaseStore.subscriptionError);
       }
-      if (status == SubscriptionStatus.canceled) return;
+      if (status == SubscriptionStatus.canceled) {
+        return;
+      }
       if (status != null && !status.isLoading) {
         if (status == SubscriptionStatus.purchased) {
           showSnackbar(LocaleKeys.subscriptionActive.tr());
         }
-        if (mounted) Navigator.of(context).pop();
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
         _subscriptionStore.refreshAll().ignore();
       }
     });
@@ -80,9 +86,13 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
   }
 
   void _onTabChanged() {
-    if (_tabController.indexIsChanging) return;
+    if (_tabController.indexIsChanging) {
+      return;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       final products = _tabController.index == 1 ? _store.monthlyProducts : _store.annualProducts;
       final sorted = products.sortedByCompare((it) => it.monthlyValue, compareNumsDesc);
       if (sorted.isNotEmpty) {
@@ -103,18 +113,24 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
 
   Future<void> _handlePurchasePressed() async {
     final product = _selectedProduct;
-    if (product == null) return;
+    if (product == null) {
+      return;
+    }
     await _subscribeToProduct(product.id);
   }
 
   Future<void> _subscribeToProduct(String id) async {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     final analyticsStore = GetIt.I<AnalyticsStore>();
     final remoteConfigStore = GetIt.I<RemoteConfigStore>();
     final sessionStore = GetIt.I<AuthSessionStore>();
     final products = await _store.future;
     final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
-    if (selectedProduct == null) return;
+    if (selectedProduct == null) {
+      return;
+    }
 
     if (selectedProduct.id == _subscriptionStore.subscriptionFuture.value?.planId) {
       if (mounted) {
@@ -136,7 +152,9 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
         queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
       );
       await openUrlLink(uri);
-      if (mounted) Navigator.of(context).pop();
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
       return;
     }
 

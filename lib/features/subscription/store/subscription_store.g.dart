@@ -19,11 +19,10 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   Computed<bool>? _$isSubscriptionLoadingComputed;
 
   @override
-  bool get isSubscriptionLoading =>
-      (_$isSubscriptionLoadingComputed ??= Computed<bool>(
-        () => super.isSubscriptionLoading,
-        name: '_SubscriptionStore.isSubscriptionLoading',
-      )).value;
+  bool get isSubscriptionLoading => (_$isSubscriptionLoadingComputed ??= Computed<bool>(
+    () => super.isSubscriptionLoading,
+    name: '_SubscriptionStore.isSubscriptionLoading',
+  )).value;
   Computed<StoreState>? _$storeStateComputed;
 
   @override
@@ -71,27 +70,22 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     context: context,
   );
 
-  ObservableFuture<api.SubscriptionConfigResponse?>
-  get subscriptionConfigFuture {
+  ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture {
     _$_subscriptionConfigFutureAtom.reportRead();
     return super._subscriptionConfigFuture;
   }
 
   @override
-  ObservableFuture<api.SubscriptionConfigResponse?>
-  get _subscriptionConfigFuture => subscriptionConfigFuture;
+  ObservableFuture<api.SubscriptionConfigResponse?> get _subscriptionConfigFuture =>
+      subscriptionConfigFuture;
 
   bool __subscriptionConfigFutureIsInitialized = false;
 
   @override
-  set _subscriptionConfigFuture(
-    ObservableFuture<api.SubscriptionConfigResponse?> value,
-  ) {
+  set _subscriptionConfigFuture(ObservableFuture<api.SubscriptionConfigResponse?> value) {
     _$_subscriptionConfigFutureAtom.reportWrite(
       value,
-      __subscriptionConfigFutureIsInitialized
-          ? super._subscriptionConfigFuture
-          : null,
+      __subscriptionConfigFutureIsInitialized ? super._subscriptionConfigFuture : null,
       () {
         super._subscriptionConfigFuture = value;
         __subscriptionConfigFutureIsInitialized = true;
@@ -110,8 +104,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   }
 
   @override
-  ObservableFuture<String?> get _otherSubscriberEmailFuture =>
-      otherSubscriberEmailFuture;
+  ObservableFuture<String?> get _otherSubscriberEmailFuture => otherSubscriberEmailFuture;
 
   bool __otherSubscriberEmailFutureIsInitialized = false;
 
@@ -119,9 +112,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   set _otherSubscriberEmailFuture(ObservableFuture<String?> value) {
     _$_otherSubscriberEmailFutureAtom.reportWrite(
       value,
-      __otherSubscriberEmailFutureIsInitialized
-          ? super._otherSubscriberEmailFuture
-          : null,
+      __otherSubscriberEmailFutureIsInitialized ? super._otherSubscriberEmailFuture : null,
       () {
         super._otherSubscriberEmailFuture = value;
         __otherSubscriberEmailFutureIsInitialized = true;
@@ -156,9 +147,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<Subscription> _fetchSubscription() {
-    return _$_fetchSubscriptionAsyncAction.run(
-      () => super._fetchSubscription(),
-    );
+    return _$_fetchSubscriptionAsyncAction.run(() => super._fetchSubscription());
   }
 
   late final _$refreshSubscriptionAsyncAction = AsyncAction(
@@ -168,9 +157,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<Subscription> refreshSubscription({bool force = false}) {
-    return _$refreshSubscriptionAsyncAction.run(
-      () => super.refreshSubscription(force: force),
-    );
+    return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription(force: force));
   }
 
   late final _$refreshSubscriptionConfigAsyncAction = AsyncAction(
@@ -180,9 +167,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
-    return _$refreshSubscriptionConfigAsyncAction.run(
-      () => super.refreshSubscriptionConfig(),
-    );
+    return _$refreshSubscriptionConfigAsyncAction.run(() => super.refreshSubscriptionConfig());
   }
 
   late final _$refreshOtherSubscriberAsyncAction = AsyncAction(
@@ -192,9 +177,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<String?> refreshOtherSubscriber() {
-    return _$refreshOtherSubscriberAsyncAction.run(
-      () => super.refreshOtherSubscriber(),
-    );
+    return _$refreshOtherSubscriberAsyncAction.run(() => super.refreshOtherSubscriber());
   }
 
   late final _$refreshAllAsyncAction = AsyncAction(

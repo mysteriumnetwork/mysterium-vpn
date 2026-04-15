@@ -80,8 +80,7 @@ class _HorizontalScrollIndicatorState extends State<HorizontalScrollIndicator> {
     final controller = widget.controller;
     if (controller.hasClients) {
       final stackWidth = _stackBox?.size.width ?? 0;
-      final currentPosition =
-          controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
+      final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
       controller.animateTo(
         max(0, currentPosition - stackWidth),
         duration: _animationDuration,
@@ -94,8 +93,7 @@ class _HorizontalScrollIndicatorState extends State<HorizontalScrollIndicator> {
     final controller = widget.controller;
     if (controller.hasClients && controller.positions.isNotEmpty) {
       final stackWidth = _stackBox?.size.width ?? 0;
-      final currentPosition =
-          controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
+      final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
       controller.animateTo(
         min(currentPosition + stackWidth, controller.position.maxScrollExtent),
         duration: _animationDuration,

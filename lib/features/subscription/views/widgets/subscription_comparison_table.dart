@@ -33,18 +33,22 @@ class SubscriptionComparisonTable extends StatelessWidget {
             final values = config.planFeatures
                 .map((it) {
                   final value = it.detailedFeatures[key];
-                  final ComparisonValue<dynamic>? comparisonValue = switch (value) {
-                    final bool v => ComparisonAvailable(v),
+                  final comparisonValue = switch (value) {
+                    final bool v => ComparisonAvailable(v) as ComparisonValue<dynamic>,
                     final num v => ComparisonText(v.toString()),
                     final String v => ComparisonText(v),
                     _ => null,
                   };
-                  if (comparisonValue == null) return null;
+                  if (comparisonValue == null) {
+                    return null;
+                  }
                   return MapEntry(it.name, comparisonValue);
                 })
                 .nonNulls
                 .toList();
-            if (values.length != count) continue;
+            if (values.length != count) {
+              continue;
+            }
             list.add(
               ComparisonFeature(
                 values: Map.fromEntries(values),

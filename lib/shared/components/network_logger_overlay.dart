@@ -40,39 +40,39 @@ class _NetworkLoggerOverlayViewState extends State<NetworkLoggerOverlayView> {
 
   @override
   Widget build(BuildContext context) => Observer(
-      builder: (context) {
-        final enableQAHelpers = _store.enableQaHelpers;
-        final shouldShowLogger = !kReleaseMode || enableQAHelpers;
+    builder: (context) {
+      final enableQAHelpers = _store.enableQaHelpers;
+      final shouldShowLogger = !kReleaseMode || enableQAHelpers;
 
-        if (shouldShowLogger) {
-          return Stack(
-            children: [
-              widget.child,
-              if (_xPosition != 0 && _yPosition != 0) ...[
-                Positioned(
-                  top: _yPosition,
-                  left: _xPosition,
-                  child: GestureDetector(
-                    onPanUpdate: (tapInfo) {
-                      if (mounted) {
-                        setState(() {
-                          _xPosition += tapInfo.delta.dx;
-                          _yPosition += tapInfo.delta.dy;
-                        });
-                      }
-                    },
-                    child: NetworkLoggerButton(
-                      color: Palette.purple,
-                      globalNavKey: Beamer.of(context).navigatorKey,
-                    ),
+      if (shouldShowLogger) {
+        return Stack(
+          children: [
+            widget.child,
+            if (_xPosition != 0 && _yPosition != 0) ...[
+              Positioned(
+                top: _yPosition,
+                left: _xPosition,
+                child: GestureDetector(
+                  onPanUpdate: (tapInfo) {
+                    if (mounted) {
+                      setState(() {
+                        _xPosition += tapInfo.delta.dx;
+                        _yPosition += tapInfo.delta.dy;
+                      });
+                    }
+                  },
+                  child: NetworkLoggerButton(
+                    color: Palette.purple,
+                    globalNavKey: Beamer.of(context).navigatorKey,
                   ),
                 ),
-              ],
+              ),
             ],
-          );
-        } else {
-          return widget.child;
-        }
-      },
-    );
+          ],
+        );
+      } else {
+        return widget.child;
+      }
+    },
+  );
 }

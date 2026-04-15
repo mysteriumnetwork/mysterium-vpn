@@ -48,17 +48,17 @@ class _Banner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => PromoBar(
-      icon: _buildIcon(data.iconUrl),
-      text: data.getLocalizedTitle(context.locale.languageCode),
-      onTap: data.redirectUrl != null
-          ? () => Beamer.of(context).navigateToUrl(
-              url: data.redirectUrl!,
-              context: context,
-              isAuthenticated: isAuthenticated,
-              accessToken: accessToken,
-            )
-          : null,
-    );
+    icon: _buildIcon(data.iconUrl),
+    text: data.getLocalizedTitle(context.locale.languageCode),
+    onTap: data.redirectUrl != null
+        ? () => Beamer.of(context).navigateToUrl(
+            url: data.redirectUrl!,
+            context: context,
+            isAuthenticated: isAuthenticated,
+            accessToken: accessToken,
+          )
+        : null,
+  );
 
   Widget _buildIcon(String? iconUrl) {
     final defaultIcon = Icon(Icons.campaign, size: 24, color: Palette.brand.shade700);

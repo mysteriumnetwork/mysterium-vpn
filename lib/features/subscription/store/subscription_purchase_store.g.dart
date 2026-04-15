@@ -29,10 +29,7 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
     });
   }
 
-  late final _$_futureAtom = Atom(
-    name: '_SubscriptionPurchaseStore._future',
-    context: context,
-  );
+  late final _$_futureAtom = Atom(name: '_SubscriptionPurchaseStore._future', context: context);
 
   ObservableFuture<void> get future {
     _$_futureAtom.reportRead();
@@ -46,14 +43,10 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
 
   @override
   set _future(ObservableFuture<void> value) {
-    _$_futureAtom.reportWrite(
-      value,
-      __futureIsInitialized ? super._future : null,
-      () {
-        super._future = value;
-        __futureIsInitialized = true;
-      },
-    );
+    _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
+      super._future = value;
+      __futureIsInitialized = true;
+    });
   }
 
   late final _$_subscriptionStatusAtom = Atom(
@@ -103,9 +96,7 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
 
   @override
   Future<void> subscribeToPackage({required ProductDetails product}) {
-    return _$subscribeToPackageAsyncAction.run(
-      () => super.subscribeToPackage(product: product),
-    );
+    return _$subscribeToPackageAsyncAction.run(() => super.subscribeToPackage(product: product));
   }
 
   late final _$redeemCodeAsyncAction = AsyncAction(
@@ -125,9 +116,7 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
 
   @override
   Future<void> retryVerificationProcess() {
-    return _$retryVerificationProcessAsyncAction.run(
-      () => super.retryVerificationProcess(),
-    );
+    return _$retryVerificationProcessAsyncAction.run(() => super.retryVerificationProcess());
   }
 
   late final _$manageSubscriptionAsyncAction = AsyncAction(
@@ -137,9 +126,7 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
 
   @override
   Future<void> manageSubscription() {
-    return _$manageSubscriptionAsyncAction.run(
-      () => super.manageSubscription(),
-    );
+    return _$manageSubscriptionAsyncAction.run(() => super.manageSubscription());
   }
 
   late final _$_onPurchaseUpdateAsyncAction = AsyncAction(
@@ -149,9 +136,7 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
 
   @override
   Future<void> _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) {
-    return _$_onPurchaseUpdateAsyncAction.run(
-      () => super._onPurchaseUpdate(purchaseDetailsList),
-    );
+    return _$_onPurchaseUpdateAsyncAction.run(() => super._onPurchaseUpdate(purchaseDetailsList));
   }
 
   late final _$_handlePurchaseAsyncAction = AsyncAction(
@@ -161,9 +146,7 @@ mixin _$SubscriptionPurchaseStore on _SubscriptionPurchaseStore, Store {
 
   @override
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) {
-    return _$_handlePurchaseAsyncAction.run(
-      () => super._handlePurchase(purchaseDetails),
-    );
+    return _$_handlePurchaseAsyncAction.run(() => super._handlePurchase(purchaseDetails));
   }
 
   late final _$_verifyPurchaseAsyncAction = AsyncAction(

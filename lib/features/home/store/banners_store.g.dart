@@ -12,11 +12,10 @@ mixin _$BannersStore on _BannersStore, Store {
   Computed<List<BannerType>?>? _$shownComputed;
 
   @override
-  List<BannerType>? get shown =>
-      (_$shownComputed ??= Computed<List<BannerType>?>(
-        () => super.shown,
-        name: '_BannersStore.shown',
-      )).value;
+  List<BannerType>? get shown => (_$shownComputed ??= Computed<List<BannerType>?>(
+    () => super.shown,
+    name: '_BannersStore.shown',
+  )).value;
   Computed<bool>? _$shouldShowSubscriptionBannerComputed;
 
   @override
@@ -28,11 +27,10 @@ mixin _$BannersStore on _BannersStore, Store {
   Computed<List<BannerType>>? _$mainBannersComputed;
 
   @override
-  List<BannerType> get mainBanners =>
-      (_$mainBannersComputed ??= Computed<List<BannerType>>(
-        () => super.mainBanners,
-        name: '_BannersStore.mainBanners',
-      )).value;
+  List<BannerType> get mainBanners => (_$mainBannersComputed ??= Computed<List<BannerType>>(
+    () => super.mainBanners,
+    name: '_BannersStore.mainBanners',
+  )).value;
   Computed<BannerType?>? _$mainBannerComputed;
 
   @override
@@ -51,16 +49,12 @@ mixin _$BannersStore on _BannersStore, Store {
   Computed<bool>? _$shouldShowAppUpdateBannerComputed;
 
   @override
-  bool get shouldShowAppUpdateBanner =>
-      (_$shouldShowAppUpdateBannerComputed ??= Computed<bool>(
-        () => super.shouldShowAppUpdateBanner,
-        name: '_BannersStore.shouldShowAppUpdateBanner',
-      )).value;
+  bool get shouldShowAppUpdateBanner => (_$shouldShowAppUpdateBannerComputed ??= Computed<bool>(
+    () => super.shouldShowAppUpdateBanner,
+    name: '_BannersStore.shouldShowAppUpdateBanner',
+  )).value;
 
-  late final _$_shownBannersAtom = Atom(
-    name: '_BannersStore._shownBanners',
-    context: context,
-  );
+  late final _$_shownBannersAtom = Atom(name: '_BannersStore._shownBanners', context: context);
 
   ObservableFuture<List<BannerType>> get shownBanners {
     _$_shownBannersAtom.reportRead();
@@ -84,20 +78,14 @@ mixin _$BannersStore on _BannersStore, Store {
     );
   }
 
-  late final _$setShownAsyncAction = AsyncAction(
-    '_BannersStore.setShown',
-    context: context,
-  );
+  late final _$setShownAsyncAction = AsyncAction('_BannersStore.setShown', context: context);
 
   @override
   Future<void> setShown(BannerType banner) {
     return _$setShownAsyncAction.run(() => super.setShown(banner));
   }
 
-  late final _$resetShownAsyncAction = AsyncAction(
-    '_BannersStore.resetShown',
-    context: context,
-  );
+  late final _$resetShownAsyncAction = AsyncAction('_BannersStore.resetShown', context: context);
 
   @override
   Future<void> resetShown() {

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/enums/subscription_status.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
@@ -59,12 +58,22 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
     super.initState();
     _scrollController = ScrollController();
     _reactionDisposer = reaction((_) => _purchaseStore.subscriptionStatus, (status) {
-      if (mounted) setState(() => _isLoading = status?.isLoading ?? false);
-      if (status?.isError ?? false) showError(_purchaseStore.subscriptionError);
-      if (status == SubscriptionStatus.canceled) return;
+      if (mounted) {
+        setState(() => _isLoading = status?.isLoading ?? false);
+      }
+      if (status?.isError ?? false) {
+        showError(_purchaseStore.subscriptionError);
+      }
+      if (status == SubscriptionStatus.canceled) {
+        return;
+      }
       if (status != null && !status.isLoading) {
-        if (status == SubscriptionStatus.purchased) showSnackbar(LocaleKeys.subscriptionActive.tr());
-        if (mounted) Navigator.of(context).pop();
+        if (status == SubscriptionStatus.purchased) {
+          showSnackbar(LocaleKeys.subscriptionActive.tr());
+        }
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
         _subscriptionStore.refreshAll().ignore();
       }
     });
@@ -78,7 +87,9 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
   }
 
   Future<void> _handleSubscribe(String id) async {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     final analyticsStore = getIt<AnalyticsStore>();
     final plansStore = getIt<SubscriptionPlansStore>();
     final purchaseStore = getIt<SubscriptionPurchaseStore>();
@@ -89,7 +100,9 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
     final products = await plansStore.future;
     final gateway = subscriptionStore.subscriptionFuture.value?.gateway;
     final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
-    if (selectedProduct == null) return;
+    if (selectedProduct == null) {
+      return;
+    }
     if (selectedProduct.id == subscriptionStore.subscriptionFuture.value?.planId) {
       if (mounted) {
         showSnackbar("You're all set! You already have this plan active");
@@ -106,7 +119,9 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
         queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
       );
       await openUrlLink(uri);
-      if (mounted) Navigator.of(context).pop();
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
       return;
     }
     await purchaseStore.subscribeToPackage(product: selectedProduct.productDetails);
@@ -164,7 +179,9 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
               );
             }
 
-            if (subscription == null) return const Center(child: LoadingIndicator());
+            if (subscription == null) {
+              return const Center(child: LoadingIndicator());
+            }
 
             final hasPlan = subscription.active;
             final bestConfig = _store.findConfig(product);
@@ -196,7 +213,9 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
             final price = useStorePrices ? product.moneyMonthly : product.moneyMonthlyBackend;
             final money = useStorePrices ? product.money : product.backendMoney;
             final oldPrice = otherProduct != null
-                ? useStorePrices ? otherProduct.moneyMonthly : otherProduct.moneyMonthlyBackend
+                ? useStorePrices
+                      ? otherProduct.moneyMonthly
+                      : otherProduct.moneyMonthlyBackend
                 : null;
             final planData = PlanData(
               fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
@@ -212,7 +231,6 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
                       namedArgs: {'percent': discount.toString(), 'planId': '1-${period.tr()}'},
                     )
                   : null,
-              icon: null,
               perMonth: LocaleKeys.perMonth.tr(),
               periodLabel: period.tr(),
             );
@@ -230,8 +248,7 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          if (screenType != ScreenType.mobile)
-                            SizedBox(height: theme.spacing.xl2),
+                          if (screenType != ScreenType.mobile) SizedBox(height: theme.spacing.xl2),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
                             child: ModalHeader(
@@ -329,10 +346,7 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
                       loading: _isLoading ? const ButtonLoading() : null,
                       decoration: ButtonDecoration(
                         decorationColor: theme.palette.bgBrandPrimary,
-                        padding: EdgeInsets.symmetric(
-                          vertical: theme.spacing.lg,
-                          horizontal: 18,
-                        ),
+                        padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
                       ),
                       child: Text(
                         hasPlan

@@ -30,7 +30,9 @@ class _WelcomePageState extends State<WelcomePage> {
   void initState() {
     super.initState();
     _disposer = reaction((_) => _authSessionStore.authShown, (authShown) {
-      if (authShown) return;
+      if (authShown) {
+        return;
+      }
       Future.microtask(() async {
         _authSessionStore.authShown = true;
       });

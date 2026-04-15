@@ -125,11 +125,13 @@ class _ColoredScrollGapFillerState extends State<_ColoredScrollGapFiller> {
   void _onScroll() {
     final controller = widget.controller;
     if (!controller.hasClients || controller.positions.isEmpty) {
-      if (_offset != 0.0) setState(() => _offset = 0.0);
+      if (_offset != 0.0) {
+        setState(() => _offset = 0.0);
+      }
       return;
     }
     final position = controller.positions.first;
-    final newOffset = max(0.0, position.pixels - position.maxScrollExtent);
+    final newOffset = max(0, position.pixels - position.maxScrollExtent).toDouble();
     if (newOffset != _offset) {
       setState(() => _offset = newOffset);
     }

@@ -26,7 +26,8 @@ class _SettingCategoryScope extends InheritedWidget {
   final SettingCategory category;
   final ValueChanged<SettingCategory> onCategoryChanged;
 
-  static _SettingCategoryScope of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<_SettingCategoryScope>()!;
+  static _SettingCategoryScope of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_SettingCategoryScope>()!;
 
   @override
   bool updateShouldNotify(_SettingCategoryScope old) => category != old.category;

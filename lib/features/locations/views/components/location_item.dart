@@ -120,7 +120,9 @@ class ExpandableLocationItem extends StatelessWidget {
             openUrlLink(httpsUri).ignore();
             return;
           }
-          if (!context.mounted) return;
+          if (!context.mounted) {
+            return;
+          }
           await showSubscriptionUpgradeModalPage(context);
         }
 
@@ -166,12 +168,18 @@ class ExpandableLocationItem extends StatelessWidget {
         };
 
         final isExpanded = () {
-          if (!showCitiesAndStates) return false;
+          if (!showCitiesAndStates) {
+            return false;
+          }
           final matchesQuery =
               query.isNotEmpty &&
               children.any((it) => it.queried(query, context.locale.languageCode) != null);
-          if (matchesQuery) return true;
-          if (expansionOverride != null) return expansionOverride!;
+          if (matchesQuery) {
+            return true;
+          }
+          if (expansionOverride != null) {
+            return expansionOverride!;
+          }
           if (mapSelectedCountryCode != null) {
             return mapSelectedCountryCode == location.countryCode;
           }

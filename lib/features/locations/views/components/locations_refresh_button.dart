@@ -40,10 +40,10 @@ class _LocationsRefreshButtonState extends State<LocationsRefreshButton> {
 
   @override
   Widget build(BuildContext context) => ButtonSecondary(
-      size: ButtonSize.small,
-      decoration: const ButtonDecoration(padding: EdgeInsets.symmetric(horizontal: 16)),
-      loading: _isRefreshing ? const ButtonLoading() : null,
-      onPressed: _isRefreshing ? null : _handleRefresh,
-      child: Text(LocaleKeys.refresh.tr()),
-    );
+    size: ButtonSize.small,
+    decoration: const ButtonDecoration(padding: EdgeInsets.symmetric(horizontal: 16)),
+    loading: _isRefreshing ? const ButtonLoading() : null,
+    onPressed: _isRefreshing ? null : _handleRefresh,
+    child: Text(LocaleKeys.refresh.tr()),
+  );
 }

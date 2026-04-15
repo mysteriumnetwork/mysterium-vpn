@@ -12,10 +12,8 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   Computed<String>? _$idComputed;
 
   @override
-  String get id => (_$idComputed ??= Computed<String>(
-    () => super.id,
-    name: '_PurchasableProduct.id',
-  )).value;
+  String get id =>
+      (_$idComputed ??= Computed<String>(() => super.id, name: '_PurchasableProduct.id')).value;
   Computed<Money>? _$moneyMonthlyComputed;
 
   @override
@@ -26,19 +24,17 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   Computed<Money>? _$moneyMonthlyBackendComputed;
 
   @override
-  Money get moneyMonthlyBackend =>
-      (_$moneyMonthlyBackendComputed ??= Computed<Money>(
-        () => super.moneyMonthlyBackend,
-        name: '_PurchasableProduct.moneyMonthlyBackend',
-      )).value;
+  Money get moneyMonthlyBackend => (_$moneyMonthlyBackendComputed ??= Computed<Money>(
+    () => super.moneyMonthlyBackend,
+    name: '_PurchasableProduct.moneyMonthlyBackend',
+  )).value;
   Computed<Money>? _$moneyAnnualBackendComputed;
 
   @override
-  Money get moneyAnnualBackend =>
-      (_$moneyAnnualBackendComputed ??= Computed<Money>(
-        () => super.moneyAnnualBackend,
-        name: '_PurchasableProduct.moneyAnnualBackend',
-      )).value;
+  Money get moneyAnnualBackend => (_$moneyAnnualBackendComputed ??= Computed<Money>(
+    () => super.moneyAnnualBackend,
+    name: '_PurchasableProduct.moneyAnnualBackend',
+  )).value;
   Computed<Money>? _$moneyAnnualComputed;
 
   @override
@@ -92,11 +88,10 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   Computed<String>? _$billedPerMonthShortComputed;
 
   @override
-  String get billedPerMonthShort =>
-      (_$billedPerMonthShortComputed ??= Computed<String>(
-        () => super.billedPerMonthShort,
-        name: '_PurchasableProduct.billedPerMonthShort',
-      )).value;
+  String get billedPerMonthShort => (_$billedPerMonthShortComputed ??= Computed<String>(
+    () => super.billedPerMonthShort,
+    name: '_PurchasableProduct.billedPerMonthShort',
+  )).value;
   Computed<double>? _$monthlyValueComputed;
 
   @override
@@ -133,10 +128,7 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
     name: '_PurchasableProduct.billedInTotal',
   )).value;
 
-  late final _$statusAtom = Atom(
-    name: '_PurchasableProduct.status',
-    context: context,
-  );
+  late final _$statusAtom = Atom(name: '_PurchasableProduct.status', context: context);
 
   @override
   ProductStatus get status {

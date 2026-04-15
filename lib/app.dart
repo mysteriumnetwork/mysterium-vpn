@@ -74,47 +74,39 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     _authSessionStore.initStore().whenComplete(_authStore.initAuth);
 
     // Fetch user data when session becomes authenticated
-    _authSessionDisposer = reaction(
-      (_) => _authSessionStore.isAuthenticated,
-      (bool isAuthenticated) async {
-        if (isAuthenticated) await _authStore.fetchAuthUser();
-      },
-    );
+    _authSessionDisposer = reaction((_) => _authSessionStore.isAuthenticated, (
+      bool isAuthenticated,
+    ) async {
+      if (isAuthenticated) {
+        await _authStore.fetchAuthUser();
+      }
+    });
 
     // Routing + store cleanup on auth status change
-    _authStatusDisposer = reaction(
-      (_) => _authSessionStore.status,
-      _authenticationReaction,
-    );
+    _authStatusDisposer = reaction((_) => _authSessionStore.status, _authenticationReaction);
 
     // MQTT: start and subscribe to config-cat changes (replaces useMQTTService)
-    _mqttDisposer = reaction(
-      (_) => _authSessionStore.isAuthenticated,
-      (bool authenticated) {
-        if (authenticated) {
-          _mqtt.start().then((_) {
-            _mqtt.subscribe('config-cat/changed').listen((_) {
-              _remoteConfigStore.refresh();
-            });
+    _mqttDisposer = reaction((_) => _authSessionStore.isAuthenticated, (bool authenticated) {
+      if (authenticated) {
+        _mqtt.start().then((_) {
+          _mqtt.subscribe('config-cat/changed').listen((_) {
+            _remoteConfigStore.refresh();
           });
-        } else {
-          _mqtt.stop();
-        }
-      },
-      fireImmediately: true,
-    );
+        });
+      } else {
+        _mqtt.stop();
+      }
+    }, fireImmediately: true);
 
     // Update ConfigCat user on user change (replaces useConfigCatUserUpdater)
-    _configCatUserDisposer = reaction(
-      (_) => _configCatUserStore.future.value,
-      (user) async {
-        if (user == null) return;
-        await _abTestingStore.setUser(user);
-        await _remoteConfigStore.setUser(user);
-        await _textsStore.setUser(user);
-      },
-      fireImmediately: true,
-    );
+    _configCatUserDisposer = reaction((_) => _configCatUserStore.future.value, (user) async {
+      if (user == null) {
+        return;
+      }
+      await _abTestingStore.setUser(user);
+      await _remoteConfigStore.setUser(user);
+      await _textsStore.setUser(user);
+    }, fireImmediately: true);
 
     // Refresh subscription on app resume / auth change (replaces useSubscriptionWatcher)
     _subscriptionWatcherDisposer = reaction(
@@ -138,7 +130,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   void _onResumed() {
-    if (!_authSessionStore.isAuthenticated) return;
+    if (!_authSessionStore.isAuthenticated) {
+      return;
+    }
     Future.microtask(() => _subscriptionStore.refreshSubscription(force: true));
   }
 
@@ -155,7 +149,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _authenticationReaction(AuthStatus authStatus) {
     _routeDelegate.update();
-    if (authStatus != AuthStatus.unauthenticated) return;
+    if (authStatus != AuthStatus.unauthenticated) {
+      return;
+    }
 
     // Reset stores on logout — disposeStore() resets state; singletons stay in GetIt.
     getIt<VpnStore>().disposeStore();
@@ -170,44 +166,39 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) => LifecycleListener(
-      onThemeChanged: _themeStore.updateSystemTheme,
-      child: Observer(
-        builder: (context) => RetakeFocusOnTap(
-          child: ShortcutsWidget(
-            child: CustomPlatformMenu(
-              appName: Env.appName,
-              child: BeamerProvider(
-                routerDelegate: _routeDelegate,
-                child: Portal(
-                  child: MaterialApp.router(
-                    title: Env.appName,
-                    scaffoldMessengerKey: snackbarKey,
-                    theme: _themeStore.lightTheme,
-                    darkTheme: _themeStore.darkTheme,
-                    themeMode: _themeStore.themeMode,
-                    routerDelegate: _routeDelegate,
-                    routeInformationParser: _routeInformationParser,
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: _localeStore.currentLocale,
-                    backButtonDispatcher:
-                        BeamerBackButtonDispatcher(delegate: _routeDelegate),
-                    builder: (context, child) => ScreenTypeObserver(
-                      child: MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(textScaler: TextScaler.noScaling),
-                        child: ScrollConfiguration(
-                          behavior: ScrollConfiguration.of(context).copyWith(
-                            dragDevices: PointerDeviceKind.values.toSet(),
-                            scrollbars: false,
-                            overscroll: true,
-                            physics: const BouncingScrollPhysics(),
-                          ),
-                          child: AppDeferredInitWidget(
-                            child: FTCheckers(
-                              child: NetworkLoggerOverlayView(child: child!),
-                            ),
-                          ),
+    onThemeChanged: _themeStore.updateSystemTheme,
+    child: Observer(
+      builder: (context) => RetakeFocusOnTap(
+        child: ShortcutsWidget(
+          child: CustomPlatformMenu(
+            appName: Env.appName,
+            child: BeamerProvider(
+              routerDelegate: _routeDelegate,
+              child: Portal(
+                child: MaterialApp.router(
+                  title: Env.appName,
+                  scaffoldMessengerKey: snackbarKey,
+                  theme: _themeStore.lightTheme,
+                  darkTheme: _themeStore.darkTheme,
+                  themeMode: _themeStore.themeMode,
+                  routerDelegate: _routeDelegate,
+                  routeInformationParser: _routeInformationParser,
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: _localeStore.currentLocale,
+                  backButtonDispatcher: BeamerBackButtonDispatcher(delegate: _routeDelegate),
+                  builder: (context, child) => ScreenTypeObserver(
+                    child: MediaQuery(
+                      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: PointerDeviceKind.values.toSet(),
+                          scrollbars: false,
+                          overscroll: true,
+                          physics: const BouncingScrollPhysics(),
+                        ),
+                        child: AppDeferredInitWidget(
+                          child: FTCheckers(child: NetworkLoggerOverlayView(child: child!)),
                         ),
                       ),
                     ),
@@ -218,5 +209,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ),
         ),
       ),
-    );
+    ),
+  );
 }

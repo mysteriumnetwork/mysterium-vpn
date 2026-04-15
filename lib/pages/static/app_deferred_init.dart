@@ -54,7 +54,9 @@ class _AppDeferredInitWidgetState extends State<AppDeferredInitWidget> {
       if (Platform.isWindows) _initWindows(),
     ]);
     logger.log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
-    if (mounted) setState(() => _initialized = true);
+    if (mounted) {
+      setState(() => _initialized = true);
+    }
   }
 
   Future<void> _initRemoteConfig(Talker talker) async {
@@ -93,7 +95,9 @@ class _AppDeferredInitWidgetState extends State<AppDeferredInitWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_initialized) return const SplashPage();
+    if (!_initialized) {
+      return const SplashPage();
+    }
     return widget.child;
   }
 }

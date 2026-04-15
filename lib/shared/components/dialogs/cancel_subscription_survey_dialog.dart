@@ -65,7 +65,9 @@ class _CancelSubscriptionSurveyDialogState extends State<CancelSubscriptionSurve
     try {
       final reasons = _form.reasons.value!;
       var feedback = _form.feedback.value?.trim();
-      if (feedback?.isEmpty ?? false) feedback = null;
+      if (feedback?.isEmpty ?? false) {
+        feedback = null;
+      }
       await _analyticsStore.logSubscriptionCancellationSurvey(reasons: reasons, feedback: feedback);
       if (mounted) {
         Navigator.of(context).pop(true);

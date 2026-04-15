@@ -12,11 +12,10 @@ mixin _$ConnectionDecisionStore on _ConnectionDecisionStore, Store {
   Computed<VPNLocation?>? _$potentialLocationComputed;
 
   @override
-  VPNLocation? get potentialLocation =>
-      (_$potentialLocationComputed ??= Computed<VPNLocation?>(
-        () => super.potentialLocation,
-        name: '_ConnectionDecisionStore.potentialLocation',
-      )).value;
+  VPNLocation? get potentialLocation => (_$potentialLocationComputed ??= Computed<VPNLocation?>(
+    () => super.potentialLocation,
+    name: '_ConnectionDecisionStore.potentialLocation',
+  )).value;
 
   @override
   String toString() {

@@ -270,11 +270,15 @@ Future<void> _handleToggleConnection(
       Beamer.of(context).beamToNamed(Routes.platformLogin.path);
     }
   } on SubscriptionRequiredException catch (_) {
-    _handleSubscribe(context);
+    if (context.mounted) {
+      await _handleSubscribe(context);
+    }
   } on TunnelSetupRequiredException catch (_) {
-    final permissionsGiven = await _handleSetupTunnel(context);
-    if (permissionsGiven) {
-      await vpnStore.manageConnection(location: location, intent: intent);
+    if (context.mounted) {
+      final permissionsGiven = await _handleSetupTunnel(context);
+      if (permissionsGiven) {
+        await vpnStore.manageConnection(location: location, intent: intent);
+      }
     }
   }
 }

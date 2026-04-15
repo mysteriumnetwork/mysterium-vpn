@@ -36,19 +36,17 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
   Computed<int?>? _$upgradeDiscountPercentComputed;
 
   @override
-  int? get upgradeDiscountPercent =>
-      (_$upgradeDiscountPercentComputed ??= Computed<int?>(
-        () => super.upgradeDiscountPercent,
-        name: '_SubscriptionUpgradeStore.upgradeDiscountPercent',
-      )).value;
+  int? get upgradeDiscountPercent => (_$upgradeDiscountPercentComputed ??= Computed<int?>(
+    () => super.upgradeDiscountPercent,
+    name: '_SubscriptionUpgradeStore.upgradeDiscountPercent',
+  )).value;
   Computed<bool>? _$isEligibleForUpgradeComputed;
 
   @override
-  bool get isEligibleForUpgrade =>
-      (_$isEligibleForUpgradeComputed ??= Computed<bool>(
-        () => super.isEligibleForUpgrade,
-        name: '_SubscriptionUpgradeStore.isEligibleForUpgrade',
-      )).value;
+  bool get isEligibleForUpgrade => (_$isEligibleForUpgradeComputed ??= Computed<bool>(
+    () => super.isEligibleForUpgrade,
+    name: '_SubscriptionUpgradeStore.isEligibleForUpgrade',
+  )).value;
 
   @override
   String toString() {

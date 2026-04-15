@@ -9,10 +9,7 @@ part of 'subscription_config_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
-  late final _$_futureAtom = Atom(
-    name: '_SubscriptionConfigStore._future',
-    context: context,
-  );
+  late final _$_futureAtom = Atom(name: '_SubscriptionConfigStore._future', context: context);
 
   ObservableFuture<SubscriptionConfigResponse?> get future {
     _$_futureAtom.reportRead();
@@ -26,14 +23,10 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
 
   @override
   set _future(ObservableFuture<SubscriptionConfigResponse?> value) {
-    _$_futureAtom.reportWrite(
-      value,
-      __futureIsInitialized ? super._future : null,
-      () {
-        super._future = value;
-        __futureIsInitialized = true;
-      },
-    );
+    _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
+      super._future = value;
+      __futureIsInitialized = true;
+    });
   }
 
   late final _$_subscriptionFutureAtom = Atom(
@@ -74,8 +67,7 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
   }
 
   @override
-  ObservableFuture<GetPlanResponse> get _subscriptionPlanFuture =>
-      subscriptionPlanFuture;
+  ObservableFuture<GetPlanResponse> get _subscriptionPlanFuture => subscriptionPlanFuture;
 
   bool __subscriptionPlanFutureIsInitialized = false;
 
@@ -83,9 +75,7 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
   set _subscriptionPlanFuture(ObservableFuture<GetPlanResponse> value) {
     _$_subscriptionPlanFutureAtom.reportWrite(
       value,
-      __subscriptionPlanFutureIsInitialized
-          ? super._subscriptionPlanFuture
-          : null,
+      __subscriptionPlanFutureIsInitialized ? super._subscriptionPlanFuture : null,
       () {
         super._subscriptionPlanFuture = value;
         __subscriptionPlanFutureIsInitialized = true;

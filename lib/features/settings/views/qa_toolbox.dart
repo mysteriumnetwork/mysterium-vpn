@@ -196,10 +196,7 @@ class QAToolbox extends StatelessWidget {
     title: 'Insert invalid locations',
     subtitle: 'Add test locations for testing unavailable connections',
     actions: [
-      _QAActionButton(
-        label: 'Insert',
-        onPressed: getIt<LocationsStore>().insertInvalidLocations,
-      ),
+      _QAActionButton(label: 'Insert', onPressed: getIt<LocationsStore>().insertInvalidLocations),
     ],
   );
 
@@ -388,40 +385,40 @@ class _ExpandableSectionState extends State<_ExpandableSection> {
 
   @override
   Widget build(BuildContext context) => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: () => setState(() => _isExpanded = !_isExpanded),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Row(
-              children: [
-                Icon(widget.icon, size: 20, color: Colors.grey[600]),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                  ),
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      InkWell(
+        onTap: () => setState(() => _isExpanded = !_isExpanded),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              Icon(widget.icon, size: 20, color: Colors.grey[600]),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  widget.title,
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                 ),
-                AnimatedRotation(
-                  turns: _isExpanded ? 0.5 : 0,
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
-                ),
-              ],
-            ),
+              ),
+              AnimatedRotation(
+                turns: _isExpanded ? 0.5 : 0,
+                duration: const Duration(milliseconds: 200),
+                child: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
+              ),
+            ],
           ),
         ),
-        AnimatedCrossFade(
-          firstChild: const SizedBox.shrink(),
-          secondChild: Column(children: widget.children),
-          crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 200),
-        ),
-        Divider(height: 1, thickness: 1, color: Colors.grey[300]),
-      ],
-    );
+      ),
+      AnimatedCrossFade(
+        firstChild: const SizedBox.shrink(),
+        secondChild: Column(children: widget.children),
+        crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        duration: const Duration(milliseconds: 200),
+      ),
+      Divider(height: 1, thickness: 1, color: Colors.grey[300]),
+    ],
+  );
 }
 
 class _QAActionItem extends StatelessWidget {

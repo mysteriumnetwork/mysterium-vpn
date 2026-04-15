@@ -17,11 +17,7 @@ Future<void> showRateConnectionDialog(
   BuildContext context,
   RateConnectionRequestModeEnum mode,
 ) async {
-  final store = RateConnectionStore(
-    mode,
-    getIt<AnalyticsStore>(),
-    getIt<VpnStore>(),
-  );
+  final store = RateConnectionStore(mode, getIt<AnalyticsStore>(), getIt<VpnStore>());
 
   final future = await showBottomSheetDialog<Future<void>>(
     context,

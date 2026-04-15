@@ -33,7 +33,9 @@ class TooManyConnectionsBanner extends StatelessWidget {
     final connectionsLimitStore = getIt<ConnectionsLimitStore>();
     final abTestingStore = getIt<ABTestingStore>();
 
-    final logEvent = vpnStore.isConnected ? analyticsStore.logDisconnect : analyticsStore.logConnect;
+    final logEvent = vpnStore.isConnected
+        ? analyticsStore.logDisconnect
+        : analyticsStore.logConnect;
     logEvent(null);
 
     try {
@@ -51,33 +53,35 @@ class TooManyConnectionsBanner extends StatelessWidget {
       final accessToken = sessionStore.accessToken;
       try {
         final subscription = await subscriptionStore.subscriptionFuture;
-        if (!context.mounted) return;
-        await handleOnBillingPage(
-          context: context,
-          manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
-          upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
-          gateway: subscription.gateway,
-          subscriptionActive: subscription.active,
-          accessToken: accessToken,
-          onManageSubscription: subscriptionPurchaseStore.manageSubscription,
-          manageSubscription: false,
-        );
+        if (context.mounted) {
+          await handleOnBillingPage(
+            context: context,
+            manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
+            upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
+            gateway: subscription.gateway,
+            subscriptionActive: subscription.active,
+            accessToken: accessToken,
+            onManageSubscription: subscriptionPurchaseStore.manageSubscription,
+            manageSubscription: false,
+          );
+        }
       } on SubscriptionRequiredException catch (_) {
         // ignore
       }
       return;
     } on TunnelSetupRequiredException catch (_) {
       final tunnelConsentType = abTestingStore.tunnelConsentType;
-      if (!context.mounted) return;
-      final permissionsGranted = await showRequestTunnelPermissionsDialog(
-        context,
-        tunnelConsentType,
-      );
-      if (permissionsGranted ?? false) {
-        await vpnStore.setupTunnel();
-        await vpnStore.manageConnection();
+      if (context.mounted) {
+        final permissionsGranted = await showRequestTunnelPermissionsDialog(
+          context,
+          tunnelConsentType,
+        );
+        if (permissionsGranted ?? false) {
+          await vpnStore.setupTunnel();
+          await vpnStore.manageConnection();
+        }
+        return;
       }
-      return;
     }
 
     connectionsLimitStore.connectionLimitReached = false;
@@ -90,7 +94,9 @@ class TooManyConnectionsBanner extends StatelessWidget {
     return Observer(
       builder: (context) {
         final isConnected = vpnStore.isConnected;
-        final bannerStyle = context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight;
+        final bannerStyle = context.c.isDarkMode
+            ? BannerStyle.warningDark
+            : BannerStyle.warningLight;
 
         return Banner(
           style: bannerStyle,

@@ -17,9 +17,9 @@ import 'package:mysterium_vpn/features/home/views/home_mobile_view.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/notifications/store/push_notifications_store.dart';
 import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/shared/components/colored_scaffold.dart';
@@ -67,9 +67,13 @@ class _HomePageState extends State<HomePage> {
 
     _homeDisposers.addAll([
       autorun((_) {
-        if (!authSessionStore.isAuthenticated) return;
+        if (!authSessionStore.isAuthenticated) {
+          return;
+        }
         final value = userPreferencesStore.nextPromptToShow;
-        if (value == UserPromptType.none) return;
+        if (value == UserPromptType.none) {
+          return;
+        }
         if (!userPreferencesStore.isPromptShown(value)) {
           userPreferencesStore.markPromptAsShown(value);
           if (value case UserPromptType.marketingConsent) {
@@ -88,12 +92,16 @@ class _HomePageState extends State<HomePage> {
       }),
       autorun((_) {
         final notification = pushNotificationsStore.lastNotification;
-        if (notification?.id == pushNotificationsStore.lastShownPushNotificationId) return;
+        if (notification?.id == pushNotificationsStore.lastShownPushNotificationId) {
+          return;
+        }
         pushNotificationsStore.lastShownPushNotificationId = notification?.id;
         if (notification?.additionalData != null) {
           if (notification!.additionalData!.containsKey('redirect_url')) {
             final redirectUrl = notification.additionalData!['redirect_url'];
-            if (redirectUrl is! String || redirectUrl.isEmpty) return;
+            if (redirectUrl is! String || redirectUrl.isEmpty) {
+              return;
+            }
             Beamer.of(context).navigateToUrl(
               url: redirectUrl,
               context: context,
@@ -102,14 +110,20 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (notification.additionalData!.containsKey('coupon_code')) {
             final couponCode = notification.additionalData!['coupon_code'];
-            if (couponCode is! String || couponCode.isEmpty) return;
-            if (!authSessionStore.isAuthenticated) return;
+            if (couponCode is! String || couponCode.isEmpty) {
+              return;
+            }
+            if (!authSessionStore.isAuthenticated) {
+              return;
+            }
             FlutterClipboard.copy(couponCode).then((_) {
               showSnackbar(
                 LocaleKeys.couponCodeCopied.tr(namedArgs: {'couponCode': '"$couponCode"'}),
                 type: MessageType.success,
               );
-              if (context.mounted) showSubscriptionUpgradeModalPage(context);
+              if (mounted) {
+                showSubscriptionUpgradeModalPage(context);
+              }
             });
           }
         }

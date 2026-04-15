@@ -100,7 +100,8 @@ class _ScrollableLocationsSliverListState extends State<ScrollableLocationsSlive
 
         // Scroll-to-selected effect
         if (priorityIndex != -1 && (isDesktop || isPanelFullyOpen)) {
-          if (selectedCC != null || homeState.lastScrolledCountryCode != effectivePriorityCountryCode) {
+          if (selectedCC != null ||
+              homeState.lastScrolledCountryCode != effectivePriorityCountryCode) {
             homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
             final sc = homeState.scrollController;

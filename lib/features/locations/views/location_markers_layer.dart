@@ -28,17 +28,17 @@ class LocationMarkersLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Observer(
-      builder: (context) {
-        final markers = _buildLocationMarkers(
-          data: locations,
-          selectedLocation: selectedLocation,
-          connectedLocation: connectedLocation,
-          onLocationPressed: onLocationPressed,
-          onLocationDoubleTapped: onLocationDoubleTapped,
-        );
-        return MarkerLayer(markers: markers);
-      },
-    );
+    builder: (context) {
+      final markers = _buildLocationMarkers(
+        data: locations,
+        selectedLocation: selectedLocation,
+        connectedLocation: connectedLocation,
+        onLocationPressed: onLocationPressed,
+        onLocationDoubleTapped: onLocationDoubleTapped,
+      );
+      return MarkerLayer(markers: markers);
+    },
+  );
 }
 
 List<Marker> _buildLocationMarkers({
@@ -56,9 +56,7 @@ List<Marker> _buildLocationMarkers({
           ...data.where(
             (it) =>
                 !it.isCountry &&
-                remoteConfigStore.countriesWithCitiesOnMap.contains(
-                  it.countryCode.toUpperCase(),
-                ),
+                remoteConfigStore.countriesWithCitiesOnMap.contains(it.countryCode.toUpperCase()),
           ),
         }
       : const <VPNLocation>{};

@@ -38,15 +38,16 @@ class _LocationsSearchState extends State<LocationsSearch> {
 
   @override
   void dispose() {
-    _controller.removeListener(_listener);
-    _controller.dispose();
+    _controller
+      ..removeListener(_listener)
+      ..dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => SearchField(
-      controller: _controller,
-      placeholder: LocaleKeys.searchForLocations.tr(),
-      onSubmitted: _handleSearch,
-    );
+    controller: _controller,
+    placeholder: LocaleKeys.searchForLocations.tr(),
+    onSubmitted: _handleSearch,
+  );
 }

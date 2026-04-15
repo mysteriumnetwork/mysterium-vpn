@@ -70,7 +70,9 @@ class AppInitializer {
   // ─── Firebase SDK ─────────────────────────────────────────────────────────────
 
   Future<void> _initFirebaseSDK() async {
-    if (isWindowsOrLinux()) return;
+    if (isWindowsOrLinux()) {
+      return;
+    }
     try {
       final options = switch (Env.flavor) {
         Flavor.dev => dev.DefaultFirebaseOptions.currentPlatform,
@@ -85,7 +87,9 @@ class AppInitializer {
   // ─── OneSignal ─────────────────────────────────────────────────────────────
 
   Future<void> _initOneSignal(Talker logger) async {
-    if (!isMobile()) return;
+    if (!isMobile()) {
+      return;
+    }
     try {
       if (kDebugMode) {
         await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
@@ -138,8 +142,12 @@ class AppInitializer {
 
   void _configureFlutterErrorHandling() {
     FlutterError.demangleStackTrace = (StackTrace stack) {
-      if (stack is stack_trace.Trace) return stack.vmTrace;
-      if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
+      if (stack is stack_trace.Trace) {
+        return stack.vmTrace;
+      }
+      if (stack is stack_trace.Chain) {
+        return stack.toTrace().vmTrace;
+      }
       return stack;
     };
   }

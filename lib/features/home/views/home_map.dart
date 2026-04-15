@@ -43,7 +43,9 @@ class _HomeMapState extends State<HomeMap> {
   void initState() {
     super.initState();
     _locationClearDisposer = reaction((_) => _vpnStore.location, (location) {
-      if (location == null) return;
+      if (location == null) {
+        return;
+      }
       _handleClearSelectedLocation();
     }, fireImmediately: true);
   }
@@ -64,16 +66,14 @@ class _HomeMapState extends State<HomeMap> {
       }
     }
     final realCountry = _realIPStore.info?.country;
-    if (realCountry != null) return _latLngStore.coordinatesForCountry(realCountry);
+    if (realCountry != null) {
+      return _latLngStore.coordinatesForCountry(realCountry);
+    }
     return null;
   }
 
   void _handleClearSelectedLocation() {
     _selectedLocationStore.value = null;
-  }
-
-  void _handleSelectLocation(VPNLocation location) {
-    _selectedLocationStore.value = location;
   }
 
   void _handleDoubleTapLocation(VPNLocation location) {
@@ -94,7 +94,9 @@ class _HomeMapState extends State<HomeMap> {
     try {
       await vpnStore.manageConnection(location: location, intent: intent);
     } on AuthenticationRequiredException catch (_) {
-      if (context.mounted) Beamer.of(context).beamToNamed(Routes.platformLogin.path);
+      if (mounted) {
+        Beamer.of(context).beamToNamed(Routes.platformLogin.path);
+      }
     } on SubscriptionRequiredException catch (_) {
       await _handleSubscribe();
     } on TunnelSetupRequiredException catch (_) {
@@ -113,17 +115,18 @@ class _HomeMapState extends State<HomeMap> {
     final accessToken = sessionStore.accessToken;
     try {
       final subscription = await subscriptionStore.subscriptionFuture;
-      if (!context.mounted) return;
-      await handleOnBillingPage(
-        context: context,
-        manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
-        upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
-        gateway: subscription.gateway,
-        subscriptionActive: subscription.active,
-        accessToken: accessToken,
-        onManageSubscription: subscriptionPurchaseStore.manageSubscription,
-        manageSubscription: manageSubscription,
-      );
+      if (mounted) {
+        await handleOnBillingPage(
+          context: context,
+          manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
+          upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
+          gateway: subscription.gateway,
+          subscriptionActive: subscription.active,
+          accessToken: accessToken,
+          onManageSubscription: subscriptionPurchaseStore.manageSubscription,
+          manageSubscription: manageSubscription,
+        );
+      }
     } on SubscriptionRequiredException catch (_) {}
   }
 
@@ -155,7 +158,9 @@ class _HomeMapState extends State<HomeMap> {
         position: myLocation,
         selectedLocation: selectedLocation,
         connectedLocation: connectedLocation,
-        onLocationPressed: _handleSelectLocation,
+        onLocationPressed: (location) {
+          _selectedLocationStore.value = location;
+        },
         onLocationDoubleTapped: isDesktop() ? _handleDoubleTapLocation : null,
         onTapOutside: _handleClearSelectedLocation,
       );

@@ -64,7 +64,6 @@ import 'package:mysterium_vpn/features/vpn/store/connection_decision_store.dart'
 import 'package:mysterium_vpn/features/vpn/store/connection_display_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/connections_limit_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/dns_store.dart';
-import 'package:mysterium_vpn/features/vpn/store/mqtt_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/network_statistics_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/real_ip_info_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/refresh_ip_store.dart';
@@ -94,269 +93,254 @@ Future<void> setupServiceLocator() async {
 // ─── Primitives ────────────────────────────────────────────────────────────────
 
 void _registerPrimitives() {
-  getIt.registerLazySingleton<AppLinks>(AppLinks.new);
-  getIt.registerLazySingleton<InAppPurchase>(() => InAppPurchase.instance);
-  getIt.registerLazySingleton<WireguardDart>(WireguardDart.new);
-  getIt.registerLazySingleton<OpenVPNDart>(OpenVPNDart.new);
+  getIt
+    ..registerLazySingleton<AppLinks>(AppLinks.new)
+    ..registerLazySingleton<InAppPurchase>(() => InAppPurchase.instance)
+    ..registerLazySingleton<WireguardDart>(WireguardDart.new)
+    ..registerLazySingleton<OpenVPNDart>(OpenVPNDart.new);
 }
 
 // ─── Networking ────────────────────────────────────────────────────────────────
 
 void _registerNetworking() {
-  getIt.registerLazySingleton<BaseOptions>(
-    () => BaseOptions(
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-        'User-Agent': Env.userAgent,
-        'x-client-version': Env.buildInfo.buildVersion,
-        'x-client-platform': Platform.operatingSystem,
-      },
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-      sendTimeout: const Duration(seconds: 15),
-    ),
-  );
-
-  // Primary Dio (with auth interceptors)
-  getIt.registerLazySingleton<Dio>(() {
-    final options = getIt<BaseOptions>();
-    final sessionStore = getIt<AuthSessionStore>();
-    final logger = getIt<Talker>();
-    final dio = Dio(options);
-    dio.interceptors.addAll([
-      ConnectionErrorsInterceptor(),
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          if (sessionStore.accessToken != null) {
-            options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
-          }
-          options.headers['Accept-Charset'] = 'utf-8';
-          return handler.next(options);
+  getIt
+    ..registerLazySingleton<BaseOptions>(
+      () => BaseOptions(
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          'User-Agent': Env.userAgent,
+          'x-client-version': Env.buildInfo.buildVersion,
+          'x-client-platform': Platform.operatingSystem,
         },
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+        sendTimeout: const Duration(seconds: 15),
       ),
-      RefreshTokenInterceptor(dio: dio, logger: logger),
-      RetryRequestInterceptor(dio: dio),
-      if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
-      ApiErrorsInterceptor(),
-      if (kDebugMode)
-        TalkerDioLogger(
-          talker: logger,
-          settings: const TalkerDioLoggerSettings(
-            printRequestData: false,
-            printResponseData: false,
-            printErrorData: false,
+    )
+    // Primary Dio (with auth interceptors)
+    ..registerLazySingleton<Dio>(() {
+      final options = getIt<BaseOptions>();
+      final sessionStore = getIt<AuthSessionStore>();
+      final logger = getIt<Talker>();
+      final dio = Dio(options);
+      dio.interceptors.addAll([
+        ConnectionErrorsInterceptor(),
+        InterceptorsWrapper(
+          onRequest: (options, handler) async {
+            if (sessionStore.accessToken != null) {
+              options.headers['Authorization'] = 'Bearer ${sessionStore.accessToken}';
+            }
+            options.headers['Accept-Charset'] = 'utf-8';
+            return handler.next(options);
+          },
+        ),
+        RefreshTokenInterceptor(dio: dio, logger: logger),
+        RetryRequestInterceptor(dio: dio),
+        if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+        ApiErrorsInterceptor(),
+        if (kDebugMode)
+          TalkerDioLogger(
+            talker: logger,
+            settings: const TalkerDioLoggerSettings(
+              printRequestData: false,
+              printResponseData: false,
+              printErrorData: false,
+            ),
           ),
+        if (Env.flavor == Flavor.dev && Env.isAutomated) TestFlagsInterceptor(),
+      ]);
+      return dio;
+    })
+    // DioNetworkService wrapping the primary auth Dio
+    ..registerLazySingleton<DioNetworkService>(() => DioNetworkService(getIt<Dio>()))
+    // External NetworkService (no auth; used for IP lookup etc.)
+    ..registerLazySingleton<NetworkService>(() {
+      final dio = Dio(getIt<BaseOptions>());
+      dio.interceptors.add(RetryRequestInterceptor(dio: dio));
+      return DioNetworkService(dio);
+    }, instanceName: 'external')
+    ..registerLazySingleton<VpnApi>(() => VpnApi(dio: getIt<Dio>()))
+    // Three separate ConfigCat clients (remote config, A/B testing, texts)
+    ..registerLazySingleton<ConfigCatClient>(
+      () => ConfigCatClient.get(
+        sdkKey: Env.remoteConfigSdkKey,
+        options: ConfigCatOptions(
+          pollingMode: PollingMode.manualPoll(),
+          logger: Env.flavor.isDev ? ConfigCatLogger() : null,
+          cache: ConfigCatPreferencesCache(),
         ),
-      if (Env.flavor == Flavor.dev && Env.isAutomated) TestFlagsInterceptor(),
-    ]);
-    return dio;
-  });
-
-  // DioNetworkService wrapping the primary auth Dio
-  getIt.registerLazySingleton<DioNetworkService>(() => DioNetworkService(getIt<Dio>()));
-
-  // External NetworkService (no auth; used for IP lookup etc.)
-  getIt.registerLazySingleton<NetworkService>(() {
-    final dio = Dio(getIt<BaseOptions>());
-    dio.interceptors.add(RetryRequestInterceptor(dio: dio));
-    return DioNetworkService(dio);
-  }, instanceName: 'external');
-
-  getIt.registerLazySingleton<VpnApi>(() => VpnApi(dio: getIt<Dio>()));
-
-  // Three separate ConfigCat clients (remote config, A/B testing, texts)
-  getIt.registerLazySingleton<ConfigCatClient>(
-    () => ConfigCatClient.get(
-      sdkKey: Env.remoteConfigSdkKey,
-      options: ConfigCatOptions(
-        pollingMode: PollingMode.manualPoll(),
-        logger: Env.flavor.isDev ? ConfigCatLogger() : null,
-        cache: ConfigCatPreferencesCache(),
       ),
-    ),
-    instanceName: 'remoteConfig',
-  );
-
-  getIt.registerLazySingleton<ConfigCatClient>(
-    () => ConfigCatClient.get(
-      sdkKey: Env.abTestingSdkKey,
-      options: ConfigCatOptions(
-        pollingMode: PollingMode.lazyLoad(
-          cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
+      instanceName: 'remoteConfig',
+    )
+    ..registerLazySingleton<ConfigCatClient>(
+      () => ConfigCatClient.get(
+        sdkKey: Env.abTestingSdkKey,
+        options: ConfigCatOptions(
+          pollingMode: PollingMode.lazyLoad(
+            cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
+          ),
+          logger: Env.flavor.isDev ? ConfigCatLogger() : null,
+          cache: ConfigCatPreferencesCache(),
         ),
-        logger: Env.flavor.isDev ? ConfigCatLogger() : null,
-        cache: ConfigCatPreferencesCache(),
       ),
-    ),
-    instanceName: 'abTesting',
-  );
-
-  getIt.registerLazySingleton<ConfigCatClient>(
-    () => ConfigCatClient.get(
-      sdkKey: Env.textsSdkKey,
-      options: ConfigCatOptions(
-        pollingMode: PollingMode.lazyLoad(
-          cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
+      instanceName: 'abTesting',
+    )
+    ..registerLazySingleton<ConfigCatClient>(
+      () => ConfigCatClient.get(
+        sdkKey: Env.textsSdkKey,
+        options: ConfigCatOptions(
+          pollingMode: PollingMode.lazyLoad(
+            cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
+          ),
+          logger: Env.flavor.isDev ? ConfigCatLogger() : null,
+          cache: ConfigCatPreferencesCache(),
         ),
-        logger: Env.flavor.isDev ? ConfigCatLogger() : null,
-        cache: ConfigCatPreferencesCache(),
       ),
-    ),
-    instanceName: 'texts',
-  );
-
-  // Router
-  getIt.registerLazySingleton<BeamerParser>(BeamerParser.new);
-  getIt.registerLazySingleton<BeamerDelegate>(() {
-    final authSessionStore = getIt<AuthSessionStore>();
-    final analyticsStore = getIt<AnalyticsStore>();
-    final authStore = getIt<AuthStore>();
-    return BeamerDelegate(
-      navigatorObservers: [...analyticsStore.navigationObservers(), SentryNavigatorObserver()],
-      guards: [
-        BeamGuard(
-          pathPatterns: [Routes.main.path, Routes.settings.path],
-          check: (context, state) => authSessionStore.canBrowseApp,
-          beamToNamed: (_, _) => Routes.platformLogin.path,
-        ),
-        BeamGuard(
-          pathPatterns: [Routes.platformLogin.path, Routes.checkYourEmail.path],
-          check: (context, state) =>
-              authSessionStore.status == AuthStatus.unauthenticated ||
-              authStore.authenticateFeature?.status == FutureStatus.pending,
-          beamToNamed: (_, _) => Routes.main.path,
-        ),
-        BeamGuard(
-          pathPatterns: [Routes.emailToken.path],
-          check: (context, state) => false,
-          beamToNamed: (a, b) => a?.state.routeInformation.uri.path ?? Routes.platformLogin.path,
-        ),
-        BeamGuard(
-          pathPatterns: [Routes.splash.path],
-          check: (context, state) => authSessionStore.status == AuthStatus.unknown,
-          beamToNamed: (_, _) =>
-              authSessionStore.canBrowseApp ? Routes.main.path : Routes.platformLogin.path,
-        ),
-      ],
-      initialPath: Routes.splash.path,
-      locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
-      setBrowserTabTitle: false,
-      notFoundRedirectNamed: Routes.main.path,
-    );
-  });
+      instanceName: 'texts',
+    )
+    // Router
+    ..registerLazySingleton<BeamerParser>(BeamerParser.new)
+    ..registerLazySingleton<BeamerDelegate>(() {
+      final authSessionStore = getIt<AuthSessionStore>();
+      final analyticsStore = getIt<AnalyticsStore>();
+      final authStore = getIt<AuthStore>();
+      return BeamerDelegate(
+        navigatorObservers: [...analyticsStore.navigationObservers(), SentryNavigatorObserver()],
+        guards: [
+          BeamGuard(
+            pathPatterns: [Routes.main.path, Routes.settings.path],
+            check: (context, state) => authSessionStore.canBrowseApp,
+            beamToNamed: (_, _) => Routes.platformLogin.path,
+          ),
+          BeamGuard(
+            pathPatterns: [Routes.platformLogin.path, Routes.checkYourEmail.path],
+            check: (context, state) =>
+                authSessionStore.status == AuthStatus.unauthenticated ||
+                authStore.authenticateFeature?.status == FutureStatus.pending,
+            beamToNamed: (_, _) => Routes.main.path,
+          ),
+          BeamGuard(
+            pathPatterns: [Routes.emailToken.path],
+            check: (context, state) => false,
+            beamToNamed: (a, b) => a?.state.routeInformation.uri.path ?? Routes.platformLogin.path,
+          ),
+          BeamGuard(
+            pathPatterns: [Routes.splash.path],
+            check: (context, state) => authSessionStore.status == AuthStatus.unknown,
+            beamToNamed: (_, _) =>
+                authSessionStore.canBrowseApp ? Routes.main.path : Routes.platformLogin.path,
+          ),
+        ],
+        initialPath: Routes.splash.path,
+        locationBuilder: (routeInformation, _) => BeamerLocations(routeInformation),
+        setBrowserTabTitle: false,
+        notFoundRedirectNamed: Routes.main.path,
+      );
+    });
 }
 
 // ─── Services ──────────────────────────────────────────────────────────────────
 
 void _registerServices() {
-  getIt.registerLazySingleton<Talker>(
-    () => Talker(observer: CrashlitycsLoggerObserver(analyticsStore: getIt<AnalyticsStore>())),
-  );
-
-  getIt.registerLazySingleton<MQTTService>(
-    () => MQTTService(
-      Env.mqttUrl,
-      Env.mqttUsername,
-      Env.mqttPassword,
-      'mysterium-vpn-${Env.buildInfo.buildVersion}'.truncate(23),
-      getIt<Talker>(),
-      getIt<RemoteConfigStore>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<ApiService>(
-    () => RestApiService(api: getIt<VpnApi>(), logger: getIt<Talker>()),
-  );
-
-  getIt.registerLazySingleton<ExternalApiService>(
-    () => RestExternalApiService(getIt<NetworkService>(instanceName: 'external'), getIt<Talker>()),
-  );
-
-  getIt.registerLazySingleton<AuthService>(
-    () => RestAuthService(
-      api: getIt<VpnApi>(),
-      networkService: getIt<DioNetworkService>(),
-      authSessionStore: getIt<AuthSessionStore>(),
-      logger: getIt<Talker>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<SubscriptionService>(
-    () => RestSubscriptionService(
-      api: getIt<VpnApi>(),
-      inAppPurchase: getIt<InAppPurchase>(),
-      logger: getIt<Talker>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<FilterService>(FilterService.new);
-
-  getIt.registerLazySingleton<LocationsService>(
-    () => LocationsService(getIt<VpnApi>().getConnection()),
-  );
-
-  getIt.registerLazySingleton<AssetsService>(() => const AssetsService());
-
-  // Note: WireguradKeyService preserves the typo from the original source.
-  getIt.registerLazySingleton<WireguradKeyService>(
-    () => WireguradKeyService(
-      wireguardService: getIt<WireguardDart>(),
-      secureStorageService: SecureStorageService.instance,
-      analyticsStore: getIt<AnalyticsStore>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<NominatimService>(
-    () => NominatimService(
-      LocalDBService.instance,
-      Dio(
-        BaseOptions(
-          baseUrl: 'https://nominatim.openstreetmap.org/',
-          headers: {HttpHeaders.userAgentHeader: Env.userAgent},
+  getIt
+    ..registerLazySingleton<Talker>(
+      () => Talker(observer: CrashlitycsLoggerObserver(analyticsStore: getIt<AnalyticsStore>())),
+    )
+    ..registerLazySingleton<MQTTService>(
+      () => MQTTService(
+        Env.mqttUrl,
+        Env.mqttUsername,
+        Env.mqttPassword,
+        'mysterium-vpn-${Env.buildInfo.buildVersion}'.truncate(23),
+        getIt<Talker>(),
+        getIt<RemoteConfigStore>(),
+      ),
+    )
+    ..registerLazySingleton<ApiService>(
+      () => RestApiService(api: getIt<VpnApi>(), logger: getIt<Talker>()),
+    )
+    ..registerLazySingleton<ExternalApiService>(
+      () =>
+          RestExternalApiService(getIt<NetworkService>(instanceName: 'external'), getIt<Talker>()),
+    )
+    ..registerLazySingleton<AuthService>(
+      () => RestAuthService(
+        api: getIt<VpnApi>(),
+        networkService: getIt<DioNetworkService>(),
+        authSessionStore: getIt<AuthSessionStore>(),
+        logger: getIt<Talker>(),
+      ),
+    )
+    ..registerLazySingleton<SubscriptionService>(
+      () => RestSubscriptionService(
+        api: getIt<VpnApi>(),
+        inAppPurchase: getIt<InAppPurchase>(),
+        logger: getIt<Talker>(),
+      ),
+    )
+    ..registerLazySingleton<FilterService>(FilterService.new)
+    ..registerLazySingleton<LocationsService>(
+      () => LocationsService(getIt<VpnApi>().getConnection()),
+    )
+    ..registerLazySingleton<AssetsService>(() => const AssetsService())
+    // Note: WireguradKeyService preserves the typo from the original source.
+    ..registerLazySingleton<WireguradKeyService>(
+      () => WireguradKeyService(
+        wireguardService: getIt<WireguardDart>(),
+        secureStorageService: SecureStorageService.instance,
+        analyticsStore: getIt<AnalyticsStore>(),
+      ),
+    )
+    ..registerLazySingleton<NominatimService>(
+      () => NominatimService(
+        LocalDBService.instance,
+        Dio(
+          BaseOptions(
+            baseUrl: 'https://nominatim.openstreetmap.org/',
+            headers: {HttpHeaders.userAgentHeader: Env.userAgent},
+          ),
         ),
       ),
-    ),
-  );
-
-  // TranslationAssetLoader wraps TextsStore for ConfigCat-driven translations.
-  getIt.registerLazySingleton<AssetLoader>(() => TranslationAssetLoader(getIt<TextsStore>()));
+    )
+    // TranslationAssetLoader wraps TextsStore for ConfigCat-driven translations.
+    ..registerLazySingleton<AssetLoader>(() => TranslationAssetLoader(getIt<TextsStore>()));
 }
 
 // ─── Repositories ──────────────────────────────────────────────────────────────
 
 void _registerRepositories() {
-  getIt.registerLazySingleton<WireguardRepository>(
-    () => WireguardRepository(
-      service: getIt<WireguardDart>(),
-      logger: getIt<Talker>(),
-      wireguradKeyService: getIt<WireguradKeyService>(),
-      apiService: getIt<ApiService>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<OpenVpnRepository>(
-    () => OpenVpnRepository(
-      service: getIt<OpenVPNDart>(),
-      logger: getIt<Talker>(),
-      apiService: getIt<ApiService>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<NotificationsRepository>(
-    () => isDesktop()
-        ? DesktopNotificationsRepository()
-        : OnesignalNotificationsRepository(logger: getIt<Talker>()),
-  );
+  getIt
+    ..registerLazySingleton<WireguardRepository>(
+      () => WireguardRepository(
+        service: getIt<WireguardDart>(),
+        logger: getIt<Talker>(),
+        wireguradKeyService: getIt<WireguradKeyService>(),
+        apiService: getIt<ApiService>(),
+      ),
+    )
+    ..registerLazySingleton<OpenVpnRepository>(
+      () => OpenVpnRepository(
+        service: getIt<OpenVPNDart>(),
+        logger: getIt<Talker>(),
+        apiService: getIt<ApiService>(),
+      ),
+    )
+    ..registerLazySingleton<NotificationsRepository>(
+      () => isDesktop()
+          ? DesktopNotificationsRepository()
+          : OnesignalNotificationsRepository(logger: getIt<Talker>()),
+    );
 }
 
 // ─── Stores ────────────────────────────────────────────────────────────────────
 
 void _registerStores() {
   // ── Core ──────────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<ThemeStore>(ThemeStore.new);
-  getIt.registerLazySingleton<LocaleStore>(LocaleStore.new);
-  getIt.registerLazySingleton<DeviceIDStore>(DeviceIDStore.new);
+  getIt
+    ..registerLazySingleton<ThemeStore>(ThemeStore.new)
+    ..registerLazySingleton<LocaleStore>(LocaleStore.new)
+    ..registerLazySingleton<DeviceIDStore>(DeviceIDStore.new);
 
   // ── Analytics (platform-conditional) ────────────────────────────────────
   if (isWindowsOrLinux()) {
@@ -378,268 +362,261 @@ void _registerStores() {
   }
 
   // ── Remote config ────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<RemoteConfigStore>(
-    () => RemoteConfigStore(
-      getIt<ConfigCatClient>(instanceName: 'remoteConfig'),
-      getIt<Talker>(),
-      isDev: Env.flavor.isDev,
-    ),
-  );
-  getIt.registerLazySingleton<ABTestingStore>(
-    () => ABTestingStore(
-      getIt<ConfigCatClient>(instanceName: 'abTesting'),
-      getIt<Talker>(),
-      getIt<AnalyticsStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<TextsStore>(
-    () => TextsStore(getIt<ConfigCatClient>(instanceName: 'texts'), getIt<Talker>()),
-  );
-
-  // ── Auth ──────────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<AuthSessionStore>(
-    () => AuthSessionStore(
-      secureStorage: SecureStorageService.instance,
-      remoteConfigStore: getIt<RemoteConfigStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<AuthStore>(
-    () => AuthStore(
-      authService: getIt<AuthService>(),
-      authSessionStore: getIt<AuthSessionStore>(),
-      appLinks: getIt<AppLinks>(),
-      analyticsStore: getIt<AnalyticsStore>(),
-      logger: getIt<Talker>(),
-      abTestingStore: getIt<ABTestingStore>(),
-      deviceIDStore: getIt<DeviceIDStore>(),
-    ),
-  );
-
-  // ── Locations ─────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<SelectedLocationStore>(SelectedLocationStore.new);
-  getIt.registerLazySingleton<LocationsQueryStore>(
-    () => LocationsQueryStore(
-      SharedPreferenceService.instance,
-      getIt<AnalyticsStore>(),
-      getIt<LocaleStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<LocationsStore>(
-    () => LocationsStore(
-      getIt<VpnApi>().getConnection(),
-      getIt<FilterService>(),
-      LocalDBService.instance,
-      getIt<LocationsService>(),
-      getIt<Talker>(),
-      getIt<RemoteConfigStore>(),
-      getIt<LocationsQueryStore>(),
-      getIt<LocaleStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<RecentLocationsStore>(
-    () => RecentLocationsStore(
-      LocalDBService.instance,
-      getIt<FilterService>(),
-      getIt<LocationsQueryStore>(),
-      getIt<RemoteConfigStore>(),
-      getIt<LocationsStore>(),
-      getIt<LocaleStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<UnavailableLocationsStore>(
-    () => UnavailableLocationsStore(getIt<LocationsStore>()),
-  );
-  getIt.registerLazySingleton<LatLngStore>(() => LatLngStore(getIt<AssetsService>()));
-
-  // ── VPN ───────────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<MqttStore>(
-    () => MqttStore(mqtt: getIt<MQTTService>(), logger: getIt<Talker>()),
-  );
-  getIt.registerLazySingleton<RealIPInfoStore>(
-    () => RealIPInfoStore(
-      getIt<ExternalApiService>(),
-      SharedPreferenceService.instance,
-      getIt<WireguardDart>(),
-      getIt<AnalyticsStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<RefreshIPStore>(
-    () => RefreshIPStore(LocalDBService.instance, getIt<Talker>(), getIt<AuthSessionStore>()),
-  );
-  getIt.registerLazySingleton<SmartRefreshStore>(
-    () => SmartRefreshStore(getIt<LocationsStore>(), getIt<SubscriptionStore>(), getIt<Talker>()),
-  );
-  getIt.registerLazySingleton<ConnectionsLimitStore>(ConnectionsLimitStore.new);
-  getIt.registerLazySingleton<UserIntentsStore>(
-    () => UserIntentsStore(
-      getIt<ApiService>(),
-      getIt<RealIPInfoStore>(),
-      getIt<LocationsStore>(),
-      getIt<RemoteConfigStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<ConnectionDecisionStore>(
-    () => ConnectionDecisionStore(
-      locationsStore: getIt<LocationsStore>(),
-      recentLocationsStore: getIt<RecentLocationsStore>(),
-      userIntentsStore: getIt<UserIntentsStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<VpnProtocolStore>(
-    () => VpnProtocolStore(
-      LocalDBService.instance,
-      getIt<AnalyticsStore>(),
-      getIt<RemoteConfigStore>(),
-      getIt<AuthSessionStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<DNSStore>(
-    () => DNSStore(
-      LocalDBService.instance,
-      getIt<RemoteConfigStore>(),
-      getIt<Talker>(),
-      getIt<AuthSessionStore>(),
-      getIt<SubscriptionFeaturesStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<NetworkStatisticsStore>(
-    () => NetworkStatisticsStore(getIt<WireguardDart>()),
-  );
-  getIt.registerLazySingleton<VpnStore>(
-    () => VpnStore(
-      externalApiService: getIt<ExternalApiService>(),
-      mqtt: getIt<MQTTService>(),
-      locationsStore: getIt<LocationsStore>(),
-      subscriptionStore: getIt<SubscriptionStore>(),
-      logger: getIt<Talker>(),
-      analyticsStore: getIt<AnalyticsStore>(),
-      remoteConfigStore: getIt<RemoteConfigStore>(),
-      authSessionStore: getIt<AuthSessionStore>(),
-      realIPInfo: getIt<RealIPInfoStore>(),
-      dnsStore: getIt<DNSStore>(),
-      refreshIPStore: getIt<RefreshIPStore>(),
-      locationsQueryStore: getIt<LocationsQueryStore>(),
-      recentLocationsStore: getIt<RecentLocationsStore>(),
-      locationsService: getIt<LocationsService>(),
-      unavailableLocationsStore: getIt<UnavailableLocationsStore>(),
-      userIntentsStore: getIt<UserIntentsStore>(),
-      connectionsLimitStore: getIt<ConnectionsLimitStore>(),
-      wireguardRepository: getIt<WireguardRepository>(),
-      openVpnRepository: getIt<OpenVpnRepository>(),
-      protocolStore: getIt<VpnProtocolStore>(),
-      connectionDecisionStore: getIt<ConnectionDecisionStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<ConnectionDisplayStore>(
-    () => ConnectionDisplayStore(
-      getIt<VpnStore>(),
-      getIt<LocationsStore>(),
-      getIt<SelectedLocationStore>(),
-      getIt<UnavailableLocationsStore>(),
-    ),
-  );
-
-  // ── Subscription ──────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<SubscriptionStore>(
-    () => SubscriptionStore(
-      subscriptionService: getIt<SubscriptionService>(),
-      authSessionStore: getIt<AuthSessionStore>(),
-      analyticsStore: getIt<AnalyticsStore>(),
-      remoteConfigStore: getIt<RemoteConfigStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<SubscriptionConfigStore>(
-    () => SubscriptionConfigStore(
-      getIt<AuthSessionStore>(),
-      getIt<SubscriptionService>(),
-      getIt<AnalyticsStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<SubscriptionFeaturesStore>(
-    () => SubscriptionFeaturesStore(getIt<SubscriptionStore>(), getIt<SubscriptionConfigStore>()),
-  );
-  getIt.registerLazySingleton<SubscriptionPlansStore>(
-    () => SubscriptionPlansStore(
-      getIt<SubscriptionService>(),
-      getIt<SubscriptionStore>(),
-      getIt<RemoteConfigStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<SubscriptionPurchaseStore>(
-    () => SubscriptionPurchaseStore(
-      getIt<InAppPurchase>(),
-      SecureStorageService.instance,
-      getIt<SubscriptionService>(),
-      getIt<Talker>(),
-      getIt<AnalyticsStore>(),
-      getIt<AuthSessionStore>(),
-      getIt<SubscriptionStore>(),
-      getIt<SubscriptionPlansStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<SubscriptionUpgradeStore>(
-    () => SubscriptionUpgradeStore(getIt<SubscriptionStore>(), getIt<SubscriptionPlansStore>()),
-  );
-  getIt.registerLazySingleton<SubscriptionLimitedTimeOfferStore>(
-    () => SubscriptionLimitedTimeOfferStore(
-      getIt<SubscriptionPlansStore>(),
-      getIt<RemoteConfigStore>(),
-    ),
-  );
-
-  // ── Settings ──────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<UpdateAvailableStore>(
-    () => UpdateAvailableStore(getIt<RemoteConfigStore>(), Env.buildInfo),
-  );
-  getIt.registerLazySingleton<UserPreferencesStore>(
-    () => UserPreferencesStore(
-      apiService: getIt<ApiService>(),
-      analyticsStore: getIt<AnalyticsStore>(),
-      realIPInfo: getIt<RealIPInfoStore>(),
-      localDBService: LocalDBService.instance,
-      pushNotificationsStore: getIt<PushNotificationsStore>(),
-      authSessionStore: getIt<AuthSessionStore>(),
-    ),
-  );
-
-  // ── Notifications ─────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<PushNotificationsStore>(
-    () => PushNotificationsStore(
-      getIt<AuthSessionStore>(),
-      getIt<RealIPInfoStore>(),
-      getIt<SubscriptionStore>(),
-      getIt<Talker>(),
-      getIt<NotificationsRepository>(),
-      getIt<AnalyticsStore>(),
-      LocalDBService.instance,
-      getIt<RemoteConfigStore>(),
-    ),
-  );
-
-  // ── Home ──────────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<BannersStore>(
-    () => BannersStore(
-      LocalDBService.instance,
-      getIt<SubscriptionStore>(),
-      getIt<AuthSessionStore>(),
-      getIt<ConnectionsLimitStore>(),
-      getIt<UpdateAvailableStore>(),
-    ),
-  );
-  getIt.registerLazySingleton<PromotionalContentStore>(
-    () => PromotionalContentStore(getIt<RemoteConfigStore>()),
-  );
-  getIt.registerLazySingleton<HomeState>(
-    () => HomeState(SharedPreferenceService.instance, getIt<AnalyticsStore>()),
-  );
-
-  // ── Remote config user store ───────────────────────────────────────────────
-  getIt.registerLazySingleton<ConfigCatUserStore>(
-    () => ConfigCatUserStore(
-      getIt<AuthSessionStore>(),
-      getIt<RealIPInfoStore>(),
-      getIt<SubscriptionStore>(),
-      getIt<Talker>(),
-    ),
-  );
+  getIt
+    ..registerLazySingleton<RemoteConfigStore>(
+      () => RemoteConfigStore(
+        getIt<ConfigCatClient>(instanceName: 'remoteConfig'),
+        getIt<Talker>(),
+        isDev: Env.flavor.isDev,
+      ),
+    )
+    ..registerLazySingleton<ABTestingStore>(
+      () => ABTestingStore(
+        getIt<ConfigCatClient>(instanceName: 'abTesting'),
+        getIt<Talker>(),
+        getIt<AnalyticsStore>(),
+      ),
+    )
+    ..registerLazySingleton<TextsStore>(
+      () => TextsStore(getIt<ConfigCatClient>(instanceName: 'texts'), getIt<Talker>()),
+    )
+    // ── Auth ──────────────────────────────────────────────────────────────────
+    ..registerLazySingleton<AuthSessionStore>(
+      () => AuthSessionStore(
+        secureStorage: SecureStorageService.instance,
+        remoteConfigStore: getIt<RemoteConfigStore>(),
+      ),
+    )
+    ..registerLazySingleton<AuthStore>(
+      () => AuthStore(
+        authService: getIt<AuthService>(),
+        authSessionStore: getIt<AuthSessionStore>(),
+        appLinks: getIt<AppLinks>(),
+        analyticsStore: getIt<AnalyticsStore>(),
+        logger: getIt<Talker>(),
+        abTestingStore: getIt<ABTestingStore>(),
+        deviceIDStore: getIt<DeviceIDStore>(),
+      ),
+    )
+    // ── Locations ─────────────────────────────────────────────────────────────
+    ..registerLazySingleton<SelectedLocationStore>(SelectedLocationStore.new)
+    ..registerLazySingleton<LocationsQueryStore>(
+      () => LocationsQueryStore(
+        SharedPreferenceService.instance,
+        getIt<AnalyticsStore>(),
+        getIt<LocaleStore>(),
+      ),
+    )
+    ..registerLazySingleton<LocationsStore>(
+      () => LocationsStore(
+        getIt<VpnApi>().getConnection(),
+        getIt<FilterService>(),
+        LocalDBService.instance,
+        getIt<LocationsService>(),
+        getIt<Talker>(),
+        getIt<RemoteConfigStore>(),
+        getIt<LocationsQueryStore>(),
+        getIt<LocaleStore>(),
+      ),
+    )
+    ..registerLazySingleton<RecentLocationsStore>(
+      () => RecentLocationsStore(
+        LocalDBService.instance,
+        getIt<FilterService>(),
+        getIt<LocationsQueryStore>(),
+        getIt<RemoteConfigStore>(),
+        getIt<LocationsStore>(),
+        getIt<LocaleStore>(),
+      ),
+    )
+    ..registerLazySingleton<UnavailableLocationsStore>(
+      () => UnavailableLocationsStore(getIt<LocationsStore>()),
+    )
+    ..registerLazySingleton<LatLngStore>(() => LatLngStore(getIt<AssetsService>()))
+    // ── VPN ───────────────────────────────────────────────────────────────────
+    ..registerLazySingleton<MqttStore>(
+      () => MqttStore(mqtt: getIt<MQTTService>(), logger: getIt<Talker>()),
+    )
+    ..registerLazySingleton<RealIPInfoStore>(
+      () => RealIPInfoStore(
+        getIt<ExternalApiService>(),
+        SharedPreferenceService.instance,
+        getIt<WireguardDart>(),
+        getIt<AnalyticsStore>(),
+      ),
+    )
+    ..registerLazySingleton<RefreshIPStore>(
+      () => RefreshIPStore(LocalDBService.instance, getIt<Talker>(), getIt<AuthSessionStore>()),
+    )
+    ..registerLazySingleton<SmartRefreshStore>(
+      () => SmartRefreshStore(getIt<LocationsStore>(), getIt<SubscriptionStore>(), getIt<Talker>()),
+    )
+    ..registerLazySingleton<ConnectionsLimitStore>(ConnectionsLimitStore.new)
+    ..registerLazySingleton<UserIntentsStore>(
+      () => UserIntentsStore(
+        getIt<ApiService>(),
+        getIt<RealIPInfoStore>(),
+        getIt<LocationsStore>(),
+        getIt<RemoteConfigStore>(),
+      ),
+    )
+    ..registerLazySingleton<ConnectionDecisionStore>(
+      () => ConnectionDecisionStore(
+        locationsStore: getIt<LocationsStore>(),
+        recentLocationsStore: getIt<RecentLocationsStore>(),
+        userIntentsStore: getIt<UserIntentsStore>(),
+      ),
+    )
+    ..registerLazySingleton<VpnProtocolStore>(
+      () => VpnProtocolStore(
+        LocalDBService.instance,
+        getIt<AnalyticsStore>(),
+        getIt<RemoteConfigStore>(),
+        getIt<AuthSessionStore>(),
+      ),
+    )
+    ..registerLazySingleton<DNSStore>(
+      () => DNSStore(
+        LocalDBService.instance,
+        getIt<RemoteConfigStore>(),
+        getIt<Talker>(),
+        getIt<AuthSessionStore>(),
+        getIt<SubscriptionFeaturesStore>(),
+      ),
+    )
+    ..registerLazySingleton<NetworkStatisticsStore>(
+      () => NetworkStatisticsStore(getIt<WireguardDart>()),
+    )
+    ..registerLazySingleton<VpnStore>(
+      () => VpnStore(
+        externalApiService: getIt<ExternalApiService>(),
+        mqtt: getIt<MQTTService>(),
+        locationsStore: getIt<LocationsStore>(),
+        subscriptionStore: getIt<SubscriptionStore>(),
+        logger: getIt<Talker>(),
+        analyticsStore: getIt<AnalyticsStore>(),
+        remoteConfigStore: getIt<RemoteConfigStore>(),
+        authSessionStore: getIt<AuthSessionStore>(),
+        realIPInfo: getIt<RealIPInfoStore>(),
+        dnsStore: getIt<DNSStore>(),
+        refreshIPStore: getIt<RefreshIPStore>(),
+        locationsQueryStore: getIt<LocationsQueryStore>(),
+        recentLocationsStore: getIt<RecentLocationsStore>(),
+        locationsService: getIt<LocationsService>(),
+        unavailableLocationsStore: getIt<UnavailableLocationsStore>(),
+        userIntentsStore: getIt<UserIntentsStore>(),
+        connectionsLimitStore: getIt<ConnectionsLimitStore>(),
+        wireguardRepository: getIt<WireguardRepository>(),
+        openVpnRepository: getIt<OpenVpnRepository>(),
+        protocolStore: getIt<VpnProtocolStore>(),
+        connectionDecisionStore: getIt<ConnectionDecisionStore>(),
+      ),
+    )
+    ..registerLazySingleton<ConnectionDisplayStore>(
+      () => ConnectionDisplayStore(
+        getIt<VpnStore>(),
+        getIt<LocationsStore>(),
+        getIt<SelectedLocationStore>(),
+        getIt<UnavailableLocationsStore>(),
+      ),
+    )
+    // ── Subscription ──────────────────────────────────────────────────────────
+    ..registerLazySingleton<SubscriptionStore>(
+      () => SubscriptionStore(
+        subscriptionService: getIt<SubscriptionService>(),
+        authSessionStore: getIt<AuthSessionStore>(),
+        analyticsStore: getIt<AnalyticsStore>(),
+        remoteConfigStore: getIt<RemoteConfigStore>(),
+      ),
+    )
+    ..registerLazySingleton<SubscriptionConfigStore>(
+      () => SubscriptionConfigStore(
+        getIt<AuthSessionStore>(),
+        getIt<SubscriptionService>(),
+        getIt<AnalyticsStore>(),
+      ),
+    )
+    ..registerLazySingleton<SubscriptionFeaturesStore>(
+      () => SubscriptionFeaturesStore(getIt<SubscriptionStore>(), getIt<SubscriptionConfigStore>()),
+    )
+    ..registerLazySingleton<SubscriptionPlansStore>(
+      () => SubscriptionPlansStore(
+        getIt<SubscriptionService>(),
+        getIt<SubscriptionStore>(),
+        getIt<RemoteConfigStore>(),
+      ),
+    )
+    ..registerLazySingleton<SubscriptionPurchaseStore>(
+      () => SubscriptionPurchaseStore(
+        getIt<InAppPurchase>(),
+        SecureStorageService.instance,
+        getIt<SubscriptionService>(),
+        getIt<Talker>(),
+        getIt<AnalyticsStore>(),
+        getIt<AuthSessionStore>(),
+        getIt<SubscriptionStore>(),
+        getIt<SubscriptionPlansStore>(),
+      ),
+    )
+    ..registerLazySingleton<SubscriptionUpgradeStore>(
+      () => SubscriptionUpgradeStore(getIt<SubscriptionStore>(), getIt<SubscriptionPlansStore>()),
+    )
+    ..registerLazySingleton<SubscriptionLimitedTimeOfferStore>(
+      () => SubscriptionLimitedTimeOfferStore(
+        getIt<SubscriptionPlansStore>(),
+        getIt<RemoteConfigStore>(),
+      ),
+    )
+    // ── Settings ──────────────────────────────────────────────────────────────
+    ..registerLazySingleton<UpdateAvailableStore>(
+      () => UpdateAvailableStore(getIt<RemoteConfigStore>(), Env.buildInfo),
+    )
+    ..registerLazySingleton<UserPreferencesStore>(
+      () => UserPreferencesStore(
+        apiService: getIt<ApiService>(),
+        analyticsStore: getIt<AnalyticsStore>(),
+        realIPInfo: getIt<RealIPInfoStore>(),
+        localDBService: LocalDBService.instance,
+        pushNotificationsStore: getIt<PushNotificationsStore>(),
+        authSessionStore: getIt<AuthSessionStore>(),
+      ),
+    )
+    // ── Notifications ─────────────────────────────────────────────────────────
+    ..registerLazySingleton<PushNotificationsStore>(
+      () => PushNotificationsStore(
+        getIt<AuthSessionStore>(),
+        getIt<RealIPInfoStore>(),
+        getIt<SubscriptionStore>(),
+        getIt<Talker>(),
+        getIt<NotificationsRepository>(),
+        getIt<AnalyticsStore>(),
+        LocalDBService.instance,
+        getIt<RemoteConfigStore>(),
+      ),
+    )
+    // ── Home ──────────────────────────────────────────────────────────────────
+    ..registerLazySingleton<BannersStore>(
+      () => BannersStore(
+        LocalDBService.instance,
+        getIt<SubscriptionStore>(),
+        getIt<AuthSessionStore>(),
+        getIt<ConnectionsLimitStore>(),
+        getIt<UpdateAvailableStore>(),
+      ),
+    )
+    ..registerLazySingleton<PromotionalContentStore>(
+      () => PromotionalContentStore(getIt<RemoteConfigStore>()),
+    )
+    ..registerLazySingleton<HomeState>(
+      () => HomeState(SharedPreferenceService.instance, getIt<AnalyticsStore>()),
+    )
+    // ── Remote config user store ───────────────────────────────────────────────
+    ..registerLazySingleton<ConfigCatUserStore>(
+      () => ConfigCatUserStore(
+        getIt<AuthSessionStore>(),
+        getIt<RealIPInfoStore>(),
+        getIt<SubscriptionStore>(),
+        getIt<Talker>(),
+      ),
+    );
 }

@@ -32,22 +32,24 @@ class _SettingActionButtonState extends State<SettingActionButton> {
   void _handlePressed() {
     setState(() => _isLoading = true);
     Future(() async => widget.action?.call()).whenComplete(() {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) => Theme(
-      data: DesignSystemTheme.of(context),
-      child: ButtonPrimary(
-        decoration: ButtonDecoration(
-          decorationColor: widget.backgroundColor,
-          minimumSize: Size(widget.width, widget.height),
-        ),
-        size: ButtonSize.small,
-        onPressed: widget.action == null || _isLoading ? null : _handlePressed,
-        loading: _isLoading ? const ButtonLoading() : null,
-        child: widget.child,
+    data: DesignSystemTheme.of(context),
+    child: ButtonPrimary(
+      decoration: ButtonDecoration(
+        decorationColor: widget.backgroundColor,
+        minimumSize: Size(widget.width, widget.height),
       ),
-    );
+      size: ButtonSize.small,
+      onPressed: widget.action == null || _isLoading ? null : _handlePressed,
+      loading: _isLoading ? const ButtonLoading() : null,
+      child: widget.child,
+    ),
+  );
 }

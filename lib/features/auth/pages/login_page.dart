@@ -37,9 +37,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) => UnauthenticatedPageView(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: const SafeArea(child: SignInView()),
-      ),
-    );
+    child: Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: const SafeArea(child: SignInView()),
+    ),
+  );
 }

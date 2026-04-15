@@ -13,28 +13,24 @@ mixin _$SubscriptionFeaturesStore on _SubscriptionFeaturesStore, Store {
 
   @override
   SubscriptionConfigResponsePlansInnerMetadata? get metadata =>
-      (_$metadataComputed ??=
-              Computed<SubscriptionConfigResponsePlansInnerMetadata?>(
-                () => super.metadata,
-                name: '_SubscriptionFeaturesStore.metadata',
-              ))
-          .value;
+      (_$metadataComputed ??= Computed<SubscriptionConfigResponsePlansInnerMetadata?>(
+        () => super.metadata,
+        name: '_SubscriptionFeaturesStore.metadata',
+      )).value;
   Computed<bool>? _$residentialIPsAllowedComputed;
 
   @override
-  bool get residentialIPsAllowed =>
-      (_$residentialIPsAllowedComputed ??= Computed<bool>(
-        () => super.residentialIPsAllowed,
-        name: '_SubscriptionFeaturesStore.residentialIPsAllowed',
-      )).value;
+  bool get residentialIPsAllowed => (_$residentialIPsAllowedComputed ??= Computed<bool>(
+    () => super.residentialIPsAllowed,
+    name: '_SubscriptionFeaturesStore.residentialIPsAllowed',
+  )).value;
   Computed<bool>? _$malwareBlockingAllowedComputed;
 
   @override
-  bool get malwareBlockingAllowed =>
-      (_$malwareBlockingAllowedComputed ??= Computed<bool>(
-        () => super.malwareBlockingAllowed,
-        name: '_SubscriptionFeaturesStore.malwareBlockingAllowed',
-      )).value;
+  bool get malwareBlockingAllowed => (_$malwareBlockingAllowedComputed ??= Computed<bool>(
+    () => super.malwareBlockingAllowed,
+    name: '_SubscriptionFeaturesStore.malwareBlockingAllowed',
+  )).value;
 
   @override
   String toString() {

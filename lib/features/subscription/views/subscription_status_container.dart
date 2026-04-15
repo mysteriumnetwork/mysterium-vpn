@@ -46,7 +46,9 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
 
     // Ensure plans are loaded on first mount
     Future.microtask(() async {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       final products = await _plansStore.future;
       if (products.isEmpty) {
         await _subscriptionStore.refreshSubscriptionConfig();
@@ -56,7 +58,9 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
 
     // Check for existing subscription from another account
     Future.microtask(() async {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       await _checkForExistingSubscription();
     });
 
@@ -114,7 +118,9 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
 
   Future<void> _checkForExistingSubscription() async {
     final email = await _subscriptionStore.refreshOtherSubscriber();
-    if (email == null) return;
+    if (email == null) {
+      return;
+    }
 
     void showDialog() {
       shownConfirmationDialog(

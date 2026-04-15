@@ -40,17 +40,23 @@ class _HomeMobileViewState extends State<HomeMobileView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ctx = _appBarKey.currentContext;
       final obj = ctx?.findRenderObject();
-      if (obj is RenderBox && mounted) setState(() => _appBarBox = obj);
+      if (obj is RenderBox && mounted) {
+        setState(() => _appBarBox = obj);
+      }
     });
   }
 
   void _setupReactions() {
-    if (_disposers.isNotEmpty) return;
+    if (_disposers.isNotEmpty) {
+      return;
+    }
     final homeState = HomeStateScope.read(context);
 
     _disposers.addAll([
       reaction((_) => _vpnStore.connectionStatus, (status) {
-        if (status != VpnConnectionStatus.connected) return;
+        if (status != VpnConnectionStatus.connected) {
+          return;
+        }
         WidgetsBinding.instance.addPostFrameCallback((_) {
           homeState.collapsePanel();
         });
@@ -61,7 +67,9 @@ class _HomeMobileViewState extends State<HomeMobileView> {
           homeState.scrollToLocations();
         },
         equals: (String? c, String? p) {
-          if ((p?.isEmpty ?? true) && (c?.isNotEmpty ?? false)) return false;
+          if ((p?.isEmpty ?? true) && (c?.isNotEmpty ?? false)) {
+            return false;
+          }
           return true;
         },
       ),

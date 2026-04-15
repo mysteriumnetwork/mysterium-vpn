@@ -18,31 +18,19 @@ class UserDataAdapter extends TypeAdapter<UserData> {
     };
     return UserData(
       userId: fields[0] as String,
-      recentVPNLocations: fields[11] == null
-          ? []
-          : (fields[11] as List).cast<VPNLocation>(),
-      emailCommunication: fields[1] == null
-          ? Approval.notSet
-          : fields[1] as Approval,
-      notifications: fields[3] == null
-          ? Approval.notSet
-          : fields[3] as Approval,
+      recentVPNLocations: fields[11] == null ? [] : (fields[11] as List).cast<VPNLocation>(),
+      emailCommunication: fields[1] == null ? Approval.notSet : fields[1] as Approval,
+      notifications: fields[3] == null ? Approval.notSet : fields[3] as Approval,
       subscriptionPlan: fields[4] as String?,
       refreshIPConnection: fields[7] == null ? true : fields[7] as bool,
       malwareContentBlocker: fields[8] == null ? false : fields[8] as bool,
       notSafeContentBlocker: fields[9] == null ? false : fields[9] as bool,
       vpnPrivacyPolicyConsent: fields[10] == null ? false : fields[10] as bool,
       subscriptionPurchaseId: fields[5] as String?,
-      shownBanners: fields[12] == null
-          ? []
-          : (fields[12] as List).cast<BannerType>(),
-      recentLocationCodes: fields[2] == null
-          ? const []
-          : (fields[2] as List).cast<String>(),
+      shownBanners: fields[12] == null ? [] : (fields[12] as List).cast<BannerType>(),
+      recentLocationCodes: fields[2] == null ? const [] : (fields[2] as List).cast<String>(),
       marketingConsentShown: fields[13] == null ? false : fields[13] as bool,
-      protocolType: fields[14] == null
-          ? ProtocolType.wireguard
-          : fields[14] as ProtocolType,
+      protocolType: fields[14] == null ? ProtocolType.wireguard : fields[14] as ProtocolType,
       pushNotificationsPromptLastShownAt: fields[15] as DateTime?,
       appOpenCount: fields[16] == null ? 0 : (fields[16] as num).toInt(),
     );
@@ -92,9 +80,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserDataAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is UserDataAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 class ApprovalAdapter extends TypeAdapter<Approval> {
@@ -133,7 +119,5 @@ class ApprovalAdapter extends TypeAdapter<Approval> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ApprovalAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is ApprovalAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

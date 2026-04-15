@@ -54,9 +54,7 @@ class _LocationsMapState extends State<LocationsMap> {
     _mapEventSubscription = _controller.mapEventStream
         .where((it) => it is MapEventMove)
         .cast<MapEventMove>()
-        .listen(
-          (it) => _analyticsStore.logMapScroll(from: it.oldCamera, to: it.camera),
-        );
+        .listen((it) => _analyticsStore.logMapScroll(from: it.oldCamera, to: it.camera));
   }
 
   @override
@@ -65,7 +63,9 @@ class _LocationsMapState extends State<LocationsMap> {
     if (widget.position != oldWidget.position && widget.position != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final center = widget.position;
-        if (center == null || center == _controller.camera.center) return;
+        if (center == null || center == _controller.camera.center) {
+          return;
+        }
         _handleMove(center);
       });
     }
@@ -134,7 +134,9 @@ class _LocationsMapState extends State<LocationsMap> {
               selectedLocation: widget.selectedLocation,
               connectedLocation: widget.connectedLocation,
               onLocationPressed: _handlePressed,
-              onLocationDoubleTapped: widget.onLocationDoubleTapped != null ? _handleDoubleTapped : null,
+              onLocationDoubleTapped: widget.onLocationDoubleTapped != null
+                  ? _handleDoubleTapped
+                  : null,
             ),
           ],
         );

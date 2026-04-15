@@ -306,14 +306,18 @@ class _LocationsState extends State<_Locations> {
       (_) => (_vpnStore.location?.id, _vpnStore.location?.ipType, _locationsStore.locationTypes),
       (data) {
         final (location, ipType, availableTypes) = data;
-        if ((location != null && ipType == null) || ipType == IPType.closest) return;
+        if ((location != null && ipType == null) || ipType == IPType.closest) {
+          return;
+        }
         final previous = _locationsQueryStore.ipType;
         final selected = availableTypes.contains(ipType)
             ? ipType
             : availableTypes.contains(previous)
             ? previous
             : availableTypes.firstOrNull;
-        if (selected == null) return;
+        if (selected == null) {
+          return;
+        }
         _locationsQueryStore.setIPType(selected);
       },
       fireImmediately: true,
@@ -424,12 +428,20 @@ Future<void> _handleToggleConnection(
   try {
     await vpnStore.manageConnection(location: location, intent: intent);
   } on AuthenticationRequiredException catch (_) {
-    if (context.mounted) Beamer.of(context).beamToNamed(Routes.platformLogin.path);
+    if (context.mounted) {
+      Beamer.of(context).beamToNamed(Routes.platformLogin.path);
+    }
   } on SubscriptionRequiredException catch (_) {
-    await _handleSubscribe(context);
+    if (context.mounted) {
+      await _handleSubscribe(context);
+    }
   } on TunnelSetupRequiredException catch (_) {
-    final permissionsGiven = await _handleSetupTunnel(context);
-    if (permissionsGiven) await vpnStore.manageConnection(location: location, intent: intent);
+    if (context.mounted) {
+      final permissionsGiven = await _handleSetupTunnel(context);
+      if (permissionsGiven) {
+        await vpnStore.manageConnection(location: location, intent: intent);
+      }
+    }
   }
 }
 
@@ -441,7 +453,9 @@ Future<void> _handleSubscribe(BuildContext context, {bool manageSubscription = f
   final accessToken = sessionStore.accessToken;
   try {
     final subscription = await subscriptionStore.subscriptionFuture;
-    if (!context.mounted) return;
+    if (!context.mounted) {
+      return;
+    }
     await handleOnBillingPage(
       context: context,
       manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
