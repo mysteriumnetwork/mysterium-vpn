@@ -82,9 +82,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       }
     });
 
-    // Routing + store cleanup on auth status change
-    _authStatusDisposer = reaction((_) => _authSessionStore.status, _authenticationReaction);
-
     // MQTT: start and subscribe to config-cat changes (replaces useMQTTService)
     _mqttDisposer = reaction((_) => _authSessionStore.isAuthenticated, (bool authenticated) {
       if (authenticated) {
@@ -162,43 +159,56 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     getIt<RefreshIPStore>().disposeStore();
     getIt<SmartRefreshStore>().dispose();
     getIt<PushNotificationsStore>().dispose();
+    _invalidateIfExists<LocationsStore>();
+    _invalidateIfExists<SubscriptionStore>();
+    _invalidateIfExists<RecentLocationsStore>();
+    _invalidateIfExists<RefreshIPStore>();
+  }
+
+  void _invalidateIfExists<T extends Object>() {
+    if (getIt.isRegistered<T>()) {
+      getIt.resetLazySingleton<T>();
+    }
   }
 
   @override
-  Widget build(BuildContext context) => LifecycleListener(
-    onThemeChanged: _themeStore.updateSystemTheme,
-    child: Observer(
-      builder: (context) => RetakeFocusOnTap(
-        child: ShortcutsWidget(
-          child: CustomPlatformMenu(
-            appName: Env.appName,
-            child: BeamerProvider(
-              routerDelegate: _routeDelegate,
-              child: Portal(
-                child: MaterialApp.router(
-                  title: Env.appName,
-                  scaffoldMessengerKey: snackbarKey,
-                  theme: _themeStore.lightTheme,
-                  darkTheme: _themeStore.darkTheme,
-                  themeMode: _themeStore.themeMode,
-                  routerDelegate: _routeDelegate,
-                  routeInformationParser: _routeInformationParser,
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: _localeStore.currentLocale,
-                  backButtonDispatcher: BeamerBackButtonDispatcher(delegate: _routeDelegate),
-                  builder: (context, child) => ScreenTypeObserver(
-                    child: MediaQuery(
-                      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                      child: ScrollConfiguration(
-                        behavior: ScrollConfiguration.of(context).copyWith(
-                          dragDevices: PointerDeviceKind.values.toSet(),
-                          scrollbars: false,
-                          overscroll: true,
-                          physics: const BouncingScrollPhysics(),
-                        ),
-                        child: AppDeferredInitWidget(
-                          child: FTCheckers(child: NetworkLoggerOverlayView(child: child!)),
+  Widget build(BuildContext context) => ReactionBuilder(
+    builder: (_) => reaction((_) => getIt<AuthSessionStore>().status, _authenticationReaction),
+    child: LifecycleListener(
+      onThemeChanged: _themeStore.updateSystemTheme,
+      child: Observer(
+        builder: (context) => RetakeFocusOnTap(
+          child: ShortcutsWidget(
+            child: CustomPlatformMenu(
+              appName: Env.appName,
+              child: BeamerProvider(
+                routerDelegate: _routeDelegate,
+                child: Portal(
+                  child: MaterialApp.router(
+                    title: Env.appName,
+                    scaffoldMessengerKey: snackbarKey,
+                    theme: _themeStore.lightTheme,
+                    darkTheme: _themeStore.darkTheme,
+                    themeMode: _themeStore.themeMode,
+                    routerDelegate: _routeDelegate,
+                    routeInformationParser: _routeInformationParser,
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: _localeStore.currentLocale,
+                    backButtonDispatcher: BeamerBackButtonDispatcher(delegate: _routeDelegate),
+                    builder: (context, child) => ScreenTypeObserver(
+                      child: MediaQuery(
+                        data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                        child: ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            dragDevices: PointerDeviceKind.values.toSet(),
+                            scrollbars: false,
+                            overscroll: true,
+                            physics: const BouncingScrollPhysics(),
+                          ),
+                          child: AppDeferredInitWidget(
+                            child: FTCheckers(child: NetworkLoggerOverlayView(child: child!)),
+                          ),
                         ),
                       ),
                     ),
