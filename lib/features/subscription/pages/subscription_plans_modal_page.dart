@@ -86,19 +86,11 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
   }
 
   void _onTabChanged() {
-    if (_tabController.indexIsChanging) {
-      return;
+    final products = _tabController.index == 1 ? _store.monthlyProducts : _store.annualProducts;
+    final sorted = products.sortedByCompare((it) => it.monthlyValue, compareNumsDesc);
+    if (sorted.isNotEmpty) {
+      setState(() => _selectedProduct = sorted.first);
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-      final products = _tabController.index == 1 ? _store.monthlyProducts : _store.annualProducts;
-      final sorted = products.sortedByCompare((it) => it.monthlyValue, compareNumsDesc);
-      if (sorted.isNotEmpty) {
-        setState(() => _selectedProduct = sorted.first);
-      }
-    });
   }
 
   @override
