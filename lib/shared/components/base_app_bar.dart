@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/shared/components/app_logo.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class BaseAppBar extends StatelessWidget {

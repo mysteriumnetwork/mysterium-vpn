@@ -1,10 +1,10 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/extensions/vpn_location.dart';
-import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
 import 'package:mysterium_vpn/features/locations/store/unavailable_locations_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 part 'connection_display_store.g.dart';

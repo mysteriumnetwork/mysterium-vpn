@@ -9,15 +9,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:openvpn_dart/openvpn_dart.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:talker/talker.dart';
-import 'package:talker_dio_logger/talker_dio_logger.dart';
-import 'package:vpn_api/vpn_api.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
-
+import 'package:mobx/mobx.dart';
+// Core stores
+import 'package:mysterium_vpn/core/device/device_id_store.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/string.dart';
 import 'package:mysterium_vpn/core/interceptors/api_errors.dart';
@@ -25,17 +20,12 @@ import 'package:mysterium_vpn/core/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/core/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/core/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/core/interceptors/test_flags_interceptor.dart';
+import 'package:mysterium_vpn/core/locale/locale_store.dart';
 import 'package:mysterium_vpn/core/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/core/router/router.dart';
+import 'package:mysterium_vpn/core/theme/theme_store.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/services/services.dart';
-
-// Core stores
-import 'package:mysterium_vpn/core/device/device_id_store.dart';
-import 'package:mysterium_vpn/core/locale/locale_store.dart';
-import 'package:mysterium_vpn/core/theme/theme_store.dart';
-
 // Feature stores
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store_firebase.dart';
@@ -44,14 +34,15 @@ import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:mysterium_vpn/features/home/store/banners_store.dart';
 import 'package:mysterium_vpn/features/home/store/promotional_content_store.dart';
+import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/locations/store/latlng_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_query_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/locations/store/recent_locations_store.dart';
 import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
 import 'package:mysterium_vpn/features/locations/store/unavailable_locations_store.dart';
-import 'package:mysterium_vpn/features/notifications/repositories/notifications_repository.dart';
 import 'package:mysterium_vpn/features/notifications/repositories/desktop_notifications_repository.dart';
+import 'package:mysterium_vpn/features/notifications/repositories/notifications_repository.dart';
 import 'package:mysterium_vpn/features/notifications/repositories/onesignal_notifications_repository.dart';
 import 'package:mysterium_vpn/features/notifications/store/push_notifications_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
@@ -67,8 +58,8 @@ import 'package:mysterium_vpn/features/subscription/store/subscription_plans_sto
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_upgrade_store.dart';
-import 'package:mysterium_vpn/features/vpn/repositories/wireguard_repository.dart';
 import 'package:mysterium_vpn/features/vpn/repositories/openvpn_repository.dart';
+import 'package:mysterium_vpn/features/vpn/repositories/wireguard_repository.dart';
 import 'package:mysterium_vpn/features/vpn/store/connection_decision_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/connection_display_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/connections_limit_store.dart';
@@ -81,6 +72,13 @@ import 'package:mysterium_vpn/features/vpn/store/smart_refresh_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/user_intents_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_protocol_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:openvpn_dart/openvpn_dart.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:talker/talker.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:vpn_api/vpn_api.dart';
+import 'package:wireguard_dart/wireguard_dart.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -96,10 +94,10 @@ Future<void> setupServiceLocator() async {
 // ─── Primitives ────────────────────────────────────────────────────────────────
 
 void _registerPrimitives() {
-  getIt.registerLazySingleton<AppLinks>(() => AppLinks());
+  getIt.registerLazySingleton<AppLinks>(AppLinks.new);
   getIt.registerLazySingleton<InAppPurchase>(() => InAppPurchase.instance);
-  getIt.registerLazySingleton<WireguardDart>(() => WireguardDart());
-  getIt.registerLazySingleton<OpenVPNDart>(() => OpenVPNDart());
+  getIt.registerLazySingleton<WireguardDart>(WireguardDart.new);
+  getIt.registerLazySingleton<OpenVPNDart>(OpenVPNDart.new);
 }
 
 // ─── Networking ────────────────────────────────────────────────────────────────
@@ -107,7 +105,6 @@ void _registerPrimitives() {
 void _registerNetworking() {
   getIt.registerLazySingleton<BaseOptions>(
     () => BaseOptions(
-      baseUrl: Env.baseUrl,
       headers: {
         'Content-Type': 'application/json',
         'accept': 'application/json',
@@ -157,19 +154,14 @@ void _registerNetworking() {
   });
 
   // DioNetworkService wrapping the primary auth Dio
-  getIt.registerLazySingleton<DioNetworkService>(
-    () => DioNetworkService(getIt<Dio>()),
-  );
+  getIt.registerLazySingleton<DioNetworkService>(() => DioNetworkService(getIt<Dio>()));
 
   // External NetworkService (no auth; used for IP lookup etc.)
-  getIt.registerLazySingleton<NetworkService>(
-    () {
-      final dio = Dio(getIt<BaseOptions>());
-      dio.interceptors.add(RetryRequestInterceptor(dio: dio));
-      return DioNetworkService(dio);
-    },
-    instanceName: 'external',
-  );
+  getIt.registerLazySingleton<NetworkService>(() {
+    final dio = Dio(getIt<BaseOptions>());
+    dio.interceptors.add(RetryRequestInterceptor(dio: dio));
+    return DioNetworkService(dio);
+  }, instanceName: 'external');
 
   getIt.registerLazySingleton<VpnApi>(() => VpnApi(dio: getIt<Dio>()));
 
@@ -215,16 +207,13 @@ void _registerNetworking() {
   );
 
   // Router
-  getIt.registerLazySingleton<BeamerParser>(() => BeamerParser());
+  getIt.registerLazySingleton<BeamerParser>(BeamerParser.new);
   getIt.registerLazySingleton<BeamerDelegate>(() {
     final authSessionStore = getIt<AuthSessionStore>();
     final analyticsStore = getIt<AnalyticsStore>();
     final authStore = getIt<AuthStore>();
     return BeamerDelegate(
-      navigatorObservers: [
-        ...analyticsStore.navigationObservers(),
-        SentryNavigatorObserver(),
-      ],
+      navigatorObservers: [...analyticsStore.navigationObservers(), SentryNavigatorObserver()],
       guards: [
         BeamGuard(
           pathPatterns: [Routes.main.path, Routes.settings.path],
@@ -241,8 +230,7 @@ void _registerNetworking() {
         BeamGuard(
           pathPatterns: [Routes.emailToken.path],
           check: (context, state) => false,
-          beamToNamed: (a, b) =>
-              a?.state.routeInformation.uri.path ?? Routes.platformLogin.path,
+          beamToNamed: (a, b) => a?.state.routeInformation.uri.path ?? Routes.platformLogin.path,
         ),
         BeamGuard(
           pathPatterns: [Routes.splash.path],
@@ -282,10 +270,7 @@ void _registerServices() {
   );
 
   getIt.registerLazySingleton<ExternalApiService>(
-    () => RestExternalApiService(
-      getIt<NetworkService>(instanceName: 'external'),
-      getIt<Talker>(),
-    ),
+    () => RestExternalApiService(getIt<NetworkService>(instanceName: 'external'), getIt<Talker>()),
   );
 
   getIt.registerLazySingleton<AuthService>(
@@ -305,7 +290,7 @@ void _registerServices() {
     ),
   );
 
-  getIt.registerLazySingleton<FilterService>(() => FilterService());
+  getIt.registerLazySingleton<FilterService>(FilterService.new);
 
   getIt.registerLazySingleton<LocationsService>(
     () => LocationsService(getIt<VpnApi>().getConnection()),
@@ -335,9 +320,7 @@ void _registerServices() {
   );
 
   // TranslationAssetLoader wraps TextsStore for ConfigCat-driven translations.
-  getIt.registerLazySingleton<AssetLoader>(
-    () => TranslationAssetLoader(getIt<TextsStore>()),
-  );
+  getIt.registerLazySingleton<AssetLoader>(() => TranslationAssetLoader(getIt<TextsStore>()));
 }
 
 // ─── Repositories ──────────────────────────────────────────────────────────────
@@ -371,9 +354,9 @@ void _registerRepositories() {
 
 void _registerStores() {
   // ── Core ──────────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<ThemeStore>(() => ThemeStore());
-  getIt.registerLazySingleton<LocaleStore>(() => LocaleStore());
-  getIt.registerLazySingleton<DeviceIDStore>(() => DeviceIDStore());
+  getIt.registerLazySingleton<ThemeStore>(ThemeStore.new);
+  getIt.registerLazySingleton<LocaleStore>(LocaleStore.new);
+  getIt.registerLazySingleton<DeviceIDStore>(DeviceIDStore.new);
 
   // ── Analytics (platform-conditional) ────────────────────────────────────
   if (isWindowsOrLinux()) {
@@ -410,10 +393,7 @@ void _registerStores() {
     ),
   );
   getIt.registerLazySingleton<TextsStore>(
-    () => TextsStore(
-      getIt<ConfigCatClient>(instanceName: 'texts'),
-      getIt<Talker>(),
-    ),
+    () => TextsStore(getIt<ConfigCatClient>(instanceName: 'texts'), getIt<Talker>()),
   );
 
   // ── Auth ──────────────────────────────────────────────────────────────────
@@ -436,7 +416,7 @@ void _registerStores() {
   );
 
   // ── Locations ─────────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<SelectedLocationStore>(() => SelectedLocationStore());
+  getIt.registerLazySingleton<SelectedLocationStore>(SelectedLocationStore.new);
   getIt.registerLazySingleton<LocationsQueryStore>(
     () => LocationsQueryStore(
       SharedPreferenceService.instance,
@@ -469,9 +449,7 @@ void _registerStores() {
   getIt.registerLazySingleton<UnavailableLocationsStore>(
     () => UnavailableLocationsStore(getIt<LocationsStore>()),
   );
-  getIt.registerLazySingleton<LatLngStore>(
-    () => LatLngStore(getIt<AssetsService>()),
-  );
+  getIt.registerLazySingleton<LatLngStore>(() => LatLngStore(getIt<AssetsService>()));
 
   // ── VPN ───────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<MqttStore>(
@@ -486,20 +464,12 @@ void _registerStores() {
     ),
   );
   getIt.registerLazySingleton<RefreshIPStore>(
-    () => RefreshIPStore(
-      LocalDBService.instance,
-      getIt<Talker>(),
-      getIt<AuthSessionStore>(),
-    ),
+    () => RefreshIPStore(LocalDBService.instance, getIt<Talker>(), getIt<AuthSessionStore>()),
   );
   getIt.registerLazySingleton<SmartRefreshStore>(
-    () => SmartRefreshStore(
-      getIt<LocationsStore>(),
-      getIt<SubscriptionStore>(),
-      getIt<Talker>(),
-    ),
+    () => SmartRefreshStore(getIt<LocationsStore>(), getIt<SubscriptionStore>(), getIt<Talker>()),
   );
-  getIt.registerLazySingleton<ConnectionsLimitStore>(() => ConnectionsLimitStore());
+  getIt.registerLazySingleton<ConnectionsLimitStore>(ConnectionsLimitStore.new);
   getIt.registerLazySingleton<UserIntentsStore>(
     () => UserIntentsStore(
       getIt<ApiService>(),
@@ -586,10 +556,7 @@ void _registerStores() {
     ),
   );
   getIt.registerLazySingleton<SubscriptionFeaturesStore>(
-    () => SubscriptionFeaturesStore(
-      getIt<SubscriptionStore>(),
-      getIt<SubscriptionConfigStore>(),
-    ),
+    () => SubscriptionFeaturesStore(getIt<SubscriptionStore>(), getIt<SubscriptionConfigStore>()),
   );
   getIt.registerLazySingleton<SubscriptionPlansStore>(
     () => SubscriptionPlansStore(
@@ -611,10 +578,7 @@ void _registerStores() {
     ),
   );
   getIt.registerLazySingleton<SubscriptionUpgradeStore>(
-    () => SubscriptionUpgradeStore(
-      getIt<SubscriptionStore>(),
-      getIt<SubscriptionPlansStore>(),
-    ),
+    () => SubscriptionUpgradeStore(getIt<SubscriptionStore>(), getIt<SubscriptionPlansStore>()),
   );
   getIt.registerLazySingleton<SubscriptionLimitedTimeOfferStore>(
     () => SubscriptionLimitedTimeOfferStore(
@@ -664,6 +628,9 @@ void _registerStores() {
   );
   getIt.registerLazySingleton<PromotionalContentStore>(
     () => PromotionalContentStore(getIt<RemoteConfigStore>()),
+  );
+  getIt.registerLazySingleton<HomeState>(
+    () => HomeState(SharedPreferenceService.instance, getIt<AnalyticsStore>()),
   );
 
   // ── Remote config user store ───────────────────────────────────────────────

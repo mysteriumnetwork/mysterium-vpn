@@ -1,16 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/shared/components/headline_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/shared/components/headline_text.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class LoginHeadlines extends HookConsumerWidget {
+class LoginHeadlines extends StatelessWidget {
   const LoginHeadlines({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) => FittedBox(
+  Widget build(BuildContext context) => FittedBox(
     fit: BoxFit.scaleDown,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

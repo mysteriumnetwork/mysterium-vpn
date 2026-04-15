@@ -2,17 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:window_manager/window_manager.dart';
 
-class CustomPlatformMenu extends ConsumerWidget {
+class CustomPlatformMenu extends StatelessWidget {
   const CustomPlatformMenu({required this.child, required this.appName, super.key});
   final Widget child;
   final String appName;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isVisible = ref.watch(isAppWindowFocused);
+  Widget build(BuildContext context) {
+    const isVisible = true;
     return Platform.isMacOS
         ? PlatformMenuBar(
             menus: <PlatformMenuItem>[
@@ -185,9 +183,8 @@ class CustomPlatformMenu extends ConsumerWidget {
                             : null,
                       ),
                       if (PlatformProvidedMenuItem.hasMenu(PlatformProvidedMenuItemType.zoomWindow))
-                        PlatformProvidedMenuItem(
+                        const PlatformProvidedMenuItem(
                           type: PlatformProvidedMenuItemType.zoomWindow,
-                          enabled: isVisible,
                         ),
                     ],
                   ),

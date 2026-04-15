@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 import 'wiregurad_key_service_test.mocks.dart';

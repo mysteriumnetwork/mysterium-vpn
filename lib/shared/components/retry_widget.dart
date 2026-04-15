@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/shared/components/easy_button.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RetryWdiget extends StatelessWidget {

@@ -1,18 +1,17 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/shared/components/base_app_bar.dart';
 import 'package:mysterium_vpn/shared/components/base_layout.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class InformationalView extends ConsumerWidget {
+class InformationalView extends StatelessWidget {
   const InformationalView({required this.translationKey, super.key});
   final String translationKey;
   @override
-  Widget build(BuildContext context, WidgetRef ref) => BaseLayout(
+  Widget build(BuildContext context) => BaseLayout(
     header: BaseAppBar(onBackButtonPressed: context.beamBack),
     child: Center(
       child: EasyText(

@@ -1,13 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/home/store/banners_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class LocationsDisclaimer extends HookConsumerWidget {
+class LocationsDisclaimer extends StatelessWidget {
   const LocationsDisclaimer({
     required this.text,
     required this.bannerType,
@@ -36,9 +37,9 @@ class LocationsDisclaimer extends HookConsumerWidget {
   final TooltipIcon? tooltip;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bannersStore = ref.watch(bannersStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final bannersStore = getIt<BannersStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
     void handleDismiss() {
       if (bannerType == BannerType.residentialIPs) {
         bannersStore.setShown(BannerType.residentialIPs);

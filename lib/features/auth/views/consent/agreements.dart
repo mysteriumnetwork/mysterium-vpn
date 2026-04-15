@@ -5,8 +5,8 @@ import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 
 class Agreements extends StatelessWidget {
   const Agreements({required this.analyticsStore, super.key});

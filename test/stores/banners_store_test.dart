@@ -3,14 +3,14 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/home/store/banners_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/settings/store/update_available_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/connections_limit_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 import 'banners_store_test.mocks.dart';
 

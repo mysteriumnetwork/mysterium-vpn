@@ -5,13 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/models/models.dart' hide Response;
-import 'package:mysterium_vpn/services/services.dart' hide Response;
 import 'package:mysterium_vpn/core/locale/locale_store.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_query_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/models/models.dart' hide Response;
+import 'package:mysterium_vpn/services/services.dart' hide Response;
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 

@@ -1,16 +1,17 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/app_logo.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class UnauthenticatedHeader extends HookConsumerWidget {
+class UnauthenticatedHeader extends StatelessWidget {
   const UnauthenticatedHeader({
     this.padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
     super.key,
@@ -19,27 +20,32 @@ class UnauthenticatedHeader extends HookConsumerWidget {
   final EdgeInsets padding;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authSessionStore = ref.read(authSessionStorePOD);
-    final canBrowseApp = useComputedValue(() => authSessionStore.canBrowseApp);
+  Widget build(BuildContext context) {
+    final authSessionStore = getIt<AuthSessionStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
 
-    return Padding(
-      padding: padding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 24,
-        children: [
-          if (canBrowseApp) const _BackButton(),
-          if (!canBrowseApp) const SizedBox.shrink(),
-          const Expanded(child: AppLogo()),
-          SvgIconButton(
-            asset: Asset.icons.supportLight,
-            onPressed: () {
-              handleOnSupportPage(context: context, analyticsStore: ref.read(analyticsStorePOD));
-            },
+    return Observer(
+      builder: (_) {
+        final canBrowseApp = authSessionStore.canBrowseApp;
+        return Padding(
+          padding: padding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 24,
+            children: [
+              if (canBrowseApp) const _BackButton(),
+              if (!canBrowseApp) const SizedBox.shrink(),
+              const Expanded(child: AppLogo()),
+              SvgIconButton(
+                asset: Asset.icons.supportLight,
+                onPressed: () {
+                  handleOnSupportPage(context: context, analyticsStore: analyticsStore);
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

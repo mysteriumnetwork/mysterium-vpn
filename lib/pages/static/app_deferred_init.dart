@@ -3,11 +3,14 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/features/locations/store/latlng_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_user_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/texts_store.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
-import 'package:mysterium_vpn/providers/service_providers.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -15,58 +18,83 @@ import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-final _appStartupPOD = FutureProvider<void>((ref) async {
-  final logger = ref.read(loggerPOD)..log('App startup initiated');
-  await Future.wait([
-    _initRemoteConfig(ref, logger).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => logger.log('Remote config init timed out'),
-    ),
-    _initLatLngStore(ref, logger).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => logger.log('LatLng store init timed out'),
-    ),
-    _initOtherConfigCatStores(ref, logger).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => logger.log('ConfigCat stores init timed out'),
-    ),
-    if (Platform.isWindows) _initWindows(),
-  ]);
+class AppDeferredInitWidget extends StatefulWidget {
+  const AppDeferredInitWidget({required this.child, super.key});
 
-  ref.read(loggerPOD).log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
-});
+  final Widget child;
 
-Future<void> _initRemoteConfig(Ref ref, Talker talker) async {
-  try {
-    final configCatUserStore = ref.read(configCatUserStorePOD);
-    final remoteConfigStore = ref.read(remoteConfigStorePOD);
-    final configCatUser = await configCatUserStore.future;
-    await remoteConfigStore.setUser(configCatUser);
-    await remoteConfigStore.configFuture;
-  } catch (e) {
-    talker.log('Remote config init error (non-fatal): $e');
-  }
+  @override
+  State<AppDeferredInitWidget> createState() => _AppDeferredInitWidgetState();
 }
 
-Future<void> _initOtherConfigCatStores(Ref ref, Talker logger) async {
-  try {
-    final configCatUserStore = ref.read(configCatUserStorePOD);
-    final configCatUser = await configCatUserStore.future;
+class _AppDeferredInitWidgetState extends State<AppDeferredInitWidget> {
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _runStartup();
+  }
+
+  Future<void> _runStartup() async {
+    final logger = getIt<Talker>()..log('App startup initiated');
     await Future.wait([
-      ref.read(abTestingStorePOD).setUser(configCatUser),
-      ref.read(textsStorePOD).setUser(configCatUser),
+      _initRemoteConfig(logger).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => logger.log('Remote config init timed out'),
+      ),
+      _initLatLngStore(logger).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => logger.log('LatLng store init timed out'),
+      ),
+      _initOtherConfigCatStores(logger).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => logger.log('ConfigCat stores init timed out'),
+      ),
+      if (Platform.isWindows) _initWindows(),
     ]);
-  } catch (e) {
-    logger.log('ConfigCat stores init error (non-fatal): $e');
+    logger.log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
+    if (mounted) setState(() => _initialized = true);
   }
-}
 
-Future<void> _initLatLngStore(Ref ref, Talker logger) async {
-  try {
-    final latLngStore = ref.read(latLngStorePOD);
-    await latLngStore.countryCoordinatesFuture;
-  } catch (e) {
-    logger.log('LatLng store init error (non-fatal): $e');
+  Future<void> _initRemoteConfig(Talker talker) async {
+    try {
+      final configCatUserStore = getIt<ConfigCatUserStore>();
+      final remoteConfigStore = getIt<RemoteConfigStore>();
+      final configCatUser = await configCatUserStore.future;
+      await remoteConfigStore.setUser(configCatUser);
+      await remoteConfigStore.configFuture;
+    } catch (e) {
+      talker.log('Remote config init error (non-fatal): $e');
+    }
+  }
+
+  Future<void> _initOtherConfigCatStores(Talker logger) async {
+    try {
+      final configCatUserStore = getIt<ConfigCatUserStore>();
+      final configCatUser = await configCatUserStore.future;
+      await Future.wait([
+        getIt<ABTestingStore>().setUser(configCatUser),
+        getIt<TextsStore>().setUser(configCatUser),
+      ]);
+    } catch (e) {
+      logger.log('ConfigCat stores init error (non-fatal): $e');
+    }
+  }
+
+  Future<void> _initLatLngStore(Talker logger) async {
+    try {
+      final latLngStore = getIt<LatLngStore>();
+      await latLngStore.countryCoordinatesFuture;
+    } catch (e) {
+      logger.log('LatLng store init error (non-fatal): $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_initialized) return const SplashPage();
+    return widget.child;
   }
 }
 
@@ -123,22 +151,5 @@ Future<void> _setupTrayIcon() async {
     );
   } catch (e) {
     Sentry.captureException(e);
-  }
-}
-
-class AppDeferredInitWidget extends ConsumerWidget {
-  const AppDeferredInitWidget({required this.child, super.key});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final startup = ref.watch(_appStartupPOD);
-
-    return startup.when(
-      loading: () => const SplashPage(),
-      data: (_) => child,
-      error: (_, _) => child,
-    );
   }
 }

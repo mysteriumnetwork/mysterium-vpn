@@ -1,22 +1,23 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
-class NetworkLoggerOverlayView extends StatefulHookConsumerWidget {
+class NetworkLoggerOverlayView extends StatefulWidget {
   const NetworkLoggerOverlayView({required this.child, super.key});
 
   final Widget child;
 
   @override
-  ConsumerState<NetworkLoggerOverlayView> createState() => _NetworkLoggerOverlayViewState();
+  State<NetworkLoggerOverlayView> createState() => _NetworkLoggerOverlayViewState();
 }
 
-class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayView> {
+class _NetworkLoggerOverlayViewState extends State<NetworkLoggerOverlayView> {
+  final _store = getIt<RemoteConfigStore>();
   double _xPosition = 0;
   double _yPosition = 0;
 
@@ -38,39 +39,40 @@ class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayV
   }
 
   @override
-  Widget build(BuildContext context) {
-    final store = ref.watch(remoteConfigStorePOD);
-    final enableQAHelpers = useComputedValue(() => store.enableQaHelpers);
-    final shouldShowLogger = !kReleaseMode || enableQAHelpers;
+  Widget build(BuildContext context) => Observer(
+      builder: (context) {
+        final enableQAHelpers = _store.enableQaHelpers;
+        final shouldShowLogger = !kReleaseMode || enableQAHelpers;
 
-    if (shouldShowLogger) {
-      return Stack(
-        children: [
-          widget.child,
-          if (_xPosition != 0 && _yPosition != 0) ...[
-            Positioned(
-              top: _yPosition,
-              left: _xPosition,
-              child: GestureDetector(
-                onPanUpdate: (tapInfo) {
-                  if (mounted) {
-                    setState(() {
-                      _xPosition += tapInfo.delta.dx;
-                      _yPosition += tapInfo.delta.dy;
-                    });
-                  }
-                },
-                child: NetworkLoggerButton(
-                  color: Palette.purple,
-                  globalNavKey: Beamer.of(context).navigatorKey,
+        if (shouldShowLogger) {
+          return Stack(
+            children: [
+              widget.child,
+              if (_xPosition != 0 && _yPosition != 0) ...[
+                Positioned(
+                  top: _yPosition,
+                  left: _xPosition,
+                  child: GestureDetector(
+                    onPanUpdate: (tapInfo) {
+                      if (mounted) {
+                        setState(() {
+                          _xPosition += tapInfo.delta.dx;
+                          _yPosition += tapInfo.delta.dy;
+                        });
+                      }
+                    },
+                    child: NetworkLoggerButton(
+                      color: Palette.purple,
+                      globalNavKey: Beamer.of(context).navigatorKey,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        ],
-      );
-    } else {
-      return widget.child;
-    }
-  }
+              ],
+            ],
+          );
+        } else {
+          return widget.child;
+        }
+      },
+    );
 }

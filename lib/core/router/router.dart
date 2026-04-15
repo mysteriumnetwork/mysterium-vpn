@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/enum.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/features/home/pages/home_page.dart';
 import 'package:mysterium_vpn/features/auth/pages/login_page.dart';
-import 'package:mysterium_vpn/features/settings/pages/settings_page.dart';
-import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/features/auth/pages/verify_email_page.dart';
 import 'package:mysterium_vpn/features/auth/pages/welcome_page.dart';
+import 'package:mysterium_vpn/features/home/pages/home_page.dart';
+import 'package:mysterium_vpn/features/settings/pages/settings_page.dart';
+import 'package:mysterium_vpn/pages/static/splash_page.dart';
 
 class BeamerLocations extends BeamLocation<BeamState> {
   BeamerLocations(RouteInformation super.routeInformation);

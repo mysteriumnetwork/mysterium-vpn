@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 
-class AnimatedLogoPanel extends HookWidget {
+class AnimatedLogoPanel extends StatelessWidget {
   const AnimatedLogoPanel({super.key});
 
   @override

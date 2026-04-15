@@ -1,27 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/settings/views/action_button.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/shared/components/easy_text.dart';
+import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AppVersionUpdateSetting extends ConsumerWidget {
+class AppVersionUpdateSetting extends StatelessWidget {
   const AppVersionUpdateSetting({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final remoteConfigStore = getIt<RemoteConfigStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
 
     return Observer(
       builder: (context) {

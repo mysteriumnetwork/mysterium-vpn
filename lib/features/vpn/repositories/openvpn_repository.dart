@@ -5,8 +5,8 @@ import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/features/vpn/repositories/base_vpn_repository.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:vpn_api/vpn_api.dart';
 

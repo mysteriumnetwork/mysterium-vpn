@@ -13,10 +13,10 @@ import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 

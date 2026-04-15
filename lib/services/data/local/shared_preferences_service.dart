@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {

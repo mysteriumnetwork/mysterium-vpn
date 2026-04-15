@@ -1,6 +1,6 @@
 part of '../cancel_subscription_survey_dialog.dart';
 
-class _ReasonsField extends HookWidget {
+class _ReasonsField extends StatelessWidget {
   const _ReasonsField({
     required this.items,
     required this.selection,
@@ -13,7 +13,7 @@ class _ReasonsField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final axisCount = useResponsiveValue(1, tablet: 2, desktop: 2);
+    final axisCount = getScreenType(MediaQuery.sizeOf(context)) == ScreenType.mobile ? 1 : 2;
 
     void handleToggle(String value) {
       onSelectionChanged(selection.toggle(value));

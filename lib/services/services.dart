@@ -1,4 +1,4 @@
-export '../stores/mqtt_store.dart';
+export '../features/vpn/store/mqtt_store.dart';
 export 'api/api_service.dart';
 export 'api/external_api_service.dart';
 export 'api/rest_api_service.dart';

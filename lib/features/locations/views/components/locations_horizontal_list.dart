@@ -1,16 +1,15 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/vpn_location.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/shared/components/horizontal_scroll_indicator.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/shared/components/horizontal_scroll_indicator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
-class LocationsHorizontalList extends HookWidget {
+class LocationsHorizontalList extends StatefulWidget {
   const LocationsHorizontalList({
     required this.title,
     required this.items,
@@ -27,36 +26,47 @@ class LocationsHorizontalList extends HookWidget {
   final BoxConstraints listConstraints;
 
   @override
-  Widget build(BuildContext context) {
-    final scrollController = useScrollController();
-    return _Container(
-      title: title,
-      constraints: listConstraints,
-      scrollController: scrollController,
-      child: ListView.separated(
-        itemCount: items.length,
-        controller: scrollController,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, _) => const SizedBox(width: 12),
-        itemBuilder: (_, index) {
-          final item = items[index];
-          final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
-          return LocationCard(
-            icon: CircleFlag(item.countryCode, size: 24),
-            name: item.getName(context),
-            subtitle: item.ipType == IPType.datacenter
-                ? LocaleKeys.highSpeed.tr()
-                : LocaleKeys.residential.tr(),
-            onTap: () => onItemPressed(item),
-            status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
-          );
-        },
-      ),
-    );
-  }
+  State<LocationsHorizontalList> createState() => _LocationsHorizontalListState();
 }
 
-class _Container extends HookWidget {
+class _LocationsHorizontalListState extends State<LocationsHorizontalList> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _Container(
+    title: widget.title,
+    constraints: widget.listConstraints,
+    scrollController: _scrollController,
+    child: ListView.separated(
+      itemCount: widget.items.length,
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      separatorBuilder: (_, _) => const SizedBox(width: 12),
+      itemBuilder: (_, index) {
+        final item = widget.items[index];
+        final isConnected =
+            widget.connectedLocation != null && widget.connectedLocation!.id == item.id;
+        return LocationCard(
+          icon: CircleFlag(item.countryCode, size: 24),
+          name: item.getName(context),
+          subtitle: item.ipType == IPType.datacenter
+              ? LocaleKeys.highSpeed.tr()
+              : LocaleKeys.residential.tr(),
+          onTap: () => widget.onItemPressed(item),
+          status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
+        );
+      },
+    ),
+  );
+}
+
+class _Container extends StatelessWidget {
   const _Container({
     required this.title,
     required this.constraints,
@@ -71,7 +81,8 @@ class _Container extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasIndicator = useResponsiveValue(false, desktop: true, tablet: true);
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final hasIndicator = screenType >= ScreenType.tablet;
 
     Widget child = ConstrainedBox(constraints: constraints, child: this.child);
 

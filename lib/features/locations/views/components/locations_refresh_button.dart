@@ -1,13 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class LocationsRefreshButton extends HookConsumerWidget {
+class LocationsRefreshButton extends StatefulWidget {
   const LocationsRefreshButton({
     this.outlinedButton = false,
     this.minimumSize = const Size(100, 36),
@@ -22,21 +21,29 @@ class LocationsRefreshButton extends HookConsumerWidget {
   final BorderRadius? borderRadius;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locationsStore = ref.watch(locationsStorePOD);
-    final refreshFuture = useState<Future<void>?>(null);
-    final isRefreshing = useFuture(refreshFuture.value).connectionState == ConnectionState.waiting;
+  State<LocationsRefreshButton> createState() => _LocationsRefreshButtonState();
+}
 
-    void handleRefresh() {
-      refreshFuture.value = locationsStore.refreshAll();
-    }
+class _LocationsRefreshButtonState extends State<LocationsRefreshButton> {
+  final _locationsStore = getIt<LocationsStore>();
+  bool _isRefreshing = false;
 
-    return ButtonSecondary(
+  void _handleRefresh() {
+    final future = _locationsStore.refreshAll();
+    setState(() => _isRefreshing = true);
+    future.whenComplete(() {
+      if (mounted) {
+        setState(() => _isRefreshing = false);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => ButtonSecondary(
       size: ButtonSize.small,
       decoration: const ButtonDecoration(padding: EdgeInsets.symmetric(horizontal: 16)),
-      loading: isRefreshing ? const ButtonLoading() : null,
-      onPressed: isRefreshing ? null : handleRefresh,
+      loading: _isRefreshing ? const ButtonLoading() : null,
+      onPressed: _isRefreshing ? null : _handleRefresh,
       child: Text(LocaleKeys.refresh.tr()),
     );
-  }
 }

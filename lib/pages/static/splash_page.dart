@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

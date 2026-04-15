@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/locale/locale_store.dart';
 import 'package:mysterium_vpn/core/theme/theme_store.dart';
-import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // Routing + store cleanup on auth status change
     _authStatusDisposer = reaction(
       (_) => _authSessionStore.status,
-      (AuthStatus status) => _authenticationReaction(status),
+      _authenticationReaction,
     );
 
     // MQTT: start and subscribe to config-cat changes (replaces useMQTTService)
@@ -169,8 +169,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return LifecycleListener(
+  Widget build(BuildContext context) => LifecycleListener(
       onThemeChanged: _themeStore.updateSystemTheme,
       child: Observer(
         builder: (context) => RetakeFocusOnTap(
@@ -220,5 +219,4 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ),
       ),
     );
-  }
 }

@@ -1,24 +1,24 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/core/styles/style.dart' hide Palette;
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/home/store/promotional_content_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:mysterium_vpn_design/widgets/promo_bar.dart';
 
-class PromoBanner extends HookConsumerWidget {
+class PromoBanner extends StatelessWidget {
   const PromoBanner({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final promotionalContentStore = ref.watch(promotionalContentStorePOD);
-    final authSessionStore = ref.watch(authSessionStorePOD);
+  Widget build(BuildContext context) {
+    final promotionalContentStore = getIt<PromotionalContentStore>();
+    final authSessionStore = getIt<AuthSessionStore>();
     return Observer(
       builder: (context) {
         final banner = promotionalContentStore.activeBanner;
@@ -39,18 +39,16 @@ class PromoBanner extends HookConsumerWidget {
   }
 }
 
-class _Banner extends HookWidget {
+class _Banner extends StatelessWidget {
   const _Banner({required this.data, required this.isAuthenticated, required this.accessToken});
 
   final PromotionalBanner data;
   final bool isAuthenticated;
   final String? accessToken;
-  @override
-  Widget build(BuildContext context) {
-    final icon = useMemoized(() => _buildIcon(data.iconUrl), [data.iconUrl]);
 
-    return PromoBar(
-      icon: icon,
+  @override
+  Widget build(BuildContext context) => PromoBar(
+      icon: _buildIcon(data.iconUrl),
       text: data.getLocalizedTitle(context.locale.languageCode),
       onTap: data.redirectUrl != null
           ? () => Beamer.of(context).navigateToUrl(
@@ -61,7 +59,6 @@ class _Banner extends HookWidget {
             )
           : null,
     );
-  }
 
   Widget _buildIcon(String? iconUrl) {
     final defaultIcon = Icon(Icons.campaign, size: 24, color: Palette.brand.shade700);

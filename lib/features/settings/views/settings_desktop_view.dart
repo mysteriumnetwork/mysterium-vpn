@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/shared/components/desktop_panels_layout.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_left_panel.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_right_panel.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/shared/components/desktop_panels_layout.dart';
 
 const _initialCategory = SettingCategory.connection;
-
-class SelectedCategoryNotifier extends Notifier<SettingCategory> {
-  @override
-  SettingCategory build() => _initialCategory;
-  SettingCategory get category => state;
-  set category(SettingCategory value) => state = value;
-}
-
-final selectedCategoryProvider = NotifierProvider<SelectedCategoryNotifier, SettingCategory>(
-  SelectedCategoryNotifier.new,
-);
 
 enum SettingCategory {
   connection(LocaleKeys.connection),
@@ -29,12 +16,47 @@ enum SettingCategory {
   final String trKey;
 }
 
-class SettingsDesktopView extends HookWidget {
+class _SettingCategoryScope extends InheritedWidget {
+  const _SettingCategoryScope({
+    required this.category,
+    required this.onCategoryChanged,
+    required super.child,
+  });
+
+  final SettingCategory category;
+  final ValueChanged<SettingCategory> onCategoryChanged;
+
+  static _SettingCategoryScope of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<_SettingCategoryScope>()!;
+
+  @override
+  bool updateShouldNotify(_SettingCategoryScope old) => category != old.category;
+}
+
+class SettingsDesktopView extends StatefulWidget {
   const SettingsDesktopView({super.key});
 
   @override
-  Widget build(BuildContext context) => const DesktopPanelsLayout(
-    leftPanel: SettingsDesktopLeftPanel(),
-    rightPanel: SettingsDesktopRightPanel(),
+  State<SettingsDesktopView> createState() => _SettingsDesktopViewState();
+}
+
+class _SettingsDesktopViewState extends State<SettingsDesktopView> {
+  SettingCategory _category = _initialCategory;
+
+  @override
+  Widget build(BuildContext context) => _SettingCategoryScope(
+    category: _category,
+    onCategoryChanged: (cat) => setState(() => _category = cat),
+    child: const DesktopPanelsLayout(
+      leftPanel: SettingsDesktopLeftPanel(),
+      rightPanel: SettingsDesktopRightPanel(),
+    ),
   );
 }
+
+/// Reads current selected category from the scope.
+SettingCategory readSelectedCategory(BuildContext context) =>
+    _SettingCategoryScope.of(context).category;
+
+/// Updates the selected category in the scope.
+void updateSelectedCategory(BuildContext context, SettingCategory category) =>
+    _SettingCategoryScope.of(context).onCategoryChanged(category);

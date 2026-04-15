@@ -2,16 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-// ignore: depend_on_referenced_packages
-import 'package:hooks_riverpod/legacy.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
-class _HomeState extends ChangeNotifier {
-  _HomeState(this._prefs, this._analytics) {
+class HomeStateScope extends InheritedNotifier<HomeState> {
+  const HomeStateScope({required super.notifier, required super.child, super.key});
+
+  /// Reactive: rebuilds when HomeState notifies.
+  static HomeState of(BuildContext context) {
+    final scope = context.dependOnInheritedWidgetOfExactType<HomeStateScope>();
+    assert(scope != null, 'No HomeStateScope found in context');
+    return scope!.notifier!;
+  }
+
+  /// Non-reactive: use in callbacks.
+  static HomeState read(BuildContext context) =>
+      context.findAncestorWidgetOfExactType<HomeStateScope>()!.notifier!;
+}
+
+class HomeState extends ChangeNotifier {
+  HomeState(this._prefs, this._analytics) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animatePanelState(initialState).ignore();
     });
@@ -251,9 +263,3 @@ enum PanelState {
     return values[previousIndex];
   }
 }
-
-// ignore: deprecated_member_use
-final homeStateProvider = ChangeNotifierProvider.autoDispose((ref) {
-  final analyticsStore = ref.watch(analyticsStorePOD);
-  return _HomeState(SharedPreferenceService.instance, analyticsStore);
-});

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/shared/components/animated_logo_panel.dart';
 import 'package:mysterium_vpn/shared/components/desktop_panels_layout.dart';
 
-class UnauthenticatedPageView extends HookWidget {
+class UnauthenticatedPageView extends StatelessWidget {
   const UnauthenticatedPageView({required this.child, super.key});
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final showPanel = useResponsiveValue(false, desktop: true);
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final showPanel = screenType >= ScreenType.desktop;
 
     if (!showPanel) {
       return child;

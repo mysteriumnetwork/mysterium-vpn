@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
@@ -58,7 +57,7 @@ Future<T?> showModalPage<T>(BuildContext context, {required WidgetBuilder builde
   );
 }
 
-class ModalPageScaffold extends HookWidget {
+class ModalPageScaffold extends StatelessWidget {
   const ModalPageScaffold({
     required this.child,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 32),

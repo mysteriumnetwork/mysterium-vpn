@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/shared/components/page_header.dart';
 
-class SheetScaffold extends HookWidget {
+class SheetScaffold extends StatefulWidget {
   const SheetScaffold({
     required this.sliver,
     this.headerTitle = '',
@@ -24,12 +23,31 @@ class SheetScaffold extends HookWidget {
   final Color? scaffoldColor;
 
   @override
+  State<SheetScaffold> createState() => _SheetScaffoldState();
+}
+
+class _SheetScaffoldState extends State<SheetScaffold> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
-    final header = this.header ?? PageHeader(headerTitle: headerTitle);
-    final sheetColor = this.sheetColor ?? (context.c.isDarkMode ? Palette.darkBlue : Palette.white);
+    final header = widget.header ?? PageHeader(headerTitle: widget.headerTitle);
+    final sheetColor =
+        widget.sheetColor ?? (context.c.isDarkMode ? Palette.darkBlue : Palette.white);
     final scaffoldColor =
-        this.scaffoldColor ?? (context.c.isDarkMode ? Palette.deepPurple : Palette.grayScaffold);
+        widget.scaffoldColor ?? (context.c.isDarkMode ? Palette.deepPurple : Palette.grayScaffold);
 
     return ColoredBox(
       color: scaffoldColor,
@@ -39,10 +57,10 @@ class SheetScaffold extends HookWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: _ColoredScrollGapFiller(color: sheetColor, controller: scrollController),
+            child: _ColoredScrollGapFiller(color: sheetColor, controller: _scrollController),
           ),
           CustomScrollView(
-            controller: scrollController,
+            controller: _scrollController,
             slivers: [
               // Sticky header with background
               SliverAppBar(
@@ -56,7 +74,7 @@ class SheetScaffold extends HookWidget {
                 backgroundColor: scaffoldColor,
                 flexibleSpace: Container(color: scaffoldColor),
               ),
-              ?subheaderSliver,
+              ?widget.subheaderSliver,
               // Content below the header
               DecoratedSliver(
                 decoration: BoxDecoration(
@@ -66,7 +84,10 @@ class SheetScaffold extends HookWidget {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                sliver: SliverPadding(padding: const EdgeInsets.only(top: 20), sliver: sliver),
+                sliver: SliverPadding(
+                  padding: const EdgeInsets.only(top: 20),
+                  sliver: widget.sliver,
+                ),
               ),
             ],
           ),
@@ -76,23 +97,45 @@ class SheetScaffold extends HookWidget {
   }
 }
 
-class _ColoredScrollGapFiller extends HookWidget {
+class _ColoredScrollGapFiller extends StatefulWidget {
   const _ColoredScrollGapFiller({required this.color, required this.controller});
 
   final Color color;
   final ScrollController controller;
 
   @override
-  Widget build(BuildContext context) {
-    final offset = useListenableSelector<double>(controller, () {
-      if (!controller.hasClients || controller.positions.isEmpty) {
-        return 0.0;
-      }
+  State<_ColoredScrollGapFiller> createState() => _ColoredScrollGapFillerState();
+}
 
-      final position = controller.positions.first;
-      return max(0, position.pixels - position.maxScrollExtent);
-    });
+class _ColoredScrollGapFillerState extends State<_ColoredScrollGapFiller> {
+  double _offset = 0;
 
-    return Container(height: offset + 4, width: double.infinity, color: color);
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_onScroll);
   }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final controller = widget.controller;
+    if (!controller.hasClients || controller.positions.isEmpty) {
+      if (_offset != 0.0) setState(() => _offset = 0.0);
+      return;
+    }
+    final position = controller.positions.first;
+    final newOffset = max(0.0, position.pixels - position.maxScrollExtent);
+    if (newOffset != _offset) {
+      setState(() => _offset = newOffset);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Container(height: _offset + 4, width: double.infinity, color: widget.color);
 }

@@ -1,23 +1,24 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/home/views/world_map_tiles_layer.dart';
 import 'package:mysterium_vpn/features/locations/views/location_markers_layer.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
-class LocationsMap extends HookConsumerWidget {
+class LocationsMap extends StatefulWidget {
   const LocationsMap({
     super.key,
     this.locations,
@@ -38,90 +39,106 @@ class LocationsMap extends HookConsumerWidget {
   final VoidCallback? onTapOutside;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    final theme = Theme.of(context);
-    final controller = useMapController();
-    final screenType = useScreenType();
-    final mapConfig = useComputedValue(() => remoteConfigStore.mapConfig);
+  State<LocationsMap> createState() => _LocationsMapState();
+}
 
-    void handleMove(LatLng point) {
-      final zoom = controller.camera.zoom;
-      var offset = Offset.zero;
-      if (screenType == ScreenType.mobile) {
-        offset = switch (ref.read(homeStateProvider).panelState) {
-          PanelState.closed => const Offset(0, -100),
-          PanelState.snap => const Offset(0, -180),
-          PanelState.open => const Offset(0, -180),
-        };
-      }
-      controller.move(point, zoom, offset: offset);
-    }
+class _LocationsMapState extends State<LocationsMap> {
+  final _analyticsStore = getIt<AnalyticsStore>();
+  final _remoteConfigStore = getIt<RemoteConfigStore>();
+  late final MapController _controller = MapController();
+  StreamSubscription<MapEvent>? _mapEventSubscription;
 
-    void handlePressed(VPNLocation location, LatLng point) {
-      handleMove(point);
-      onLocationPressed?.call(location);
-      analyticsStore.logMapLocationClick(location.id, point);
-    }
+  @override
+  void initState() {
+    super.initState();
+    _mapEventSubscription = _controller.mapEventStream
+        .where((it) => it is MapEventMove)
+        .cast<MapEventMove>()
+        .listen(
+          (it) => _analyticsStore.logMapScroll(from: it.oldCamera, to: it.camera),
+        );
+  }
 
-    void handleDoubleTapped(VPNLocation location, LatLng point) {
-      onLocationDoubleTapped?.call(location);
-    }
-
-    final locations = useMemoized(
-      () =>
-          this.locations?.flattenBy((it) => it.children ?? const <VPNLocation>[]).toList() ??
-          const <VPNLocation>[],
-      [this.locations],
-    );
-
-    useValueChanged<LatLng?, void>(position, (_, _) {
+  @override
+  void didUpdateWidget(covariant LocationsMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.position != oldWidget.position && widget.position != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final center = position;
-        if (center == null || center == controller.camera.center) {
-          return;
-        }
-
-        handleMove(center);
+        final center = widget.position;
+        if (center == null || center == _controller.camera.center) return;
+        _handleMove(center);
       });
-    });
+    }
+  }
 
-    useEffect(
-      () => controller.mapEventStream
-          .where((it) => it is MapEventMove)
-          .cast<MapEventMove>()
-          .listen(
-            (it) => ref.read(analyticsStorePOD).logMapScroll(from: it.oldCamera, to: it.camera),
-          )
-          .cancel,
-      [controller],
-    );
+  @override
+  void dispose() {
+    _mapEventSubscription?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
 
-    return FlutterMap(
-      mapController: controller,
-      options: MapOptions(
-        initialZoom: mapConfig.initialZoom.toDouble(),
-        initialCenter: position ?? const LatLng(0, 0),
-        cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
-        backgroundColor: theme.palette.bgMapBackground,
-        minZoom: mapConfig.zoomLevels.min.toDouble(),
-        maxZoom: mapConfig.zoomLevels.max.toDouble(),
-        onTap: (_, _) => onTapOutside?.call(),
-        interactionOptions: const InteractionOptions(
-          flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-        ),
-      ),
-      children: [
-        const WorldMapTilesLayer(),
-        LocationMarkersLayer(
-          locations: locations,
-          selectedLocation: selectedLocation,
-          connectedLocation: connectedLocation,
-          onLocationPressed: handlePressed,
-          onLocationDoubleTapped: onLocationDoubleTapped != null ? handleDoubleTapped : null,
-        ),
-      ],
+  void _handleMove(LatLng point) {
+    final zoom = _controller.camera.zoom;
+    var offset = Offset.zero;
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    if (screenType == ScreenType.mobile) {
+      offset = switch (HomeStateScope.read(context).panelState) {
+        PanelState.closed => const Offset(0, -100),
+        PanelState.snap => const Offset(0, -180),
+        PanelState.open => const Offset(0, -180),
+      };
+    }
+    _controller.move(point, zoom, offset: offset);
+  }
+
+  void _handlePressed(VPNLocation location, LatLng point) {
+    _handleMove(point);
+    widget.onLocationPressed?.call(location);
+    _analyticsStore.logMapLocationClick(location.id, point);
+  }
+
+  void _handleDoubleTapped(VPNLocation location, LatLng point) {
+    widget.onLocationDoubleTapped?.call(location);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Observer(
+      builder: (context) {
+        final mapConfig = _remoteConfigStore.mapConfig;
+        final locations =
+            widget.locations?.flattenBy((it) => it.children ?? const <VPNLocation>[]).toList() ??
+            const <VPNLocation>[];
+
+        return FlutterMap(
+          mapController: _controller,
+          options: MapOptions(
+            initialZoom: mapConfig.initialZoom.toDouble(),
+            initialCenter: widget.position ?? const LatLng(0, 0),
+            cameraConstraint: CameraConstraint.contain(bounds: kWorldBounds),
+            backgroundColor: theme.palette.bgMapBackground,
+            minZoom: mapConfig.zoomLevels.min.toDouble(),
+            maxZoom: mapConfig.zoomLevels.max.toDouble(),
+            onTap: (_, _) => widget.onTapOutside?.call(),
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+            ),
+          ),
+          children: [
+            const WorldMapTilesLayer(),
+            LocationMarkersLayer(
+              locations: locations,
+              selectedLocation: widget.selectedLocation,
+              connectedLocation: widget.connectedLocation,
+              onLocationPressed: _handlePressed,
+              onLocationDoubleTapped: widget.onLocationDoubleTapped != null ? _handleDoubleTapped : null,
+            ),
+          ],
+        );
+      },
     );
   }
 }

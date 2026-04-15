@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
 
 class CloseButton extends StatelessWidget {
   const CloseButton({this.onPressed, this.implicit = true, super.key});

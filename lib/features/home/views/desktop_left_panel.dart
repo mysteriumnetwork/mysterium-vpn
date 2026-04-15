@@ -1,40 +1,86 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
+import 'package:mysterium_vpn/core/styles/palette.dart' as app_palette;
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/locations/views/components/locations_search.dart';
 import 'package:mysterium_vpn/features/locations/views/locations_view.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class HomeDesktopLeftPanel extends HookConsumerWidget {
+class HomeDesktopLeftPanel extends StatefulWidget {
   const HomeDesktopLeftPanel({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final analyticsStore = ref.read(analyticsStorePOD);
-    final scrollController = useScrollController()
-      ..addListener(analyticsStore.logLocationsListScroll);
-    final brightness = useScaffoldBrightness();
+  State<HomeDesktopLeftPanel> createState() => _HomeDesktopLeftPanelState();
+}
 
-    ref.read(homeStateProvider).scrollController = scrollController;
-    final pallete = Theme.of(context).palette;
+class _HomeDesktopLeftPanelState extends State<HomeDesktopLeftPanel> with WidgetsBindingObserver {
+  final _analyticsStore = getIt<AnalyticsStore>();
+  final _scrollController = ScrollController();
+  Brightness? _brightness;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_analyticsStore.logLocationsListScroll);
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateBrightness();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    HomeStateScope.read(context).scrollController = _scrollController;
+  }
+
+  void _updateBrightness() {
+    final b = Scaffold.maybeOf(context)?.widget.backgroundColor.brightness;
+    if (b != _brightness && mounted) {
+      setState(() => _brightness = b);
+    }
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    _updateBrightness();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    _updateBrightness();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_analyticsStore.logLocationsListScroll);
+    WidgetsBinding.instance.removeObserver(this);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final brightness = _brightness ?? Theme.of(context).brightness;
+    final palette = Theme.of(context).palette;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: pallete.bgSidePanel,
+        color: palette.bgSidePanel,
         boxShadow: [
           switch (brightness) {
             Brightness.dark => BoxShadow(
-              color: pallete.bgPrimary.withValues(alpha: .2),
+              color: palette.bgPrimary.withValues(alpha: .2),
               blurRadius: 100,
             ),
             Brightness.light => BoxShadow(
-              color: pallete.bgPrimary.withValues(alpha: .04),
+              color: palette.bgPrimary.withValues(alpha: .04),
               blurRadius: 16,
               offset: const Offset(4, -4),
             ),
@@ -42,30 +88,30 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
         ],
       ),
       child: CustomScrollView(
-        controller: scrollController,
+        controller: _scrollController,
         slivers: [
           SliverPinnedHeader(
             child: DecoratedBox(
-              decoration: BoxDecoration(color: pallete.bgSidePanel),
+              decoration: BoxDecoration(color: palette.bgSidePanel),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Header.logo(
                     automaticallyImplyLeading: false,
                     showBackButton: false,
-                    backgroundColor: pallete.bgSidePanel,
+                    backgroundColor: palette.bgSidePanel,
                     actions: [
                       IconButton(
                         icon: const Icon(UntitledUI.message_question_square),
                         onPressed: () => handleOnSupportPage(
                           context: context,
-                          analyticsStore: ref.read(analyticsStorePOD),
+                          analyticsStore: _analyticsStore,
                         ),
                       ),
                       IconButton(
                         icon: const Icon(UntitledUI.settings_01),
                         onPressed: () {
-                          analyticsStore.logEvent(AnalyticsEvent.openSettings);
+                          _analyticsStore.logEvent(AnalyticsEvent.openSettings);
                           context.beamToNamed(Routes.settings.path);
                         },
                       ),
@@ -86,4 +132,12 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
       ),
     );
   }
+}
+
+extension _ColorBrightnessExtension on Color? {
+  Brightness? get brightness => switch (this) {
+    app_palette.Palette.white => Brightness.light,
+    app_palette.Palette.darkBlue => Brightness.dark,
+    _ => null,
+  };
 }

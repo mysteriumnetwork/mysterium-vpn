@@ -4,12 +4,12 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/extensions/observable_future_extensions.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/core/locale/locale_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_query_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 part 'recent_locations_store.g.dart';
 

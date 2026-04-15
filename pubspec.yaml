@@ -17,8 +17,8 @@ dependencies:
   circle_flags: 5.0.1
   clipboard:
     git:
-        url: https://github.com/samuelezedi/flutter_clipboard.git
-        ref: 6f8dce7b71396b713ab3d71cb20a04967c5458fd
+      url: https://github.com/samuelezedi/flutter_clipboard.git
+      ref: 6f8dce7b71396b713ab3d71cb20a04967c5458fd
   collection: 1.19.1
   configcat_client: 4.1.1
   connectivity_plus: 6.1.5
@@ -54,11 +54,11 @@ dependencies:
       url: https://github.com/mysteriumnetwork/flutter_udid.git
       ref: 1.0.1
   freezed_annotation: 3.1.0
+  get_it: 9.1.0
   google_fonts: 8.0.2
   google_sign_in: 7.2.0
   hive_ce: 2.19.3
   hive_ce_flutter: 2.3.4
-  get_it: ^9.1.0
   in_app_purchase: 3.2.3
   in_app_purchase_android: ^0.4.0+8
   in_app_purchase_storekit: 0.4.5
@@ -208,5 +208,5 @@ patrol:
     bundle_id: com.mysteriumvpn.test
 
 easy_localization_sheet:
-  csv_url: 'https://docs.google.com/spreadsheets/d/1_rcGKCSnaBzF-dHnow53aBxBu_av_jhLS-x0HGeY5tE/export?format=csv&gid=216784309'
-  output_dir: 'resources/langs' # Optional, default is assets
+  csv_url: "https://docs.google.com/spreadsheets/d/1_rcGKCSnaBzF-dHnow53aBxBu_av_jhLS-x0HGeY5tE/export?format=csv&gid=216784309"
+  output_dir: "resources/langs" # Optional, default is assets

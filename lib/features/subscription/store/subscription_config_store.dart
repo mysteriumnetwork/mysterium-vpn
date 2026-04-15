@@ -5,10 +5,10 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 part 'subscription_config_store.g.dart';

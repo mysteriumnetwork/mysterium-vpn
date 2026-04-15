@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/shared/components/banners/banner.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 
-class BannerTitle extends HookWidget {
+class BannerTitle extends StatelessWidget {
   const BannerTitle({required this.text, this.iconAsset, this.iconSize, this.icon, super.key});
 
   final String text;

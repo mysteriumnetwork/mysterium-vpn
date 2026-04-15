@@ -1,14 +1,15 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class AnalyticsLoggerOverlay extends HookConsumerWidget {
+class AnalyticsLoggerOverlay extends StatefulWidget {
   const AnalyticsLoggerOverlay({required this.onDismissPressed, super.key});
 
   final VoidCallback onDismissPressed;
@@ -28,10 +29,38 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<AnalyticsLoggerOverlay> createState() => _AnalyticsLoggerOverlayState();
+}
+
+class _AnalyticsLoggerOverlayState extends State<AnalyticsLoggerOverlay> {
+  final _analyticsStore = getIt<AnalyticsStore>();
+  Set<AnalyticsLogType> _types = {AnalyticsLogType.screenView, AnalyticsLogType.event};
+  List<AnalyticsLogEntry> _allLogs = [];
+  StreamSubscription<AnalyticsLogEntry>? _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = _analyticsStore.watchLogs().listen((entry) {
+      setState(() {
+        _allLogs = [..._allLogs, entry];
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  List<AnalyticsLogEntry> get _filteredLogs =>
+      _allLogs.where((it) => _types.contains(it.type)).toList().reversed.toList();
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final types = useState({AnalyticsLogType.screenView, AnalyticsLogType.event});
-    final logs = _useAnalyticsLogs(types.value);
+    final logs = _filteredLogs;
 
     return Scaffold(
       body: CustomScrollView(
@@ -54,13 +83,13 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
                           children: [
                             IconButton(
                               color: theme.textTheme.bodyLarge?.color,
-                              onPressed: onDismissPressed,
+                              onPressed: widget.onDismissPressed,
                               icon: const Icon(Icons.close),
                             ),
                             Expanded(
                               child: _TypePicker(
-                                selected: types.value,
-                                onChanged: (value) => types.value = value,
+                                selected: _types,
+                                onChanged: (value) => setState(() => _types = value),
                               ),
                             ),
                           ],
@@ -88,19 +117,6 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
       ),
     );
   }
-}
-
-List<AnalyticsLogEntry> _useAnalyticsLogs(Iterable<AnalyticsLogType> types) {
-  final context = useContext();
-  final logs = useState<List<AnalyticsLogEntry>>([]);
-  useEffect(() {
-    final ref = ProviderScope.containerOf(context, listen: false);
-    return ref.read(analyticsStorePOD).watchLogs().listen((entry) {
-      logs.value = [...logs.value, entry];
-    }).cancel;
-  }, [logs, context]);
-
-  return logs.value.where((it) => types.contains(it.type)).toList().reversed.toList();
 }
 
 class _TypePicker extends StatelessWidget {
@@ -222,62 +238,66 @@ class _LogListItem extends StatelessWidget {
   }
 }
 
-class _ParamsView extends HookWidget {
+class _ParamsView extends StatefulWidget {
   const _ParamsView({required this.params});
 
   final Map<String, Object?> params;
 
   @override
-  Widget build(BuildContext context) {
-    final group = useMemoized(AutoSizeGroup.new);
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          for (var i = 0; i < params.length; i++)
-            Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Palette.lightBlue,
-                  strokeAlign: BorderSide.strokeAlignOutside,
-                ),
-                borderRadius: BorderRadius.circular(6),
+  State<_ParamsView> createState() => _ParamsViewState();
+}
+
+class _ParamsViewState extends State<_ParamsView> {
+  final _group = AutoSizeGroup();
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: 8),
+    child: Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (var i = 0; i < widget.params.length; i++)
+          Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Palette.lightBlue,
+                strokeAlign: BorderSide.strokeAlignOutside,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    color: Palette.purple,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  color: Palette.purple,
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: EasyText(
+                    widget.params.keys.elementAt(i),
+                    autoSizeGroup: _group,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Palette.white,
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: EasyText(
-                      params.keys.elementAt(i),
-                      autoSizeGroup: group,
+                      '${widget.params.values.elementAt(i)}',
+                      autoSizeGroup: _group,
                       fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Palette.white,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      child: EasyText(
-                        '${params.values.elementAt(i)}',
-                        autoSizeGroup: group,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-        ],
-      ),
-    );
-  }
+          ),
+      ],
+    ),
+  );
 }
 
 extension _AnalyticsLogTypeExt on AnalyticsLogType {

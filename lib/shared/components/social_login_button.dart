@@ -2,18 +2,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/core/theme/theme_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 const _appleIconSizeScale = 28 / 44;
 
-class SocialLoginButton extends ConsumerWidget {
+class SocialLoginButton extends StatelessWidget {
   const SocialLoginButton({
     required this.label,
     required this.asset,
@@ -32,9 +32,9 @@ class SocialLoginButton extends ConsumerWidget {
   final double height;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final fontSize = height * 0.43;
-    final themeStore = ref.read(themeStorePOD);
+    final themeStore = getIt<ThemeStore>();
 
     return Observer(
       builder: (context) {

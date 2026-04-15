@@ -1,18 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/views/consent/agreements.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_button.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/header_title.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/auth/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 Future<bool?> showRequestTunnelPermissionsDialog(BuildContext context, String dialogVariant) async {
@@ -83,13 +83,13 @@ class _RequestTunnelPermissionsOptionA extends StatelessWidget {
   );
 }
 
-class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
+class _RequestTunnelPermissionsOptionB extends StatelessWidget {
   const _RequestTunnelPermissionsOptionB();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final height = getMediaHeight(context);
-    final analyticsStore = ref.read(analyticsStorePOD);
+    final analyticsStore = getIt<AnalyticsStore>();
 
     return Column(
       children: [

@@ -84,9 +84,3 @@ class _FeedbackLengthValidator extends Validator<dynamic> {
     return null;
   }
 }
-
-_FormGroup _useForm() {
-  final form = useMemoized(_FormGroup._);
-  useStream(form.valueChanges);
-  return form;
-}

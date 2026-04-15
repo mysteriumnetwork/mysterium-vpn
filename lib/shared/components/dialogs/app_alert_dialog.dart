@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-
-class AppAlertDialog extends HookWidget {
+import 'package:mysterium_vpn/core/utils/utils.dart';
+class AppAlertDialog extends StatelessWidget {
   const AppAlertDialog({
     super.key,
     this.titleText,
@@ -25,7 +24,13 @@ class AppAlertDialog extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final margin = useResponsiveValue<double>(24, tablet: 32, desktop: 36);
+    final size = MediaQuery.sizeOf(context);
+    final screenType = getScreenType(size);
+    final margin = screenType == ScreenType.desktop
+        ? 36.0
+        : screenType == ScreenType.tablet
+        ? 32.0
+        : 24.0;
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720, maxHeight: 720),

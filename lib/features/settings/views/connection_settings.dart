@@ -1,44 +1,98 @@
 import 'dart:io';
 
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
+import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/settings/views/action_button.dart';
+import 'package:mysterium_vpn/features/settings/views/protocol_picker.dart';
+import 'package:mysterium_vpn/features/settings/views/switch_item.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/dns_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/refresh_ip_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_protocol_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/confirmation_dialog.dart';
+import 'package:mysterium_vpn/shared/components/dialogs/request_tunnel_permissions_dialog.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:mysterium_vpn/shared/components/setting_item.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
-import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
-import 'package:mysterium_vpn/features/settings/views/action_button.dart';
-import 'package:mysterium_vpn/features/settings/views/protocol_picker.dart';
-import 'package:mysterium_vpn/features/settings/views/switch_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ConnectionSettings extends HookConsumerWidget {
+class ConnectionSettings extends StatelessWidget {
   const ConnectionSettings({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vpnStore = ref.read(vpnStorePOD);
-    final refreshIPStore = ref.read(refreshIPStorePOD);
-    final analyticsStore = ref.read(analyticsStorePOD);
-    final remoteConfigStore = ref.read(remoteConfigStorePOD);
-    final handleToggleConnection = useHandleToggleConnection();
-    final dnsStore = ref.watch(dnsStorePOD);
-    final authSessionStore = ref.watch(authSessionStorePOD);
-    final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
+  Widget build(BuildContext context) {
+    final vpnStore = getIt<VpnStore>();
+    final refreshIPStore = getIt<RefreshIPStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
+    final remoteConfigStore = getIt<RemoteConfigStore>();
+    final dnsStore = getIt<DNSStore>();
+    final authSessionStore = getIt<AuthSessionStore>();
+    final vpnProtocolStore = getIt<VpnProtocolStore>();
+
+    Future<void> handleToggleConnection() async {
+      final logEvent = vpnStore.isConnected
+          ? analyticsStore.logDisconnect
+          : analyticsStore.logConnect;
+      logEvent(null);
+      try {
+        await vpnStore.manageConnection();
+      } on AuthenticationRequiredException catch (_) {
+        if (context.mounted) {
+          Beamer.of(context).beamToNamed(Routes.platformLogin.path);
+        }
+      } on SubscriptionRequiredException catch (_) {
+        if (!context.mounted) return;
+        final subscriptionStore = getIt<SubscriptionStore>();
+        final subscriptionPurchaseStore = getIt<SubscriptionPurchaseStore>();
+        final remoteConfig = getIt<RemoteConfigStore>();
+        final sessionStore = getIt<AuthSessionStore>();
+        try {
+          final subscription = await subscriptionStore.subscriptionFuture;
+          if (!context.mounted) return;
+          await handleOnBillingPage(
+            context: context,
+            manageSubscriptionPage: remoteConfig.manageSubscriptionPage,
+            upgradeSubscriptionPage: remoteConfig.upgradeSubscriptionPage,
+            gateway: subscription.gateway,
+            subscriptionActive: subscription.active,
+            accessToken: sessionStore.accessToken,
+            onManageSubscription: subscriptionPurchaseStore.manageSubscription,
+            manageSubscription: false,
+          );
+        } catch (_) {}
+      } on TunnelSetupRequiredException catch (_) {
+        if (!context.mounted) return;
+        final abTestingStore = getIt<ABTestingStore>();
+        final permissionsGranted = await showRequestTunnelPermissionsDialog(
+          context,
+          abTestingStore.tunnelConsentType,
+        );
+        if (permissionsGranted ?? false) {
+          await vpnStore.setupTunnel();
+          await vpnStore.manageConnection();
+        }
+      }
+    }
+
     return Observer(
       builder: (_) {
         final disableSettings = !authSessionStore.isAuthenticated;
@@ -175,7 +229,7 @@ class ConnectionSettings extends HookConsumerWidget {
     required BuildContext context,
     required AnalyticsStore analyticsStore,
     required VpnStore vpnStore,
-    required VoidCallback handleToggleConnection,
+    required Future<void> Function() handleToggleConnection,
   }) {
     analyticsStore.logEvent(AnalyticsEvent.resetApp);
     if (!vpnStore.isConnected) {
@@ -212,7 +266,7 @@ class ConnectionSettings extends HookConsumerWidget {
     BuildContext context,
     VpnStore vpnStore,
     AnalyticsStore analyticsStore, [
-    VoidCallback? handleToggleConnection,
+    Future<void> Function()? handleToggleConnection,
   ]) async {
     try {
       await vpnStore.resetApp();
@@ -226,7 +280,7 @@ class ConnectionSettings extends HookConsumerWidget {
                 textColor: Palette.white,
                 onPressed: () async {
                   snackbarKey.currentState?.clearSnackBars();
-                  handleToggleConnection();
+                  await handleToggleConnection();
                 },
               )
             : null,

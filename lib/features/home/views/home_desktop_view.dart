@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/features/home/views/desktop_left_panel.dart';
 import 'package:mysterium_vpn/features/home/views/desktop_right_panel.dart';
 
-class HomeDesktopView extends HookConsumerWidget {
+class HomeDesktopView extends StatelessWidget {
   const HomeDesktopView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     const sidebarWidth = 460.0;
     return const Stack(
       clipBehavior: Clip.none,

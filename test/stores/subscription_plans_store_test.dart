@@ -2,12 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
-import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
-import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 import 'subscription_plans_store_test.mocks.dart';

@@ -1,16 +1,16 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/core/utils/keys.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
@@ -21,19 +21,25 @@ Future<void> showMarketingConsentDialog(BuildContext context) async {
   );
 }
 
-class _DialogContent extends HookConsumerWidget {
+class _DialogContent extends StatefulWidget {
   const _DialogContent();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final screenType = useScreenType();
+  State<_DialogContent> createState() => _DialogContentState();
+}
+
+class _DialogContentState extends State<_DialogContent> {
+  final _userPreferencesStore = getIt<UserPreferencesStore>();
+  bool? _lastClickedConsent;
+
+  @override
+  Widget build(BuildContext context) {
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
     final palette = Theme.of(context).palette;
-    final lastClickedConsent = useState<bool?>(null);
     return Observer(
       builder: (context) {
         final isLoading =
-            userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending;
+            _userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending;
         return PromptDialog(
           contentPadding: EdgeInsets.symmetric(
             horizontal: screenType == ScreenType.mobile ? 24 : 144,
@@ -50,18 +56,16 @@ class _DialogContent extends HookConsumerWidget {
           primaryButton: ButtonPrimary(
             key: Keys.marketingConsentAcceptButton,
             onPressed: () {
-              lastClickedConsent.value = true;
+              setState(() => _lastClickedConsent = true);
               _updateMarketingConsent(context, consent: true);
             },
-            loading: isLoading && (lastClickedConsent.value ?? false)
-                ? const ButtonLoading()
-                : null,
+            loading: isLoading && (_lastClickedConsent ?? false) ? const ButtonLoading() : null,
             child: Text(LocaleKeys.allowNotificationsBtn.tr()),
           ),
           secondaryButton: ButtonSecondary(
             key: Keys.marketingConsentDeclineButton,
             onPressed: () {
-              lastClickedConsent.value = false;
+              setState(() => _lastClickedConsent = false);
               _updateMarketingConsent(context, consent: false);
             },
             decoration: ButtonDecoration(
@@ -69,7 +73,7 @@ class _DialogContent extends HookConsumerWidget {
               foregroundColor: palette.textSecondary,
               decorationColor: Palette.white,
             ),
-            loading: isLoading && lastClickedConsent.value == false ? const ButtonLoading() : null,
+            loading: isLoading && _lastClickedConsent == false ? const ButtonLoading() : null,
             child: Text(LocaleKeys.notNowBtn.tr()),
           ),
         );
@@ -79,10 +83,7 @@ class _DialogContent extends HookConsumerWidget {
 }
 
 Future<void> _updateMarketingConsent(BuildContext context, {required bool consent}) async {
-  await ProviderScope.containerOf(
-    context,
-    listen: false,
-  ).read(userPreferencesStorePOD).updateMarketingContact(consent: consent, fromPopup: true);
+  await getIt<UserPreferencesStore>().updateMarketingContact(consent: consent, fromPopup: true);
 
   if (context.mounted) {
     Navigator.of(context).pop();

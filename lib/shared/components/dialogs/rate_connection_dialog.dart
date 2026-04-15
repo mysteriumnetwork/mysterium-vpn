@@ -3,12 +3,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/rate_connection_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:vpn_api/vpn_api.dart';
 
@@ -16,11 +17,10 @@ Future<void> showRateConnectionDialog(
   BuildContext context,
   RateConnectionRequestModeEnum mode,
 ) async {
-  final container = ProviderScope.containerOf(context, listen: false);
   final store = RateConnectionStore(
     mode,
-    container.read(analyticsStorePOD),
-    container.read(vpnStorePOD),
+    getIt<AnalyticsStore>(),
+    getIt<VpnStore>(),
   );
 
   final future = await showBottomSheetDialog<Future<void>>(

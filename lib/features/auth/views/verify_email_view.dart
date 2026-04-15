@@ -1,18 +1,20 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/no_mail_app_dialog.dart';
 import 'package:mysterium_vpn/shared/components/easy_button.dart';
@@ -20,21 +22,17 @@ import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/loading_barrier.dart';
 import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class VerifyEmailView extends HookConsumerWidget {
+class VerifyEmailView extends StatelessWidget {
   const VerifyEmailView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final authStore = ref.watch(authStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
+    final authStore = getIt<AuthStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
 
     return Observer(
       builder: (context) {
@@ -132,17 +130,19 @@ class VerifyEmailView extends HookConsumerWidget {
   }
 }
 
-class _Subheader extends HookWidget {
+class _Subheader extends StatelessWidget {
   const _Subheader();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final fontSize = screenType >= ScreenType.desktop ? 28.0 : 20.0;
     final children = <Widget>[
       Flexible(
         child: EasyText(
           LocaleKeys.checkYourEmail.tr(),
-          fontSize: useResponsiveValue(20, desktop: 28),
+          fontSize: fontSize,
           fontWeight: FontWeight.w600,
           textAlign: TextAlign.center,
         ),
@@ -152,12 +152,12 @@ class _Subheader extends HookWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       spacing: 30,
-      children: useResponsiveValue(children, desktop: children.reversed.toList()),
+      children: screenType >= ScreenType.desktop ? children.reversed.toList() : children,
     );
   }
 }
 
-class _Email extends HookWidget {
+class _Email extends StatelessWidget {
   const _Email({required this.email});
 
   final String email;
@@ -166,7 +166,8 @@ class _Email extends HookWidget {
   Widget build(BuildContext context) {
     final text = LocaleKeys.emailSentTo.tr(namedArgs: {'email': email});
     final label = text.replaceAll(email, '').trim();
-    final separator = useResponsiveValue('\n', desktop: ' ');
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final separator = screenType >= ScreenType.desktop ? ' ' : '\n';
     return AutoSizeText.rich(
       TextSpan(
         children: [
@@ -185,14 +186,14 @@ class _Email extends HookWidget {
   }
 }
 
-class _Excerpt extends HookWidget {
+class _Excerpt extends StatelessWidget {
   const _Excerpt({required this.items});
 
   final List<String> items;
 
   @override
   Widget build(BuildContext context) {
-    final sizeGroup = useMemoized(AutoSizeGroup.new);
+    final sizeGroup = AutoSizeGroup();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -221,23 +222,61 @@ class _BulletItem extends StatelessWidget {
   );
 }
 
-class _ResendButton extends HookWidget {
+class _ResendButton extends StatefulWidget {
   const _ResendButton({required this.onPressed, required this.isLoading});
 
   final Future<void> Function() onPressed;
   final bool isLoading;
 
   @override
+  State<_ResendButton> createState() => _ResendButtonState();
+}
+
+class _ResendButtonState extends State<_ResendButton> {
+  int _countdown = 60;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_countdown > 1) {
+        setState(() => _countdown--);
+      } else {
+        if (_countdown == 1) {
+          setState(() => _countdown = 0);
+        }
+        timer.cancel();
+      }
+    });
+  }
+
+  void _reset() {
+    setState(() => _countdown = 60);
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final timer = useCountdownTimer(initialCountdown: 60);
-    final resendDisabled = isLoading || timer.countdown > 0;
-    final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
+    final resendDisabled = widget.isLoading || _countdown > 0;
+    final onPressed = resendDisabled ? null : () => widget.onPressed().whenComplete(_reset);
 
-    final child = isLoading
+    final child = widget.isLoading
         ? LoadingIndicator(indicatorColor: theme.palette.disabledButtonForegroundColor)
         : Text(
-            LocaleKeys.sendAgain.plural(timer.countdown),
+            LocaleKeys.sendAgain.plural(_countdown),
             style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
           );
 

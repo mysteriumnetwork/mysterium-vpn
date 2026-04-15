@@ -1,16 +1,18 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -24,72 +26,80 @@ Future<bool?> showCancelSubscriptionSurveyDialog(BuildContext context) async =>
       builder: (context) => const CancelSubscriptionSurveyDialog(),
     );
 
-class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
+class CancelSubscriptionSurveyDialog extends StatefulWidget {
   const CancelSubscriptionSurveyDialog({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final reasons = useComputedValue(() {
-      final keys = remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled();
-      keys?.remove(kCancelReasonOther);
-      return {...?keys, kCancelReasonOther};
-    });
+  State<CancelSubscriptionSurveyDialog> createState() => _CancelSubscriptionSurveyDialogState();
+}
 
-    final form = _useForm();
-    final submitFuture = useState<Future<void>?>(null);
-    final submitState = useFuture(submitFuture.value);
+class _CancelSubscriptionSurveyDialogState extends State<CancelSubscriptionSurveyDialog> {
+  final _remoteConfigStore = getIt<RemoteConfigStore>();
+  final _analyticsStore = getIt<AnalyticsStore>();
+  late final _FormGroup _form;
+  late final StreamSubscription<dynamic> _formSub;
+  bool _isSubmitting = false;
 
-    void handleCancel() {
-      Navigator.of(context).pop();
-    }
-
-    void handleSubmit() {
-      submitFuture.value = () async {
-        if (!form.valid) {
-          throw FormValidationException(form.errors);
-        }
-
-        final reasons = form.reasons.value!;
-        var feedback = form.feedback.value?.trim();
-        if (feedback?.isEmpty ?? false) {
-          feedback = null;
-        }
-        await analyticsStore.logSubscriptionCancellationSurvey(
-          reasons: reasons,
-          feedback: feedback,
-        );
-      }();
-    }
-
-    useValueChanged<ConnectionState, void>(submitState.connectionState, (_, _) {
-      if (submitState.connectionState == ConnectionState.done) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (submitState.hasError) {
-            final error = submitState.error;
-            if (error is FormValidationException) {
-              showSnackbar(error.message);
-            }
-          }
-          Navigator.of(context).pop(!submitState.hasError);
-        });
-      }
-    });
-
-    return BottomSheetDialog(
-      title: LocaleKeys.cancelSurveyTitle.tr(),
-      body: _Form(form: form, items: reasons),
-      primaryButton: ButtonPrimary(
-        onPressed: form.invalid || submitState.connectionState == ConnectionState.waiting
-            ? null
-            : handleSubmit,
-        child: Text(LocaleKeys.submitBtn.tr()),
-      ),
-      secondaryButton: ButtonSecondary(
-        onPressed: handleCancel,
-        child: Text(LocaleKeys.cancelBtn.tr()),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _form = _FormGroup._();
+    _formSub = _form.valueChanges.listen((_) => setState(() {}));
   }
+
+  @override
+  void dispose() {
+    _formSub.cancel();
+    _form.dispose();
+    super.dispose();
+  }
+
+  void _handleCancel() => Navigator.of(context).pop();
+
+  Future<void> _handleSubmit() async {
+    if (!_form.valid) {
+      showSnackbar(FormValidationException(_form.errors).message);
+      return;
+    }
+    setState(() => _isSubmitting = true);
+    try {
+      final reasons = _form.reasons.value!;
+      var feedback = _form.feedback.value?.trim();
+      if (feedback?.isEmpty ?? false) feedback = null;
+      await _analyticsStore.logSubscriptionCancellationSurvey(reasons: reasons, feedback: feedback);
+      if (mounted) {
+        Navigator.of(context).pop(true);
+      }
+    } catch (_) {
+      if (mounted) {
+        Navigator.of(context).pop(false);
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Observer(
+    builder: (context) {
+      final keys = _remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled();
+      keys?.remove(kCancelReasonOther);
+      final reasons = {...?keys, kCancelReasonOther};
+
+      return BottomSheetDialog(
+        title: LocaleKeys.cancelSurveyTitle.tr(),
+        body: _Form(form: _form, items: reasons),
+        primaryButton: ButtonPrimary(
+          onPressed: _form.invalid || _isSubmitting ? null : _handleSubmit,
+          child: Text(LocaleKeys.submitBtn.tr()),
+        ),
+        secondaryButton: ButtonSecondary(
+          onPressed: _handleCancel,
+          child: Text(LocaleKeys.cancelBtn.tr()),
+        ),
+      );
+    },
+  );
 }

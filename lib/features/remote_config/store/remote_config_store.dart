@@ -5,9 +5,9 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/models/subscription_plan_features.dart';
-import 'package:mysterium_vpn/features/remote_config/store/config_cat_store.dart';
 
 part 'remote_config_store.g.dart';
 

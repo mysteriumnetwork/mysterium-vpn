@@ -1,22 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/shared/components/easy_text.dart';
+import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 
-class RefreshConnection extends HookConsumerWidget {
+class RefreshConnection extends StatelessWidget {
   const RefreshConnection({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vpnStore = ref.watch(vpnStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final vpnStore = getIt<VpnStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
+    final selectedLocationStore = getIt<SelectedLocationStore>();
     return Observer(
       builder: (context) => Visibility(
         visible: vpnStore.isConnected,
@@ -31,7 +34,7 @@ class RefreshConnection extends HookConsumerWidget {
           ),
           onPressed: () async {
             analyticsStore.logEvent(AnalyticsEvent.refreshIp);
-            ref.read(selectedLocationStorePOD).value = null;
+            selectedLocationStore.value = null;
             await vpnStore.manageConnection(refreshIP: true);
           },
           label: EasyText(LocaleKeys.refreshIP.tr(), fontSize: 12, color: Palette.white),

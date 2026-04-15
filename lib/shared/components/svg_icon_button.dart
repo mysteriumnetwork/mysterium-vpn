@@ -1,7 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 // Project imports:
 
 class SvgIconButton extends StatelessWidget {

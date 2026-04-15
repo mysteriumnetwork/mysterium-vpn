@@ -1,31 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/auth/views/login_view.dart';
 import 'package:mysterium_vpn/features/auth/views/unauthenticated_page_view.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 
-class LoginPage extends HookConsumerWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authSessionStore = ref.watch(authSessionStorePOD);
+  State<LoginPage> createState() => _LoginPageState();
+}
 
-    useReaction(() => authSessionStore.authShown, (authShown) {
+class _LoginPageState extends State<LoginPage> {
+  final _authSessionStore = getIt<AuthSessionStore>();
+  late final ReactionDisposer _disposer;
+
+  @override
+  void initState() {
+    super.initState();
+    _disposer = reaction((_) => _authSessionStore.authShown, (authShown) {
       if (authShown) {
         return;
       }
       Future.microtask(() async {
-        authSessionStore.authShown = true;
+        _authSessionStore.authShown = true;
       });
     }, fireImmediately: true);
+  }
 
-    return UnauthenticatedPageView(
+  @override
+  void dispose() {
+    _disposer();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => UnauthenticatedPageView(
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         body: const SafeArea(child: SignInView()),
       ),
     );
-  }
 }

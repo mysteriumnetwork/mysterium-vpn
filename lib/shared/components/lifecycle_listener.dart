@@ -2,9 +2,9 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -116,7 +116,7 @@ class __LifecycleMobileState extends State<_LifecycleMobile> with WidgetsBinding
   Widget build(BuildContext context) => widget.child;
 }
 
-class _LifecycleDesktop extends ConsumerStatefulWidget {
+class _LifecycleDesktop extends StatefulWidget {
   const _LifecycleDesktop({
     required this.child,
     this.onResumed,
@@ -133,11 +133,13 @@ class _LifecycleDesktop extends ConsumerStatefulWidget {
   final VoidCallback? onDetached;
   final VoidCallback? onThemeChanged;
   @override
-  ConsumerState<_LifecycleDesktop> createState() => __LifecycleDesktopState();
+  State<_LifecycleDesktop> createState() => __LifecycleDesktopState();
 }
 
-class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
+class __LifecycleDesktopState extends State<_LifecycleDesktop>
     with WindowListener, TrayListener, WidgetsBindingObserver {
+  final _vpnStore = getIt<VpnStore>();
+
   @override
   void initState() {
     super.initState();
@@ -198,7 +200,7 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
         trayManager.popUpContextMenu();
       }
     } else if (menuItem.key == 'exit_app') {
-      ref.read(vpnStorePOD).disposeStore().whenComplete(() async {
+      _vpnStore.disposeStore().whenComplete(() async {
         await trayManager.destroy();
         exit(0);
       });
@@ -207,12 +209,8 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
 
   @override
   void onWindowEvent(String eventType) {
-    if (eventType == 'closed' || eventType == 'minimized' || eventType == 'blur') {
-      ref.read(isAppWindowFocused.notifier).focused = false;
-    }
-    if (eventType == 'restored' || eventType == 'focus') {
-      ref.read(isAppWindowFocused.notifier).focused = true;
-    }
+    // isAppWindowFocused was a Riverpod provider — no direct MobX equivalent.
+    // If needed, wire up a store for window focus state.
   }
 
   @override

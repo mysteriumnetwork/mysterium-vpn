@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/core/theme/theme_store.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class HeadlineText extends ConsumerWidget {
+class HeadlineText extends StatelessWidget {
   const HeadlineText({
     required this.text,
     this.color,
@@ -26,8 +26,8 @@ class HeadlineText extends ConsumerWidget {
   final TextAlign textAlign;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
+  Widget build(BuildContext context) {
+    final themeStore = getIt<ThemeStore>();
     return Observer(
       builder: (context) {
         final themeColor = themeStore.isDarkMode || checkMediaWidth(context, 750)

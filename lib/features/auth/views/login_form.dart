@@ -3,58 +3,66 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/forms/forms.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_button.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:mysterium_vpn/shared/components/social_login_button.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
-import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SignInForm extends HookConsumerWidget {
+class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final store = ref.watch(authStorePOD);
-    final signInForm = useMemoized(() {
-      final form = singIn();
-      return form;
-    });
-    final height = getMediaHeight(context);
+  State<SignInForm> createState() => _SignInFormState();
+}
 
-    useEffect(() {
-      Future.microtask(() async {
-        final email = await store.getLastLoggedInUser();
-        if (!signInForm.control('email').dirty) {
-          signInForm.control('email').value = email;
-        }
-      });
-      return null;
-    }, [signInForm, store]);
+class _SignInFormState extends State<SignInForm> {
+  final _analyticsStore = getIt<AnalyticsStore>();
+  final _store = getIt<AuthStore>();
+  late final FormGroup _signInForm = singIn();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      final email = await _store.getLastLoggedInUser();
+      if (!_signInForm.control('email').dirty) {
+        _signInForm.control('email').value = email;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _signInForm.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = getMediaHeight(context);
 
     return Observer(
       builder: (context) {
-        final signInStatus = store.signInFeature.status;
+        final signInStatus = _store.signInFeature.status;
 
         return Stack(
           children: [
             ReactiveForm(
-              formGroup: signInForm,
+              formGroup: _signInForm,
               child:
                   Column(
                         children: [
@@ -67,12 +75,12 @@ class SignInForm extends HookConsumerWidget {
                             onPressed: signInStatus == FutureStatus.pending
                                 ? null
                                 : () {
-                                    analyticsStore.logEvent(AnalyticsEvent.appleLogin);
-                                    store.signInWithApple();
+                                    _analyticsStore.logEvent(AnalyticsEvent.appleLogin);
+                                    _store.signInWithApple();
                                   },
                             isLoading:
                                 signInStatus == FutureStatus.pending &&
-                                store.authenticatingType == GrantType.apple,
+                                _store.authenticatingType == GrantType.apple,
                             asset: Asset.icons.apple,
                             label: LocaleKeys.continueWithApple.tr(),
                           ).padding(bottom: 20),
@@ -80,12 +88,12 @@ class SignInForm extends HookConsumerWidget {
                             onPressed: signInStatus == FutureStatus.pending
                                 ? null
                                 : () {
-                                    analyticsStore.logEvent(AnalyticsEvent.gLogin);
-                                    store.signInWithGoogle();
+                                    _analyticsStore.logEvent(AnalyticsEvent.gLogin);
+                                    _store.signInWithGoogle();
                                   },
                             isLoading:
                                 signInStatus == FutureStatus.pending &&
-                                store.authenticatingType == GrantType.google,
+                                _store.authenticatingType == GrantType.google,
                             asset: Asset.icons.google,
                             label: LocaleKeys.continueWithGoogle.tr(),
                           ),
@@ -105,7 +113,7 @@ class SignInForm extends HookConsumerWidget {
                             child: ReactiveTextField(
                               key: K.loginEmailField,
                               onTap: (_) {
-                                analyticsStore.logEvent(AnalyticsEvent.emailInput);
+                                _analyticsStore.logEvent(AnalyticsEvent.emailInput);
                               },
                               onTapOutside: (_) =>
                                   FocusScope.of(context, createDependency: false).unfocus(),
@@ -134,13 +142,13 @@ class SignInForm extends HookConsumerWidget {
                                   ? () => _onSignInWithEmailPressed(
                                       signInForm,
                                       context,
-                                      store,
-                                      analyticsStore,
+                                      _store,
+                                      _analyticsStore,
                                     )
                                   : null,
                               child:
                                   signInStatus == FutureStatus.pending &&
-                                      store.authenticatingType == GrantType.email
+                                      _store.authenticatingType == GrantType.email
                                   ? const LoadingIndicator()
                                   : EasyText(
                                       LocaleKeys.continueWithEmail.tr(),
@@ -166,7 +174,7 @@ class SignInForm extends HookConsumerWidget {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       openUrlLink(Uri.parse(termsOfServiceUrl));
-                                      analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
+                                      _analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
                                     },
                                 ),
                                 TextSpan(text: '${LocaleKeys.and.tr()} '),
@@ -181,7 +189,7 @@ class SignInForm extends HookConsumerWidget {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       openUrlLink(Uri.parse(privacyPolicyUrl));
-                                      analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
+                                      _analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
                                     },
                                 ),
                               ],

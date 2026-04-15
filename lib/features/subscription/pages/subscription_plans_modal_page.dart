@@ -1,29 +1,28 @@
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/core/enums/subscription_status.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/scroll_controller_extensions.dart';
-import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_upgrade_store.dart';
 import 'package:mysterium_vpn/features/subscription/views/subscription_status_container.dart';
 import 'package:mysterium_vpn/features/subscription/views/widgets/subscription_comparison_table.dart';
 import 'package:mysterium_vpn/features/subscription/views/widgets/subscription_privacy_and_terms.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
-  ProviderScope.containerOf(
-    context,
-    listen: false,
-  ).read(analyticsStorePOD).logScreenViewed('subscription_plans_modal').ignore();
+  GetIt.I<AnalyticsStore>().logScreenViewed('subscription_plans_modal').ignore();
   final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
@@ -31,48 +30,122 @@ Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
   );
 }
 
-class _SubscriptionPlansModalPage extends HookConsumerWidget {
+class _SubscriptionPlansModalPage extends StatefulWidget {
   const _SubscriptionPlansModalPage();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tableKey = useRef(GlobalKey()).value;
+  State<_SubscriptionPlansModalPage> createState() => _SubscriptionPlansModalPageState();
+}
 
-    final store = ref.watch(subscriptionPlansStorePOD);
-    final purchaseStore = ref.watch(subscriptionPurchaseStorePOD);
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
+class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage>
+    with SingleTickerProviderStateMixin {
+  final _store = GetIt.I<SubscriptionPlansStore>();
+  final _purchaseStore = GetIt.I<SubscriptionPurchaseStore>();
+  final _subscriptionStore = GetIt.I<SubscriptionStore>();
 
-    final theme = Theme.of(context);
-    final tabController = useTabController(initialLength: 2);
-    final scrollController = useScrollController();
-    final selectedProduct = useState<PurchasableProduct?>(null);
-    final handleSubscribe = useHandleSubscribeToProduct();
-    final isLoading = useState(false);
+  final _tableKey = GlobalKey();
+  late final TabController _tabController;
+  late final ScrollController _scrollController;
 
-    useReaction(() => purchaseStore.subscriptionStatus, (status) {
-      isLoading.value = status?.isLoading ?? false;
+  PurchasableProduct? _selectedProduct;
+  bool _isLoading = false;
+
+  late final ReactionDisposer _purchaseReactionDisposer;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _scrollController = ScrollController();
+
+    _purchaseReactionDisposer = reaction((_) => _purchaseStore.subscriptionStatus, (
+      SubscriptionStatus? status,
+    ) {
+      if (!mounted) return;
+      setState(() => _isLoading = status?.isLoading ?? false);
       if (status?.isError ?? false) {
-        showError(purchaseStore.subscriptionError);
+        showError(_purchaseStore.subscriptionError);
       }
-      if (status == SubscriptionStatus.canceled) {
-        return;
-      }
+      if (status == SubscriptionStatus.canceled) return;
       if (status != null && !status.isLoading) {
         if (status == SubscriptionStatus.purchased) {
           showSnackbar(LocaleKeys.subscriptionActive.tr());
         }
-        Navigator.of(context).pop();
-        subscriptionStore.refreshAll().ignore();
+        if (mounted) Navigator.of(context).pop();
+        _subscriptionStore.refreshAll().ignore();
       }
     });
 
-    Future<void> handlePurchasePressed() async {
-      final product = selectedProduct.value;
-      if (product == null) {
-        return;
+    _tabController.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    if (_tabController.indexIsChanging) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final products = _tabController.index == 1 ? _store.monthlyProducts : _store.annualProducts;
+      final sorted = products.sortedByCompare((it) => it.monthlyValue, compareNumsDesc);
+      if (sorted.isNotEmpty) {
+        setState(() => _selectedProduct = sorted.first);
       }
-      await handleSubscribe(product.id);
+    });
+  }
+
+  @override
+  void dispose() {
+    _purchaseReactionDisposer();
+    _tabController
+      ..removeListener(_onTabChanged)
+      ..dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handlePurchasePressed() async {
+    final product = _selectedProduct;
+    if (product == null) return;
+    await _subscribeToProduct(product.id);
+  }
+
+  Future<void> _subscribeToProduct(String id) async {
+    if (!mounted) return;
+    final analyticsStore = GetIt.I<AnalyticsStore>();
+    final remoteConfigStore = GetIt.I<RemoteConfigStore>();
+    final sessionStore = GetIt.I<AuthSessionStore>();
+    final products = await _store.future;
+    final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
+    if (selectedProduct == null) return;
+
+    if (selectedProduct.id == _subscriptionStore.subscriptionFuture.value?.planId) {
+      if (mounted) {
+        showSnackbar("You're all set! You already have this plan active");
+        Navigator.of(context).pop();
+      }
+      return;
     }
+
+    analyticsStore.logEvent(
+      AnalyticsEvent.subscriptionNew,
+      parameters: {'item_ids': products.map((e) => e.id).toList()},
+    );
+
+    final gateway = _subscriptionStore.subscriptionFuture.value?.gateway;
+    if (remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway?.toLowerCase())) {
+      final accessToken = sessionStore.accessToken;
+      final uri = remoteConfigStore.checkoutWebRedirectUrl.replace(
+        queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
+      );
+      await openUrlLink(uri);
+      if (mounted) Navigator.of(context).pop();
+      return;
+    }
+
+    await _purchaseStore.subscribeToPackage(product: selectedProduct.productDetails);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return ModalScaffold(
       autoApplyPadding: false,
@@ -83,7 +156,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                controller: scrollController,
+                controller: _scrollController,
                 padding: ModalPadding.insets(
                   context,
                   add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
@@ -103,7 +176,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                       ),
                       SizedBox(height: theme.spacing.xl2),
                       TabBar(
-                        controller: tabController,
+                        controller: _tabController,
                         tabs: [
                           Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
                           Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
@@ -111,43 +184,22 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                       ),
                       Observer(
                         builder: (context) {
-                          final monthly = store.monthlyProducts;
-                          final annual = store.annualProducts;
-                          return HookBuilder(
-                            builder: (context) {
-                              final products = useListenableSelector(
-                                tabController,
-                                () => switch (tabController.index) {
-                                  1 => monthly,
-                                  _ => annual,
-                                }.sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
-                              );
-
-                              final productsRef = useRef(products)..value = products;
-
-                              useEffect(() {
-                                void listener() {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                                    selectedProduct.value = productsRef.value.first;
-                                  });
-                                }
-
-                                listener();
-                                tabController.addListener(listener);
-                                return () => tabController.removeListener(listener);
-                              }, [tabController, selectedProduct, productsRef]);
-
-                              return RadioGroup<PurchasableProduct>(
-                                groupValue: selectedProduct.value,
-                                onChanged: (value) => selectedProduct.value = value,
-                                child: _SubscriptionPlans(
-                                  products: products,
-                                  allProducts: [...annual, ...monthly],
-                                  onCompareFeaturesPressed: () =>
-                                      scrollController.scrollToKey(tableKey),
-                                ),
-                              );
-                            },
+                          final monthly = _store.monthlyProducts;
+                          final annual = _store.annualProducts;
+                          final products = _tabController.index == 1 ? monthly : annual;
+                          final sorted = products.sortedByCompare(
+                            (it) => it.monthlyValue,
+                            compareNumsDesc,
+                          );
+                          return RadioGroup<PurchasableProduct>(
+                            groupValue: _selectedProduct,
+                            onChanged: (value) => setState(() => _selectedProduct = value),
+                            child: _SubscriptionPlans(
+                              products: sorted,
+                              allProducts: [...annual, ...monthly],
+                              onCompareFeaturesPressed: () =>
+                                  _scrollController.scrollToKey(_tableKey),
+                            ),
                           );
                         },
                       ),
@@ -181,62 +233,62 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                       ),
                       SizedBox(height: theme.spacing.xl3),
                       SubscriptionComparisonTable(
-                        key: tableKey,
-                        onShowPlansPressed: () => scrollController.scrollToPosition(-1),
+                        key: _tableKey,
+                        onShowPlansPressed: () => _scrollController.scrollToPosition(-1),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-            ModalFooter(
-              spacing: 0,
-              children: [
-                if (subscriptionStore.canRedeemCode)
+            Observer(
+              builder: (context) => ModalFooter(
+                spacing: 0,
+                children: [
+                  if (_subscriptionStore.canRedeemCode)
+                    ButtonTertiary(
+                      size: ButtonSize.small,
+                      decoration: ButtonDecoration(
+                        foregroundColor: theme.palette.textPrimarySelected,
+                        padding: EdgeInsets.zero,
+                      ),
+                      onPressed: () async {
+                        try {
+                          await _purchaseStore.redeemCode();
+                        } catch (e) {
+                          showError(e);
+                        }
+                      },
+                      child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                    ),
+                  SizedBox(height: theme.spacing.ms),
+                  ButtonPrimary(
+                    onPressed: _handlePurchasePressed,
+                    loading: _isLoading ? const ButtonLoading() : null,
+                    decoration: ButtonDecoration(
+                      decorationColor: theme.palette.bgBrandPrimary,
+                      padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
+                    ),
+                    child: Text(
+                      (_subscriptionStore.isSubscribed ?? false)
+                          ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
+                          : LocaleKeys.subscriptionAllPlansPurchase.tr(),
+                    ),
+                  ),
+                  SizedBox(height: theme.spacing.xl),
                   ButtonTertiary(
-                    size: ButtonSize.small,
+                    onPressed: () => _scrollController.scrollToKey(_tableKey),
                     decoration: ButtonDecoration(
                       foregroundColor: theme.palette.textPrimarySelected,
+                      textStyle: theme.textStyles.textMd.semibold,
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () async {
-                      try {
-                        await purchaseStore.redeemCode();
-                      } catch (e) {
-                        showError(e);
-                      }
-                    },
-                    child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                    child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
                   ),
-                SizedBox(height: theme.spacing.ms),
-                ButtonPrimary(
-                  onPressed: handlePurchasePressed,
-                  loading: isLoading.value ? const ButtonLoading() : null,
-                  decoration: ButtonDecoration(
-                    decorationColor: theme.palette.bgBrandPrimary,
-                    padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
-                  ),
-                  child: Text(
-                    (subscriptionStore.isSubscribed ?? false)
-                        ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
-                        : LocaleKeys.subscriptionAllPlansPurchase.tr(),
-                  ),
-                ),
-                SizedBox(height: theme.spacing.xl),
-                ButtonTertiary(
-                  onPressed: () {
-                    scrollController.scrollToKey(tableKey);
-                  },
-                  decoration: ButtonDecoration(
-                    foregroundColor: theme.palette.textPrimarySelected,
-                    textStyle: theme.textStyles.textMd.semibold,
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
-                ),
-                SizedBox(height: theme.spacing.xl),
-                const SubscriptionPrivacyAndTerms(),
-              ],
+                  SizedBox(height: theme.spacing.xl),
+                  const SubscriptionPrivacyAndTerms(),
+                ],
+              ),
             ),
           ],
         ),
@@ -245,7 +297,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
   }
 }
 
-class _SubscriptionPlans extends HookWidget {
+class _SubscriptionPlans extends StatelessWidget {
   const _SubscriptionPlans({
     required this.products,
     required this.allProducts,
@@ -260,10 +312,7 @@ class _SubscriptionPlans extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final direction = switch (ScreenType.of(context)) {
-      < ScreenType.desktop => Axis.vertical,
-      _ => Axis.horizontal,
-    };
+    final direction = ScreenType.of(context) < ScreenType.desktop ? Axis.vertical : Axis.horizontal;
 
     final isDesktop = direction == Axis.horizontal;
 
@@ -272,14 +321,7 @@ class _SubscriptionPlans extends HookWidget {
       child: IntrinsicHeight(
         child: Flex(
           spacing: theme.spacing.s,
-          mainAxisSize: switch (direction) {
-            Axis.vertical => MainAxisSize.max,
-            Axis.horizontal => MainAxisSize.max,
-          },
-          crossAxisAlignment: switch (direction) {
-            Axis.vertical => CrossAxisAlignment.stretch,
-            Axis.horizontal => CrossAxisAlignment.stretch,
-          },
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           direction: direction,
           children: [
             for (final product in products)
@@ -296,7 +338,7 @@ class _SubscriptionPlans extends HookWidget {
   }
 }
 
-class _Plan extends HookWidget {
+class _Plan extends StatelessWidget {
   const _Plan({required this.value, required this.allProducts});
 
   final PurchasableProduct value;
@@ -304,15 +346,19 @@ class _Plan extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = ProviderScope.containerOf(context, listen: false).read(subscriptionPlansStorePOD);
-    final upgradeStore = ProviderScope.containerOf(
-      context,
-      listen: false,
-    ).read(subscriptionUpgradeStorePOD);
+    final store = GetIt.I<SubscriptionPlansStore>();
+    final upgradeStore = GetIt.I<SubscriptionUpgradeStore>();
+    final subscriptionStore = GetIt.I<SubscriptionStore>();
+    final remoteConfigStore = GetIt.I<RemoteConfigStore>();
 
     final comparisonProduct = upgradeStore.getComparisonProduct(value, allProducts);
-
-    final data = usePlanData(product: value, otherProduct: comparisonProduct, isOffer: false);
+    final data = _buildPlanData(
+      store,
+      subscriptionStore,
+      remoteConfigStore,
+      value,
+      comparisonProduct,
+    );
     final features = _getPreviewFeatures(store, value);
 
     return PlanCard.features(
@@ -324,14 +370,63 @@ class _Plan extends HookWidget {
     );
   }
 
+  PlanData _buildPlanData(
+    SubscriptionPlansStore store,
+    SubscriptionStore subscriptionStore,
+    RemoteConfigStore remoteConfigStore,
+    PurchasableProduct product,
+    PurchasableProduct? otherProduct,
+  ) {
+    final currentPlanGateway = subscriptionStore.subscriptionFuture.value?.gateway;
+    final useStorePrices =
+        currentPlanGateway == null ||
+        currentPlanGateway.isEmpty ||
+        isMobilePaymentGateway(currentPlanGateway);
+    final canUseSalesValues = remoteConfigStore.pricingMonthly;
+    final isBestValue = store.bestValueProducts.any((it) => it.id == product.id);
+    final isBasic = product.id.contains('basic');
+    final config = store.findConfig(product);
+    final period = switch (product.duration) {
+      1 => LocaleKeys.month,
+      12 => LocaleKeys.year,
+      _ => '',
+    };
+
+    final discount = otherProduct != null
+        ? useStorePrices
+              ? otherProduct.periodDiscountPercentage(product)
+              : otherProduct.discountPercentageBackend(product)
+        : 0;
+    final price = useStorePrices ? product.moneyMonthly : product.moneyMonthlyBackend;
+    final money = useStorePrices ? product.money : product.backendMoney;
+    final oldPrice = otherProduct != null
+        ? useStorePrices
+              ? otherProduct.moneyMonthly
+              : otherProduct.moneyMonthlyBackend
+        : null;
+
+    return PlanData(
+      fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
+      discountedLabel: LocaleKeys.discountedPriceLabel.tr(),
+      name: config.name.tr(),
+      monthlyFullPrice: canUseSalesValues ? oldPrice?.toString() : null,
+      monthlyDiscountedPrice: canUseSalesValues ? price.toString() : null,
+      fullPrice: '$money',
+      bestValueBadge: isBestValue ? LocaleKeys.subscriptionPlanBestValue.tr() : null,
+      promoBadge: discount > 0 && canUseSalesValues
+          ? LocaleKeys.subscriptionPlanSavePercent.tr(args: [discount.toString()])
+          : null,
+      icon: isBasic ? UntitledUI.star_04 : UntitledUI.stars_02,
+      perMonth: LocaleKeys.perMonth.tr(),
+      periodLabel: period.tr(),
+    );
+  }
+
   List<String> _getPreviewFeatures(SubscriptionPlansStore store, PurchasableProduct product) {
     final config = store.findConfig(product);
     final allFeatures = config.previewFeatures.map((it) => it.tr()).toList();
-
-    // Basic plan: show 3 features, Pro/Plus plan: show 4 features
     final isBasic = config.name == LocaleKeys.subscriptionPlanNameBasic;
     final featureCount = isBasic ? 3 : 4;
-
     return allFeatures.take(featureCount).toList();
   }
 }

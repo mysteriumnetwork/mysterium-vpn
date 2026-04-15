@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/core/enums/screen_type.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/home/views/home_state.dart';
+import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
+import 'package:mysterium_vpn/features/locations/views/components/location_item.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' show PanelController;
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/home/views/home_state.dart';
-import 'package:mysterium_vpn/features/locations/views/components/location_item.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 
 /// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
 const _kItemHeight = 64.0;
@@ -26,15 +25,15 @@ const _kItemStride = _kItemHeight + _kSeparatorHeight;
 ///
 /// When a country is selected (via map or connection), the list scrolls to it:
 ///
-///   1. **Collapse** — suppress the target's auto-expansion so all items have
+///   1. **Collapse** -- suppress the target's auto-expansion so all items have
 ///      uniform height, making scroll offsets predictable.
-///   2. **Jump** — compute the target offset deterministically using
+///   2. **Jump** -- compute the target offset deterministically using
 ///      [SliverLayoutBuilder]'s `precedingScrollExtent` + `index * stride`.
-///   3. **Fine-tune** — use `localToGlobal` screen coordinates to adjust for
+///   3. **Fine-tune** -- use `localToGlobal` screen coordinates to adjust for
 ///      pinned headers. This sidesteps `getOffsetToReveal` which is broken
 ///      with nested sliver_tools slivers.
-///   4. **Expand** — restore auto-expansion so the target country opens.
-class ScrollableLocationsSliverList extends HookConsumerWidget {
+///   4. **Expand** -- restore auto-expansion so the target country opens.
+class ScrollableLocationsSliverList extends StatefulWidget {
   const ScrollableLocationsSliverList({
     required this.items,
     required this.onItemPressed,
@@ -50,121 +49,118 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   final GlobalKey? stickyHeaderKey;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
-    final screenType = useScreenType();
+  State<ScrollableLocationsSliverList> createState() => _ScrollableLocationsSliverListState();
+}
 
-    final priorityIndex = effectivePriorityCountryCode == null
-        ? -1
-        : items.indexWhere((it) => it.countryCode == effectivePriorityCountryCode);
+class _ScrollableLocationsSliverListState extends State<ScrollableLocationsSliverList> {
+  final _selectedLocationStore = getIt<SelectedLocationStore>();
+  final _vpnStore = getIt<VpnStore>();
 
+  Map<String, bool> _expansionOverrides = {};
+  int _overridesVersion = 0;
+  int _scrollGeneration = 0;
+  double _precedingExtent = 0;
+  String? _lastPriority;
+
+  String? _computeEffectivePriorityCountryCode() {
+    final selectedLocation = _selectedLocationStore.value;
+    final connectingLocation = _vpnStore.connectingLocation;
+    final connectedLocation = _vpnStore.isConnected ? _vpnStore.location : null;
+
+    final activePriority = selectedLocation?.countryCode ?? connectingLocation?.countryCode;
+    if (activePriority != null) {
+      _lastPriority = activePriority;
+    }
+    return activePriority ?? _lastPriority ?? connectedLocation?.countryCode;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
     final isDesktop = screenType == ScreenType.desktop;
 
-    final isPanelFullyOpen = ref.watch(
-      homeStateProvider.select((s) {
-        final pc = s.panelController;
-        if (!pc.isAttached) {
-          return true;
+    return Observer(
+      builder: (context) {
+        final effectivePriorityCountryCode = _computeEffectivePriorityCountryCode();
+        final selectedLocation = _selectedLocationStore.value;
+        final selectedCC = selectedLocation?.countryCode;
+
+        final priorityIndex = effectivePriorityCountryCode == null
+            ? -1
+            : widget.items.indexWhere((it) => it.countryCode == effectivePriorityCountryCode);
+
+        final homeState = HomeStateScope.read(context);
+        final pc = homeState.panelController;
+        final isPanelFullyOpen = !pc.isAttached || pc.isPanelOpen;
+
+        // Clear overrides when priority changes (new selection context).
+        if (_lastPriority != effectivePriorityCountryCode) {
+          _expansionOverrides = {};
         }
-        return pc.isPanelOpen;
-      }),
-    );
 
-    final homeState = ref.read(homeStateProvider);
+        // Scroll-to-selected effect
+        if (priorityIndex != -1 && (isDesktop || isPanelFullyOpen)) {
+          if (selectedCC != null || homeState.lastScrolledCountryCode != effectivePriorityCountryCode) {
+            homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
-    final selectedLocationStore = ref.watch(selectedLocationStorePOD);
-    final selectedLocation = useComputedValue(() => selectedLocationStore.value);
-    final selectedCC = selectedLocation?.countryCode;
+            final sc = homeState.scrollController;
+            if (sc != null) {
+              // Step 1: Collapse the target so all items have uniform height.
+              _expansionOverrides = {effectivePriorityCountryCode!: false};
+              _overridesVersion++;
 
-    // --- Expansion state ---
-    final expansionOverrides = useRef<Map<String, bool>>({});
-    final overridesVersion = useState(0);
-    final scrollGeneration = useRef(0);
+              final generation = ++_scrollGeneration;
 
-    // Captured each layout pass by SliverLayoutBuilder below.
-    final precedingExtent = useRef<double>(0);
-
-    // Clear overrides when priority changes (new selection context).
-    final prevPriority = useRef(effectivePriorityCountryCode);
-    if (prevPriority.value != effectivePriorityCountryCode) {
-      expansionOverrides.value = {};
-      prevPriority.value = effectivePriorityCountryCode;
-    }
-
-    // --- Scroll-to-selected effect ---
-    useEffect(() {
-      if (priorityIndex == -1) {
-        return null;
-      }
-      if (!isDesktop && !isPanelFullyOpen) {
-        return null;
-      }
-
-      // Allow re-scroll on re-selection; guard redundant connected-only scrolls.
-      if (selectedCC == null) {
-        if (homeState.lastScrolledCountryCode == effectivePriorityCountryCode) {
-          return null;
+              _scrollToCountry(
+                context: context,
+                countryCode: effectivePriorityCountryCode,
+                stickyHeaderKey: widget.stickyHeaderKey,
+                panelController: homeState.panelController,
+                scrollController: sc,
+                isDesktop: isDesktop,
+                priorityIndex: priorityIndex,
+                precedingExtentGetter: () => _precedingExtent,
+                generation: generation,
+                currentGenerationGetter: () => _scrollGeneration,
+                onComplete: () {
+                  if (mounted) {
+                    setState(() {
+                      _expansionOverrides = {};
+                      _overridesVersion++;
+                    });
+                  }
+                },
+              );
+            }
+          }
         }
-      }
 
-      homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
+        // Force rebuild tracking.
+        // ignore: unused_local_variable
+        final _ = _overridesVersion;
 
-      final sc = homeState.scrollController;
-      if (sc == null) {
-        return null;
-      }
+        return SliverLayoutBuilder(
+          builder: (context, constraints) {
+            _precedingExtent = constraints.precedingScrollExtent;
 
-      // Step 1: Collapse the target so all items have uniform height.
-      expansionOverrides.value = {effectivePriorityCountryCode!: false};
-      overridesVersion.value++;
-
-      final generation = ++scrollGeneration.value;
-
-      // Steps 2–4 happen asynchronously.
-      _scrollToCountry(
-        context: context,
-        countryCode: effectivePriorityCountryCode,
-        stickyHeaderKey: stickyHeaderKey,
-        panelController: homeState.panelController,
-        scrollController: sc,
-        isDesktop: isDesktop,
-        priorityIndex: priorityIndex,
-        precedingExtent: precedingExtent,
-        generation: generation,
-        currentGeneration: scrollGeneration,
-        onComplete: () {
-          // Step 4: Clear suppression → target auto-expands via Rule 3.
-          expansionOverrides.value = {};
-          overridesVersion.value++;
-        },
-      );
-
-      return null;
-    }, [effectivePriorityCountryCode, isPanelFullyOpen, selectedCC]);
-
-    // Force rebuild when overrides change.
-    // ignore: unused_local_variable
-    final _ = overridesVersion.value;
-
-    // --- Build the list ---
-    return SliverLayoutBuilder(
-      builder: (context, constraints) {
-        precedingExtent.value = constraints.precedingScrollExtent;
-
-        return SliverList.separated(
-          itemCount: items.length,
-          separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
-          itemBuilder: (_, index) {
-            final cc = items[index].countryCode;
-            return ExpandableLocationItem(
-              key: _LocationKey(cc),
-              location: items[index],
-              onTap: onItemPressed,
-              mapSelectedCountryCode: effectivePriorityCountryCode,
-              expansionOverride: expansionOverrides.value[cc],
-              onExpansionChanged: (expanded) {
-                expansionOverrides.value = {...expansionOverrides.value, cc: expanded};
-                overridesVersion.value++;
+            return SliverList.separated(
+              itemCount: widget.items.length,
+              separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
+              itemBuilder: (_, index) {
+                final cc = widget.items[index].countryCode;
+                return ExpandableLocationItem(
+                  key: _LocationKey(cc),
+                  location: widget.items[index],
+                  onTap: widget.onItemPressed,
+                  mapSelectedCountryCode: effectivePriorityCountryCode,
+                  expansionOverride: _expansionOverrides[cc],
+                  onExpansionChanged: (expanded) {
+                    setState(() {
+                      _expansionOverrides = {..._expansionOverrides, cc: expanded};
+                      _overridesVersion++;
+                    });
+                  },
+                );
               },
             );
           },
@@ -190,13 +186,13 @@ Future<void> _scrollToCountry({
   required ScrollController scrollController,
   required bool isDesktop,
   required int priorityIndex,
-  required ObjectRef<double> precedingExtent,
+  required double Function() precedingExtentGetter,
   required int generation,
-  required ObjectRef<int> currentGeneration,
+  required int Function() currentGenerationGetter,
   required VoidCallback onComplete,
 }) async {
   bool isStale() =>
-      !context.mounted || !scrollController.hasClients || generation != currentGeneration.value;
+      !context.mounted || !scrollController.hasClients || generation != currentGenerationGetter();
 
   // Wait for the rebuild that collapses all items.
   await WidgetsBinding.instance.endOfFrame;
@@ -212,7 +208,7 @@ Future<void> _scrollToCountry({
   var itemRO = _findItemRenderBox(countryCode);
   if (itemRO == null) {
     // Deterministic offset: content before our SliverList + item stride.
-    final roughTarget = precedingExtent.value + priorityIndex * _kItemStride;
+    final roughTarget = precedingExtentGetter() + priorityIndex * _kItemStride;
     scrollController.jumpTo(roughTarget.clamp(0.0, scrollController.position.maxScrollExtent));
 
     await WidgetsBinding.instance.endOfFrame;

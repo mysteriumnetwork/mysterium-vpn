@@ -3,56 +3,63 @@ import 'dart:io';
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/home/store/banners_store.dart';
+import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
+import 'package:mysterium_vpn/features/locations/store/recent_locations_store.dart';
+import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
+import 'package:mysterium_vpn/features/settings/views/network_statistics.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_limited_time_offer_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/connections_limit_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/shared/components/analytics_logger_overlay.dart';
 import 'package:mysterium_vpn/shared/components/analytics_user_properties_overlay.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/device_limit_dialog.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/marketing_consent_dialog.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/push_notifications_dialog.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/retry_dialog.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
-import 'package:mysterium_vpn/features/settings/views/network_statistics.dart';
 
-class QAToolbox extends HookConsumerWidget {
+class QAToolbox extends StatelessWidget {
   const QAToolbox({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Observer(
+  Widget build(BuildContext context) => Observer(
     builder: (context) => Column(
       children: [
-        if (ref.read(vpnStorePOD).isConnected && Platform.isAndroid) const NetworkStatistics(),
+        if (getIt<VpnStore>().isConnected && Platform.isAndroid) const NetworkStatistics(),
         _ExpandableSection(
           title: 'Data Management',
           icon: Icons.storage,
           children: [
-            _buildResetActions(context, ref),
-            _buildClearLocationsAction(context, ref),
-            _buildGetMarketingConsent(context, ref),
+            _buildResetActions(context),
+            _buildClearLocationsAction(context),
+            _buildGetMarketingConsent(context),
           ],
         ),
         _ExpandableSection(
           title: 'VPN & Connection',
           icon: Icons.vpn_lock,
           children: [
-            _buildConnectionLimitAction(context, ref),
-            _buildTunnelStatusAction(context, ref),
-            _buildInvalidLocationsAction(context, ref),
+            _buildConnectionLimitAction(context),
+            _buildTunnelStatusAction(context),
+            _buildInvalidLocationsAction(context),
             if (Platform.isWindows) _buildOpenVPNLogsAction(context),
           ],
         ),
         _ExpandableSection(
           title: 'Subscription & Auth',
           icon: Icons.card_membership,
-          children: [_buildSubscriptionActions(context, ref), _buildAuthActions(context, ref)],
+          children: [_buildSubscriptionActions(context), _buildAuthActions(context)],
         ),
         _ExpandableSection(
           title: 'Analytics & Debugging',
@@ -62,16 +69,16 @@ class QAToolbox extends HookConsumerWidget {
         _ExpandableSection(
           title: 'UI Testing',
           icon: Icons.visibility,
-          children: [_buildDialogTestActions(context, ref)],
+          children: [_buildDialogTestActions(context)],
         ),
         const SizedBox(height: 36),
       ],
     ),
   );
 
-  Widget _buildResetActions(BuildContext context, WidgetRef ref) {
-    final bannerStore = ref.read(bannersStorePOD);
-    final recentLocationsStore = ref.read(recentLocationsStorePOD);
+  Widget _buildResetActions(BuildContext context) {
+    final bannerStore = getIt<BannersStore>();
+    final recentLocationsStore = getIt<RecentLocationsStore>();
 
     return _QAActionItem(
       icon: Icons.refresh,
@@ -110,7 +117,7 @@ class QAToolbox extends HookConsumerWidget {
     );
   }
 
-  Widget _buildClearLocationsAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+  Widget _buildClearLocationsAction(BuildContext context) => _QAActionItem(
     icon: Icons.delete_outline,
     title: 'Clear cached locations',
     subtitle: 'Delete all VPN locations from database',
@@ -118,15 +125,15 @@ class QAToolbox extends HookConsumerWidget {
       _QAActionButton(
         label: 'Clear',
         onPressed: () async {
-          await ref.read(locationsStorePOD).clear();
+          await getIt<LocationsStore>().clear();
           showSnackbar('Locations cleared');
         },
       ),
     ],
   );
 
-  Widget _buildConnectionLimitAction(BuildContext context, WidgetRef ref) {
-    final connectionsLimitStore = ref.read(connectionsLimitStorePOD);
+  Widget _buildConnectionLimitAction(BuildContext context) {
+    final connectionsLimitStore = getIt<ConnectionsLimitStore>();
 
     return _QAActionItem(
       icon: Icons.swap_horiz,
@@ -148,8 +155,8 @@ class QAToolbox extends HookConsumerWidget {
     );
   }
 
-  Widget _buildGetMarketingConsent(BuildContext context, WidgetRef ref) {
-    final userPreferencesStore = ref.read(userPreferencesStorePOD);
+  Widget _buildGetMarketingConsent(BuildContext context) {
+    final userPreferencesStore = getIt<UserPreferencesStore>();
 
     return _QAActionItem(
       icon: Icons.swap_horiz,
@@ -169,7 +176,7 @@ class QAToolbox extends HookConsumerWidget {
     );
   }
 
-  Widget _buildTunnelStatusAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+  Widget _buildTunnelStatusAction(BuildContext context) => _QAActionItem(
     icon: Icons.network_check,
     title: 'Check tunnel status',
     subtitle: 'Query current tunnel connection status',
@@ -177,26 +184,26 @@ class QAToolbox extends HookConsumerWidget {
       _QAActionButton(
         label: 'Check',
         onPressed: () async {
-          final status = await ref.read(vpnStorePOD).checkTunnelStatus();
+          final status = await getIt<VpnStore>().checkTunnelStatus();
           showSnackbar('Tunnel status: $status');
         },
       ),
     ],
   );
 
-  Widget _buildInvalidLocationsAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+  Widget _buildInvalidLocationsAction(BuildContext context) => _QAActionItem(
     icon: Icons.add_location_alt_outlined,
     title: 'Insert invalid locations',
     subtitle: 'Add test locations for testing unavailable connections',
     actions: [
       _QAActionButton(
         label: 'Insert',
-        onPressed: ref.read(locationsStorePOD).insertInvalidLocations,
+        onPressed: getIt<LocationsStore>().insertInvalidLocations,
       ),
     ],
   );
 
-  Widget _buildSubscriptionActions(BuildContext context, WidgetRef ref) => _QAActionItem(
+  Widget _buildSubscriptionActions(BuildContext context) => _QAActionItem(
     icon: Icons.science_outlined,
     title: 'Subscription testing',
     subtitle: 'Mock subscription states and offers',
@@ -204,21 +211,21 @@ class QAToolbox extends HookConsumerWidget {
       _QAActionButton(
         label: 'Fail',
         onPressed: () async {
-          ref.read(subscriptionStorePOD).mockSubscriptionFailureStatus();
+          getIt<SubscriptionStore>().mockSubscriptionFailureStatus();
           showSnackbar('Subscription set to failed');
         },
       ),
       _QAActionButton(
         label: 'Mock Offer',
         onPressed: () async {
-          await ref.read(subscriptionLimitedTimeOfferStorePOD).mockOffer();
+          await getIt<SubscriptionLimitedTimeOfferStore>().mockOffer();
           showSnackbar('Limited time offer created');
         },
       ),
     ],
   );
 
-  Widget _buildAuthActions(BuildContext context, WidgetRef ref) => _QAActionItem(
+  Widget _buildAuthActions(BuildContext context) => _QAActionItem(
     icon: Icons.key_off,
     title: 'Invalidate access token',
     subtitle: 'Test token refresh mechanism',
@@ -226,7 +233,7 @@ class QAToolbox extends HookConsumerWidget {
       _QAActionButton(
         label: 'Invalidate',
         onPressed: () async {
-          await ref.read(authSessionStorePOD).invalidateAccessToken();
+          await getIt<AuthSessionStore>().invalidateAccessToken();
           showSnackbar('Access token invalidated');
         },
       ),
@@ -246,7 +253,7 @@ class QAToolbox extends HookConsumerWidget {
     ],
   );
 
-  Widget _buildDialogTestActions(BuildContext context, WidgetRef ref) => Column(
+  Widget _buildDialogTestActions(BuildContext context) => Column(
     children: [
       _QAActionItem(
         icon: Icons.check,
@@ -366,35 +373,39 @@ class QAToolbox extends HookConsumerWidget {
   }
 }
 
-class _ExpandableSection extends HookWidget {
+class _ExpandableSection extends StatefulWidget {
   const _ExpandableSection({required this.title, required this.icon, required this.children});
   final String title;
   final IconData icon;
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) {
-    final isExpanded = useState(false);
+  State<_ExpandableSection> createState() => _ExpandableSectionState();
+}
 
-    return Column(
+class _ExpandableSectionState extends State<_ExpandableSection> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () => isExpanded.value = !isExpanded.value,
+          onTap: () => setState(() => _isExpanded = !_isExpanded),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
-                Icon(icon, size: 20, color: Colors.grey[600]),
+                Icon(widget.icon, size: 20, color: Colors.grey[600]),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    title,
+                    widget.title,
                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
                 ),
                 AnimatedRotation(
-                  turns: isExpanded.value ? 0.5 : 0,
+                  turns: _isExpanded ? 0.5 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
                 ),
@@ -404,14 +415,13 @@ class _ExpandableSection extends HookWidget {
         ),
         AnimatedCrossFade(
           firstChild: const SizedBox.shrink(),
-          secondChild: Column(children: children),
-          crossFadeState: isExpanded.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          secondChild: Column(children: widget.children),
+          crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 200),
         ),
         Divider(height: 1, thickness: 1, color: Colors.grey[300]),
       ],
     );
-  }
 }
 
 class _QAActionItem extends StatelessWidget {

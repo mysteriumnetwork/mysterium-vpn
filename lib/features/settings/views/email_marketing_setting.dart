@@ -1,27 +1,28 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
 import 'package:mysterium_vpn/features/settings/views/switch_item.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class EmailMarketingSetting extends HookConsumerWidget {
+class EmailMarketingSetting extends StatelessWidget {
   const EmailMarketingSetting({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authSessionStore = ref.watch(authSessionStorePOD);
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final analyticsStore = ref.read(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final authSessionStore = getIt<AuthSessionStore>();
+    final userPreferencesStore = getIt<UserPreferencesStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
     return Observer(
       builder: (context) {
         final shouldShowLoadingIndicator = _shouldShowLoadingIndicator(userPreferencesStore);

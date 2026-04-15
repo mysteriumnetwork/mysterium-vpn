@@ -2,46 +2,48 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_button.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
-class MinAppVersionChecker extends HookConsumerWidget {
+class MinAppVersionChecker extends StatefulWidget {
   const MinAppVersionChecker({required this.child, super.key});
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    final canContinue = useState(false);
+  State<MinAppVersionChecker> createState() => _MinAppVersionCheckerState();
+}
 
-    return Observer(
+class _MinAppVersionCheckerState extends State<MinAppVersionChecker> {
+  final _remoteConfigStore = getIt<RemoteConfigStore>();
+  bool _canContinue = false;
+
+  @override
+  Widget build(BuildContext context) => Observer(
       builder: (context) {
         final currentBuildVersion = Env.buildInfo.buildVersion;
-        final minAppBuildNumber = getMinAppBuildNumber(
-          remoteConfigStore: remoteConfigStore,
+        final minAppBuildNumber = _getMinAppBuildNumber(
+          remoteConfigStore: _remoteConfigStore,
           installerStore: Env.buildInfo.installerStore,
         );
         if (!isCurrentVersionBehind(
               currentAppVersion: currentBuildVersion,
               comparisonVersion: minAppBuildNumber,
             ) ||
-            canContinue.value) {
-          return child;
+            _canContinue) {
+          return widget.child;
         } else {
           return Scaffold(
             backgroundColor: Palette.darkBlue,
@@ -66,8 +68,8 @@ class MinAppVersionChecker extends HookConsumerWidget {
                       onPressed: () async {
                         try {
                           if (Env.buildInfo.installerStore?.toLowerCase().contains(
-                                windowsStandAloneProductId.toLowerCase(),
-                              ) ??
+                                    windowsStandAloneProductId.toLowerCase(),
+                                  ) ??
                               false) {
                             await openUrlLink(Uri.parse(windowsGithubDownloadLink));
                           } else {
@@ -75,7 +77,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                           }
                         } catch (e) {
                           // Unable to open the store, unblock the user
-                          canContinue.value = true;
+                          setState(() => _canContinue = true);
                         }
                       },
                       text: LocaleKeys.buttonUpdateApp.tr(),
@@ -90,9 +92,8 @@ class MinAppVersionChecker extends HookConsumerWidget {
         }
       },
     );
-  }
 
-  String getMinAppBuildNumber({
+  String _getMinAppBuildNumber({
     required RemoteConfigStore remoteConfigStore,
     required String? installerStore,
   }) {

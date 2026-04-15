@@ -1,27 +1,30 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/styles/palette.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_protocol_store.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/shared/components/easy_dropdown.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class ProtocolPicker extends ConsumerWidget {
+class ProtocolPicker extends StatelessWidget {
   const ProtocolPicker({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
-    final vpnStore = ref.watch(vpnStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
-    final authSessionStore = ref.watch(authSessionStorePOD);
+  Widget build(BuildContext context) {
+    final vpnProtocolStore = getIt<VpnProtocolStore>();
+    final vpnStore = getIt<VpnStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
+    final authSessionStore = getIt<AuthSessionStore>();
     return Observer(
       builder: (context) => EasyDropdown<ProtocolType>(
         value: vpnProtocolStore.protocol,

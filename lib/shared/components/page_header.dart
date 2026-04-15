@@ -1,25 +1,25 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/api_version.dart';
 import 'package:mysterium_vpn/shared/components/app_version.dart';
 import 'package:mysterium_vpn/shared/components/header_title.dart';
 import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class PageHeader extends HookConsumerWidget {
+class PageHeader extends StatelessWidget {
   const PageHeader({required this.headerTitle, super.key});
 
   final String headerTitle;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final analyticsStore = ref.read(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final analyticsStore = getIt<AnalyticsStore>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(

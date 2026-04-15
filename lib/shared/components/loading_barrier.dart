@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoadingBarrier extends StatelessWidget {

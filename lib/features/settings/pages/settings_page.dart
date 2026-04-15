@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/layout_builders/screen_type_builder.dart';
-import 'package:mysterium_vpn/shared/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_view.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_mobile_view.dart';
+import 'package:mysterium_vpn/shared/components/colored_scaffold.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

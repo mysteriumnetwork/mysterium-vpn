@@ -1,26 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class ConnectionStatusBar extends HookConsumerWidget {
+class ConnectionStatusBar extends StatelessWidget {
   const ConnectionStatusBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vpnStore = ref.watch(vpnStorePOD);
-    final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
-    final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
-
-    return ConnectionBar(
-      label: _statusText(connectionStatus, isFetchingConfig),
-      killSwitchLabel: LocaleKeys.killSwitchTooltipTitle.tr(),
-      killSwitchDescription: LocaleKeys.killSwitchTooltipMessage.tr(),
-      status: _mapStatus(connectionStatus, isFetchingConfig),
+  Widget build(BuildContext context) {
+    final vpnStore = getIt<VpnStore>();
+    return Observer(
+      builder: (_) => ConnectionBar(
+        label: _statusText(vpnStore.vpnStatus, vpnStore.isFetchingConfig),
+        killSwitchLabel: LocaleKeys.killSwitchTooltipTitle.tr(),
+        killSwitchDescription: LocaleKeys.killSwitchTooltipMessage.tr(),
+        status: _mapStatus(vpnStore.vpnStatus, vpnStore.isFetchingConfig),
+      ),
     );
   }
 

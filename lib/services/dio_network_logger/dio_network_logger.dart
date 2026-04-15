@@ -8,13 +8,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/core/device/device_id_store.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/features/notifications/store/push_notifications_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/config_cat_user_store.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
-import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
 
 /// Overlay for [NetworkLoggerButton].
 class NetworkLoggerOverlay extends StatefulWidget {
@@ -874,7 +878,7 @@ extension _DioErrorX on dio.DioException {
   NetworkError toNetworkError() => NetworkError(message: toString());
 }
 
-class _ConfigPage extends ConsumerWidget {
+class _ConfigPage extends StatelessWidget {
   const _ConfigPage._();
 
   static void show({required BuildContext context}) {
@@ -892,11 +896,11 @@ class _ConfigPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final remoteConfigs = ref.watch(remoteConfigStorePOD);
-    final configcatUser = ref.watch(configCatUserStorePOD);
-    final abTesting = ref.watch(abTestingStorePOD);
-    final pushNotificationStore = ref.watch(pushNotificationsStorePOD);
+  Widget build(BuildContext context) {
+    final remoteConfigs = getIt<RemoteConfigStore>();
+    final configcatUser = getIt<ConfigCatUserStore>();
+    final abTesting = getIt<ABTestingStore>();
+    final pushNotificationStore = getIt<PushNotificationsStore>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -949,7 +953,7 @@ class _ConfigPage extends ConsumerWidget {
   }
 }
 
-class _DeviceInfo extends ConsumerWidget {
+class _DeviceInfo extends StatelessWidget {
   const _DeviceInfo._();
 
   static void show({required BuildContext context}) {
@@ -967,8 +971,8 @@ class _DeviceInfo extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final deviceIDStore = ref.watch(deviceIDStorePOD);
+  Widget build(BuildContext context) {
+    final deviceIDStore = getIt<DeviceIDStore>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -1010,7 +1014,7 @@ class _DeviceInfo extends ConsumerWidget {
   }
 }
 
-class _SecuredStorageValues extends ConsumerWidget {
+class _SecuredStorageValues extends StatelessWidget {
   const _SecuredStorageValues._();
 
   static void show({required BuildContext context}) {
@@ -1028,7 +1032,7 @@ class _SecuredStorageValues extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),

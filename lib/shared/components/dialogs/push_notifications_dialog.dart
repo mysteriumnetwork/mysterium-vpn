@@ -1,26 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
   await showModal(context, builder: (_) => const _DialogContent());
 }
 
-class _DialogContent extends HookConsumerWidget {
+class _DialogContent extends StatelessWidget {
   const _DialogContent();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final screenType = useScreenType();
+  Widget build(BuildContext context) {
+    final userPreferencesStore = getIt<UserPreferencesStore>();
+    final screenType = getScreenType(MediaQuery.sizeOf(context));
     final palette = Theme.of(context).palette;
     return PromptDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: screenType == ScreenType.mobile ? 24 : 144),

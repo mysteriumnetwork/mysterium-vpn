@@ -1,17 +1,16 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/shared/components/easy_text.dart';
+import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
 
-class DesktopPageHeader extends ConsumerWidget {
+class DesktopPageHeader extends StatelessWidget {
   const DesktopPageHeader({
     required this.asset,
     required this.onPressed,
@@ -24,8 +23,8 @@ class DesktopPageHeader extends ConsumerWidget {
   final bool showNavigationButton;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final analyticsStore = ref.read(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final analyticsStore = getIt<AnalyticsStore>();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

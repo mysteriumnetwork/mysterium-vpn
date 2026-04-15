@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class SettingActionButton extends HookWidget {
+class SettingActionButton extends StatefulWidget {
   const SettingActionButton({
     required this.action,
     required this.child,
@@ -25,25 +23,31 @@ class SettingActionButton extends HookWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final (notifier, status) = useFutureStatus();
+  State<SettingActionButton> createState() => _SettingActionButtonState();
+}
 
-    void handlePressed() {
-      notifier.run(() async => action?.call());
-    }
+class _SettingActionButtonState extends State<SettingActionButton> {
+  bool _isLoading = false;
 
-    return Theme(
+  void _handlePressed() {
+    setState(() => _isLoading = true);
+    Future(() async => widget.action?.call()).whenComplete(() {
+      if (mounted) setState(() => _isLoading = false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Theme(
       data: DesignSystemTheme.of(context),
       child: ButtonPrimary(
         decoration: ButtonDecoration(
-          decorationColor: backgroundColor,
-          minimumSize: Size(width, height),
+          decorationColor: widget.backgroundColor,
+          minimumSize: Size(widget.width, widget.height),
         ),
         size: ButtonSize.small,
-        onPressed: action == null || status.isLoading ? null : handlePressed,
-        loading: status.isLoading ? const ButtonLoading() : null,
-        child: child,
+        onPressed: widget.action == null || _isLoading ? null : _handlePressed,
+        loading: _isLoading ? const ButtonLoading() : null,
+        child: widget.child,
       ),
     );
-  }
 }

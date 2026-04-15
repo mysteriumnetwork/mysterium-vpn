@@ -2,11 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class HorizontalScrollIndicator extends HookWidget {
+class HorizontalScrollIndicator extends StatefulWidget {
   const HorizontalScrollIndicator({
     required this.controller,
     required this.child,
@@ -19,93 +17,126 @@ class HorizontalScrollIndicator extends HookWidget {
   final Offset offset;
 
   @override
-  Widget build(BuildContext context) {
-    const animationDuration = Duration(milliseconds: 250);
-    final (stackKey, stackBox) = useRenderObject<RenderBox>();
-
-    final canScrollLeft = useListenableSelector(controller, () {
-      if (!controller.hasClients) {
-        return false;
-      }
-      return controller.offset > controller.position.minScrollExtent;
-    });
-
-    final canScrollRight = useListenableSelector(controller, () {
-      if (!controller.hasClients) {
-        return false;
-      }
-      return controller.offset < controller.position.maxScrollExtent;
-    });
-
-    void handleScrollToStart() {
-      if (controller.hasClients) {
-        final stackWidth = stackBox?.size.width ?? 0;
-        final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
-        controller.animateTo(
-          max(0, currentPosition - stackWidth),
-          duration: animationDuration,
-          curve: Curves.easeInOut,
-        );
-      }
-    }
-
-    void handleScrollToEnd() {
-      if (controller.hasClients && controller.positions.isNotEmpty) {
-        final stackWidth = stackBox?.size.width ?? 0;
-        final currentPosition = controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
-        controller.animateTo(
-          min(currentPosition + stackWidth, controller.position.maxScrollExtent),
-          duration: animationDuration,
-          curve: Curves.easeInOut,
-        );
-      }
-    }
-
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        /// This is a workaround to force the scroll controller to recalculate. Otherwise, listener is not called on first frame.
-        if (controller.hasClients) {
-          controller
-            ..jumpTo(0.1)
-            ..jumpTo(0);
-        }
-      });
-      return null;
-    }, [controller]);
-
-    return Stack(
-      key: stackKey,
-      clipBehavior: Clip.none,
-      children: [
-        child,
-        if (canScrollLeft)
-          AnimatedPositioned(
-            duration: animationDuration,
-            top: offset.dy,
-            left: offset.dx,
-            bottom: offset.dy,
-            child: InkWell(
-              onTap: handleScrollToStart,
-              child: const _Indicator(scrollDirection: ScrollDirection.forward),
-            ),
-          ),
-        if (canScrollRight)
-          AnimatedPositioned(
-            duration: animationDuration,
-            top: offset.dy,
-            right: offset.dx,
-            bottom: offset.dy,
-            child: InkWell(
-              onTap: handleScrollToEnd,
-              child: const _Indicator(scrollDirection: ScrollDirection.reverse),
-            ),
-          ),
-      ],
-    );
-  }
+  State<HorizontalScrollIndicator> createState() => _HorizontalScrollIndicatorState();
 }
 
-class _Indicator extends HookWidget {
+class _HorizontalScrollIndicatorState extends State<HorizontalScrollIndicator> {
+  static const _animationDuration = Duration(milliseconds: 250);
+
+  final _stackKey = GlobalKey();
+  RenderBox? _stackBox;
+
+  bool _canScrollLeft = false;
+  bool _canScrollRight = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Resolve the render box after first frame.
+      final context = _stackKey.currentContext;
+      final object = context?.findRenderObject();
+      if (object is RenderBox) {
+        setState(() => _stackBox = object);
+      }
+      // Force scroll controller to recalculate so listener fires on first frame.
+      if (widget.controller.hasClients) {
+        widget.controller
+          ..jumpTo(0.1)
+          ..jumpTo(0);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final controller = widget.controller;
+    if (!controller.hasClients) {
+      if (_canScrollLeft || _canScrollRight) {
+        setState(() {
+          _canScrollLeft = false;
+          _canScrollRight = false;
+        });
+      }
+      return;
+    }
+    final newLeft = controller.offset > controller.position.minScrollExtent;
+    final newRight = controller.offset < controller.position.maxScrollExtent;
+    if (newLeft != _canScrollLeft || newRight != _canScrollRight) {
+      setState(() {
+        _canScrollLeft = newLeft;
+        _canScrollRight = newRight;
+      });
+    }
+  }
+
+  void _handleScrollToStart() {
+    final controller = widget.controller;
+    if (controller.hasClients) {
+      final stackWidth = _stackBox?.size.width ?? 0;
+      final currentPosition =
+          controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
+      controller.animateTo(
+        max(0, currentPosition - stackWidth),
+        duration: _animationDuration,
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _handleScrollToEnd() {
+    final controller = widget.controller;
+    if (controller.hasClients && controller.positions.isNotEmpty) {
+      final stackWidth = _stackBox?.size.width ?? 0;
+      final currentPosition =
+          controller.positions.isNotEmpty ? controller.position.pixels : 0.0;
+      controller.animateTo(
+        min(currentPosition + stackWidth, controller.position.maxScrollExtent),
+        duration: _animationDuration,
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Stack(
+    key: _stackKey,
+    clipBehavior: Clip.none,
+    children: [
+      widget.child,
+      if (_canScrollLeft)
+        AnimatedPositioned(
+          duration: _animationDuration,
+          top: widget.offset.dy,
+          left: widget.offset.dx,
+          bottom: widget.offset.dy,
+          child: InkWell(
+            onTap: _handleScrollToStart,
+            child: const _Indicator(scrollDirection: ScrollDirection.forward),
+          ),
+        ),
+      if (_canScrollRight)
+        AnimatedPositioned(
+          duration: _animationDuration,
+          top: widget.offset.dy,
+          right: widget.offset.dx,
+          bottom: widget.offset.dy,
+          child: InkWell(
+            onTap: _handleScrollToEnd,
+            child: const _Indicator(scrollDirection: ScrollDirection.reverse),
+          ),
+        ),
+    ],
+  );
+}
+
+class _Indicator extends StatelessWidget {
   const _Indicator({required this.scrollDirection});
 
   final ScrollDirection scrollDirection;
@@ -132,7 +163,7 @@ class _Indicator extends HookWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 25, right: 8),
-          child: Icon(UntitledUI.chevron_right, color: Theme.of(context).palette.iconPrimary),
+          child: Icon(UntitledUI.chevron_right, color: theme.palette.iconPrimary),
         ),
       ),
     );

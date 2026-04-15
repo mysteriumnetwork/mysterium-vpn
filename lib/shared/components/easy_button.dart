@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn/core/theme/theme_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 
-class EasyButton extends ConsumerWidget {
+class EasyButton extends StatelessWidget {
   const EasyButton({
     required this.onPressed,
     this.text,
@@ -31,8 +31,8 @@ class EasyButton extends ConsumerWidget {
   final double? height;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
+  Widget build(BuildContext context) {
+    final themeStore = getIt<ThemeStore>();
     return SizedBox(
       width: width,
       height: height,

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/shared/components/connection_tile.dart';
 import 'package:mysterium_vpn/features/home/views/home_connection_view.dart';
+import 'package:mysterium_vpn/shared/components/connection_tile.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class HomeDesktopRightPanel extends HookConsumerWidget {
+class HomeDesktopRightPanel extends StatelessWidget {
   const HomeDesktopRightPanel({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => LayoutBuilder(
+  Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => DecoratedBox(
       decoration: BoxDecoration(color: Theme.of(context).palette.bgPrimary),
       child: Stack(

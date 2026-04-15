@@ -1,9 +1,9 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/core/locale/locale_store.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/services/services.dart';
 
 part 'locations_query_store.g.dart';
 

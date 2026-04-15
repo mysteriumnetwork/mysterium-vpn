@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/auth_status.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/refresh_ip_store.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 
 import 'refresh_ip_store_test.mocks.dart';

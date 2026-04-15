@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/extensions/date.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/vpn/store/network_statistics_store.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 
-class NetworkStatistics extends ConsumerWidget {
+class NetworkStatistics extends StatelessWidget {
   const NetworkStatistics({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.watch(networkStatisticsStorePOD);
+  Widget build(BuildContext context) {
+    final store = getIt<NetworkStatisticsStore>();
     return Observer(
       builder: (context) => Container(
         width: double.infinity,

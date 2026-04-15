@@ -1,23 +1,23 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/locations/views/components/locations_search.dart';
+import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn/shared/components/svg_icon_button.dart';
 
-class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({required this.supportIcon, required this.settingsIcon, super.key});
 
   final SvgGenImage supportIcon;
   final SvgGenImage settingsIcon;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final analyticsStore = ref.read(analyticsStorePOD);
+  Widget build(BuildContext context) {
+    final analyticsStore = getIt<AnalyticsStore>();
 
     return SafeArea(
       bottom: false,
@@ -38,7 +38,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 SvgIconButton(
                   onPressed: () => handleOnSupportPage(
                     context: context,
-                    analyticsStore: ref.read(analyticsStorePOD),
+                    analyticsStore: getIt<AnalyticsStore>(),
                   ),
                   asset: supportIcon,
                 ),
