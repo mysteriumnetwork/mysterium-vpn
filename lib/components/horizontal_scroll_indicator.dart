@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HorizontalScrollIndicator extends HookWidget {
   const HorizontalScrollIndicator({
@@ -114,7 +113,7 @@ class _Indicator extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final gradientColor = theme.primaryColor;
+    final gradientColor = theme.palette.bgPrimary;
     return Transform.rotate(
       angle: switch (scrollDirection) {
         ScrollDirection.forward => pi,
@@ -133,7 +132,7 @@ class _Indicator extends HookWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 25, right: 8),
-          child: SvgIcon(asset: Asset.icons.chevronRight),
+          child: Icon(UntitledUI.chevron_right, color: Theme.of(context).palette.iconPrimary),
         ),
       ),
     );

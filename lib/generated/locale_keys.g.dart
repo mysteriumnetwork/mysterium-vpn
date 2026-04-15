@@ -165,9 +165,7 @@ abstract class LocaleKeys {
   static const installVpnProfile = 'installVpnProfile';
   static const internetConnectionRestored = 'internetConnectionRestored';
   static const ipTypeDataCenter = 'ipTypeDataCenter';
-  static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
   static const ipTypeResidential = 'ipTypeResidential';
-  static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
   static const isThisYou = 'isThisYou';
   static const it = 'it';
   static const italy = 'italy';
@@ -204,8 +202,6 @@ abstract class LocaleKeys {
   static const manageBtn = 'manageBtn';
   static const manageSubsDesc = 'manageSubsDesc';
   static const manageSubsTittle = 'manageSubsTittle';
-  static const marketingConsentPopupDesc = 'marketingConsentPopupDesc';
-  static const marketingConsentPopupTitle = 'marketingConsentPopupTitle';
   static const maybeLaterBtn = 'maybeLaterBtn';
   static const mk = 'mk';
   static const monitorStatus = 'monitorStatus';
@@ -492,4 +488,11 @@ abstract class LocaleKeys {
   static const switchToLocationBtn = 'switchToLocationBtn';
   static const redeemDiscountCode = 'redeemDiscountCode';
   static const couponCodeCopied = 'couponCodeCopied';
+  static const marketingConsentPopupTitle = 'marketingConsentPopupTitle';
+  static const marketingConsentPopupDesc = 'marketingConsentPopupDesc';
+  static const allowNotificationsBtn = 'allowNotificationsBtn';
+  static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
+  static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
+  static const ipTypeResidentialTooltipTitle = 'ipTypeResidentialTooltipTitle';
+  static const ipTypeResidentialTooltipBody = 'ipTypeResidentialTooltipBody';
 }

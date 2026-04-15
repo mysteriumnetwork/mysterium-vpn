@@ -26,12 +26,13 @@ class HomeConnectionView extends HookConsumerWidget {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: switch (screenType) {
-                  ScreenType.tablet => 222,
-                  ScreenType.desktop => 212,
+
+                top: switch (screenType) {
+                  ScreenType.mobile => 10,
+                  ScreenType.tablet => 40,
+                  ScreenType.desktop => 40,
                   _ => null,
                 },
-                top: screenType == ScreenType.mobile ? 10 : null,
                 child: const HomeBanner(),
               ),
             ],
