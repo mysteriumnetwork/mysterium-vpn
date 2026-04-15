@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
@@ -21,14 +22,6 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/cancel_subscription_survey_dialog.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/delete_account_dialog.dart';
-import 'package:mysterium_vpn/shared/components/easy_button.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
-import 'package:mysterium_vpn/shared/components/setting_item.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 
 class AccountSettings extends StatelessWidget {
   const AccountSettings({super.key});

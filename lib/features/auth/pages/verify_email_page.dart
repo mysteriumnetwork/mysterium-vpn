@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/auth/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn/features/auth/views/verify_email_view.dart';
-import 'package:mysterium_vpn/shared/components/unauthenticated_header.dart';
 
 class VerifyEmailPage extends StatelessWidget {
   const VerifyEmailPage({super.key});

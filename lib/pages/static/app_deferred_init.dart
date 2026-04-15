@@ -3,6 +3,7 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/features/locations/store/latlng_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
@@ -11,7 +12,6 @@ import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.d
 import 'package:mysterium_vpn/features/remote_config/store/texts_store.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/lifecycle_listener.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
@@ -10,8 +11,6 @@ import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:mysterium_vpn/features/auth/views/welcome_desktop_view.dart';
 import 'package:mysterium_vpn/features/auth/views/welcome_mobile_view.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/colored_scaffold.dart';
-import 'package:mysterium_vpn/shared/components/loading_barrier.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

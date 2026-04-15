@@ -1,10 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/shared/components/base_app_bar.dart';
-import 'package:mysterium_vpn/shared/components/base_layout.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class InformationalView extends StatelessWidget {

@@ -6,6 +6,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/core/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/core/configurations/breakpoint_configuration.dart';
@@ -16,7 +17,6 @@ import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 

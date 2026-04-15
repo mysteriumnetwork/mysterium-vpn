@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/bottom_spacer.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 
 class ServiceAvailabilityChecker extends StatelessWidget {
   const ServiceAvailabilityChecker({required this.child, super.key});

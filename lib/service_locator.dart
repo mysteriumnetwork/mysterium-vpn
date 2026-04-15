@@ -51,6 +51,7 @@ import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.d
 import 'package:mysterium_vpn/features/remote_config/store/texts_store.dart';
 import 'package:mysterium_vpn/features/settings/store/update_available_store.dart';
 import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_checkout_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_features_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_limited_time_offer_store.dart';
@@ -560,8 +561,22 @@ void _registerStores() {
         getIt<SubscriptionPlansStore>(),
       ),
     )
+    ..registerLazySingleton<SubscriptionCheckoutStore>(
+      () => SubscriptionCheckoutStore(
+        getIt<SubscriptionPlansStore>(),
+        getIt<SubscriptionStore>(),
+        getIt<SubscriptionPurchaseStore>(),
+        getIt<RemoteConfigStore>(),
+        getIt<AuthSessionStore>(),
+        getIt<AnalyticsStore>(),
+      ),
+    )
     ..registerLazySingleton<SubscriptionUpgradeStore>(
-      () => SubscriptionUpgradeStore(getIt<SubscriptionStore>(), getIt<SubscriptionPlansStore>()),
+      () => SubscriptionUpgradeStore(
+        getIt<SubscriptionStore>(),
+        getIt<SubscriptionPlansStore>(),
+        getIt<RemoteConfigStore>(),
+      ),
     )
     ..registerLazySingleton<SubscriptionLimitedTimeOfferStore>(
       () => SubscriptionLimitedTimeOfferStore(

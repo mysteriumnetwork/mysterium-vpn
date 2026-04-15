@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PurchasedPlan extends StatelessWidget {

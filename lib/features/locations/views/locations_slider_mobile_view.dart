@@ -1,11 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/locations/views/locations_view.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/connection_tile.dart';
-import 'package:mysterium_vpn/shared/components/dragable_indicator.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliderMobileView extends StatefulWidget {

@@ -119,7 +119,7 @@ void main() {
             purchasedProductId: anyNamed('purchasedProductId'),
             userId: anyNamed('userId'),
           ),
-        ).thenAnswer((_) async => null);
+        ).thenAnswer((_) async {});
 
         final store = createStore();
         await store.subscribeToPackage(product: productDetails);
@@ -153,7 +153,7 @@ void main() {
             userId: anyNamed('userId'),
           ),
         ).thenThrow(Exception('Purchase failed'));
-        when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async => null);
+        when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
 
         final store = createStore();
         await store.subscribeToPackage(product: productDetails);
@@ -189,7 +189,7 @@ void main() {
             purchasedProductId: anyNamed('purchasedProductId'),
             userId: anyNamed('userId'),
           ),
-        ).thenAnswer((_) async => null);
+        ).thenAnswer((_) async {});
 
         final store = createStore();
         await store.subscribeToPackage(product: newProductDetails);

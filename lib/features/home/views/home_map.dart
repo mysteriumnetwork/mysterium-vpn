@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
@@ -21,7 +22,6 @@ import 'package:mysterium_vpn/features/vpn/store/real_ip_info_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/request_tunnel_permissions_dialog.dart';
 
 class HomeMap extends StatefulWidget {
   const HomeMap({super.key});

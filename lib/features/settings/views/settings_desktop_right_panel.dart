@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/settings/views/account_settings.dart';
@@ -9,9 +10,6 @@ import 'package:mysterium_vpn/features/settings/views/qa_toolbox.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_view.dart';
 import 'package:mysterium_vpn/features/settings/views/version_update_setting.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/shared/components/banners/promotional_banner.dart';
-import 'package:mysterium_vpn/shared/components/circle_box.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopRightPanel extends StatelessWidget {

@@ -8,8 +8,9 @@ import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/scroll_controller_extensions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
-import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_checkout_outcome.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_checkout_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
@@ -42,15 +43,15 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
   final _store = GetIt.I<SubscriptionPlansStore>();
   final _purchaseStore = GetIt.I<SubscriptionPurchaseStore>();
   final _subscriptionStore = GetIt.I<SubscriptionStore>();
+  final _checkoutStore = GetIt.I<SubscriptionCheckoutStore>();
 
   final _tableKey = GlobalKey();
   late final TabController _tabController;
   late final ScrollController _scrollController;
 
   PurchasableProduct? _selectedProduct;
-  bool _isLoading = false;
 
-  late final ReactionDisposer _purchaseReactionDisposer;
+  late final ReactionDisposer _checkoutDisposer;
 
   @override
   void initState() {
@@ -58,28 +59,11 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
     _tabController = TabController(length: 2, vsync: this);
     _scrollController = ScrollController();
 
-    _purchaseReactionDisposer = reaction((_) => _purchaseStore.subscriptionStatus, (
-      SubscriptionStatus? status,
-    ) {
-      if (!mounted) {
+    _checkoutDisposer = reaction((_) => _checkoutStore.outcome, (CheckoutOutcome? outcome) {
+      if (outcome == null || !mounted) {
         return;
       }
-      setState(() => _isLoading = status?.isLoading ?? false);
-      if (status?.isError ?? false) {
-        showError(_purchaseStore.subscriptionError);
-      }
-      if (status == SubscriptionStatus.canceled) {
-        return;
-      }
-      if (status != null && !status.isLoading) {
-        if (status == SubscriptionStatus.purchased) {
-          showSnackbar(LocaleKeys.subscriptionActive.tr());
-        }
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
-        _subscriptionStore.refreshAll().ignore();
-      }
+      handleCheckoutOutcome(context, _checkoutStore, outcome);
     });
 
     _tabController.addListener(_onTabChanged);
@@ -95,7 +79,7 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
 
   @override
   void dispose() {
-    _purchaseReactionDisposer();
+    _checkoutDisposer();
     _tabController
       ..removeListener(_onTabChanged)
       ..dispose();
@@ -108,49 +92,7 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
     if (product == null) {
       return;
     }
-    await _subscribeToProduct(product.id);
-  }
-
-  Future<void> _subscribeToProduct(String id) async {
-    if (!mounted) {
-      return;
-    }
-    final analyticsStore = GetIt.I<AnalyticsStore>();
-    final remoteConfigStore = GetIt.I<RemoteConfigStore>();
-    final sessionStore = GetIt.I<AuthSessionStore>();
-    final products = await _store.future;
-    final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
-    if (selectedProduct == null) {
-      return;
-    }
-
-    if (selectedProduct.id == _subscriptionStore.subscriptionFuture.value?.planId) {
-      if (mounted) {
-        showSnackbar("You're all set! You already have this plan active");
-        Navigator.of(context).pop();
-      }
-      return;
-    }
-
-    analyticsStore.logEvent(
-      AnalyticsEvent.subscriptionNew,
-      parameters: {'item_ids': products.map((e) => e.id).toList()},
-    );
-
-    final gateway = _subscriptionStore.subscriptionFuture.value?.gateway;
-    if (remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway?.toLowerCase())) {
-      final accessToken = sessionStore.accessToken;
-      final uri = remoteConfigStore.checkoutWebRedirectUrl.replace(
-        queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
-      );
-      await openUrlLink(uri);
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-      return;
-    }
-
-    await _purchaseStore.subscribeToPackage(product: selectedProduct.productDetails);
+    await _checkoutStore.subscribe(product.id);
   }
 
   @override
@@ -274,7 +216,7 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
                   SizedBox(height: theme.spacing.ms),
                   ButtonPrimary(
                     onPressed: _handlePurchasePressed,
-                    loading: _isLoading ? const ButtonLoading() : null,
+                    loading: _checkoutStore.isLoading ? const ButtonLoading() : null,
                     decoration: ButtonDecoration(
                       decorationColor: theme.palette.bgBrandPrimary,
                       padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/auth_status.dart';
 import 'package:mysterium_vpn/core/enums/screen_type.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
@@ -18,8 +19,6 @@ import 'package:mysterium_vpn/features/settings/views/theme_picker.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/easy_text.dart';
-import 'package:mysterium_vpn/shared/components/setting_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ApplicationSettings extends StatelessWidget {

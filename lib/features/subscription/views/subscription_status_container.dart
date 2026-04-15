@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
@@ -15,12 +16,6 @@ import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/retry_dialog.dart';
-import 'package:mysterium_vpn/shared/components/error_widget.dart';
-import 'package:mysterium_vpn/shared/components/loading_barrier.dart';
-import 'package:mysterium_vpn/shared/components/loading_indicator.dart';
-import 'package:mysterium_vpn/shared/components/svg_icon.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends StatefulWidget {

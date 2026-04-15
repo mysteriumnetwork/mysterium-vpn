@@ -203,8 +203,9 @@ void main() {
 
   group('clearOutcome', () {
     test('resets outcome to null', () {
-      store.outcome = CheckoutOutcome.purchased;
-      store.clearOutcome();
+      store
+        ..outcome = CheckoutOutcome.purchased
+        ..clearOutcome();
       expect(store.outcome, isNull);
     });
   });

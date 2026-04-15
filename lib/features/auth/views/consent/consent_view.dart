@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/shared/components/base_app_bar.dart';
-import 'package:mysterium_vpn/shared/components/base_layout.dart';
+import 'package:mysterium_vpn/components/components.dart';
 
 class ConsentView extends StatelessWidget {
   const ConsentView({required this.child, super.key});

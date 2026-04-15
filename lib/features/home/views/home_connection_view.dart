@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/home/views/home_banner.dart';
 import 'package:mysterium_vpn/features/home/views/home_map.dart';
-import 'package:mysterium_vpn/shared/components/banners/promotional_banner.dart';
-import 'package:mysterium_vpn/shared/components/connection_status_bar.dart';
 
 class HomeConnectionView extends StatelessWidget {
   const HomeConnectionView({super.key});

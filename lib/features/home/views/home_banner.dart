@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/home/store/banners_store.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/banners/too_many_connections_banner.dart';
-import 'package:mysterium_vpn/shared/components/banners/unauthenticated_banner.dart';
-import 'package:mysterium_vpn/shared/components/banners/version_update_banner.dart';
-import 'package:mysterium_vpn/shared/components/subscription_banner.dart';
 
 class HomeBanner extends StatelessWidget {
   const HomeBanner({super.key});

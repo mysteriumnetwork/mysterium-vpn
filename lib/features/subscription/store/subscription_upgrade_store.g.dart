@@ -47,6 +47,28 @@ mixin _$SubscriptionUpgradeStore on _SubscriptionUpgradeStore, Store {
     () => super.isEligibleForUpgrade,
     name: '_SubscriptionUpgradeStore.isEligibleForUpgrade',
   )).value;
+  Computed<bool>? _$useStorePricesComputed;
+
+  @override
+  bool get useStorePrices => (_$useStorePricesComputed ??= Computed<bool>(
+    () => super.useStorePrices,
+    name: '_SubscriptionUpgradeStore.useStorePrices',
+  )).value;
+  Computed<bool>? _$canUseSalesValuesComputed;
+
+  @override
+  bool get canUseSalesValues => (_$canUseSalesValuesComputed ??= Computed<bool>(
+    () => super.canUseSalesValues,
+    name: '_SubscriptionUpgradeStore.canUseSalesValues',
+  )).value;
+  Computed<PurchasableProduct?>? _$upgradeComparisonProductComputed;
+
+  @override
+  PurchasableProduct? get upgradeComparisonProduct =>
+      (_$upgradeComparisonProductComputed ??= Computed<PurchasableProduct?>(
+        () => super.upgradeComparisonProduct,
+        name: '_SubscriptionUpgradeStore.upgradeComparisonProduct',
+      )).value;
 
   @override
   String toString() {
@@ -55,7 +77,10 @@ purchasableProducts: ${purchasableProducts},
 currentProduct: ${currentProduct},
 upgradeProduct: ${upgradeProduct},
 upgradeDiscountPercent: ${upgradeDiscountPercent},
-isEligibleForUpgrade: ${isEligibleForUpgrade}
+isEligibleForUpgrade: ${isEligibleForUpgrade},
+useStorePrices: ${useStorePrices},
+canUseSalesValues: ${canUseSalesValues},
+upgradeComparisonProduct: ${upgradeComparisonProduct}
     ''';
   }
 }

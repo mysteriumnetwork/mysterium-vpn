@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -10,10 +12,11 @@ part 'subscription_upgrade_store.g.dart';
 class SubscriptionUpgradeStore = _SubscriptionUpgradeStore with _$SubscriptionUpgradeStore;
 
 abstract class _SubscriptionUpgradeStore with Store {
-  _SubscriptionUpgradeStore(this._subscriptionStore, this._plansStore);
+  _SubscriptionUpgradeStore(this._subscriptionStore, this._plansStore, this._remoteConfigStore);
 
   final SubscriptionStore _subscriptionStore;
   final SubscriptionPlansStore _plansStore;
+  final RemoteConfigStore _remoteConfigStore;
 
   @computed
   List<PurchasableProduct> get purchasableProducts {
@@ -87,6 +90,31 @@ abstract class _SubscriptionUpgradeStore with Store {
   bool get isEligibleForUpgrade {
     final discount = upgradeDiscountPercent;
     return discount != null && discount > 0;
+  }
+
+  @computed
+  bool get useStorePrices {
+    final gateway = _subscriptionStore.subscriptionFuture.value?.gateway;
+    return gateway == null || gateway.isEmpty || isMobilePaymentGateway(gateway);
+  }
+
+  @computed
+  bool get canUseSalesValues => _remoteConfigStore.pricingMonthly;
+
+  /// The monthly product of the same tier as the best-value product,
+  /// used as a price comparison baseline. Falls back to the user's purchased product.
+  @computed
+  PurchasableProduct? get upgradeComparisonProduct {
+    final product = upgradeProduct;
+    if (product == null) {
+      return null;
+    }
+    final bestConfig = _plansStore.findConfig(product);
+    final allProducts = [..._plansStore.annualProducts, ..._plansStore.monthlyProducts];
+    return allProducts.firstWhereOrNull(
+          (p) => _plansStore.findConfig(p).name == bestConfig.name && p.duration == 1,
+        ) ??
+        _plansStore.purchasedProduct;
   }
 
   /// Get comparison product for a given plan

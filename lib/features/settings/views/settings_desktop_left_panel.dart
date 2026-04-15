@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
@@ -11,9 +12,6 @@ import 'package:mysterium_vpn/features/settings/views/settings_desktop_view.dart
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn/shared/components/api_version.dart';
-import 'package:mysterium_vpn/shared/components/app_version.dart';
-import 'package:mysterium_vpn/shared/components/desktop_page_header.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopLeftPanel extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_left_panel.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_right_panel.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/shared/components/desktop_panels_layout.dart';
 
 const _initialCategory = SettingCategory.connection;
 

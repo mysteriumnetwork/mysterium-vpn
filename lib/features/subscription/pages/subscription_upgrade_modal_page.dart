@@ -9,15 +9,17 @@ import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
-import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
-import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_checkout_outcome.dart';
 import 'package:mysterium_vpn/features/subscription/pages/subscription_plans_modal_page.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_checkout_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_upgrade_store.dart';
 import 'package:mysterium_vpn/features/subscription/views/subscription_status_container.dart';
 import 'package:mysterium_vpn/features/subscription/views/widgets/subscription_privacy_and_terms.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
@@ -48,83 +50,28 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
   final _store = getIt<SubscriptionPlansStore>();
   final _subscriptionStore = getIt<SubscriptionStore>();
   final _purchaseStore = getIt<SubscriptionPurchaseStore>();
-  final _remoteConfigStore = getIt<RemoteConfigStore>();
+  final _upgradeStore = getIt<SubscriptionUpgradeStore>();
+  final _checkoutStore = getIt<SubscriptionCheckoutStore>();
   late final ScrollController _scrollController;
-  bool _isLoading = false;
-  late final ReactionDisposer _reactionDisposer;
+  late final ReactionDisposer _checkoutDisposer;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _reactionDisposer = reaction((_) => _purchaseStore.subscriptionStatus, (status) {
-      if (mounted) {
-        setState(() => _isLoading = status?.isLoading ?? false);
-      }
-      if (status?.isError ?? false) {
-        showError(_purchaseStore.subscriptionError);
-      }
-      if (status == SubscriptionStatus.canceled) {
+    _checkoutDisposer = reaction((_) => _checkoutStore.outcome, (CheckoutOutcome? outcome) {
+      if (outcome == null || !mounted) {
         return;
       }
-      if (status != null && !status.isLoading) {
-        if (status == SubscriptionStatus.purchased) {
-          showSnackbar(LocaleKeys.subscriptionActive.tr());
-        }
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
-        _subscriptionStore.refreshAll().ignore();
-      }
+      handleCheckoutOutcome(context, _checkoutStore, outcome);
     });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _reactionDisposer();
+    _checkoutDisposer();
     super.dispose();
-  }
-
-  Future<void> _handleSubscribe(String id) async {
-    if (!mounted) {
-      return;
-    }
-    final analyticsStore = getIt<AnalyticsStore>();
-    final plansStore = getIt<SubscriptionPlansStore>();
-    final purchaseStore = getIt<SubscriptionPurchaseStore>();
-    final subscriptionStore = getIt<SubscriptionStore>();
-    final remoteConfigStore = getIt<RemoteConfigStore>();
-    final sessionStore = getIt<AuthSessionStore>();
-    final accessToken = await sessionStore.accessTokenFuture;
-    final products = await plansStore.future;
-    final gateway = subscriptionStore.subscriptionFuture.value?.gateway;
-    final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
-    if (selectedProduct == null) {
-      return;
-    }
-    if (selectedProduct.id == subscriptionStore.subscriptionFuture.value?.planId) {
-      if (mounted) {
-        showSnackbar("You're all set! You already have this plan active");
-        Navigator.of(context).pop();
-      }
-      return;
-    }
-    analyticsStore.logEvent(
-      AnalyticsEvent.subscriptionNew,
-      parameters: {'item_ids': products.map((e) => e.id).toList()},
-    );
-    if (remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway?.toLowerCase())) {
-      final uri = remoteConfigStore.checkoutWebRedirectUrl.replace(
-        queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
-      );
-      await openUrlLink(uri);
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-      return;
-    }
-    await purchaseStore.subscribeToPackage(product: selectedProduct.productDetails);
   }
 
   @override
@@ -184,56 +131,7 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
             }
 
             final hasPlan = subscription.active;
-            final bestConfig = _store.findConfig(product);
-            final allProducts = [..._store.annualProducts, ..._store.monthlyProducts];
-            final monthlyComparison = allProducts.firstWhereOrNull(
-              (p) => _store.findConfig(p).name == bestConfig.name && p.duration == 1,
-            );
-            final otherProduct = monthlyComparison ?? _store.purchasedProduct;
-
-            // Inline PlanData computation (from usePlanData)
-            final currentPlanGateway = _subscriptionStore.subscriptionFuture.value?.gateway;
-            final useStorePrices =
-                currentPlanGateway == null ||
-                currentPlanGateway.isEmpty ||
-                isMobilePaymentGateway(currentPlanGateway);
-            final canUseSalesValues = _remoteConfigStore.pricingMonthly;
-            final isBestValue = _store.bestValueProducts.any((it) => it.id == product.id);
-            final config = _store.findConfig(product);
-            final period = switch (product.duration) {
-              1 => LocaleKeys.month,
-              12 => LocaleKeys.year,
-              _ => '',
-            };
-            final discount = otherProduct != null
-                ? useStorePrices
-                      ? otherProduct.periodDiscountPercentage(product)
-                      : otherProduct.discountPercentageBackend(product)
-                : 0;
-            final price = useStorePrices ? product.moneyMonthly : product.moneyMonthlyBackend;
-            final money = useStorePrices ? product.money : product.backendMoney;
-            final oldPrice = otherProduct != null
-                ? useStorePrices
-                      ? otherProduct.moneyMonthly
-                      : otherProduct.moneyMonthlyBackend
-                : null;
-            final planData = PlanData(
-              fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
-              discountedLabel: LocaleKeys.discountedPriceLabel.tr(),
-              isOffer: true,
-              name: config.name.tr(),
-              monthlyFullPrice: canUseSalesValues ? oldPrice?.toString() : null,
-              monthlyDiscountedPrice: canUseSalesValues ? price.toString() : null,
-              fullPrice: '$money',
-              bestValueBadge: isBestValue ? LocaleKeys.subscriptionPlanBestValue.tr() : null,
-              promoBadge: discount > 0 && canUseSalesValues
-                  ? LocaleKeys.subscriptionPlanSaveWith.tr(
-                      namedArgs: {'percent': discount.toString(), 'planId': '1-${period.tr()}'},
-                    )
-                  : null,
-              perMonth: LocaleKeys.perMonth.tr(),
-              periodLabel: period.tr(),
-            );
+            final planData = _buildUpgradePlanData(_store, _upgradeStore, product);
             final planWithDuration = '${planData.name} 1-${planData.periodLabel.capitalize()}';
 
             return Column(
@@ -342,8 +240,8 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
                       ),
                     SizedBox(height: theme.spacing.ms),
                     ButtonPrimary(
-                      onPressed: () => _handleSubscribe(product.id),
-                      loading: _isLoading ? const ButtonLoading() : null,
+                      onPressed: () => _checkoutStore.subscribe(product.id),
+                      loading: _checkoutStore.isLoading ? const ButtonLoading() : null,
                       decoration: ButtonDecoration(
                         decorationColor: theme.palette.bgBrandPrimary,
                         padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
@@ -374,4 +272,51 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
       ),
     );
   }
+}
+
+PlanData _buildUpgradePlanData(
+  SubscriptionPlansStore plansStore,
+  SubscriptionUpgradeStore upgradeStore,
+  PurchasableProduct product,
+) {
+  final useStorePrices = upgradeStore.useStorePrices;
+  final canUseSalesValues = upgradeStore.canUseSalesValues;
+  final otherProduct = upgradeStore.upgradeComparisonProduct;
+  final config = plansStore.findConfig(product);
+  final period = switch (product.duration) {
+    1 => LocaleKeys.month,
+    12 => LocaleKeys.year,
+    _ => '',
+  };
+  final discount = otherProduct != null
+      ? useStorePrices
+            ? otherProduct.periodDiscountPercentage(product)
+            : otherProduct.discountPercentageBackend(product)
+      : 0;
+  final price = useStorePrices ? product.moneyMonthly : product.moneyMonthlyBackend;
+  final money = useStorePrices ? product.money : product.backendMoney;
+  final oldPrice = otherProduct != null
+      ? useStorePrices
+            ? otherProduct.moneyMonthly
+            : otherProduct.moneyMonthlyBackend
+      : null;
+  return PlanData(
+    fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
+    discountedLabel: LocaleKeys.discountedPriceLabel.tr(),
+    isOffer: true,
+    name: config.name.tr(),
+    monthlyFullPrice: canUseSalesValues ? oldPrice?.toString() : null,
+    monthlyDiscountedPrice: canUseSalesValues ? price.toString() : null,
+    fullPrice: '$money',
+    bestValueBadge: plansStore.bestValueProducts.any((it) => it.id == product.id)
+        ? LocaleKeys.subscriptionPlanBestValue.tr()
+        : null,
+    promoBadge: discount > 0 && canUseSalesValues
+        ? LocaleKeys.subscriptionPlanSaveWith.tr(
+            namedArgs: {'percent': discount.toString(), 'planId': '1-${period.tr()}'},
+          )
+        : null,
+    perMonth: LocaleKeys.perMonth.tr(),
+    periodLabel: period.tr(),
+  );
 }

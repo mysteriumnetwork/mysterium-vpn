@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/locale/locale_store.dart';
@@ -29,11 +30,6 @@ import 'package:mysterium_vpn/pages/static/app_deferred_init.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/shared/components/custom_platform_menu.dart';
-import 'package:mysterium_vpn/shared/components/lifecycle_listener.dart';
-import 'package:mysterium_vpn/shared/components/network_logger_overlay.dart';
-import 'package:mysterium_vpn/shared/components/retake_fokus.dart';
-import 'package:mysterium_vpn/shared/components/shortcuts.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class MyApp extends StatefulWidget {

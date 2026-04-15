@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/features/home/views/home_connection_view.dart';
-import 'package:mysterium_vpn/shared/components/connection_tile.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeDesktopRightPanel extends StatelessWidget {

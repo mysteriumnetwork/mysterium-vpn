@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/extensions/navigation_extensions.dart';
@@ -22,11 +23,6 @@ import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/shared/components/colored_scaffold.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/device_limit_dialog.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/marketing_consent_dialog.dart';
-import 'package:mysterium_vpn/shared/components/dialogs/push_notifications_dialog.dart';
-import 'package:mysterium_vpn/shared/components/loading_barrier.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
