@@ -29,7 +29,7 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
         .scrollable()
         .backgroundColor(theme.palette.bgPrimary)
         .height(getMediaHeight(context))
-        .width(getMediaWidth(context) - 360);
+        .width(getMediaWidth(context) -346);
   }
 }
 
