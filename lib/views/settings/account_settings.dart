@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -319,7 +320,14 @@ class _SubscriptionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
             ),
             size: ButtonSize.small,
-            onPressed: isSubscribing ? null : () => onSubscribePress(manageSubscription: true),
+            onPressed: isSubscribing
+                ? null
+                : () async {
+                    final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
+                    if (shouldProceed ?? false) {
+                      await onSubscribePress(manageSubscription: true);
+                    }
+                  },
             child: Text(LocaleKeys.cancelBtn.tr()),
           );
           trailing = isDesktop
