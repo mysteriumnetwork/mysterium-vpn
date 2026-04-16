@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
+import 'package:mysterium_vpn/common/enums/blocker_type.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
@@ -108,6 +109,27 @@ void main() {
       await store.toggleNotSafeContentBlocker();
       expect(store.notSafeContentBlocker, isFalse);
       verify(mockLocalDBService.setNotSafeContentBlocker(value: false)).called(1);
+    });
+  });
+
+  group('blockerType', () {
+    test('returns none when both blockers are off', () {
+      expect(store.blockerType, BlockerType.none);
+    });
+
+    test('returns malware when only malware blocker is on', () async {
+      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      await store.getMalwareContentBlocker();
+      expect(store.blockerType, BlockerType.malware);
+    });
+
+    test('returns nsfwAndMalware when both blockers are on', () async {
+      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setNotSafeContentBlocker(value: true)).thenAnswer((_) async => {});
+      await store.toggleNotSafeContentBlocker();
+      expect(store.malwareContentBlocker, isTrue);
+      expect(store.notSafeContentBlocker, isTrue);
+      expect(store.blockerType, BlockerType.nsfwAndMalware);
     });
   });
 
