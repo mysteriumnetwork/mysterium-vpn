@@ -186,6 +186,7 @@ class _Authenticated extends HookConsumerWidget {
           analyticsStore: analyticsStore,
           position: showDeleteAccount ? SettingsCardPosition.middle : SettingsCardPosition.bottom,
           isSubscribing: subscribeStatus.isLoading,
+          isDesktop: isDesktop,
           onSubscribePress: onSubscribePress,
         ),
         if (showDeleteAccount)
@@ -250,6 +251,7 @@ class _SubscriptionCard extends StatelessWidget {
     required this.analyticsStore,
     required this.position,
     required this.isSubscribing,
+    required this.isDesktop,
     required this.onSubscribePress,
   });
 
@@ -257,6 +259,7 @@ class _SubscriptionCard extends StatelessWidget {
   final AnalyticsStore analyticsStore;
   final SettingsCardPosition position;
   final bool isSubscribing;
+  final bool isDesktop;
   final Future<void> Function({required bool manageSubscription}) onSubscribePress;
 
   @override
@@ -296,36 +299,39 @@ class _SubscriptionCard extends StatelessWidget {
                 : Text(LocaleKeys.pricingPlanSeePlansBtn.tr()),
           );
         } else {
-          trailing = Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ButtonTertiary(
-                decoration: ButtonDecoration(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-                ),
-                size: ButtonSize.small,
-                onPressed: isSubscribing
-                    ? null
-                    : () async {
-                        analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                        await onSubscribePress(manageSubscription: true);
-                      },
-                child: Text(LocaleKeys.settingManageBtn.tr()),
-              ),
-              SizedBox(height: spacing.xs),
-              ButtonTertiary(
-                decoration: ButtonDecoration(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-                ),
-                size: ButtonSize.small,
-                onPressed: isSubscribing ? null : () => onSubscribePress(manageSubscription: true),
-                child: Text(LocaleKeys.cancelBtn.tr()),
-              ),
-            ],
+          final manageButton = ButtonTertiary(
+            decoration: ButtonDecoration(
+              minimumSize: Size.zero,
+              padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
+            ),
+            size: ButtonSize.small,
+            onPressed: isSubscribing
+                ? null
+                : () async {
+                    analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                    await onSubscribePress(manageSubscription: true);
+                  },
+            child: Text(LocaleKeys.settingManageBtn.tr()),
           );
+          final cancelButton = ButtonTertiary(
+            decoration: ButtonDecoration(
+              minimumSize: Size.zero,
+              padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
+            ),
+            size: ButtonSize.small,
+            onPressed: isSubscribing ? null : () => onSubscribePress(manageSubscription: true),
+            child: Text(LocaleKeys.cancelBtn.tr()),
+          );
+          trailing = isDesktop
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [manageButton, SizedBox(width: spacing.md), cancelButton],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [manageButton, SizedBox(height: spacing.xs), cancelButton],
+                );
         }
 
         final planTitle = isSubscriptionActive
