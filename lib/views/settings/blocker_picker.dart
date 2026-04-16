@@ -116,6 +116,9 @@ class BlockerPicker extends ConsumerWidget {
       )
       .toList();
 
+  /// Applies blocker type by toggling malware/NSFW flags in a safe order:
+  /// disable dependent (NSFW) before dependency (malware), enable dependency
+  /// before dependent. Rolls back the first toggle if the second fails.
   static Future<void> _applyBlockerType(
     BlockerType type,
     DNSStore dnsStore,
@@ -126,13 +129,38 @@ class BlockerPicker extends ConsumerWidget {
     final targetMalware = type != BlockerType.none;
     final targetNsfw = type == BlockerType.nsfwAndMalware;
 
-    if (wasMalware != targetMalware) {
-      await dnsStore.toggleMalwareBlocker();
-      analyticsStore.logEvent(targetMalware ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
-    }
-    if (wasNsfw != targetNsfw) {
+    // 1. Disable NSFW first (before disabling its dependency, malware).
+    if (wasNsfw && !targetNsfw) {
       await dnsStore.toggleNotSafeContentBlocker();
-      analyticsStore.logEvent(targetNsfw ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
+      analyticsStore.logEvent(AnalyticsEvent.nsfwOff);
+    }
+
+    // 2. Toggle malware; rollback NSFW on failure.
+    if (wasMalware != targetMalware) {
+      try {
+        await dnsStore.toggleMalwareBlocker();
+        analyticsStore.logEvent(
+          targetMalware ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
+        );
+      } catch (_) {
+        if (wasNsfw && !targetNsfw) {
+          await dnsStore.toggleNotSafeContentBlocker();
+        }
+        rethrow;
+      }
+    }
+
+    // 3. Enable NSFW last (after its dependency, malware); rollback malware on failure.
+    if (!wasNsfw && targetNsfw) {
+      try {
+        await dnsStore.toggleNotSafeContentBlocker();
+        analyticsStore.logEvent(AnalyticsEvent.nsfwOn);
+      } catch (_) {
+        if (wasMalware != targetMalware) {
+          await dnsStore.toggleMalwareBlocker();
+        }
+        rethrow;
+      }
     }
   }
 }
