@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/easy_dropdown.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/picker_bottom_sheet.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -66,7 +65,7 @@ class BlockerPicker extends ConsumerWidget {
           title: LocaleKeys.blockerSettingLbl.tr(),
           items: _availableTypes(dnsStore, current),
           value: current,
-          labelOf: (t) => t.label,
+          labelOf: (t) => t.localeKey.tr(),
           onChanged: (type) => _applyBlockerType(type, dnsStore, analyticsStore),
         );
 
@@ -77,7 +76,7 @@ class BlockerPicker extends ConsumerWidget {
           onTap: tap,
           child: SettingsCard(
             title: LocaleKeys.blockerSettingLbl.tr(),
-            subtitle: current.label,
+            subtitle: current.localeKey.tr(),
             position: position,
             trailing: isLoading
                 ? const LoadingIndicator()
@@ -111,7 +110,7 @@ class BlockerPicker extends ConsumerWidget {
           value: type,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: EasyText(type.label),
+            child: Text(type.localeKey.tr()),
           ),
         ),
       )

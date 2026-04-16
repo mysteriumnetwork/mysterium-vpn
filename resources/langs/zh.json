@@ -518,5 +518,9 @@
   "backHomeLbl": "返回首页",
   "backToSettingsLbl": "返回设置",
   "qaToolboxLbl": "QA工具箱",
-  "helpSupportLbl": "帮助与支持"
+  "helpSupportLbl": "帮助与支持",
+  "settingManageBtn": "管理",
+  "noneLbl": "没有任何",
+  "malwareLbl": "恶意软件",
+  "nsfwLbl": "NSFW 和恶意软件"
 }

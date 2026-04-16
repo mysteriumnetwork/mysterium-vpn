@@ -518,5 +518,9 @@
   "backHomeLbl": "ホームに戻る",
   "backToSettingsLbl": "設定に戻る",
   "qaToolboxLbl": "QAツールボックス",
-  "helpSupportLbl": "ヘルプ＆サポート"
+  "helpSupportLbl": "ヘルプ＆サポート",
+  "settingManageBtn": "管理",
+  "noneLbl": "なし",
+  "malwareLbl": "マルウェア",
+  "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア"
 }

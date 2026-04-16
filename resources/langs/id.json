@@ -518,5 +518,9 @@
   "backHomeLbl": "Kembali ke halaman utama",
   "backToSettingsLbl": "Kembali ke Pengaturan",
   "qaToolboxLbl": "Kotak Peralatan QA",
-  "helpSupportLbl": "Bantuan & Dukungan"
+  "helpSupportLbl": "Bantuan & Dukungan",
+  "settingManageBtn": "Mengelola",
+  "noneLbl": "Tidak ada",
+  "malwareLbl": "Perangkat lunak berbahaya",
+  "nsfwLbl": "Konten Dewasa & Malware"
 }

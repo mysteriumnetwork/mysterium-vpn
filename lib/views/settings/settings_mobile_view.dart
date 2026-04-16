@@ -7,16 +7,19 @@ import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/settings/account_settings.dart';
-import 'package:mysterium_vpn/views/settings/application_settings.dart';
-import 'package:mysterium_vpn/views/settings/connection_settings.dart';
-import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
+import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsMobileView extends HookConsumerWidget {
   const SettingsMobileView({super.key});
+
+  static const _mainCategories = [
+    SettingCategory.account,
+    SettingCategory.connection,
+    SettingCategory.preferences,
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +35,24 @@ class SettingsMobileView extends HookConsumerWidget {
           builder: (_) => Theme(
             data: capturedTheme,
             child: _MobileSettingsSubPage(title: title, scrollable: scrollable, child: content),
+          ),
+        ),
+      );
+    }
+
+    Widget categoryCard(SettingCategory category, SettingsCardPosition position) {
+      void onTap() =>
+          pushSubPage(category.trKey.tr(), category.content, scrollable: category.scrollable);
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: SettingsCard(
+          position: position,
+          icon: Icon(category.icon, size: 20),
+          title: category.trKey.tr(),
+          trailing: IconButton(
+            onPressed: onTap,
+            icon: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
           ),
         ),
       );
@@ -56,71 +77,13 @@ class SettingsMobileView extends HookConsumerWidget {
               child: Column(
                 children: [
                   const AppVersionUpdateSetting(),
+                  for (final (index, category) in _mainCategories.indexed)
+                    categoryCard(
+                      category,
+                      index == 0 ? SettingsCardPosition.top : SettingsCardPosition.middle,
+                    ),
                   GestureDetector(
-                    onTap: () => pushSubPage(
-                      LocaleKeys.account.tr(),
-                      const AccountSettings(),
-                      scrollable: false,
-                    ),
-                    child: SettingsCard(
-                      position: SettingsCardPosition.top,
-                      icon: const Icon(UntitledUI.user_03, size: 20),
-                      title: LocaleKeys.account.tr(),
-                      trailing: IconButton(
-                        onPressed: () => pushSubPage(
-                          LocaleKeys.account.tr(),
-                          const AccountSettings(),
-                          scrollable: false,
-                        ),
-                        icon: Icon(
-                          UntitledUI.chevron_right,
-                          size: 24,
-                          color: theme.palette.iconTertiary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => pushSubPage(
-                      LocaleKeys.connectionSettingLbl.tr(),
-                      const ConnectionSettings(),
-                    ),
-                    child: SettingsCard(
-                      icon: const Icon(UntitledUI.wifi, size: 20),
-                      title: LocaleKeys.connectionSettingLbl.tr(),
-                      position: SettingsCardPosition.middle,
-                      trailing: IconButton(
-                        onPressed: () => pushSubPage(
-                          LocaleKeys.connectionSettingLbl.tr(),
-                          const ConnectionSettings(),
-                        ),
-                        icon: Icon(
-                          UntitledUI.chevron_right,
-                          size: 24,
-                          color: theme.palette.iconTertiary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () =>
-                        pushSubPage(LocaleKeys.preferences.tr(), const ApplicationSettings()),
-                    child: SettingsCard(
-                      icon: const Icon(UntitledUI.settings_04, size: 20),
-                      title: LocaleKeys.preferences.tr(),
-                      position: SettingsCardPosition.middle,
-                      trailing: IconButton(
-                        onPressed: () =>
-                            pushSubPage(LocaleKeys.preferences.tr(), const ApplicationSettings()),
-                        icon: Icon(
-                          UntitledUI.chevron_right,
-                          size: 24,
-                          color: theme.palette.iconTertiary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onTap: () =>
                         handleOnSupportPage(context: context, analyticsStore: analyticsStore),
                     child: SettingsCard(
@@ -139,22 +102,10 @@ class SettingsMobileView extends HookConsumerWidget {
                     ),
                   ),
                   if (enableQaHelpers)
-                    GestureDetector(
-                      onTap: () => pushSubPage(LocaleKeys.qaToolboxLbl.tr(), const QAToolbox()),
-                      child: SettingsCard(
-                        icon: const Icon(UntitledUI.settings_04, size: 20),
-                        title: LocaleKeys.qaToolboxLbl.tr(),
-                        trailing: IconButton(
-                          onPressed: () =>
-                              pushSubPage(LocaleKeys.qaToolboxLbl.tr(), const QAToolbox()),
-                          icon: Icon(
-                            UntitledUI.chevron_right,
-                            size: 24,
-                            color: theme.palette.iconTertiary,
-                          ),
-                        ),
-                      ).padding(top: theme.spacing.md),
-                    ),
+                    categoryCard(
+                      SettingCategory.qaToolbox,
+                      SettingsCardPosition.single,
+                    ).padding(top: theme.spacing.md),
                 ],
               ),
             ),

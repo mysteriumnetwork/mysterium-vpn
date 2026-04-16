@@ -518,5 +518,9 @@
   "backHomeLbl": "Ana sayfaya geri dön",
   "backToSettingsLbl": "Ayarlara geri dön",
   "qaToolboxLbl": "QA Araç Kutusu",
-  "helpSupportLbl": "Yardım ve Destek"
+  "helpSupportLbl": "Yardım ve Destek",
+  "settingManageBtn": "Üstesinden gelmek",
+  "noneLbl": "Hiçbiri",
+  "malwareLbl": "Kötü amaçlı yazılım",
+  "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım"
 }

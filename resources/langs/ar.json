@@ -518,5 +518,9 @@
   "backHomeLbl": "العودة إلى الصفحة الرئيسية",
   "backToSettingsLbl": "العودة إلى الإعدادات",
   "qaToolboxLbl": "أدوات ضمان الجودة",
-  "helpSupportLbl": "المساعدة والدعم"
+  "helpSupportLbl": "المساعدة والدعم",
+  "settingManageBtn": "يدير",
+  "noneLbl": "لا أحد",
+  "malwareLbl": "البرامج الضارة",
+  "nsfwLbl": "محتوى غير لائق وبرامج ضارة"
 }

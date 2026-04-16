@@ -12,7 +12,7 @@ FutureOr<void> showPickerBottomSheet<T>({
   required String title,
   required List<T> items,
   required T value,
-  required void Function(T) onChanged,
+  required FutureOr<void> Function(T) onChanged,
   required String Function(T) labelOf,
   String? Function(T)? subtitleOf,
 }) => showBottomSheetDialog(
@@ -44,7 +44,7 @@ class _PickerSheet<T> extends StatefulWidget {
   final String title;
   final List<T> items;
   final T value;
-  final void Function(T) onChanged;
+  final FutureOr<void> Function(T) onChanged;
   final String Function(T) labelOf;
   final String? Function(T)? subtitleOf;
 
@@ -72,10 +72,12 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
             label: widget.labelOf(item),
             subtitle: widget.subtitleOf?.call(item),
             selected: _selected == item,
-            onTap: () {
+            onTap: () async {
               setState(() => _selected = item);
-              widget.onChanged(item);
-              Navigator.of(context).pop();
+              await widget.onChanged(item);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
           ),
       ],

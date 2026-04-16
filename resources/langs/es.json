@@ -518,5 +518,9 @@
   "backHomeLbl": "Volver a casa",
   "backToSettingsLbl": "Volver a Configuración",
   "qaToolboxLbl": "Caja de herramientas de control de calidad",
-  "helpSupportLbl": "Ayuda y soporte"
+  "helpSupportLbl": "Ayuda y soporte",
+  "settingManageBtn": "Administrar",
+  "noneLbl": "Ninguno",
+  "malwareLbl": "malware",
+  "nsfwLbl": "Contenido para adultos y malware"
 }

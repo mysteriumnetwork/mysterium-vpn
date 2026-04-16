@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -35,31 +36,14 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                NavItem(
-                  icon: const Icon(UntitledUI.user_03, size: 20),
-                  label: LocaleKeys.account.tr(),
-                  current: settingCategory == SettingCategory.account,
-                  onTap: () => _updateCategory(ref, SettingCategory.account),
-                ),
-                NavItem(
-                  icon: const Icon(UntitledUI.wifi, size: 20),
-                  label: LocaleKeys.connectionSettingLbl.tr(),
-                  current: settingCategory == SettingCategory.connection,
-                  onTap: () => _updateCategory(ref, SettingCategory.connection),
-                ),
-                NavItem(
-                  icon: const Icon(UntitledUI.settings_04, size: 20),
-                  label: LocaleKeys.preferences.tr(),
-                  current: settingCategory == SettingCategory.preferences,
-                  onTap: () => _updateCategory(ref, SettingCategory.preferences),
-                ),
-                if (enableQaHelpers)
-                  NavItem(
-                    icon: const Icon(UntitledUI.settings_04, size: 20),
-                    label: LocaleKeys.qaToolboxLbl.tr(),
-                    current: settingCategory == SettingCategory.qaToolbox,
-                    onTap: () => _updateCategory(ref, SettingCategory.qaToolbox),
-                  ),
+                for (final category in SettingCategory.values)
+                  if (category != SettingCategory.qaToolbox || enableQaHelpers)
+                    NavItem(
+                      icon: Icon(category.icon, size: 20),
+                      label: category.trKey.tr(),
+                      current: settingCategory == category,
+                      onTap: () => _updateCategory(ref, category),
+                    ),
                 NavItem(
                   icon: const Icon(UntitledUI.message_question_square, size: 20),
                   label: LocaleKeys.helpSupportLbl.tr(),

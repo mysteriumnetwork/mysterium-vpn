@@ -510,4 +510,8 @@ abstract class LocaleKeys {
   static const backToSettingsLbl = 'backToSettingsLbl';
   static const qaToolboxLbl = 'qaToolboxLbl';
   static const helpSupportLbl = 'helpSupportLbl';
+  static const settingManageBtn = 'settingManageBtn';
+  static const noneLbl = 'noneLbl';
+  static const malwareLbl = 'malwareLbl';
+  static const nsfwLbl = 'nsfwLbl';
 }

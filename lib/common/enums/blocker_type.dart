@@ -1,10 +1,12 @@
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+
 /// The three content-blocking modes available in the app.
 enum BlockerType {
-  none('None'),
-  malware('Malware'),
-  nsfwAndMalware('NSFW & Malware');
+  none(LocaleKeys.noneLbl),
+  malware(LocaleKeys.malwareLbl),
+  nsfwAndMalware(LocaleKeys.nsfwLbl);
 
-  const BlockerType(this.label);
+  const BlockerType(this.localeKey);
 
-  final String label;
+  final String localeKey;
 }

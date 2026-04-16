@@ -518,5 +518,9 @@
   "backHomeLbl": "Back to home",
   "backToSettingsLbl": "Back to Settings",
   "qaToolboxLbl": "QA Toolbox",
-  "helpSupportLbl": "Help & Support"
+  "helpSupportLbl": "Help & Support",
+  "settingManageBtn": "Manage",
+  "noneLbl": "None",
+  "malwareLbl": "Malware",
+  "nsfwLbl": "NSFW & Malware"
 }

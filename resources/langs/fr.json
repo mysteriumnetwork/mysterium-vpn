@@ -518,5 +518,9 @@
   "backHomeLbl": "Retour à l'accueil",
   "backToSettingsLbl": "Retour aux paramètres",
   "qaToolboxLbl": "Boîte à outils QA",
-  "helpSupportLbl": "Aide et assistance"
+  "helpSupportLbl": "Aide et assistance",
+  "settingManageBtn": "Gérer",
+  "noneLbl": "Aucun",
+  "malwareLbl": "Logiciel malveillant",
+  "nsfwLbl": "Contenu réservé aux adultes et logiciels malveillants"
 }

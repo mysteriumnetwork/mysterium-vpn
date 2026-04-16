@@ -525,6 +525,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "返回设置",
     "qaToolboxLbl": "QA工具箱",
     "helpSupportLbl": "帮助与支持",
+    "settingManageBtn": "管理",
+    "noneLbl": "没有任何",
+    "malwareLbl": "恶意软件",
+    "nsfwLbl": "NSFW 和恶意软件",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1087,6 +1091,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Ayarlara geri dön",
     "qaToolboxLbl": "QA Araç Kutusu",
     "helpSupportLbl": "Yardım ve Destek",
+    "settingManageBtn": "Üstesinden gelmek",
+    "noneLbl": "Hiçbiri",
+    "malwareLbl": "Kötü amaçlı yazılım",
+    "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1608,6 +1616,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "設定に戻る",
     "qaToolboxLbl": "QAツールボックス",
     "helpSupportLbl": "ヘルプ＆サポート",
+    "settingManageBtn": "管理",
+    "noneLbl": "なし",
+    "malwareLbl": "マルウェア",
+    "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2197,6 +2209,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Zurück zu den Einstellungen",
     "qaToolboxLbl": "QA-Toolbox",
     "helpSupportLbl": "Hilfe & Unterstützung",
+    "settingManageBtn": "Verwalten",
+    "noneLbl": "Keiner",
+    "malwareLbl": "Malware",
+    "nsfwLbl": "NSFW & Malware",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2777,6 +2793,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Voltar às configurações",
     "qaToolboxLbl": "Caixa de ferramentas de controle de qualidade",
     "helpSupportLbl": "Ajuda e suporte",
+    "settingManageBtn": "Gerenciar",
+    "noneLbl": "Nenhum",
+    "malwareLbl": "Malware",
+    "nsfwLbl": "Conteúdo impróprio para menores e malware",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3345,6 +3365,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Back to Settings",
     "qaToolboxLbl": "QA Toolbox",
     "helpSupportLbl": "Help & Support",
+    "settingManageBtn": "Manage",
+    "noneLbl": "None",
+    "malwareLbl": "Malware",
+    "nsfwLbl": "NSFW & Malware",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3928,6 +3952,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Torna alle impostazioni",
     "qaToolboxLbl": "Kit di strumenti per il controllo qualità",
     "helpSupportLbl": "Aiuto e supporto",
+    "settingManageBtn": "Maneggio",
+    "noneLbl": "Nessuno",
+    "malwareLbl": "Malware",
+    "nsfwLbl": "Contenuti non adatti ai minori e malware",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4518,6 +4546,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Retour aux paramètres",
     "qaToolboxLbl": "Boîte à outils QA",
     "helpSupportLbl": "Aide et assistance",
+    "settingManageBtn": "Gérer",
+    "noneLbl": "Aucun",
+    "malwareLbl": "Logiciel malveillant",
+    "nsfwLbl": "Contenu réservé aux adultes et logiciels malveillants",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5090,6 +5122,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Kembali ke Pengaturan",
     "qaToolboxLbl": "Kotak Peralatan QA",
     "helpSupportLbl": "Bantuan & Dukungan",
+    "settingManageBtn": "Mengelola",
+    "noneLbl": "Tidak ada",
+    "malwareLbl": "Perangkat lunak berbahaya",
+    "nsfwLbl": "Konten Dewasa & Malware",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5673,6 +5709,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "Volver a Configuración",
     "qaToolboxLbl": "Caja de herramientas de control de calidad",
     "helpSupportLbl": "Ayuda y soporte",
+    "settingManageBtn": "Administrar",
+    "noneLbl": "Ninguno",
+    "malwareLbl": "malware",
+    "nsfwLbl": "Contenido para adultos y malware",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6227,6 +6267,10 @@ class CodegenLoader extends AssetLoader {
     "backToSettingsLbl": "العودة إلى الإعدادات",
     "qaToolboxLbl": "أدوات ضمان الجودة",
     "helpSupportLbl": "المساعدة والدعم",
+    "settingManageBtn": "يدير",
+    "noneLbl": "لا أحد",
+    "malwareLbl": "البرامج الضارة",
+    "nsfwLbl": "محتوى غير لائق وبرامج ضارة",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

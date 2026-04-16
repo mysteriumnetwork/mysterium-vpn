@@ -312,7 +312,7 @@ class _SubscriptionCard extends StatelessWidget {
                         analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                         await onSubscribePress(manageSubscription: true);
                       },
-                child: const Text('Manage'),
+                child: Text(LocaleKeys.settingManageBtn.tr()),
               ),
               SizedBox(height: spacing.xs),
               ButtonTertiary(
@@ -322,7 +322,7 @@ class _SubscriptionCard extends StatelessWidget {
                 ),
                 size: ButtonSize.small,
                 onPressed: isSubscribing ? null : () => onSubscribePress(manageSubscription: true),
-                child: const Text('Cancel'),
+                child: Text(LocaleKeys.cancelBtn.tr()),
               ),
             ],
           );
