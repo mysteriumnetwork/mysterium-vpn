@@ -30,13 +30,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.hideDeleteAccount,
     name: 'RemoteConfigStoreBase.hideDeleteAccount',
   )).value;
-  Computed<bool>? _$hideKillSwitchComputed;
-
-  @override
-  bool get hideKillSwitch => (_$hideKillSwitchComputed ??= Computed<bool>(
-    () => super.hideKillSwitch,
-    name: 'RemoteConfigStoreBase.hideKillSwitch',
-  )).value;
   Computed<String>? _$minMacosBuildNumberComputed;
 
   @override
@@ -366,7 +359,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
 isServiceAvailable: ${isServiceAvailable},
 isServiceAvailableMessage: ${isServiceAvailableMessage},
 hideDeleteAccount: ${hideDeleteAccount},
-hideKillSwitch: ${hideKillSwitch},
 minMacosBuildNumber: ${minMacosBuildNumber},
 minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
 minWindowsBuildNumber: ${minWindowsBuildNumber},
