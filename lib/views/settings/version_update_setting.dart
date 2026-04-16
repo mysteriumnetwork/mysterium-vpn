@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -18,6 +19,7 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
     final screenType = useScreenType();
 
     final isDesktop = screenType != ScreenType.mobile;
@@ -41,7 +43,10 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
                 minimumSize: Size.zero,
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
-              onPressed: openAppStorePage,
+              onPressed: () {
+                analyticsStore.logEvent(AnalyticsEvent.appVersionSettingClicked);
+                openAppStorePage();
+              },
               child: Text(LocaleKeys.updateBtn.tr()),
             ),
           ),
