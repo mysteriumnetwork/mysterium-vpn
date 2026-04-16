@@ -61,25 +61,34 @@ class BlockerPicker extends ConsumerWidget {
             dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending;
         final current = dnsStore.blockerType;
 
+        void onTap() => showPickerBottomSheet<BlockerType>(
+          context: context,
+          title: LocaleKeys.blockerSettingLbl.tr(),
+          items: _availableTypes(dnsStore, current),
+          value: current,
+          labelOf: (t) => t.label,
+          onChanged: (type) => _applyBlockerType(type, dnsStore, analyticsStore),
+        );
+
+        final tap = isLoading || !authSessionStore.isAuthenticated ? null : onTap;
+
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: isLoading || !authSessionStore.isAuthenticated
-              ? null
-              : () => showPickerBottomSheet<BlockerType>(
-                  context: context,
-                  title: LocaleKeys.blockerSettingLbl.tr(),
-                  items: _availableTypes(dnsStore, current),
-                  value: current,
-                  labelOf: (t) => t.label,
-                  onChanged: (type) => _applyBlockerType(type, dnsStore, analyticsStore),
-                ),
+          onTap: tap,
           child: SettingsCard(
             title: LocaleKeys.blockerSettingLbl.tr(),
             subtitle: current.label,
             position: position,
             trailing: isLoading
                 ? const LoadingIndicator()
-                : Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
+                : IconButton(
+                    icon: Icon(
+                      UntitledUI.chevron_right,
+                      size: 24,
+                      color: theme.palette.iconTertiary,
+                    ),
+                    onPressed: tap,
+                  ),
           ),
         );
       },
@@ -115,35 +124,16 @@ class BlockerPicker extends ConsumerWidget {
   ) async {
     final wasMalware = dnsStore.malwareContentBlocker;
     final wasNsfw = dnsStore.notSafeContentBlocker;
+    final targetMalware = type != BlockerType.none;
+    final targetNsfw = type == BlockerType.nsfwAndMalware;
 
-    switch (type) {
-      case BlockerType.none:
-        if (wasNsfw) {
-          await dnsStore.toggleNotSafeContentBlocker();
-        }
-        if (wasMalware) {
-          await dnsStore.toggleMalwareBlocker();
-        }
-      case BlockerType.malware:
-        if (wasNsfw) {
-          await dnsStore.toggleNotSafeContentBlocker();
-        }
-        if (!wasMalware) {
-          await dnsStore.toggleMalwareBlocker();
-        }
-      case BlockerType.nsfwAndMalware:
-        if (!wasNsfw) {
-          await dnsStore.toggleNotSafeContentBlocker();
-        }
+    if (wasMalware != targetMalware) {
+      await dnsStore.toggleMalwareBlocker();
+      analyticsStore.logEvent(targetMalware ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
     }
-
-    final isMalware = type != BlockerType.none;
-    final isNsfw = type == BlockerType.nsfwAndMalware;
-    if (wasMalware != isMalware) {
-      analyticsStore.logEvent(isMalware ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff);
-    }
-    if (wasNsfw != isNsfw) {
-      analyticsStore.logEvent(isNsfw ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
+    if (wasNsfw != targetNsfw) {
+      await dnsStore.toggleNotSafeContentBlocker();
+      analyticsStore.logEvent(targetNsfw ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff);
     }
   }
 }

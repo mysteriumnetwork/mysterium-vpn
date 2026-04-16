@@ -70,31 +70,38 @@ class ProtocolPicker extends ConsumerWidget {
 
     // Mobile
     return Observer(
-      builder: (context) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: authSessionStore.isAuthenticated
-            ? () => showPickerBottomSheet<ProtocolType>(
-                context: context,
-                title: title,
-                items: ProtocolType.values,
-                value: vpnProtocolStore.protocol,
-                labelOf: (p) => p.label,
-                onChanged: (newProtocol) => _changeProtocol(
-                  context,
-                  newProtocol: newProtocol,
-                  vpnStore: vpnStore,
-                  vpnProtocolStore: vpnProtocolStore,
-                  analyticsStore: analyticsStore,
-                ),
-              )
-            : null,
-        child: SettingsCard(
+      builder: (context) {
+        void onTap() => showPickerBottomSheet<ProtocolType>(
+          context: context,
           title: title,
-          subtitle: vpnProtocolStore.protocol.label,
-          position: position,
-          trailing: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
-        ),
-      ),
+          items: ProtocolType.values,
+          value: vpnProtocolStore.protocol,
+          labelOf: (p) => p.label,
+          onChanged: (newProtocol) => _changeProtocol(
+            context,
+            newProtocol: newProtocol,
+            vpnStore: vpnStore,
+            vpnProtocolStore: vpnProtocolStore,
+            analyticsStore: analyticsStore,
+          ),
+        );
+
+        final tap = authSessionStore.isAuthenticated ? onTap : null;
+
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: tap,
+          child: SettingsCard(
+            title: title,
+            subtitle: vpnProtocolStore.protocol.label,
+            position: position,
+            trailing: IconButton(
+              icon: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
+              onPressed: tap,
+            ),
+          ),
+        );
+      },
     );
   }
 
