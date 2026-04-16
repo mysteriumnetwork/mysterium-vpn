@@ -45,7 +45,7 @@ class SettingsMobileView extends HookConsumerWidget {
             backLabel: LocaleKeys.backHomeLbl.tr(),
             backgroundColor: theme.palette.bgSidePanel,
           ),
-          PromoBanner(),
+          const PromoBanner(),
           Text(
             LocaleKeys.settings.tr(),
             style: theme.textStyles.displayXlg.semibold.copyWith(color: theme.palette.textPrimary),
@@ -55,7 +55,7 @@ class SettingsMobileView extends HookConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
               child: Column(
                 children: [
-                  AppVersionUpdateSetting(),
+                  const AppVersionUpdateSetting(),
                   GestureDetector(
                     onTap: () => pushSubPage(
                       LocaleKeys.account.tr(),
