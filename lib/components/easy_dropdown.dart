@@ -25,7 +25,8 @@ class EasyDropdown<T> extends StatelessWidget {
           isExpanded: true,
           value: value,
           icon: Icon(UntitledUI.chevron_down, size: 20, color: theme.palette.iconTertiary),
-          disabledHint: items.where((item) => item.value == value).firstOrNull?.child ??
+          disabledHint:
+              items.where((item) => item.value == value).firstOrNull?.child ??
               Text(
                 value.toString(),
                 style: TextStyle(color: theme.palette.textTertiary, fontSize: 16),
