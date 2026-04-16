@@ -1,18 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
-import 'package:mysterium_vpn/components/circle_box.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
 import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
-import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
@@ -21,40 +15,45 @@ class SettingsDesktopRightPanel extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingCategory = ref.watch(selectedCategoryProvider);
+    final theme = Theme.of(context);
+
     return Column(
-          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 40, right: 40, top: 40, bottom: 12),
-              child: _HeaderTitle(title: settingCategory.trKey.tr()),
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 18), child: PromoBanner()),
-            const AppVersionUpdateSetting(),
+            _ContentPanelHeader(category: settingCategory),
             switch (settingCategory) {
+              SettingCategory.account => const AccountSettings(),
               SettingCategory.connection => const ConnectionSettings(),
               SettingCategory.preferences => const ApplicationSettings(),
-              SettingCategory.account => const AccountSettings(),
               SettingCategory.qaToolbox => const QAToolbox(),
             },
           ],
         )
         .scrollable()
+        .backgroundColor(theme.palette.bgPrimary)
         .height(getMediaHeight(context))
-        .backgroundColor(context.c.isDarkMode ? Palette.darkBlue : Palette.white);
+        .width(getMediaWidth(context) - 360);
   }
 }
 
-class _HeaderTitle extends StatelessWidget {
-  const _HeaderTitle({required this.title});
+class _ContentPanelHeader extends StatelessWidget {
+  const _ContentPanelHeader({required this.category});
 
-  final String title;
+  final SettingCategory category;
+
+  String _label(BuildContext context) => switch (category) {
+    SettingCategory.account => 'Account',
+    SettingCategory.connection => 'Connection & Protection',
+    SettingCategory.preferences => 'Preferences',
+    SettingCategory.qaToolbox => 'QA Toolbox',
+  };
 
   @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      EasyText(LocaleKeys.settings.tr(), fontSize: 20, fontWeight: FontWeight.w700),
-      CircleBox(size: 8, color: Theme.of(context).secondaryHeaderColor).padding(horizontal: 14),
-      EasyText(title, fontSize: 20, fontWeight: FontWeight.w300, color: Palette.purple),
-    ],
-  );
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      _label(context),
+      style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textTertiary),
+    ).padding(horizontal: theme.spacing.xl3, vertical: theme.spacing.xl2);
+  }
 }

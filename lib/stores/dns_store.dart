@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
+import 'package:mysterium_vpn/common/enums/blocker_type.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_features_store.dart';
@@ -59,6 +60,16 @@ abstract class _DNSStore with Store {
   ObservableFuture<bool> notSafeContentBlockerFuture = ObservableFuture.value(
     _initialNotSafeContentBlockerValue,
   );
+
+  BlockerType get blockerType {
+    if (notSafeContentBlocker) {
+      return BlockerType.nsfwAndMalware;
+    }
+    if (malwareContentBlocker) {
+      return BlockerType.malware;
+    }
+    return BlockerType.none;
+  }
 
   @computed
   bool get hideNotSafeContentBlocker =>

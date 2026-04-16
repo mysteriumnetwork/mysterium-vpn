@@ -28,10 +28,7 @@ class WelcomeDesktopViewLeftPanel extends StatelessWidget {
             text: LocaleKeys.signIn.tr(),
             onPressed: onSignInPressed,
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: AppVersion(headerText: LocaleKeys.appVersion.tr()),
-          ),
+          const Align(alignment: Alignment.centerLeft, child: AppVersion()),
         ],
       ).paddingDirectional(
         horizontal: getMediaWidth(context) * 0.02,
