@@ -70,6 +70,7 @@ class ThemePicker extends ConsumerWidget {
       ),
       child: SettingsCard(
         title: title,
+        subtitle: store.themeMode.name.tr(),
         position: position,
         trailing: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
       ),
