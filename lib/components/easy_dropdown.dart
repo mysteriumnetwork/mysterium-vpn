@@ -25,10 +25,11 @@ class EasyDropdown<T> extends StatelessWidget {
           isExpanded: true,
           value: value,
           icon: Icon(UntitledUI.chevron_down, size: 20, color: theme.palette.iconTertiary),
-          disabledHint: Text(
-            value.toString(),
-            style: TextStyle(color: theme.palette.textTertiary, fontSize: 16),
-          ),
+          disabledHint: items.where((item) => item.value == value).firstOrNull?.child ??
+              Text(
+                value.toString(),
+                style: TextStyle(color: theme.palette.textTertiary, fontSize: 16),
+              ),
           style: TextStyle(color: theme.palette.textTertiary, fontSize: 16),
           borderRadius: BorderRadius.circular(8),
           underline: const SizedBox.shrink(),
