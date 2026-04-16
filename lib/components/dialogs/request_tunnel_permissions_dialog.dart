@@ -15,19 +15,17 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<bool?> showRequestTunnelPermissionsDialog(
-  BuildContext context,
-  String dialogVariant,
-) async => showBarModalBottomSheet<bool>(
-  clipBehavior: Clip.none,
-  topControl: const SizedBox.shrink(),
-  context: context,
-  backgroundColor: Theme.of(context).primaryColor,
-  shape: const RoundedRectangleBorder(
-    borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-  ),
-  builder: (context) => const _RequestTunnelPermissionsOptionB(),
-);
+Future<bool?> showRequestTunnelPermissionsDialog(BuildContext context) async =>
+    showBarModalBottomSheet<bool>(
+      clipBehavior: Clip.none,
+      topControl: const SizedBox.shrink(),
+      context: context,
+      backgroundColor: Theme.of(context).primaryColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (context) => const _RequestTunnelPermissionsOptionB(),
+    );
 
 class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
   const _RequestTunnelPermissionsOptionB();
