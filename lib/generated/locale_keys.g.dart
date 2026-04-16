@@ -84,7 +84,6 @@ abstract class LocaleKeys {
   static const coudntFindLocations = 'coudntFindLocations';
   static const currentlyOffline = 'currentlyOffline';
   static const currentPrice = 'currentPrice';
-  static const dark = 'dark';
   static const dataCenterBannerBtn = 'dataCenterBannerBtn';
   static const dataCenterBannerDesc = 'dataCenterBannerDesc';
   static const dataCenterBannerTitle = 'dataCenterBannerTitle';
@@ -147,7 +146,6 @@ abstract class LocaleKeys {
   static const frequentDisconnectsReason = 'frequentDisconnectsReason';
   static const germany = 'germany';
   static const getHelp = 'getHelp';
-  static const getNewIPAddress = 'getNewIPAddress';
   static const gettingIPAddress = 'gettingIPAddress';
   static const gettingYourPlan = 'gettingYourPlan';
   static const getTips = 'getTips';
@@ -176,7 +174,6 @@ abstract class LocaleKeys {
   static const killSwitchTooltipMessage = 'killSwitchTooltipMessage';
   static const killSwitchTooltipTitle = 'killSwitchTooltipTitle';
   static const letsGoBtn = 'letsGoBtn';
-  static const light = 'light';
   static const linkCopied = 'linkCopied';
   static const linkExpires = 'linkExpires';
   static const location = 'location';
@@ -296,11 +293,9 @@ abstract class LocaleKeys {
   static const redirectToLoginPage = 'redirectToLoginPage';
   static const refresh = 'refresh';
   static const refreshIP = 'refreshIP';
-  static const refreshIPAddress = 'refreshIPAddress';
   static const renewsFor = 'renewsFor';
   static const renewSubsBtn = 'renewSubsBtn';
   static const reportAnIssue = 'reportAnIssue';
-  static const resetAppDesc = 'resetAppDesc';
   static const resetAppDialogContent = 'resetAppDialogContent';
   static const resetAppDialogTitle = 'resetAppDialogTitle';
   static const resetAppFailed = 'resetAppFailed';
@@ -348,7 +343,6 @@ abstract class LocaleKeys {
   static const subscripton = 'subscripton';
   static const subsExpiredDesc = 'subsExpiredDesc';
   static const subsExpiredTittle = 'subsExpiredTittle';
-  static const system = 'system';
   static const tap = 'tap';
   static const termsAndConditions = 'termsAndConditions';
   static const thanksForFeedback = 'thanksForFeedback';
@@ -495,4 +489,22 @@ abstract class LocaleKeys {
   static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
   static const ipTypeResidentialTooltipTitle = 'ipTypeResidentialTooltipTitle';
   static const ipTypeResidentialTooltipBody = 'ipTypeResidentialTooltipBody';
+  static const refreshIPAddress = 'refreshIPAddress';
+  static const getNewIPAddress = 'getNewIPAddress';
+  static const resetAppDesc = 'resetAppDesc';
+  static const communicationLbl = 'communicationLbl';
+  static const languageSettingLbl = 'languageSettingLbl';
+  static const appearanceSettingLbl = 'appearanceSettingLbl';
+  static const connectionSettingLbl = 'connectionSettingLbl';
+  static const deleteBtn = 'deleteBtn';
+  static const unauthenticatedSettingTitle = 'unauthenticatedSettingTitle';
+  static const unauthenticatedSettingSubtitle = 'unauthenticatedSettingSubtitle';
+  static const signInBtn = 'signInBtn';
+  static const vpnProtocolSettingLbl = 'vpnProtocolSettingLbl';
+  static const blockerSettingLbl = 'blockerSettingLbl';
+  static const light = 'light';
+  static const dark = 'dark';
+  static const system = 'system';
+  static const communicationLblDesktop = 'communicationLblDesktop';
+  static const backHomeLbl = 'backHomeLbl';
 }
