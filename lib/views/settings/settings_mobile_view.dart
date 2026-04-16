@@ -4,12 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
+import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
 import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
+import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -43,6 +45,7 @@ class SettingsMobileView extends HookConsumerWidget {
             backLabel: LocaleKeys.backHomeLbl.tr(),
             backgroundColor: theme.palette.bgSidePanel,
           ),
+          PromoBanner(),
           Text(
             LocaleKeys.settings.tr(),
             style: theme.textStyles.displayXlg.semibold.copyWith(color: theme.palette.textPrimary),
@@ -52,6 +55,7 @@ class SettingsMobileView extends HookConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
               child: Column(
                 children: [
+                  AppVersionUpdateSetting(),
                   GestureDetector(
                     onTap: () => pushSubPage(
                       LocaleKeys.account.tr(),
