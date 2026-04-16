@@ -325,12 +325,20 @@ class _SubscriptionCard extends StatelessWidget {
           trailing = isDesktop
               ? Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [manageButton, SizedBox(width: spacing.md), cancelButton],
+                  children: [
+                    manageButton,
+                    SizedBox(width: spacing.md),
+                    cancelButton,
+                  ],
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
-                  children: [manageButton, SizedBox(height: spacing.xs), cancelButton],
+                  children: [
+                    manageButton,
+                    SizedBox(height: spacing.xs),
+                    cancelButton,
+                  ],
                 );
         }
 

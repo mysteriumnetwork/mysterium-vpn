@@ -22,46 +22,57 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
     final theme = Theme.of(context);
     final analyticsStore = ref.read(analyticsStorePOD);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Header(backLabel: LocaleKeys.backHomeLbl.tr(), backgroundColor: theme.palette.bgSidePanel),
-        Text(
-          LocaleKeys.settings.tr(),
-          style: theme.textStyles.displayXlg.semibold.copyWith(color: theme.palette.textSecondary),
-        ).padding(horizontal: theme.spacing.xl3, bottom: theme.spacing.lg),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (final category in SettingCategory.values)
-                  if (category != SettingCategory.qaToolbox || enableQaHelpers)
-                    NavItem(
-                      icon: Icon(category.icon, size: 20),
-                      label: category.trKey.tr(),
-                      current: settingCategory == category,
-                      onTap: () => _updateCategory(ref, category),
+    return DecoratedBox(
+      position: DecorationPosition.foreground,
+      decoration: BoxDecoration(
+        border: Border(right: BorderSide(color: theme.palette.borderSecondary, width: 0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Header(
+            backLabel: LocaleKeys.backHomeLbl.tr(),
+            backgroundColor: theme.palette.bgSidePanel,
+          ),
+          Text(
+            LocaleKeys.settings.tr(),
+            style: theme.textStyles.displayXlg.semibold.copyWith(
+              color: theme.palette.textSecondary,
+            ),
+          ).padding(horizontal: theme.spacing.xl3, bottom: theme.spacing.lg),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final category in SettingCategory.values)
+                    if (category != SettingCategory.qaToolbox || enableQaHelpers)
+                      NavItem(
+                        icon: Icon(category.icon, size: 20),
+                        label: category.trKey.tr(),
+                        current: settingCategory == category,
+                        onTap: () => _updateCategory(ref, category),
+                      ),
+                  NavItem(
+                    icon: const Icon(UntitledUI.message_question_square, size: 20),
+                    label: LocaleKeys.helpSupportLbl.tr(),
+                    trailing: Icon(
+                      UntitledUI.link_external_02,
+                      size: 16,
+                      color: theme.palette.iconTertiary,
                     ),
-                NavItem(
-                  icon: const Icon(UntitledUI.message_question_square, size: 20),
-                  label: LocaleKeys.helpSupportLbl.tr(),
-                  trailing: Icon(
-                    UntitledUI.link_external_02,
-                    size: 16,
-                    color: theme.palette.iconTertiary,
+                    onTap: () =>
+                        handleOnSupportPage(context: context, analyticsStore: analyticsStore),
                   ),
-                  onTap: () =>
-                      handleOnSupportPage(context: context, analyticsStore: analyticsStore),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        const AppVersion(),
-      ],
-    ).backgroundColor(theme.palette.bgSidePanel).width(346);
+          const AppVersion(),
+        ],
+      ).backgroundColor(theme.palette.bgSidePanel),
+    ).width(346);
   }
 
   void _updateCategory(WidgetRef ref, SettingCategory category) {
