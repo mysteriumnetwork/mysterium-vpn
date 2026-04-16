@@ -105,13 +105,13 @@ class ProtocolPicker extends ConsumerWidget {
     );
   }
 
-  void _changeProtocol(
+  Future<void> _changeProtocol(
     BuildContext context, {
     required ProtocolType newProtocol,
     required VpnStore vpnStore,
     required VpnProtocolStore vpnProtocolStore,
     required AnalyticsStore analyticsStore,
-  }) {
+  }) async {
     if (vpnStore.isConnected) {
       shownConfirmationDialog(
         context,
@@ -135,7 +135,7 @@ class ProtocolPicker extends ConsumerWidget {
         },
       );
     } else {
-      vpnProtocolStore.setProtocol(newProtocol);
+      await vpnProtocolStore.setProtocol(newProtocol);
     }
   }
 }
