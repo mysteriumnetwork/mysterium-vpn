@@ -125,7 +125,7 @@ class SettingsMobileView extends HookConsumerWidget {
                         handleOnSupportPage(context: context, analyticsStore: analyticsStore),
                     child: SettingsCard(
                       icon: const Icon(UntitledUI.message_question_square, size: 20),
-                      title: 'Help & Support',
+                      title: LocaleKeys.helpSupportLbl.tr(),
                       position: SettingsCardPosition.bottom,
                       trailing: IconButton(
                         onPressed: () =>
@@ -140,12 +140,13 @@ class SettingsMobileView extends HookConsumerWidget {
                   ),
                   if (enableQaHelpers)
                     GestureDetector(
-                      onTap: () => pushSubPage('QA Toolbox', const QAToolbox()),
+                      onTap: () => pushSubPage(LocaleKeys.qaToolboxLbl.tr(), const QAToolbox()),
                       child: SettingsCard(
                         icon: const Icon(UntitledUI.settings_04, size: 20),
-                        title: 'QA Toolbox',
+                        title: LocaleKeys.qaToolboxLbl.tr(),
                         trailing: IconButton(
-                          onPressed: () => pushSubPage('QA Toolbox', const QAToolbox()),
+                          onPressed: () =>
+                              pushSubPage(LocaleKeys.qaToolboxLbl.tr(), const QAToolbox()),
                           icon: Icon(
                             UntitledUI.chevron_right,
                             size: 24,
@@ -181,7 +182,10 @@ class _MobileSettingsSubPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Header(backLabel: 'Back to Settings', backgroundColor: theme.palette.bgSidePanel),
+            Header(
+              backLabel: LocaleKeys.backToSettingsLbl.tr(),
+              backgroundColor: theme.palette.bgSidePanel,
+            ),
             Text(
               title,
               style: theme.textStyles.displayXlg.semibold.copyWith(

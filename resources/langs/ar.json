@@ -515,5 +515,8 @@
   "dark": "مظلم",
   "system": "تقصير",
   "communicationLblDesktop": "الاتصالات",
-  "backHomeLbl": "العودة إلى الصفحة الرئيسية"
+  "backHomeLbl": "العودة إلى الصفحة الرئيسية",
+  "backToSettingsLbl": "العودة إلى الإعدادات",
+  "qaToolboxLbl": "أدوات ضمان الجودة",
+  "helpSupportLbl": "المساعدة والدعم"
 }

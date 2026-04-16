@@ -522,6 +522,9 @@ class CodegenLoader extends AssetLoader {
     "system": "默认",
     "communicationLblDesktop": "通讯",
     "backHomeLbl": "返回首页",
+    "backToSettingsLbl": "返回设置",
+    "qaToolboxLbl": "QA工具箱",
+    "helpSupportLbl": "帮助与支持",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1081,6 +1084,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Varsayılan",
     "communicationLblDesktop": "İLETİŞİM",
     "backHomeLbl": "Ana sayfaya geri dön",
+    "backToSettingsLbl": "Ayarlara geri dön",
+    "qaToolboxLbl": "QA Araç Kutusu",
+    "helpSupportLbl": "Yardım ve Destek",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1599,6 +1605,9 @@ class CodegenLoader extends AssetLoader {
     "system": "デフォルト",
     "communicationLblDesktop": "コミュニケーション",
     "backHomeLbl": "ホームに戻る",
+    "backToSettingsLbl": "設定に戻る",
+    "qaToolboxLbl": "QAツールボックス",
+    "helpSupportLbl": "ヘルプ＆サポート",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2185,6 +2194,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Standard",
     "communicationLblDesktop": "KOMMUNIKATION",
     "backHomeLbl": "Zurück zur Startseite",
+    "backToSettingsLbl": "Zurück zu den Einstellungen",
+    "qaToolboxLbl": "QA-Toolbox",
+    "helpSupportLbl": "Hilfe & Unterstützung",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2762,6 +2774,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Padrão",
     "communicationLblDesktop": "COMUNICAÇÕES",
     "backHomeLbl": "Voltar para a página inicial",
+    "backToSettingsLbl": "Voltar às configurações",
+    "qaToolboxLbl": "Caixa de ferramentas de controle de qualidade",
+    "helpSupportLbl": "Ajuda e suporte",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3327,6 +3342,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Default",
     "communicationLblDesktop": "COMMUNICATIONS",
     "backHomeLbl": "Back to home",
+    "backToSettingsLbl": "Back to Settings",
+    "qaToolboxLbl": "QA Toolbox",
+    "helpSupportLbl": "Help & Support",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3907,6 +3925,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Predefinito",
     "communicationLblDesktop": "COMUNICAZIONI",
     "backHomeLbl": "Torna alla home",
+    "backToSettingsLbl": "Torna alle impostazioni",
+    "qaToolboxLbl": "Kit di strumenti per il controllo qualità",
+    "helpSupportLbl": "Aiuto e supporto",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4494,6 +4515,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Défaut",
     "communicationLblDesktop": "COMMUNICATIONS",
     "backHomeLbl": "Retour à l'accueil",
+    "backToSettingsLbl": "Retour aux paramètres",
+    "qaToolboxLbl": "Boîte à outils QA",
+    "helpSupportLbl": "Aide et assistance",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5063,6 +5087,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Bawaan",
     "communicationLblDesktop": "KOMUNIKASI",
     "backHomeLbl": "Kembali ke halaman utama",
+    "backToSettingsLbl": "Kembali ke Pengaturan",
+    "qaToolboxLbl": "Kotak Peralatan QA",
+    "helpSupportLbl": "Bantuan & Dukungan",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5643,6 +5670,9 @@ class CodegenLoader extends AssetLoader {
     "system": "Por defecto",
     "communicationLblDesktop": "COMUNICACIONES",
     "backHomeLbl": "Volver a casa",
+    "backToSettingsLbl": "Volver a Configuración",
+    "qaToolboxLbl": "Caja de herramientas de control de calidad",
+    "helpSupportLbl": "Ayuda y soporte",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6194,6 +6224,9 @@ class CodegenLoader extends AssetLoader {
     "system": "تقصير",
     "communicationLblDesktop": "الاتصالات",
     "backHomeLbl": "العودة إلى الصفحة الرئيسية",
+    "backToSettingsLbl": "العودة إلى الإعدادات",
+    "qaToolboxLbl": "أدوات ضمان الجودة",
+    "helpSupportLbl": "المساعدة والدعم",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

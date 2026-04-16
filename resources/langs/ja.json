@@ -515,5 +515,8 @@
   "dark": "暗い",
   "system": "デフォルト",
   "communicationLblDesktop": "コミュニケーション",
-  "backHomeLbl": "ホームに戻る"
+  "backHomeLbl": "ホームに戻る",
+  "backToSettingsLbl": "設定に戻る",
+  "qaToolboxLbl": "QAツールボックス",
+  "helpSupportLbl": "ヘルプ＆サポート"
 }

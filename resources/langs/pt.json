@@ -515,5 +515,8 @@
   "dark": "Escuro",
   "system": "Padrão",
   "communicationLblDesktop": "COMUNICAÇÕES",
-  "backHomeLbl": "Voltar para a página inicial"
+  "backHomeLbl": "Voltar para a página inicial",
+  "backToSettingsLbl": "Voltar às configurações",
+  "qaToolboxLbl": "Caixa de ferramentas de controle de qualidade",
+  "helpSupportLbl": "Ajuda e suporte"
 }

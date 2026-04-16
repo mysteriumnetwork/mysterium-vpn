@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -45,18 +46,11 @@ class _ContentPanelHeader extends StatelessWidget {
 
   final SettingCategory category;
 
-  String _label(BuildContext context) => switch (category) {
-    SettingCategory.account => 'Account',
-    SettingCategory.connection => 'Connection & Protection',
-    SettingCategory.preferences => 'Preferences',
-    SettingCategory.qaToolbox => 'QA Toolbox',
-  };
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Text(
-      _label(context),
+      category.trKey.tr(),
       style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textTertiary),
     ).padding(horizontal: theme.spacing.xl3, vertical: theme.spacing.xl2);
   }

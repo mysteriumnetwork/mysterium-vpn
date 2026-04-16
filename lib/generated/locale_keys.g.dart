@@ -507,4 +507,7 @@ abstract class LocaleKeys {
   static const system = 'system';
   static const communicationLblDesktop = 'communicationLblDesktop';
   static const backHomeLbl = 'backHomeLbl';
+  static const backToSettingsLbl = 'backToSettingsLbl';
+  static const qaToolboxLbl = 'qaToolboxLbl';
+  static const helpSupportLbl = 'helpSupportLbl';
 }

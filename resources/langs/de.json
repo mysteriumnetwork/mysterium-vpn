@@ -515,5 +515,8 @@
   "dark": "Dunkel",
   "system": "Standard",
   "communicationLblDesktop": "KOMMUNIKATION",
-  "backHomeLbl": "Zurück zur Startseite"
+  "backHomeLbl": "Zurück zur Startseite",
+  "backToSettingsLbl": "Zurück zu den Einstellungen",
+  "qaToolboxLbl": "QA-Toolbox",
+  "helpSupportLbl": "Hilfe & Unterstützung"
 }

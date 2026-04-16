@@ -56,13 +56,13 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
                 if (enableQaHelpers)
                   NavItem(
                     icon: const Icon(UntitledUI.settings_04, size: 20),
-                    label: 'QA Toolbox',
+                    label: LocaleKeys.qaToolboxLbl.tr(),
                     current: settingCategory == SettingCategory.qaToolbox,
                     onTap: () => _updateCategory(ref, SettingCategory.qaToolbox),
                   ),
                 NavItem(
                   icon: const Icon(UntitledUI.message_question_square, size: 20),
-                  label: 'Help & Support',
+                  label: LocaleKeys.helpSupportLbl.tr(),
                   trailing: Icon(
                     UntitledUI.link_external_02,
                     size: 16,

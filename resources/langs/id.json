@@ -515,5 +515,8 @@
   "dark": "Gelap",
   "system": "Bawaan",
   "communicationLblDesktop": "KOMUNIKASI",
-  "backHomeLbl": "Kembali ke halaman utama"
+  "backHomeLbl": "Kembali ke halaman utama",
+  "backToSettingsLbl": "Kembali ke Pengaturan",
+  "qaToolboxLbl": "Kotak Peralatan QA",
+  "helpSupportLbl": "Bantuan & Dukungan"
 }

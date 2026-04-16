@@ -515,5 +515,8 @@
   "dark": "Sombre",
   "system": "Défaut",
   "communicationLblDesktop": "COMMUNICATIONS",
-  "backHomeLbl": "Retour à l'accueil"
+  "backHomeLbl": "Retour à l'accueil",
+  "backToSettingsLbl": "Retour aux paramètres",
+  "qaToolboxLbl": "Boîte à outils QA",
+  "helpSupportLbl": "Aide et assistance"
 }

@@ -22,9 +22,9 @@ final selectedCategoryProvider = NotifierProvider<SelectedCategoryNotifier, Sett
 
 enum SettingCategory {
   account(LocaleKeys.account),
-  connection(LocaleKeys.connection),
+  connection(LocaleKeys.connectionSettingLbl),
   preferences(LocaleKeys.preferences),
-  qaToolbox('QA Toolbox');
+  qaToolbox(LocaleKeys.qaToolboxLbl);
 
   const SettingCategory(this.trKey);
   final String trKey;

@@ -515,5 +515,8 @@
   "dark": "Dark",
   "system": "Default",
   "communicationLblDesktop": "COMMUNICATIONS",
-  "backHomeLbl": "Back to home"
+  "backHomeLbl": "Back to home",
+  "backToSettingsLbl": "Back to Settings",
+  "qaToolboxLbl": "QA Toolbox",
+  "helpSupportLbl": "Help & Support"
 }

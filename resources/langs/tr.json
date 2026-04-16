@@ -515,5 +515,8 @@
   "dark": "Karanlık",
   "system": "Varsayılan",
   "communicationLblDesktop": "İLETİŞİM",
-  "backHomeLbl": "Ana sayfaya geri dön"
+  "backHomeLbl": "Ana sayfaya geri dön",
+  "backToSettingsLbl": "Ayarlara geri dön",
+  "qaToolboxLbl": "QA Araç Kutusu",
+  "helpSupportLbl": "Yardım ve Destek"
 }

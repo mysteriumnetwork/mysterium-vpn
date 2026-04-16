@@ -515,5 +515,8 @@
   "dark": "黑暗的",
   "system": "默认",
   "communicationLblDesktop": "通讯",
-  "backHomeLbl": "返回首页"
+  "backHomeLbl": "返回首页",
+  "backToSettingsLbl": "返回设置",
+  "qaToolboxLbl": "QA工具箱",
+  "helpSupportLbl": "帮助与支持"
 }

@@ -515,5 +515,8 @@
   "dark": "Buio",
   "system": "Predefinito",
   "communicationLblDesktop": "COMUNICAZIONI",
-  "backHomeLbl": "Torna alla home"
+  "backHomeLbl": "Torna alla home",
+  "backToSettingsLbl": "Torna alle impostazioni",
+  "qaToolboxLbl": "Kit di strumenti per il controllo qualità",
+  "helpSupportLbl": "Aiuto e supporto"
 }
