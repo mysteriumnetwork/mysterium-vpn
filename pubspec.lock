@@ -1339,8 +1339,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/settings-components"
-      resolved-ref: "575c6f52da510335ac38fe76da378af6dbc1e13a"
+      ref: "0.0.9"
+      resolved-ref: f0cc3c11539b3172217e6cac0afbdf62e4fa6c99
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
