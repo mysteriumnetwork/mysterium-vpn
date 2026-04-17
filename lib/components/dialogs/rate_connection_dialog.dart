@@ -77,31 +77,41 @@ class _RateConnectionBody extends StatelessWidget {
     return Observer(
       builder: (context) {
         final selectedReasons = store.selectedReasons;
+        final axisCount = ScreenType.of(context) >= ScreenType.tablet ? 2 : 1;
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: ScreenType.of(context) >= ScreenType.tablet ? 2 : 1,
-                mainAxisExtent: 60,
-              ),
-              itemCount: store.showReasons.length,
-              itemBuilder: (context, index) {
-                final reason = store.showReasons[index];
-                return CheckboxListTile(
-                  minVerticalPadding: 0,
-                  visualDensity: VisualDensity.compact,
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  value: selectedReasons.contains(reason),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  onChanged: (_) => store.toggleRateConnectionReason(reason),
-                  title: Text(_stringifyReason(reason), style: theme.textStyles.textMd.medium),
-                );
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (int i = 0; i < store.showReasons.length; i += axisCount)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (int j = 0; j < axisCount; j++)
+                        if (i + j < store.showReasons.length)
+                          Expanded(
+                            child: CheckboxListTile(
+                              minVerticalPadding: 0,
+                              visualDensity: VisualDensity.compact,
+                              dense: true,
+                              contentPadding: EdgeInsets.zero,
+                              value: selectedReasons.contains(store.showReasons[i + j]),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              onChanged: (_) =>
+                                  store.toggleRateConnectionReason(store.showReasons[i + j]),
+                              title: Text(
+                                _stringifyReason(store.showReasons[i + j]),
+                                style: theme.textStyles.textMd.medium,
+                              ),
+                            ),
+                          )
+                        else
+                          const Expanded(child: SizedBox()),
+                    ],
+                  ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(top: 12, bottom: 32),

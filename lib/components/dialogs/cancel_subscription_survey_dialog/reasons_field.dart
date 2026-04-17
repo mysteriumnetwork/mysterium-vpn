@@ -19,22 +19,29 @@ class _ReasonsField extends HookWidget {
       onSelectionChanged(selection.toggle(value));
     }
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: axisCount,
-        mainAxisExtent: 60,
-      ),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items.elementAt(index);
-        return _Item(
-          value: item,
-          isChecked: selection.contains(item),
-          onPressed: () => handleToggle(item),
-        );
-      },
+    final itemsList = items.toList();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (int i = 0; i < itemsList.length; i += axisCount)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (int j = 0; j < axisCount; j++)
+                if (i + j < itemsList.length)
+                  Expanded(
+                    child: _Item(
+                      value: itemsList[i + j],
+                      isChecked: selection.contains(itemsList[i + j]),
+                      onPressed: () => handleToggle(itemsList[i + j]),
+                    ),
+                  )
+                else
+                  const Expanded(child: SizedBox()),
+            ],
+          ),
+      ],
     );
   }
 }
