@@ -105,7 +105,9 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    final connectedLocation = useComputedValue(() => vpnStore.location);
+    final connectedLocation = useComputedValue(
+      () => vpnStore.isConnected ? vpnStore.location : null,
+    );
     final locationsStore = ref.watch(locationsStorePOD);
     final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
