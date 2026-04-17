@@ -5,6 +5,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/agreements.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/header_title.dart';
@@ -12,17 +13,10 @@ import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/consent/agreements.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-Future<bool?> showRequestTunnelPermissionsDialog(BuildContext context, String dialogVariant) async {
-  if (dialogVariant == 'A') {
-    return showDialog<bool>(
-      context: context,
-      builder: (context) => const _RequestTunnelPermissionsOptionA(),
-    );
-  } else {
-    return showBarModalBottomSheet<bool>(
+Future<bool?> showRequestTunnelPermissionsDialog(BuildContext context) async =>
+    showBarModalBottomSheet<bool>(
       clipBehavior: Clip.none,
       topControl: const SizedBox.shrink(),
       context: context,
@@ -32,56 +26,6 @@ Future<bool?> showRequestTunnelPermissionsDialog(BuildContext context, String di
       ),
       builder: (context) => const _RequestTunnelPermissionsOptionB(),
     );
-  }
-}
-
-class _RequestTunnelPermissionsOptionA extends StatelessWidget {
-  const _RequestTunnelPermissionsOptionA();
-
-  @override
-  Widget build(BuildContext context) => Dialog(
-    backgroundColor: Palette.black,
-    surfaceTintColor: Palette.black,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-    child: Container(
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          EasyText(
-            LocaleKeys.setupTunnerPermissionsDialogTitle.tr(),
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            color: Palette.white,
-          ).padding(bottom: 16),
-          EasyText(
-            LocaleKeys.setupTunnerPermissionsDialogDesc.tr(),
-            fontSize: 14,
-            textAlign: TextAlign.center,
-            maxLines: 4,
-            color: Palette.white,
-          ).padding(bottom: 16),
-          EasyText(
-            LocaleKeys.setupTunnerPermissionsDialogDisclaimer.tr(),
-            fontSize: 14,
-            textAlign: TextAlign.center,
-            color: const Color(0xffC4C1DD),
-            maxLines: 4,
-          ).padding(bottom: 40),
-          EasyButton(
-            useSystemColor: false,
-            width: 160,
-            color: Palette.purple,
-            text: 'Allow',
-            onPressed: () => Navigator.pop(context, true),
-          ),
-        ],
-      ).padding(horizontal: 20, vertical: 40),
-    ),
-  );
-}
 
 class _RequestTunnelPermissionsOptionB extends HookConsumerWidget {
   const _RequestTunnelPermissionsOptionB();
