@@ -1,6 +1,6 @@
 /// Protocol types supported by the app.
 enum ProtocolType {
-  wireguard('WireGuard'),
+  wireguard('Fast (WireGuard)'),
   openvpn('OpenVPN');
 
   const ProtocolType(this.label);

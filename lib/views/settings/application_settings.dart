@@ -1,68 +1,94 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/auth_status.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/setting_item.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/email_marketing_setting.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/push_notifications_settings.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:styled_widget/styled_widget.dart';
 
-class ApplicationSettings extends HookConsumerWidget {
+class ApplicationSettings extends ConsumerWidget {
   const ApplicationSettings({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStore = ref.read(themeStorePOD);
-    final localeStore = ref.read(localeStorePOD);
-    final analyticsStore = ref.read(analyticsStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
 
-    final screenType = useScreenType();
-    final isMobile = screenType == ScreenType.mobile;
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    final theme = Theme.of(context);
 
-    return Column(
+    final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SettingItem(
-          asset: Asset.icons.language(context),
-          title: LocaleKeys.appLang.tr(),
-          actionWidget: LanguagePicker(store: localeStore, analyticsStore: analyticsStore),
-        ),
-        SettingItem(
-          asset: Asset.icons.theme(context),
-          title: LocaleKeys.theme.tr(),
-          actionWidget: ThemePicker(store: themeStore, analyticsStore: analyticsStore),
-        ),
-        Builder(
-          builder: (context) {
-            final notificationsTitleVisible =
-                (userPreferencesStore.marketingConsent != null ||
-                    pushNotificationsStore.supportsPushNotifications) &&
-                authSessionStore.status == AuthStatus.authenticated;
-            return Visibility(
-              visible: notificationsTitleVisible,
-              child: EasyText(
-                LocaleKeys.notificationsSettingTitle.tr(),
-                fontSize: isMobile ? 16 : 14,
-                fontWeight: isMobile ? FontWeight.w600 : FontWeight.w400,
-              ).padding(bottom: 16, left: 20, top: isMobile ? 16 : 30, right: 0),
+        const LanguagePicker(position: SettingsCardPosition.top),
+        const ThemePicker(position: SettingsCardPosition.bottom),
+        Observer(
+          builder: (_) {
+            final isAuthenticated = authSessionStore.status == AuthStatus.authenticated;
+            final showPush = pushNotificationsStore.supportsPushNotifications && isAuthenticated;
+            final showEmail = userPreferencesStore.marketingConsent != null && isAuthenticated;
+            final showCommunications = showPush || showEmail;
+
+            if (!showCommunications) {
+              return const SizedBox.shrink();
+            }
+
+            final pushPosition = showEmail ? SettingsCardPosition.top : SettingsCardPosition.single;
+            final emailPosition = showPush
+                ? SettingsCardPosition.bottom
+                : SettingsCardPosition.single;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: theme.spacing.xl2),
+                if (isDesktop)
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: theme.spacing.md,
+                      vertical: theme.spacing.s,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.palette.bgSidePanel,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      LocaleKeys.communicationLblDesktop.tr(),
+                      style: theme.textStyles.textXs.semibold.copyWith(
+                        color: theme.palette.textSecondary,
+                      ),
+                    ),
+                  )
+                else
+                  Text(
+                    LocaleKeys.communicationLbl.tr(),
+                    style: theme.textStyles.textMd.regular.copyWith(
+                      color: theme.palette.textTertiary,
+                    ),
+                  ).padding(bottom: theme.spacing.sm),
+                if (isDesktop) SizedBox(height: theme.spacing.md),
+                if (showPush) PushNotificationsSetting(position: pushPosition),
+                if (showEmail) EmailMarketingSetting(position: emailPosition),
+              ],
             );
           },
         ),
-        const PushNotificationsSetting(),
-        const EmailMarketingSetting(),
       ],
     );
+
+    return isDesktop
+        ? Padding(
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
+            child: content,
+          )
+        : content;
   }
 }

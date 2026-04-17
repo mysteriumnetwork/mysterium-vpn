@@ -15,7 +15,6 @@ enum _FeatureToggleKey {
   isServiceAvailable,
   isServiceAvailableMessage,
   hideDeleteAccount,
-  hideKillSwitch,
   minAndroidBuildNumber,
   minIosBuildNumber,
   minWindowsBuildNumber,
@@ -89,14 +88,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   bool get hideDeleteAccount {
     if (config.containsKey(_FeatureToggleKey.hideDeleteAccount.name)) {
       return config[_FeatureToggleKey.hideDeleteAccount.name] as bool;
-    }
-    return false;
-  }
-
-  @computed
-  bool get hideKillSwitch {
-    if (config.containsKey(_FeatureToggleKey.hideKillSwitch.name)) {
-      return config[_FeatureToggleKey.hideKillSwitch.name] as bool;
     }
     return false;
   }

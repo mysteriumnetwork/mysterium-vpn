@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/login_headlines.dart';
 import 'package:mysterium_vpn/components/unauthenticated_header.dart';
@@ -27,10 +26,6 @@ class WelcomeDesktopViewLeftPanel extends StatelessWidget {
             color: Palette.purple,
             text: LocaleKeys.signIn.tr(),
             onPressed: onSignInPressed,
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: AppVersion(headerText: LocaleKeys.appVersion.tr()),
           ),
         ],
       ).paddingDirectional(
