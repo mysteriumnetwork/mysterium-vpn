@@ -1,18 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/api_version.dart';
 import 'package:mysterium_vpn/components/app_version.dart';
-import 'package:mysterium_vpn/components/desktop_page_header.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/settings/category_item.dart';
+import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsDesktopLeftPanel extends HookConsumerWidget {
@@ -23,51 +19,63 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
     final settingCategory = ref.watch(selectedCategoryProvider);
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final enableQaHelpers = useComputedValue(() => remoteConfig.enableQaHelpers);
-    return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DesktopPageHeader(
-              onPressed: () => handleOnSupportPage(
-                context: context,
-                analyticsStore: ref.read(analyticsStorePOD),
-              ),
-              asset: Asset.icons.reportAdaptive(context),
-            ).padding(bottom: 10),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                CategoryItem(
-                  isSelected: settingCategory == SettingCategory.connection,
-                  title: SettingCategory.connection.trKey.tr(),
-                  onTap: () => updateSelectedCategory(ref, SettingCategory.connection),
-                ),
-                CategoryItem(
-                  isSelected: settingCategory == SettingCategory.preferences,
-                  title: SettingCategory.preferences.trKey.tr(),
-                  onTap: () => updateSelectedCategory(ref, SettingCategory.preferences),
-                ),
-                CategoryItem(
-                  isSelected: settingCategory == SettingCategory.account,
-                  title: SettingCategory.account.trKey.tr(),
-                  onTap: () => updateSelectedCategory(ref, SettingCategory.account),
-                ),
-                if (enableQaHelpers)
-                  CategoryItem(
-                    isSelected: settingCategory == SettingCategory.qaToolbox,
-                    title: SettingCategory.qaToolbox.trKey,
-                    onTap: () => updateSelectedCategory(ref, SettingCategory.qaToolbox),
+    final theme = Theme.of(context);
+    final analyticsStore = ref.read(analyticsStorePOD);
+
+    return DecoratedBox(
+      position: DecorationPosition.foreground,
+      decoration: BoxDecoration(
+        border: Border(right: BorderSide(color: theme.palette.borderSecondary, width: 0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Header(
+            backLabel: LocaleKeys.backHomeLbl.tr(),
+            backgroundColor: theme.palette.bgSidePanel,
+          ),
+          Text(
+            LocaleKeys.settings.tr(),
+            style: theme.textStyles.displayXlg.semibold.copyWith(
+              color: theme.palette.textSecondary,
+            ),
+          ).padding(horizontal: theme.spacing.xl3, bottom: theme.spacing.lg),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final category in SettingCategory.values)
+                    if (category != SettingCategory.qaToolbox || enableQaHelpers)
+                      NavItem(
+                        icon: Icon(category.icon, size: 20),
+                        label: category.trKey.tr(),
+                        current: settingCategory == category,
+                        onTap: () => _updateCategory(ref, category),
+                      ),
+                  NavItem(
+                    icon: const Icon(UntitledUI.message_question_square, size: 20),
+                    label: LocaleKeys.helpSupportLbl.tr(),
+                    trailing: Icon(
+                      UntitledUI.link_external_02,
+                      size: 16,
+                      color: theme.palette.iconTertiary,
+                    ),
+                    onTap: () =>
+                        handleOnSupportPage(context: context, analyticsStore: analyticsStore),
                   ),
-              ],
-            ).expanded(),
-            AppVersion(headerText: LocaleKeys.appVersion.tr()),
-            ApiVersion(headerText: LocaleKeys.apiVersion.tr()),
-          ],
-        )
-        .padding(horizontal: 40, vertical: 40)
-        .backgroundColor(context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer);
+                ],
+              ),
+            ),
+          ),
+          const AppVersion(),
+        ],
+      ).backgroundColor(theme.palette.bgSidePanel),
+    ).width(346);
   }
 
-  void updateSelectedCategory(WidgetRef ref, SettingCategory category) {
+  void _updateCategory(WidgetRef ref, SettingCategory category) {
     ref.read(selectedCategoryProvider.notifier).category = category;
   }
 }
