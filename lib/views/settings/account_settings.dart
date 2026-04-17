@@ -294,7 +294,12 @@ class _SubscriptionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
             ),
             size: ButtonSize.small,
-            onPressed: isSubscribing ? null : () => onSubscribePress(manageSubscription: false),
+            onPressed: isSubscribing
+                ? null
+                : () {
+                    analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
+                    onSubscribePress(manageSubscription: false);
+                  },
             child: isSubscribing
                 ? const LoadingIndicator()
                 : Text(LocaleKeys.pricingPlanSeePlansBtn.tr()),

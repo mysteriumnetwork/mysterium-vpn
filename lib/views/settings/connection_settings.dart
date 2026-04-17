@@ -150,6 +150,7 @@ class ConnectionSettings extends HookConsumerWidget {
       _onResetApp(context, vpnStore, analyticsStore);
       return;
     }
+    analyticsStore.logEvent(AnalyticsEvent.resetAppConfirmShown);
     shownConfirmationDialog(
       context,
       confirmText: LocaleKeys.resetBtn.tr(),
@@ -202,7 +203,9 @@ class ConnectionSettings extends HookConsumerWidget {
       analyticsStore.logEvent(AnalyticsEvent.resetAppSuccess);
     } catch (e, s) {
       showSnackbar(LocaleKeys.resetAppFailed.tr());
-      analyticsStore.logError(err: e, stack: s);
+      analyticsStore
+        ..logEvent(AnalyticsEvent.resetAppError)
+        ..logError(err: e, stack: s);
     }
   }
 }
