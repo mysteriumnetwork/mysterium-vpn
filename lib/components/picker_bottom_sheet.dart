@@ -113,7 +113,7 @@ class _PickerItem extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 2),
-              child: _RadioIndicator(selected: selected),
+              child: RadioButton(selected: selected),
             ),
             SizedBox(width: theme.spacing.lg),
             Expanded(
@@ -141,37 +141,6 @@ class _PickerItem extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-// ─── Radio indicator ──────────────────────────────────────────────────────────
-
-class _RadioIndicator extends StatelessWidget {
-  const _RadioIndicator({required this.selected});
-
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = Theme.of(context).palette;
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: selected ? Palette.brand.shade400 : null,
-        border: selected ? null : Border.all(color: palette.borderPrimary),
-      ),
-      child: selected
-          ? Center(
-              child: Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-              ),
-            )
-          : null,
     );
   }
 }

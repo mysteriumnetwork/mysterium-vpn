@@ -8,7 +8,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
@@ -17,6 +16,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/blocker_picker.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
+import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, ScreenType;
 
 class ConnectionSettings extends HookConsumerWidget {
@@ -32,8 +32,7 @@ class ConnectionSettings extends HookConsumerWidget {
     final dnsStore = ref.watch(dnsStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
     final vpnProtocolStore = ref.watch(vpnProtocolStorePOD);
-    final screenType = useScreenType();
-    final isDesktop = screenType != ScreenType.mobile;
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
 
     return Observer(
@@ -46,19 +45,13 @@ class ConnectionSettings extends HookConsumerWidget {
         final showProtocol = vpnProtocolStore.isProtocolPickerAvailable;
 
         final builders = <Widget Function(SettingsCardPosition)>[];
-        final spacing = theme.spacing;
         if (showReset) {
           builders.add(
             (pos) => SettingsCard(
               title: LocaleKeys.resetAppTitle.tr(),
               subtitle: LocaleKeys.resetAppDesc.tr(),
               position: pos,
-              trailing: ButtonTertiary(
-                decoration: ButtonDecoration(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-                ),
-                size: ButtonSize.small,
+              trailing: SettingsActionButton(
                 onPressed:
                     vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
                     ? null

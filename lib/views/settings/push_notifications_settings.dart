@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
-class PushNotificationsSetting extends HookConsumerWidget {
+class PushNotificationsSetting extends ConsumerWidget {
   const PushNotificationsSetting({required this.position, super.key});
 
   final SettingsCardPosition position;
@@ -20,8 +19,7 @@ class PushNotificationsSetting extends HookConsumerWidget {
     final authSessionStore = ref.watch(authSessionStorePOD);
     final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
-    final screenType = useScreenType();
-    final isDesktop = screenType != ScreenType.mobile;
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
 
     return Observer(

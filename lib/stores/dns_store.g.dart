@@ -23,6 +23,13 @@ mixin _$DNSStore on _DNSStore, Store {
     () => super.notSafeContentBlocker,
     name: '_DNSStore.notSafeContentBlocker',
   )).value;
+  Computed<BlockerType>? _$blockerTypeComputed;
+
+  @override
+  BlockerType get blockerType => (_$blockerTypeComputed ??= Computed<BlockerType>(
+    () => super.blockerType,
+    name: '_DNSStore.blockerType',
+  )).value;
   Computed<bool>? _$hideNotSafeContentBlockerComputed;
 
   @override
@@ -158,6 +165,7 @@ malwareContentBlockerFuture: ${malwareContentBlockerFuture},
 notSafeContentBlockerFuture: ${notSafeContentBlockerFuture},
 malwareContentBlocker: ${malwareContentBlocker},
 notSafeContentBlocker: ${notSafeContentBlocker},
+blockerType: ${blockerType},
 hideNotSafeContentBlocker: ${hideNotSafeContentBlocker},
 hideMalwareContentBlocker: ${hideMalwareContentBlocker},
 dnsAddress: ${dnsAddress}

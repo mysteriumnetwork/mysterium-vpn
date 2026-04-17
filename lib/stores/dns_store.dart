@@ -61,6 +61,7 @@ abstract class _DNSStore with Store {
     _initialNotSafeContentBlockerValue,
   );
 
+  @computed
   BlockerType get blockerType {
     if (notSafeContentBlocker) {
       return BlockerType.nsfwAndMalware;
@@ -136,7 +137,7 @@ abstract class _DNSStore with Store {
     notSafeContentBlockerFuture = ObservableFuture.value(value);
   }
 
-  // Call on log out or app termiantion
+  // Call on log out or app termination
   Future<void> disposeStore() async {
     _authReactionDisposer?.call();
   }

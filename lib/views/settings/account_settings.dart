@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
@@ -20,6 +19,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, ScreenType;
 
 class AccountSettings extends HookConsumerWidget {
@@ -44,8 +44,7 @@ class _Unauthenticated extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final screenType = useScreenType();
-    final isDesktop = screenType != ScreenType.mobile;
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
     void handleSignIn() => context.beamToNamed(Routes.platformLogin.path);
 
@@ -105,13 +104,11 @@ class _Authenticated extends HookConsumerWidget {
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
 
-    final screenType = useScreenType();
     final handleSubscribe = useHandleSubscribe();
     final (notifier, subscribeStatus) = useFutureStatus();
 
-    final isDesktop = screenType != ScreenType.mobile;
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
-    final spacing = theme.spacing;
 
     useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, _) {
       if (subscribeStatus.hasError) {
@@ -171,15 +168,7 @@ class _Authenticated extends HookConsumerWidget {
           title: email.isEmpty ? LocaleKeys.account.tr() : email,
           position: SettingsCardPosition.top,
           trailing: isDesktop
-              ? ButtonTertiary(
-                  decoration: ButtonDecoration(
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-                  ),
-                  size: ButtonSize.small,
-                  onPressed: handleLogout,
-                  child: Text(LocaleKeys.logout.tr()),
-                )
+              ? SettingsActionButton(onPressed: handleLogout, child: Text(LocaleKeys.logout.tr()))
               : null,
         ),
         _SubscriptionCard(
@@ -194,12 +183,7 @@ class _Authenticated extends HookConsumerWidget {
           SettingsCard(
             title: LocaleKeys.deleteAccount.tr(),
             position: SettingsCardPosition.bottom,
-            trailing: ButtonTertiary(
-              decoration: ButtonDecoration(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-              ),
-              size: ButtonSize.small,
+            trailing: SettingsActionButton(
               onPressed: handleDeleteAccount,
               child: Text(LocaleKeys.deleteBtn.tr()),
             ),
@@ -264,113 +248,89 @@ class _SubscriptionCard extends StatelessWidget {
   final Future<void> Function({required bool manageSubscription}) onSubscribePress;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final spacing = theme.spacing;
+  Widget build(BuildContext context) => Observer(
+    builder: (_) {
+      final subscription = subscriptionStore.subscriptionFuture.value;
+      final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
+      final isSubscriptionActive = subscription?.active ?? false;
 
-    return Observer(
-      builder: (_) {
-        final subscription = subscriptionStore.subscriptionFuture.value;
-        final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
-        final isSubscriptionActive = subscription?.active ?? false;
-
-        Widget trailing;
-        if (isLoading) {
-          trailing = const LoadingIndicator();
-        } else if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
-          trailing = ButtonTertiary(
-            decoration: ButtonDecoration(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-            ),
-            size: ButtonSize.small,
-            onPressed: subscriptionStore.refreshSubscription,
-            child: Text(LocaleKeys.retryBtn.tr()),
-          );
-        } else if (!isSubscriptionActive) {
-          trailing = ButtonTertiary(
-            decoration: ButtonDecoration(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-            ),
-            size: ButtonSize.small,
-            onPressed: isSubscribing
-                ? null
-                : () {
-                    analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
-                    onSubscribePress(manageSubscription: false);
-                  },
-            child: isSubscribing
-                ? const LoadingIndicator()
-                : Text(LocaleKeys.pricingPlanSeePlansBtn.tr()),
-          );
-        } else {
-          final manageButton = ButtonTertiary(
-            decoration: ButtonDecoration(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-            ),
-            size: ButtonSize.small,
-            onPressed: isSubscribing
-                ? null
-                : () async {
-                    analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                    await onSubscribePress(manageSubscription: true);
-                  },
-            child: Text(LocaleKeys.settingManageBtn.tr()),
-          );
-          final cancelButton = ButtonTertiary(
-            decoration: ButtonDecoration(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.xxs),
-            ),
-            size: ButtonSize.small,
-            onPressed: isSubscribing
-                ? null
-                : () async {
-                    final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
-                    if (shouldProceed ?? false) {
-                      await onSubscribePress(manageSubscription: true);
-                    }
-                  },
-            child: Text(LocaleKeys.cancelBtn.tr()),
-          );
-          trailing = isDesktop
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    manageButton,
-                    SizedBox(width: spacing.md),
-                    cancelButton,
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    manageButton,
-                    SizedBox(height: spacing.xs),
-                    cancelButton,
-                  ],
-                );
-        }
-
-        final planTitle = isSubscriptionActive
-            ? (subscription!.planId?.tr() ?? LocaleKeys.subscripton.tr())
-            : LocaleKeys.subscripton.tr();
-        final planSubtitle = isSubscriptionActive
-            ? LocaleKeys.nextBilling.tr(
-                namedArgs: {'date': subscription!.activeUntil?.toLocal().formatWithDay() ?? ''},
-              )
-            : null;
-
-        return SettingsCard(
-          title: planTitle,
-          subtitle: planSubtitle,
-          position: position,
-          trailing: trailing,
+      Widget trailing;
+      if (isLoading) {
+        trailing = const LoadingIndicator();
+      } else if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
+        trailing = SettingsActionButton(
+          onPressed: subscriptionStore.refreshSubscription,
+          child: Text(LocaleKeys.retryBtn.tr()),
         );
-      },
-    );
-  }
+      } else if (!isSubscriptionActive) {
+        trailing = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () {
+                  analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
+                  onSubscribePress(manageSubscription: false);
+                },
+          child: isSubscribing
+              ? const LoadingIndicator()
+              : Text(LocaleKeys.pricingPlanSeePlansBtn.tr()),
+        );
+      } else {
+        final manageButton = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () async {
+                  analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                  await onSubscribePress(manageSubscription: true);
+                },
+          child: Text(LocaleKeys.settingManageBtn.tr()),
+        );
+        final cancelButton = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () async {
+                  final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
+                  if (shouldProceed ?? false) {
+                    await onSubscribePress(manageSubscription: true);
+                  }
+                },
+          child: Text(LocaleKeys.cancelBtn.tr()),
+        );
+        final spacing = Theme.of(context).spacing;
+        trailing = isDesktop
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  manageButton,
+                  SizedBox(width: spacing.md),
+                  cancelButton,
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  manageButton,
+                  SizedBox(height: spacing.xs),
+                  cancelButton,
+                ],
+              );
+      }
+
+      final planTitle = isSubscriptionActive
+          ? (subscription!.planId?.tr() ?? LocaleKeys.subscripton.tr())
+          : LocaleKeys.subscripton.tr();
+      final planSubtitle = isSubscriptionActive
+          ? LocaleKeys.nextBilling.tr(
+              namedArgs: {'date': subscription!.activeUntil?.toLocal().formatWithDay() ?? ''},
+            )
+          : null;
+
+      return SettingsCard(
+        title: planTitle,
+        subtitle: planSubtitle,
+        position: position,
+        trailing: trailing,
+      );
+    },
+  );
 }

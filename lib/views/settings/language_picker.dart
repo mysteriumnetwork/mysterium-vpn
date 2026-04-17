@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
-import 'package:mysterium_vpn/components/easy_dropdown.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/picker_bottom_sheet.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn/views/settings/settings_picker_card.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LanguagePicker extends ConsumerWidget {
   const LanguagePicker({required this.position, super.key});
@@ -21,60 +18,18 @@ class LanguagePicker extends ConsumerWidget {
     final store = ref.read(localeStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
 
-    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
-    final theme = Theme.of(context);
-    final title = LocaleKeys.languageSettingLbl.tr();
-
-    Future<void> onChange(Locale locale) async {
-      await context.setLocale(locale);
-      await store.setLocale(locale);
-      analyticsStore.logLanguageChange(locale.languageCode);
-    }
-
-    if (isDesktop) {
-      return SettingsCard(
-        title: title,
+    return Observer(
+      builder: (_) => SettingsPickerCard<Locale>(
+        title: LocaleKeys.languageSettingLbl.tr(),
         position: position,
-        trailing: Observer(
-          builder: (_) => EasyDropdown<Locale>(
-            value: store.currentLocale,
-            onChanged: (Locale? locale) async {
-              if (locale == null) {
-                return;
-              }
-              await onChange(locale);
-            },
-            items: kSupportedLocales
-                .map<DropdownMenuItem<Locale>>(
-                  (locale) => DropdownMenuItem<Locale>(
-                    value: locale,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: EasyText(locale.languageCode.tr()),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      );
-    }
-
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => showPickerBottomSheet<Locale>(
-        context: context,
-        title: title,
-        items: kSupportedLocales,
         value: store.currentLocale,
+        items: kSupportedLocales,
         labelOf: (locale) => locale.languageCode.tr(),
-        onChanged: onChange,
-      ),
-      child: SettingsCard(
-        title: title,
-        subtitle: store.currentLocale.languageCode.tr(),
-        position: position,
-        trailing: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
+        onChanged: (locale) async {
+          await context.setLocale(locale);
+          await store.setLocale(locale);
+          analyticsStore.logLanguageChange(locale.languageCode);
+        },
       ),
     );
   }
