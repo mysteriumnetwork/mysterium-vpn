@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EasyDropdown<T> extends StatelessWidget {
@@ -20,36 +19,36 @@ class EasyDropdown<T> extends StatelessWidget {
   bool get isDisabled => onChanged == null;
 
   @override
-  Widget build(BuildContext context) =>
-      DropdownButton<T>(
-            isExpanded: true,
-            value: value,
-            icon: Icon(
-              Icons.arrow_drop_down,
-              color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
-            ),
-            disabledHint: Text(
-              value.toString(),
-              style: TextStyle(color: Palette.lightBlack.withValues(alpha: .3)),
-            ),
-            style: TextStyle(
-              color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            underline: const SizedBox.shrink(),
-            onChanged: onChanged,
-            onTap: onTap,
-            items: items,
-          )
-          .width(checkMediaWidth(context, 750) ? double.infinity : 220)
-          .height(36)
-          .padding(horizontal: 10)
-          .decorated(
-            color: context.c.isDarkMode ? Palette.black : Palette.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(
-              color: isDisabled ? Palette.lightBlack.withValues(alpha: .3) : Palette.lightBlack,
-            ),
-          )
-          .opacity(isDisabled ? 0.6 : 1.0);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return DropdownButton<T>(
+          isExpanded: true,
+          value: value,
+          icon: Icon(UntitledUI.chevron_down, size: 20, color: theme.palette.iconTertiary),
+          disabledHint:
+              items.where((item) => item.value == value).firstOrNull?.child ??
+              Text(
+                value.toString(),
+                style: TextStyle(color: theme.palette.textTertiary, fontSize: 16),
+              ),
+          style: TextStyle(color: theme.palette.textTertiary, fontSize: 16),
+          borderRadius: BorderRadius.circular(8),
+          underline: const SizedBox.shrink(),
+          onChanged: onChanged,
+          onTap: onTap,
+          items: items,
+        )
+        .width(220)
+        .height(40)
+        .padding(horizontal: 12)
+        .decorated(
+          color: theme.palette.bgPrimary,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: theme.palette.borderPrimary),
+          boxShadow: const [
+            BoxShadow(color: Color(0x0D0A0D12), blurRadius: 2, offset: Offset(0, 1)),
+          ],
+        )
+        .opacity(isDisabled ? 0.6 : 1.0);
+  }
 }

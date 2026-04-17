@@ -2,68 +2,158 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/app_version.dart';
 import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/sheet_scaffold.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/settings/account_settings.dart';
-import 'package:mysterium_vpn/views/settings/application_settings.dart';
-import 'package:mysterium_vpn/views/settings/connection_settings.dart';
-import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
+import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
-import 'package:sliver_tools/sliver_tools.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsMobileView extends HookConsumerWidget {
   const SettingsMobileView({super.key});
 
+  static const _mainCategories = [
+    SettingCategory.account,
+    SettingCategory.connection,
+    SettingCategory.preferences,
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final enableQaHelpers = useComputedValue(() => remoteConfig.enableQaHelpers);
-    return SheetScaffold(
-      headerTitle: LocaleKeys.settings.tr(),
-      subheaderSliver: const SliverPinnedHeader(child: PromoBanner()),
-      sliver: SliverPadding(
-        padding: const EdgeInsets.only(bottom: 30),
-        sliver: SliverClip(
-          child: DecoratedSliver(
-            decoration: BoxDecoration(
-              color: context.c.isDarkMode ? Palette.darkBlue : Palette.white,
-            ),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                const AppVersionUpdateSetting(),
-                _HeaderTitle(title: LocaleKeys.connection.tr()),
-                const ConnectionSettings(),
-                _HeaderTitle(title: LocaleKeys.application.tr()),
-                const ApplicationSettings(),
-                _HeaderTitle(title: LocaleKeys.account.tr()),
-                const AccountSettings(),
-                if (enableQaHelpers) ...[
-                  const _HeaderTitle(title: 'QA Toolbox'),
-                  const QAToolbox(),
-                ],
-              ]),
-            ),
+    final analyticsStore = ref.read(analyticsStorePOD);
+    final theme = Theme.of(context);
+
+    void pushSubPage(String title, Widget content, {bool scrollable = true}) {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (routeContext) => Theme(
+            data: DesignSystemTheme.of(routeContext),
+            child: _MobileSettingsSubPage(title: title, scrollable: scrollable, child: content),
           ),
         ),
+      );
+    }
+
+    Widget categoryCard(SettingCategory category, SettingsCardPosition position) {
+      void onTap() =>
+          pushSubPage(category.trKey.tr(), category.content, scrollable: category.scrollable);
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: SettingsCard(
+          position: position,
+          icon: Icon(category.icon, size: 20),
+          title: category.trKey.tr(),
+          trailing: IconButton(
+            onPressed: onTap,
+            icon: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
+          ),
+        ),
+      );
+    }
+
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Header(
+            backLabel: LocaleKeys.backHomeLbl.tr(),
+            backgroundColor: theme.palette.bgSidePanel,
+          ),
+          const PromoBanner(),
+          Text(
+            LocaleKeys.settings.tr(),
+            style: theme.textStyles.displayXlg.semibold.copyWith(color: theme.palette.textPrimary),
+          ).padding(horizontal: theme.spacing.md, bottom: theme.spacing.xl2, top: theme.spacing.ms),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+              child: Column(
+                children: [
+                  const AppVersionUpdateSetting(),
+                  for (final (index, category) in _mainCategories.indexed)
+                    categoryCard(
+                      category,
+                      index == 0 ? SettingsCardPosition.top : SettingsCardPosition.middle,
+                    ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () =>
+                        handleOnSupportPage(context: context, analyticsStore: analyticsStore),
+                    child: SettingsCard(
+                      icon: const Icon(UntitledUI.message_question_square, size: 20),
+                      title: LocaleKeys.helpSupportLbl.tr(),
+                      position: SettingsCardPosition.bottom,
+                      trailing: IconButton(
+                        onPressed: () =>
+                            handleOnSupportPage(context: context, analyticsStore: analyticsStore),
+                        icon: Icon(
+                          UntitledUI.link_external_02,
+                          size: 24,
+                          color: theme.palette.iconTertiary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (enableQaHelpers)
+                    categoryCard(
+                      SettingCategory.qaToolbox,
+                      SettingsCardPosition.single,
+                    ).padding(top: theme.spacing.md),
+                ],
+              ),
+            ),
+          ),
+          const AppVersion(),
+        ],
       ),
-    ).backgroundColor(context.c.isDarkMode ? Palette.darkBlue : Palette.white);
+    ).backgroundColor(theme.palette.bgSidePanel);
   }
 }
 
-class _HeaderTitle extends StatelessWidget {
-  const _HeaderTitle({required this.title});
+class _MobileSettingsSubPage extends StatelessWidget {
+  const _MobileSettingsSubPage({required this.title, required this.child, this.scrollable = true});
 
   final String title;
+  final Widget child;
+  final bool scrollable;
 
   @override
-  Widget build(BuildContext context) => EasyText(
-    title,
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-  ).padding(vertical: 16, horizontal: 20);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      backgroundColor: theme.palette.bgSidePanel,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Header(
+              backLabel: LocaleKeys.backToSettingsLbl.tr(),
+              backgroundColor: theme.palette.bgSidePanel,
+            ),
+            Text(
+              title,
+              style: theme.textStyles.displayXlg.semibold.copyWith(
+                color: theme.palette.textPrimary,
+              ),
+            ).padding(horizontal: theme.spacing.md, bottom: theme.spacing.xl),
+            Expanded(
+              child: scrollable
+                  ? SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+                      child: child,
+                    )
+                  : child,
+            ),
+            const AppVersion(),
+          ],
+        ),
+      ),
+    );
+  }
 }

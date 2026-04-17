@@ -51,7 +51,6 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Header.logo(
-                    automaticallyImplyLeading: false,
                     showBackButton: false,
                     backgroundColor: pallete.bgSidePanel,
                     actions: [

@@ -6,24 +6,21 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
-import 'package:mysterium_vpn/components/easy_button.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_indicator.dart';
-import 'package:mysterium_vpn/components/setting_item.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/settings/action_button.dart';
-import 'package:mysterium_vpn/views/settings/purchased_plan.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, ScreenType;
 
 class AccountSettings extends HookConsumerWidget {
   const AccountSettings({super.key});
@@ -46,14 +43,51 @@ class _Unauthenticated extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void handleSignIn() {
-      context.beamToNamed(Routes.platformLogin.path);
-    }
+    final theme = Theme.of(context);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
-    return SettingItem(
-      asset: Asset.icons.accountName(context),
-      title: LocaleKeys.accountSignInTitle.tr(),
-      actionWidget: EasyButton(text: LocaleKeys.accountSignIn.tr(), onPressed: handleSignIn),
+    void handleSignIn() => context.beamToNamed(Routes.platformLogin.path);
+
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: theme.palette.bgSecondarySelected,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Icon(UntitledUI.user_02, size: 24, color: theme.palette.textBrandPrimary),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          LocaleKeys.unauthenticatedSettingTitle.tr(),
+          style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textPrimary),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 343),
+          child: Text(
+            LocaleKeys.unauthenticatedSettingSubtitle.tr(),
+            style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        SizedBox(height: theme.spacing.xl3),
+        SizedBox(
+          width: isDesktop ? null : double.infinity,
+          child: ButtonPrimary(onPressed: handleSignIn, child: Text(LocaleKeys.signIn.tr())),
+        ),
+      ],
+    );
+
+    return Padding(
+      padding: EdgeInsets.only(top: isDesktop ? 80 : 60, bottom: theme.spacing.xl3),
+      child: Center(child: content),
     );
   }
 }
@@ -69,152 +103,234 @@ class _Authenticated extends HookConsumerWidget {
     final analyticsStore = ref.read(analyticsStorePOD);
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
-    return Observer(
-      builder: (ctx) {
-        final subscription = subscriptionStore.subscriptionFuture.value;
-        final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
-        return Column(
-          children: [
-            SettingItem(
-              asset: Asset.icons.billing(context),
-              title: LocaleKeys.myBillingPackage.tr(),
-              description: subscription != null && subscription.active
-                  ? PurchasedPlan(subscription: subscription)
-                  : null,
-              actionWidget: HookBuilder(
-                builder: (context) {
-                  final handleSubscribe = useHandleSubscribe();
-                  final (notifier, subscribeStatus) = useFutureStatus();
 
-                  useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, _) {
-                    if (subscribeStatus.hasError) {
-                      showSnackbar(LocaleKeys.somethingWentWrong.tr());
-                    }
-                  });
+    final handleSubscribe = useHandleSubscribe();
+    final (notifier, subscribeStatus) = useFutureStatus();
 
-                  Future<void> onSubscribePress() async {
-                    await notifier.runAndAwait(
-                      () async =>
-                          await handleSubscribe(manageSubscription: subscription?.active ?? false),
-                    );
-                  }
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    final theme = Theme.of(context);
 
-                  if (isLoading) {
-                    return const LoadingIndicator();
-                  }
+    useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, _) {
+      if (subscribeStatus.hasError) {
+        showSnackbar(LocaleKeys.somethingWentWrong.tr());
+      }
+    });
 
-                  if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
-                    return SettingActionButton(
-                      action: subscriptionStore.refreshSubscription,
-                      child: EasyText(LocaleKeys.retryBtn.tr(), color: Palette.white),
-                    );
-                  }
+    void handleLogout() {
+      analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
+      shownConfirmationDialog(
+        context,
+        confirmText: LocaleKeys.confirm.tr(),
+        cancelText: LocaleKeys.cancelBtn.tr(),
+        icon: SvgIcon(asset: Asset.icons.warning),
+        title: LocaleKeys.logoutConfirmationTitle.tr(),
+        content: Text(
+          vpnStore.isConnected
+              ? LocaleKeys.logoutVPNConnectedDesc.tr()
+              : LocaleKeys.logoutConfirmationDesc.tr(),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          maxLines: 5,
+          textAlign: TextAlign.center,
+        ),
+        onConfirm: () async {
+          analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
+          await vpnStore.disconnectTunnel();
+          authStore.logout();
+        },
+        onCancel: () {
+          analyticsStore.logEvent(AnalyticsEvent.logOutCancel);
+        },
+      );
+    }
 
-                  if (subscription == null || !subscription.active) {
-                    return SettingActionButton(
-                      action: subscribeStatus.isLoading ? null : onSubscribePress,
-                      child: subscribeStatus.isLoading
-                          ? const LoadingIndicator()
-                          : EasyText(LocaleKeys.pricingPlanSeePlansBtn.tr(), color: Palette.white),
-                    );
-                  }
+    void handleDeleteAccount() {
+      analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
+      shownDeleteAccountDialog(
+        context,
+        authStore: authStore,
+        analyticsStore: analyticsStore,
+        vpnStore: vpnStore,
+      );
+    }
 
-                  return ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 250),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 16,
-                      children: [
-                        SettingActionButton(
-                          backgroundColor: Palette.purple,
-                          action: () async {
-                            analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                            await onSubscribePress();
-                          },
-                          child: EasyText(LocaleKeys.goToBillingPage.tr(), color: Palette.white),
-                        ),
-                        SettingActionButton(
-                          action: () async {
-                            final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
-                            if (shouldProceed ?? false) {
-                              await onSubscribePress();
-                            }
-                          },
-                          child: EasyText(
-                            LocaleKeys.cancelSubscriptionBtn.tr(),
-                            color: Palette.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+    Future<void> onSubscribePress({required bool manageSubscription}) async {
+      await notifier.runAndAwait(
+        () async => handleSubscribe(manageSubscription: manageSubscription),
+      );
+    }
+
+    final email = authSessionStore.user?.username ?? '';
+    final showDeleteAccount = !remoteConfigStore.hideDeleteAccount;
+
+    final cards = Column(
+      children: [
+        SettingsCard(
+          title: email.isEmpty ? LocaleKeys.account.tr() : email,
+          position: SettingsCardPosition.top,
+          trailing: isDesktop
+              ? SettingsActionButton(onPressed: handleLogout, child: Text(LocaleKeys.logout.tr()))
+              : null,
+        ),
+        _SubscriptionCard(
+          subscriptionStore: subscriptionStore,
+          analyticsStore: analyticsStore,
+          position: showDeleteAccount ? SettingsCardPosition.middle : SettingsCardPosition.bottom,
+          isSubscribing: subscribeStatus.isLoading,
+          isDesktop: isDesktop,
+          onSubscribePress: onSubscribePress,
+        ),
+        if (showDeleteAccount)
+          SettingsCard(
+            title: LocaleKeys.deleteAccount.tr(),
+            position: SettingsCardPosition.bottom,
+            trailing: SettingsActionButton(
+              onPressed: handleDeleteAccount,
+              child: Text(LocaleKeys.deleteBtn.tr()),
             ),
-            SettingItem(
-              asset: Asset.icons.accountName(context),
-              title: authSessionStore.user?.username ?? '',
-              actionWidget: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 250),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: SettingActionButton(
-                    child: EasyText(LocaleKeys.logout.tr(), color: Palette.white),
-                    action: () {
-                      analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
-                      shownConfirmationDialog(
-                        context,
-                        confirmText: LocaleKeys.confirm.tr(),
-                        cancelText: LocaleKeys.cancelBtn.tr(),
-                        icon: SvgIcon(asset: Asset.icons.warning),
-                        title: LocaleKeys.logoutConfirmationTitle.tr(),
-                        content: Text(
-                          vpnStore.isConnected
-                              ? LocaleKeys.logoutVPNConnectedDesc.tr()
-                              : LocaleKeys.logoutConfirmationDesc.tr(),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Palette.black,
-                          ),
-                          maxLines: 5,
-                          textAlign: TextAlign.center,
-                        ),
-                        onConfirm: () async {
-                          analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
-                          await vpnStore.disconnectTunnel();
-                          authStore.logout();
-                        },
-                        onCancel: () {
-                          analyticsStore.logEvent(AnalyticsEvent.logOutCancel);
-                        },
-                      );
-                    },
+          ),
+      ],
+    );
+
+    if (isDesktop) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
+        child: cards,
+      );
+    }
+
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+          sliver: SliverToBoxAdapter(child: cards),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ButtonSecondary(
+                  onPressed: handleLogout,
+                  child: Text(
+                    LocaleKeys.logout.tr(),
+                    style: theme.textStyles.textMd.semibold.copyWith(
+                      color: theme.palette.textErrorPrimary,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-            if (!remoteConfigStore.hideDeleteAccount)
-              SettingItem(
-                asset: Asset.icons.deleteAccount(context),
-                title: LocaleKeys.cancelMyAccount.tr(),
-                actionWidget: SettingActionButton(
-                  child: EasyText(LocaleKeys.deleteAccount.tr(), color: Palette.white),
-                  action: () {
-                    analyticsStore.logEvent(AnalyticsEvent.deleteAccount);
-                    shownDeleteAccountDialog(
-                      context,
-                      authStore: authStore,
-                      analyticsStore: analyticsStore,
-                      vpnStore: vpnStore,
-                    );
-                  },
-                ),
-              ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
+}
+
+class _SubscriptionCard extends StatelessWidget {
+  const _SubscriptionCard({
+    required this.subscriptionStore,
+    required this.analyticsStore,
+    required this.position,
+    required this.isSubscribing,
+    required this.isDesktop,
+    required this.onSubscribePress,
+  });
+
+  final SubscriptionStore subscriptionStore;
+  final AnalyticsStore analyticsStore;
+  final SettingsCardPosition position;
+  final bool isSubscribing;
+  final bool isDesktop;
+  final Future<void> Function({required bool manageSubscription}) onSubscribePress;
+
+  @override
+  Widget build(BuildContext context) => Observer(
+    builder: (_) {
+      final subscription = subscriptionStore.subscriptionFuture.value;
+      final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
+      final isSubscriptionActive = subscription?.active ?? false;
+
+      Widget trailing;
+      if (isLoading) {
+        trailing = const LoadingIndicator();
+      } else if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
+        trailing = SettingsActionButton(
+          onPressed: subscriptionStore.refreshSubscription,
+          child: Text(LocaleKeys.retryBtn.tr()),
+        );
+      } else if (!isSubscriptionActive) {
+        trailing = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () {
+                  analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
+                  onSubscribePress(manageSubscription: false);
+                },
+          child: isSubscribing
+              ? const LoadingIndicator()
+              : Text(LocaleKeys.pricingPlanSeePlansBtn.tr()),
+        );
+      } else {
+        final manageButton = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () async {
+                  analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                  await onSubscribePress(manageSubscription: true);
+                },
+          child: Text(LocaleKeys.settingManageBtn.tr()),
+        );
+        final cancelButton = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () async {
+                  final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
+                  if (shouldProceed ?? false) {
+                    await onSubscribePress(manageSubscription: true);
+                  }
+                },
+          child: Text(LocaleKeys.cancelBtn.tr()),
+        );
+        final spacing = Theme.of(context).spacing;
+        trailing = isDesktop
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  manageButton,
+                  SizedBox(width: spacing.md),
+                  cancelButton,
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  manageButton,
+                  SizedBox(height: spacing.xs),
+                  cancelButton,
+                ],
+              );
+      }
+
+      final planTitle = isSubscriptionActive
+          ? (subscription!.planId?.tr() ?? LocaleKeys.subscripton.tr())
+          : LocaleKeys.subscripton.tr();
+      final planSubtitle = isSubscriptionActive
+          ? LocaleKeys.nextBilling.tr(
+              namedArgs: {'date': subscription!.activeUntil?.toLocal().formatWithDay() ?? ''},
+            )
+          : null;
+
+      return SettingsCard(
+        title: planTitle,
+        subtitle: planSubtitle,
+        position: position,
+        trailing: trailing,
+      );
+    },
+  );
 }

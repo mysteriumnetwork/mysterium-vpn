@@ -55,8 +55,14 @@ jobs:
         run: choco install yq -y
       - run: dotnet tool install --global AzureSignTool
 
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
       - name: Setup Flutter Version Management CLI
-        run: choco install yq fvm -y
+        shell: pwsh
+        run: |
+          dart pub global activate fvm
+          echo "$env:LOCALAPPDATA\Pub\Cache\bin" >> $env:GITHUB_PATH
 
       - name: Install Flutter SDK
         run: echo yes | fvm use
