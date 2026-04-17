@@ -394,7 +394,6 @@
   "upload": "Yükleme",
   "userIntentBestSpeed": "En iyi hız",
   "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlanın",
-  "userIntentLabel": "Uzmanlaşmış sunucu seç",
   "userIntentLowLatency": "Düşük gecikme",
   "userIntentLowLatencyDesc": "Kararlı ve güvenilir erişim için en yakın sunucuya otomatik olarak bağlanır",
   "userIntentMaxPrivacy": "Maksimum gizlilik",
@@ -522,5 +521,6 @@
   "settingManageBtn": "Üstesinden gelmek",
   "noneLbl": "Hiçbiri",
   "malwareLbl": "Kötü amaçlı yazılım",
-  "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım"
+  "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
+  "userIntentLabel": "Özel servis elemanı"
 }

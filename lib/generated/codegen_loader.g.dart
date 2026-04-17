@@ -400,7 +400,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "上传",
     "userIntentBestSpeed": "最佳速度",
     "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
-    "userIntentLabel": "选择专用服务器",
     "userIntentLowLatency": "低延迟",
     "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
     "userIntentMaxPrivacy": "最大隐私",
@@ -503,7 +502,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
     "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
     "ipTypeResidentialTooltipBody":
-        "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+        "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
     "refreshIPAddress": "IP地址刷新",
     "getNewIPAddress": "刷新后获取新的 IP 地址",
     "resetAppDesc": "当出现故障时，请重置。",
@@ -529,6 +528,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "没有任何",
     "malwareLbl": "恶意软件",
     "nsfwLbl": "NSFW 和恶意软件",
+    "userIntentLabel": "专业服务器",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -953,7 +953,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "Yükleme",
     "userIntentBestSpeed": "En iyi hız",
     "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlanın",
-    "userIntentLabel": "Uzmanlaşmış sunucu seç",
     "userIntentLowLatency": "Düşük gecikme",
     "userIntentLowLatencyDesc":
         "Kararlı ve güvenilir erişim için en yakın sunucuya otomatik olarak bağlanır",
@@ -1095,6 +1094,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Hiçbiri",
     "malwareLbl": "Kötü amaçlı yazılım",
     "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
+    "userIntentLabel": "Özel servis elemanı",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1487,7 +1487,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "アップロード",
     "userIntentBestSpeed": "最速",
     "userIntentBestSpeedDesc": "最適なパフォーマンスのために、最も高速な利用可能サーバーに接続します",
-    "userIntentLabel": "専用サーバーを選択",
     "userIntentLowLatency": "低遅延",
     "userIntentLowLatencyDesc": "安定して信頼できるアクセスのために、最も近いサーバーに自動接続します",
     "userIntentMaxPrivacy": "最大限のプライバシー",
@@ -1582,7 +1581,7 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IPプール: {ips}",
     "connectToTooltip": "{countryNum}に接続します",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
-    "switchToLocationBtn": "{switchLocation} に切り替える",
+    "switchToLocationBtn": "{switchLocation}に切り替える",
     "redeemDiscountCode": "割引コードを引き換える",
     "couponCodeCopied": "",
     "marketingConsentPopupTitle": "メールで最新情報を受け取る",
@@ -1620,6 +1619,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "なし",
     "malwareLbl": "マルウェア",
     "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア",
+    "userIntentLabel": "専門サーバー",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2069,7 +2069,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Beste Geschwindigkeit",
     "userIntentBestSpeedDesc":
         "Verbinde dich mit dem schnellsten verfügbaren Server für optimale Leistung",
-    "userIntentLabel": "Spezialserver auswählen",
     "userIntentLowLatency": "Niedrige Latenz",
     "userIntentLowLatencyDesc":
         "Verbindet dich automatisch mit dem nächstgelegenen Server für stabilen und zuverlässigen Zugriff",
@@ -2153,11 +2152,11 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
     "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
@@ -2213,6 +2212,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Keiner",
     "malwareLbl": "Malware",
     "nsfwLbl": "NSFW & Malware",
+    "userIntentLabel": "Spezialserver",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2654,7 +2654,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Melhor velocidade",
     "userIntentBestSpeedDesc":
         "Conecte-se ao servidor disponível mais rápido para um desempenho ideal",
-    "userIntentLabel": "Selecionar servidor especializado",
     "userIntentLowLatency": "Baixa latência",
     "userIntentLowLatencyDesc":
         "Conecta automaticamente ao servidor mais próximo para um acesso estável e confiável",
@@ -2737,7 +2736,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
-        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
+        "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
     "subscriptionPlanCityLevelDesc":
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2797,6 +2796,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Nenhum",
     "malwareLbl": "Malware",
     "nsfwLbl": "Conteúdo impróprio para menores e malware",
+    "userIntentLabel": "Servidor especializado",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3228,7 +3228,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "Upload",
     "userIntentBestSpeed": "Best speed",
     "userIntentBestSpeedDesc": "Connect to the fastest available server for optimal performance",
-    "userIntentLabel": "Select speciality server",
     "userIntentLowLatency": "Low latency",
     "userIntentLowLatencyDesc":
         "Automatically connects you to the closest server for stable and reliable access",
@@ -3369,6 +3368,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "None",
     "malwareLbl": "Malware",
     "nsfwLbl": "NSFW & Malware",
+    "userIntentLabel": "Speciality server",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3813,7 +3813,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Massima velocità",
     "userIntentBestSpeedDesc":
         "Connettiti al server disponibile più veloce per prestazioni ottimali",
-    "userIntentLabel": "Seleziona server specializzato",
     "userIntentLowLatency": "Bassa latenza",
     "userIntentLowLatencyDesc":
         "Si connette automaticamente al server più vicino per un accesso stabile e affidabile",
@@ -3956,6 +3955,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Nessuno",
     "malwareLbl": "Malware",
     "nsfwLbl": "Contenuti non adatti ai minori e malware",
+    "userIntentLabel": "Server specializzato",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4406,7 +4406,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Meilleure vitesse",
     "userIntentBestSpeedDesc":
         "Connectez-vous au serveur disponible le plus rapide pour des performances optimales",
-    "userIntentLabel": "Sélectionner un serveur spécialisé",
     "userIntentLowLatency": "Faible latence",
     "userIntentLowLatencyDesc":
         "Se connecte automatiquement au serveur le plus proche pour un accès stable et fiable",
@@ -4486,11 +4485,11 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
-        "Apparaissez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
+        "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
     "subscriptionPlanCityLevelDesc":
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -4550,6 +4549,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Aucun",
     "malwareLbl": "Logiciel malveillant",
     "nsfwLbl": "Contenu réservé aux adultes et logiciels malveillants",
+    "userIntentLabel": "Serveur spécialisé",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4981,7 +4981,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "Mengunggah",
     "userIntentBestSpeed": "Kecepatan terbaik",
     "userIntentBestSpeedDesc": "Hubungkan ke server tercepat yang tersedia untuk performa optimal",
-    "userIntentLabel": "Pilih server khusus",
     "userIntentLowLatency": "Latensi rendah",
     "userIntentLowLatencyDesc":
         "Secara otomatis menghubungkan Anda ke server terdekat untuk akses yang stabil dan andal",
@@ -5056,7 +5055,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5126,6 +5125,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Tidak ada",
     "malwareLbl": "Perangkat lunak berbahaya",
     "nsfwLbl": "Konten Dewasa & Malware",
+    "userIntentLabel": "Server khusus",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5569,7 +5569,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Mejor velocidad",
     "userIntentBestSpeedDesc":
         "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
-    "userIntentLabel": "Seleccionar servidor especializado",
     "userIntentLowLatency": "Baja latencia",
     "userIntentLowLatencyDesc":
         "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
@@ -5673,7 +5672,7 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Grupo de direcciones IP: {ips}",
     "connectToTooltip": "Conéctate a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
-    "switchToLocationBtn": "Cambiar a {switchLocation}",
+    "switchToLocationBtn": "Cambiar a {ubicación del switch}",
     "redeemDiscountCode": "Canjea el código de descuento",
     "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
     "marketingConsentPopupTitle": "Manténgase informado por correo electrónico.",
@@ -5713,6 +5712,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Ninguno",
     "malwareLbl": "malware",
     "nsfwLbl": "Contenido para adultos y malware",
+    "userIntentLabel": "Servidor especializado",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6132,7 +6132,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "رفع",
     "userIntentBestSpeed": "أفضل سرعة",
     "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أفضل أداء",
-    "userIntentLabel": "اختر خادمًا متخصصًا",
     "userIntentLowLatency": "كمون منخفض",
     "userIntentLowLatencyDesc": "يتصل تلقائيًا بأقرب خادم لتوفير وصول مستقر وموثوق",
     "userIntentMaxPrivacy": "أقصى قدر من الخصوصية",
@@ -6271,6 +6270,7 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "لا أحد",
     "malwareLbl": "البرامج الضارة",
     "nsfwLbl": "محتوى غير لائق وبرامج ضارة",
+    "userIntentLabel": "خادم متخصص",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

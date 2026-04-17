@@ -394,7 +394,6 @@
   "upload": "上传",
   "userIntentBestSpeed": "最佳速度",
   "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
-  "userIntentLabel": "选择专用服务器",
   "userIntentLowLatency": "低延迟",
   "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
   "userIntentMaxPrivacy": "最大隐私",
@@ -497,7 +496,7 @@
   "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
   "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
   "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
-  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
   "refreshIPAddress": "IP地址刷新",
   "getNewIPAddress": "刷新后获取新的 IP 地址",
   "resetAppDesc": "当出现故障时，请重置。",
@@ -522,5 +521,6 @@
   "settingManageBtn": "管理",
   "noneLbl": "没有任何",
   "malwareLbl": "恶意软件",
-  "nsfwLbl": "NSFW 和恶意软件"
+  "nsfwLbl": "NSFW 和恶意软件",
+  "userIntentLabel": "专业服务器"
 }

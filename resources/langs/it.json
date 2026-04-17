@@ -394,7 +394,6 @@
   "upload": "Upload",
   "userIntentBestSpeed": "Massima velocità",
   "userIntentBestSpeedDesc": "Connettiti al server disponibile più veloce per prestazioni ottimali",
-  "userIntentLabel": "Seleziona server specializzato",
   "userIntentLowLatency": "Bassa latenza",
   "userIntentLowLatencyDesc": "Si connette automaticamente al server più vicino per un accesso stabile e affidabile",
   "userIntentMaxPrivacy": "Massima privacy",
@@ -522,5 +521,6 @@
   "settingManageBtn": "Maneggio",
   "noneLbl": "Nessuno",
   "malwareLbl": "Malware",
-  "nsfwLbl": "Contenuti non adatti ai minori e malware"
+  "nsfwLbl": "Contenuti non adatti ai minori e malware",
+  "userIntentLabel": "Server specializzato"
 }

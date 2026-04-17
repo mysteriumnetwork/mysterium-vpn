@@ -394,7 +394,6 @@
   "upload": "رفع",
   "userIntentBestSpeed": "أفضل سرعة",
   "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أفضل أداء",
-  "userIntentLabel": "اختر خادمًا متخصصًا",
   "userIntentLowLatency": "كمون منخفض",
   "userIntentLowLatencyDesc": "يتصل تلقائيًا بأقرب خادم لتوفير وصول مستقر وموثوق",
   "userIntentMaxPrivacy": "أقصى قدر من الخصوصية",
@@ -522,5 +521,6 @@
   "settingManageBtn": "يدير",
   "noneLbl": "لا أحد",
   "malwareLbl": "البرامج الضارة",
-  "nsfwLbl": "محتوى غير لائق وبرامج ضارة"
+  "nsfwLbl": "محتوى غير لائق وبرامج ضارة",
+  "userIntentLabel": "خادم متخصص"
 }

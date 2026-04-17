@@ -394,7 +394,6 @@
   "upload": "Subir",
   "userIntentBestSpeed": "Mejor velocidad",
   "userIntentBestSpeedDesc": "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
-  "userIntentLabel": "Seleccionar servidor especializado",
   "userIntentLowLatency": "Baja latencia",
   "userIntentLowLatencyDesc": "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
   "userIntentMaxPrivacy": "Máxima privacidad",
@@ -488,7 +487,7 @@
     "one": "{statesNum} Estado",
     "other": "{statesNum} Estados"
   },
-  "switchToLocationBtn": "Cambiar a {switchLocation}",
+  "switchToLocationBtn": "Cambiar a {ubicación del switch}",
   "redeemDiscountCode": "Canjea el código de descuento",
   "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
   "marketingConsentPopupTitle": "Manténgase informado por correo electrónico.",
@@ -522,5 +521,6 @@
   "settingManageBtn": "Administrar",
   "noneLbl": "Ninguno",
   "malwareLbl": "malware",
-  "nsfwLbl": "Contenido para adultos y malware"
+  "nsfwLbl": "Contenido para adultos y malware",
+  "userIntentLabel": "Servidor especializado"
 }

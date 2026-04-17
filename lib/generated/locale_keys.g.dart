@@ -388,7 +388,6 @@ abstract class LocaleKeys {
   static const upload = 'upload';
   static const userIntentBestSpeed = 'userIntentBestSpeed';
   static const userIntentBestSpeedDesc = 'userIntentBestSpeedDesc';
-  static const userIntentLabel = 'userIntentLabel';
   static const userIntentLowLatency = 'userIntentLowLatency';
   static const userIntentLowLatencyDesc = 'userIntentLowLatencyDesc';
   static const userIntentMaxPrivacy = 'userIntentMaxPrivacy';
@@ -514,4 +513,5 @@ abstract class LocaleKeys {
   static const noneLbl = 'noneLbl';
   static const malwareLbl = 'malwareLbl';
   static const nsfwLbl = 'nsfwLbl';
+  static const userIntentLabel = 'userIntentLabel';
 }
