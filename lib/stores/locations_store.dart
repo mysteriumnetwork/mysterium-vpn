@@ -200,8 +200,10 @@ abstract class _LocationsStore with Store {
       switch (ipType) {
         case IPType.datacenter:
           _dcLocationsFuture = ObservableFuture.value(result);
+          break;
         case IPType.residential:
           _residentialLocationsFuture = ObservableFuture.value(result);
+          break;
         default:
           break;
       }

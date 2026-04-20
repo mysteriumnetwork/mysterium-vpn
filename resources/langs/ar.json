@@ -480,7 +480,6 @@
     "one": "{statesNum} الولاية",
     "other": "{statesNum} الولايات"
   },
-  "switchToLocationBtn": "انتقل إلى {switchLocation}",
   "redeemDiscountCode": "استخدم رمز الخصم",
   "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
   "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
@@ -522,5 +521,6 @@
   },
   "rateConnectionLike": "ما الذي أعجبك؟",
   "rateConnectionDislike": "ما الذي لم يعجبك؟",
-  "cancelSurveyFeedbackHint": "يرجى إدخال المزيد من التفاصيل..."
+  "cancelSurveyFeedbackHint": "يرجى إدخال المزيد من التفاصيل...",
+  "switchToLocationBtn": "انتقل إلى {}"
 }

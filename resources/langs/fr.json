@@ -480,7 +480,6 @@
     "one": "{statesNum} État",
     "other": "{statesNum} États"
   },
-  "switchToLocationBtn": "Passer à {switchLocation}",
   "redeemDiscountCode": "Utilisez le code de réduction",
   "couponCodeCopied": "{couponCode} copié dans le presse-papiers !",
   "marketingConsentPopupTitle": "Restez informé par e-mail",
@@ -522,5 +521,6 @@
   },
   "rateConnectionLike": "Qu'est-ce qui vous a plu ?",
   "rateConnectionDislike": "Qu'est-ce qui ne vous a pas plu ?",
-  "cancelSurveyFeedbackHint": "Veuillez saisir plus de détails..."
+  "cancelSurveyFeedbackHint": "Veuillez saisir plus de détails...",
+  "switchToLocationBtn": "Passer à {}"
 }

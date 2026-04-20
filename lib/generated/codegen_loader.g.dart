@@ -488,7 +488,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP地址池：{ips}",
     "connectToTooltip": "连接到 {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 个州"},
-    "switchToLocationBtn": "切换到 {switchLocation}",
     "redeemDiscountCode": "兑换折扣码",
     "couponCodeCopied": "优惠券代码已复制到剪贴板！",
     "marketingConsentPopupTitle": "通过电子邮件获取最新信息",
@@ -529,6 +528,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "你喜欢什么？",
     "rateConnectionDislike": "你不喜欢什么？",
     "cancelSurveyFeedbackHint": "请填写更多详情……",
+    "switchToLocationBtn": "切换到 {}",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1050,7 +1050,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP Havuzu: {ips}",
     "connectToTooltip": "{countryNum} ülkesine bağlanın",
     "locationItemStatesCount": {"one": "{statesNum} Eyalet", "other": "{statesNum} Eyalet"},
-    "switchToLocationBtn": "{switchLocation} konumuna geçin",
     "redeemDiscountCode": "İndirim kodunu kullanın",
     "couponCodeCopied": "{couponCode} panoya kopyalandı!",
     "marketingConsentPopupTitle": "E-posta yoluyla gelişmelerden haberdar olun.",
@@ -1095,6 +1094,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
     "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
+    "switchToLocationBtn": "Şuna geçin: {}",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1577,7 +1577,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IPプール: {ips}",
     "connectToTooltip": "{countryNum}に接続します",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
-    "switchToLocationBtn": "{switchLocation} に切り替える",
     "redeemDiscountCode": "割引コードを引き換える",
     "couponCodeCopied": "",
     "marketingConsentPopupTitle": "メールで最新情報を受け取る",
@@ -1620,6 +1619,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "何が気に入りましたか？",
     "rateConnectionDislike": "何が気に入らなかったのですか？",
     "cancelSurveyFeedbackHint": "詳細を入力してください...",
+    "switchToLocationBtn": "{}に切り替える",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2168,7 +2168,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP-Pool: {ips}",
     "connectToTooltip": "Verbindung zu {countryNum} herstellen",
     "locationItemStatesCount": {"one": "{statesNum} Zustand", "other": "{statesNum} Staaten"},
-    "switchToLocationBtn": "Wechseln Sie zu {switchLocation}",
     "redeemDiscountCode": "Gutscheincode einlösen",
     "couponCodeCopied": "{couponCode} wurde in die Zwischenablage kopiert!",
     "marketingConsentPopupTitle": "Bleiben Sie per E-Mail auf dem Laufenden",
@@ -2213,6 +2212,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "Was hat dir gefallen?",
     "rateConnectionDislike": "Was hat dir nicht gefallen?",
     "cancelSurveyFeedbackHint": "Bitte geben Sie weitere Details ein...",
+    "switchToLocationBtn": "Wechseln Sie zu {}",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2752,7 +2752,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Conjunto de IPs: {ips}",
     "connectToTooltip": "Conecte-se a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
-    "switchToLocationBtn": "Alternar para {switchLocation}",
     "redeemDiscountCode": "Resgatar código de desconto",
     "couponCodeCopied": "{couponCode} copiado para a área de transferência!",
     "marketingConsentPopupTitle": "Mantenha-se atualizado por e-mail",
@@ -2797,6 +2796,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "Do que você gostou?",
     "rateConnectionDislike": "Do que você não gostou?",
     "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
+    "switchToLocationBtn": "Alternar para {}",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3325,7 +3325,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IP Pool: {ips}",
     "connectToTooltip": "Connect to {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} State", "other": "{statesNum} States"},
-    "switchToLocationBtn": "Switch to {switchLocation}",
     "redeemDiscountCode": "Redeem discount code",
     "couponCodeCopied": "{couponCode} copied to clipboard!",
     "marketingConsentPopupTitle": "Stay updated by email",
@@ -3369,6 +3368,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "What did you like?",
     "rateConnectionDislike": "What didn’t you like?",
     "cancelSurveyFeedbackHint": "Please enter more details...",
+    "switchToLocationBtn": "Switch to {}",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3911,7 +3911,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Pool di indirizzi IP: {ips}",
     "connectToTooltip": "Connettiti a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Stato", "other": "{statesNum} Stati"},
-    "switchToLocationBtn": "Passa a {switchLocation}",
     "redeemDiscountCode": "Riscatta il codice sconto",
     "couponCodeCopied": "{couponCode} copiato negli appunti!",
     "marketingConsentPopupTitle": "Rimani aggiornato tramite email",
@@ -3956,6 +3955,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "Cosa ti è piaciuto?",
     "rateConnectionDislike": "Cosa non ti è piaciuto?",
     "cancelSurveyFeedbackHint": "Inserisci maggiori dettagli...",
+    "switchToLocationBtn": "Passa a {}",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4505,7 +4505,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Pool d'adresses IP : {ips}",
     "connectToTooltip": "Se connecter à {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} État", "other": "{statesNum} États"},
-    "switchToLocationBtn": "Passer à {switchLocation}",
     "redeemDiscountCode": "Utilisez le code de réduction",
     "couponCodeCopied": "{couponCode} copié dans le presse-papiers !",
     "marketingConsentPopupTitle": "Restez informé par e-mail",
@@ -4550,6 +4549,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "Qu'est-ce qui vous a plu ?",
     "rateConnectionDislike": "Qu'est-ce qui ne vous a pas plu ?",
     "cancelSurveyFeedbackHint": "Veuillez saisir plus de détails...",
+    "switchToLocationBtn": "Passer à {}",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5082,7 +5082,6 @@ class CodegenLoader extends AssetLoader {
       "one": "{statesNum} Negara Bagian",
       "other": "{statesNum} Negara Bagian",
     },
-    "switchToLocationBtn": "Beralih ke {switchLocation}",
     "redeemDiscountCode": "Tukarkan kode diskon",
     "couponCodeCopied": "{Kode kupon} disalin ke papan klip!",
     "marketingConsentPopupTitle": "Tetap dapatkan informasi terbaru melalui email.",
@@ -5126,6 +5125,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "Apa yang kamu sukai?",
     "rateConnectionDislike": "Apa yang tidak kamu sukai?",
     "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya...",
+    "switchToLocationBtn": "Beralih ke {}",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5668,7 +5668,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "Grupo de direcciones IP: {ips}",
     "connectToTooltip": "Conéctate a {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} Estado", "other": "{statesNum} Estados"},
-    "switchToLocationBtn": "Cambiar a {ubicación del switch}",
     "redeemDiscountCode": "Canjea el código de descuento",
     "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
     "marketingConsentPopupTitle": "Manténgase informado por correo electrónico.",
@@ -5713,6 +5712,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "¿Qué te gustó?",
     "rateConnectionDislike": "¿Qué no te gustó?",
     "cancelSurveyFeedbackHint": "Por favor, introduzca más detalles...",
+    "switchToLocationBtn": "Cambiar a {}",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6227,7 +6227,6 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "مجموعة عناوين IP: {ips}",
     "connectToTooltip": "اتصل بـ {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
-    "switchToLocationBtn": "انتقل إلى {switchLocation}",
     "redeemDiscountCode": "استخدم رمز الخصم",
     "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
     "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
@@ -6271,6 +6270,7 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionLike": "ما الذي أعجبك؟",
     "rateConnectionDislike": "ما الذي لم يعجبك؟",
     "cancelSurveyFeedbackHint": "يرجى إدخال المزيد من التفاصيل...",
+    "switchToLocationBtn": "انتقل إلى {}",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

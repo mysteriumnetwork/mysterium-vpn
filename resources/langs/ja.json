@@ -480,7 +480,6 @@
     "one": "{statesNum} 州",
     "other": "{statesNum} 州"
   },
-  "switchToLocationBtn": "{switchLocation} に切り替える",
   "redeemDiscountCode": "割引コードを引き換える",
   "couponCodeCopied": "",
   "marketingConsentPopupTitle": "メールで最新情報を受け取る",
@@ -522,5 +521,6 @@
   },
   "rateConnectionLike": "何が気に入りましたか？",
   "rateConnectionDislike": "何が気に入らなかったのですか？",
-  "cancelSurveyFeedbackHint": "詳細を入力してください..."
+  "cancelSurveyFeedbackHint": "詳細を入力してください...",
+  "switchToLocationBtn": "{}に切り替える"
 }

@@ -474,7 +474,6 @@ abstract class LocaleKeys {
   static const ipPoolLabel = 'ipPoolLabel';
   static const connectToTooltip = 'connectToTooltip';
   static const locationItemStatesCount = 'locationItemStatesCount';
-  static const switchToLocationBtn = 'switchToLocationBtn';
   static const redeemDiscountCode = 'redeemDiscountCode';
   static const couponCodeCopied = 'couponCodeCopied';
   static const marketingConsentPopupTitle = 'marketingConsentPopupTitle';
@@ -514,4 +513,5 @@ abstract class LocaleKeys {
   static const rateConnectionLike = 'rateConnectionLike';
   static const rateConnectionDislike = 'rateConnectionDislike';
   static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
+  static const switchToLocationBtn = 'switchToLocationBtn';
 }

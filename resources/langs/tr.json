@@ -480,7 +480,6 @@
     "one": "{statesNum} Eyalet",
     "other": "{statesNum} Eyalet"
   },
-  "switchToLocationBtn": "{switchLocation} konumuna geçin",
   "redeemDiscountCode": "İndirim kodunu kullanın",
   "couponCodeCopied": "{couponCode} panoya kopyalandı!",
   "marketingConsentPopupTitle": "E-posta yoluyla gelişmelerden haberdar olun.",
@@ -522,5 +521,6 @@
   },
   "rateConnectionLike": "Neyi beğendiniz?",
   "rateConnectionDislike": "Neyi beğenmediniz?",
-  "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin..."
+  "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
+  "switchToLocationBtn": "Şuna geçin: {}"
 }

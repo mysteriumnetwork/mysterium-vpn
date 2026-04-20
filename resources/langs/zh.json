@@ -480,7 +480,6 @@
     "one": "{statesNum} 州",
     "other": "{statesNum} 个州"
   },
-  "switchToLocationBtn": "切换到 {switchLocation}",
   "redeemDiscountCode": "兑换折扣码",
   "couponCodeCopied": "优惠券代码已复制到剪贴板！",
   "marketingConsentPopupTitle": "通过电子邮件获取最新信息",
@@ -522,5 +521,6 @@
   },
   "rateConnectionLike": "你喜欢什么？",
   "rateConnectionDislike": "你不喜欢什么？",
-  "cancelSurveyFeedbackHint": "请填写更多详情……"
+  "cancelSurveyFeedbackHint": "请填写更多详情……",
+  "switchToLocationBtn": "切换到 {}"
 }

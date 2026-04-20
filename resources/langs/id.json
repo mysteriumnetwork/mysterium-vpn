@@ -480,7 +480,6 @@
     "one": "{statesNum} Negara Bagian",
     "other": "{statesNum} Negara Bagian"
   },
-  "switchToLocationBtn": "Beralih ke {switchLocation}",
   "redeemDiscountCode": "Tukarkan kode diskon",
   "couponCodeCopied": "{Kode kupon} disalin ke papan klip!",
   "marketingConsentPopupTitle": "Tetap dapatkan informasi terbaru melalui email.",
@@ -522,5 +521,6 @@
   },
   "rateConnectionLike": "Apa yang kamu sukai?",
   "rateConnectionDislike": "Apa yang tidak kamu sukai?",
-  "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya..."
+  "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya...",
+  "switchToLocationBtn": "Beralih ke {}"
 }

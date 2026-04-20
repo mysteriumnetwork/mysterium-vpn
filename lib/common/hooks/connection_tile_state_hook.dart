@@ -98,9 +98,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     );
     final switchLabel = isSelectedUnavailable
         ? LocaleKeys.locationUnavailableAction.tr()
-        : LocaleKeys.switchToLocationBtn.tr(
-            namedArgs: {'switchLocation': selectedLocation!.getName(context)},
-          );
+        : LocaleKeys.switchToLocationBtn.tr(args: [selectedLocation!.getName(context)]);
 
     if (isMobile) {
       status = MainIpCardNewIpPreview(
