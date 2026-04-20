@@ -517,7 +517,7 @@
   "userIntentLabel": "専門サーバー",
   "locationItemNodeCount": {
     "one": "{} IP",
-    "other": "{} IPアドレス"
+    "other": "{} IPs"
   },
   "rateConnectionLike": "何が気に入りましたか？",
   "rateConnectionDislike": "何が気に入らなかったのですか？",

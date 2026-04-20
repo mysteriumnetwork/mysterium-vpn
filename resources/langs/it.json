@@ -517,7 +517,7 @@
   "userIntentLabel": "Server specializzato",
   "locationItemNodeCount": {
     "one": "{} IP",
-    "other": "{} IP"
+    "other": "{} IPs"
   },
   "rateConnectionLike": "Cosa ti è piaciuto?",
   "rateConnectionDislike": "Cosa non ti è piaciuto?",

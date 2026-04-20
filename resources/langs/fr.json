@@ -517,7 +517,7 @@
   "userIntentLabel": "Serveur spécialisé",
   "locationItemNodeCount": {
     "one": "{} IP",
-    "other": "{} IP"
+    "other": "{} IPs"
   },
   "rateConnectionLike": "Qu'est-ce qui vous a plu ?",
   "rateConnectionDislike": "Qu'est-ce qui ne vous a pas plu ?",

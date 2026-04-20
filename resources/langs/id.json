@@ -516,8 +516,8 @@
   "nsfwLbl": "Konten Dewasa & Malware",
   "userIntentLabel": "Server khusus",
   "locationItemNodeCount": {
-    "one": "{} AKU P",
-    "other": "{} IP"
+    "one": "{} IP",
+    "other": "{} IPs"
   },
   "rateConnectionLike": "Apa yang kamu sukai?",
   "rateConnectionDislike": "Apa yang tidak kamu sukai?",

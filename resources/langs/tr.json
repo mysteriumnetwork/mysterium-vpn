@@ -517,7 +517,7 @@
   "userIntentLabel": "Özel servis elemanı",
   "locationItemNodeCount": {
     "one": "{} IP",
-    "other": "{} IP adresleri"
+    "other": "{} IPs"
   },
   "rateConnectionLike": "Neyi beğendiniz?",
   "rateConnectionDislike": "Neyi beğenmediniz?",

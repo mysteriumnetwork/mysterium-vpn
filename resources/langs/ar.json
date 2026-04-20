@@ -517,7 +517,7 @@
   "userIntentLabel": "خادم متخصص",
   "locationItemNodeCount": {
     "one": "{} IP",
-    "other": "{} عناوين IP"
+    "other": "{} IPs"
   },
   "rateConnectionLike": "ما الذي أعجبك؟",
   "rateConnectionDislike": "ما الذي لم يعجبك؟",

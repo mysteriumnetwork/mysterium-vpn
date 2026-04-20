@@ -516,8 +516,8 @@
   "nsfwLbl": "Conteúdo impróprio para menores e malware",
   "userIntentLabel": "Servidor especializado",
   "locationItemNodeCount": {
-    "one": "IP",
-    "other": "IPs"
+    "one": "{} IP",
+    "other": "{} IPs"
   },
   "rateConnectionLike": "Do que você gostou?",
   "rateConnectionDislike": "Do que você não gostou?",

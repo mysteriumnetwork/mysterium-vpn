@@ -517,7 +517,7 @@
   "userIntentLabel": "专业服务器",
   "locationItemNodeCount": {
     "one": "{} IP",
-    "other": "{} IP"
+    "other": "{} IPs"
   },
   "rateConnectionLike": "你喜欢什么？",
   "rateConnectionDislike": "你不喜欢什么？",
