@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/subscription_status.dart';
 import 'package:mysterium_vpn/common/extensions/scroll_controller_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
@@ -78,167 +79,208 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       autoApplyPadding: false,
       showGradient: false,
       body: SubscriptionStatusContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                controller: scrollController,
-                padding: ModalPadding.insets(
-                  context,
-                  add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
+        child: Observer(
+          builder: (context) {
+            final subscriptionStatus = subscriptionStore.subscriptionFuture.status;
+
+            // Handle loading state
+            if (subscriptionStatus == FutureStatus.pending) {
+              return const Center(child: LoadingIndicator());
+            }
+
+            // Handle error state - future was rejected
+            if (subscriptionStatus == FutureStatus.rejected) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      UntitledUI.alert_circle,
+                      size: 48,
+                      color: Theme.of(context).palette.textTertiary,
+                    ),
+                    SizedBox(height: Theme.of(context).spacing.lg),
+                    Text(
+                      LocaleKeys.somethingWentWrong.tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textStyles.textMd.regular,
+                    ),
+                    SizedBox(height: Theme.of(context).spacing.lg),
+                    ButtonPrimary(
+                      onPressed: subscriptionStore.refreshSubscription,
+                      decoration: ButtonDecoration(
+                        decorationColor: Theme.of(context).palette.bgBrandPrimary,
+                      ),
+                      child: Text(LocaleKeys.retryBtn.tr()),
+                    ),
+                  ],
                 ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: theme.spacing.xl),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-                        child: ModalHeader(
-                          title: LocaleKeys.subscriptionAllPlansTitle.tr(),
-                          titleStyle: theme.textStyles.textLg.semibold,
-                        ),
-                      ),
-                      SizedBox(height: theme.spacing.xl2),
-                      TabBar(
-                        controller: tabController,
-                        tabs: [
-                          Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
-                          Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
-                        ],
-                      ),
-                      Observer(
-                        builder: (context) {
-                          final monthly = store.monthlyProducts;
-                          final annual = store.annualProducts;
-                          return HookBuilder(
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: ModalPadding.insets(
+                      context,
+                      add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
+                    ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(height: theme.spacing.xl),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+                            child: ModalHeader(
+                              title: LocaleKeys.subscriptionAllPlansTitle.tr(),
+                              titleStyle: theme.textStyles.textLg.semibold,
+                            ),
+                          ),
+                          SizedBox(height: theme.spacing.xl2),
+                          TabBar(
+                            controller: tabController,
+                            tabs: [
+                              Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
+                              Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
+                            ],
+                          ),
+                          Observer(
                             builder: (context) {
-                              final products = useListenableSelector(
-                                tabController,
-                                () => switch (tabController.index) {
-                                  1 => monthly,
-                                  _ => annual,
-                                }.sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
-                              );
+                              final monthly = store.monthlyProducts;
+                              final annual = store.annualProducts;
+                              return HookBuilder(
+                                builder: (context) {
+                                  final products = useListenableSelector(
+                                    tabController,
+                                    () => switch (tabController.index) {
+                                      1 => monthly,
+                                      _ => annual,
+                                    }.sortedByCompare((it) => it.monthlyValue, compareNumsDesc),
+                                  );
 
-                              final productsRef = useRef(products)..value = products;
+                                  final productsRef = useRef(products)..value = products;
 
-                              useEffect(() {
-                                void listener() {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                                    selectedProduct.value = productsRef.value.first;
-                                  });
-                                }
+                                  useEffect(() {
+                                    void listener() {
+                                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        selectedProduct.value = productsRef.value.first;
+                                      });
+                                    }
 
-                                listener();
-                                tabController.addListener(listener);
-                                return () => tabController.removeListener(listener);
-                              }, [tabController, selectedProduct, productsRef]);
+                                    listener();
+                                    tabController.addListener(listener);
+                                    return () => tabController.removeListener(listener);
+                                  }, [tabController, selectedProduct, productsRef]);
 
-                              return RadioGroup<PurchasableProduct>(
-                                groupValue: selectedProduct.value,
-                                onChanged: (value) => selectedProduct.value = value,
-                                child: _SubscriptionPlans(
-                                  products: products,
-                                  allProducts: [...annual, ...monthly],
-                                  onCompareFeaturesPressed: () =>
-                                      scrollController.scrollToKey(tableKey),
-                                ),
+                                  return RadioGroup<PurchasableProduct>(
+                                    groupValue: selectedProduct.value,
+                                    onChanged: (value) => selectedProduct.value = value,
+                                    child: _SubscriptionPlans(
+                                      products: products,
+                                      allProducts: [...annual, ...monthly],
+                                      onCompareFeaturesPressed: () =>
+                                          scrollController.scrollToKey(tableKey),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                      ),
-                      SizedBox(height: theme.spacing.ms),
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            WidgetSpan(
-                              child: Icon(
-                                UntitledUI.currency_dollar_circle,
-                                size: 16,
-                                color: theme.palette.textTertiary,
-                              ),
+                          ),
+                          SizedBox(height: theme.spacing.ms),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: Icon(
+                                    UntitledUI.currency_dollar_circle,
+                                    size: 16,
+                                    color: theme.palette.textTertiary,
+                                  ),
+                                ),
+                                CharacterSpan.space(),
+                                TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
+                              ],
                             ),
-                            CharacterSpan.space(),
-                            TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                        style: theme.textStyles.textXs.regular.copyWith(
-                          color: theme.palette.textTertiary,
-                        ),
+                            textAlign: TextAlign.center,
+                            style: theme.textStyles.textXs.regular.copyWith(
+                              color: theme.palette.textTertiary,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          Text(
+                            LocaleKeys.subscriptionAllPlansCompareAll.tr(),
+                            style: theme.textStyles.textMd.medium.copyWith(
+                              color: theme.palette.textPrimary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: theme.spacing.xl3),
+                          SubscriptionComparisonTable(
+                            key: tableKey,
+                            onShowPlansPressed: () => scrollController.scrollToPosition(-1),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 32),
-                      Text(
-                        LocaleKeys.subscriptionAllPlansCompareAll.tr(),
-                        style: theme.textStyles.textMd.medium.copyWith(
-                          color: theme.palette.textPrimary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: theme.spacing.xl3),
-                      SubscriptionComparisonTable(
-                        key: tableKey,
-                        onShowPlansPressed: () => scrollController.scrollToPosition(-1),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            ModalFooter(
-              spacing: 0,
-              children: [
-                if (subscriptionStore.canRedeemCode)
-                  ButtonTertiary(
-                    size: ButtonSize.small,
-                    decoration: ButtonDecoration(
-                      foregroundColor: theme.palette.textPrimarySelected,
-                      padding: EdgeInsets.zero,
                     ),
-                    onPressed: () async {
-                      try {
-                        await purchaseStore.redeemCode();
-                      } catch (e) {
-                        showError(e);
-                      }
-                    },
-                    child: Text(LocaleKeys.redeemDiscountCode.tr()),
-                  ),
-                SizedBox(height: theme.spacing.ms),
-                ButtonPrimary(
-                  onPressed: subscriptionStore.isSubscribed == null ? null : handlePurchasePressed,
-                  loading: isLoading.value ? const ButtonLoading() : null,
-                  decoration: ButtonDecoration(
-                    decorationColor: theme.palette.bgBrandPrimary,
-                    padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
-                  ),
-                  child: Text(
-                    (subscriptionStore.isSubscribed ?? false)
-                        ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
-                        : LocaleKeys.subscriptionAllPlansPurchase.tr(),
                   ),
                 ),
-                SizedBox(height: theme.spacing.xl),
-                ButtonTertiary(
-                  onPressed: () {
-                    scrollController.scrollToKey(tableKey);
-                  },
-                  decoration: ButtonDecoration(
-                    foregroundColor: theme.palette.textPrimarySelected,
-                    textStyle: theme.textStyles.textMd.semibold,
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
+                ModalFooter(
+                  spacing: 0,
+                  children: [
+                    if (subscriptionStore.canRedeemCode)
+                      ButtonTertiary(
+                        size: ButtonSize.small,
+                        decoration: ButtonDecoration(
+                          foregroundColor: theme.palette.textPrimarySelected,
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: () async {
+                          try {
+                            await purchaseStore.redeemCode();
+                          } catch (e) {
+                            showError(e);
+                          }
+                        },
+                        child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                      ),
+                    SizedBox(height: theme.spacing.ms),
+                    ButtonPrimary(
+                      onPressed: handlePurchasePressed,
+                      loading: isLoading.value ? const ButtonLoading() : null,
+                      decoration: ButtonDecoration(
+                        decorationColor: theme.palette.bgBrandPrimary,
+                        padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
+                      ),
+                      child: Text(
+                        (subscriptionStore.isSubscribed ?? false)
+                            ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
+                            : LocaleKeys.subscriptionAllPlansPurchase.tr(),
+                      ),
+                    ),
+                    SizedBox(height: theme.spacing.xl),
+                    ButtonTertiary(
+                      onPressed: () {
+                        scrollController.scrollToKey(tableKey);
+                      },
+                      decoration: ButtonDecoration(
+                        foregroundColor: theme.palette.textPrimarySelected,
+                        textStyle: theme.textStyles.textMd.semibold,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
+                    ),
+                    SizedBox(height: theme.spacing.xl),
+                    const SubscriptionPrivacyAndTerms(),
+                  ],
                 ),
-                SizedBox(height: theme.spacing.xl),
-                const SubscriptionPrivacyAndTerms(),
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
