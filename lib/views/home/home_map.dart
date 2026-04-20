@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/views/home/locations_map.dart';
 
 /// Resolves the best available VPN location when connecting from the map.
 /// Priority: residential (if allowed and available) > datacenter > original (triggers paywall).
-@visibleForTesting
 VPNLocation resolveMapLocation({
   required VPNLocation location,
   required LocationsStore locationsStore,
@@ -27,14 +26,20 @@ VPNLocation resolveMapLocation({
     return location;
   }
 
-  final dcAlternative = locationsStore.dcLocationsFuture.value?.allLocations
-      .where(
-        (it) =>
-            it.countryCode == location.countryCode &&
-            it.isCountry == location.isCountry &&
-            it.isAvailable,
-      )
-      .firstOrNull;
+  // Search flattened locations (countries + cities) for a datacenter alternative.
+  // Prefer an exact match (same id + country), then fall back to the country-level entry.
+  final dcLocations = locationsStore.dcLocationsFuture.value?.allLocationsFlattened;
+
+  final dcAlternative =
+      dcLocations
+          ?.where(
+            (it) =>
+                it.id == location.id && it.countryCode == location.countryCode && it.isAvailable,
+          )
+          .firstOrNull ??
+      dcLocations
+          ?.where((it) => it.countryCode == location.countryCode && it.isCountry && it.isAvailable)
+          .firstOrNull;
 
   if (dcAlternative != null) {
     return dcAlternative;
@@ -87,7 +92,7 @@ class HomeMap extends HookConsumerWidget {
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
       );
-      if (vpnStore.isConnected && vpnStore.location?.id == resolved.id) {
+      if (vpnStore.isConnected && vpnStore.location == resolved) {
         return;
       }
       handleToggleConnection(location: resolved);

@@ -31,6 +31,7 @@ void main() {
     String countryCode = 'US',
     bool isAvailable = true,
     int? nodeCount,
+    List<VPNLocation>? children,
   }) => VPNLocation(
     id: id,
     ipType: ipType,
@@ -38,6 +39,7 @@ void main() {
     countryCode: countryCode,
     isAvailable: isAvailable,
     nodeCount: nodeCount ?? 10,
+    children: children,
   );
 
   late _FakeLocationsStore fakeLocationsStore;
@@ -164,6 +166,37 @@ void main() {
 
       expect(result, same(residential));
       expect(result.ipType, IPType.residential);
+    });
+
+    test('city-level location resolves to matching datacenter city', () {
+      final residentialCity = makeLocation(id: 'new-york');
+      final dcCity = makeLocation(id: 'new-york', ipType: IPType.datacenter);
+      final dcCountry = makeLocation(ipType: IPType.datacenter, children: [dcCity]);
+      fakeLocationsStore.setDcLocations({dcCountry});
+
+      final result = resolveMapLocation(
+        location: residentialCity,
+        locationsStore: fakeLocationsStore,
+        residentialIPsAllowed: false,
+      );
+
+      expect(result, same(dcCity));
+      expect(result.ipType, IPType.datacenter);
+    });
+
+    test('city-level location falls back to datacenter country when no city match', () {
+      final residentialCity = makeLocation(id: 'new-york');
+      final dcCountry = makeLocation(ipType: IPType.datacenter);
+      fakeLocationsStore.setDcLocations({dcCountry});
+
+      final result = resolveMapLocation(
+        location: residentialCity,
+        locationsStore: fakeLocationsStore,
+        residentialIPsAllowed: false,
+      );
+
+      expect(result, same(dcCountry));
+      expect(result.ipType, IPType.datacenter);
     });
   });
 }
