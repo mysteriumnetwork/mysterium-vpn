@@ -177,10 +177,6 @@
     "one": "{} Stadt",
     "other": "{} Städte"
   },
-  "locationItemNodeCount": {
-    "one": "{} Server",
-    "other": "{} Server"
-  },
   "locationUnavailableAction": "Mit nächster IP verbinden",
   "locationUnavailableSubtitle": "Verbinde dich mit der nächsten IP – oder wähle sie manuell aus",
   "locationUnavailableTitle": "{} ist nicht verfügbar",
@@ -275,7 +271,7 @@
   "purchased": "Gekauft",
   "purchasePromoCTA": "Lass uns gehen",
   "purchasePromoEnds": "Enden {}",
-  "purchasePromoFeatures": "[\"Über 100 Länder\", \"Mehr als 19.000 IP-Adressen für Privatkunden\", \"7-Tage-Geld-zurück-Garantie\"]",
+  "purchasePromoFeatures": "[\"Über 100 Länder\", \"Über 19.000 IP-Adressen für Privatkunden\", \"7-Tage-Geld-zurück-Garantie\"]",
   "purchasePromoPPTOC": "Lesen Sie unsere {} und {}",
   "purchasePromoPrivacyPolicy": "Datenschutzrichtlinie",
   "purchasePromoSeeAllPlans": "Alle Tarife anzeigen",
@@ -394,7 +390,6 @@
   "upload": "Hochladen",
   "userIntentBestSpeed": "Beste Geschwindigkeit",
   "userIntentBestSpeedDesc": "Verbinde dich mit dem schnellsten verfügbaren Server für optimale Leistung",
-  "userIntentLabel": "Spezialserver auswählen",
   "userIntentLowLatency": "Niedrige Latenz",
   "userIntentLowLatencyDesc": "Verbindet dich automatisch mit dem nächstgelegenen Server für stabilen und zuverlässigen Zugriff",
   "userIntentMaxPrivacy": "Maximale Privatsphäre",
@@ -522,5 +517,10 @@
   "settingManageBtn": "Verwalten",
   "noneLbl": "Keiner",
   "malwareLbl": "Malware",
-  "nsfwLbl": "NSFW & Malware"
+  "nsfwLbl": "NSFW & Malware",
+  "userIntentLabel": "Spezialserver",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  }
 }

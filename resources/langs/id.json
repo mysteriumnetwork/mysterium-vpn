@@ -177,10 +177,6 @@
     "one": "",
     "other": "{} kota"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} server"
-  },
   "locationUnavailableAction": "Hubungkan ke IP terdekat",
   "locationUnavailableSubtitle": "Hubungkan ke IP terdekat – atau pilih secara manual",
   "locationUnavailableTitle": "{} tidak tersedia",
@@ -394,7 +390,6 @@
   "upload": "Mengunggah",
   "userIntentBestSpeed": "Kecepatan terbaik",
   "userIntentBestSpeedDesc": "Hubungkan ke server tercepat yang tersedia untuk performa optimal",
-  "userIntentLabel": "Pilih server khusus",
   "userIntentLowLatency": "Latensi rendah",
   "userIntentLowLatencyDesc": "Secara otomatis menghubungkan Anda ke server terdekat untuk akses yang stabil dan andal",
   "userIntentMaxPrivacy": "Privasi maksimal",
@@ -463,7 +458,7 @@
   "pushNotificationsConsentPopupDesc": "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
   "notificationsSettingTitle": "Pemberitahuan",
   "pushNotificationsSetting": "Notifikasi Push",
-  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
   "openSystemSettingsBtn": "Buka pengaturan sistem",
   "emailNotificationsSetting": "Notifikasi Email",
   "subscriptionPlanWireGuardDesc": "WireGuard - protokol cepat terbaik untuk bermain game dan streaming\nOpenVPN - protokol yang sangat mudah dikonfigurasi yang berfungsi di tempat protokol lain gagal (tidak tersedia di Android)",
@@ -522,5 +517,10 @@
   "settingManageBtn": "Mengelola",
   "noneLbl": "Tidak ada",
   "malwareLbl": "Perangkat lunak berbahaya",
-  "nsfwLbl": "Konten Dewasa & Malware"
+  "nsfwLbl": "Konten Dewasa & Malware",
+  "userIntentLabel": "Server khusus",
+  "locationItemNodeCount": {
+    "one": "{} AKU P",
+    "other": "{} IP"
+  }
 }

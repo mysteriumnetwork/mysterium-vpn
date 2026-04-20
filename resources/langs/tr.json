@@ -177,10 +177,6 @@
     "one": "",
     "other": "{} şehir"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} sunucu"
-  },
   "locationUnavailableAction": "En yakın IP'ye bağlan",
   "locationUnavailableSubtitle": "En yakın IP'ye bağlanın – ya da manuel olarak seçin",
   "locationUnavailableTitle": "{} kullanılamıyor",
@@ -274,7 +270,7 @@
   "pt": "Portekizce",
   "purchased": "satın alındı",
   "purchasePromoCTA": "Haydi gidelim",
-  "purchasePromoEnds": "Sonlar {}",
+  "purchasePromoEnds": "Uçlar {}",
   "purchasePromoFeatures": "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
   "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
   "purchasePromoPrivacyPolicy": "Gizlilik Politikası",
@@ -394,7 +390,6 @@
   "upload": "Yükleme",
   "userIntentBestSpeed": "En iyi hız",
   "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlanın",
-  "userIntentLabel": "Uzmanlaşmış sunucu seç",
   "userIntentLowLatency": "Düşük gecikme",
   "userIntentLowLatencyDesc": "Kararlı ve güvenilir erişim için en yakın sunucuya otomatik olarak bağlanır",
   "userIntentMaxPrivacy": "Maksimum gizlilik",
@@ -522,5 +517,10 @@
   "settingManageBtn": "Üstesinden gelmek",
   "noneLbl": "Hiçbiri",
   "malwareLbl": "Kötü amaçlı yazılım",
-  "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım"
+  "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
+  "userIntentLabel": "Özel servis elemanı",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IP adresleri"
+  }
 }

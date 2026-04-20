@@ -177,10 +177,6 @@
     "one": "",
     "other": "{} 都市"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} サーバー"
-  },
   "locationUnavailableAction": "最寄りのIPに接続",
   "locationUnavailableSubtitle": "最寄りのIPに接続するか、手動で選択してください",
   "locationUnavailableTitle": "{} は利用できません",
@@ -394,7 +390,6 @@
   "upload": "アップロード",
   "userIntentBestSpeed": "最速",
   "userIntentBestSpeedDesc": "最適なパフォーマンスのために、最も高速な利用可能サーバーに接続します",
-  "userIntentLabel": "専用サーバーを選択",
   "userIntentLowLatency": "低遅延",
   "userIntentLowLatencyDesc": "安定して信頼できるアクセスのために、最も近いサーバーに自動接続します",
   "userIntentMaxPrivacy": "最大限のプライバシー",
@@ -522,5 +517,10 @@
   "settingManageBtn": "管理",
   "noneLbl": "なし",
   "malwareLbl": "マルウェア",
-  "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア"
+  "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア",
+  "userIntentLabel": "専門サーバー",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPアドレス"
+  }
 }

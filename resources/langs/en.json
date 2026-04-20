@@ -177,10 +177,6 @@
     "one": "{} City",
     "other": "{} Cities"
   },
-  "locationItemNodeCount": {
-    "one": "{} Server",
-    "other": "{} Servers"
-  },
   "locationUnavailableAction": "Connect to nearest IP",
   "locationUnavailableSubtitle": "Connect to the nearest IP - or choose it manually",
   "locationUnavailableTitle": "{} is not available",
@@ -394,7 +390,6 @@
   "upload": "Upload",
   "userIntentBestSpeed": "Best speed",
   "userIntentBestSpeedDesc": "Connect to the fastest available server for optimal performance",
-  "userIntentLabel": "Select speciality server",
   "userIntentLowLatency": "Low latency",
   "userIntentLowLatencyDesc": "Automatically connects you to the closest server for stable and reliable access",
   "userIntentMaxPrivacy": "Max privacy",
@@ -522,5 +517,10 @@
   "settingManageBtn": "Manage",
   "noneLbl": "None",
   "malwareLbl": "Malware",
-  "nsfwLbl": "NSFW & Malware"
+  "nsfwLbl": "NSFW & Malware",
+  "userIntentLabel": "Speciality server",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  }
 }

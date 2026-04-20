@@ -190,7 +190,6 @@ class CodegenLoader extends AssetLoader {
     "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
     "location": "地点",
     "locationItemCityCount": {"one": "", "other": "{} 个城市"},
-    "locationItemNodeCount": {"one": "", "other": "{} 台服务器"},
     "locationUnavailableAction": "连接到最近的 IP",
     "locationUnavailableSubtitle": "连接到最近的 IP，或手动选择",
     "locationUnavailableTitle": "{} 当前不可用",
@@ -400,7 +399,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "上传",
     "userIntentBestSpeed": "最佳速度",
     "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
-    "userIntentLabel": "选择专用服务器",
     "userIntentLowLatency": "低延迟",
     "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
     "userIntentMaxPrivacy": "最大隐私",
@@ -529,6 +527,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "没有任何",
     "malwareLbl": "恶意软件",
     "nsfwLbl": "NSFW 和恶意软件",
+    "userIntentLabel": "专业服务器",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP"},
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -727,7 +727,6 @@ class CodegenLoader extends AssetLoader {
         "Link 30 dakika içinde kullanılmalıdır, bu yüzden bir an önce tıkladığınızdan emin olun. ",
     "location": "Ülke",
     "locationItemCityCount": {"one": "", "other": "{} şehir"},
-    "locationItemNodeCount": {"one": "", "other": "{} sunucu"},
     "locationUnavailableAction": "En yakın IP'ye bağlan",
     "locationUnavailableSubtitle": "En yakın IP'ye bağlanın – ya da manuel olarak seçin",
     "locationUnavailableTitle": "{} kullanılamıyor",
@@ -826,7 +825,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Sonlar {}",
+    "purchasePromoEnds": "Uçlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -953,7 +952,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "Yükleme",
     "userIntentBestSpeed": "En iyi hız",
     "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlanın",
-    "userIntentLabel": "Uzmanlaşmış sunucu seç",
     "userIntentLowLatency": "Düşük gecikme",
     "userIntentLowLatencyDesc":
         "Kararlı ve güvenilir erişim için en yakın sunucuya otomatik olarak bağlanır",
@@ -1095,6 +1093,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Hiçbiri",
     "malwareLbl": "Kötü amaçlı yazılım",
     "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
+    "userIntentLabel": "Özel servis elemanı",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP adresleri"},
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1274,7 +1274,6 @@ class CodegenLoader extends AssetLoader {
     "linkExpires": "リンクの有効期限は 30 分ですので、お早めにご利用ください。メールをチェックしてみよう",
     "location": "位置",
     "locationItemCityCount": {"one": "", "other": "{} 都市"},
-    "locationItemNodeCount": {"one": "", "other": "{} サーバー"},
     "locationUnavailableAction": "最寄りのIPに接続",
     "locationUnavailableSubtitle": "最寄りのIPに接続するか、手動で選択してください",
     "locationUnavailableTitle": "{} は利用できません",
@@ -1487,7 +1486,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "アップロード",
     "userIntentBestSpeed": "最速",
     "userIntentBestSpeedDesc": "最適なパフォーマンスのために、最も高速な利用可能サーバーに接続します",
-    "userIntentLabel": "専用サーバーを選択",
     "userIntentLowLatency": "低遅延",
     "userIntentLowLatencyDesc": "安定して信頼できるアクセスのために、最も近いサーバーに自動接続します",
     "userIntentMaxPrivacy": "最大限のプライバシー",
@@ -1620,6 +1618,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "なし",
     "malwareLbl": "マルウェア",
     "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア",
+    "userIntentLabel": "専門サーバー",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IPアドレス"},
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1832,7 +1832,6 @@ class CodegenLoader extends AssetLoader {
         "Der Link läuft in 30 Minuten ab, also nutzen Sie ihn bald. Überprüfen Sie Ihre E-Mails",
     "location": "Standort",
     "locationItemCityCount": {"one": "{} Stadt", "other": "{} Städte"},
-    "locationItemNodeCount": {"one": "{} Server", "other": "{} Server"},
     "locationUnavailableAction": "Mit nächster IP verbinden",
     "locationUnavailableSubtitle": "Verbinde dich mit der nächsten IP – oder wähle sie manuell aus",
     "locationUnavailableTitle": "{} ist nicht verfügbar",
@@ -1937,7 +1936,7 @@ class CodegenLoader extends AssetLoader {
     "purchasePromoCTA": "Lass uns gehen",
     "purchasePromoEnds": "Enden {}",
     "purchasePromoFeatures":
-        "[\"Über 100 Länder\", \"Mehr als 19.000 IP-Adressen für Privatkunden\", \"7-Tage-Geld-zurück-Garantie\"]",
+        "[\"Über 100 Länder\", \"Über 19.000 IP-Adressen für Privatkunden\", \"7-Tage-Geld-zurück-Garantie\"]",
     "purchasePromoPPTOC": "Lesen Sie unsere {} und {}",
     "purchasePromoPrivacyPolicy": "Datenschutzrichtlinie",
     "purchasePromoSeeAllPlans": "Alle Tarife anzeigen",
@@ -2069,7 +2068,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Beste Geschwindigkeit",
     "userIntentBestSpeedDesc":
         "Verbinde dich mit dem schnellsten verfügbaren Server für optimale Leistung",
-    "userIntentLabel": "Spezialserver auswählen",
     "userIntentLowLatency": "Niedrige Latenz",
     "userIntentLowLatencyDesc":
         "Verbindet dich automatisch mit dem nächstgelegenen Server für stabilen und zuverlässigen Zugriff",
@@ -2213,6 +2211,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Keiner",
     "malwareLbl": "Malware",
     "nsfwLbl": "NSFW & Malware",
+    "userIntentLabel": "Spezialserver",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2417,7 +2417,6 @@ class CodegenLoader extends AssetLoader {
         "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
     "location": "Localização",
     "locationItemCityCount": {"one": "{} cidade", "other": "{} cidades"},
-    "locationItemNodeCount": {"one": "{} servidor", "other": "{} servidores"},
     "locationUnavailableAction": "Conectar ao IP mais próximo",
     "locationUnavailableSubtitle": "Conecte-se ao IP mais próximo – ou escolha manualmente",
     "locationUnavailableTitle": "{} não está disponível",
@@ -2654,7 +2653,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Melhor velocidade",
     "userIntentBestSpeedDesc":
         "Conecte-se ao servidor disponível mais rápido para um desempenho ideal",
-    "userIntentLabel": "Selecionar servidor especializado",
     "userIntentLowLatency": "Baixa latência",
     "userIntentLowLatencyDesc":
         "Conecta automaticamente ao servidor mais próximo para um acesso estável e confiável",
@@ -2797,6 +2795,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Nenhum",
     "malwareLbl": "Malware",
     "nsfwLbl": "Conteúdo impróprio para menores e malware",
+    "userIntentLabel": "Servidor especializado",
+    "locationItemNodeCount": {"one": "IP", "other": "IPs"},
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2996,7 +2996,6 @@ class CodegenLoader extends AssetLoader {
     "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
     "location": "Location",
     "locationItemCityCount": {"one": "{} City", "other": "{} Cities"},
-    "locationItemNodeCount": {"one": "{} Server", "other": "{} Servers"},
     "locationUnavailableAction": "Connect to nearest IP",
     "locationUnavailableSubtitle": "Connect to the nearest IP - or choose it manually",
     "locationUnavailableTitle": "{} is not available",
@@ -3228,7 +3227,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "Upload",
     "userIntentBestSpeed": "Best speed",
     "userIntentBestSpeedDesc": "Connect to the fastest available server for optimal performance",
-    "userIntentLabel": "Select speciality server",
     "userIntentLowLatency": "Low latency",
     "userIntentLowLatencyDesc":
         "Automatically connects you to the closest server for stable and reliable access",
@@ -3369,6 +3367,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "None",
     "malwareLbl": "Malware",
     "nsfwLbl": "NSFW & Malware",
+    "userIntentLabel": "Speciality server",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3577,7 +3577,6 @@ class CodegenLoader extends AssetLoader {
         "Il link scade tra 30 minuti, quindi assicurati di usarlo presto. Vai a controllare la tua posta",
     "location": "Posizione",
     "locationItemCityCount": {"one": "{} città", "other": "{} città"},
-    "locationItemNodeCount": {"one": "{} server", "other": "{} server"},
     "locationUnavailableAction": "Connettiti all’IP più vicino",
     "locationUnavailableSubtitle": "Connettiti all’IP più vicino – o scegli manualmente",
     "locationUnavailableTitle": "{} non è disponibile",
@@ -3813,7 +3812,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Massima velocità",
     "userIntentBestSpeedDesc":
         "Connettiti al server disponibile più veloce per prestazioni ottimali",
-    "userIntentLabel": "Seleziona server specializzato",
     "userIntentLowLatency": "Bassa latenza",
     "userIntentLowLatencyDesc":
         "Si connette automaticamente al server più vicino per un accesso stabile e affidabile",
@@ -3956,6 +3954,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Nessuno",
     "malwareLbl": "Malware",
     "nsfwLbl": "Contenuti non adatti ai minori e malware",
+    "userIntentLabel": "Server specializzato",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP"},
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4167,7 +4167,6 @@ class CodegenLoader extends AssetLoader {
         "Le lien expire en 30 minutes, alors assurez-vous de l'utiliser bientôt. Allez vérifier votre e-mail",
     "location": "Emplacement",
     "locationItemCityCount": {"one": "{} ville", "other": "{} villes"},
-    "locationItemNodeCount": {"one": "{} serveur", "other": "{} serveurs"},
     "locationUnavailableAction": "Se connecter à l’IP la plus proche",
     "locationUnavailableSubtitle":
         "Connectez-vous à l’IP la plus proche – ou choisissez-la manuellement",
@@ -4406,7 +4405,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Meilleure vitesse",
     "userIntentBestSpeedDesc":
         "Connectez-vous au serveur disponible le plus rapide pour des performances optimales",
-    "userIntentLabel": "Sélectionner un serveur spécialisé",
     "userIntentLowLatency": "Faible latence",
     "userIntentLowLatencyDesc":
         "Se connecte automatiquement au serveur le plus proche pour un accès stable et fiable",
@@ -4486,11 +4484,11 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
-        "Apparaissez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
+        "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
     "subscriptionPlanCityLevelDesc":
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -4550,6 +4548,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Aucun",
     "malwareLbl": "Logiciel malveillant",
     "nsfwLbl": "Contenu réservé aux adultes et logiciels malveillants",
+    "userIntentLabel": "Serveur spécialisé",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP"},
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4751,7 +4751,6 @@ class CodegenLoader extends AssetLoader {
         "Tautan kedaluwarsa dalam 30 menit, jadi pastikan untuk segera menggunakannya. Periksa email Anda",
     "location": "Lokasi",
     "locationItemCityCount": {"one": "", "other": "{} kota"},
-    "locationItemNodeCount": {"one": "", "other": "{} server"},
     "locationUnavailableAction": "Hubungkan ke IP terdekat",
     "locationUnavailableSubtitle": "Hubungkan ke IP terdekat – atau pilih secara manual",
     "locationUnavailableTitle": "{} tidak tersedia",
@@ -4981,7 +4980,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "Mengunggah",
     "userIntentBestSpeed": "Kecepatan terbaik",
     "userIntentBestSpeedDesc": "Hubungkan ke server tercepat yang tersedia untuk performa optimal",
-    "userIntentLabel": "Pilih server khusus",
     "userIntentLowLatency": "Latensi rendah",
     "userIntentLowLatencyDesc":
         "Secara otomatis menghubungkan Anda ke server terdekat untuk akses yang stabil dan andal",
@@ -5056,7 +5054,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5126,6 +5124,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Tidak ada",
     "malwareLbl": "Perangkat lunak berbahaya",
     "nsfwLbl": "Konten Dewasa & Malware",
+    "userIntentLabel": "Server khusus",
+    "locationItemNodeCount": {"one": "{} AKU P", "other": "{} IP"},
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5333,7 +5333,6 @@ class CodegenLoader extends AssetLoader {
         "El enlace caduca en 30 minutos, así que asegúrate de usarlo pronto. Ve a revisar tu correo electrónico",
     "location": "Ubicación",
     "locationItemCityCount": {"one": "{} ciudad", "other": "{} ciudades"},
-    "locationItemNodeCount": {"one": "{} servidor", "other": "{} servidores"},
     "locationUnavailableAction": "Conectarse a la IP más cercana",
     "locationUnavailableSubtitle": "Conéctate a la IP más cercana o elige una manualmente",
     "locationUnavailableTitle": "{} no está disponible",
@@ -5569,7 +5568,6 @@ class CodegenLoader extends AssetLoader {
     "userIntentBestSpeed": "Mejor velocidad",
     "userIntentBestSpeedDesc":
         "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
-    "userIntentLabel": "Seleccionar servidor especializado",
     "userIntentLowLatency": "Baja latencia",
     "userIntentLowLatencyDesc":
         "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
@@ -5713,6 +5711,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "Ninguno",
     "malwareLbl": "malware",
     "nsfwLbl": "Contenido para adultos y malware",
+    "userIntentLabel": "Servidor especializado",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} direcciones IP"},
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5907,7 +5907,6 @@ class CodegenLoader extends AssetLoader {
         "تنتهي صلاحية الرابط في غضون 30 دقيقة ، لذا تأكد من استخدامه قريبًا. اذهب للتحقق من بريدك الإلكتروني",
     "location": "الموقع",
     "locationItemCityCount": {"one": "{} مدينة", "other": "{} مدن"},
-    "locationItemNodeCount": {"one": "{} خادم", "other": "{} خوادم"},
     "locationUnavailableAction": "اتصل بأقرب عنوان IP",
     "locationUnavailableSubtitle": "اتصل بأقرب عنوان IP - أو اختره يدويًا",
     "locationUnavailableTitle": "{} غير متاح",
@@ -6132,7 +6131,6 @@ class CodegenLoader extends AssetLoader {
     "upload": "رفع",
     "userIntentBestSpeed": "أفضل سرعة",
     "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أفضل أداء",
-    "userIntentLabel": "اختر خادمًا متخصصًا",
     "userIntentLowLatency": "كمون منخفض",
     "userIntentLowLatencyDesc": "يتصل تلقائيًا بأقرب خادم لتوفير وصول مستقر وموثوق",
     "userIntentMaxPrivacy": "أقصى قدر من الخصوصية",
@@ -6196,7 +6194,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو أنوال",
+    "plan_yearly_pro": "برو سنوي",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -6271,6 +6269,8 @@ class CodegenLoader extends AssetLoader {
     "noneLbl": "لا أحد",
     "malwareLbl": "البرامج الضارة",
     "nsfwLbl": "محتوى غير لائق وبرامج ضارة",
+    "userIntentLabel": "خادم متخصص",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} عناوين IP"},
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

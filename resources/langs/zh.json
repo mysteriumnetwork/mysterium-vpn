@@ -177,10 +177,6 @@
     "one": "",
     "other": "{} 个城市"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} 台服务器"
-  },
   "locationUnavailableAction": "连接到最近的 IP",
   "locationUnavailableSubtitle": "连接到最近的 IP，或手动选择",
   "locationUnavailableTitle": "{} 当前不可用",
@@ -394,7 +390,6 @@
   "upload": "上传",
   "userIntentBestSpeed": "最佳速度",
   "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
-  "userIntentLabel": "选择专用服务器",
   "userIntentLowLatency": "低延迟",
   "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
   "userIntentMaxPrivacy": "最大隐私",
@@ -522,5 +517,10 @@
   "settingManageBtn": "管理",
   "noneLbl": "没有任何",
   "malwareLbl": "恶意软件",
-  "nsfwLbl": "NSFW 和恶意软件"
+  "nsfwLbl": "NSFW 和恶意软件",
+  "userIntentLabel": "专业服务器",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IP"
+  }
 }

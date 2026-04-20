@@ -177,10 +177,6 @@
     "one": "{} ciudad",
     "other": "{} ciudades"
   },
-  "locationItemNodeCount": {
-    "one": "{} servidor",
-    "other": "{} servidores"
-  },
   "locationUnavailableAction": "Conectarse a la IP más cercana",
   "locationUnavailableSubtitle": "Conéctate a la IP más cercana o elige una manualmente",
   "locationUnavailableTitle": "{} no está disponible",
@@ -394,7 +390,6 @@
   "upload": "Subir",
   "userIntentBestSpeed": "Mejor velocidad",
   "userIntentBestSpeedDesc": "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
-  "userIntentLabel": "Seleccionar servidor especializado",
   "userIntentLowLatency": "Baja latencia",
   "userIntentLowLatencyDesc": "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
   "userIntentMaxPrivacy": "Máxima privacidad",
@@ -522,5 +517,10 @@
   "settingManageBtn": "Administrar",
   "noneLbl": "Ninguno",
   "malwareLbl": "malware",
-  "nsfwLbl": "Contenido para adultos y malware"
+  "nsfwLbl": "Contenido para adultos y malware",
+  "userIntentLabel": "Servidor especializado",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} direcciones IP"
+  }
 }
