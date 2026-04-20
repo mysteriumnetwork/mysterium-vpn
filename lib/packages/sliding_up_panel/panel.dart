@@ -206,6 +206,12 @@ class SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvide
   bool _scrollingEnabled = false;
   final VelocityTracker _vt = VelocityTracker.withKind(PointerDeviceKind.touch);
 
+  // Drag direction tracking: prevents horizontal scrolling gestures (e.g. in
+  // horizontal lists) from also triggering vertical panel sliding.
+  Offset? _dragStartPosition;
+  bool? _isHorizontalDrag; // null = undetermined, true = horizontal, false = vertical
+  double? _panelPositionOnDragStart;
+
   bool _isPanelVisible = true;
 
   @override
@@ -419,12 +425,46 @@ class SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvide
     }
 
     return Listener(
-      onPointerDown: (PointerDownEvent p) => _vt.addPosition(p.timeStamp, p.position),
-      onPointerMove: (PointerMoveEvent p) {
-        _vt.addPosition(p.timeStamp, p.position); // add current position for velocity tracking
-        _onGestureSlide(p.delta.dy);
+      onPointerDown: (PointerDownEvent p) {
+        _vt.addPosition(p.timeStamp, p.position);
+        _dragStartPosition = p.position;
+        _isHorizontalDrag = null;
+        _panelPositionOnDragStart = _ac.value;
       },
-      onPointerUp: (PointerUpEvent p) => _onGestureEnd(_vt.getVelocity()),
+      onPointerMove: (PointerMoveEvent p) {
+        _vt.addPosition(p.timeStamp, p.position);
+
+        // Determine drag direction once the pointer moves past the touch slop
+        // threshold. This prevents horizontal scrolling gestures from also
+        // triggering vertical panel/scroll movement.
+        if (_isHorizontalDrag == null && _dragStartPosition != null) {
+          final totalDelta = p.position - _dragStartPosition!;
+          if (totalDelta.distance > kTouchSlop) {
+            _isHorizontalDrag = totalDelta.dx.abs() > totalDelta.dy.abs();
+            if (_isHorizontalDrag! && _panelPositionOnDragStart != null) {
+              // Undo any small vertical panel shift from before direction was determined.
+              _ac.value = _panelPositionOnDragStart!;
+            }
+          }
+        }
+
+        if (_isHorizontalDrag != true) {
+          _onGestureSlide(p.delta.dy);
+        }
+      },
+      onPointerUp: (PointerUpEvent p) {
+        if (_isHorizontalDrag != true) {
+          _onGestureEnd(_vt.getVelocity());
+        }
+        _dragStartPosition = null;
+        _isHorizontalDrag = null;
+        _panelPositionOnDragStart = null;
+      },
+      onPointerCancel: (_) {
+        _dragStartPosition = null;
+        _isHorizontalDrag = null;
+        _panelPositionOnDragStart = null;
+      },
       child: child,
     );
   }
