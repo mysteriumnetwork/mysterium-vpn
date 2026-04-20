@@ -196,7 +196,15 @@ abstract class _LocationsStore with Store {
         _ => throw Exception('Invalid IP type for refresh'),
       };
 
-      await _fetch(ipType);
+      final result = await _fetch(ipType);
+      switch (ipType) {
+        case IPType.datacenter:
+          _dcLocationsFuture = ObservableFuture.value(result);
+        case IPType.residential:
+          _residentialLocationsFuture = ObservableFuture.value(result);
+        default:
+          break;
+      }
     } on ApiException catch (_) {
       // do nothing. previously cached locations remain available for use
     } catch (e, stackTrace) {
