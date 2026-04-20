@@ -210,7 +210,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                   ),
                 SizedBox(height: theme.spacing.ms),
                 ButtonPrimary(
-                  onPressed: handlePurchasePressed,
+                  onPressed: subscriptionStore.isSubscribed == null ? null : handlePurchasePressed,
                   loading: isLoading.value ? const ButtonLoading() : null,
                   decoration: ButtonDecoration(
                     decorationColor: theme.palette.bgBrandPrimary,
