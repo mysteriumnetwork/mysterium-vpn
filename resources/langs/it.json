@@ -41,7 +41,6 @@
   "cancelBtn": "Annulla",
   "cancelMyAccount": "Cancellazione dell'account",
   "cancelSubscriptionBtn": "Annulla abbonamento",
-  "cancelSurveyFeedbackHint": "Scrivi il tuo feedback qui...",
   "cancelSurveyTitle": "Mi dispiace sentirlo. Qual era il problema?",
   "cancelYourSubsMess": "Annulla l'abbonamento sugli abbonamenti dell'App Store prima di eliminare il tuo account.",
   "changeSubPlan": "Cambia piano di abbonamento",
@@ -177,10 +176,6 @@
     "one": "{} città",
     "other": "{} città"
   },
-  "locationItemNodeCount": {
-    "one": "{} server",
-    "other": "{} server"
-  },
   "locationUnavailableAction": "Connettiti all’IP più vicino",
   "locationUnavailableSubtitle": "Connettiti all’IP più vicino – o scegli manualmente",
   "locationUnavailableTitle": "{} non è disponibile",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
   "questions": "Domande?",
   "rateConnection": "Com'è la tua connessione?",
-  "rateConnectionDislike": "Spiacente di sentirlo! Qual è stato il problema?",
-  "rateConnectionLike": "Felice di sentirlo! Cosa ti è piaciuto?",
   "readOur": "Leggi il nostro ",
   "recentLocations": "Località recenti",
   "reconnectBtn": "Riconnettersi",
@@ -494,7 +487,7 @@
   "marketingConsentPopupDesc": "Desideri ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
   "allowNotificationsBtn": "Consenti le notifiche",
   "ipTypeDataCenterDisclaimer": "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
-  "ipTypeResidentialDisclaimer": "Indirizzi IP residenziali di abitazioni reali. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+  "ipTypeResidentialDisclaimer": "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
   "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
   "ipTypeResidentialTooltipBody": "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
   "refreshIPAddress": "Aggiornamento dell'indirizzo IP",
@@ -522,5 +515,12 @@
   "noneLbl": "Nessuno",
   "malwareLbl": "Malware",
   "nsfwLbl": "Contenuti non adatti ai minori e malware",
-  "userIntentLabel": "Server specializzato"
+  "userIntentLabel": "Server specializzato",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IP"
+  },
+  "rateConnectionLike": "Cosa ti è piaciuto?",
+  "rateConnectionDislike": "Cosa non ti è piaciuto?",
+  "cancelSurveyFeedbackHint": "Inserisci maggiori dettagli..."
 }

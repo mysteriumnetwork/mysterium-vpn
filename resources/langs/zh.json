@@ -41,7 +41,6 @@
   "cancelBtn": "取消",
   "cancelMyAccount": "帐号删除",
   "cancelSubscriptionBtn": "取消订阅",
-  "cancelSurveyFeedbackHint": "请在此输入您的反馈...",
   "cancelSurveyTitle": "很抱歉听到这个消息。出现了什么问题？",
   "cancelYourSubsMess": "在删除您的帐号之前，请取消您在 App Store 订阅中的订阅。",
   "changeSubPlan": "更改订阅计划",
@@ -177,10 +176,6 @@
     "one": "",
     "other": "{} 个城市"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} 台服务器"
-  },
   "locationUnavailableAction": "连接到最近的 IP",
   "locationUnavailableSubtitle": "连接到最近的 IP，或手动选择",
   "locationUnavailableTitle": "{} 当前不可用",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
   "questions": "问题？",
   "rateConnection": "您的连接如何？",
-  "rateConnectionDislike": "很抱歉听到这个！问题是什么？",
-  "rateConnectionLike": "很高兴听到这个！您喜欢什么？",
   "readOur": "阅读我们的 ",
   "recentLocations": "最近的地点",
   "reconnectBtn": "重新连接",
@@ -496,7 +489,7 @@
   "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
   "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
   "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
-  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
   "refreshIPAddress": "IP地址刷新",
   "getNewIPAddress": "刷新后获取新的 IP 地址",
   "resetAppDesc": "当出现故障时，请重置。",
@@ -522,5 +515,12 @@
   "noneLbl": "没有任何",
   "malwareLbl": "恶意软件",
   "nsfwLbl": "NSFW 和恶意软件",
-  "userIntentLabel": "专业服务器"
+  "userIntentLabel": "专业服务器",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IP"
+  },
+  "rateConnectionLike": "你喜欢什么？",
+  "rateConnectionDislike": "你不喜欢什么？",
+  "cancelSurveyFeedbackHint": "请填写更多详情……"
 }

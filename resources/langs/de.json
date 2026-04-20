@@ -41,7 +41,6 @@
   "cancelBtn": "Abbrechen",
   "cancelMyAccount": "Kontolöschung",
   "cancelSubscriptionBtn": "Abonnement kündigen",
-  "cancelSurveyFeedbackHint": "Geben Sie hier Ihr Feedback ein...",
   "cancelSurveyTitle": "Das tut mir leid zu hören. Was war das Problem?",
   "cancelYourSubsMess": "Kündigen Sie Ihr Abonnement im App Store, bevor Sie Ihr Konto löschen.",
   "changeSubPlan": "Abonnementplan ändern",
@@ -177,10 +176,6 @@
     "one": "{} Stadt",
     "other": "{} Städte"
   },
-  "locationItemNodeCount": {
-    "one": "{} Server",
-    "other": "{} Server"
-  },
   "locationUnavailableAction": "Mit nächster IP verbinden",
   "locationUnavailableSubtitle": "Verbinde dich mit der nächsten IP – oder wähle sie manuell aus",
   "locationUnavailableTitle": "{} ist nicht verfügbar",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• Konto- und Dienstaktivitätswarnungen",
   "questions": "Fragen?",
   "rateConnection": "Wie ist Ihre Verbindung?",
-  "rateConnectionDislike": "Tut mir leid zu hören! Was war das Problem?",
-  "rateConnectionLike": "Freut mich zu hören! Was hat Ihnen gefallen?",
   "readOur": "Lesen Sie unsere ",
   "recentLocations": "Aktuelle Standorte",
   "reconnectBtn": "Erneut verbinden",
@@ -467,9 +460,9 @@
   "emailNotificationsSetting": "E-Mail-Benachrichtigungen",
   "subscriptionPlanWireGuardDesc": "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming\nOpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar)",
   "subscriptionPlanDoubleVPNDesc": "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
-  "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
-  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
-  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+  "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
   "notNowBtn": "Nicht jetzt.",
   "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
   "viewLessBtn": "Weniger anzeigen",
@@ -522,5 +515,12 @@
   "noneLbl": "Keiner",
   "malwareLbl": "Malware",
   "nsfwLbl": "NSFW & Malware",
-  "userIntentLabel": "Spezialserver"
+  "userIntentLabel": "Spezialserver",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "Was hat dir gefallen?",
+  "rateConnectionDislike": "Was hat dir nicht gefallen?",
+  "cancelSurveyFeedbackHint": "Bitte geben Sie weitere Details ein..."
 }

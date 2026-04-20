@@ -41,7 +41,6 @@
   "cancelBtn": "Cancel",
   "cancelMyAccount": "Account deletion",
   "cancelSubscriptionBtn": "Cancel Subscription",
-  "cancelSurveyFeedbackHint": "Type your feedback here...",
   "cancelSurveyTitle": "Sorry to hear that. What was the issue?",
   "cancelYourSubsMess": "Cancel your subscription on the App Store subscriptions before deleting your account.",
   "changeSubPlan": "Change subscription plan",
@@ -177,10 +176,6 @@
     "one": "{} City",
     "other": "{} Cities"
   },
-  "locationItemNodeCount": {
-    "one": "{} Server",
-    "other": "{} Servers"
-  },
   "locationUnavailableAction": "Connect to nearest IP",
   "locationUnavailableSubtitle": "Connect to the nearest IP - or choose it manually",
   "locationUnavailableTitle": "{} is not available",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• Account and Service activity alerts",
   "questions": "Questions?",
   "rateConnection": "How is your connection?",
-  "rateConnectionDislike": "Sorry to hear that! What was the issue?",
-  "rateConnectionLike": "Glad to hear that! What did you like?",
   "readOur": "Read our ",
   "recentLocations": "Recent locations",
   "reconnectBtn": "Reconnect",
@@ -522,5 +515,12 @@
   "noneLbl": "None",
   "malwareLbl": "Malware",
   "nsfwLbl": "NSFW & Malware",
-  "userIntentLabel": "Speciality server"
+  "userIntentLabel": "Speciality server",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "What did you like?",
+  "rateConnectionDislike": "What didn’t you like?",
+  "cancelSurveyFeedbackHint": "Please enter more details..."
 }

@@ -45,7 +45,6 @@ abstract class LocaleKeys {
   static const cancelBtn = 'cancelBtn';
   static const cancelMyAccount = 'cancelMyAccount';
   static const cancelSubscriptionBtn = 'cancelSubscriptionBtn';
-  static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
   static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const cancelYourSubsMess = 'cancelYourSubsMess';
   static const changeSubPlan = 'changeSubPlan';
@@ -178,7 +177,6 @@ abstract class LocaleKeys {
   static const linkExpires = 'linkExpires';
   static const location = 'location';
   static const locationItemCityCount = 'locationItemCityCount';
-  static const locationItemNodeCount = 'locationItemNodeCount';
   static const locationUnavailableAction = 'locationUnavailableAction';
   static const locationUnavailableSubtitle = 'locationUnavailableSubtitle';
   static const locationUnavailableTitle = 'locationUnavailableTitle';
@@ -284,8 +282,6 @@ abstract class LocaleKeys {
   static const pushNotificationsPermissionPoint2 = 'pushNotificationsPermissionPoint2';
   static const questions = 'questions';
   static const rateConnection = 'rateConnection';
-  static const rateConnectionDislike = 'rateConnectionDislike';
-  static const rateConnectionLike = 'rateConnectionLike';
   static const readOur = 'readOur';
   static const recentLocations = 'recentLocations';
   static const reconnectBtn = 'reconnectBtn';
@@ -514,4 +510,8 @@ abstract class LocaleKeys {
   static const malwareLbl = 'malwareLbl';
   static const nsfwLbl = 'nsfwLbl';
   static const userIntentLabel = 'userIntentLabel';
+  static const locationItemNodeCount = 'locationItemNodeCount';
+  static const rateConnectionLike = 'rateConnectionLike';
+  static const rateConnectionDislike = 'rateConnectionDislike';
+  static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
 }

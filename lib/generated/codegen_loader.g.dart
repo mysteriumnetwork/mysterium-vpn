@@ -57,7 +57,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "取消",
     "cancelMyAccount": "帐号删除",
     "cancelSubscriptionBtn": "取消订阅",
-    "cancelSurveyFeedbackHint": "请在此输入您的反馈...",
     "cancelSurveyTitle": "很抱歉听到这个消息。出现了什么问题？",
     "cancelYourSubsMess": "在删除您的帐号之前，请取消您在 App Store 订阅中的订阅。",
     "changeSubPlan": "更改订阅计划",
@@ -190,7 +189,6 @@ class CodegenLoader extends AssetLoader {
     "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
     "location": "地点",
     "locationItemCityCount": {"one": "", "other": "{} 个城市"},
-    "locationItemNodeCount": {"one": "", "other": "{} 台服务器"},
     "locationUnavailableAction": "连接到最近的 IP",
     "locationUnavailableSubtitle": "连接到最近的 IP，或手动选择",
     "locationUnavailableTitle": "{} 当前不可用",
@@ -296,8 +294,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
     "questions": "问题？",
     "rateConnection": "您的连接如何？",
-    "rateConnectionDislike": "很抱歉听到这个！问题是什么？",
-    "rateConnectionLike": "很高兴听到这个！您喜欢什么？",
     "readOur": "阅读我们的 ",
     "recentLocations": "最近的地点",
     "reconnectBtn": "重新连接",
@@ -502,7 +498,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
     "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
     "ipTypeResidentialTooltipBody":
-        "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+        "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
     "refreshIPAddress": "IP地址刷新",
     "getNewIPAddress": "刷新后获取新的 IP 地址",
     "resetAppDesc": "当出现故障时，请重置。",
@@ -529,6 +525,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "恶意软件",
     "nsfwLbl": "NSFW 和恶意软件",
     "userIntentLabel": "专业服务器",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP"},
+    "rateConnectionLike": "你喜欢什么？",
+    "rateConnectionDislike": "你不喜欢什么？",
+    "cancelSurveyFeedbackHint": "请填写更多详情……",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -576,7 +576,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "İptal et",
     "cancelMyAccount": "Hesap yönetimi",
     "cancelSubscriptionBtn": "Aboneliği iptal et",
-    "cancelSurveyFeedbackHint": "Geri bildiriminizi buraya yazın...",
     "cancelSurveyTitle": "Bunu duyduğuma üzüldüm. Sorun neydi?",
     "cancelYourSubsMess":
         "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
@@ -727,7 +726,6 @@ class CodegenLoader extends AssetLoader {
         "Link 30 dakika içinde kullanılmalıdır, bu yüzden bir an önce tıkladığınızdan emin olun. ",
     "location": "Ülke",
     "locationItemCityCount": {"one": "", "other": "{} şehir"},
-    "locationItemNodeCount": {"one": "", "other": "{} sunucu"},
     "locationUnavailableAction": "En yakın IP'ye bağlan",
     "locationUnavailableSubtitle": "En yakın IP'ye bağlanın – ya da manuel olarak seçin",
     "locationUnavailableTitle": "{} kullanılamıyor",
@@ -839,8 +837,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
     "questions": "Sorular?",
     "rateConnection": "Bağlantınız nasıl?",
-    "rateConnectionDislike": "Bunu duyduğuma üzüldüm! Sorun neydi?",
-    "rateConnectionLike": "Bunu duyduğuma sevindim! Neyi beğendiniz?",
     "readOur": "Okuyun ",
     "recentLocations": "Son konumlar",
     "reconnectBtn": "Yeniden bağlanmak",
@@ -1095,6 +1091,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Kötü amaçlı yazılım",
     "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
     "userIntentLabel": "Özel servis elemanı",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP adresleri"},
+    "rateConnectionLike": "Neyi beğendiniz?",
+    "rateConnectionDislike": "Neyi beğenmediniz?",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1139,7 +1139,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "キャンセル",
     "cancelMyAccount": "アカウントの削除",
     "cancelSubscriptionBtn": "サブスクリプションをキャンセル",
-    "cancelSurveyFeedbackHint": "ここにフィードバックを入力してください...",
     "cancelSurveyTitle": "それはお気の毒です。問題は何でしたか？",
     "cancelYourSubsMess": "アカウントを削除する前に、App Store のサブスクリプションでサブスクリプションをキャンセルしてください。",
     "changeSubPlan": "サブスクリプションプランを変更",
@@ -1274,7 +1273,6 @@ class CodegenLoader extends AssetLoader {
     "linkExpires": "リンクの有効期限は 30 分ですので、お早めにご利用ください。メールをチェックしてみよう",
     "location": "位置",
     "locationItemCityCount": {"one": "", "other": "{} 都市"},
-    "locationItemNodeCount": {"one": "", "other": "{} サーバー"},
     "locationUnavailableAction": "最寄りのIPに接続",
     "locationUnavailableSubtitle": "最寄りのIPに接続するか、手動で選択してください",
     "locationUnavailableTitle": "{} は利用できません",
@@ -1380,8 +1378,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• アカウントとサービスのアクティビティアラート",
     "questions": "質問がありますか?",
     "rateConnection": "接続状況はいかがですか？",
-    "rateConnectionDislike": "それは残念です！問題は何でしたか？",
-    "rateConnectionLike": "それは良かったです！何が良かったですか？",
     "readOur": "私たちの記事を読んでください ",
     "recentLocations": "最近の場所",
     "reconnectBtn": "再接続します",
@@ -1581,7 +1577,7 @@ class CodegenLoader extends AssetLoader {
     "ipPoolLabel": "IPプール: {ips}",
     "connectToTooltip": "{countryNum}に接続します",
     "locationItemStatesCount": {"one": "{statesNum} 州", "other": "{statesNum} 州"},
-    "switchToLocationBtn": "{switchLocation}に切り替える",
+    "switchToLocationBtn": "{switchLocation} に切り替える",
     "redeemDiscountCode": "割引コードを引き換える",
     "couponCodeCopied": "",
     "marketingConsentPopupTitle": "メールで最新情報を受け取る",
@@ -1620,6 +1616,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "マルウェア",
     "nsfwLbl": "NSFW（成人向けコンテンツ）およびマルウェア",
     "userIntentLabel": "専門サーバー",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IPアドレス"},
+    "rateConnectionLike": "何が気に入りましたか？",
+    "rateConnectionDislike": "何が気に入らなかったのですか？",
+    "cancelSurveyFeedbackHint": "詳細を入力してください...",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1669,7 +1669,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Abbrechen",
     "cancelMyAccount": "Kontolöschung",
     "cancelSubscriptionBtn": "Abonnement kündigen",
-    "cancelSurveyFeedbackHint": "Geben Sie hier Ihr Feedback ein...",
     "cancelSurveyTitle": "Das tut mir leid zu hören. Was war das Problem?",
     "cancelYourSubsMess": "Kündigen Sie Ihr Abonnement im App Store, bevor Sie Ihr Konto löschen.",
     "changeSubPlan": "Abonnementplan ändern",
@@ -1832,7 +1831,6 @@ class CodegenLoader extends AssetLoader {
         "Der Link läuft in 30 Minuten ab, also nutzen Sie ihn bald. Überprüfen Sie Ihre E-Mails",
     "location": "Standort",
     "locationItemCityCount": {"one": "{} Stadt", "other": "{} Städte"},
-    "locationItemNodeCount": {"one": "{} Server", "other": "{} Server"},
     "locationUnavailableAction": "Mit nächster IP verbinden",
     "locationUnavailableSubtitle": "Verbinde dich mit der nächsten IP – oder wähle sie manuell aus",
     "locationUnavailableTitle": "{} ist nicht verfügbar",
@@ -1948,8 +1946,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Konto- und Dienstaktivitätswarnungen",
     "questions": "Fragen?",
     "rateConnection": "Wie ist Ihre Verbindung?",
-    "rateConnectionDislike": "Tut mir leid zu hören! Was war das Problem?",
-    "rateConnectionLike": "Freut mich zu hören! Was hat Ihnen gefallen?",
     "readOur": "Lesen Sie unsere ",
     "recentLocations": "Aktuelle Standorte",
     "reconnectBtn": "Erneut verbinden",
@@ -2152,11 +2148,11 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
     "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
@@ -2213,6 +2209,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Malware",
     "nsfwLbl": "NSFW & Malware",
     "userIntentLabel": "Spezialserver",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
+    "rateConnectionLike": "Was hat dir gefallen?",
+    "rateConnectionDislike": "Was hat dir nicht gefallen?",
+    "cancelSurveyFeedbackHint": "Bitte geben Sie weitere Details ein...",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2260,7 +2260,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Cancelar",
     "cancelMyAccount": "Cancele minha conta",
     "cancelSubscriptionBtn": "Cancelar assinatura",
-    "cancelSurveyFeedbackHint": "Digite seu feedback aqui...",
     "cancelSurveyTitle": "Lamentamos ouvir isso. Qual foi o problema?",
     "cancelYourSubsMess":
         "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
@@ -2417,7 +2416,6 @@ class CodegenLoader extends AssetLoader {
         "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
     "location": "Localização",
     "locationItemCityCount": {"one": "{} cidade", "other": "{} cidades"},
-    "locationItemNodeCount": {"one": "{} servidor", "other": "{} servidores"},
     "locationUnavailableAction": "Conectar ao IP mais próximo",
     "locationUnavailableSubtitle": "Conecte-se ao IP mais próximo – ou escolha manualmente",
     "locationUnavailableTitle": "{} não está disponível",
@@ -2532,8 +2530,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
     "questions": "Questões?",
     "rateConnection": "Como está sua conexão?",
-    "rateConnectionDislike": "Lamentamos ouvir isso! Qual foi o problema?",
-    "rateConnectionLike": "Que bom ouvir isso! O que você gostou?",
     "readOur": "Leia nosso ",
     "recentLocations": "Locais recentes",
     "reconnectBtn": "Reconectar",
@@ -2736,7 +2732,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
-        "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
+        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
     "subscriptionPlanCityLevelDesc":
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2797,6 +2793,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Malware",
     "nsfwLbl": "Conteúdo impróprio para menores e malware",
     "userIntentLabel": "Servidor especializado",
+    "locationItemNodeCount": {"one": "IP", "other": "IPs"},
+    "rateConnectionLike": "Do que você gostou?",
+    "rateConnectionDislike": "Do que você não gostou?",
+    "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2845,7 +2845,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Cancel",
     "cancelMyAccount": "Account deletion",
     "cancelSubscriptionBtn": "Cancel Subscription",
-    "cancelSurveyFeedbackHint": "Type your feedback here...",
     "cancelSurveyTitle": "Sorry to hear that. What was the issue?",
     "cancelYourSubsMess":
         "Cancel your subscription on the App Store subscriptions before deleting your account.",
@@ -2996,7 +2995,6 @@ class CodegenLoader extends AssetLoader {
     "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
     "location": "Location",
     "locationItemCityCount": {"one": "{} City", "other": "{} Cities"},
-    "locationItemNodeCount": {"one": "{} Server", "other": "{} Servers"},
     "locationUnavailableAction": "Connect to nearest IP",
     "locationUnavailableSubtitle": "Connect to the nearest IP - or choose it manually",
     "locationUnavailableTitle": "{} is not available",
@@ -3111,8 +3109,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Account and Service activity alerts",
     "questions": "Questions?",
     "rateConnection": "How is your connection?",
-    "rateConnectionDislike": "Sorry to hear that! What was the issue?",
-    "rateConnectionLike": "Glad to hear that! What did you like?",
     "readOur": "Read our ",
     "recentLocations": "Recent locations",
     "reconnectBtn": "Reconnect",
@@ -3369,6 +3365,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Malware",
     "nsfwLbl": "NSFW & Malware",
     "userIntentLabel": "Speciality server",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
+    "rateConnectionLike": "What did you like?",
+    "rateConnectionDislike": "What didn’t you like?",
+    "cancelSurveyFeedbackHint": "Please enter more details...",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3417,7 +3417,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Annulla",
     "cancelMyAccount": "Cancellazione dell'account",
     "cancelSubscriptionBtn": "Annulla abbonamento",
-    "cancelSurveyFeedbackHint": "Scrivi il tuo feedback qui...",
     "cancelSurveyTitle": "Mi dispiace sentirlo. Qual era il problema?",
     "cancelYourSubsMess":
         "Annulla l'abbonamento sugli abbonamenti dell'App Store prima di eliminare il tuo account.",
@@ -3577,7 +3576,6 @@ class CodegenLoader extends AssetLoader {
         "Il link scade tra 30 minuti, quindi assicurati di usarlo presto. Vai a controllare la tua posta",
     "location": "Posizione",
     "locationItemCityCount": {"one": "{} città", "other": "{} città"},
-    "locationItemNodeCount": {"one": "{} server", "other": "{} server"},
     "locationUnavailableAction": "Connettiti all’IP più vicino",
     "locationUnavailableSubtitle": "Connettiti all’IP più vicino – o scegli manualmente",
     "locationUnavailableTitle": "{} non è disponibile",
@@ -3692,8 +3690,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Avvisi di attività dell'account e del servizio",
     "questions": "Domande?",
     "rateConnection": "Com'è la tua connessione?",
-    "rateConnectionDislike": "Spiacente di sentirlo! Qual è stato il problema?",
-    "rateConnectionLike": "Felice di sentirlo! Cosa ti è piaciuto?",
     "readOur": "Leggi il nostro ",
     "recentLocations": "Località recenti",
     "reconnectBtn": "Riconnettersi",
@@ -3925,7 +3921,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
     "ipTypeResidentialDisclaimer":
-        "Indirizzi IP residenziali di abitazioni reali. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+        "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
     "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
     "ipTypeResidentialTooltipBody":
         "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
@@ -3956,6 +3952,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Malware",
     "nsfwLbl": "Contenuti non adatti ai minori e malware",
     "userIntentLabel": "Server specializzato",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP"},
+    "rateConnectionLike": "Cosa ti è piaciuto?",
+    "rateConnectionDislike": "Cosa non ti è piaciuto?",
+    "cancelSurveyFeedbackHint": "Inserisci maggiori dettagli...",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4004,7 +4004,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Annuler",
     "cancelMyAccount": "Annuler mon compte",
     "cancelSubscriptionBtn": "Annuler l'abonnement",
-    "cancelSurveyFeedbackHint": "Tapez vos commentaires ici...",
     "cancelSurveyTitle": "Désolé de l'apprendre. Quel était le problème ?",
     "cancelYourSubsMess":
         "Veuillez ANNULER VOTRE ABONNEMENT sur la page de facturation avant de supprimer votre compte.",
@@ -4167,7 +4166,6 @@ class CodegenLoader extends AssetLoader {
         "Le lien expire en 30 minutes, alors assurez-vous de l'utiliser bientôt. Allez vérifier votre e-mail",
     "location": "Emplacement",
     "locationItemCityCount": {"one": "{} ville", "other": "{} villes"},
-    "locationItemNodeCount": {"one": "{} serveur", "other": "{} serveurs"},
     "locationUnavailableAction": "Se connecter à l’IP la plus proche",
     "locationUnavailableSubtitle":
         "Connectez-vous à l’IP la plus proche – ou choisissez-la manuellement",
@@ -4283,8 +4281,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Alertes d'activité de compte et de service",
     "questions": "Des questions?",
     "rateConnection": "Comment est votre connexion ?",
-    "rateConnectionDislike": "Désolé de l'entendre ! Quel était le problème ?",
-    "rateConnectionLike": "Ravi de l'entendre ! Qu'est-ce qui vous a plu ?",
     "readOur": "Lisez notre ",
     "recentLocations": "Emplacements récents",
     "reconnectBtn": "Reconnecter",
@@ -4485,7 +4481,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -4550,6 +4546,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Logiciel malveillant",
     "nsfwLbl": "Contenu réservé aux adultes et logiciels malveillants",
     "userIntentLabel": "Serveur spécialisé",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} IP"},
+    "rateConnectionLike": "Qu'est-ce qui vous a plu ?",
+    "rateConnectionDislike": "Qu'est-ce qui ne vous a pas plu ?",
+    "cancelSurveyFeedbackHint": "Veuillez saisir plus de détails...",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4598,7 +4598,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Membatalkan",
     "cancelMyAccount": "Penghapusan akun",
     "cancelSubscriptionBtn": "Batalkan Langganan",
-    "cancelSurveyFeedbackHint": "Ketik masukan Anda di sini...",
     "cancelSurveyTitle": "Maaf mendengarnya. Apa masalahnya?",
     "cancelYourSubsMess":
         "Batalkan langganan Anda di langganan App Store sebelum menghapus akun Anda.",
@@ -4751,7 +4750,6 @@ class CodegenLoader extends AssetLoader {
         "Tautan kedaluwarsa dalam 30 menit, jadi pastikan untuk segera menggunakannya. Periksa email Anda",
     "location": "Lokasi",
     "locationItemCityCount": {"one": "", "other": "{} kota"},
-    "locationItemNodeCount": {"one": "", "other": "{} server"},
     "locationUnavailableAction": "Hubungkan ke IP terdekat",
     "locationUnavailableSubtitle": "Hubungkan ke IP terdekat – atau pilih secara manual",
     "locationUnavailableTitle": "{} tidak tersedia",
@@ -4864,8 +4862,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
     "questions": "Pertanyaan?",
     "rateConnection": "Bagaimana koneksi Anda?",
-    "rateConnectionDislike": "Maaf mendengarnya! Apa masalahnya?",
-    "rateConnectionLike": "Senang mendengarnya! Apa yang Anda sukai?",
     "readOur": "Baca kami ",
     "recentLocations": "Lokasi terkini",
     "reconnectBtn": "Terhubung kembali",
@@ -5126,6 +5122,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "Perangkat lunak berbahaya",
     "nsfwLbl": "Konten Dewasa & Malware",
     "userIntentLabel": "Server khusus",
+    "locationItemNodeCount": {"one": "{} AKU P", "other": "{} IP"},
+    "rateConnectionLike": "Apa yang kamu sukai?",
+    "rateConnectionDislike": "Apa yang tidak kamu sukai?",
+    "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya...",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5174,7 +5174,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Cancelar",
     "cancelMyAccount": "Eliminación de cuenta",
     "cancelSubscriptionBtn": "Cancelar suscripción",
-    "cancelSurveyFeedbackHint": "Escribe tus comentarios aquí...",
     "cancelSurveyTitle": "Lamentamos escuchar eso. ¿Cuál fue el problema?",
     "cancelYourSubsMess":
         "Cancela tu suscripción en las suscripciones de la App Store antes de eliminar tu cuenta.",
@@ -5333,7 +5332,6 @@ class CodegenLoader extends AssetLoader {
         "El enlace caduca en 30 minutos, así que asegúrate de usarlo pronto. Ve a revisar tu correo electrónico",
     "location": "Ubicación",
     "locationItemCityCount": {"one": "{} ciudad", "other": "{} ciudades"},
-    "locationItemNodeCount": {"one": "{} servidor", "other": "{} servidores"},
     "locationUnavailableAction": "Conectarse a la IP más cercana",
     "locationUnavailableSubtitle": "Conéctate a la IP más cercana o elige una manualmente",
     "locationUnavailableTitle": "{} no está disponible",
@@ -5448,8 +5446,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
     "questions": "¿Preguntas?",
     "rateConnection": "¿Cómo está tu conexión?",
-    "rateConnectionDislike": "¡Lamentamos escuchar eso! ¿Cuál fue el problema?",
-    "rateConnectionLike": "¡Me alegra saberlo! ¿Qué te gustó?",
     "readOur": "Lee nuestro ",
     "recentLocations": "Ubicaciones recientes",
     "reconnectBtn": "Volver a conectar",
@@ -5713,6 +5709,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "malware",
     "nsfwLbl": "Contenido para adultos y malware",
     "userIntentLabel": "Servidor especializado",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} direcciones IP"},
+    "rateConnectionLike": "¿Qué te gustó?",
+    "rateConnectionDislike": "¿Qué no te gustó?",
+    "cancelSurveyFeedbackHint": "Por favor, introduzca más detalles...",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5760,7 +5760,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "الغي",
     "cancelMyAccount": "حذف الحساب",
     "cancelSubscriptionBtn": "إلغاء الاشتراك",
-    "cancelSurveyFeedbackHint": "اكتب ملاحظاتك هنا...",
     "cancelSurveyTitle": "عذرًا لسماع ذلك. ما هي المشكلة؟",
     "cancelYourSubsMess": "قم بإلغاء اشتراكك في اشتراكات App Store قبل حذف حسابك.",
     "changeSubPlan": "تغيير خطة الاشتراك",
@@ -5907,7 +5906,6 @@ class CodegenLoader extends AssetLoader {
         "تنتهي صلاحية الرابط في غضون 30 دقيقة ، لذا تأكد من استخدامه قريبًا. اذهب للتحقق من بريدك الإلكتروني",
     "location": "الموقع",
     "locationItemCityCount": {"one": "{} مدينة", "other": "{} مدن"},
-    "locationItemNodeCount": {"one": "{} خادم", "other": "{} خوادم"},
     "locationUnavailableAction": "اتصل بأقرب عنوان IP",
     "locationUnavailableSubtitle": "اتصل بأقرب عنوان IP - أو اختره يدويًا",
     "locationUnavailableTitle": "{} غير متاح",
@@ -6019,8 +6017,6 @@ class CodegenLoader extends AssetLoader {
     "pushNotificationsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
     "questions": "أسئلة؟",
     "rateConnection": "كيف هي اتصالك؟",
-    "rateConnectionDislike": "نأسف لسماع ذلك! ما هي المشكلة؟",
-    "rateConnectionLike": "سعيد لسماع ذلك! ما الذي أعجبك؟",
     "readOur": "اقرأ ",
     "recentLocations": "المواقع الأخيرة",
     "reconnectBtn": "إعادة الاتصال",
@@ -6195,7 +6191,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو أنوال",
+    "plan_yearly_pro": "برو سنوي",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -6271,6 +6267,10 @@ class CodegenLoader extends AssetLoader {
     "malwareLbl": "البرامج الضارة",
     "nsfwLbl": "محتوى غير لائق وبرامج ضارة",
     "userIntentLabel": "خادم متخصص",
+    "locationItemNodeCount": {"one": "{} IP", "other": "{} عناوين IP"},
+    "rateConnectionLike": "ما الذي أعجبك؟",
+    "rateConnectionDislike": "ما الذي لم يعجبك؟",
+    "cancelSurveyFeedbackHint": "يرجى إدخال المزيد من التفاصيل...",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

@@ -41,7 +41,6 @@
   "cancelBtn": "Cancelar",
   "cancelMyAccount": "Eliminación de cuenta",
   "cancelSubscriptionBtn": "Cancelar suscripción",
-  "cancelSurveyFeedbackHint": "Escribe tus comentarios aquí...",
   "cancelSurveyTitle": "Lamentamos escuchar eso. ¿Cuál fue el problema?",
   "cancelYourSubsMess": "Cancela tu suscripción en las suscripciones de la App Store antes de eliminar tu cuenta.",
   "changeSubPlan": "Cambiar plan de suscripción",
@@ -177,10 +176,6 @@
     "one": "{} ciudad",
     "other": "{} ciudades"
   },
-  "locationItemNodeCount": {
-    "one": "{} servidor",
-    "other": "{} servidores"
-  },
   "locationUnavailableAction": "Conectarse a la IP más cercana",
   "locationUnavailableSubtitle": "Conéctate a la IP más cercana o elige una manualmente",
   "locationUnavailableTitle": "{} no está disponible",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
   "questions": "¿Preguntas?",
   "rateConnection": "¿Cómo está tu conexión?",
-  "rateConnectionDislike": "¡Lamentamos escuchar eso! ¿Cuál fue el problema?",
-  "rateConnectionLike": "¡Me alegra saberlo! ¿Qué te gustó?",
   "readOur": "Lee nuestro ",
   "recentLocations": "Ubicaciones recientes",
   "reconnectBtn": "Volver a conectar",
@@ -522,5 +515,12 @@
   "noneLbl": "Ninguno",
   "malwareLbl": "malware",
   "nsfwLbl": "Contenido para adultos y malware",
-  "userIntentLabel": "Servidor especializado"
+  "userIntentLabel": "Servidor especializado",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} direcciones IP"
+  },
+  "rateConnectionLike": "¿Qué te gustó?",
+  "rateConnectionDislike": "¿Qué no te gustó?",
+  "cancelSurveyFeedbackHint": "Por favor, introduzca más detalles..."
 }

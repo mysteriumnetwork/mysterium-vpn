@@ -41,7 +41,6 @@
   "cancelBtn": "İptal et",
   "cancelMyAccount": "Hesap yönetimi",
   "cancelSubscriptionBtn": "Aboneliği iptal et",
-  "cancelSurveyFeedbackHint": "Geri bildiriminizi buraya yazın...",
   "cancelSurveyTitle": "Bunu duyduğuma üzüldüm. Sorun neydi?",
   "cancelYourSubsMess": "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
   "changeSubPlan": "Abonelik planını değiştir",
@@ -177,10 +176,6 @@
     "one": "",
     "other": "{} şehir"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} sunucu"
-  },
   "locationUnavailableAction": "En yakın IP'ye bağlan",
   "locationUnavailableSubtitle": "En yakın IP'ye bağlanın – ya da manuel olarak seçin",
   "locationUnavailableTitle": "{} kullanılamıyor",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• Hesap ve hizmet etkinliği uyarıları",
   "questions": "Sorular?",
   "rateConnection": "Bağlantınız nasıl?",
-  "rateConnectionDislike": "Bunu duyduğuma üzüldüm! Sorun neydi?",
-  "rateConnectionLike": "Bunu duyduğuma sevindim! Neyi beğendiniz?",
   "readOur": "Okuyun ",
   "recentLocations": "Son konumlar",
   "reconnectBtn": "Yeniden bağlanmak",
@@ -522,5 +515,12 @@
   "noneLbl": "Hiçbiri",
   "malwareLbl": "Kötü amaçlı yazılım",
   "nsfwLbl": "NSFW ve Kötü Amaçlı Yazılım",
-  "userIntentLabel": "Özel servis elemanı"
+  "userIntentLabel": "Özel servis elemanı",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IP adresleri"
+  },
+  "rateConnectionLike": "Neyi beğendiniz?",
+  "rateConnectionDislike": "Neyi beğenmediniz?",
+  "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin..."
 }

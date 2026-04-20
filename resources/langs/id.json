@@ -41,7 +41,6 @@
   "cancelBtn": "Membatalkan",
   "cancelMyAccount": "Penghapusan akun",
   "cancelSubscriptionBtn": "Batalkan Langganan",
-  "cancelSurveyFeedbackHint": "Ketik masukan Anda di sini...",
   "cancelSurveyTitle": "Maaf mendengarnya. Apa masalahnya?",
   "cancelYourSubsMess": "Batalkan langganan Anda di langganan App Store sebelum menghapus akun Anda.",
   "changeSubPlan": "Ubah paket langganan",
@@ -177,10 +176,6 @@
     "one": "",
     "other": "{} kota"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} server"
-  },
   "locationUnavailableAction": "Hubungkan ke IP terdekat",
   "locationUnavailableSubtitle": "Hubungkan ke IP terdekat – atau pilih secara manual",
   "locationUnavailableTitle": "{} tidak tersedia",
@@ -286,8 +281,6 @@
   "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
   "questions": "Pertanyaan?",
   "rateConnection": "Bagaimana koneksi Anda?",
-  "rateConnectionDislike": "Maaf mendengarnya! Apa masalahnya?",
-  "rateConnectionLike": "Senang mendengarnya! Apa yang Anda sukai?",
   "readOur": "Baca kami ",
   "recentLocations": "Lokasi terkini",
   "reconnectBtn": "Terhubung kembali",
@@ -522,5 +515,12 @@
   "noneLbl": "Tidak ada",
   "malwareLbl": "Perangkat lunak berbahaya",
   "nsfwLbl": "Konten Dewasa & Malware",
-  "userIntentLabel": "Server khusus"
+  "userIntentLabel": "Server khusus",
+  "locationItemNodeCount": {
+    "one": "{} AKU P",
+    "other": "{} IP"
+  },
+  "rateConnectionLike": "Apa yang kamu sukai?",
+  "rateConnectionDislike": "Apa yang tidak kamu sukai?",
+  "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya..."
 }
