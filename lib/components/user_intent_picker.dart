@@ -60,49 +60,46 @@ class _List extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ConstrainedBox(
     constraints: const BoxConstraints(maxHeight: 46),
-    child: GestureDetector(
-      onVerticalDragUpdate: (_) {},
-      child: ListView.separated(
-        controller: scrollController,
-        clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
-        scrollDirection: Axis.horizontal,
-        itemCount: items?.length ?? UserIntent.values.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          if (items == null) {
-            final theme = Theme.of(context);
-            return Shimmer.fromColors(
-              baseColor: theme.palette.bgPrimary,
-              highlightColor: theme.palette.bgPrimary.darken(20),
-              child: IntentTab(
-                icon: UntitledUI.marker_pin_04,
-                label: LocaleKeys.userIntentNearestLocation.tr(),
-              ),
-            );
-          }
-
-          final item = items![index];
-          final isSelected = value == item;
-          return IntentTab(
-            icon: _iconFor(item),
-            label: _labelFor(item),
-            status: onChanged == null
-                ? IntentTabStatus.disabled
-                : isSelected
-                ? IntentTabStatus.selected
-                : IntentTabStatus.idle,
-            onTap: onChanged == null
-                ? null
-                : () {
-                    if (isSelected) {
-                      onChanged!(null);
-                    } else {
-                      onChanged!(item);
-                    }
-                  },
+    child: ListView.separated(
+      controller: scrollController,
+      clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
+      scrollDirection: Axis.horizontal,
+      itemCount: items?.length ?? UserIntent.values.length,
+      separatorBuilder: (_, _) => const SizedBox(width: 8),
+      itemBuilder: (context, index) {
+        if (items == null) {
+          final theme = Theme.of(context);
+          return Shimmer.fromColors(
+            baseColor: theme.palette.bgPrimary,
+            highlightColor: theme.palette.bgPrimary.darken(20),
+            child: IntentTab(
+              icon: UntitledUI.marker_pin_04,
+              label: LocaleKeys.userIntentNearestLocation.tr(),
+            ),
           );
-        },
-      ),
+        }
+
+        final item = items![index];
+        final isSelected = value == item;
+        return IntentTab(
+          icon: _iconFor(item),
+          label: _labelFor(item),
+          status: onChanged == null
+              ? IntentTabStatus.disabled
+              : isSelected
+              ? IntentTabStatus.selected
+              : IntentTabStatus.idle,
+          onTap: onChanged == null
+              ? null
+              : () {
+                  if (isSelected) {
+                    onChanged!(null);
+                  } else {
+                    onChanged!(item);
+                  }
+                },
+        );
+      },
     ),
   );
 

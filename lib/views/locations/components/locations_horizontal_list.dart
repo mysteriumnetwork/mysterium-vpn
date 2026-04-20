@@ -33,27 +33,24 @@ class LocationsHorizontalList extends HookWidget {
       title: title,
       constraints: listConstraints,
       scrollController: scrollController,
-      child: GestureDetector(
-        onVerticalDragUpdate: (_) {},
-        child: ListView.separated(
-          itemCount: items.length,
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          separatorBuilder: (_, _) => const SizedBox(width: 12),
-          itemBuilder: (_, index) {
-            final item = items[index];
-            final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
-            return LocationCard(
-              icon: CircleFlag(item.countryCode, size: 24),
-              name: item.getName(context),
-              subtitle: item.ipType == IPType.datacenter
-                  ? LocaleKeys.highSpeed.tr()
-                  : LocaleKeys.residential.tr(),
-              onTap: () => onItemPressed(item),
-              status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
-            );
-          },
-        ),
+      child: ListView.separated(
+        itemCount: items.length,
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
+        itemBuilder: (_, index) {
+          final item = items[index];
+          final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
+          return LocationCard(
+            icon: CircleFlag(item.countryCode, size: 24),
+            name: item.getName(context),
+            subtitle: item.ipType == IPType.datacenter
+                ? LocaleKeys.highSpeed.tr()
+                : LocaleKeys.residential.tr(),
+            onTap: () => onItemPressed(item),
+            status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
+          );
+        },
       ),
     );
   }
