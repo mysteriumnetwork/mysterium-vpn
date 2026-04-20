@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/components/banners/banner.dart';
 import 'package:mysterium_vpn/components/banners/banner_body.dart';
 import 'package:mysterium_vpn/components/banners/banner_cta.dart';
@@ -22,7 +21,8 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
 
     final handleToggleConnection = useHandleToggleConnection();
     final isConnected = useComputedValue(() => vpnStore.isConnected);
-    final bannerStyle = context.c.isDarkMode ? BannerStyle.warningDark : BannerStyle.warningLight;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bannerStyle = isDark ? BannerStyle.warningDark : BannerStyle.warningLight;
 
     Future<void> handleDisconnect() async {
       await handleToggleConnection();
