@@ -79,12 +79,15 @@ class HomeMap extends HookConsumerWidget {
     }
 
     void handleDoubleTapLocation(VPNLocation location) {
+      if (vpnStore.isLoading) {
+        return;
+      }
       final resolved = resolveMapLocation(
         location: location,
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
       );
-      if ((vpnStore.isConnected && vpnStore.location?.id == resolved.id) || vpnStore.isLoading) {
+      if (vpnStore.isConnected && vpnStore.location?.id == resolved.id) {
         return;
       }
       handleToggleConnection(location: resolved);
