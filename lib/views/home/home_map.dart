@@ -28,10 +28,15 @@ VPNLocation resolveMapLocation({
   }
 
   final dcAlternative = locationsStore.dcLocationsFuture.value?.allLocations
-      .where((it) => it.countryCode == location.countryCode && it.isCountry == location.isCountry)
+      .where(
+        (it) =>
+            it.countryCode == location.countryCode &&
+            it.isCountry == location.isCountry &&
+            it.isAvailable,
+      )
       .firstOrNull;
 
-  if (dcAlternative != null && dcAlternative.isAvailable) {
+  if (dcAlternative != null) {
     return dcAlternative;
   }
 
@@ -74,14 +79,14 @@ class HomeMap extends HookConsumerWidget {
     }
 
     void handleDoubleTapLocation(VPNLocation location) {
-      if ((vpnStore.isConnected && vpnStore.location?.id == location.id) || vpnStore.isLoading) {
-        return;
-      }
       final resolved = resolveMapLocation(
         location: location,
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
       );
+      if ((vpnStore.isConnected && vpnStore.location?.id == resolved.id) || vpnStore.isLoading) {
+        return;
+      }
       handleToggleConnection(location: resolved);
       handleClearSelectedLocation();
     }
