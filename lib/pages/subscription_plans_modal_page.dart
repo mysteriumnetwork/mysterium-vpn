@@ -81,15 +81,8 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       body: SubscriptionStatusContainer(
         child: Observer(
           builder: (context) {
-            final subscriptionStatus = subscriptionStore.subscriptionFuture.status;
-
-            // Handle loading state
-            if (subscriptionStatus == FutureStatus.pending) {
-              return const Center(child: LoadingIndicator());
-            }
-
-            // Handle error state - future was rejected
-            if (subscriptionStatus == FutureStatus.rejected) {
+            // Block purchase flow when subscription data is unavailable
+            if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
