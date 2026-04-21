@@ -55,13 +55,22 @@ List<Marker> _useLocationMarkers({
     () {
       final cities = remoteConfigStore.showCitiesAndStates
           ? {
-              ...data.where(
-                (it) =>
-                    !it.isCountry &&
-                    remoteConfigStore.countriesWithCitiesOnMap.contains(
-                      it.countryCode.toUpperCase(),
-                    ),
-              ),
+              ...data
+                  .where(
+                    (it) =>
+                        !it.isCountry &&
+                        remoteConfigStore.countriesWithCitiesOnMap.contains(
+                          it.countryCode.toUpperCase(),
+                        ),
+                  )
+                  .groupListsBy((it) => it.countryCode.toUpperCase())
+                  .entries
+                  .expand((entry) {
+                if (entry.key == 'CA') {
+                  return entry.value.sortedBy<num>((it) => -(it.nodeCount ?? 0)).take(15);
+                }
+                return entry.value;
+              }),
             }
           : const <VPNLocation>{};
 
