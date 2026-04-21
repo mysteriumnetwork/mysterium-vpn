@@ -78,10 +78,7 @@ class _Unauthenticated extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: theme.spacing.xl3),
-        SizedBox(
-          width: isDesktop ? null : double.infinity,
-          child: ButtonPrimary(onPressed: handleSignIn, child: Text(LocaleKeys.signIn.tr())),
-        ),
+        ButtonPrimary(onPressed: handleSignIn, child: Text(LocaleKeys.signInBtn.tr())),
       ],
     );
 
@@ -168,7 +165,11 @@ class _Authenticated extends HookConsumerWidget {
           title: email.isEmpty ? LocaleKeys.account.tr() : email,
           position: SettingsCardPosition.top,
           trailing: isDesktop
-              ? SettingsActionButton(onPressed: handleLogout, child: Text(LocaleKeys.logout.tr()))
+              ? SettingsActionButton(
+                  onPressed: handleLogout,
+                  foregroundColor: theme.palette.textErrorPrimary,
+                  child: Text(LocaleKeys.logout.tr()),
+                )
               : null,
         ),
         _SubscriptionCard(
@@ -323,7 +324,7 @@ class _SubscriptionCard extends StatelessWidget {
           ? LocaleKeys.nextBilling.tr(
               namedArgs: {'date': subscription!.activeUntil?.toLocal().formatWithDay() ?? ''},
             )
-          : null;
+          : LocaleKeys.noActiveSubsDesc.tr();
 
       return SettingsCard(
         title: planTitle,
