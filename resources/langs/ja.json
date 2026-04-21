@@ -522,5 +522,9 @@
   "rateConnectionLike": "何が気に入りましたか？",
   "rateConnectionDislike": "何が気に入らなかったのですか？",
   "cancelSurveyFeedbackHint": "詳細を入力してください...",
-  "switchToLocationBtn": "{}に切り替える"
+  "switchToLocationBtn": "{}に切り替える",
+  "noActiveSubsDesc": "有効なサブスクリプションがありません。",
+  "fastLabel": "速い",
+  "batterySaverLabel": "バッテリーセーバー",
+  "protocolLabel": "{} ({})"
 }

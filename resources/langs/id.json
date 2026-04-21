@@ -522,5 +522,9 @@
   "rateConnectionLike": "Apa yang kamu sukai?",
   "rateConnectionDislike": "Apa yang tidak kamu sukai?",
   "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya...",
-  "switchToLocationBtn": "Beralih ke {}"
+  "switchToLocationBtn": "Beralih ke {}",
+  "noActiveSubsDesc": "Anda tidak memiliki langganan aktif.",
+  "fastLabel": "Cepat",
+  "batterySaverLabel": "Penghemat baterai",
+  "protocolLabel": "{} ({})"
 }

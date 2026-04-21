@@ -522,5 +522,9 @@
   "rateConnectionLike": "你喜欢什么？",
   "rateConnectionDislike": "你不喜欢什么？",
   "cancelSurveyFeedbackHint": "请填写更多详情……",
-  "switchToLocationBtn": "切换到 {}"
+  "switchToLocationBtn": "切换到 {}",
+  "noActiveSubsDesc": "您没有有效的订阅。",
+  "fastLabel": "快速地",
+  "batterySaverLabel": "省电模式",
+  "protocolLabel": "{} ({})"
 }

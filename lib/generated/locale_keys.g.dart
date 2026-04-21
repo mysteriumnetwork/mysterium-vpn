@@ -514,4 +514,8 @@ abstract class LocaleKeys {
   static const rateConnectionDislike = 'rateConnectionDislike';
   static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
   static const switchToLocationBtn = 'switchToLocationBtn';
+  static const noActiveSubsDesc = 'noActiveSubsDesc';
+  static const fastLabel = 'fastLabel';
+  static const batterySaverLabel = 'batterySaverLabel';
+  static const protocolLabel = 'protocolLabel';
 }

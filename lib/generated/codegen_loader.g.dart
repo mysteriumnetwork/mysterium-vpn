@@ -529,6 +529,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "你不喜欢什么？",
     "cancelSurveyFeedbackHint": "请填写更多详情……",
     "switchToLocationBtn": "切换到 {}",
+    "noActiveSubsDesc": "您没有有效的订阅。",
+    "fastLabel": "快速地",
+    "batterySaverLabel": "省电模式",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -853,7 +857,7 @@ class CodegenLoader extends AssetLoader {
     "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin.",
     "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
     "resetAppTitle": "Uygulamayı sıfırla",
-    "resetBtn": "Sıfırlamak",
+    "resetBtn": "Sıfırla",
     "residential": "Ev bağlantısı",
     "retryBtn": "yeniden dene",
     "savePercent": "{}% tasarruf et",
@@ -1095,6 +1099,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "Neyi beğenmediniz?",
     "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
+    "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
+    "fastLabel": "Hızlı",
+    "batterySaverLabel": "Pil tasarrufu",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1620,6 +1628,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "何が気に入らなかったのですか？",
     "cancelSurveyFeedbackHint": "詳細を入力してください...",
     "switchToLocationBtn": "{}に切り替える",
+    "noActiveSubsDesc": "有効なサブスクリプションがありません。",
+    "fastLabel": "速い",
+    "batterySaverLabel": "バッテリーセーバー",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2213,6 +2225,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "Was hat dir nicht gefallen?",
     "cancelSurveyFeedbackHint": "Bitte geben Sie weitere Details ein...",
     "switchToLocationBtn": "Wechseln Sie zu {}",
+    "noActiveSubsDesc": "Sie haben kein aktives Abonnement.",
+    "fastLabel": "Schnell",
+    "batterySaverLabel": "Batteriesparmodus",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2797,6 +2813,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "Do que você não gostou?",
     "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
     "switchToLocationBtn": "Alternar para {}",
+    "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
+    "fastLabel": "Rápido",
+    "batterySaverLabel": "Economizador de bateria",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3369,6 +3389,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "What didn’t you like?",
     "cancelSurveyFeedbackHint": "Please enter more details...",
     "switchToLocationBtn": "Switch to {}",
+    "noActiveSubsDesc": "You have no active subscription",
+    "fastLabel": "Fast",
+    "batterySaverLabel": "Battery saver",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3956,6 +3980,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "Cosa non ti è piaciuto?",
     "cancelSurveyFeedbackHint": "Inserisci maggiori dettagli...",
     "switchToLocationBtn": "Passa a {}",
+    "noActiveSubsDesc": "Non hai un abbonamento attivo",
+    "fastLabel": "Veloce",
+    "batterySaverLabel": "Risparmio batteria",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4550,6 +4578,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "Qu'est-ce qui ne vous a pas plu ?",
     "cancelSurveyFeedbackHint": "Veuillez saisir plus de détails...",
     "switchToLocationBtn": "Passer à {}",
+    "noActiveSubsDesc": "Vous n'avez aucun abonnement actif.",
+    "fastLabel": "Rapide",
+    "batterySaverLabel": "économiseur de batterie",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5126,6 +5158,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "Apa yang tidak kamu sukai?",
     "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya...",
     "switchToLocationBtn": "Beralih ke {}",
+    "noActiveSubsDesc": "Anda tidak memiliki langganan aktif.",
+    "fastLabel": "Cepat",
+    "batterySaverLabel": "Penghemat baterai",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5713,6 +5749,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "¿Qué no te gustó?",
     "cancelSurveyFeedbackHint": "Por favor, introduzca más detalles...",
     "switchToLocationBtn": "Cambiar a {}",
+    "noActiveSubsDesc": "No tienes ninguna suscripción activa.",
+    "fastLabel": "Rápido",
+    "batterySaverLabel": "Ahorro de batería",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6271,6 +6311,10 @@ class CodegenLoader extends AssetLoader {
     "rateConnectionDislike": "ما الذي لم يعجبك؟",
     "cancelSurveyFeedbackHint": "يرجى إدخال المزيد من التفاصيل...",
     "switchToLocationBtn": "انتقل إلى {}",
+    "noActiveSubsDesc": "ليس لديك اشتراك فعال",
+    "fastLabel": "سريع",
+    "batterySaverLabel": "موفر البطارية",
+    "protocolLabel": "{} ({})",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

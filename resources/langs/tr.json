@@ -296,7 +296,7 @@
   "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin.",
   "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
   "resetAppTitle": "Uygulamayı sıfırla",
-  "resetBtn": "Sıfırlamak",
+  "resetBtn": "Sıfırla",
   "residential": "Ev bağlantısı",
   "retryBtn": "yeniden dene",
   "savePercent": "{}% tasarruf et",
@@ -522,5 +522,9 @@
   "rateConnectionLike": "Neyi beğendiniz?",
   "rateConnectionDislike": "Neyi beğenmediniz?",
   "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
-  "switchToLocationBtn": "Şuna geçin: {}"
+  "switchToLocationBtn": "Şuna geçin: {}",
+  "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
+  "fastLabel": "Hızlı",
+  "batterySaverLabel": "Pil tasarrufu",
+  "protocolLabel": "{} ({})"
 }

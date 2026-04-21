@@ -522,5 +522,9 @@
   "rateConnectionLike": "¿Qué te gustó?",
   "rateConnectionDislike": "¿Qué no te gustó?",
   "cancelSurveyFeedbackHint": "Por favor, introduzca más detalles...",
-  "switchToLocationBtn": "Cambiar a {}"
+  "switchToLocationBtn": "Cambiar a {}",
+  "noActiveSubsDesc": "No tienes ninguna suscripción activa.",
+  "fastLabel": "Rápido",
+  "batterySaverLabel": "Ahorro de batería",
+  "protocolLabel": "{} ({})"
 }
