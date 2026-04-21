@@ -45,46 +45,52 @@ class _Unauthenticated extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
-
+    final spacing = theme.spacing;
     void handleSignIn() => context.beamToNamed(Routes.platformLogin.path);
 
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: theme.palette.bgSecondarySelected,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(UntitledUI.user_02, size: 24, color: theme.palette.textBrandPrimary),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          LocaleKeys.unauthenticatedSettingTitle.tr(),
-          style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textPrimary),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 12),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 343),
-          child: Text(
-            LocaleKeys.unauthenticatedSettingSubtitle.tr(),
-            style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        SizedBox(height: theme.spacing.xl3),
-        ButtonPrimary(onPressed: handleSignIn, child: Text(LocaleKeys.signInBtn.tr())),
-      ],
-    );
-
     return Padding(
-      padding: EdgeInsets.only(top: isDesktop ? 80 : 60, bottom: theme.spacing.xl3),
-      child: Center(child: content),
+      padding: EdgeInsets.fromLTRB(
+        isDesktop ? spacing.xl3 : spacing.md,
+        isDesktop ? spacing.xl7 : spacing.xl6,
+        isDesktop ? spacing.xl3 : spacing.md,
+        spacing.xl3, // same in both cases
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: spacing.xl5,
+              height: spacing.xl5,
+              decoration: BoxDecoration(
+                color: theme.palette.bgSecondarySelected,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(UntitledUI.user_02, size: 24, color: theme.palette.textBrandPrimary),
+            ),
+            SizedBox(height: spacing.md),
+            Text(
+              LocaleKeys.unauthenticatedSettingTitle.tr(),
+              style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textPrimary),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: spacing.lg),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 343),
+              child: Text(
+                LocaleKeys.unauthenticatedSettingSubtitle.tr(),
+                style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: spacing.xl3),
+            SizedBox(
+              width: isDesktop ? null : double.infinity,
+              child: ButtonPrimary(onPressed: handleSignIn, child: Text(LocaleKeys.signInBtn.tr())),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
