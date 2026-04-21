@@ -66,11 +66,11 @@ List<Marker> _useLocationMarkers({
                   .groupListsBy((it) => it.countryCode.toUpperCase())
                   .entries
                   .expand((entry) {
-                if (entry.key == 'CA') {
-                  return entry.value.sortedBy<num>((it) => -(it.nodeCount ?? 0)).take(15);
-                }
-                return entry.value;
-              }),
+                    if (entry.key == 'CA') {
+                      return entry.value.sortedBy<num>((it) => -(it.nodeCount ?? 0)).take(15);
+                    }
+                    return entry.value;
+                  }),
             }
           : const <VPNLocation>{};
 
