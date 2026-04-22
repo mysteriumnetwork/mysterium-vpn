@@ -11,19 +11,17 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:mysterium_vpn/components/dialogs/no_mail_app_dialog.dart';
-import 'package:mysterium_vpn/components/easy_button.dart';
 import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -68,10 +66,8 @@ class VerifyEmailView extends HookConsumerWidget {
                     Flexible(
                       child: Visibility(
                         visible: isMobile(),
-                        child: EasyButton(
-                          color: Palette.purple,
-                          useSystemColor: false,
-                          text: LocaleKeys.openEmailApp.tr(),
+                        child: ButtonPrimary(
+                          child: Text(LocaleKeys.openEmailApp.tr()),
                           onPressed: () {
                             analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
                             openEmailApp(context, analyticsStore);
@@ -229,41 +225,28 @@ class _ResendButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final timer = useCountdownTimer(initialCountdown: 60);
     final resendDisabled = isLoading || timer.countdown > 0;
     final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
 
     final child = isLoading
-        ? LoadingIndicator(indicatorColor: theme.palette.disabledButtonForegroundColor)
+        ? const LoadingIndicator()
         : Text(
             LocaleKeys.sendAgain.plural(timer.countdown),
             style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
           );
 
     if (isMobile()) {
-      return OutlinedButton(
+      return ButtonSecondary(
         onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
-          disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
-          side: resendDisabled ? BorderSide.none : null,
-          minimumSize: const Size(200, 50),
-          backgroundColor: Colors.transparent,
-        ),
+        decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
         child: child,
       );
     }
 
-    return ElevatedButton(
+    return ButtonPrimary(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
-        disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
-        minimumSize: const Size(200, 50),
-        foregroundColor: theme.palette.filledButtonTextColor,
-        backgroundColor: Palette.purple,
-      ),
+      decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
       child: child,
     );
   }

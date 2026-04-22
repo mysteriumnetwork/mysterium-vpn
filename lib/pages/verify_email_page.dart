@@ -1,38 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/unauthenticated_header.dart';
 import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn/views/verify_email_view.dart';
+import 'package:mysterium_vpn_design/styles/styles.dart';
 
 class VerifyEmailPage extends HookConsumerWidget {
   const VerifyEmailPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final viewDecoration = useResponsiveValue(
-      BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      desktop: const BoxDecoration(),
-    );
+    final designTheme = DesignSystemTheme.of(context);
 
-    return UnauthenticatedPageView(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              const UnauthenticatedHeader(),
-              Expanded(
-                child: DecoratedBox(decoration: viewDecoration, child: const VerifyEmailView()),
-              ),
-            ],
+    return Theme(
+      data: designTheme,
+      child: UnauthenticatedPageView(
+        child: ColoredScaffold(
+          backgroundColor: designTheme.palette.bgSidePanel,
+
+          body: const SafeArea(
+            child: Column(
+              children: [
+                UnauthenticatedHeader(backHeader: true),
+                Expanded(child: VerifyEmailView()),
+              ],
+            ),
           ),
         ),
       ),
