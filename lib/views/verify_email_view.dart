@@ -86,7 +86,7 @@ class VerifyEmailView extends HookConsumerWidget {
               ],
             ).padding(vertical: 20, horizontal: getMediaWidth(context) > 650 ? 60 : 20),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
-              LoadingBarrier(color: theme.primaryColor),
+              LoadingBarrier(color: theme.palette.bgPopover),
           ],
         );
       },

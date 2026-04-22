@@ -52,7 +52,7 @@ class WelcomePage extends HookConsumerWidget {
                 desktop: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
               ),
               if (authStore.authenticateFeature?.status == FutureStatus.pending)
-                Positioned.fill(child: LoadingBarrier(color: Theme.of(context).primaryColor)),
+                Positioned.fill(child: LoadingBarrier(color: Theme.of(context).palette.bgPopover)),
             ],
           ),
         ),
