@@ -1340,7 +1340,7 @@ packages:
     description:
       path: "."
       ref: adjust-components
-      resolved-ref: "17bf5e0049f162fa035cb5bf22ad0f5ff7885716"
+      resolved-ref: "52bed619ca59bedf79413d207607a57cf970229d"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
