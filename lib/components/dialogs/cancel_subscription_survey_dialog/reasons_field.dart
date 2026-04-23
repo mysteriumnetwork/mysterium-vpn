@@ -13,6 +13,7 @@ class _ReasonsField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final axisCount = useResponsiveValue(1, tablet: 2, desktop: 2);
 
     void handleToggle(String value) {
@@ -23,20 +24,20 @@ class _ReasonsField extends HookWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      spacing: 24,
+      spacing: theme.spacing.xl2,
       children: [
         for (int i = 0; i < itemsList.length; i += axisCount)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 24,
+            spacing: theme.spacing.xl2,
             children: [
               for (int j = 0; j < axisCount; j++)
                 if (i + j < itemsList.length)
                   Expanded(
-                    child: _Item(
-                      value: itemsList[i + j],
-                      isChecked: selection.contains(itemsList[i + j]),
-                      onPressed: () => handleToggle(itemsList[i + j]),
+                    child: CheckboxItem(
+                      value: selection.contains(itemsList[i + j]),
+                      onChanged: () => handleToggle(itemsList[i + j]),
+                      label: Text(itemsList[i + j].tr(), style: theme.textStyles.textMd.medium),
                     ),
                   )
                 else
@@ -44,43 +45,6 @@ class _ReasonsField extends HookWidget {
             ],
           ),
       ],
-    );
-  }
-}
-
-class _Item extends StatelessWidget {
-  const _Item({required this.value, required this.isChecked, required this.onPressed});
-
-  final String value;
-  final bool isChecked;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: onPressed,
-      behavior: HitTestBehavior.opaque,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: Checkbox(
-                value: isChecked,
-                onChanged: (_) => onPressed(),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                visualDensity: VisualDensity.compact,
-              ),
-            ),
-          ),
-          Expanded(child: Text(value.tr(), style: theme.textStyles.textMd.medium)),
-        ],
-      ),
     );
   }
 }

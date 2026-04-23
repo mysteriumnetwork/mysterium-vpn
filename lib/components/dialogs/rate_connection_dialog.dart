@@ -26,6 +26,7 @@ Future<void> showRateConnectionDialog(
   final future = await showBottomSheetDialog<Future<void>>(
     context,
     mobileConstraints: BoxConstraints(maxHeight: getMediaHeight(context) * 0.95),
+    desktopConstraints: const BoxConstraints(maxWidth: 637, maxHeight: 700),
     builder: (ctx) => BottomSheetDialog(
       title: mode == RateConnectionRequestModeEnum.like
           ? LocaleKeys.rateConnectionLike.tr()
@@ -84,24 +85,21 @@ class _RateConnectionBody extends StatelessWidget {
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
+              spacing: theme.spacing.xl2,
               children: [
                 for (int i = 0; i < store.showReasons.length; i += axisCount)
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: theme.spacing.xl2,
                     children: [
                       for (int j = 0; j < axisCount; j++)
                         if (i + j < store.showReasons.length)
                           Expanded(
-                            child: CheckboxListTile(
-                              minVerticalPadding: 0,
-                              visualDensity: VisualDensity.compact,
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
+                            child: CheckboxItem(
                               value: selectedReasons.contains(store.showReasons[i + j]),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              onChanged: (_) =>
+                              onChanged: () =>
                                   store.toggleRateConnectionReason(store.showReasons[i + j]),
-                              title: Text(
+                              label: Text(
                                 _stringifyReason(store.showReasons[i + j]),
                                 style: theme.textStyles.textMd.medium,
                               ),
@@ -114,7 +112,7 @@ class _RateConnectionBody extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 32),
+              padding: EdgeInsets.only(top: theme.spacing.xl2),
               child: TextField(
                 maxLines: 4,
                 onChanged: (value) => store.feedback = value,
