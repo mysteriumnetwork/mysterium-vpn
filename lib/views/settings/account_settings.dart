@@ -86,7 +86,11 @@ class _Unauthenticated extends HookConsumerWidget {
             SizedBox(height: spacing.xl3),
             SizedBox(
               width: isDesktop ? null : double.infinity,
-              child: ButtonPrimary(onPressed: handleSignIn, child: Text(LocaleKeys.signInBtn.tr())),
+              child: ButtonPrimary(
+                onPressed: handleSignIn,
+                size: ButtonSize.large,
+                child: Text(LocaleKeys.signInBtn.tr()),
+              ),
             ),
           ],
         ),
