@@ -41,7 +41,6 @@
   "cancelBtn": "キャンセル",
   "cancelMyAccount": "アカウントの削除",
   "cancelSubscriptionBtn": "サブスクリプションをキャンセル",
-  "cancelSurveyTitle": "それはお気の毒です。問題は何でしたか？",
   "cancelYourSubsMess": "アカウントを削除する前に、App Store のサブスクリプションでサブスクリプションをキャンセルしてください。",
   "changeSubPlan": "サブスクリプションプランを変更",
   "checkingEmaillCommunicationsApproval": "メールの通信状況を確認しています...",
@@ -526,5 +525,6 @@
   "noActiveSubsDesc": "有効なサブスクリプションがありません。",
   "fastLabel": "速い",
   "batterySaverLabel": "バッテリーセーバー",
-  "protocolLabel": "{} ({})"
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "キャンセル理由"
 }

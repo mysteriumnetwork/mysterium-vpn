@@ -41,7 +41,6 @@
   "cancelBtn": "Cancel",
   "cancelMyAccount": "Account deletion",
   "cancelSubscriptionBtn": "Cancel Subscription",
-  "cancelSurveyTitle": "Sorry to hear that. What was the issue?",
   "cancelYourSubsMess": "Cancel your subscription on the App Store subscriptions before deleting your account.",
   "changeSubPlan": "Change subscription plan",
   "checkingEmaillCommunicationsApproval": "Checking Email communication status...",
@@ -526,5 +525,6 @@
   "noActiveSubsDesc": "You have no active subscription",
   "fastLabel": "Fast",
   "batterySaverLabel": "Battery saver",
-  "protocolLabel": "{} ({})"
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Reasons for cancelling"
 }

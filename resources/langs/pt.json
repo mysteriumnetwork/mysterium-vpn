@@ -41,7 +41,6 @@
   "cancelBtn": "Cancelar",
   "cancelMyAccount": "Cancele minha conta",
   "cancelSubscriptionBtn": "Cancelar assinatura",
-  "cancelSurveyTitle": "Lamentamos ouvir isso. Qual foi o problema?",
   "cancelYourSubsMess": "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
   "changeSubPlan": "Alterar plano de assinatura",
   "checkingEmaillCommunicationsApproval": "Verificando o status de comunicação por e -mail ...",
@@ -526,5 +525,6 @@
   "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
   "fastLabel": "Rápido",
   "batterySaverLabel": "Economizador de bateria",
-  "protocolLabel": "{} ({})"
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Motivos para o cancelamento"
 }

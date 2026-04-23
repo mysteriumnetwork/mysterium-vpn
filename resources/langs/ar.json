@@ -41,7 +41,6 @@
   "cancelBtn": "الغي",
   "cancelMyAccount": "حذف الحساب",
   "cancelSubscriptionBtn": "إلغاء الاشتراك",
-  "cancelSurveyTitle": "عذرًا لسماع ذلك. ما هي المشكلة؟",
   "cancelYourSubsMess": "قم بإلغاء اشتراكك في اشتراكات App Store قبل حذف حسابك.",
   "changeSubPlan": "تغيير خطة الاشتراك",
   "checkingEmaillCommunicationsApproval": "جارٍ التحقق من حالة الاتصال بالبريد الإلكتروني...",
@@ -447,7 +446,7 @@
   "plan_yearly_basic": "السنة السنوية الأساسية",
   "plan_monthly_basic": "اشتراك شهري أساسي",
   "plan_monthly_pro": "برو مونثلي",
-  "plan_yearly_pro": "برو سنوي",
+  "plan_yearly_pro": "برو أنوال",
   "subscriptionUpgrade": "يرقي",
   "plan_2_years_basic": "سنتان أساسيتان",
   "plan_2_years_pro": "محترف لمدة عامين",
@@ -526,5 +525,6 @@
   "noActiveSubsDesc": "ليس لديك اشتراك فعال",
   "fastLabel": "سريع",
   "batterySaverLabel": "موفر البطارية",
-  "protocolLabel": "{} ({})"
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "أسباب الإلغاء"
 }

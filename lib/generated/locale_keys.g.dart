@@ -45,7 +45,6 @@ abstract class LocaleKeys {
   static const cancelBtn = 'cancelBtn';
   static const cancelMyAccount = 'cancelMyAccount';
   static const cancelSubscriptionBtn = 'cancelSubscriptionBtn';
-  static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const cancelYourSubsMess = 'cancelYourSubsMess';
   static const changeSubPlan = 'changeSubPlan';
   static const checkingEmaillCommunicationsApproval = 'checkingEmaillCommunicationsApproval';
@@ -518,4 +517,5 @@ abstract class LocaleKeys {
   static const fastLabel = 'fastLabel';
   static const batterySaverLabel = 'batterySaverLabel';
   static const protocolLabel = 'protocolLabel';
+  static const cancelSurveyTitle = 'cancelSurveyTitle';
 }

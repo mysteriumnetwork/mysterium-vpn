@@ -41,7 +41,6 @@
   "cancelBtn": "Cancelar",
   "cancelMyAccount": "Eliminación de cuenta",
   "cancelSubscriptionBtn": "Cancelar suscripción",
-  "cancelSurveyTitle": "Lamentamos escuchar eso. ¿Cuál fue el problema?",
   "cancelYourSubsMess": "Cancela tu suscripción en las suscripciones de la App Store antes de eliminar tu cuenta.",
   "changeSubPlan": "Cambiar plan de suscripción",
   "checkingEmaillCommunicationsApproval": "Comprobando el estado de la comunicación por correo electrónico...",
@@ -526,5 +525,6 @@
   "noActiveSubsDesc": "No tienes ninguna suscripción activa.",
   "fastLabel": "Rápido",
   "batterySaverLabel": "Ahorro de batería",
-  "protocolLabel": "{} ({})"
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Motivos de cancelación"
 }

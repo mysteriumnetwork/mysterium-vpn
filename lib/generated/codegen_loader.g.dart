@@ -57,7 +57,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "取消",
     "cancelMyAccount": "帐号删除",
     "cancelSubscriptionBtn": "取消订阅",
-    "cancelSurveyTitle": "很抱歉听到这个消息。出现了什么问题？",
     "cancelYourSubsMess": "在删除您的帐号之前，请取消您在 App Store 订阅中的订阅。",
     "changeSubPlan": "更改订阅计划",
     "checkingEmaillCommunicationsApproval": "正在检查电子邮件通信状态...",
@@ -472,7 +471,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+    "subscriptionPlanCityLevelDesc": "与大多数 VPN 相比，它能提供更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
@@ -533,6 +532,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "快速地",
     "batterySaverLabel": "省电模式",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "取消的原因",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -580,7 +580,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "İptal et",
     "cancelMyAccount": "Hesap yönetimi",
     "cancelSubscriptionBtn": "Aboneliği iptal et",
-    "cancelSurveyTitle": "Bunu duyduğuma üzüldüm. Sorun neydi?",
     "cancelYourSubsMess":
         "Lütfen hesabınızı silmeden önce faturalandırma sayfasında ABONELİĞİNİZİ İPTAL EDİN.",
     "changeSubPlan": "Abonelik planını değiştir",
@@ -828,7 +827,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Sonlar {}",
+    "purchasePromoEnds": "Uçlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -1097,12 +1096,13 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
-    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
     "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
     "fastLabel": "Hızlı",
     "batterySaverLabel": "Pil tasarrufu",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "İptal nedenleri",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1147,7 +1147,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "キャンセル",
     "cancelMyAccount": "アカウントの削除",
     "cancelSubscriptionBtn": "サブスクリプションをキャンセル",
-    "cancelSurveyTitle": "それはお気の毒です。問題は何でしたか？",
     "cancelYourSubsMess": "アカウントを削除する前に、App Store のサブスクリプションでサブスクリプションをキャンセルしてください。",
     "changeSubPlan": "サブスクリプションプランを変更",
     "checkingEmaillCommunicationsApproval": "メールの通信状況を確認しています...",
@@ -1632,6 +1631,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "速い",
     "batterySaverLabel": "バッテリーセーバー",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "キャンセル理由",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1681,7 +1681,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Abbrechen",
     "cancelMyAccount": "Kontolöschung",
     "cancelSubscriptionBtn": "Abonnement kündigen",
-    "cancelSurveyTitle": "Das tut mir leid zu hören. Was war das Problem?",
     "cancelYourSubsMess": "Kündigen Sie Ihr Abonnement im App Store, bevor Sie Ihr Konto löschen.",
     "changeSubPlan": "Abonnementplan ändern",
     "checkingEmaillCommunicationsApproval": "E-Mail-Kommunikationsstatus wird überprüft...",
@@ -2117,14 +2116,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionAllPlansPurchase": "Plan abrufen",
     "subscriptionPlanNameBasic": "Basic",
     "subscriptionPlanNamePlus": "Plus",
-    "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
+    "subscriptionPlanPF1Basic": "Sichern Sie bis zu 6 Geräte gleichzeitig",
     "subscriptionPlanPF2Basic": "57 unterstützte Länder",
     "subscriptionPlanPF3Basic": "10 Server",
     "subscriptionPlanPF4Basic": "VPN-Protokoll",
     "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
     "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
     "subscriptionPlanPF3Plus": "100 Server",
-    "subscriptionPlanPF4Plus": "Mehr als 7.500 Wohn-IPs",
+    "subscriptionPlanPF4Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
     "subscriptionPlanPF5Plus": "VPN-Protokoll",
     "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
@@ -2229,6 +2228,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Schnell",
     "batterySaverLabel": "Batteriesparmodus",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Gründe für die Stornierung",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2276,7 +2276,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Cancelar",
     "cancelMyAccount": "Cancele minha conta",
     "cancelSubscriptionBtn": "Cancelar assinatura",
-    "cancelSurveyTitle": "Lamentamos ouvir isso. Qual foi o problema?",
     "cancelYourSubsMess":
         "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
     "changeSubPlan": "Alterar plano de assinatura",
@@ -2817,6 +2816,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Rápido",
     "batterySaverLabel": "Economizador de bateria",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Motivos para o cancelamento",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2865,7 +2865,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Cancel",
     "cancelMyAccount": "Account deletion",
     "cancelSubscriptionBtn": "Cancel Subscription",
-    "cancelSurveyTitle": "Sorry to hear that. What was the issue?",
     "cancelYourSubsMess":
         "Cancel your subscription on the App Store subscriptions before deleting your account.",
     "changeSubPlan": "Change subscription plan",
@@ -3393,6 +3392,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Fast",
     "batterySaverLabel": "Battery saver",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Reasons for cancelling",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3441,7 +3441,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Annulla",
     "cancelMyAccount": "Cancellazione dell'account",
     "cancelSubscriptionBtn": "Annulla abbonamento",
-    "cancelSurveyTitle": "Mi dispiace sentirlo. Qual era il problema?",
     "cancelYourSubsMess":
         "Annulla l'abbonamento sugli abbonamenti dell'App Store prima di eliminare il tuo account.",
     "changeSubPlan": "Cambia piano di abbonamento",
@@ -3984,6 +3983,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Veloce",
     "batterySaverLabel": "Risparmio batteria",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Motivi della cancellazione",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4032,7 +4032,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Annuler",
     "cancelMyAccount": "Annuler mon compte",
     "cancelSubscriptionBtn": "Annuler l'abonnement",
-    "cancelSurveyTitle": "Désolé de l'apprendre. Quel était le problème ?",
     "cancelYourSubsMess":
         "Veuillez ANNULER VOTRE ABONNEMENT sur la page de facturation avant de supprimer votre compte.",
     "changeSubPlan": "Changer le plan d'abonnement",
@@ -4509,7 +4508,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -4582,6 +4581,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Rapide",
     "batterySaverLabel": "économiseur de batterie",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Motifs d'annulation",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4630,7 +4630,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Membatalkan",
     "cancelMyAccount": "Penghapusan akun",
     "cancelSubscriptionBtn": "Batalkan Langganan",
-    "cancelSurveyTitle": "Maaf mendengarnya. Apa masalahnya?",
     "cancelYourSubsMess":
         "Batalkan langganan Anda di langganan App Store sebelum menghapus akun Anda.",
     "changeSubPlan": "Ubah paket langganan",
@@ -5083,7 +5082,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5162,6 +5161,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Cepat",
     "batterySaverLabel": "Penghemat baterai",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Alasan pembatalan",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5210,7 +5210,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "Cancelar",
     "cancelMyAccount": "Eliminación de cuenta",
     "cancelSubscriptionBtn": "Cancelar suscripción",
-    "cancelSurveyTitle": "Lamentamos escuchar eso. ¿Cuál fue el problema?",
     "cancelYourSubsMess":
         "Cancela tu suscripción en las suscripciones de la App Store antes de eliminar tu cuenta.",
     "changeSubPlan": "Cambiar plan de suscripción",
@@ -5753,6 +5752,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "Rápido",
     "batterySaverLabel": "Ahorro de batería",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "Motivos de cancelación",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5800,7 +5800,6 @@ class CodegenLoader extends AssetLoader {
     "cancelBtn": "الغي",
     "cancelMyAccount": "حذف الحساب",
     "cancelSubscriptionBtn": "إلغاء الاشتراك",
-    "cancelSurveyTitle": "عذرًا لسماع ذلك. ما هي المشكلة؟",
     "cancelYourSubsMess": "قم بإلغاء اشتراكك في اشتراكات App Store قبل حذف حسابك.",
     "changeSubPlan": "تغيير خطة الاشتراك",
     "checkingEmaillCommunicationsApproval": "جارٍ التحقق من حالة الاتصال بالبريد الإلكتروني...",
@@ -6231,7 +6230,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو سنوي",
+    "plan_yearly_pro": "برو أنوال",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -6315,6 +6314,7 @@ class CodegenLoader extends AssetLoader {
     "fastLabel": "سريع",
     "batterySaverLabel": "موفر البطارية",
     "protocolLabel": "{} ({})",
+    "cancelSurveyTitle": "أسباب الإلغاء",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
