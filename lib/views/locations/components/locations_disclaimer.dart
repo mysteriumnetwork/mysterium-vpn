@@ -13,16 +13,16 @@ class LocationsDisclaimer extends HookConsumerWidget {
     required this.bannerType,
     this.tooltip,
     this.tooltipMsg,
+    this.tooltipTitle,
+    this.tooltipBody,
     super.key,
   });
 
   factory LocationsDisclaimer.residential() => LocationsDisclaimer(
     text: LocaleKeys.ipTypeResidentialDisclaimer.tr(),
     bannerType: BannerType.residentialIPs,
-    tooltip: TooltipIcon.titled(
-      title: LocaleKeys.ipTypeResidentialTooltipTitle.tr(),
-      body: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
-    ),
+    tooltipTitle: LocaleKeys.ipTypeResidentialTooltipTitle.tr(),
+    tooltipBody: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
   );
 
   factory LocationsDisclaimer.dataCenter() => LocationsDisclaimer(
@@ -33,6 +33,8 @@ class LocationsDisclaimer extends HookConsumerWidget {
   final String text;
   final BannerType bannerType;
   final String? tooltipMsg;
+  final String? tooltipTitle;
+  final String? tooltipBody;
   final TooltipIcon? tooltip;
 
   @override
@@ -61,6 +63,8 @@ class LocationsDisclaimer extends HookConsumerWidget {
             message: text,
             tooltip: tooltip,
             tooltipMsg: tooltipMsg,
+            tooltipTitle: tooltipTitle,
+            tooltipBody: tooltipBody,
             onDismiss: handleDismiss,
           ),
         );
