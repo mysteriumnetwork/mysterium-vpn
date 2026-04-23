@@ -58,7 +58,7 @@ class HomeMobileView extends HookConsumerWidget {
     return LayoutBuilder(
       builder: (context, layoutConstraints) => Observer(
         builder: (context) {
-          final bottomOffset = MediaQuery.paddingOf(context).bottom + 16;
+          final bottomOffset = MediaQuery.paddingOf(context).bottom + theme.spacing.md;
           final minHeight = (vpnStore.isConnected ? 300.0 : 200.0) + bottomOffset;
           final constraints = layoutConstraints.copyWith(
             maxHeight: max(
@@ -125,9 +125,14 @@ class HomeMobileView extends HookConsumerWidget {
                                 ),
                               ],
                             ),
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
-                              child: LocationsSearch(),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                theme.spacing.md,
+                                0,
+                                theme.spacing.md,
+                                theme.spacing.ms,
+                              ),
+                              child: const LocationsSearch(),
                             ),
                           ],
                         ),

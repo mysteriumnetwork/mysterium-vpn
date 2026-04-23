@@ -24,6 +24,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
 
     ref.read(homeStateProvider).scrollController = scrollController;
     final pallete = Theme.of(context).palette;
+    final spacing = Theme.of(context).spacing;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: pallete.bgSidePanel,
@@ -80,9 +81,9 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(32, 0, 32, 16),
-                    child: LocationsSearch(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
+                    child: const LocationsSearch(),
                   ),
                 ],
               ),

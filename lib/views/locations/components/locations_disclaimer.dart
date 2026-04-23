@@ -49,13 +49,14 @@ class LocationsDisclaimer extends HookConsumerWidget {
       }
     }
 
+    final spacing = Theme.of(context).spacing;
     return Observer(
       builder: (context) {
         if (!bannersStore.canShow(bannerType)) {
           return const SizedBox.shrink();
         }
         return Padding(
-          padding: const EdgeInsets.only(bottom: 30),
+          padding: EdgeInsets.only(bottom: spacing.s),
           child: MinimalAlert(
             message: text,
             tooltip: tooltip,

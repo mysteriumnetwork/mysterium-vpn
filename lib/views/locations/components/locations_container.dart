@@ -3,14 +3,9 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsContainer extends StatelessWidget {
-  const LocationsContainer({
-    required this.locationType,
-    this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 15, vertical: 21),
-    super.key,
-  });
+  const LocationsContainer({required this.locationType, this.child, this.padding, super.key});
 
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final Widget? child;
   final IPType locationType;
 
@@ -25,7 +20,12 @@ class LocationsContainer extends StatelessWidget {
         bottomLeft: Radius.kM,
         bottomRight: Radius.kM,
       ),
-      child: Padding(padding: padding, child: child),
+      child: Padding(
+        padding:
+            padding ??
+            EdgeInsets.symmetric(horizontal: theme.spacing.md, vertical: theme.spacing.xl),
+        child: child,
+      ),
     );
   }
 }
