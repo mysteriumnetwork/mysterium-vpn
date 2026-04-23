@@ -9,7 +9,12 @@ class AppVersion extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3, vertical: theme.spacing.xl2),
+      padding: EdgeInsets.fromLTRB(
+        theme.spacing.xl3,
+        theme.spacing.xl,
+        theme.spacing.xl3,
+        theme.spacing.xl2,
+      ),
       child: AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
     );
   }
