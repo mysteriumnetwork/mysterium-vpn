@@ -23,10 +23,12 @@ class _ReasonsField extends HookWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
+      spacing: 24,
       children: [
         for (int i = 0; i < itemsList.length; i += axisCount)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 24,
             children: [
               for (int j = 0; j < axisCount; j++)
                 if (i + j < itemsList.length)
@@ -56,14 +58,29 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return CheckboxListTile(
-      visualDensity: VisualDensity.compact,
-      dense: true,
-      contentPadding: EdgeInsets.zero,
-      value: isChecked,
-      controlAffinity: ListTileControlAffinity.leading,
-      onChanged: (_) => onPressed(),
-      title: Text(value.tr(), style: theme.textStyles.textMd.medium, maxLines: 2),
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 12,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: Checkbox(
+                value: isChecked,
+                onChanged: (_) => onPressed(),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+            ),
+          ),
+          Expanded(child: Text(value.tr(), style: theme.textStyles.textMd.medium)),
+        ],
+      ),
     );
   }
 }

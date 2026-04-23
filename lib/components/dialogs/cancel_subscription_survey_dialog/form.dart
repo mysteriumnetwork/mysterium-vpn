@@ -17,7 +17,7 @@ class _Form extends StatelessWidget {
         children: [
           _ReactiveReasonsField(formControlName: 'reasons', items: items),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 32),
+            padding: const EdgeInsets.only(top: 24),
             child: ReactiveTextField(
               formControlName: 'feedback',
               maxLines: 5,
