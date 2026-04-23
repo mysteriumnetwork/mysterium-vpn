@@ -58,7 +58,6 @@ abstract class LocaleKeys {
   static const closeBtn = 'closeBtn';
   static const confirm = 'confirm';
   static const connect = 'connect';
-  static const connectBestServer = 'connectBestServer';
   static const connected = 'connected';
   static const connecting = 'connecting';
   static const connectingInProggress = 'connectingInProggress';
@@ -227,7 +226,6 @@ abstract class LocaleKeys {
   static const openEmailApp = 'openEmailApp';
   static const or = 'or';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
-  static const orSelectCountryManually = 'orSelectCountryManually';
   static const otherReason = 'otherReason';
   static const paymentMethod = 'paymentMethod';
   static const pendingTransactionMessage = 'pendingTransactionMessage';
@@ -518,4 +516,6 @@ abstract class LocaleKeys {
   static const batterySaverLabel = 'batterySaverLabel';
   static const protocolLabel = 'protocolLabel';
   static const cancelSurveyTitle = 'cancelSurveyTitle';
+  static const connectBestServer = 'connectBestServer';
+  static const orSelectCountryManually = 'orSelectCountryManually';
 }

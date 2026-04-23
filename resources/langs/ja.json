@@ -54,7 +54,6 @@
   "closeBtn": "閉じる",
   "confirm": "確認",
   "connect": "接続",
-  "connectBestServer": "最適なサーバーに接続",
   "connected": "接続済み",
   "connecting": "接続中",
   "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
@@ -226,7 +225,6 @@
   "openEmailApp": "メールアプリを開く",
   "or": "または",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "または国を手動で選択",
   "otherReason": "その他...",
   "paymentMethod": "支払い方法: {method}",
   "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
@@ -526,5 +524,7 @@
   "fastLabel": "速い",
   "batterySaverLabel": "バッテリーセーバー",
   "protocolLabel": "{} ({})",
-  "cancelSurveyTitle": "キャンセル理由"
+  "cancelSurveyTitle": "キャンセル理由",
+  "connectBestServer": "最高のサーバー",
+  "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。"
 }

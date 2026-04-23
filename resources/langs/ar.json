@@ -54,7 +54,6 @@
   "closeBtn": "إغلاق",
   "confirm": "أكد",
   "connect": "قطع الاتصال",
-  "connectBestServer": "الاتصال بأفضل خادم...",
   "connected": "متصل",
   "connecting": "جاري الاتصال",
   "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
@@ -226,7 +225,6 @@
   "openEmailApp": "افتح تطبيق البريد الإلكتروني",
   "or": "OR",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "أو اختر الدولة يدويًا",
   "otherReason": "أخرى...",
   "paymentMethod": "طريقة الدفع: {method}",
   "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
@@ -526,5 +524,7 @@
   "fastLabel": "سريع",
   "batterySaverLabel": "موفر البطارية",
   "protocolLabel": "{} ({})",
-  "cancelSurveyTitle": "أسباب الإلغاء"
+  "cancelSurveyTitle": "أسباب الإلغاء",
+  "connectBestServer": "أفضل خادم",
+  "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا."
 }

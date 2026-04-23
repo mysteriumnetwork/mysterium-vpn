@@ -70,7 +70,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "关闭",
     "confirm": "确认",
     "connect": "连接",
-    "connectBestServer": "连接到最佳服务器",
     "connected": "连接的",
     "connecting": "正在连接",
     "connectingInProggress": "连接正在进行中。请等到建立连接。",
@@ -239,7 +238,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "打开电子邮件应用程序",
     "or": "或者",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "或手动选择国家",
     "otherReason": "其他...",
     "paymentMethod": "付款方式：{method}",
     "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
@@ -533,6 +531,8 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "省电模式",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "取消的原因",
+    "connectBestServer": "最佳服务器",
+    "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -594,7 +594,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Kapat",
     "confirm": "Onaylamak",
     "connect": "Bağlan",
-    "connectBestServer": "En iyi sunucuya bağlanılıyor",
     "connected": "Bağlı",
     "connecting": "Bağlanıyor",
     "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
@@ -781,7 +780,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "E-posta Uygulamasını Aç",
     "or": "VEYA",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Veya ülkeyi manuel olarak seçin",
     "otherReason": "Diğer...",
     "paymentMethod": "Ödeme Yöntemi: {method}",
     "pendingTransactionMessage":
@@ -1103,6 +1101,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Pil tasarrufu",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "İptal nedenleri",
+    "connectBestServer": "En iyi sunucu",
+    "orSelectCountryManually":
+        "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz.",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1160,7 +1161,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "閉じる",
     "confirm": "確認",
     "connect": "接続",
-    "connectBestServer": "最適なサーバーに接続",
     "connected": "接続済み",
     "connecting": "接続中",
     "connectingInProggress": "進行中の接続..接続が確立されるまで待ってください。",
@@ -1331,7 +1331,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "メールアプリを開く",
     "or": "または",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "または国を手動で選択",
     "otherReason": "その他...",
     "paymentMethod": "支払い方法: {method}",
     "pendingTransactionMessage": "すでに支払いプロセスが進行中です。新しい支払いプロセスを開始する前に完了してください。",
@@ -1632,6 +1631,8 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "バッテリーセーバー",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "キャンセル理由",
+    "connectBestServer": "最高のサーバー",
+    "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1695,7 +1696,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Schließen",
     "confirm": "Bestätigen",
     "connect": "Verbinden",
-    "connectBestServer": "Verbinden Sie sich mit dem besten Server",
     "connected": "Verbunden",
     "connecting": "Verbinden",
     "connectingInProggress":
@@ -1897,7 +1897,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Öffnen Sie die E-Mail-App",
     "or": "ODER",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Oder Land manuell auswählen",
     "otherReason": "Andere...",
     "paymentMethod": "Zahlungsmethode: {method}",
     "pendingTransactionMessage":
@@ -2229,6 +2228,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Batteriesparmodus",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Gründe für die Stornierung",
+    "connectBestServer": "Bester Server",
+    "orSelectCountryManually":
+        "Wir verbinden Sie mit dem besten Server – oder Sie können ein Land manuell auswählen.",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2291,7 +2293,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Fechar",
     "confirm": "confirme",
     "connect": "Conectar",
-    "connectBestServer": "Conecte -se ao melhor servidor",
     "connected": "Conectada",
     "connecting": "Conectando",
     "connectingInProggress":
@@ -2485,7 +2486,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Abra o aplicativo de email",
     "or": "OU",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Ou selecione o país manualmente",
     "otherReason": "Outro...",
     "paymentMethod": "Método de pagamento: {method}",
     "pendingTransactionMessage":
@@ -2817,6 +2817,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Economizador de bateria",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Motivos para o cancelamento",
+    "connectBestServer": "Melhor servidor",
+    "orSelectCountryManually":
+        "Vamos conectar você ao melhor servidor - ou você pode selecionar um país manualmente.",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2879,7 +2882,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Close",
     "confirm": "Confirm",
     "connect": "Connect",
-    "connectBestServer": "Connect to the best server",
     "connected": "Connected",
     "connecting": "Connecting",
     "connectingInProggress":
@@ -3068,7 +3070,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Open Email App",
     "or": "OR",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Or select country manually",
     "otherReason": "Other...",
     "paymentMethod": "Payment Method: {method}",
     "pendingTransactionMessage":
@@ -3393,6 +3394,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Battery saver",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Reasons for cancelling",
+    "connectBestServer": "Best server",
+    "orSelectCountryManually":
+        "We'll connect you to the best server - or you can manually select a country.",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3457,7 +3461,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Chiudi",
     "confirm": "Conferma",
     "connect": "Connetti",
-    "connectBestServer": "Collegati al miglior server",
     "connected": "Collegato",
     "connecting": "Collegamento",
     "connectingInProggress":
@@ -3653,7 +3656,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Apri l'app di posta elettronica",
     "or": "O",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Oppure seleziona il paese manualmente",
     "otherReason": "Altro...",
     "paymentMethod": "Metodo di pagamento: {method}",
     "pendingTransactionMessage":
@@ -3984,6 +3986,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Risparmio batteria",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Motivi della cancellazione",
+    "connectBestServer": "Miglior server",
+    "orSelectCountryManually":
+        "Ti collegheremo al server migliore, oppure puoi selezionare manualmente un paese.",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4049,7 +4054,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Fermer",
     "confirm": "Confirmer",
     "connect": "Connecter",
-    "connectBestServer": "Connectez-vous au meilleur serveur",
     "connected": "Connecté",
     "connecting": "De liaison",
     "connectingInProggress":
@@ -4248,7 +4252,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Application de messagerie ouverte",
     "or": "OU",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Ou sélectionnez le pays manuellement",
     "otherReason": "Autre...",
     "paymentMethod": "Méthode de paiement : {method}",
     "pendingTransactionMessage":
@@ -4582,6 +4585,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "économiseur de batterie",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Motifs d'annulation",
+    "connectBestServer": "Meilleur serveur",
+    "orSelectCountryManually":
+        "Nous vous connecterons au meilleur serveur, ou vous pouvez sélectionner manuellement un pays.",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4645,7 +4651,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Tutup",
     "confirm": "Mengonfirmasi",
     "connect": "Hubungkan",
-    "connectBestServer": "Menghubungkan ke server terbaik",
     "connected": "Terhubung",
     "connecting": "Menghubungkan",
     "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
@@ -4834,7 +4839,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Buka Aplikasi Email",
     "or": "ATAU",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "Atau pilih negara secara manual",
     "otherReason": "Lainnya...",
     "paymentMethod": "Metode Pembayaran: {method}",
     "pendingTransactionMessage":
@@ -5162,6 +5166,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Penghemat baterai",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Alasan pembatalan",
+    "connectBestServer": "Server terbaik",
+    "orSelectCountryManually":
+        "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual.",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5226,7 +5233,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "Cerrar",
     "confirm": "Confirmar",
     "connect": "Conectar",
-    "connectBestServer": "Conéctate al mejor servidor",
     "connected": "Conectado",
     "connecting": "Conectando",
     "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión.",
@@ -5421,7 +5427,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "Abrir aplicación de correo electrónico",
     "or": "O",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "O selecciona el país manualmente",
     "otherReason": "Otro...",
     "paymentMethod": "Método de pago: {method}",
     "pendingTransactionMessage":
@@ -5753,6 +5758,9 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "Ahorro de batería",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "Motivos de cancelación",
+    "connectBestServer": "El mejor servidor",
+    "orSelectCountryManually":
+        "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente.",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5813,7 +5821,6 @@ class CodegenLoader extends AssetLoader {
     "closeBtn": "إغلاق",
     "confirm": "أكد",
     "connect": "قطع الاتصال",
-    "connectBestServer": "الاتصال بأفضل خادم...",
     "connected": "متصل",
     "connecting": "جاري الاتصال",
     "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
@@ -5997,7 +6004,6 @@ class CodegenLoader extends AssetLoader {
     "openEmailApp": "افتح تطبيق البريد الإلكتروني",
     "or": "OR",
     "originalMonthlyPrice": "{amount}",
-    "orSelectCountryManually": "أو اختر الدولة يدويًا",
     "otherReason": "أخرى...",
     "paymentMethod": "طريقة الدفع: {method}",
     "pendingTransactionMessage":
@@ -6315,6 +6321,8 @@ class CodegenLoader extends AssetLoader {
     "batterySaverLabel": "موفر البطارية",
     "protocolLabel": "{} ({})",
     "cancelSurveyTitle": "أسباب الإلغاء",
+    "connectBestServer": "أفضل خادم",
+    "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا.",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

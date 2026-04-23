@@ -54,7 +54,6 @@
   "closeBtn": "Kapat",
   "confirm": "Onaylamak",
   "connect": "Bağlan",
-  "connectBestServer": "En iyi sunucuya bağlanılıyor",
   "connected": "Bağlı",
   "connecting": "Bağlanıyor",
   "connectingInProggress": "Devam Edecek Bağlantı .. Lütfen bağlantı kurulana kadar bekleyin.",
@@ -226,7 +225,6 @@
   "openEmailApp": "E-posta Uygulamasını Aç",
   "or": "VEYA",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "Veya ülkeyi manuel olarak seçin",
   "otherReason": "Diğer...",
   "paymentMethod": "Ödeme Yöntemi: {method}",
   "pendingTransactionMessage": "Halihazırda devam eden bir ödeme işleminiz var. Lütfen yeni bir ödeme işlemine başlamadan önce işlemi tamamlayın.",
@@ -526,5 +524,7 @@
   "fastLabel": "Hızlı",
   "batterySaverLabel": "Pil tasarrufu",
   "protocolLabel": "{} ({})",
-  "cancelSurveyTitle": "İptal nedenleri"
+  "cancelSurveyTitle": "İptal nedenleri",
+  "connectBestServer": "En iyi sunucu",
+  "orSelectCountryManually": "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz."
 }

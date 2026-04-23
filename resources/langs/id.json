@@ -54,7 +54,6 @@
   "closeBtn": "Tutup",
   "confirm": "Mengonfirmasi",
   "connect": "Hubungkan",
-  "connectBestServer": "Menghubungkan ke server terbaik",
   "connected": "Terhubung",
   "connecting": "Menghubungkan",
   "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
@@ -226,7 +225,6 @@
   "openEmailApp": "Buka Aplikasi Email",
   "or": "ATAU",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "Atau pilih negara secara manual",
   "otherReason": "Lainnya...",
   "paymentMethod": "Metode Pembayaran: {method}",
   "pendingTransactionMessage": "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
@@ -526,5 +524,7 @@
   "fastLabel": "Cepat",
   "batterySaverLabel": "Penghemat baterai",
   "protocolLabel": "{} ({})",
-  "cancelSurveyTitle": "Alasan pembatalan"
+  "cancelSurveyTitle": "Alasan pembatalan",
+  "connectBestServer": "Server terbaik",
+  "orSelectCountryManually": "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual."
 }

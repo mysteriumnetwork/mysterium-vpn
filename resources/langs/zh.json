@@ -54,7 +54,6 @@
   "closeBtn": "关闭",
   "confirm": "确认",
   "connect": "连接",
-  "connectBestServer": "连接到最佳服务器",
   "connected": "连接的",
   "connecting": "正在连接",
   "connectingInProggress": "连接正在进行中。请等到建立连接。",
@@ -226,7 +225,6 @@
   "openEmailApp": "打开电子邮件应用程序",
   "or": "或者",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "或手动选择国家",
   "otherReason": "其他...",
   "paymentMethod": "付款方式：{method}",
   "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
@@ -526,5 +524,7 @@
   "fastLabel": "快速地",
   "batterySaverLabel": "省电模式",
   "protocolLabel": "{} ({})",
-  "cancelSurveyTitle": "取消的原因"
+  "cancelSurveyTitle": "取消的原因",
+  "connectBestServer": "最佳服务器",
+  "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。"
 }

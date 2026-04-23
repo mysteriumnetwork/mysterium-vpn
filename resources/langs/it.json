@@ -54,7 +54,6 @@
   "closeBtn": "Chiudi",
   "confirm": "Conferma",
   "connect": "Connetti",
-  "connectBestServer": "Collegati al miglior server",
   "connected": "Collegato",
   "connecting": "Collegamento",
   "connectingInProggress": "Connessione in corso. Attendere fino a quando non è stabilita la connessione.",
@@ -226,7 +225,6 @@
   "openEmailApp": "Apri l'app di posta elettronica",
   "or": "O",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "Oppure seleziona il paese manualmente",
   "otherReason": "Altro...",
   "paymentMethod": "Metodo di pagamento: {method}",
   "pendingTransactionMessage": "Hai già un processo di pagamento in corso. Completalo prima di iniziarne uno nuovo.",
@@ -526,5 +524,7 @@
   "fastLabel": "Veloce",
   "batterySaverLabel": "Risparmio batteria",
   "protocolLabel": "{} ({})",
-  "cancelSurveyTitle": "Motivi della cancellazione"
+  "cancelSurveyTitle": "Motivi della cancellazione",
+  "connectBestServer": "Miglior server",
+  "orSelectCountryManually": "Ti collegheremo al server migliore, oppure puoi selezionare manualmente un paese."
 }
