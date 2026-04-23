@@ -8,13 +8,17 @@ class AppVersion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+
     return Padding(
-      padding: EdgeInsets.fromLTRB(
-        theme.spacing.xl3,
-        theme.spacing.xl,
-        theme.spacing.xl3,
-        theme.spacing.xl2,
-      ),
+      padding: isDesktop
+          ? EdgeInsetsGeometry.all(theme.spacing.xl3)
+          : EdgeInsets.fromLTRB(
+              theme.spacing.md,
+              theme.spacing.xl2,
+              theme.spacing.md,
+              theme.spacing.xl2,
+            ),
       child: AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
     );
   }
