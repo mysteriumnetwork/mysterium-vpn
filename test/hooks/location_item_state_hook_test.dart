@@ -202,6 +202,25 @@ void main() {
       expect(capturedState, isNotNull);
       expect(capturedState!.items.length, 2);
     });
+
+    testWidgets('updates from disabled to idle when isAvailable changes to true', (tester) async {
+      final unavailableLocation = makeLocation(isAvailable: false);
+
+      await tester.pumpWidget(buildHarness(unavailableLocation));
+      await tester.pump();
+
+      expect(capturedState, isNotNull);
+      expect(capturedState!.countryStatus, IpCardStatus.disabled);
+
+      // Same identity (id/ipType/countryCode) but isAvailable changed to true.
+      final availableLocation = makeLocation(isAvailable: true);
+
+      await tester.pumpWidget(buildHarness(availableLocation));
+      await tester.pump();
+
+      expect(capturedState, isNotNull);
+      expect(capturedState!.countryStatus, IpCardStatus.idle);
+    });
   });
 }
 
