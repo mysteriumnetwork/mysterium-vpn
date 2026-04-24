@@ -17,7 +17,6 @@ class SplashPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgIcon(asset: Asset.logo.splashLogo),
-            const SizedBox(height: 20),
             const LoadingIndicator(),
           ],
         ),
