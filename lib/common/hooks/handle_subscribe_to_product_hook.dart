@@ -21,13 +21,14 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
     final sessionStore = ref.read(authSessionStorePOD);
     final accessToken = await sessionStore.accessTokenFuture;
     final products = await plansStore.future;
-    final gateway = subscriptionStore.subscriptionFuture.value?.gateway;
+    final subscription = subscriptionStore.subscriptionFuture.value;
+    final gateway = subscription?.gateway;
     final selectedProduct = products.firstWhereOrNull((it) => it.id == id);
     if (selectedProduct == null) {
       return;
     }
 
-    if (selectedProduct.id == subscriptionStore.subscriptionFuture.value?.planId) {
+    if ((subscription?.active ?? false) && selectedProduct.id == subscription?.planId) {
       // already subscribed to this product, do nothing
       if (context.mounted) {
         showSnackbar("You're all set! You already have this plan active");
@@ -41,7 +42,8 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       parameters: {'item_ids': products.map((e) => e.id).toList()},
     );
 
-    if (remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway?.toLowerCase())) {
+    if ((subscription?.active ?? false) &&
+        remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway?.toLowerCase())) {
       final uri = remoteConfigStore.checkoutWebRedirectUrl.replace(
         queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
       );
