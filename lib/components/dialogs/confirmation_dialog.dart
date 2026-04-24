@@ -14,6 +14,7 @@ Future<void> shownConfirmationDialog(
   Widget? icon,
   VoidCallback? onCancel,
   bool dismissible = true,
+  bool showCancel = true,
   String? confirmText,
   String? cancelText,
 }) => showDialog(
@@ -27,6 +28,7 @@ Future<void> shownConfirmationDialog(
     confirmText: confirmText,
     cancelText: cancelText,
     onCancel: onCancel,
+    showCancel: showCancel,
   ),
 );
 
@@ -36,6 +38,7 @@ class _ConfirmDialog extends StatelessWidget {
     required this.content,
     required this.onConfirm,
     required this.icon,
+    required this.showCancel,
     this.confirmText,
     this.cancelText,
     this.onCancel,
@@ -45,6 +48,7 @@ class _ConfirmDialog extends StatelessWidget {
   final Widget? icon;
   final VoidCallback onConfirm;
   final VoidCallback? onCancel;
+  final bool showCancel;
   final String? confirmText;
   final String? cancelText;
   @override
@@ -62,14 +66,15 @@ class _ConfirmDialog extends StatelessWidget {
       textAlign: TextAlign.center,
     ),
     actions: [
-      ButtonTertiary(
-        decoration: ButtonDecoration(foregroundColor: Theme.of(context).palette.textTertiary),
-        child: Text(cancelText ?? LocaleKeys.no.tr()),
-        onPressed: () {
-          Navigator.pop(context);
-          onCancel?.call();
-        },
-      ),
+      if (showCancel)
+        ButtonTertiary(
+          decoration: ButtonDecoration(foregroundColor: Theme.of(context).palette.textTertiary),
+          child: Text(cancelText ?? LocaleKeys.no.tr()),
+          onPressed: () {
+            Navigator.pop(context);
+            onCancel?.call();
+          },
+        ),
       ButtonTertiary(
         child: Text(confirmText ?? LocaleKeys.yes.tr()),
         onPressed: () {
