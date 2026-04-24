@@ -213,7 +213,7 @@ void main() {
       expect(capturedState!.countryStatus, IpCardStatus.disabled);
 
       // Same identity (id/ipType/countryCode) but isAvailable changed to true.
-      final availableLocation = makeLocation(isAvailable: true);
+      final availableLocation = makeLocation();
 
       await tester.pumpWidget(buildHarness(availableLocation));
       await tester.pump();

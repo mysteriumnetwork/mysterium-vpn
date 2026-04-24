@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/common/styles/style.dart' hide Palette;
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/promo_bar.dart';
 
 class PromoBanner extends HookConsumerWidget {
   const PromoBanner({super.key});
