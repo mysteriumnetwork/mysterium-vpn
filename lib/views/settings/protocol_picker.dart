@@ -31,7 +31,9 @@ class ProtocolPicker extends ConsumerWidget {
         position: position,
         value: vpnProtocolStore.protocol,
         items: ProtocolType.values,
-        labelOf: (p) => p.label,
+        labelOf: (p) => LocaleKeys.protocolLabel.tr(args: [p.labelKey.tr(), p.subtitle]),
+        subtitleOf: (p) => p.subtitle,
+        customLabel: (p) => p.labelKey.tr(),
         onChanged: (newProtocol) => _changeProtocol(
           context,
           newProtocol: newProtocol,

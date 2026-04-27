@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
-import 'package:styled_widget/styled_widget.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -62,12 +61,13 @@ class _DevProtocolLabel extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnProtocol = ref.watch(vpnProtocolStorePOD);
+    final palette = Theme.of(context).palette;
     return Align(
       alignment: Alignment.centerLeft,
       child: Text(
         'Protocol: ${vpnProtocol.protocol.name}',
-        style: const TextStyle(fontSize: 8, color: Palette.warning, fontWeight: FontWeight.w800),
-      ).padding(left: 12),
+        style: TextStyle(fontSize: 8, color: palette.textSecondary, fontWeight: FontWeight.w800),
+      ),
     );
   }
 }

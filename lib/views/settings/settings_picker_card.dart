@@ -21,6 +21,7 @@ class SettingsPickerCard<T> extends StatelessWidget {
     this.enabled = true,
     this.isLoading = false,
     this.subtitleOf,
+    this.customLabel,
     super.key,
   });
 
@@ -33,6 +34,7 @@ class SettingsPickerCard<T> extends StatelessWidget {
   final bool enabled;
   final bool isLoading;
   final String? Function(T)? subtitleOf;
+  final String Function(T)? customLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class SettingsPickerCard<T> extends StatelessWidget {
       title: title,
       items: items,
       value: value,
-      labelOf: labelOf,
+      labelOf: customLabel ?? labelOf,
       onChanged: onChanged,
       subtitleOf: subtitleOf,
     );

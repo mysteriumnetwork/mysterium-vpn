@@ -131,7 +131,10 @@ class _Indicator extends HookWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 25, right: 8),
+          padding: EdgeInsets.only(
+            left: Theme.of(context).spacing.xl2,
+            right: Theme.of(context).spacing.s,
+          ),
           child: Icon(UntitledUI.chevron_right, color: Theme.of(context).palette.iconPrimary),
         ),
       ),

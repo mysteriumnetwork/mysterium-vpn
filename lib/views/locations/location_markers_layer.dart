@@ -55,13 +55,22 @@ List<Marker> _useLocationMarkers({
     () {
       final cities = remoteConfigStore.showCitiesAndStates
           ? {
-              ...data.where(
-                (it) =>
-                    !it.isCountry &&
-                    remoteConfigStore.countriesWithCitiesOnMap.contains(
-                      it.countryCode.toUpperCase(),
-                    ),
-              ),
+              ...data
+                  .where(
+                    (it) =>
+                        !it.isCountry &&
+                        remoteConfigStore.countriesWithCitiesOnMap.contains(
+                          it.countryCode.toUpperCase(),
+                        ),
+                  )
+                  .groupListsBy((it) => it.countryCode.toUpperCase())
+                  .entries
+                  .expand((entry) {
+                    if (entry.key == 'CA') {
+                      return entry.value.sortedBy<num>((it) => -(it.nodeCount ?? 0)).take(15);
+                    }
+                    return entry.value;
+                  }),
             }
           : const <VPNLocation>{};
 
@@ -85,6 +94,7 @@ List<Marker> _useLocationMarkers({
       };
 
       final markers = <Marker>[];
+      Marker? labelMarker;
 
       for (final it in sorted) {
         final point = it.isCountry
@@ -119,27 +129,30 @@ List<Marker> _useLocationMarkers({
         );
 
         if (hasLabel) {
-          markers.add(
-            Marker(
-              point: point,
-              width: 400,
-              height: 45,
-              alignment: Alignment.topCenter,
-              child: IgnorePointer(
-                child: Builder(
-                  builder: (context) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IntrinsicWidth(child: MapLocationTooltip(label: it.getName(context))),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+          labelMarker = Marker(
+            point: point,
+            width: 400,
+            height: 45,
+            alignment: Alignment.topCenter,
+            child: IgnorePointer(
+              child: Builder(
+                builder: (context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IntrinsicWidth(child: MapLocationTooltip(label: it.getName(context))),
+                    const SizedBox(height: 16),
+                  ],
                 ),
               ),
             ),
           );
         }
+      }
+
+      // Add label last so it renders on top of all pins.
+      if (labelMarker != null) {
+        markers.add(labelMarker);
       }
 
       return markers;

@@ -41,8 +41,6 @@
   "cancelBtn": "Membatalkan",
   "cancelMyAccount": "Penghapusan akun",
   "cancelSubscriptionBtn": "Batalkan Langganan",
-  "cancelSurveyFeedbackHint": "Ketik masukan Anda di sini...",
-  "cancelSurveyTitle": "Maaf mendengarnya. Apa masalahnya?",
   "cancelYourSubsMess": "Batalkan langganan Anda di langganan App Store sebelum menghapus akun Anda.",
   "changeSubPlan": "Ubah paket langganan",
   "checkingEmaillCommunicationsApproval": "Memeriksa status komunikasi Email...",
@@ -56,7 +54,6 @@
   "closeBtn": "Tutup",
   "confirm": "Mengonfirmasi",
   "connect": "Hubungkan",
-  "connectBestServer": "Menghubungkan ke server terbaik",
   "connected": "Terhubung",
   "connecting": "Menghubungkan",
   "connectingInProggress": "Menghubungkan dalam proses .. Harap tunggu sampai koneksi dibuat.",
@@ -177,10 +174,6 @@
     "one": "",
     "other": "{} kota"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} server"
-  },
   "locationUnavailableAction": "Hubungkan ke IP terdekat",
   "locationUnavailableSubtitle": "Hubungkan ke IP terdekat – atau pilih secara manual",
   "locationUnavailableTitle": "{} tidak tersedia",
@@ -232,7 +225,6 @@
   "openEmailApp": "Buka Aplikasi Email",
   "or": "ATAU",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "Atau pilih negara secara manual",
   "otherReason": "Lainnya...",
   "paymentMethod": "Metode Pembayaran: {method}",
   "pendingTransactionMessage": "Anda sudah memiliki proses pembayaran yang sedang berjalan. Harap selesaikan sebelum memulai yang baru.",
@@ -286,8 +278,6 @@
   "pushNotificationsPermissionPoint2": "• Peringatan aktivitas akun dan layanan",
   "questions": "Pertanyaan?",
   "rateConnection": "Bagaimana koneksi Anda?",
-  "rateConnectionDislike": "Maaf mendengarnya! Apa masalahnya?",
-  "rateConnectionLike": "Senang mendengarnya! Apa yang Anda sukai?",
   "readOur": "Baca kami ",
   "recentLocations": "Lokasi terkini",
   "reconnectBtn": "Terhubung kembali",
@@ -394,7 +384,6 @@
   "upload": "Mengunggah",
   "userIntentBestSpeed": "Kecepatan terbaik",
   "userIntentBestSpeedDesc": "Hubungkan ke server tercepat yang tersedia untuk performa optimal",
-  "userIntentLabel": "Pilih server khusus",
   "userIntentLowLatency": "Latensi rendah",
   "userIntentLowLatencyDesc": "Secara otomatis menghubungkan Anda ke server terdekat untuk akses yang stabil dan andal",
   "userIntentMaxPrivacy": "Privasi maksimal",
@@ -488,7 +477,6 @@
     "one": "{statesNum} Negara Bagian",
     "other": "{statesNum} Negara Bagian"
   },
-  "switchToLocationBtn": "Beralih ke {switchLocation}",
   "redeemDiscountCode": "Tukarkan kode diskon",
   "couponCodeCopied": "{Kode kupon} disalin ke papan klip!",
   "marketingConsentPopupTitle": "Tetap dapatkan informasi terbaru melalui email.",
@@ -522,5 +510,21 @@
   "settingManageBtn": "Mengelola",
   "noneLbl": "Tidak ada",
   "malwareLbl": "Perangkat lunak berbahaya",
-  "nsfwLbl": "Konten Dewasa & Malware"
+  "nsfwLbl": "Konten Dewasa & Malware",
+  "userIntentLabel": "Server khusus",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "Apa yang kamu sukai?",
+  "rateConnectionDislike": "Apa yang tidak kamu sukai?",
+  "cancelSurveyFeedbackHint": "Silakan masukkan detail selengkapnya...",
+  "switchToLocationBtn": "Beralih ke {}",
+  "noActiveSubsDesc": "Anda tidak memiliki langganan aktif.",
+  "fastLabel": "Cepat",
+  "batterySaverLabel": "Penghemat baterai",
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Alasan pembatalan",
+  "connectBestServer": "Server terbaik",
+  "orSelectCountryManually": "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual."
 }

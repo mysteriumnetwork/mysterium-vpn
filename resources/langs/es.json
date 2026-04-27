@@ -41,8 +41,6 @@
   "cancelBtn": "Cancelar",
   "cancelMyAccount": "Eliminación de cuenta",
   "cancelSubscriptionBtn": "Cancelar suscripción",
-  "cancelSurveyFeedbackHint": "Escribe tus comentarios aquí...",
-  "cancelSurveyTitle": "Lamentamos escuchar eso. ¿Cuál fue el problema?",
   "cancelYourSubsMess": "Cancela tu suscripción en las suscripciones de la App Store antes de eliminar tu cuenta.",
   "changeSubPlan": "Cambiar plan de suscripción",
   "checkingEmaillCommunicationsApproval": "Comprobando el estado de la comunicación por correo electrónico...",
@@ -56,7 +54,6 @@
   "closeBtn": "Cerrar",
   "confirm": "Confirmar",
   "connect": "Conectar",
-  "connectBestServer": "Conéctate al mejor servidor",
   "connected": "Conectado",
   "connecting": "Conectando",
   "connectingInProggress": "Conectando en progreso. Espere hasta que se establezca la conexión.",
@@ -177,10 +174,6 @@
     "one": "{} ciudad",
     "other": "{} ciudades"
   },
-  "locationItemNodeCount": {
-    "one": "{} servidor",
-    "other": "{} servidores"
-  },
   "locationUnavailableAction": "Conectarse a la IP más cercana",
   "locationUnavailableSubtitle": "Conéctate a la IP más cercana o elige una manualmente",
   "locationUnavailableTitle": "{} no está disponible",
@@ -232,7 +225,6 @@
   "openEmailApp": "Abrir aplicación de correo electrónico",
   "or": "O",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "O selecciona el país manualmente",
   "otherReason": "Otro...",
   "paymentMethod": "Método de pago: {method}",
   "pendingTransactionMessage": "Ya tienes un proceso de pago en curso. Termínalo antes de comenzar uno nuevo.",
@@ -286,8 +278,6 @@
   "pushNotificationsPermissionPoint2": "• Alertas de actividad de cuenta y servicio",
   "questions": "¿Preguntas?",
   "rateConnection": "¿Cómo está tu conexión?",
-  "rateConnectionDislike": "¡Lamentamos escuchar eso! ¿Cuál fue el problema?",
-  "rateConnectionLike": "¡Me alegra saberlo! ¿Qué te gustó?",
   "readOur": "Lee nuestro ",
   "recentLocations": "Ubicaciones recientes",
   "reconnectBtn": "Volver a conectar",
@@ -394,7 +384,6 @@
   "upload": "Subir",
   "userIntentBestSpeed": "Mejor velocidad",
   "userIntentBestSpeedDesc": "Conéctate al servidor disponible más rápido para un rendimiento óptimo",
-  "userIntentLabel": "Seleccionar servidor especializado",
   "userIntentLowLatency": "Baja latencia",
   "userIntentLowLatencyDesc": "Se conecta automáticamente al servidor más cercano para un acceso estable y confiable",
   "userIntentMaxPrivacy": "Máxima privacidad",
@@ -488,7 +477,6 @@
     "one": "{statesNum} Estado",
     "other": "{statesNum} Estados"
   },
-  "switchToLocationBtn": "Cambiar a {switchLocation}",
   "redeemDiscountCode": "Canjea el código de descuento",
   "couponCodeCopied": "¡El código de cupón se copió al portapapeles!",
   "marketingConsentPopupTitle": "Manténgase informado por correo electrónico.",
@@ -522,5 +510,21 @@
   "settingManageBtn": "Administrar",
   "noneLbl": "Ninguno",
   "malwareLbl": "malware",
-  "nsfwLbl": "Contenido para adultos y malware"
+  "nsfwLbl": "Contenido para adultos y malware",
+  "userIntentLabel": "Servidor especializado",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "¿Qué te gustó?",
+  "rateConnectionDislike": "¿Qué no te gustó?",
+  "cancelSurveyFeedbackHint": "Por favor, introduzca más detalles...",
+  "switchToLocationBtn": "Cambiar a {}",
+  "noActiveSubsDesc": "No tienes ninguna suscripción activa.",
+  "fastLabel": "Rápido",
+  "batterySaverLabel": "Ahorro de batería",
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Motivos de cancelación",
+  "connectBestServer": "El mejor servidor",
+  "orSelectCountryManually": "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente."
 }

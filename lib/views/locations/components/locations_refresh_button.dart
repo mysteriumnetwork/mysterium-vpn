@@ -33,7 +33,9 @@ class LocationsRefreshButton extends HookConsumerWidget {
 
     return ButtonSecondary(
       size: ButtonSize.small,
-      decoration: const ButtonDecoration(padding: EdgeInsets.symmetric(horizontal: 16)),
+      decoration: ButtonDecoration(
+        padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.md),
+      ),
       loading: isRefreshing ? const ButtonLoading() : null,
       onPressed: isRefreshing ? null : handleRefresh,
       child: Text(LocaleKeys.refresh.tr()),

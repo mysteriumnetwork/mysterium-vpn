@@ -61,7 +61,7 @@ class ConnectionSettings extends HookConsumerWidget {
                         vpnStore: vpnStore,
                         handleToggleConnection: handleToggleConnection,
                       ),
-                child: Text(LocaleKeys.resetAppTitle.tr()),
+                child: Text(LocaleKeys.resetBtn.tr()),
               ),
             ),
           );
