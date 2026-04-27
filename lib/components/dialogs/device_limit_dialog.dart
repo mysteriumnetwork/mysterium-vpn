@@ -20,7 +20,6 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sessionStore = ref.watch(authSessionStorePOD);
-    final palette = Theme.of(context).palette;
     final screenType = useScreenType();
     void handleOpenDashboard() {
       final uri = Uri.parse(Env.manageDevicesPage);
@@ -53,11 +52,6 @@ class _DialogContent extends HookConsumerWidget {
         child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
       ),
       secondaryButton: ButtonSecondary(
-        decoration: ButtonDecoration(
-          borderColor: palette.borderBrandSecondary,
-          foregroundColor: palette.textSecondary,
-          decorationColor: Palette.white,
-        ),
         onPressed: () => Navigator.of(context).pop(),
         child: Text(LocaleKeys.closeBtn.tr()),
       ),
