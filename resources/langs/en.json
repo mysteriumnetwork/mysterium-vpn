@@ -10,7 +10,6 @@
   "activeSubsPaidVia": "You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
   "affordable": "Affordable",
   "allLocations": "All locations",
-  "allowPermissionsBtn": "Allow",
   "allowPushNotificationsBtn": "Allow notifications",
   "almostThere": "Almost there!",
   "and": " and ",
@@ -358,7 +357,6 @@
   "tryAgainBtn": "Try again",
   "tryAgainOrContactSupport": "Please try again shortly or contact support if the issue persists.",
   "turnOnNotificationsBtn": "Turn on the notifications",
-  "typeDelete": "Type DELETE in the text field below to confirm.",
   "typeFeedback": "Type your feedback here...",
   "typeIssueHere": "Type your issue here..",
   "uk": "Ukrainian",
@@ -526,5 +524,7 @@
   "protocolLabel": "{} ({})",
   "cancelSurveyTitle": "Reasons for cancelling",
   "connectBestServer": "Best server",
-  "orSelectCountryManually": "We'll connect you to the best server - or you can manually select a country."
+  "orSelectCountryManually": "We'll connect you to the best server - or you can manually select a country.",
+  "typeDelete": "Type DELETE",
+  "allowBtn": "Allow"
 }

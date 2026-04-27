@@ -10,7 +10,6 @@
   "activeSubsPaidVia": "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
   "affordable": "Abordable",
   "allLocations": "Tous les emplacements",
-  "allowPermissionsBtn": "Permettre",
   "allowPushNotificationsBtn": "Autoriser les notifications",
   "almostThere": "Presque là!",
   "and": " Estonien ",
@@ -358,7 +357,6 @@
   "tryAgainBtn": "Essayer à nouveau",
   "tryAgainOrContactSupport": "Veuillez réessayer sous peu ou contacter le support si le problème persiste.",
   "turnOnNotificationsBtn": "Activer les notifications",
-  "typeDelete": "Tapez la suppression du champ de texte ci-dessous pour confirmer!",
   "typeFeedback": "Tapez vos commentaires ici...",
   "typeIssueHere": "Tapez votre problème ici.",
   "uk": "Ukrainien",
@@ -526,5 +524,7 @@
   "protocolLabel": "{} ({})",
   "cancelSurveyTitle": "Motifs d'annulation",
   "connectBestServer": "Meilleur serveur",
-  "orSelectCountryManually": "Nous vous connecterons au meilleur serveur, ou vous pouvez sélectionner manuellement un pays."
+  "orSelectCountryManually": "Nous vous connecterons au meilleur serveur, ou vous pouvez sélectionner manuellement un pays.",
+  "typeDelete": "Tapez SUPPRIMER",
+  "allowBtn": "Permettre"
 }

@@ -14,7 +14,6 @@ abstract class LocaleKeys {
   static const activeSubsPaidVia = 'activeSubsPaidVia';
   static const affordable = 'affordable';
   static const allLocations = 'allLocations';
-  static const allowPermissionsBtn = 'allowPermissionsBtn';
   static const allowPushNotificationsBtn = 'allowPushNotificationsBtn';
   static const almostThere = 'almostThere';
   static const and = 'and';
@@ -355,7 +354,6 @@ abstract class LocaleKeys {
   static const tryAgainBtn = 'tryAgainBtn';
   static const tryAgainOrContactSupport = 'tryAgainOrContactSupport';
   static const turnOnNotificationsBtn = 'turnOnNotificationsBtn';
-  static const typeDelete = 'typeDelete';
   static const typeFeedback = 'typeFeedback';
   static const typeIssueHere = 'typeIssueHere';
   static const uk = 'uk';
@@ -518,4 +516,6 @@ abstract class LocaleKeys {
   static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const connectBestServer = 'connectBestServer';
   static const orSelectCountryManually = 'orSelectCountryManually';
+  static const typeDelete = 'typeDelete';
+  static const allowBtn = 'allowBtn';
 }
