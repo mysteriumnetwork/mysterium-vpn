@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/layout_builders/responsive_layout_builder.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Provides a builder function for different screen types
@@ -24,32 +23,28 @@ class ScreenTypeLayoutBuilder extends StatelessWidget {
   final WidgetBuilder? desktop;
 
   @override
-  Widget build(BuildContext context) => ResponsiveLayoutBuilder(
-    builder: (context, sizingInformation) {
-      // If we're at desktop size
-      if (sizingInformation.screenType == ScreenType.desktop) {
-        // If we have supplied the desktop layout then display that
-        if (desktop != null) {
-          return desktop!(context);
-        }
-        // If no desktop layout is supplied we want to check if we have the size below it and display that
-        if (tablet != null) {
-          return tablet!(context);
-        }
-      }
+  Widget build(BuildContext context) {
+    final screenType = ScreenType.of(context);
 
-      if (sizingInformation.screenType == ScreenType.tablet) {
-        if (tablet != null) {
-          return tablet!(context);
-        }
+    if (screenType == ScreenType.desktop) {
+      if (desktop != null) {
+        return desktop!(context);
       }
-
-      if (sizingInformation.screenType == ScreenType.watch && watch != null) {
-        return watch!(context);
+      if (tablet != null) {
+        return tablet!(context);
       }
+    }
 
-      // If none of the layouts above are supplied or we're on the mobile layout then we show the mobile layout
-      return mobile != null ? mobile!(context) : const SizedBox.shrink();
-    },
-  );
+    if (screenType == ScreenType.tablet) {
+      if (tablet != null) {
+        return tablet!(context);
+      }
+    }
+
+    if (screenType == ScreenType.watch && watch != null) {
+      return watch!(context);
+    }
+
+    return mobile != null ? mobile!(context) : const SizedBox.shrink();
+  }
 }

@@ -28,66 +28,66 @@ class MinAppVersionChecker extends HookConsumerWidget {
     final canContinue = useState(false);
 
     return Observer(
-        builder: (context) {
-          final currentBuildVersion = Env.buildInfo.buildVersion;
-          final minAppBuildNumber = getMinAppBuildNumber(
-            remoteConfigStore: remoteConfigStore,
-            installerStore: Env.buildInfo.installerStore,
-          );
-          if (!isCurrentVersionBehind(
-                currentAppVersion: currentBuildVersion,
-                comparisonVersion: minAppBuildNumber,
-              ) ||
-              canContinue.value) {
-            return child;
-          } else {
-            return ColoredScaffold(
-              body: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.all(theme.spacing.xl2),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        SizedBox(height: theme.spacing.xl6),
-                        const Logo(),
-                        const Spacer(),
-                        Text(
-                          LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
-                          textAlign: TextAlign.center,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textStyles.textLg.regular.copyWith(
-                            color: theme.palette.textPrimary,
-                          ),
+      builder: (context) {
+        final currentBuildVersion = Env.buildInfo.buildVersion;
+        final minAppBuildNumber = getMinAppBuildNumber(
+          remoteConfigStore: remoteConfigStore,
+          installerStore: Env.buildInfo.installerStore,
+        );
+        if (!isCurrentVersionBehind(
+              currentAppVersion: currentBuildVersion,
+              comparisonVersion: minAppBuildNumber,
+            ) ||
+            canContinue.value) {
+          return child;
+        } else {
+          return ColoredScaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(theme.spacing.xl2),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: theme.spacing.xl6),
+                      const Logo(),
+                      const Spacer(),
+                      Text(
+                        LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
+                        textAlign: TextAlign.center,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textStyles.textLg.regular.copyWith(
+                          color: theme.palette.textPrimary,
                         ),
-                        SizedBox(height: theme.spacing.md),
-                        ButtonPrimary(
-                          onPressed: () async {
-                            try {
-                              if (Env.buildInfo.installerStore?.toLowerCase().contains(
-                                    windowsStandAloneProductId.toLowerCase(),
-                                  ) ??
-                                  false) {
-                                await openUrlLink(Uri.parse(windowsGithubDownloadLink));
-                              } else {
-                                await openAppStorePage();
-                              }
-                            } catch (e) {
-                              // Unable to open the store, unblock the user
-                              canContinue.value = true;
+                      ),
+                      SizedBox(height: theme.spacing.md),
+                      ButtonPrimary(
+                        onPressed: () async {
+                          try {
+                            if (Env.buildInfo.installerStore?.toLowerCase().contains(
+                                  windowsStandAloneProductId.toLowerCase(),
+                                ) ??
+                                false) {
+                              await openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                            } else {
+                              await openAppStorePage();
                             }
-                          },
-                          child: Text(LocaleKeys.buttonUpdateApp.tr()),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
+                          } catch (e) {
+                            // Unable to open the store, unblock the user
+                            canContinue.value = true;
+                          }
+                        },
+                        child: Text(LocaleKeys.buttonUpdateApp.tr()),
+                      ),
+                      const Spacer(),
+                    ],
                   ),
                 ),
               ),
-            );
-          }
-        },
+            ),
+          );
+        }
+      },
     );
   }
 

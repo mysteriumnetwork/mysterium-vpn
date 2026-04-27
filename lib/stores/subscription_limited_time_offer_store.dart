@@ -5,7 +5,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/models/product_offer.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 

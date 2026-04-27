@@ -25,10 +25,7 @@ Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
     context,
     listen: false,
   ).read(analyticsStorePOD).logScreenViewed('subscription_plans_modal').ignore();
-  await showModal(
-    context,
-    builder: (ctx) => const _SubscriptionPlansModalPage(),
-  );
+  await showModal(context, builder: (ctx) => const _SubscriptionPlansModalPage());
 }
 
 class _SubscriptionPlansModalPage extends HookConsumerWidget {
