@@ -4,14 +4,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
   await showModal<void>(
@@ -34,7 +33,7 @@ class _DialogContentState extends State<_DialogContent> {
 
   @override
   Widget build(BuildContext context) {
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final palette = Theme.of(context).palette;
     return Observer(
       builder: (context) {

@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/vpn_location.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsHorizontalList extends StatefulWidget {
   const LocationsHorizontalList({
@@ -81,7 +80,7 @@ class _Container extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final hasIndicator = screenType >= ScreenType.tablet;
 
     Widget child = ConstrainedBox(constraints: constraints, child: this.child);

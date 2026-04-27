@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class DraggableIndicator extends StatelessWidget {
   const DraggableIndicator({this.onTap, this.size = const Size(45, 10), super.key});
@@ -16,6 +16,6 @@ class DraggableIndicator extends StatelessWidget {
     onPressed: onTap,
     constraints: BoxConstraints.tight(size),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(size.height / 2)),
-    fillColor: Palette.lightBlack,
+    fillColor: Palette.grayPurple.shade500,
   );
 }

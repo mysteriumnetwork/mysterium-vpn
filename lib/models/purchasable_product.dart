@@ -5,7 +5,7 @@ import 'package:money2/money2.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/product_offer.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 part 'purchasable_product.g.dart';

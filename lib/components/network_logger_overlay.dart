@@ -2,10 +2,10 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class NetworkLoggerOverlayView extends StatefulWidget {
   const NetworkLoggerOverlayView({required this.child, super.key});
@@ -62,7 +62,7 @@ class _NetworkLoggerOverlayViewState extends State<NetworkLoggerOverlayView> {
                     }
                   },
                   child: NetworkLoggerButton(
-                    color: Palette.purple,
+                    color: Palette.brand,
                     globalNavKey: Beamer.of(context).navigatorKey,
                   ),
                 ),

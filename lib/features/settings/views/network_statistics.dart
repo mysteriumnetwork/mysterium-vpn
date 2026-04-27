@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/core/extensions/date.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/vpn/store/network_statistics_store.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 class NetworkStatistics extends StatelessWidget {
   const NetworkStatistics({super.key});
@@ -17,7 +17,9 @@ class NetworkStatistics extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
         decoration: BoxDecoration(
-          color: context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Palette.grayPurple.shade800
+              : Palette.grayLight.shade100,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
         child: Column(
@@ -70,7 +72,7 @@ class _StatisticsItem extends StatelessWidget {
         value,
         style: Theme.of(
           context,
-        ).textTheme.titleMedium?.copyWith(color: Palette.purple, fontWeight: FontWeight.w700),
+        ).textTheme.titleMedium?.copyWith(color: Palette.brand, fontWeight: FontWeight.w700),
       ),
     ],
   );

@@ -75,7 +75,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.8
+      ref: feat/dialogs-components
   onesignal_flutter: 5.4.5
   open_mail_app:
     git:
@@ -157,7 +157,7 @@ flutter:
     - resources/langs/
     - assets/google_fonts/
     - assets/data/
-    # BEGIN auto-generated assets
+     # BEGIN auto-generated assets
     - assets/map_tiles/light/
     - assets/map_tiles/light/4/
     - assets/map_tiles/light/4/9/
@@ -176,7 +176,15 @@ flutter:
     - assets/map_tiles/light/4/13/
     - assets/map_tiles/light/4/5/
     - assets/map_tiles/light/4/14/
-    - assets/map_tiles/light/4/15/
+    - assets/map_tiles/light/3/
+    - assets/map_tiles/light/3/0/
+    - assets/map_tiles/light/3/7/
+    - assets/map_tiles/light/3/6/
+    - assets/map_tiles/light/3/1/
+    - assets/map_tiles/light/3/4/
+    - assets/map_tiles/light/3/3/
+    - assets/map_tiles/light/3/2/
+    - assets/map_tiles/light/3/5/
     - assets/map_tiles/dark/
     - assets/map_tiles/dark/4/
     - assets/map_tiles/dark/4/9/
@@ -195,7 +203,15 @@ flutter:
     - assets/map_tiles/dark/4/13/
     - assets/map_tiles/dark/4/5/
     - assets/map_tiles/dark/4/14/
-    - assets/map_tiles/dark/4/15/
+    - assets/map_tiles/dark/3/
+    - assets/map_tiles/dark/3/0/
+    - assets/map_tiles/dark/3/7/
+    - assets/map_tiles/dark/3/6/
+    - assets/map_tiles/dark/3/1/
+    - assets/map_tiles/dark/3/4/
+    - assets/map_tiles/dark/3/3/
+    - assets/map_tiles/dark/3/2/
+    - assets/map_tiles/dark/3/5/
     # END auto-generated assets
 
 patrol:

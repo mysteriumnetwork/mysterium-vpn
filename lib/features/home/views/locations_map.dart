@@ -6,9 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
-import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/home/views/world_map_tiles_layer.dart';
@@ -16,7 +14,7 @@ import 'package:mysterium_vpn/features/locations/views/location_markers_layer.da
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsMap extends StatefulWidget {
   const LocationsMap({
@@ -81,7 +79,7 @@ class _LocationsMapState extends State<LocationsMap> {
   void _handleMove(LatLng point) {
     final zoom = _controller.camera.zoom;
     var offset = Offset.zero;
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     if (screenType == ScreenType.mobile) {
       offset = switch (HomeStateScope.read(context).panelState) {
         PanelState.closed => const Offset(0, -100),

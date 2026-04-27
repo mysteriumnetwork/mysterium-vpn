@@ -31,7 +31,7 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliverView extends StatelessWidget {
@@ -125,7 +125,7 @@ class _Body extends StatelessWidget {
             (userIntentsStore.intents.isNotEmpty ||
                 userIntentsStore.intentsFuture.status == FutureStatus.pending);
         final theme = Theme.of(context);
-        final screenType = getScreenType(MediaQuery.sizeOf(context));
+        final screenType = ScreenType.of(context);
         final horizontalPadding = screenType >= ScreenType.desktop
             ? theme.spacing.xl3
             : screenType >= ScreenType.tablet
@@ -328,7 +328,7 @@ class _LocationsState extends State<_Locations> {
 
   @override
   Widget build(BuildContext context) {
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final innerHorizontalPadding = screenType >= ScreenType.tablet ? 32.0 : 0.0;
 
     return Observer(

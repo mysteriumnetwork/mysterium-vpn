@@ -21,7 +21,7 @@ import 'package:mysterium_vpn/features/subscription/views/widgets/subscription_p
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
   getIt<AnalyticsStore>().logScreenViewed('subscription_upgrade_modal').ignore();
@@ -76,7 +76,7 @@ class _SubscriptionUpgradeModalPageState extends State<_SubscriptionUpgradeModal
 
   @override
   Widget build(BuildContext context) {
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final theme = Theme.of(context);
 
     void handleSeeAllPlans() {

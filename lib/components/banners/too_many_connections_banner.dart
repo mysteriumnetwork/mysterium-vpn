@@ -1,23 +1,21 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart' hide Banner;
+import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
-import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/connections_limit_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class TooManyConnectionsBanner extends StatelessWidget {
   const TooManyConnectionsBanner({super.key});
@@ -26,7 +24,6 @@ class TooManyConnectionsBanner extends StatelessWidget {
     final vpnStore = getIt<VpnStore>();
     final analyticsStore = getIt<AnalyticsStore>();
     final connectionsLimitStore = getIt<ConnectionsLimitStore>();
-    final abTestingStore = getIt<ABTestingStore>();
 
     final logEvent = vpnStore.isConnected
         ? analyticsStore.logDisconnect
@@ -65,12 +62,8 @@ class TooManyConnectionsBanner extends StatelessWidget {
       }
       return;
     } on TunnelSetupRequiredException catch (_) {
-      final tunnelConsentType = abTestingStore.tunnelConsentType;
       if (context.mounted) {
-        final permissionsGranted = await showRequestTunnelPermissionsDialog(
-          context,
-          tunnelConsentType,
-        );
+        final permissionsGranted = await showRequestTunnelPermissionsDialog(context);
         if (permissionsGranted ?? false) {
           await vpnStore.setupTunnel();
           await vpnStore.manageConnection();
@@ -89,31 +82,21 @@ class TooManyConnectionsBanner extends StatelessWidget {
     return Observer(
       builder: (context) {
         final isConnected = vpnStore.isConnected;
-        final bannerStyle = context.c.isDarkMode
-            ? BannerStyle.warningDark
-            : BannerStyle.warningLight;
 
-        return Banner(
-          style: bannerStyle,
-          title: BannerTitle(
-            text: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
-            icon: SvgIcon(
-              color: bannerStyle.foregroundColor,
-              asset: Asset.icons.infoOutline,
-              width: 20,
-              height: 20,
-            ),
-          ),
-          body: BannerBody(
-            text: isConnected
-                ? LocaleKeys.tooManyConnectionsBannerDescConnected.tr()
-                : LocaleKeys.tooManyConnectionsBannerDesc.tr(),
-          ),
-          cta: BannerCTA(
+        return AlertModal(
+          type: AlertModalType.warning,
+          title: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
+          supportingText: isConnected
+              ? LocaleKeys.tooManyConnectionsBannerDescConnected.tr()
+              : LocaleKeys.tooManyConnectionsBannerDesc.tr(),
+          primaryButton: ButtonPrimary(
+            size: ButtonSize.small,
             onPressed: () => _handleDisconnect(context),
-            text: isConnected
-                ? LocaleKeys.tooManyConnectionsBannerCTADisconnect.tr()
-                : LocaleKeys.tooManyConnectionsBannerCTAReconnect.tr(),
+            child: Text(
+              isConnected
+                  ? LocaleKeys.tooManyConnectionsBannerCTADisconnect.tr()
+                  : LocaleKeys.tooManyConnectionsBannerCTAReconnect.tr(),
+            ),
           ),
         );
       },

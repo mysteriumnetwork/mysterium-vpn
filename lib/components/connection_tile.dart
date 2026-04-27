@@ -16,7 +16,6 @@ import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
 import 'package:mysterium_vpn/features/locations/store/unavailable_locations_store.dart';
-import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_features_store.dart';
@@ -28,8 +27,7 @@ import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 class ConnectionTile extends StatelessWidget {
@@ -87,7 +85,7 @@ class _ConnectionTileContent extends StatelessWidget {
                 LocationMode.unsupportedByPlan;
       }();
 
-      final isMobile = ScreenType.of(context) <= ScreenType.mobile;
+      final isMobile = MediaQuery.sizeOf(context).width <= 600;
 
       final MainIpCardStatus status;
       var noConnectionTitle = LocaleKeys.connectBestServer.tr();
@@ -349,11 +347,9 @@ Future<void> _handleUpgradePlan(BuildContext context) async {
 }
 
 Future<bool> _handleSetupTunnel(BuildContext context) async {
-  final abTestingStore = getIt<ABTestingStore>();
   final vpnStore = getIt<VpnStore>();
-  final tunnelConsentType = abTestingStore.tunnelConsentType;
 
-  final permissionsGranted = await showRequestTunnelPermissionsDialog(context, tunnelConsentType);
+  final permissionsGranted = await showRequestTunnelPermissionsDialog(context);
   if (permissionsGranted ?? false) {
     await vpnStore.setupTunnel();
     return true;
@@ -367,13 +363,21 @@ class _DevProtocolLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vpnProtocol = getIt<VpnProtocolStore>();
+    final palette = Theme.of(context).palette;
     return Observer(
       builder: (context) => Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          'Protocol: ${vpnProtocol.protocol.name}',
-          style: const TextStyle(fontSize: 8, color: Palette.warning, fontWeight: FontWeight.w800),
-        ).padding(left: 12),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Text(
+            'Protocol: ${vpnProtocol.protocol.name}',
+            style: TextStyle(
+              fontSize: 8,
+              color: palette.textSecondary,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
       ),
     );
   }

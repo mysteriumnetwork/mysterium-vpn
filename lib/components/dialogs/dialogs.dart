@@ -1,6 +1,6 @@
 export 'adaptive_action_sheet/adaptive_action_sheet.dart';
 export 'app_alert_dialog.dart';
-export 'cancel_subscription_survey_dialog.dart';
+export 'cancel_subscription_survey_dialog/cancel_subscription_survey_dialog.dart';
 export 'confirmation_dialog.dart';
 export 'delete_account_dialog.dart';
 export 'device_limit_dialog.dart';

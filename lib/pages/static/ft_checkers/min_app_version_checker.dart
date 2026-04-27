@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
@@ -29,67 +28,72 @@ class _MinAppVersionCheckerState extends State<MinAppVersionChecker> {
   bool _canContinue = false;
 
   @override
-  Widget build(BuildContext context) => Observer(
-    builder: (context) {
-      final currentBuildVersion = Env.buildInfo.buildVersion;
-      final minAppBuildNumber = _getMinAppBuildNumber(
-        remoteConfigStore: _remoteConfigStore,
-        installerStore: Env.buildInfo.installerStore,
-      );
-      if (!isCurrentVersionBehind(
-            currentAppVersion: currentBuildVersion,
-            comparisonVersion: minAppBuildNumber,
-          ) ||
-          _canContinue) {
-        return widget.child;
-      } else {
-        return Scaffold(
-          backgroundColor: Palette.darkBlue,
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 64),
-                  SvgIcon(asset: Asset.logo.splashLogo),
-                  const Spacer(),
-                  EasyText(
-                    LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
-                    textAlign: TextAlign.center,
-                    color: Palette.white,
-                    maxLines: 4,
-                    fontSize: 18,
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Observer(
+      builder: (context) {
+        final currentBuildVersion = Env.buildInfo.buildVersion;
+        final minAppBuildNumber = _getMinAppBuildNumber(
+          remoteConfigStore: _remoteConfigStore,
+          installerStore: Env.buildInfo.installerStore,
+        );
+        if (!isCurrentVersionBehind(
+              currentAppVersion: currentBuildVersion,
+              comparisonVersion: minAppBuildNumber,
+            ) ||
+            _canContinue) {
+          return widget.child;
+        } else {
+          return ColoredScaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(theme.spacing.xl2),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: theme.spacing.xl6),
+                      const Logo(),
+                      const Spacer(),
+                      Text(
+                        LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
+                        textAlign: TextAlign.center,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textStyles.textLg.regular.copyWith(
+                          color: theme.palette.textPrimary,
+                        ),
+                      ),
+                      SizedBox(height: theme.spacing.md),
+                      ButtonPrimary(
+                        onPressed: () async {
+                          try {
+                            if (Env.buildInfo.installerStore?.toLowerCase().contains(
+                                  windowsStandAloneProductId.toLowerCase(),
+                                ) ??
+                                false) {
+                              await openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                            } else {
+                              await openAppStorePage();
+                            }
+                          } catch (e) {
+                            // Unable to open the store, unblock the user
+                            setState(() => _canContinue = true);
+                          }
+                        },
+                        child: Text(LocaleKeys.buttonUpdateApp.tr()),
+                      ),
+                      const Spacer(),
+                    ],
                   ),
-                  const SizedBox(height: 40),
-                  EasyButton(
-                    onPressed: () async {
-                      try {
-                        if (Env.buildInfo.installerStore?.toLowerCase().contains(
-                              windowsStandAloneProductId.toLowerCase(),
-                            ) ??
-                            false) {
-                          await openUrlLink(Uri.parse(windowsGithubDownloadLink));
-                        } else {
-                          await openAppStorePage();
-                        }
-                      } catch (e) {
-                        // Unable to open the store, unblock the user
-                        setState(() => _canContinue = true);
-                      }
-                    },
-                    text: LocaleKeys.buttonUpdateApp.tr(),
-                  ),
-                  const Spacer(),
-                  SizedBox(height: MediaQuery.of(context).padding.bottom),
-                ],
+                ),
               ),
             ),
-          ),
-        );
-      }
-    },
-  );
+          );
+        }
+      },
+    );
+  }
 
   String _getMinAppBuildNumber({
     required RemoteConfigStore remoteConfigStore,

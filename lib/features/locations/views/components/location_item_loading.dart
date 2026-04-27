@@ -12,9 +12,9 @@ class LocationItemLoading extends StatelessWidget {
     final color = theme.palette.bgPrimary;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: theme.spacing.ms, vertical: theme.spacing.s),
       constraints: const BoxConstraints(maxWidth: 360, maxHeight: 40),
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(theme.spacing.s)),
       child: Shimmer.fromColors(
         baseColor: color,
         highlightColor: color.darken(20),
@@ -29,13 +29,13 @@ class LocationItemLoading extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: theme.spacing.ms),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(width: 160, height: 16, color: color.darken(20).withValues(alpha: 150)),
-                const SizedBox(height: 4),
+                SizedBox(height: theme.spacing.xs),
                 Container(width: 90, height: 8, color: color.darken(20).withValues(alpha: 150)),
               ],
             ),

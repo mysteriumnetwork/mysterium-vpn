@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mysterium_vpn/core/extensions/navigation_extensions.dart';
-import 'package:mysterium_vpn/core/styles/style.dart' hide Palette;
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/home/store/promotional_content_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/promo_bar.dart';
 
 class PromoBanner extends StatelessWidget {
   const PromoBanner({super.key});
@@ -26,13 +24,10 @@ class PromoBanner extends StatelessWidget {
         if (banner == null) {
           return const SizedBox.shrink();
         }
-        return Theme(
-          data: Theme.of(context).designSystem,
-          child: _Banner(
-            data: banner,
-            isAuthenticated: isAuthenticated,
-            accessToken: authSessionStore.accessToken,
-          ),
+        return _Banner(
+          data: banner,
+          isAuthenticated: isAuthenticated,
+          accessToken: authSessionStore.accessToken,
         );
       },
     );

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/features/settings/views/account_settings.dart';
+import 'package:mysterium_vpn/features/settings/views/application_settings.dart';
+import 'package:mysterium_vpn/features/settings/views/connection_settings.dart';
+import 'package:mysterium_vpn/features/settings/views/qa_toolbox.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_left_panel.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_right_panel.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -14,6 +18,13 @@ enum SettingCategory {
 
   const SettingCategory(this.trKey);
   final String trKey;
+
+  Widget get content => switch (this) {
+    account => const AccountSettings(),
+    connection => const ConnectionSettings(),
+    preferences => const ApplicationSettings(),
+    qaToolbox => const QAToolbox(),
+  };
 }
 
 class _SettingCategoryScope extends InheritedWidget {

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/theme/theme_store.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HeadlineText extends StatelessWidget {
@@ -27,19 +26,23 @@ class HeadlineText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final themeStore = getIt<ThemeStore>();
     return Observer(
       builder: (context) {
         final themeColor = themeStore.isDarkMode || checkMediaWidth(context, 750)
             ? Palette.white
-            : Palette.darkBlue;
-        return EasyText(
+            : Palette.grayPurple.shade800;
+        return Text(
           text,
-          color: color ?? themeColor,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
           maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
           textAlign: textAlign,
+          style: theme.textStyles.displayXlg.bold.copyWith(
+            color: color ?? themeColor,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+          ),
         ).padding(vertical: 6);
       },
     );

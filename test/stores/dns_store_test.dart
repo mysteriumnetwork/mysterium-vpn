@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/core/enums/auth_status.dart';
+import 'package:mysterium_vpn/core/enums/blocker_type.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_config_store.dart';
@@ -83,13 +84,13 @@ void main() {
   group('toggleMalwareBlocker', () {
     test('toggles malware blocker and saves to localDB', () async {
       // Initial value is false, toggling will set to true
-      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async {});
       await store.toggleMalwareBlocker();
       expect(store.malwareContentBlocker, isTrue);
       verify(mockLocalDBService.setMalwareContentBlocker(value: true)).called(1);
 
       // Toggling again will set to false
-      when(mockLocalDBService.setMalwareContentBlocker(value: false)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setMalwareContentBlocker(value: false)).thenAnswer((_) async {});
       await store.toggleMalwareBlocker();
       expect(store.malwareContentBlocker, isFalse);
       verify(mockLocalDBService.setMalwareContentBlocker(value: false)).called(1);
@@ -99,18 +100,39 @@ void main() {
   group('toggleNotSafeContentBlocker', () {
     test('toggles not safe content blocker and saves to localDB', () async {
       // Initial value is false, toggling will set to true
-      when(mockLocalDBService.setNotSafeContentBlocker(value: true)).thenAnswer((_) async => {});
-      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setNotSafeContentBlocker(value: true)).thenAnswer((_) async {});
+      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async {});
       await store.toggleNotSafeContentBlocker();
       expect(store.notSafeContentBlocker, isTrue);
       verify(mockLocalDBService.setNotSafeContentBlocker(value: true)).called(1);
       verify(mockLocalDBService.setMalwareContentBlocker(value: true)).called(1);
 
       // Toggling again will set to false
-      when(mockLocalDBService.setNotSafeContentBlocker(value: false)).thenAnswer((_) async => {});
+      when(mockLocalDBService.setNotSafeContentBlocker(value: false)).thenAnswer((_) async {});
       await store.toggleNotSafeContentBlocker();
       expect(store.notSafeContentBlocker, isFalse);
       verify(mockLocalDBService.setNotSafeContentBlocker(value: false)).called(1);
+    });
+  });
+
+  group('blockerType', () {
+    test('returns none when both blockers are off', () {
+      expect(store.blockerType, BlockerType.none);
+    });
+
+    test('returns malware when only malware blocker is on', () async {
+      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      await store.getMalwareContentBlocker();
+      expect(store.blockerType, BlockerType.malware);
+    });
+
+    test('returns nsfwAndMalware when both blockers are on', () async {
+      when(mockLocalDBService.setMalwareContentBlocker(value: true)).thenAnswer((_) async {});
+      when(mockLocalDBService.setNotSafeContentBlocker(value: true)).thenAnswer((_) async {});
+      await store.toggleNotSafeContentBlocker();
+      expect(store.malwareContentBlocker, isTrue);
+      expect(store.notSafeContentBlocker, isTrue);
+      expect(store.blockerType, BlockerType.nsfwAndMalware);
     });
   });
 

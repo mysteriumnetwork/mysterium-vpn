@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/locations/views/components/locations_search.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({required this.supportIcon, required this.settingsIcon, super.key});
@@ -19,18 +20,19 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final analyticsStore = getIt<AnalyticsStore>();
 
+    final spacing = Theme.of(context).spacing;
     return SafeArea(
       bottom: false,
-      minimum: const EdgeInsets.only(top: 12),
+      minimum: EdgeInsets.only(top: spacing.ms),
       child: Padding(
-        padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16),
+        padding: EdgeInsets.only(left: spacing.xl3, right: spacing.xl3, bottom: spacing.md),
         child: Column(
-          spacing: 12,
+          spacing: spacing.ms,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              spacing: 4,
+              spacing: spacing.xs,
               children: [
                 Expanded(
                   child: Asset.logo.logo(context).svg(height: 24, alignment: Alignment.centerLeft),

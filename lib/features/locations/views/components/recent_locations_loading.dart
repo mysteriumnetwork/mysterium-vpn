@@ -26,7 +26,7 @@ class RecentLocationsLoading extends StatelessWidget {
             children: [Container(width: 200, height: 24, color: Colors.grey[300])],
           ),
         ).width(100),
-        const SizedBox(height: 12),
+        SizedBox(height: theme.spacing.ms),
         ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 62),
           child: ListView.separated(
@@ -34,7 +34,7 @@ class RecentLocationsLoading extends StatelessWidget {
             clipBehavior: Clip.none,
             scrollDirection: Axis.horizontal,
             itemCount: placeholderCount,
-            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => SizedBox(width: theme.spacing.ms),
             itemBuilder: (_, _) => const LocationItemLoading(),
           ),
         ),

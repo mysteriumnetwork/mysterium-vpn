@@ -4,62 +4,61 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/settings/store/user_preferences_store.dart';
-import 'package:mysterium_vpn/features/settings/views/switch_item.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EmailMarketingSetting extends StatelessWidget {
-  const EmailMarketingSetting({super.key});
+  const EmailMarketingSetting({required this.position, super.key});
+
+  final SettingsCardPosition position;
 
   @override
   Widget build(BuildContext context) {
     final authSessionStore = getIt<AuthSessionStore>();
     final userPreferencesStore = getIt<UserPreferencesStore>();
     final analyticsStore = getIt<AnalyticsStore>();
+
     return Observer(
-      builder: (context) {
-        final shouldShowLoadingIndicator = _shouldShowLoadingIndicator(userPreferencesStore);
+      builder: (_) {
         final visible =
             userPreferencesStore.marketingConsent != null &&
             authSessionStore.status == AuthStatus.authenticated;
-        return Visibility(
-          visible: visible,
-          child: SwitchItem(
-            asset: Asset.icons.emailNotification(context),
-            title: LocaleKeys.emailNotificationsSetting.tr(),
-            subtitle: LocaleKeys.emailNotificationsSettingDesc.tr(),
-            actionWidget: Observer(
-              builder: (context) => shouldShowLoadingIndicator
-                  ? const LoadingIndicator().padding(all: 8)
-                  : Switch(
-                      value: userPreferencesStore.marketingConsent!,
-                      onChanged: (val) async {
-                        try {
-                          await userPreferencesStore.updateMarketingContact(consent: val);
-                          analyticsStore.logEvent(
-                            AnalyticsEvent.toggleMarketingConsent,
-                            parameters: {'value': val.toString()},
-                          );
-                        } catch (e) {
-                          showSnackbar(LocaleKeys.somethingWentWrong.tr());
-                        }
-                      },
-                    ),
-            ),
-          ),
+
+        if (!visible) {
+          return const SizedBox.shrink();
+        }
+
+        final isLoading =
+            userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending ||
+            userPreferencesStore.getMarketingConsentFuture?.status == FutureStatus.pending;
+
+        return SettingsCard(
+          title: LocaleKeys.emailNotificationsSetting.tr(),
+          position: position,
+          trailing: isLoading
+              ? const LoadingIndicator().padding(all: 8)
+              : Switch(
+                  value: userPreferencesStore.marketingConsent!,
+                  onChanged: (val) async {
+                    try {
+                      await userPreferencesStore.updateMarketingContact(consent: val);
+                      analyticsStore.logEvent(
+                        AnalyticsEvent.toggleMarketingConsent,
+                        parameters: {'value': val.toString()},
+                      );
+                    } catch (e) {
+                      showSnackbar(LocaleKeys.somethingWentWrong.tr());
+                    }
+                  },
+                ),
         );
       },
     );
   }
-
-  bool _shouldShowLoadingIndicator(UserPreferencesStore userPreferencesStore) =>
-      userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending ||
-      userPreferencesStore.getMarketingConsentFuture?.status == FutureStatus.pending;
 }

@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/core/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/features/remote_config/store/config_cat_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 
 part 'remote_config_store.g.dart';
 
@@ -15,7 +14,6 @@ enum _FeatureToggleKey {
   isServiceAvailable,
   isServiceAvailableMessage,
   hideDeleteAccount,
-  hideKillSwitch,
   minAndroidBuildNumber,
   minIosBuildNumber,
   minWindowsBuildNumber,
@@ -89,14 +87,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   bool get hideDeleteAccount {
     if (config.containsKey(_FeatureToggleKey.hideDeleteAccount.name)) {
       return config[_FeatureToggleKey.hideDeleteAccount.name] as bool;
-    }
-    return false;
-  }
-
-  @computed
-  bool get hideKillSwitch {
-    if (config.containsKey(_FeatureToggleKey.hideKillSwitch.name)) {
-      return config[_FeatureToggleKey.hideKillSwitch.name] as bool;
     }
     return false;
   }

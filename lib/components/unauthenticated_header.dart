@@ -1,22 +1,19 @@
 import 'package:beamer/beamer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/extensions/asset.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class UnauthenticatedHeader extends StatelessWidget {
-  const UnauthenticatedHeader({
-    this.padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-    super.key,
-  });
+  const UnauthenticatedHeader({this.backHeader = false, super.key});
 
-  final EdgeInsets padding;
+  final bool backHeader;
 
   @override
   Widget build(BuildContext context) {
@@ -26,46 +23,38 @@ class UnauthenticatedHeader extends StatelessWidget {
     return Observer(
       builder: (_) {
         final canBrowseApp = authSessionStore.canBrowseApp;
-        return Padding(
-          padding: padding,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            spacing: 24,
-            children: [
-              if (canBrowseApp) const _BackButton(),
-              if (!canBrowseApp) const SizedBox.shrink(),
-              const Expanded(child: AppLogo()),
-              SvgIconButton(
-                asset: Asset.icons.supportLight,
-                onPressed: () {
-                  handleOnSupportPage(context: context, analyticsStore: analyticsStore);
-                },
-              ),
-            ],
-          ),
-        );
+
+        Future<void> handleBackOrHome() async {
+          final beamer = Beamer.of(context);
+          final success = await beamer.popRoute();
+          if (!success) {
+            beamer.beamToNamed(Routes.main.path);
+          }
+        }
+
+        final theme = Theme.of(context);
+
+        return backHeader
+            ? Header(backgroundColor: theme.palette.bgSidePanel, backLabel: LocaleKeys.back.tr())
+            : Header.logo(
+                onBackPressed: handleBackOrHome,
+                backgroundColor: theme.palette.bgSidePanel,
+                centerTitle: true,
+                showBackButton: canBrowseApp,
+                actions: [
+                  IconButton(
+                    style: IconButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(32, 32),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    icon: const Icon(UntitledUI.message_question_square, size: 24),
+                    onPressed: () =>
+                        handleOnSupportPage(context: context, analyticsStore: analyticsStore),
+                  ),
+                ],
+              );
       },
-    );
-  }
-}
-
-class _BackButton extends StatelessWidget {
-  const _BackButton();
-
-  @override
-  Widget build(BuildContext context) {
-    Future<void> handleBackOrHome() async {
-      final beamer = Beamer.of(context);
-      final success = await beamer.popRoute();
-      if (!success) {
-        beamer.beamToNamed(Routes.main.path);
-      }
-    }
-
-    return SvgIconButton(
-      key: K.backButton,
-      asset: Asset.icons.navigateBackLighter(context),
-      onPressed: handleBackOrHome,
     );
   }
 }

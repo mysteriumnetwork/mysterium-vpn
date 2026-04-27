@@ -67,7 +67,5 @@ extension NavigationExtensions on BeamerDelegate {
     );
 
     await openUrlLink(httpsUri);
-
-    openUrlLink(uri);
   }
 }

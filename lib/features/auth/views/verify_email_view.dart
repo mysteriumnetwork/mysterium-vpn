@@ -9,13 +9,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -60,10 +60,8 @@ class VerifyEmailView extends StatelessWidget {
                     Flexible(
                       child: Visibility(
                         visible: isMobile(),
-                        child: EasyButton(
-                          color: Palette.purple,
-                          useSystemColor: false,
-                          text: LocaleKeys.openEmailApp.tr(),
+                        child: ButtonPrimary(
+                          child: Text(LocaleKeys.openEmailApp.tr()),
                           onPressed: () {
                             analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
                             openEmailApp(context, analyticsStore);
@@ -82,7 +80,7 @@ class VerifyEmailView extends StatelessWidget {
               ],
             ).padding(vertical: 20, horizontal: getMediaWidth(context) > 650 ? 60 : 20),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
-              LoadingBarrier(color: theme.primaryColor),
+              LoadingBarrier(color: theme.palette.bgPopover),
           ],
         );
       },
@@ -129,16 +127,18 @@ class _Subheader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
     final height = MediaQuery.sizeOf(context).height;
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final fontSize = screenType >= ScreenType.desktop ? 28.0 : 20.0;
     final children = <Widget>[
       Flexible(
-        child: EasyText(
+        child: Text(
           LocaleKeys.checkYourEmail.tr(),
-          fontSize: fontSize,
-          fontWeight: FontWeight.w600,
           textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: textStyles.displayXlg.semibold.copyWith(fontSize: fontSize),
         ),
       ),
       SvgIcon(asset: Asset.images.checkEmail, height: min(120, height * .15)),
@@ -160,7 +160,7 @@ class _Email extends StatelessWidget {
   Widget build(BuildContext context) {
     final text = LocaleKeys.emailSentTo.tr(namedArgs: {'email': email});
     final label = text.replaceAll(email, '').trim();
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final separator = screenType >= ScreenType.desktop ? ' ' : '\n';
     return AutoSizeText.rich(
       TextSpan(
@@ -208,16 +208,27 @@ class _BulletItem extends StatelessWidget {
   final AutoSizeGroup sizeGroup;
 
   @override
-  Widget build(BuildContext context) => Flexible(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        EasyText('•', autoSizeGroup: sizeGroup),
-        const SizedBox(width: 12),
-        Expanded(child: EasyText(text, maxLines: 3, autoSizeGroup: sizeGroup)),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
+    return Flexible(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText('•', group: sizeGroup, style: textStyles.textMd.regular),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AutoSizeText(
+              text,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              group: sizeGroup,
+              style: textStyles.textMd.regular,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _ResendButton extends StatefulWidget {
@@ -267,40 +278,28 @@ class _ResendButtonState extends State<_ResendButton> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final resendDisabled = widget.isLoading || _countdown > 0;
     final onPressed = resendDisabled ? null : () => widget.onPressed().whenComplete(_reset);
+    final loading = widget.isLoading ? const ButtonLoading() : null;
 
-    final child = widget.isLoading
-        ? LoadingIndicator(indicatorColor: theme.palette.disabledButtonForegroundColor)
-        : Text(
-            LocaleKeys.sendAgain.plural(_countdown),
-            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
-          );
+    final child = Text(
+      LocaleKeys.sendAgain.plural(_countdown),
+      style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
+    );
 
     if (isMobile()) {
-      return OutlinedButton(
+      return ButtonSecondary(
         onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
-          disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
-          side: resendDisabled ? BorderSide.none : null,
-          minimumSize: const Size(200, 50),
-          backgroundColor: Colors.transparent,
-        ),
+        loading: loading,
+        decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
         child: child,
       );
     }
 
-    return ElevatedButton(
+    return ButtonPrimary(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        disabledBackgroundColor: theme.palette.disabledButtonBackgroundColor,
-        disabledForegroundColor: theme.palette.disabledButtonForegroundColor,
-        minimumSize: const Size(200, 50),
-        foregroundColor: theme.palette.filledButtonTextColor,
-        backgroundColor: Palette.purple,
-      ),
+      loading: loading,
+      decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
       child: child,
     );
   }

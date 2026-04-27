@@ -1,15 +1,7 @@
-// Flutter imports:
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
-import 'package:mysterium_vpn/core/theme/theme_store.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/service_locator.dart';
-import 'package:styled_widget/styled_widget.dart';
-
-const _appleIconSizeScale = 28 / 44;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 class SocialLoginButton extends StatelessWidget {
   const SocialLoginButton({
@@ -17,74 +9,53 @@ class SocialLoginButton extends StatelessWidget {
     required this.asset,
     required this.isLoading,
     required this.onPressed,
-    this.height = 44,
+    this.iconColor,
     super.key,
-    this.width,
   });
 
   final String label;
   final SvgGenImage asset;
   final bool isLoading;
   final VoidCallback? onPressed;
-  final double? width;
-  final double height;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
-    final fontSize = height * 0.43;
-    final themeStore = getIt<ThemeStore>();
+    final palette = Palette.of(context);
+    final textStyles = Theme.of(context).textStyles;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Observer(
-      builder: (context) {
-        final isDarkMode = themeStore.isDarkMode;
-        return CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: onPressed,
-          color: Palette.white,
-          child: Container(
-            decoration: BoxDecoration(
-              border: isDarkMode ? null : Border.all(),
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            height: 44,
-            child: SizedBox(
-              width: double.infinity,
-              child: isLoading
-                  ? const LoadingIndicator()
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _SocialLoginIcon(asset: asset, height: height, iconSize: fontSize),
-                        Flexible(
-                          child: EasyText(
-                            label,
-                            color: Colors.black,
-                            fontSize: fontSize,
-                            letterSpacing: -0.41,
-                          ),
-                        ),
-                      ],
-                    ),
-            ),
-          ),
-        ).width(width ?? double.infinity).height(height);
-      },
+    final backgroundColor = isDark ? Palette.grayDarkAlpha.shade700 : Palette.white;
+    final foregroundColor = isDark ? Palette.white : palette.textSecondary;
+    final borderColor = isDark ? Palette.grayDarkAlpha.shade700 : palette.borderPrimary;
+
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: isLoading ? null : onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          disabledBackgroundColor: backgroundColor,
+          disabledForegroundColor: foregroundColor,
+          side: BorderSide(color: borderColor),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          textStyle: textStyles.textMd.semibold,
+          minimumSize: const Size(double.infinity, 44),
+          overlayColor: Colors.transparent,
+        ),
+        child: isLoading
+            ? const LoadingIndicator()
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgIcon(asset: asset, width: 24, height: 24, color: iconColor),
+                  const SizedBox(width: 16),
+                  Flexible(child: Text(label)),
+                ],
+              ),
+      ),
     );
   }
-}
-
-class _SocialLoginIcon extends StatelessWidget {
-  const _SocialLoginIcon({required this.asset, required this.height, required this.iconSize});
-
-  final SvgGenImage asset;
-  final double height;
-  final double iconSize;
-
-  @override
-  Widget build(BuildContext context) =>
-      SvgIcon(asset: asset, width: iconSize * (25 / 31), height: iconSize)
-          .paddingDirectional(bottom: (4 / height) * height, end: 4)
-          .width(_appleIconSizeScale * height)
-          .height(height * _appleIconSizeScale + 2);
 }

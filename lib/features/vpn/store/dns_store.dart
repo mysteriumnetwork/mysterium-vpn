@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/core/enums/auth_status.dart';
+import 'package:mysterium_vpn/core/enums/blocker_type.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_features_store.dart';
@@ -60,6 +61,17 @@ abstract class _DNSStore with Store {
   ObservableFuture<bool> notSafeContentBlockerFuture = ObservableFuture.value(
     _initialNotSafeContentBlockerValue,
   );
+
+  @computed
+  BlockerType get blockerType {
+    if (notSafeContentBlocker) {
+      return BlockerType.nsfwAndMalware;
+    }
+    if (malwareContentBlocker) {
+      return BlockerType.malware;
+    }
+    return BlockerType.none;
+  }
 
   @computed
   bool get hideNotSafeContentBlocker =>
@@ -126,7 +138,7 @@ abstract class _DNSStore with Store {
     notSafeContentBlockerFuture = ObservableFuture.value(value);
   }
 
-  // Call on log out or app termiantion
+  // Call on log out or app termination
   Future<void> disposeStore() async {
     _authReactionDisposer?.call();
   }

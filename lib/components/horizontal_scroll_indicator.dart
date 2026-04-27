@@ -169,7 +169,7 @@ class _Indicator extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 25, right: 8),
+          padding: EdgeInsets.only(left: theme.spacing.xl2, right: theme.spacing.s),
           child: Icon(UntitledUI.chevron_right, color: theme.palette.iconPrimary),
         ),
       ),

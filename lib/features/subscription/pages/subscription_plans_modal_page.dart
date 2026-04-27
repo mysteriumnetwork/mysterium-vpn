@@ -20,7 +20,7 @@ import 'package:mysterium_vpn/features/subscription/views/widgets/subscription_c
 import 'package:mysterium_vpn/features/subscription/views/widgets/subscription_privacy_and_terms.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
   GetIt.I<AnalyticsStore>().logScreenViewed('subscription_plans_modal').ignore();

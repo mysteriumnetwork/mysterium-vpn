@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/home/views/home_banner.dart';
 import 'package:mysterium_vpn/features/home/views/home_map.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeConnectionView extends StatelessWidget {
   const HomeConnectionView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

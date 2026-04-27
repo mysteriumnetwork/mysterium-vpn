@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -37,12 +36,11 @@ class _RetryOnErrorWidgetState extends State<RetryOnErrorWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        EasyText(
+        Text(
           widget.error,
           maxLines: 4,
-          color: theme.palette.textErrorPrimary,
+          style: theme.textStyles.textSm.semibold,
           textAlign: TextAlign.center,
-          fontWeight: FontWeight.w700,
         ).padding(bottom: 20),
         ButtonPrimary(
           decoration: ButtonDecoration(decorationColor: theme.palette.borderError),

@@ -29,7 +29,7 @@ abstract class _SubscriptionFeaturesStore with Store, Disposeable {
   }
 
   @computed
-  bool get residentialIPsAllowed => metadata?.residentialIpsAllowed ?? true;
+  bool get residentialIPsAllowed => metadata?.residentialIpsAllowed ?? false;
 
   @computed
   bool get malwareBlockingAllowed => metadata?.malwareBlockingAllowed ?? false;

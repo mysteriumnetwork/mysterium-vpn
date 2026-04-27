@@ -206,6 +206,11 @@ class SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvide
   bool _scrollingEnabled = false;
   final VelocityTracker _vt = VelocityTracker.withKind(PointerDeviceKind.touch);
 
+  // Drag direction tracking: prevents horizontal scrolling gestures (e.g. in
+  // horizontal lists) from also triggering vertical panel sliding.
+  Offset? _dragStartPosition;
+  bool? _isHorizontalDrag; // null = undetermined, true = horizontal, false = vertical
+
   bool _isPanelVisible = true;
 
   @override
@@ -419,12 +424,40 @@ class SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvide
     }
 
     return Listener(
-      onPointerDown: (PointerDownEvent p) => _vt.addPosition(p.timeStamp, p.position),
-      onPointerMove: (PointerMoveEvent p) {
-        _vt.addPosition(p.timeStamp, p.position); // add current position for velocity tracking
-        _onGestureSlide(p.delta.dy);
+      onPointerDown: (PointerDownEvent p) {
+        _vt.addPosition(p.timeStamp, p.position);
+        _dragStartPosition = p.position;
+        _isHorizontalDrag = null;
       },
-      onPointerUp: (PointerUpEvent p) => _onGestureEnd(_vt.getVelocity()),
+      onPointerMove: (PointerMoveEvent p) {
+        _vt.addPosition(p.timeStamp, p.position);
+
+        // Determine the primary drag direction once movement exceeds touch slop.
+        // Until determined, vertical panel handling is deferred so that horizontal
+        // scrolling gestures (e.g. in horizontal lists) don't also trigger
+        // vertical panel/scroll movement.
+        if (_isHorizontalDrag == null && _dragStartPosition != null) {
+          final totalDelta = p.position - _dragStartPosition!;
+          if (totalDelta.distance > kTouchSlop) {
+            _isHorizontalDrag = totalDelta.dx.abs() > totalDelta.dy.abs();
+          }
+        }
+
+        if (_isHorizontalDrag == false) {
+          _onGestureSlide(p.delta.dy);
+        }
+      },
+      onPointerUp: (PointerUpEvent p) {
+        if (_isHorizontalDrag != true) {
+          _onGestureEnd(_vt.getVelocity());
+        }
+        _dragStartPosition = null;
+        _isHorizontalDrag = null;
+      },
+      onPointerCancel: (_) {
+        _dragStartPosition = null;
+        _isHorizontalDrag = null;
+      },
       child: child,
     );
   }

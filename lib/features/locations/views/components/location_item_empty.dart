@@ -22,10 +22,10 @@ class LocationItemEmpty extends StatelessWidget {
       hoverElevation: 0,
       onPressed: null,
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(theme.spacing.ms),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          spacing: 20,
+          spacing: theme.spacing.xl,
           children: [
             Container(
               width: 30,
@@ -34,11 +34,11 @@ class LocationItemEmpty extends StatelessWidget {
               child: SvgIcon(height: 30, width: 30, asset: Asset.icons.fix(context)),
             ),
             Expanded(
-              child: EasyText(
+              child: Text(
                 LocaleKeys.noServersAvailable.tr(),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
                 maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textStyles.textSm.medium,
               ),
             ),
             const LocationsRefreshButton(minimumSize: Size(100, 38), outlinedButton: true),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/core/enums/screen_type.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
 import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
 import 'package:mysterium_vpn/features/locations/views/components/location_item.dart';
@@ -9,6 +7,7 @@ import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' show PanelController;
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
 const _kItemHeight = 64.0;
@@ -76,7 +75,7 @@ class _ScrollableLocationsSliverListState extends State<ScrollableLocationsSlive
 
   @override
   Widget build(BuildContext context) {
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final isDesktop = screenType == ScreenType.desktop;
 
     return Observer(

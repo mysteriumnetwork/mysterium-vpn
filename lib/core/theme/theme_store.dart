@@ -3,8 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 // Project imports:
 
@@ -18,8 +18,8 @@ abstract class _ThemeStore with Store {
     themeMode = _sharedPrefs.getThemeType() ?? ThemeMode.system;
   }
   final _sharedPrefs = SharedPreferenceService.instance;
-  final darkTheme = themeData(DarkPalette());
-  final lightTheme = themeData(LightPalette());
+  final darkTheme = DesignSystem.darkTheme;
+  final lightTheme = DesignSystem.lightTheme;
 
   @observable
   ThemeMode themeMode = ThemeMode.system;

@@ -9,26 +9,23 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
-import 'package:mysterium_vpn/features/settings/views/action_button.dart';
+import 'package:mysterium_vpn/features/settings/views/blocker_picker.dart';
 import 'package:mysterium_vpn/features/settings/views/protocol_picker.dart';
-import 'package:mysterium_vpn/features/settings/views/switch_item.dart';
+import 'package:mysterium_vpn/features/settings/views/settings_action_button.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/dns_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/refresh_ip_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_protocol_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class ConnectionSettings extends StatelessWidget {
   const ConnectionSettings({super.key});
@@ -42,6 +39,8 @@ class ConnectionSettings extends StatelessWidget {
     final dnsStore = getIt<DNSStore>();
     final authSessionStore = getIt<AuthSessionStore>();
     final vpnProtocolStore = getIt<VpnProtocolStore>();
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    final theme = Theme.of(context);
 
     Future<void> handleToggleConnection() async {
       final logEvent = vpnStore.isConnected
@@ -97,133 +96,98 @@ class ConnectionSettings extends StatelessWidget {
     return Observer(
       builder: (_) {
         final disableSettings = !authSessionStore.isAuthenticated;
-        return Column(
-          children: [
-            Visibility(
-              visible: !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid,
-              child: SettingItem(
-                asset: Asset.icons.resetAppSetting(context),
-                title: LocaleKeys.resetAppTitle.tr(),
-                subtitle: EasyText(
-                  LocaleKeys.resetAppDesc.tr(),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  maxLines: 3,
-                ),
-                actionWidget: SettingActionButton(
-                  action: vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
-                      ? null
-                      : () => _onConfirmResetApp(
-                          context: context,
-                          analyticsStore: analyticsStore,
-                          vpnStore: vpnStore,
-                          handleToggleConnection: handleToggleConnection,
-                        ),
-                  backgroundColor: Palette.purple,
-                  child: Text(LocaleKeys.resetAppTitle.tr()),
-                ),
-              ),
-            ),
-            SwitchItem(
-              asset: Asset.icons.refreshIpSetting(context),
-              title: LocaleKeys.refreshIPAddress.tr(),
-              subtitle: LocaleKeys.getNewIPAddress.tr(),
-              actionWidget: Observer(
-                builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
-                    ? const LoadingIndicator()
-                    : Switch(
-                        value: refreshIPStore.refreshIPConnection,
-                        onChanged: disableSettings
-                            ? null
-                            : (val) async {
-                                await refreshIPStore.toggleRefreshIPWhenConnecting();
-                                analyticsStore.logEvent(
-                                  val
-                                      ? AnalyticsEvent.refreshIpEnable
-                                      : AnalyticsEvent.refreshIpDisable,
-                                );
-                              },
+
+        final showReset = !remoteConfigStore.hideResetAppSetting && !Platform.isAndroid;
+        final showBlocker =
+            !dnsStore.hideMalwareContentBlocker || !dnsStore.hideNotSafeContentBlocker;
+        final showProtocol = vpnProtocolStore.isProtocolPickerAvailable;
+
+        final builders = <Widget Function(SettingsCardPosition)>[];
+        if (showReset) {
+          builders.add(
+            (pos) => SettingsCard(
+              title: LocaleKeys.resetAppTitle.tr(),
+              subtitle: LocaleKeys.resetAppDesc.tr(),
+              position: pos,
+              trailing: SettingsActionButton(
+                onPressed:
+                    vpnStore.resetAppFuture?.status == FutureStatus.pending || disableSettings
+                    ? null
+                    : () => _onConfirmResetApp(
+                        context: context,
+                        analyticsStore: analyticsStore,
+                        vpnStore: vpnStore,
+                        handleToggleConnection: handleToggleConnection,
                       ),
+                child: Text(LocaleKeys.resetBtn.tr()),
               ),
             ),
-            Visibility(
-              visible: !dnsStore.hideMalwareContentBlocker,
-              child: SwitchItem(
-                enabled: !dnsStore.notSafeContentBlocker,
-                asset: Asset.icons.locker(context),
-                title: LocaleKeys.malwareBlocker.tr(),
-                subtitle: '',
-                actionWidget: Observer(
-                  builder: (context) =>
-                      dnsStore.malwareContentBlockerFuture.status == FutureStatus.pending
-                      ? const LoadingIndicator()
-                      : Switch(
-                          value: dnsStore.malwareContentBlocker,
-                          onChanged: disableSettings
-                              ? null
-                              : (val) async {
-                                  await dnsStore.toggleMalwareBlocker();
-                                  analyticsStore.logEvent(
-                                    val ? AnalyticsEvent.malwareOn : AnalyticsEvent.malwareOff,
-                                  );
-                                },
-                        ),
-                ),
-              ),
+          );
+        }
+
+        builders.add(
+          (pos) => SettingsCard(
+            title: LocaleKeys.refreshIPAddress.tr(),
+            subtitle: LocaleKeys.getNewIPAddress.tr(),
+            position: pos,
+            trailing: Observer(
+              builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
+                  ? const LoadingIndicator()
+                  : Switch(
+                      value: refreshIPStore.refreshIPConnection,
+                      onChanged: disableSettings
+                          ? null
+                          : (val) async {
+                              await refreshIPStore.toggleRefreshIPWhenConnecting();
+                              analyticsStore.logEvent(
+                                val
+                                    ? AnalyticsEvent.refreshIpEnable
+                                    : AnalyticsEvent.refreshIpDisable,
+                              );
+                            },
+                    ),
             ),
-            Visibility(
-              visible: !dnsStore.hideNotSafeContentBlocker,
-              child: SwitchItem(
-                asset: Asset.icons.stop(context),
-                title: LocaleKeys.contentBlockerTitle.tr(),
-                subtitle: LocaleKeys.contentBlockerDesc.tr(),
-                actionWidget: Observer(
-                  builder: (context) =>
-                      dnsStore.notSafeContentBlockerFuture.status == FutureStatus.pending
-                      ? const LoadingIndicator()
-                      : Switch(
-                          value: dnsStore.notSafeContentBlocker,
-                          onChanged: disableSettings
-                              ? null
-                              : (val) async {
-                                  await dnsStore.toggleNotSafeContentBlocker();
-                                  analyticsStore.logEvent(
-                                    val ? AnalyticsEvent.nsfwOn : AnalyticsEvent.nsfwOff,
-                                  );
-                                },
-                        ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: !remoteConfigStore.hideKillSwitch,
-              child: SwitchItem(
-                asset: Asset.icons.refreshIpSetting(context),
-                title: LocaleKeys.killSwitch.tr(),
-                subtitle: LocaleKeys.killSwitchDesc.tr(),
-                actionWidget: Row(
-                  children: [
-                    EasyText(
-                      LocaleKeys.on.tr(),
-                      color: Palette.lightBlue,
-                    ).paddingDirectional(end: 5),
-                    SvgIcon(asset: Asset.icons.checkmark),
-                  ],
-                ),
-              ),
-            ),
-            Visibility(
-              visible: vpnProtocolStore.isProtocolPickerAvailable,
-              child: SettingItem(
-                asset: Asset.icons.protocol(context),
-                title: LocaleKeys.protocol.tr(),
-                actionWidget: const ProtocolPicker(),
-              ),
-            ),
-          ],
+          ),
         );
+
+        if (showBlocker) {
+          builders.add((pos) => BlockerPicker(position: pos));
+        }
+
+        if (showProtocol) {
+          builders.add((pos) => ProtocolPicker(position: pos));
+        }
+
+        final total = builders.length;
+        if (total == 0) {
+          return const SizedBox.shrink();
+        }
+
+        final cards = Column(
+          children: [for (var i = 0; i < total; i++) builders[i](_cardPosition(i, total))],
+        );
+
+        return isDesktop
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
+                child: cards,
+              )
+            : cards;
       },
     );
+  }
+
+  SettingsCardPosition _cardPosition(int index, int total) {
+    if (total == 1) {
+      return SettingsCardPosition.single;
+    }
+    if (index == 0) {
+      return SettingsCardPosition.top;
+    }
+    if (index == total - 1) {
+      return SettingsCardPosition.bottom;
+    }
+    return SettingsCardPosition.middle;
   }
 
   void _onConfirmResetApp({
@@ -237,22 +201,13 @@ class ConnectionSettings extends StatelessWidget {
       _onResetApp(context, vpnStore, analyticsStore);
       return;
     }
+    analyticsStore.logEvent(AnalyticsEvent.resetAppConfirmShown);
     shownConfirmationDialog(
       context,
       confirmText: LocaleKeys.resetBtn.tr(),
       cancelText: LocaleKeys.goBackButton.tr(),
       title: LocaleKeys.resetAppDialogTitle.tr(),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            LocaleKeys.resetAppDialogContent.tr(),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
-            maxLines: 4,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+      supportingText: LocaleKeys.resetAppDialogContent.tr(),
       onConfirm: () {
         analyticsStore.logEvent(AnalyticsEvent.resetAppConfirm);
         _onResetApp(context, vpnStore, analyticsStore, handleToggleConnection);
@@ -273,15 +228,13 @@ class ConnectionSettings extends StatelessWidget {
       await vpnStore.resetApp();
       showSnackbar(
         LocaleKeys.resetAppSuccess.tr(),
-        type: MessageType.success,
+        type: SnackbarType.success,
         action: handleToggleConnection != null
-            ? SnackBarAction(
-                label: LocaleKeys.reconnectBtn.tr(),
-                backgroundColor: Palette.black,
-                textColor: Palette.white,
-                onPressed: () async {
+            ? IconButton(
+                icon: const Icon(Icons.refresh, size: 16),
+                onPressed: () {
                   snackbarKey.currentState?.clearSnackBars();
-                  await handleToggleConnection();
+                  handleToggleConnection();
                 },
               )
             : null,
@@ -289,7 +242,9 @@ class ConnectionSettings extends StatelessWidget {
       analyticsStore.logEvent(AnalyticsEvent.resetAppSuccess);
     } catch (e, s) {
       showSnackbar(LocaleKeys.resetAppFailed.tr());
-      analyticsStore.logError(err: e, stack: s);
+      analyticsStore
+        ..logEvent(AnalyticsEvent.resetAppError)
+        ..logError(err: e, stack: s);
     }
   }
 }

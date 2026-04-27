@@ -1,20 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/styles/palette.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
+import 'package:mysterium_vpn/features/settings/views/settings_picker_card.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_protocol_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class ProtocolPicker extends StatelessWidget {
-  const ProtocolPicker({super.key});
+  const ProtocolPicker({required this.position, super.key});
+
+  final SettingsCardPosition position;
 
   @override
   Widget build(BuildContext context) {
@@ -22,57 +22,53 @@ class ProtocolPicker extends StatelessWidget {
     final vpnStore = getIt<VpnStore>();
     final analyticsStore = getIt<AnalyticsStore>();
     final authSessionStore = getIt<AuthSessionStore>();
+
     return Observer(
-      builder: (context) => EasyDropdown<ProtocolType>(
+      builder: (_) => SettingsPickerCard<ProtocolType>(
+        title: LocaleKeys.vpnProtocolSettingLbl.tr(),
+        position: position,
         value: vpnProtocolStore.protocol,
-        onChanged: authSessionStore.isAuthenticated
-            ? (ProtocolType? newProtocol) async {
-                if (newProtocol == null) {
-                  return;
-                }
-                if (vpnStore.isConnected) {
-                  shownConfirmationDialog(
-                    context,
-                    confirmText: LocaleKeys.confirm.tr(),
-                    cancelText: LocaleKeys.cancelBtn.tr(),
-                    icon: SvgIcon(asset: Asset.icons.warning),
-                    title: LocaleKeys.protocolPickerSettingTitle.tr(),
-                    content: Text(
-                      LocaleKeys.protocolPickerSettingDesc.tr(),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Palette.black,
-                      ),
-                      maxLines: 5,
-                      textAlign: TextAlign.center,
-                    ),
-                    onConfirm: () async {
-                      analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
-                      await vpnStore.disconnectTunnel();
-                      await vpnProtocolStore.setProtocol(newProtocol);
-                    },
-                    onCancel: () {
-                      analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeDeclined);
-                    },
-                  );
-                } else {
-                  await vpnProtocolStore.setProtocol(newProtocol);
-                }
-              }
-            : null,
-        items: ProtocolType.values
-            .map<DropdownMenuItem<ProtocolType>>(
-              (protocol) => DropdownMenuItem<ProtocolType>(
-                value: protocol,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: EasyText(protocol.label),
-                ),
-              ),
-            )
-            .toList(),
+        items: ProtocolType.values,
+        labelOf: (p) => LocaleKeys.protocolLabel.tr(args: [p.labelKey.tr(), p.subtitle]),
+        subtitleOf: (p) => p.subtitle,
+        customLabel: (p) => p.labelKey.tr(),
+        onChanged: (newProtocol) => _changeProtocol(
+          context,
+          newProtocol: newProtocol,
+          vpnStore: vpnStore,
+          vpnProtocolStore: vpnProtocolStore,
+          analyticsStore: analyticsStore,
+        ),
+        enabled: authSessionStore.isAuthenticated,
       ),
     );
+  }
+
+  Future<void> _changeProtocol(
+    BuildContext context, {
+    required ProtocolType newProtocol,
+    required VpnStore vpnStore,
+    required VpnProtocolStore vpnProtocolStore,
+    required AnalyticsStore analyticsStore,
+  }) async {
+    if (vpnStore.isConnected) {
+      shownConfirmationDialog(
+        context,
+        confirmText: LocaleKeys.confirm.tr(),
+        cancelText: LocaleKeys.cancelBtn.tr(),
+        title: LocaleKeys.protocolPickerSettingTitle.tr(),
+        supportingText: LocaleKeys.protocolPickerSettingDesc.tr(),
+        onConfirm: () async {
+          analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
+          await vpnStore.disconnectTunnel();
+          await vpnProtocolStore.setProtocol(newProtocol);
+        },
+        onCancel: () {
+          analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeDeclined);
+        },
+      );
+    } else {
+      await vpnProtocolStore.setProtocol(newProtocol);
+    }
   }
 }

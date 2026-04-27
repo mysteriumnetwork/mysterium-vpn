@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart' hide Banner;
-import 'package:mysterium_vpn/components/components.dart';
+import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/home/store/banners_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class AppVersionUpdateBanner extends StatelessWidget {
   const AppVersionUpdateBanner({super.key});
@@ -27,15 +26,16 @@ class AppVersionUpdateBanner extends StatelessWidget {
       bannersStore.setShown(BannerType.appUpdateAvailable);
     }
 
-    return Banner(
-      title: BannerTitle(
-        iconAsset: Asset.icons.appUpdate,
-        text: LocaleKeys.appUpdateAvailableTitle.tr(),
+    return AlertModal(
+      type: AlertModalType.info,
+      title: LocaleKeys.appUpdateAvailableTitle.tr(),
+      supportingText: LocaleKeys.appUpdateAvailableDesc.tr(),
+      onClose: handleDismiss,
+      primaryButton: ButtonPrimary(
+        size: ButtonSize.small,
+        onPressed: handlePressed,
+        child: Text(LocaleKeys.updateBtn.tr()),
       ),
-      body: BannerBody(text: LocaleKeys.appUpdateAvailableDesc.tr()),
-      cta: BannerCTA(text: LocaleKeys.updateBtn.tr(), onPressed: handlePressed),
-      onPressed: handlePressed,
-      onDismiss: handleDismiss,
     );
   }
 }

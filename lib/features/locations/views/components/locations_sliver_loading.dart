@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/features/locations/views/components/location_item_loading.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsSliverLoading extends StatelessWidget {
   const LocationsSliverLoading({this.placeholderCount = 10, super.key});
@@ -7,9 +8,12 @@ class LocationsSliverLoading extends StatelessWidget {
   final int placeholderCount;
 
   @override
-  Widget build(BuildContext context) => SliverList.separated(
-    itemCount: placeholderCount,
-    separatorBuilder: (_, _) => const SizedBox(height: 12),
-    itemBuilder: (_, _) => const LocationItemLoading(),
-  );
+  Widget build(BuildContext context) {
+    final spacing = Theme.of(context).spacing;
+    return SliverList.separated(
+      itemCount: placeholderCount,
+      separatorBuilder: (_, _) => SizedBox(height: spacing.ms),
+      itemBuilder: (_, _) => const LocationItemLoading(),
+    );
+  }
 }

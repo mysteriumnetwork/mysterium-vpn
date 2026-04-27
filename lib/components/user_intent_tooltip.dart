@@ -15,7 +15,7 @@ class UserIntentTooltip extends StatelessWidget {
 class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
-    spacing: 10,
+    spacing: Theme.of(context).spacing.ms,
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [for (final value in UserIntent.values) _Item(value: value)],

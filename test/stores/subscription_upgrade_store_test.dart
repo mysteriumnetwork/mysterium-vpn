@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/features/subscription/store/subscription_plans_sto
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_upgrade_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 
 import 'subscription_upgrade_store_test.mocks.dart';
 
@@ -290,7 +289,7 @@ void main() {
 
     test('falls back to purchasedProduct when no monthly of same tier exists', () {
       // upgradeProduct == annualPlus (best value)
-      // No monthly Plus product in the lists → fall back to purchasedProduct
+      // No monthly Plus product in the lists -> fall back to purchasedProduct
       final purchasedProduct = MockPurchasableProduct();
       when(purchasedProduct.id).thenReturn('plan-basic-monthly');
       when(purchasedProduct.duration).thenReturn(1);

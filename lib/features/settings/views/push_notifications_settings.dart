@@ -1,87 +1,63 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/extensions/asset.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/notifications/store/push_notifications_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class PushNotificationsSetting extends StatelessWidget {
-  const PushNotificationsSetting({super.key});
+  const PushNotificationsSetting({required this.position, super.key});
+
+  final SettingsCardPosition position;
 
   @override
   Widget build(BuildContext context) {
     final authSessionStore = getIt<AuthSessionStore>();
     final pushNotificationsStore = getIt<PushNotificationsStore>();
     final analyticsStore = getIt<AnalyticsStore>();
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    final theme = Theme.of(context);
+
     return Observer(
-      builder: (context) {
+      builder: (_) {
         final visible =
             pushNotificationsStore.supportsPushNotifications &&
             authSessionStore.status == AuthStatus.authenticated;
-        return Visibility(
-          visible: visible,
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgIcon(asset: Asset.icons.notification(context)).paddingDirectional(end: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    EasyText(
-                      LocaleKeys.pushNotificationsSetting.tr(),
-                      fontSize: 14,
-                      maxLines: 2,
-                      fontWeight: FontWeight.w700,
-                    ).padding(bottom: 4),
-                    EasyText(
-                      LocaleKeys.pushNotificationsSettingDesc.tr(),
-                      fontSize: 12,
-                      maxLines: 3,
-                    ).padding(bottom: 4),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        alignment: Alignment.centerLeft,
-                      ),
-                      onPressed: () => _updatePushNotificationsPermissions(
-                        pushNotificationsStore: pushNotificationsStore,
-                        currentValue: pushNotificationsStore.pushNotificationsPermissionGranted,
-                        analyticsStore: analyticsStore,
-                      ),
-                      child: EasyText(
-                        LocaleKeys.openSystemSettingsBtn.tr(),
-                        fontSize: 12,
-                        color: Palette.purple,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ).expanded(),
-                Switch(
-                  value: pushNotificationsStore.pushNotificationsPermissionGranted,
-                  onChanged: null,
+
+        if (!visible) {
+          return const SizedBox.shrink();
+        }
+
+        final subtitleWidget = isDesktop
+            ? null
+            : GestureDetector(
+                onTap: () => _updatePushNotificationsPermissions(
+                  pushNotificationsStore: pushNotificationsStore,
+                  currentValue: pushNotificationsStore.pushNotificationsPermissionGranted,
+                  analyticsStore: analyticsStore,
                 ),
-              ],
-            ),
-          ).paddingDirectional(bottom: 10, horizontal: 20),
+                child: Text(
+                  LocaleKeys.openSystemSettingsBtn.tr(),
+                  style: theme.textStyles.textXs.semibold.copyWith(
+                    color: theme.palette.textBrandPrimary,
+                  ),
+                ),
+              );
+
+        return SettingsCard(
+          title: LocaleKeys.pushNotificationsSetting.tr(),
+          subtitle: isDesktop ? LocaleKeys.pushNotificationsSettingDesc.tr() : null,
+          subtitleWidget: subtitleWidget,
+          position: position,
+          trailing: Switch(
+            value: pushNotificationsStore.pushNotificationsPermissionGranted,
+            onChanged: null,
+          ),
         );
       },
     );

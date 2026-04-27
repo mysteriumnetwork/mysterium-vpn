@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/home/store/banners_store.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeBanner extends StatelessWidget {
   const HomeBanner({super.key});
@@ -12,7 +12,7 @@ class HomeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bannersStore = getIt<BannersStore>();
-    final screenType = getScreenType(MediaQuery.sizeOf(context));
+    final screenType = ScreenType.of(context);
     final maxWidth = screenType >= ScreenType.desktop ? 432.0 : double.infinity;
 
     return Observer(

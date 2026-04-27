@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/models/subscription_plan_features.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 

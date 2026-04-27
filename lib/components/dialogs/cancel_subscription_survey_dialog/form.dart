@@ -1,4 +1,4 @@
-part of '../cancel_subscription_survey_dialog.dart';
+part of 'cancel_subscription_survey_dialog.dart';
 
 class _Form extends StatelessWidget {
   const _Form({required this.form, required this.items});
@@ -17,7 +17,7 @@ class _Form extends StatelessWidget {
         children: [
           _ReactiveReasonsField(formControlName: 'reasons', items: items),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 32),
+            padding: EdgeInsets.only(top: theme.spacing.xl2),
             child: ReactiveTextField(
               formControlName: 'feedback',
               maxLines: 5,

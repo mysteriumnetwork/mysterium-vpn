@@ -10,6 +10,21 @@ import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 import 'subscription_features_store_test.mocks.dart';
 
+SubscriptionConfigResponsePlansInner _makePlan({required String id, bool? residentialIpsAllowed}) =>
+    SubscriptionConfigResponsePlansInner(
+      id: id,
+      interval: SubscriptionConfigResponsePlansInnerInterval(
+        unit: SubscriptionConfigResponsePlansInnerIntervalUnitEnum.month,
+        amount: 1,
+      ),
+      price: SubscriptionConfigResponsePlansInnerPrice(USD: 500),
+      prices: [],
+      supportedGateways: [],
+      metadata: SubscriptionConfigResponsePlansInnerMetadata(
+        residentialIpsAllowed: residentialIpsAllowed,
+      ),
+    );
+
 @GenerateNiceMocks([
   MockSpec<SubscriptionStore>(),
   MockSpec<SubscriptionConfigStore>(),
@@ -106,6 +121,99 @@ void main() {
       when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config));
 
       expect(store.residentialIPsAllowed, isFalse);
+    });
+  });
+
+  group('residentialIPsAllowed (concrete objects)', () {
+    final activeSubscription = Subscription(
+      active: true,
+      expired: false,
+      recurring: false,
+      planId: 'basic',
+    );
+
+    test('defaults to false when config is null', () {
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(null));
+
+      final s = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(s.residentialIPsAllowed, false);
+    });
+
+    test('defaults to false when plan is not found in config', () {
+      final config = SubscriptionConfigResponse(
+        gateways: [],
+        plans: [_makePlan(id: 'premium', residentialIpsAllowed: true)],
+        countries: [],
+        stripeReturnUrl: '',
+        stripePublishableKey: '',
+      );
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config));
+
+      final s = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(s.residentialIPsAllowed, false);
+    });
+
+    test('returns false from plan metadata', () {
+      final config = SubscriptionConfigResponse(
+        gateways: [],
+        plans: [_makePlan(id: 'basic', residentialIpsAllowed: false)],
+        countries: [],
+        stripeReturnUrl: '',
+        stripePublishableKey: '',
+      );
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config));
+
+      final s = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(s.residentialIPsAllowed, false);
+    });
+
+    test('returns true when plan metadata allows it', () {
+      final config = SubscriptionConfigResponse(
+        gateways: [],
+        plans: [_makePlan(id: 'basic', residentialIpsAllowed: true)],
+        countries: [],
+        stripeReturnUrl: '',
+        stripePublishableKey: '',
+      );
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config));
+
+      final s = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(s.residentialIPsAllowed, true);
+    });
+
+    test('defaults to false when metadata field is null', () {
+      final config = SubscriptionConfigResponse(
+        gateways: [],
+        // residentialIpsAllowed is null in metadata
+        plans: [_makePlan(id: 'basic')],
+        countries: [],
+        stripeReturnUrl: '',
+        stripePublishableKey: '',
+      );
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config));
+
+      final s = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(s.residentialIPsAllowed, false);
     });
   });
 

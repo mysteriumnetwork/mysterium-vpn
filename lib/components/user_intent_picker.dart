@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -41,12 +40,7 @@ class _UserIntentPickerState extends State<UserIntentPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final hasIndicator = getValueForScreenType<bool>(
-      context: context,
-      mobile: false,
-      tablet: true,
-      desktop: true,
-    );
+    final hasIndicator = ScreenType.of(context) >= ScreenType.tablet;
 
     final child = _List(
       scrollController: _scrollController,
@@ -87,7 +81,7 @@ class _List extends StatelessWidget {
       clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
       scrollDirection: Axis.horizontal,
       itemCount: items?.length ?? UserIntent.values.length,
-      separatorBuilder: (_, _) => const SizedBox(width: 8),
+      separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.s),
       itemBuilder: (context, index) {
         if (items == null) {
           final theme = Theme.of(context);

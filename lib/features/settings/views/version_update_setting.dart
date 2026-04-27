@@ -1,26 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
-import 'package:mysterium_vpn/features/settings/views/action_button.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class AppVersionUpdateSetting extends StatelessWidget {
   const AppVersionUpdateSetting({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final remoteConfigStore = getIt<RemoteConfigStore>();
     final analyticsStore = getIt<AnalyticsStore>();
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
     return Observer(
       builder: (context) {
@@ -28,46 +26,27 @@ class AppVersionUpdateSetting extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return RawMaterialButton(
-          onPressed: () async {
-            analyticsStore.logEvent(AnalyticsEvent.appVersionSettingClicked);
-            await openAppStorePage();
-          },
-          elevation: 0,
-          fillColor: context.c.isDarkMode ? const Color(0xff524e77) : Palette.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            side: BorderSide(color: Palette.purple, width: 1.5),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CircleAvatar(
-                  radius: 17,
-                  backgroundColor: Palette.purple,
-                  child: SvgIcon(asset: Asset.icons.appUpdate, width: 16, height: 16),
-                ).padding(right: 10),
-                Expanded(
-                  child: EasyText(
-                    LocaleKeys.appUpdateAvailableSetting.tr(),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    maxLines: 2,
-                  ),
-                ),
-                SettingActionButton(
-                  action: () async {
-                    await openAppStorePage();
-                  },
-                  backgroundColor: Palette.purple,
-                  child: EasyText(LocaleKeys.updateBtn.tr(), color: Palette.white),
-                ),
-              ],
+        return Padding(
+          padding: isDesktop
+              ? EdgeInsets.symmetric(horizontal: theme.spacing.xl3)
+              : EdgeInsets.zero,
+          child: SettingsCard(
+            position: SettingsCardPosition.top,
+            title: LocaleKeys.appUpdateAvailableSetting.tr(),
+            trailing: ButtonSecondary(
+              size: ButtonSize.small,
+              decoration: const ButtonDecoration(
+                minimumSize: Size.zero,
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              onPressed: () {
+                analyticsStore.logEvent(AnalyticsEvent.appVersionSettingClicked);
+                openAppStorePage();
+              },
+              child: Text(LocaleKeys.updateBtn.tr()),
             ),
           ),
-        ).paddingDirectional(bottom: 10, horizontal: 20);
+        );
       },
     );
   }
@@ -75,10 +54,6 @@ class AppVersionUpdateSetting extends StatelessWidget {
   bool shouldShowAppUpdateBanner(RemoteConfigStore remoteConfigStore) {
     final latestStableAppVersion = remoteConfigStore.latestStableAppVersion;
     final currentBuildVersion = Env.buildInfo.buildVersion;
-
-    if (currentBuildVersion.compareTo(latestStableAppVersion) >= 0) {
-      return false;
-    }
-    return true;
+    return currentBuildVersion.compareTo(latestStableAppVersion) < 0;
   }
 }

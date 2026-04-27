@@ -10,7 +10,7 @@ import 'package:mysterium_vpn/features/vpn/store/rate_connection_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 Future<void> showRateConnectionDialog(
@@ -22,6 +22,7 @@ Future<void> showRateConnectionDialog(
   final future = await showBottomSheetDialog<Future<void>>(
     context,
     mobileConstraints: BoxConstraints(maxHeight: getMediaHeight(context) * 0.95),
+    desktopConstraints: const BoxConstraints(maxWidth: 637, maxHeight: 700),
     builder: (ctx) => BottomSheetDialog(
       title: mode == RateConnectionRequestModeEnum.like
           ? LocaleKeys.rateConnectionLike.tr()
@@ -73,34 +74,41 @@ class _RateConnectionBody extends StatelessWidget {
     return Observer(
       builder: (context) {
         final selectedReasons = store.selectedReasons;
+        final axisCount = ScreenType.of(context) >= ScreenType.tablet ? 2 : 1;
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: ScreenType.of(context) >= ScreenType.tablet ? 2 : 1,
-                mainAxisExtent: 60,
-              ),
-              itemCount: store.showReasons.length,
-              itemBuilder: (context, index) {
-                final reason = store.showReasons[index];
-                return CheckboxListTile(
-                  minVerticalPadding: 0,
-                  visualDensity: VisualDensity.compact,
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  value: selectedReasons.contains(reason),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  onChanged: (_) => store.toggleRateConnectionReason(reason),
-                  title: Text(_stringifyReason(reason), style: theme.textStyles.textMd.medium),
-                );
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: theme.spacing.xl2,
+              children: [
+                for (int i = 0; i < store.showReasons.length; i += axisCount)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: theme.spacing.xl2,
+                    children: [
+                      for (int j = 0; j < axisCount; j++)
+                        if (i + j < store.showReasons.length)
+                          Expanded(
+                            child: CheckboxItem(
+                              value: selectedReasons.contains(store.showReasons[i + j]),
+                              onChanged: () =>
+                                  store.toggleRateConnectionReason(store.showReasons[i + j]),
+                              label: Text(
+                                _stringifyReason(store.showReasons[i + j]),
+                                style: theme.textStyles.textMd.medium,
+                              ),
+                            ),
+                          )
+                        else
+                          const Expanded(child: SizedBox()),
+                    ],
+                  ),
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 32),
+              padding: EdgeInsets.only(top: theme.spacing.xl2),
               child: TextField(
                 maxLines: 4,
                 onChanged: (value) => store.feedback = value,

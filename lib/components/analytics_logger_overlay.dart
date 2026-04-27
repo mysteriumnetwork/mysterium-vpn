@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsLoggerOverlay extends StatefulWidget {
@@ -67,14 +66,14 @@ class _AnalyticsLoggerOverlayState extends State<AnalyticsLoggerOverlay> {
         slivers: [
           SliverStack(
             children: [
-              SliverPositioned.fill(child: ColoredBox(color: theme.palette.backgroundColor)),
+              SliverPositioned.fill(child: ColoredBox(color: theme.palette.bgSecondary)),
               SliverSafeArea(
                 bottom: false,
                 sliver: SliverPadding(
                   padding: const EdgeInsets.only(top: 24),
                   sliver: SliverPinnedHeader(
                     child: DecoratedBox(
-                      decoration: BoxDecoration(color: theme.palette.backgroundColor),
+                      decoration: BoxDecoration(color: theme.palette.bgSecondary),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         child: Row(
@@ -180,7 +179,14 @@ class _TypeItem extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(child: EasyText(item.label, fontSize: 12, fontWeight: FontWeight.w700)),
+          Flexible(
+            child: Text(
+              item.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyles.of(context).textXs.bold,
+            ),
+          ),
         ],
       ),
     ),
@@ -195,7 +201,8 @@ class _LogsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList.separated(
     itemCount: items.length,
-    separatorBuilder: (_, _) => const Divider(thickness: 0.5, color: Palette.lightBlue, height: 0),
+    separatorBuilder: (_, _) =>
+        Divider(thickness: 0.5, color: Palette.grayPurple.shade300, height: 0),
     itemBuilder: (context, index) {
       final item = items[index];
       return _LogListItem(value: item);
@@ -225,12 +232,18 @@ class _LogListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          EasyText(
+          Text(
             [value.timestamp.formatWithDay(), value.timestamp.formatWithTime()].join(', '),
-            fontSize: 10,
-            color: theme.palette.subtitleColor,
+            style: TextStyles.of(
+              context,
+            ).textXs.regular.copyWith(fontSize: 10, color: theme.palette.textSecondary),
           ),
-          EasyText(value.message, fontWeight: FontWeight.w700, fontSize: 14, minFontSize: 14),
+          Text(
+            value.message,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyles.of(context).textSm.bold,
+          ),
         ],
       ),
       subtitle: params != null ? _ParamsView(params: params) : const SizedBox.shrink(),
@@ -262,7 +275,7 @@ class _ParamsViewState extends State<_ParamsView> {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               border: Border.all(
-                color: Palette.lightBlue,
+                color: Palette.grayPurple.shade300,
                 strokeAlign: BorderSide.strokeAlignOutside,
               ),
               borderRadius: BorderRadius.circular(6),
@@ -271,24 +284,23 @@ class _ParamsViewState extends State<_ParamsView> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  color: Palette.purple,
+                  color: Palette.brand,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: EasyText(
+                  child: AutoSizeText(
                     widget.params.keys.elementAt(i),
-                    autoSizeGroup: _group,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Palette.white,
+                    group: _group,
+                    maxLines: 1,
+                    style: TextStyles.of(context).textXs.bold.copyWith(color: Palette.white),
                   ),
                 ),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    child: EasyText(
+                    child: AutoSizeText(
                       '${widget.params.values.elementAt(i)}',
-                      autoSizeGroup: _group,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      group: _group,
+                      maxLines: 1,
+                      style: TextStyles.of(context).textXs.semibold,
                     ),
                   ),
                 ),

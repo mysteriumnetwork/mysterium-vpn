@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
 import 'package:mysterium_vpn/features/auth/views/login_view.dart';
 import 'package:mysterium_vpn/features/auth/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -36,10 +38,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) => UnauthenticatedPageView(
-    child: Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: const SafeArea(child: SignInView()),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    return UnauthenticatedPageView(
+      child: ColoredScaffold(
+        backgroundColor: palette.bgSidePanel,
+        body: const SafeArea(child: SignInView()),
+      ),
+    );
+  }
 }

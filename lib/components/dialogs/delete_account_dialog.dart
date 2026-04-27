@@ -1,19 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> shownDeleteAccountDialog(
   BuildContext context, {
@@ -22,36 +19,37 @@ Future<void> shownDeleteAccountDialog(
   required AnalyticsStore analyticsStore,
 }) async {
   analyticsStore.logEvent(AnalyticsEvent.deleteAccountPopup);
-  showModalBottomSheet(
-    clipBehavior: Clip.none,
-    constraints: const BoxConstraints.tightFor(width: double.infinity),
+  final deleted = await showDialog<bool>(
     context: context,
-    isScrollControlled: true,
-    backgroundColor: Theme.of(context).primaryColor,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-    ),
-    builder: (context) => Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: _DeleteAccountDialog(
-        authStore: authStore,
-        analyticsStore: analyticsStore,
-        vpnStore: vpnStore,
-      ),
+    builder: (context) => Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      constraints: const BoxConstraints(maxWidth: 350),
+      child: _DeleteAccountDialog(authStore: authStore, analyticsStore: analyticsStore),
     ),
   );
+  if ((deleted ?? false) && context.mounted) {
+    shownConfirmationDialog(
+      context,
+      type: AlertModalType.success,
+      title: LocaleKeys.accountSuccessfullyDeleted.tr(),
+      supportingText: LocaleKeys.redirectToLoginPage.tr(),
+      dismissible: false,
+      showCancel: false,
+      confirmText: LocaleKeys.continueBtn.tr(),
+      onConfirm: () async {
+        await vpnStore.disconnectTunnel();
+        authStore.logout();
+      },
+    );
+  }
 }
 
 class _DeleteAccountDialog extends StatefulWidget {
-  const _DeleteAccountDialog({
-    required this.authStore,
-    required this.analyticsStore,
-    required this.vpnStore,
-  });
+  const _DeleteAccountDialog({required this.authStore, required this.analyticsStore});
 
   final AuthStore authStore;
   final AnalyticsStore analyticsStore;
-  final VpnStore vpnStore;
 
   @override
   State<_DeleteAccountDialog> createState() => _DeleteAccountDialogState();
@@ -61,83 +59,59 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
   String _confirmationMessage = '';
 
   @override
-  Widget build(BuildContext context) => Stack(
-    clipBehavior: Clip.none,
-    alignment: Alignment.center,
-    children: [
-      Positioned(top: -15, child: SvgIcon(asset: Asset.icons.warning)),
-      Observer(
-        builder: (context) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            HeaderTitle(text: LocaleKeys.deleteAccountQuestion.tr()),
-            EasyText(
-              LocaleKeys.cancelYourSubsMess.tr(),
-              fontSize: 14,
-              maxLines: 3,
-              fontWeight: FontWeight.w700,
-              textAlign: TextAlign.center,
-            ).padding(bottom: 30),
-            EasyText(LocaleKeys.typeDelete.tr(), fontSize: 14, maxLines: 3).padding(bottom: 10),
-            TextField(
-              style: TextStyle(color: context.c.isDarkMode ? Palette.veryLightGrey : Palette.black),
-              decoration: InputDecoration(
-                filled: true,
-                contentPadding: const EdgeInsets.only(left: 20),
-                fillColor: Theme.of(context).colorScheme.surface,
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Palette.lightBlue),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Palette.lightBlue),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
+  Widget build(BuildContext context) {
+    final palette = Theme.of(context).palette;
+    final textStyles = Theme.of(context).textStyles;
+    return Observer(
+      builder: (context) => AlertModal(
+        type: AlertModalType.error,
+        title: LocaleKeys.deleteAccountQuestion.tr(),
+        supportingText: '${LocaleKeys.cancelYourSubsMess.tr()} ${LocaleKeys.typeDelete.tr()}',
+        input: SizedBox(
+          height: 40,
+          child: TextField(
+            onChanged: (val) => setState(() => _confirmationMessage = val),
+            autocorrect: false,
+            style: textStyles.textMd.regular.copyWith(color: palette.textPrimary),
+            onTap: () {
+              widget.analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
+            },
+            onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
+            decoration: InputDecoration(
+              hintText: LocaleKeys.typeDelete.tr(),
+              hintStyle: textStyles.textMd.regular.copyWith(color: palette.textTertiary),
+              filled: true,
+              fillColor: palette.bgPrimary,
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.kXs)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.kXs),
+                borderSide: BorderSide(color: palette.borderPrimary),
               ),
-              onChanged: (val) => setState(() => _confirmationMessage = val),
-              autocorrect: false,
-              onTap: () {
-                widget.analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
-              },
-              onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
-            ).height(40).padding(bottom: 30),
-            EasyButton(
-              useSystemColor: false,
-              width: 160,
-              color: Palette.pink,
-              onPressed:
-                  _confirmationMessage == 'DELETE' &&
-                      widget.authStore.deleteAccountFeature.status != FutureStatus.pending
-                  ? () async {
-                      widget.analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
-                      await widget.authStore.deleteAccount();
-                      if (context.mounted) {
-                        await Beamer.of(context).popRoute();
-                        shownInfoDialog(
-                          context,
-                          LocaleKeys.accountSuccessfullyDeleted.tr(),
-                          isDismissible: false,
-                          messages: [LocaleKeys.redirectToLoginPage.tr()],
-                          onConfirm: () async {
-                            await widget.vpnStore.disconnectTunnel();
-                            widget.authStore.logout();
-                          },
-                        );
-                      }
-                    }
-                  : null,
-              child: widget.authStore.deleteAccountFeature.status == FutureStatus.pending
-                  ? const LoadingIndicator(indicatorColor: Palette.white).paddingDirectional(end: 4)
-                  : EasyText(
-                      LocaleKeys.confirm.tr(),
-                      color: Palette.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.kXs),
+                borderSide: BorderSide(color: palette.borderBrand),
+              ),
             ),
-          ],
-        ).padding(horizontal: 20, vertical: 40),
+          ),
+        ),
+        primaryButton: ButtonPrimary(
+          onPressed: _confirmationMessage == 'DELETE'
+              ? () async {
+                  widget.analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
+                  await widget.authStore.deleteAccount();
+                  if (context.mounted) {
+                    Navigator.of(context).pop(true);
+                  }
+                }
+              : null,
+          loading: widget.authStore.deleteAccountFeature.status == FutureStatus.pending
+              ? const ButtonLoading()
+              : null,
+          child: Text(LocaleKeys.allowBtn.tr()),
+        ),
       ),
-    ],
-  );
+    );
+  }
 }
