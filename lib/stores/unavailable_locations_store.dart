@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -16,7 +15,6 @@ abstract class _UnavailableLocationsStore with Store, Disposeable {
         ...?locationsStore.dcLocationsFuture.value?.allLocationsFlattened,
         ...?locationsStore.residentialLocationsFuture.value?.allLocationsFlattened,
       },
-      equals: (s1, s2) => const SetEquality().equals(s1, s2),
       (available) {
         _unavailableLocations = _unavailableLocations
             .where((it) => !available.contains(it))

@@ -130,7 +130,7 @@ class _PickerItem extends StatelessWidget {
                     SizedBox(height: theme.spacing.xxs),
                     Text(
                       subtitle!,
-                      style: theme.textStyles.textXs.regular.copyWith(
+                      style: theme.textStyles.textMd.regular.copyWith(
                         color: theme.palette.textTertiary,
                       ),
                     ),

@@ -7,7 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/components/dialogs/info_dialog.dart';
+import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -91,11 +91,13 @@ class _DeleteAccountDialog extends HookWidget {
                     await authStore.deleteAccount();
                     if (context.mounted) {
                       await Beamer.of(context).popRoute();
-                      shownInfoDialog(
+                      shownConfirmationDialog(
                         context,
-                        LocaleKeys.accountSuccessfullyDeleted.tr(),
-                        isDismissible: false,
-                        messages: [LocaleKeys.redirectToLoginPage.tr()],
+                        title: LocaleKeys.accountSuccessfullyDeleted.tr(),
+                        dismissible: false,
+                        showCancel: false,
+                        content: Text(LocaleKeys.redirectToLoginPage.tr()),
+                        confirmText: LocaleKeys.continueBtn.tr(),
                         onConfirm: () async {
                           await vpnStore.disconnectTunnel();
                           authStore.logout();

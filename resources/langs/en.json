@@ -41,8 +41,6 @@
   "cancelBtn": "Cancel",
   "cancelMyAccount": "Account deletion",
   "cancelSubscriptionBtn": "Cancel Subscription",
-  "cancelSurveyFeedbackHint": "Type your feedback here...",
-  "cancelSurveyTitle": "Sorry to hear that. What was the issue?",
   "cancelYourSubsMess": "Cancel your subscription on the App Store subscriptions before deleting your account.",
   "changeSubPlan": "Change subscription plan",
   "checkingEmaillCommunicationsApproval": "Checking Email communication status...",
@@ -56,7 +54,6 @@
   "closeBtn": "Close",
   "confirm": "Confirm",
   "connect": "Connect",
-  "connectBestServer": "Connect to the best server",
   "connected": "Connected",
   "connecting": "Connecting",
   "connectingInProggress": "Connecting in progress.. Please wait until the connection is established.",
@@ -177,10 +174,6 @@
     "one": "{} City",
     "other": "{} Cities"
   },
-  "locationItemNodeCount": {
-    "one": "{} Server",
-    "other": "{} Servers"
-  },
   "locationUnavailableAction": "Connect to nearest IP",
   "locationUnavailableSubtitle": "Connect to the nearest IP - or choose it manually",
   "locationUnavailableTitle": "{} is not available",
@@ -232,7 +225,6 @@
   "openEmailApp": "Open Email App",
   "or": "OR",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "Or select country manually",
   "otherReason": "Other...",
   "paymentMethod": "Payment Method: {method}",
   "pendingTransactionMessage": "You already have an ongoing payment transaction. Please complete it before starting a new one.",
@@ -286,8 +278,6 @@
   "pushNotificationsPermissionPoint2": "• Account and Service activity alerts",
   "questions": "Questions?",
   "rateConnection": "How is your connection?",
-  "rateConnectionDislike": "Sorry to hear that! What was the issue?",
-  "rateConnectionLike": "Glad to hear that! What did you like?",
   "readOur": "Read our ",
   "recentLocations": "Recent locations",
   "reconnectBtn": "Reconnect",
@@ -394,7 +384,6 @@
   "upload": "Upload",
   "userIntentBestSpeed": "Best speed",
   "userIntentBestSpeedDesc": "Connect to the fastest available server for optimal performance",
-  "userIntentLabel": "Select speciality server",
   "userIntentLowLatency": "Low latency",
   "userIntentLowLatencyDesc": "Automatically connects you to the closest server for stable and reliable access",
   "userIntentMaxPrivacy": "Max privacy",
@@ -488,7 +477,6 @@
     "one": "{statesNum} State",
     "other": "{statesNum} States"
   },
-  "switchToLocationBtn": "Switch to {switchLocation}",
   "redeemDiscountCode": "Redeem discount code",
   "couponCodeCopied": "{couponCode} copied to clipboard!",
   "marketingConsentPopupTitle": "Stay updated by email",
@@ -522,5 +510,21 @@
   "settingManageBtn": "Manage",
   "noneLbl": "None",
   "malwareLbl": "Malware",
-  "nsfwLbl": "NSFW & Malware"
+  "nsfwLbl": "NSFW & Malware",
+  "userIntentLabel": "Speciality server",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "What did you like?",
+  "rateConnectionDislike": "What didn’t you like?",
+  "cancelSurveyFeedbackHint": "Please enter more details...",
+  "switchToLocationBtn": "Switch to {}",
+  "noActiveSubsDesc": "You have no active subscription",
+  "fastLabel": "Fast",
+  "batterySaverLabel": "Battery saver",
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Reasons for cancelling",
+  "connectBestServer": "Best server",
+  "orSelectCountryManually": "We'll connect you to the best server - or you can manually select a country."
 }

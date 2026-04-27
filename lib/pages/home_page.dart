@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
+import 'package:mysterium_vpn_design/styles/styles.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -40,7 +41,7 @@ class HomePage extends HookConsumerWidget {
               desktop: (BuildContext context) => const HomeDesktopView(),
             ),
             if (isLoading)
-              Positioned.fill(child: LoadingBarrier(color: Theme.of(context).primaryColor)),
+              Positioned.fill(child: LoadingBarrier(color: Theme.of(context).palette.bgPopover)),
           ],
         ),
       ),

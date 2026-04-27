@@ -24,6 +24,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
 
     ref.read(homeStateProvider).scrollController = scrollController;
     final pallete = Theme.of(context).palette;
+    final spacing = Theme.of(context).spacing;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: pallete.bgSidePanel,
@@ -55,14 +56,24 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     backgroundColor: pallete.bgSidePanel,
                     actions: [
                       IconButton(
-                        icon: const Icon(UntitledUI.message_question_square),
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(32, 32),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        icon: const Icon(UntitledUI.message_question_square, size: 24),
                         onPressed: () => handleOnSupportPage(
                           context: context,
                           analyticsStore: ref.read(analyticsStorePOD),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(UntitledUI.settings_01),
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(32, 32),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        icon: const Icon(UntitledUI.settings_01, size: 24),
                         onPressed: () {
                           analyticsStore.logEvent(AnalyticsEvent.openSettings);
                           context.beamToNamed(Routes.settings.path);
@@ -70,9 +81,9 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(32, 0, 32, 16),
-                    child: LocationsSearch(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
+                    child: const LocationsSearch(),
                   ),
                 ],
               ),

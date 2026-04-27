@@ -2,9 +2,9 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> shownConfirmationDialog(
   BuildContext context, {
@@ -14,6 +14,7 @@ Future<void> shownConfirmationDialog(
   Widget? icon,
   VoidCallback? onCancel,
   bool dismissible = true,
+  bool showCancel = true,
   String? confirmText,
   String? cancelText,
 }) => showDialog(
@@ -27,6 +28,7 @@ Future<void> shownConfirmationDialog(
     confirmText: confirmText,
     cancelText: cancelText,
     onCancel: onCancel,
+    showCancel: showCancel,
   ),
 );
 
@@ -36,6 +38,7 @@ class _ConfirmDialog extends StatelessWidget {
     required this.content,
     required this.onConfirm,
     required this.icon,
+    required this.showCancel,
     this.confirmText,
     this.cancelText,
     this.onCancel,
@@ -45,34 +48,34 @@ class _ConfirmDialog extends StatelessWidget {
   final Widget? icon;
   final VoidCallback onConfirm;
   final VoidCallback? onCancel;
+  final bool showCancel;
   final String? confirmText;
   final String? cancelText;
   @override
   Widget build(BuildContext context) => AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-    surfaceTintColor: Palette.white,
     titlePadding: EdgeInsets.only(top: icon != null ? 4 : 30, left: 16, right: 16, bottom: 8),
     contentPadding: const EdgeInsets.only(top: 4, bottom: 16, left: 16, right: 16),
     insetPadding: const EdgeInsets.symmetric(horizontal: 15),
     iconPadding: const EdgeInsets.only(top: 16, bottom: 8),
-    backgroundColor: Palette.white,
     actionsAlignment: MainAxisAlignment.spaceAround,
     icon: icon,
     title: Text(
       title,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Palette.black),
+      style: Theme.of(context).textTheme.headlineSmall,
       textAlign: TextAlign.center,
     ),
     actions: [
-      TextButton(
-        style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Palette.lightBlack)),
-        child: Text(cancelText ?? LocaleKeys.no.tr()),
-        onPressed: () {
-          Navigator.pop(context);
-          onCancel?.call();
-        },
-      ),
-      TextButton(
+      if (showCancel)
+        ButtonTertiary(
+          decoration: ButtonDecoration(foregroundColor: Theme.of(context).palette.textTertiary),
+          child: Text(cancelText ?? LocaleKeys.no.tr()),
+          onPressed: () {
+            Navigator.pop(context);
+            onCancel?.call();
+          },
+        ),
+      ButtonTertiary(
         child: Text(confirmText ?? LocaleKeys.yes.tr()),
         onPressed: () {
           Navigator.pop(context);

@@ -39,7 +39,7 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
             style: theme.textStyles.displayXlg.semibold.copyWith(
               color: theme.palette.textSecondary,
             ),
-          ).padding(horizontal: theme.spacing.xl3, bottom: theme.spacing.lg),
+          ).padding(horizontal: theme.spacing.xl3, bottom: theme.spacing.xl3),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),

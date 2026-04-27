@@ -17,8 +17,8 @@ dependencies:
   circle_flags: 5.0.1
   clipboard:
     git:
-        url: https://github.com/samuelezedi/flutter_clipboard.git
-        ref: 6f8dce7b71396b713ab3d71cb20a04967c5458fd
+      url: https://github.com/samuelezedi/flutter_clipboard.git
+      ref: 6f8dce7b71396b713ab3d71cb20a04967c5458fd
   collection: 1.19.1
   configcat_client: 4.1.1
   connectivity_plus: 6.1.5
@@ -76,7 +76,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.9
+      ref: 0.0.11
   onesignal_flutter: 5.4.5
   open_mail_app:
     git:
@@ -158,7 +158,7 @@ flutter:
     - resources/langs/
     - assets/google_fonts/
     - assets/data/
-    # BEGIN auto-generated assets
+     # BEGIN auto-generated assets
     - assets/map_tiles/light/
     - assets/map_tiles/light/4/
     - assets/map_tiles/light/4/9/
@@ -177,7 +177,15 @@ flutter:
     - assets/map_tiles/light/4/13/
     - assets/map_tiles/light/4/5/
     - assets/map_tiles/light/4/14/
-    - assets/map_tiles/light/4/15/
+    - assets/map_tiles/light/3/
+    - assets/map_tiles/light/3/0/
+    - assets/map_tiles/light/3/7/
+    - assets/map_tiles/light/3/6/
+    - assets/map_tiles/light/3/1/
+    - assets/map_tiles/light/3/4/
+    - assets/map_tiles/light/3/3/
+    - assets/map_tiles/light/3/2/
+    - assets/map_tiles/light/3/5/
     - assets/map_tiles/dark/
     - assets/map_tiles/dark/4/
     - assets/map_tiles/dark/4/9/
@@ -196,7 +204,15 @@ flutter:
     - assets/map_tiles/dark/4/13/
     - assets/map_tiles/dark/4/5/
     - assets/map_tiles/dark/4/14/
-    - assets/map_tiles/dark/4/15/
+    - assets/map_tiles/dark/3/
+    - assets/map_tiles/dark/3/0/
+    - assets/map_tiles/dark/3/7/
+    - assets/map_tiles/dark/3/6/
+    - assets/map_tiles/dark/3/1/
+    - assets/map_tiles/dark/3/4/
+    - assets/map_tiles/dark/3/3/
+    - assets/map_tiles/dark/3/2/
+    - assets/map_tiles/dark/3/5/
     # END auto-generated assets
 
 patrol:
@@ -209,5 +225,5 @@ patrol:
     bundle_id: com.mysteriumvpn.test
 
 easy_localization_sheet:
-  csv_url: 'https://docs.google.com/spreadsheets/d/1_rcGKCSnaBzF-dHnow53aBxBu_av_jhLS-x0HGeY5tE/export?format=csv&gid=216784309'
-  output_dir: 'resources/langs' # Optional, default is assets
+  csv_url: "https://docs.google.com/spreadsheets/d/1_rcGKCSnaBzF-dHnow53aBxBu_av_jhLS-x0HGeY5tE/export?format=csv&gid=216784309"
+  output_dir: "resources/langs" # Optional, default is assets

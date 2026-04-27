@@ -37,7 +37,7 @@ class LocationsHorizontalList extends HookWidget {
         itemCount: items.length,
         controller: scrollController,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, _) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.ms),
         itemBuilder: (_, index) {
           final item = items[index];
           final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
@@ -79,10 +79,11 @@ class _Container extends HookWidget {
       child = HorizontalScrollIndicator(controller: scrollController, child: child);
     }
 
+    final spacing = Theme.of(context).spacing;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16,
+      spacing: spacing.md,
       children: [
         Text(
           title,

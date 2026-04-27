@@ -65,7 +65,7 @@ class _List extends StatelessWidget {
       clipBehavior: hasIndicator ? Clip.hardEdge : Clip.none,
       scrollDirection: Axis.horizontal,
       itemCount: items?.length ?? UserIntent.values.length,
-      separatorBuilder: (_, _) => const SizedBox(width: 8),
+      separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.s),
       itemBuilder: (context, index) {
         if (items == null) {
           final theme = Theme.of(context);
