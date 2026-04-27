@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:mysterium_vpn/features/auth/views/login_form.dart';
 import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -23,7 +24,7 @@ class SignInView extends StatelessWidget {
             ],
           ),
           if (authStore.authenticateFeature?.status == FutureStatus.pending)
-            LoadingBarrier(color: Theme.of(context).primaryColor),
+            LoadingBarrier(color: Theme.of(context).palette.bgPopover),
         ],
       ),
     );

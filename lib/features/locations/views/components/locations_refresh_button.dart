@@ -11,12 +11,14 @@ class LocationsRefreshButton extends StatefulWidget {
     this.outlinedButton = false,
     this.minimumSize = const Size(100, 36),
     this.textScaleGroup,
+    this.borderRadius,
     super.key,
   });
 
   final bool outlinedButton;
   final Size minimumSize;
   final AutoSizeGroup? textScaleGroup;
+  final BorderRadius? borderRadius;
 
   @override
   State<LocationsRefreshButton> createState() => _LocationsRefreshButtonState();
@@ -37,27 +39,13 @@ class _LocationsRefreshButtonState extends State<LocationsRefreshButton> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final decoration = ButtonDecoration(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      minimumSize: widget.minimumSize,
-    );
-    final child = AutoSizeText(LocaleKeys.refresh.tr(), group: widget.textScaleGroup);
-    if (widget.outlinedButton) {
-      return ButtonSecondary(
-        size: ButtonSize.small,
-        decoration: decoration,
-        loading: _isRefreshing ? const ButtonLoading() : null,
-        onPressed: _isRefreshing ? null : _handleRefresh,
-        child: child,
-      );
-    }
-    return ButtonPrimary(
-      size: ButtonSize.small,
-      decoration: decoration,
-      loading: _isRefreshing ? const ButtonLoading() : null,
-      onPressed: _isRefreshing ? null : _handleRefresh,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => ButtonSecondary(
+    size: ButtonSize.small,
+    decoration: ButtonDecoration(
+      padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.md),
+    ),
+    loading: _isRefreshing ? const ButtonLoading() : null,
+    onPressed: _isRefreshing ? null : _handleRefresh,
+    child: Text(LocaleKeys.refresh.tr()),
+  );
 }

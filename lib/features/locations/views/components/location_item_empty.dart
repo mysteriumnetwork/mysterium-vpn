@@ -41,7 +41,11 @@ class LocationItemEmpty extends StatelessWidget {
                 style: theme.textStyles.textSm.medium,
               ),
             ),
-            const LocationsRefreshButton(minimumSize: Size(100, 38), outlinedButton: true),
+            LocationsRefreshButton(
+              minimumSize: const Size(100, 38),
+              borderRadius: BorderRadius.circular(10),
+              outlinedButton: true,
+            ),
           ],
         ),
       ),

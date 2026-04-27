@@ -100,12 +100,22 @@ class _HomeDesktopLeftPanelState extends State<HomeDesktopLeftPanel> with Widget
                     backgroundColor: palette.bgSidePanel,
                     actions: [
                       IconButton(
-                        icon: const Icon(UntitledUI.message_question_square),
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(32, 32),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        icon: const Icon(UntitledUI.message_question_square, size: 24),
                         onPressed: () =>
                             handleOnSupportPage(context: context, analyticsStore: _analyticsStore),
                       ),
                       IconButton(
-                        icon: const Icon(UntitledUI.settings_01),
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(32, 32),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        icon: const Icon(UntitledUI.settings_01, size: 24),
                         onPressed: () {
                           _analyticsStore.logEvent(AnalyticsEvent.openSettings);
                           context.beamToNamed(Routes.settings.path);
@@ -113,9 +123,14 @@ class _HomeDesktopLeftPanelState extends State<HomeDesktopLeftPanel> with Widget
                       ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(32, 0, 32, 16),
-                    child: LocationsSearch(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      Theme.of(context).spacing.xl3,
+                      Theme.of(context).spacing.s,
+                      Theme.of(context).spacing.xl3,
+                      Theme.of(context).spacing.xl3,
+                    ),
+                    child: const LocationsSearch(),
                   ),
                 ],
               ),

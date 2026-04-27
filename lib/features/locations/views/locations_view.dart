@@ -130,7 +130,7 @@ class _Body extends StatelessWidget {
             : screenType >= ScreenType.tablet
             ? theme.spacing.xl3
             : 0.0;
-        final sectionGap = screenType >= ScreenType.tablet ? theme.spacing.xl3 : theme.spacing.md;
+        final sectionGap = screenType >= ScreenType.tablet ? theme.spacing.xl3 : theme.spacing.xl3;
 
         if (future.value != null) {
           return MultiSliver(
@@ -157,7 +157,7 @@ class _Body extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   sliver: const _UserIntent(),
                 ),
-              if (showUserIntents) const SizedBox(height: 20),
+              if (showUserIntents) SizedBox(height: theme.spacing.xl),
               _Locations(
                 locations: locations,
                 topLocations: topLocations,
@@ -170,10 +170,10 @@ class _Body extends StatelessWidget {
         }
         if (future.status == FutureStatus.pending) {
           return MultiSliver(
-            children: const [
-              RecentLocationsLoading(),
-              SizedBox(height: 24),
-              LocationsSliverLoading(),
+            children: [
+              const RecentLocationsLoading(),
+              SizedBox(height: theme.spacing.xl2),
+              const LocationsSliverLoading(),
             ],
           );
         }
@@ -328,7 +328,8 @@ class _LocationsState extends State<_Locations> {
   @override
   Widget build(BuildContext context) {
     final screenType = ScreenType.of(context);
-    final innerHorizontalPadding = screenType >= ScreenType.tablet ? 32.0 : 0.0;
+    final theme = Theme.of(context);
+    final innerHorizontalPadding = screenType >= ScreenType.tablet ? theme.spacing.xl3 : 0.0;
 
     return Observer(
       builder: (context) {
@@ -359,7 +360,10 @@ class _LocationsState extends State<_Locations> {
                     child: LocationsContainer(key: locationsKey, locationType: widget.locationType),
                   ),
                   SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: innerHorizontalPadding, vertical: 20),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: innerHorizontalPadding,
+                      vertical: Theme.of(context).spacing.md,
+                    ),
                     sliver: MultiSliver(
                       children: [
                         switch (widget.locationType) {

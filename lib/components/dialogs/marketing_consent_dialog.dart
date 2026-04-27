@@ -34,7 +34,6 @@ class _DialogContentState extends State<_DialogContent> {
   @override
   Widget build(BuildContext context) {
     final screenType = ScreenType.of(context);
-    final palette = Theme.of(context).palette;
     return Observer(
       builder: (context) {
         final isLoading =
@@ -67,11 +66,6 @@ class _DialogContentState extends State<_DialogContent> {
               setState(() => _lastClickedConsent = false);
               _updateMarketingConsent(context, consent: false);
             },
-            decoration: ButtonDecoration(
-              borderColor: palette.borderBrandSecondary,
-              foregroundColor: palette.textSecondary,
-              decorationColor: Palette.white,
-            ),
             loading: isLoading && _lastClickedConsent == false ? const ButtonLoading() : null,
             child: Text(LocaleKeys.notNowBtn.tr()),
           ),

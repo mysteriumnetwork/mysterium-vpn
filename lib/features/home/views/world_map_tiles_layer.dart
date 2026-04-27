@@ -28,7 +28,7 @@ class WorldMapTilesLayer extends StatelessWidget {
             TileLayer(
               urlTemplate: 'assets/map_tiles/$brightnessName/{z}/{x}/{y}.png',
               tileProvider: AssetTileProvider(),
-              minNativeZoom: 4,
+              minNativeZoom: 3,
               maxNativeZoom: 4,
               tileBounds: kWorldBounds,
             ),

@@ -100,7 +100,7 @@ class _HomeMobileViewState extends State<HomeMobileView> {
     return LayoutBuilder(
       builder: (context, layoutConstraints) => Observer(
         builder: (context) {
-          final bottomOffset = MediaQuery.paddingOf(context).bottom + 16;
+          final bottomOffset = MediaQuery.paddingOf(context).bottom + theme.spacing.md;
           final minHeight = (_vpnStore.isConnected ? 300.0 : 200.0) + bottomOffset;
           final constraints = layoutConstraints.copyWith(
             maxHeight: max(
@@ -141,14 +141,24 @@ class _HomeMobileViewState extends State<HomeMobileView> {
                             showBackButton: false,
                             actions: [
                               IconButton(
-                                icon: const Icon(UntitledUI.message_question_square),
+                                style: IconButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(32, 32),
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                icon: const Icon(UntitledUI.message_question_square, size: 24),
                                 onPressed: () => handleOnSupportPage(
                                   context: context,
                                   analyticsStore: _analyticsStore,
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(UntitledUI.settings_01),
+                                style: IconButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(32, 32),
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                icon: const Icon(UntitledUI.settings_01, size: 24),
                                 onPressed: () {
                                   _analyticsStore.logEvent(AnalyticsEvent.openSettings);
                                   context.beamToNamed(Routes.settings.path);
@@ -156,9 +166,14 @@ class _HomeMobileViewState extends State<HomeMobileView> {
                               ),
                             ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
-                            child: LocationsSearch(),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              theme.spacing.md,
+                              0,
+                              theme.spacing.md,
+                              theme.spacing.ms,
+                            ),
+                            child: const LocationsSearch(),
                           ),
                         ],
                       ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/settings/views/setting_category.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_left_panel.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_right_panel.dart';
+import 'package:styled_widget/styled_widget.dart';
 
-const _initialCategory = SettingCategory.connection;
+const _initialCategory = SettingCategory.account;
 
 class _SettingCategoryScope extends InheritedWidget {
   const _SettingCategoryScope({
@@ -37,10 +38,9 @@ class _SettingsDesktopViewState extends State<SettingsDesktopView> {
   Widget build(BuildContext context) => _SettingCategoryScope(
     category: _category,
     onCategoryChanged: (cat) => setState(() => _category = cat),
-    child: const DesktopPanelsLayout(
-      leftPanel: SettingsDesktopLeftPanel(),
-      rightPanel: SettingsDesktopRightPanel(),
-    ),
+    child: const Row(
+      children: [SettingsDesktopLeftPanel(), SettingsDesktopRightPanel()],
+    ).width(getMediaWidth(context)).height(getMediaHeight(context)),
   );
 }
 

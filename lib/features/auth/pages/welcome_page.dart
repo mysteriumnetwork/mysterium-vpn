@@ -75,7 +75,7 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
             if (_authStore.authenticateFeature?.status == FutureStatus.pending)
-              LoadingBarrier(color: palette.bgPopover),
+              LoadingBarrier(color: palette.bgPopover)
           ],
         ),
       ),

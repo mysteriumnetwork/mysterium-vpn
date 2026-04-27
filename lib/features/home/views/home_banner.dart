@@ -25,7 +25,10 @@ class HomeBanner extends StatelessWidget {
 
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24),
+            padding: EdgeInsets.only(
+              left: Theme.of(context).spacing.xl2,
+              right: Theme.of(context).spacing.xl2,
+            ),
             child: Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),

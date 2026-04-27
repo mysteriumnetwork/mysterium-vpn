@@ -17,7 +17,7 @@ class VerifyEmailPage extends StatelessWidget {
         body: const SafeArea(
           child: Column(
             children: [
-              UnauthenticatedHeader(),
+              UnauthenticatedHeader(backHeader: true),
               Expanded(child: VerifyEmailView()),
             ],
           ),

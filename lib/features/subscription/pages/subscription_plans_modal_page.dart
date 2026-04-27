@@ -98,146 +98,174 @@ class _SubscriptionPlansModalPageState extends State<_SubscriptionPlansModalPage
       autoApplyPadding: false,
       showGradient: false,
       body: SubscriptionStatusContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: ModalPadding.insets(
-                  context,
-                  add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
+        child: Observer(
+          builder: (context) {
+            // Block purchase flow when subscription data is unavailable
+            if (_subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(UntitledUI.alert_circle, size: 48, color: theme.palette.textTertiary),
+                    SizedBox(height: theme.spacing.lg),
+                    Text(
+                      LocaleKeys.somethingWentWrong.tr(),
+                      textAlign: TextAlign.center,
+                      style: theme.textStyles.textMd.regular,
+                    ),
+                    SizedBox(height: theme.spacing.lg),
+                    ButtonPrimary(
+                      onPressed: _subscriptionStore.refreshSubscription,
+                      decoration: ButtonDecoration(decorationColor: theme.palette.bgBrandPrimary),
+                      child: Text(LocaleKeys.retryBtn.tr()),
+                    ),
+                  ],
                 ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: theme.spacing.xl),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-                        child: ModalHeader(
-                          title: LocaleKeys.subscriptionAllPlansTitle.tr(),
-                          titleStyle: theme.textStyles.textLg.semibold,
-                        ),
-                      ),
-                      SizedBox(height: theme.spacing.xl2),
-                      TabBar(
-                        controller: _tabController,
-                        tabs: [
-                          Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
-                          Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: ModalPadding.insets(
+                      context,
+                      add: EdgeInsets.symmetric(vertical: theme.spacing.xl),
+                    ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(height: theme.spacing.xl),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+                            child: ModalHeader(
+                              title: LocaleKeys.subscriptionAllPlansTitle.tr(),
+                              titleStyle: theme.textStyles.textLg.semibold,
+                            ),
+                          ),
+                          SizedBox(height: theme.spacing.xl2),
+                          TabBar(
+                            controller: _tabController,
+                            tabs: [
+                              Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
+                              Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
+                            ],
+                          ),
+                          Observer(
+                            builder: (context) {
+                              final monthly = _store.monthlyProducts;
+                              final annual = _store.annualProducts;
+                              final products = _tabController.index == 1 ? monthly : annual;
+                              final sorted = products.sortedByCompare(
+                                (it) => it.monthlyValue,
+                                compareNumsDesc,
+                              );
+                              return RadioGroup<PurchasableProduct>(
+                                groupValue: _selectedProduct,
+                                onChanged: (value) => setState(() => _selectedProduct = value),
+                                child: _SubscriptionPlans(
+                                  products: sorted,
+                                  allProducts: [...annual, ...monthly],
+                                  onCompareFeaturesPressed: () =>
+                                      _scrollController.scrollToKey(_tableKey),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: theme.spacing.ms),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: Icon(
+                                    UntitledUI.currency_dollar_circle,
+                                    size: 16,
+                                    color: theme.palette.textTertiary,
+                                  ),
+                                ),
+                                CharacterSpan.space(),
+                                TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                            style: theme.textStyles.textXs.regular.copyWith(
+                              color: theme.palette.textTertiary,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          Text(
+                            LocaleKeys.subscriptionAllPlansCompareAll.tr(),
+                            style: theme.textStyles.textMd.medium.copyWith(
+                              color: theme.palette.textPrimary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: theme.spacing.xl3),
+                          SubscriptionComparisonTable(
+                            key: _tableKey,
+                            onShowPlansPressed: () => _scrollController.scrollToPosition(-1),
+                          ),
                         ],
                       ),
-                      Observer(
-                        builder: (context) {
-                          final monthly = _store.monthlyProducts;
-                          final annual = _store.annualProducts;
-                          final products = _tabController.index == 1 ? monthly : annual;
-                          final sorted = products.sortedByCompare(
-                            (it) => it.monthlyValue,
-                            compareNumsDesc,
-                          );
-                          return RadioGroup<PurchasableProduct>(
-                            groupValue: _selectedProduct,
-                            onChanged: (value) => setState(() => _selectedProduct = value),
-                            child: _SubscriptionPlans(
-                              products: sorted,
-                              allProducts: [...annual, ...monthly],
-                              onCompareFeaturesPressed: () =>
-                                  _scrollController.scrollToKey(_tableKey),
-                            ),
-                          );
-                        },
-                      ),
+                    ),
+                  ),
+                ),
+                Observer(
+                  builder: (context) => ModalFooter(
+                    spacing: 0,
+                    children: [
+                      if (_subscriptionStore.canRedeemCode)
+                        ButtonTertiary(
+                          size: ButtonSize.small,
+                          decoration: ButtonDecoration(
+                            foregroundColor: theme.palette.textPrimarySelected,
+                            padding: EdgeInsets.zero,
+                          ),
+                          onPressed: () async {
+                            try {
+                              await _purchaseStore.redeemCode();
+                            } catch (e) {
+                              showError(e);
+                            }
+                          },
+                          child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                        ),
                       SizedBox(height: theme.spacing.ms),
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            WidgetSpan(
-                              child: Icon(
-                                UntitledUI.currency_dollar_circle,
-                                size: 16,
-                                color: theme.palette.textTertiary,
-                              ),
-                            ),
-                            CharacterSpan.space(),
-                            TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
-                          ],
+                      ButtonPrimary(
+                        onPressed: _handlePurchasePressed,
+                        loading: _checkoutStore.isLoading ? const ButtonLoading() : null,
+                        decoration: ButtonDecoration(
+                          decorationColor: theme.palette.bgBrandPrimary,
+                          padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
                         ),
-                        textAlign: TextAlign.center,
-                        style: theme.textStyles.textXs.regular.copyWith(
-                          color: theme.palette.textTertiary,
+                        child: Text(
+                          (_subscriptionStore.isSubscribed ?? false)
+                              ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
+                              : LocaleKeys.subscriptionAllPlansPurchase.tr(),
                         ),
                       ),
-                      const SizedBox(height: 32),
-                      Text(
-                        LocaleKeys.subscriptionAllPlansCompareAll.tr(),
-                        style: theme.textStyles.textMd.medium.copyWith(
-                          color: theme.palette.textPrimary,
+                      SizedBox(height: theme.spacing.xl),
+                      ButtonTertiary(
+                        onPressed: () => _scrollController.scrollToKey(_tableKey),
+                        decoration: ButtonDecoration(
+                          foregroundColor: theme.palette.textPrimarySelected,
+                          textStyle: theme.textStyles.textMd.semibold,
+                          padding: EdgeInsets.zero,
                         ),
-                        textAlign: TextAlign.center,
+                        child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
                       ),
-                      SizedBox(height: theme.spacing.xl3),
-                      SubscriptionComparisonTable(
-                        key: _tableKey,
-                        onShowPlansPressed: () => _scrollController.scrollToPosition(-1),
-                      ),
+                      SizedBox(height: theme.spacing.xl),
+                      const SubscriptionPrivacyAndTerms(),
                     ],
                   ),
                 ),
-              ),
-            ),
-            Observer(
-              builder: (context) => ModalFooter(
-                spacing: 0,
-                children: [
-                  if (_subscriptionStore.canRedeemCode)
-                    ButtonTertiary(
-                      size: ButtonSize.small,
-                      decoration: ButtonDecoration(
-                        foregroundColor: theme.palette.textPrimarySelected,
-                        padding: EdgeInsets.zero,
-                      ),
-                      onPressed: () async {
-                        try {
-                          await _purchaseStore.redeemCode();
-                        } catch (e) {
-                          showError(e);
-                        }
-                      },
-                      child: Text(LocaleKeys.redeemDiscountCode.tr()),
-                    ),
-                  SizedBox(height: theme.spacing.ms),
-                  ButtonPrimary(
-                    onPressed: _handlePurchasePressed,
-                    loading: _checkoutStore.isLoading ? const ButtonLoading() : null,
-                    decoration: ButtonDecoration(
-                      decorationColor: theme.palette.bgBrandPrimary,
-                      padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
-                    ),
-                    child: Text(
-                      (_subscriptionStore.isSubscribed ?? false)
-                          ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
-                          : LocaleKeys.subscriptionAllPlansPurchase.tr(),
-                    ),
-                  ),
-                  SizedBox(height: theme.spacing.xl),
-                  ButtonTertiary(
-                    onPressed: () => _scrollController.scrollToKey(_tableKey),
-                    decoration: ButtonDecoration(
-                      foregroundColor: theme.palette.textPrimarySelected,
-                      textStyle: theme.textStyles.textMd.semibold,
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
-                  ),
-                  SizedBox(height: theme.spacing.xl),
-                  const SubscriptionPrivacyAndTerms(),
-                ],
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

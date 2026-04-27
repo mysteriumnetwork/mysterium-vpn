@@ -78,7 +78,7 @@ class _LocationsMapState extends State<LocationsMap> {
 
   void _handleMove(LatLng point) {
     final zoom = _controller.camera.zoom;
-    var offset = Offset.zero;
+    var offset = const Offset(0, -30);
     final screenType = ScreenType.of(context);
     if (screenType == ScreenType.mobile) {
       offset = switch (HomeStateScope.read(context).panelState) {

@@ -46,7 +46,7 @@ class _LocationsHorizontalListState extends State<LocationsHorizontalList> {
       itemCount: widget.items.length,
       controller: _scrollController,
       scrollDirection: Axis.horizontal,
-      separatorBuilder: (_, _) => const SizedBox(width: 12),
+      separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.ms),
       itemBuilder: (_, index) {
         final item = widget.items[index];
         final isConnected =
@@ -92,7 +92,7 @@ class _Container extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16,
+      spacing: Theme.of(context).spacing.md,
       children: [
         Text(
           title,

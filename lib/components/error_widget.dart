@@ -43,9 +43,8 @@ class _RetryOnErrorWidgetState extends State<RetryOnErrorWidget> {
           textAlign: TextAlign.center,
         ).padding(bottom: 20),
         ButtonPrimary(
-          decoration: ButtonDecoration(decorationColor: theme.palette.borderError),
           loading: _isLoading ? const ButtonLoading() : null,
-          onPressed: _isLoading ? null : _handleRetry,
+          onPressed: _handleRetry,
           child: Text(LocaleKeys.tryAgainBtn.tr()),
         ),
       ],

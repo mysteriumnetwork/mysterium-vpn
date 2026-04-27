@@ -367,16 +367,9 @@ class _DevProtocolLabel extends StatelessWidget {
     return Observer(
       builder: (context) => Align(
         alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Text(
-            'Protocol: ${vpnProtocol.protocol.name}',
-            style: TextStyle(
-              fontSize: 8,
-              color: palette.textSecondary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+        child: Text(
+          'Protocol: ${vpnProtocol.protocol.name}',
+          style: TextStyle(fontSize: 8, color: palette.textSecondary, fontWeight: FontWeight.w800),
         ),
       ),
     );

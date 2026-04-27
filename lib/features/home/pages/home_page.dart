@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                 desktop: (BuildContext context) => const HomeDesktopView(),
               ),
               if (isLoading)
-                Positioned.fill(child: LoadingBarrier(color: Theme.of(context).primaryColor)),
+               LoadingBarrier(color: Theme.of(context).primaryColor),
             ],
           );
         },

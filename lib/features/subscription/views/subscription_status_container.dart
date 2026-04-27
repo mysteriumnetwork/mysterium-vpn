@@ -127,21 +127,34 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
       return;
     }
 
-    void showDialog() {
-      shownConfirmationDialog(
+    void showExistingSubscriptionDialog() {
+      showModal(
         context,
-        confirmText: LocaleKeys.logout.tr(),
-        cancelText: LocaleKeys.stayButton.tr(),
-        dismissible: false,
-        supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
-
-        title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
-        onConfirm: () => GetIt.I<AuthStore>().logout(),
+        allowDismiss: false,
+        builder: (context) => Padding(
+          padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.xl3),
+          child: AlertModal(
+            type: AlertModalType.warning,
+            title: LocaleKeys.existingSubscriptionTitle.tr(),
+            supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
+            primaryButton: ButtonPrimary(
+              onPressed: () {
+                Navigator.of(context).pop();
+                GetIt.I<AuthStore>().logout();
+              },
+              child: Text(LocaleKeys.logout.tr()),
+            ),
+            secondaryButton: ButtonSecondary(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(LocaleKeys.stayButton.tr()),
+            ),
+          ),
+        ),
       );
     }
 
     if (mounted) {
-      Future.microtask(showDialog);
+      Future.microtask(showExistingSubscriptionDialog);
     }
   }
 
@@ -168,14 +181,15 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
       if (isLoading) {
         return LoadingIndicator.message(
           LocaleKeys.connectingToPaymentProcesor.tr(),
-        ).padding(top: 36);
+          color: theme.palette.iconBrandSecondary,
+        ).center();
       } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
         return RetryOnErrorWidget(
           error: (products?.isEmpty ?? true)
               ? LocaleKeys.productsNotAvailable.tr()
               : LocaleKeys.unableToConnectToPaymentProcesor.tr(),
           onRetry: _refreshAll,
-        ).padding(top: 36);
+        ).center();
       }
 
       return Stack(
