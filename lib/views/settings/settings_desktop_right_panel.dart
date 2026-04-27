@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/banners/promotional_banner.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/version_update_setting.dart';

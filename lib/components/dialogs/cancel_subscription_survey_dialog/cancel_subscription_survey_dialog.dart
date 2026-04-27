@@ -14,8 +14,8 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:reactive_forms/reactive_forms.dart';
 
-part 'cancel_subscription_survey_dialog/form.dart';
-part 'cancel_subscription_survey_dialog/reasons_field.dart';
+part 'form.dart';
+part 'reasons_field.dart';
 
 Future<bool?> showCancelSubscriptionSurveyDialog(BuildContext context) async =>
     showBottomSheetDialog<bool?>(

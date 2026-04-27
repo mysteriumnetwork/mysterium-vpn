@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/screen_type.dart';
-import 'package:mysterium_vpn/components/easy_dropdown.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
-import 'package:mysterium_vpn/components/picker_bottom_sheet.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, ScreenType;
+import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 /// A settings card that shows an [EasyDropdown] on desktop and opens a
 /// [showPickerBottomSheet] on mobile. Handles the desktop/mobile presentation

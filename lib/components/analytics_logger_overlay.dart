@@ -4,9 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn_design/styles/typography/text_styles.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsLoggerOverlay extends HookConsumerWidget {
@@ -165,7 +165,14 @@ class _TypeItem extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(child: EasyText(item.label, fontSize: 12, fontWeight: FontWeight.w700)),
+          Flexible(
+            child: Text(
+              item.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyles.of(context).textXs.bold,
+            ),
+          ),
         ],
       ),
     ),
@@ -210,12 +217,18 @@ class _LogListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          EasyText(
+          Text(
             [value.timestamp.formatWithDay(), value.timestamp.formatWithTime()].join(', '),
-            fontSize: 10,
-            color: theme.palette.subtitleColor,
+            style: TextStyles.of(
+              context,
+            ).textXs.regular.copyWith(fontSize: 10, color: theme.palette.subtitleColor),
           ),
-          EasyText(value.message, fontWeight: FontWeight.w700, fontSize: 14, minFontSize: 14),
+          Text(
+            value.message,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyles.of(context).textSm.bold,
+          ),
         ],
       ),
       subtitle: params != null ? _ParamsView(params: params) : const SizedBox.shrink(),
@@ -253,22 +266,21 @@ class _ParamsView extends HookWidget {
                   Container(
                     color: Palette.purple,
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    child: EasyText(
+                    child: AutoSizeText(
                       params.keys.elementAt(i),
-                      autoSizeGroup: group,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Palette.white,
+                      group: group,
+                      maxLines: 1,
+                      style: TextStyles.of(context).textXs.bold.copyWith(color: Palette.white),
                     ),
                   ),
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      child: EasyText(
+                      child: AutoSizeText(
                         '${params.values.elementAt(i)}',
-                        autoSizeGroup: group,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        group: group,
+                        maxLines: 1,
+                        style: TextStyles.of(context).textXs.semibold,
                       ),
                     ),
                   ),

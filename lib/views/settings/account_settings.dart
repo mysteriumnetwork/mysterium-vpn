@@ -10,17 +10,12 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/delete_account_dialog.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 class AccountSettings extends HookConsumerWidget {
   const AccountSettings({super.key});
@@ -129,16 +124,10 @@ class _Authenticated extends HookConsumerWidget {
         context,
         confirmText: LocaleKeys.confirm.tr(),
         cancelText: LocaleKeys.cancelBtn.tr(),
-        icon: SvgIcon(asset: Asset.icons.warning),
         title: LocaleKeys.logoutConfirmationTitle.tr(),
-        content: Text(
-          vpnStore.isConnected
-              ? LocaleKeys.logoutVPNConnectedDesc.tr()
-              : LocaleKeys.logoutConfirmationDesc.tr(),
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          maxLines: 5,
-          textAlign: TextAlign.center,
-        ),
+        supportingText: vpnStore.isConnected
+            ? LocaleKeys.logoutVPNConnectedDesc.tr()
+            : LocaleKeys.logoutConfirmationDesc.tr(),
         onConfirm: () async {
           analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
           await vpnStore.disconnectTunnel();

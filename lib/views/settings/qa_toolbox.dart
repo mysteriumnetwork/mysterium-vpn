@@ -6,21 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
-import 'package:mysterium_vpn/components/analytics_user_properties_overlay.dart';
-import 'package:mysterium_vpn/components/dialogs/device_limit_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/marketing_consent_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/push_notifications_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Palette, ScreenType;
 
 class QAToolbox extends HookConsumerWidget {
   const QAToolbox({super.key});
@@ -62,7 +56,7 @@ class QAToolbox extends HookConsumerWidget {
         _ExpandableSection(
           title: 'UI Testing',
           icon: Icons.visibility,
-          children: [_buildDialogTestActions(context, ref)],
+          children: [_buildSnackbarTestActions(), _buildDialogTestActions(context, ref)],
         ),
         const SizedBox(height: 36),
       ],
@@ -246,6 +240,42 @@ class QAToolbox extends HookConsumerWidget {
     ],
   );
 
+  Widget _buildSnackbarTestActions() => _QAActionItem(
+    icon: Icons.notifications_active,
+    title: 'Test snackbars',
+    subtitle: 'Show all snackbar type variants',
+    actions: [
+      _QAActionButton(
+        label: 'Info',
+        onPressed: () => showSnackbar('Info snackbar message', type: SnackbarType.info),
+      ),
+      _QAActionButton(
+        label: 'Brand',
+        onPressed: () => showSnackbar('Brand snackbar message', type: SnackbarType.brand),
+      ),
+      _QAActionButton(
+        label: 'Success',
+        onPressed: () => showSnackbar('Success snackbar message', type: SnackbarType.success),
+      ),
+      _QAActionButton(
+        label: 'Warning',
+        onPressed: () => showSnackbar('Warning snackbar message', type: SnackbarType.warning),
+      ),
+      _QAActionButton(label: 'Error', onPressed: () => showSnackbar('Error snackbar message')),
+      _QAActionButton(
+        label: 'With Action',
+        onPressed: () => showSnackbar(
+          'Snackbar with action button',
+          type: SnackbarType.info,
+          action: IconButton(
+            icon: const Icon(Icons.close, size: 16),
+            onPressed: () => showSnackbar('Action tapped', type: SnackbarType.success),
+          ),
+        ),
+      ),
+    ],
+  );
+
   Widget _buildDialogTestActions(BuildContext context, WidgetRef ref) => Column(
     children: [
       _QAActionItem(
@@ -256,18 +286,6 @@ class QAToolbox extends HookConsumerWidget {
           _QAActionButton(
             label: 'Marketing Consent',
             onPressed: () => showMarketingConsentDialog(context),
-          ),
-          _QAActionButton(
-            label: 'Retry Subscription Verification',
-            onPressed: () => showRetryDialog(
-              context: context,
-              asset: Asset.icons.subscription,
-              title: LocaleKeys.subscriptionVerificationFailed.tr(),
-              subtitle: LocaleKeys.failedToVerifySubs.tr(),
-              dismissText: LocaleKeys.cancelBtn.tr(),
-              onDismiss: () => Navigator.of(context).pop(),
-              onRetry: () => Navigator.of(context).pop(),
-            ),
           ),
           _QAActionButton(label: 'Device Limit', onPressed: () => showDeviceLimitDialog(context)),
           _QAActionButton(
@@ -345,12 +363,11 @@ class QAToolbox extends HookConsumerWidget {
 
         showSnackbar(
           'Log preview (from ${foundPath.split(r'\').last}):\n$logPreview',
-          action: SnackBarAction(
-            textColor: Palette.black,
-            label: LocaleKeys.copyBtn.tr(),
+          action: IconButton(
+            icon: const Icon(Icons.copy, size: 16),
             onPressed: () => FlutterClipboard.copy(
               logs,
-            ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: MessageType.success)),
+            ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: SnackbarType.success)),
           ),
         );
       } else {

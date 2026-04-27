@@ -9,12 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Palette, Radius;
 
 /// Overlay for [NetworkLoggerButton].
 class NetworkLoggerOverlay extends StatefulWidget {
@@ -228,7 +227,7 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
             onPressed: _press,
             backgroundColor: widget.color,
             child: isLoading
-                ? const LoadingIndicator(indicatorColor: Colors.white)
+                ? const LoadingIndicator(color: Colors.white)
                 : const Icon(Icons.cloud, color: Colors.white),
           ),
         );
@@ -250,7 +249,10 @@ class NetworkLoggerScreen extends StatefulWidget {
     context,
     MaterialPageRoute(
       settings: const RouteSettings(name: 'network_logger'),
-      builder: (context) => NetworkLoggerScreen(eventList: eventList),
+      builder: (context) => Theme(
+        data: DesignSystemTheme.of(context),
+        child: NetworkLoggerScreen(eventList: eventList),
+      ),
     ),
   );
 
@@ -265,37 +267,40 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final textStyles = theme.textStyles;
     final events = _query.isEmpty
         ? widget.eventList.events
         : widget.eventList.events
               .where((it) => it.request.uri.toLowerCase().contains(_query))
               .toList();
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: palette.bgPrimary,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: Navigator.of(context).pop,
-          color: Theme.of(context).textTheme.bodyLarge?.color,
+          color: palette.textPrimary,
         ),
         forceMaterialTransparency: true,
-        title: const EasyText('Network Logs'),
+        title: Text('Network Logs', style: textStyles.textLg.semibold),
         actions: <Widget>[
           _ActionButton(
             onTap: () => _ConfigPage.show(context: context),
-            child: const Icon(Icons.settings, color: Colors.amber),
+            child: Icon(Icons.settings, color: palette.textWarningPrimary),
           ),
           _ActionButton(
             onTap: () => _DeviceInfo.show(context: context),
-            child: const Icon(Icons.info_outline, color: Colors.amber),
+            child: Icon(Icons.info_outline, color: palette.textWarningPrimary),
           ),
           _ActionButton(
             onTap: () => _SecuredStorageValues.show(context: context),
-            child: const Icon(Icons.key, color: Colors.amber),
+            child: Icon(Icons.key, color: palette.textWarningPrimary),
           ),
           _ActionButton(
             onTap: widget.eventList.clear,
-            child: const Icon(Icons.delete, color: Colors.amber),
+            child: Icon(Icons.delete, color: palette.textWarningPrimary),
           ),
         ],
       ),
@@ -315,11 +320,11 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
               autocorrect: false,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search, color: Colors.black26),
+                prefixIcon: Icon(Icons.search, color: palette.textTertiary),
                 suffix: ValueListenableBuilder<TextEditingValue>(
                   valueListenable: searchController,
                   builder: (context, value, child) => value.text.isNotEmpty
-                      ? EasyText('${events.length} results')
+                      ? Text('${events.length} results', style: textStyles.textSm.regular)
                       : const SizedBox(),
                 ),
                 hintText: 'enter keyword to search',
@@ -334,29 +339,29 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
                     key: ValueKey(item.request),
                     title: Row(
                       children: [
-                        EasyText(item.request.method, fontWeight: FontWeight.bold),
+                        Text(item.request.method, style: textStyles.textSm.bold),
                         const SizedBox(width: 4),
                         _AutoUpdate(
                           duration: const Duration(seconds: 1),
-                          builder: (context) => EasyText(
+                          builder: (context) => Text(
                             '${_timeDifference(item.startTime)} ago',
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
+                            style: textStyles.textXs.medium.copyWith(fontSize: 11),
                           ),
                         ),
                         if (item.endTime != null) ...[
                           const SizedBox(width: 4),
-                          EasyText(
+                          Text(
                             '''Took ${item.endTime!.difference(item.startTime).inMilliseconds} ms''',
-                            fontSize: 9,
+                            style: textStyles.textXs.regular.copyWith(fontSize: 9),
                           ),
                         ],
                         const SizedBox(width: 8),
-                        EasyText(
+                        Text(
                           "sc: ${item.response?.statusCode ?? ''}",
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                          color: Palette.purple,
+                          style: textStyles.textXs.bold.copyWith(
+                            fontSize: 9,
+                            color: palette.textBrandPrimary,
+                          ),
                         ),
                         const SizedBox(width: 4),
                         Tooltip(
@@ -370,7 +375,12 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
                         ),
                       ],
                     ),
-                    subtitle: EasyText(item.request.uri, maxLines: 10),
+                    subtitle: Text(
+                      item.request.uri,
+                      maxLines: 10,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyles.textSm.regular,
+                    ),
                     onTap: () => NetworkLoggerEventScreen.open(context, item, widget.eventList),
                   ),
                 ),
@@ -420,9 +430,12 @@ class NetworkLoggerEventScreen extends StatelessWidget {
   static Route<void> route({required NetworkEvent event, required NetworkEventList eventList}) =>
       MaterialPageRoute(
         settings: const RouteSettings(name: 'network_logger'),
-        builder: (context) => StreamBuilder(
-          stream: eventList.stream.where((item) => item.event == event),
-          builder: (context, snapshot) => NetworkLoggerEventScreen(event: event),
+        builder: (context) => Theme(
+          data: DesignSystemTheme.of(context),
+          child: StreamBuilder(
+            stream: eventList.stream.where((item) => item.event == event),
+            builder: (context, snapshot) => NetworkLoggerEventScreen(event: event),
+          ),
         ),
       );
 
@@ -442,6 +455,7 @@ class NetworkLoggerEventScreen extends StatelessWidget {
 
   // ignore: type_annotate_public_apis
   Widget buildBodyViewer(BuildContext context, body) {
+    final theme = Theme.of(context);
     String text;
     if (body == null) {
       text = '';
@@ -455,133 +469,160 @@ class NetworkLoggerEventScreen extends StatelessWidget {
     return GestureDetector(
       onLongPress: () {
         Clipboard.setData(ClipboardData(text: text));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: EasyText('Copied to clipboard'),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        showSnackbar('Copied to clipboard', type: SnackbarType.info);
       },
-      child: EasyText(text.replaceAll('","', '"\n"'), maxLines: 100),
+      child: Text(
+        text.replaceAll('","', '"\n"'),
+        maxLines: 100,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textStyles.textSm.regular,
+      ),
     );
   }
 
-  Widget buildHeadersViewer(BuildContext context, List<MapEntry<String, String>> headers) =>
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: headers
-                  .map(
-                    (e) => SelectableText(
-                      e.key,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: headers
-                  .map(
-                    (e) => SelectableText(
-                      e.value,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ],
-        ),
-      );
+  Widget buildHeadersViewer(BuildContext context, List<MapEntry<String, String>> headers) {
+    final palette = Theme.of(context).palette;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: headers
+                .map((e) => SelectableText(e.key, style: TextStyle(color: palette.textPrimary)))
+                .toList(),
+          ),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: headers
+                .map((e) => SelectableText(e.value, style: TextStyle(color: palette.textPrimary)))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget buildRequestView(BuildContext context) => ListView(
-    padding: const EdgeInsets.symmetric(vertical: 15),
-    children: <Widget>[
-      const Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 5), child: EasyText('URL')),
-      const SizedBox(height: 5),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            EasyText(event.request.method),
-            const SizedBox(width: 15),
-            Expanded(
-              child: SelectableText(
-                event.request.uri,
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyLarge?.color ?? Palette.black,
-                ),
-              ),
-            ),
-          ],
+  Widget buildRequestView(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final textStyles = theme.textStyles;
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+          child: Text('URL', style: textStyles.textMd.regular),
         ),
-      ),
-      const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('TIMESTAMP')),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: EasyText(event.startTime.toString()),
-      ),
-      if (event.request.headers.isNotEmpty) ...[
-        const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('HEADERS')),
-        buildHeadersViewer(context, event.request.headers.entries),
-      ],
-      if (event.error != null) ...[
-        const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('ERROR')),
+        const SizedBox(height: 5),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: EasyText(event.error.toString(), color: Palette.pink, maxLines: 100),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.request.method, style: textStyles.textMd.regular),
+              const SizedBox(width: 15),
+              Expanded(
+                child: SelectableText(
+                  event.request.uri,
+                  style: TextStyle(color: palette.textPrimary),
+                ),
+              ),
+            ],
+          ),
         ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+          child: Text('TIMESTAMP', style: textStyles.textMd.regular),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Text(event.startTime.toString(), style: textStyles.textMd.regular),
+        ),
+        if (event.request.headers.isNotEmpty) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+            child: Text('HEADERS', style: textStyles.textMd.regular),
+          ),
+          buildHeadersViewer(context, event.request.headers.entries),
+        ],
+        if (event.error != null) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+            child: Text('ERROR', style: textStyles.textMd.regular),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              event.error.toString(),
+              maxLines: 100,
+              overflow: TextOverflow.ellipsis,
+              style: textStyles.textMd.regular.copyWith(color: palette.textErrorPrimary),
+            ),
+          ),
+        ],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+          child: Text('BODY', style: textStyles.textMd.regular),
+        ),
+        buildBodyViewer(context, event.request.data),
       ],
-      const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('BODY')),
-      buildBodyViewer(context, event.request.data),
-    ],
-  );
+    );
+  }
 
-  Widget buildResponseView(BuildContext context) => ListView(
-    padding: const EdgeInsets.symmetric(vertical: 15),
-    children: <Widget>[
-      const Padding(padding: EdgeInsets.fromLTRB(15, 0, 15, 5), child: EasyText('RESULT')),
-      const SizedBox(height: 5),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            EasyText(event.response!.statusCode.toString()),
-            const SizedBox(width: 15),
-            Expanded(child: EasyText(event.response!.statusMessage)),
-          ],
+  Widget buildResponseView(BuildContext context) {
+    final textStyles = Theme.of(context).textStyles;
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+          child: Text('RESULT', style: textStyles.textMd.regular),
         ),
-      ),
-      if (event.response?.headers.isNotEmpty ?? false) ...[
-        const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('HEADERS')),
-        buildHeadersViewer(context, event.response?.headers.entries ?? []),
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.response!.statusCode.toString(), style: textStyles.textMd.regular),
+              const SizedBox(width: 15),
+              Expanded(
+                child: Text(event.response!.statusMessage, style: textStyles.textMd.regular),
+              ),
+            ],
+          ),
+        ),
+        if (event.response?.headers.isNotEmpty ?? false) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+            child: Text('HEADERS', style: textStyles.textMd.regular),
+          ),
+          buildHeadersViewer(context, event.response?.headers.entries ?? []),
+        ],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+          child: Text('BODY', style: textStyles.textMd.regular),
+        ),
+        buildBodyViewer(context, event.response?.data),
       ],
-      const Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 5), child: EasyText('BODY')),
-      buildBodyViewer(context, event.response?.data),
-    ],
-  );
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
     final showResponse = event.response != null;
 
     Widget? bottom;
     if (showResponse) {
       bottom = TabBar(
-        labelColor: Palette.purple,
-        unselectedLabelColor: Theme.of(context).textTheme.bodyLarge?.color,
+        labelColor: palette.textBrandPrimary,
+        unselectedLabelColor: palette.textSecondary,
         tabs: const [
           Tab(text: 'Request'),
           Tab(text: 'Response'),
@@ -596,9 +637,9 @@ class NetworkLoggerEventScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: Navigator.of(context).pop,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+            color: palette.textPrimary,
           ),
-          title: const EasyText('Log Entry'),
+          title: Text('Log Entry', style: theme.textStyles.textLg.semibold),
           bottom: bottom as PreferredSizeWidget?,
         ),
         body: Builder(
@@ -884,7 +925,8 @@ class _ConfigPage extends ConsumerWidget {
       }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) => const _ConfigPage._(),
+          builder: (context) =>
+              Theme(data: DesignSystemTheme.of(context), child: const _ConfigPage._()),
           settings: const RouteSettings(name: 'configPage'),
         ),
       );
@@ -893,6 +935,9 @@ class _ConfigPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final textStyles = theme.textStyles;
     final remoteConfigs = ref.watch(remoteConfigStorePOD);
     final configcatUser = ref.watch(configCatUserStorePOD);
     final abTesting = ref.watch(abTestingStorePOD);
@@ -902,10 +947,10 @@ class _ConfigPage extends ConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: Navigator.of(context).pop,
-          color: Theme.of(context).textTheme.bodyLarge?.color,
+          color: palette.textPrimary,
         ),
         forceMaterialTransparency: true,
-        title: const EasyText('Current Configs'),
+        title: Text('Current Configs', style: textStyles.textLg.semibold),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -914,32 +959,60 @@ class _ConfigPage extends ConsumerWidget {
             builder: (context) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const EasyText('Environment: ', fontWeight: FontWeight.bold, color: Palette.purple),
-                EasyText(Env.stringify(), maxLines: 20),
+                Text(
+                  'Environment: ',
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
+                ),
+                Text(
+                  Env.stringify(),
+                  maxLines: 20,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.textMd.regular,
+                ),
                 const SizedBox(height: 8),
-                const EasyText(
+                Text(
                   'Remote Configs: ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
                 ),
-                EasyText(remoteConfigs.asUserProperties.toString(), maxLines: 20),
+                Text(
+                  remoteConfigs.asUserProperties.toString(),
+                  maxLines: 20,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.textMd.regular,
+                ),
                 const SizedBox(height: 8),
-                const EasyText(
+                Text(
                   'ConfigCat User: ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
                 ),
-                EasyText(configcatUser.user ?? 'Loading...', maxLines: 100),
+                Text(
+                  configcatUser.user ?? 'Loading...',
+                  maxLines: 100,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.textMd.regular,
+                ),
                 const SizedBox(height: 8),
-                const EasyText(
+                Text(
                   'Push Notifications User: ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
                 ),
-                EasyText(pushNotificationStore.user ?? 'Loading...', maxLines: 100),
+                Text(
+                  pushNotificationStore.user ?? 'Loading...',
+                  maxLines: 100,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.textMd.regular,
+                ),
                 const SizedBox(height: 8),
-                const EasyText('AB Testing: ', fontWeight: FontWeight.bold, color: Palette.purple),
-                EasyText(abTesting.asUserProperties.toString(), maxLines: 20),
+                Text(
+                  'AB Testing: ',
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
+                ),
+                Text(
+                  abTesting.asUserProperties.toString(),
+                  maxLines: 20,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.textMd.regular,
+                ),
               ],
             ),
           ),
@@ -959,7 +1032,8 @@ class _DeviceInfo extends ConsumerWidget {
       }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) => const _DeviceInfo._(),
+          builder: (context) =>
+              Theme(data: DesignSystemTheme.of(context), child: const _DeviceInfo._()),
           settings: const RouteSettings(name: 'deviceInfoPage'),
         ),
       );
@@ -968,16 +1042,19 @@ class _DeviceInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final textStyles = theme.textStyles;
     final deviceIDStore = ref.watch(deviceIDStorePOD);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: Navigator.of(context).pop,
-          color: Theme.of(context).textTheme.bodyLarge?.color,
+          color: palette.textPrimary,
         ),
         forceMaterialTransparency: true,
-        title: const EasyText('Device infos'),
+        title: Text('Device infos', style: textStyles.textLg.semibold),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -986,18 +1063,30 @@ class _DeviceInfo extends ConsumerWidget {
             builder: (context) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const EasyText(
+                Text(
                   'Persistent Device ID (We will track this one to analytics): ',
-                  fontWeight: FontWeight.bold,
-                  color: Palette.purple,
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
                 ),
-                EasyText(deviceIDStore.deviceId, maxLines: 20),
-                const EasyText('Device info: ', fontWeight: FontWeight.bold, color: Palette.purple),
+                Text(
+                  deviceIDStore.deviceId,
+                  maxLines: 20,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.textMd.regular,
+                ),
+                Text(
+                  'Device info: ',
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ...Env.deviceInfo.data.entries.map(
-                      (e) => EasyText('${e.key}: ${e.value}', maxLines: 20),
+                      (e) => Text(
+                        '${e.key}: ${e.value}',
+                        maxLines: 20,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyles.textMd.regular,
+                      ),
                     ),
                   ],
                 ),
@@ -1020,7 +1109,8 @@ class _SecuredStorageValues extends ConsumerWidget {
       }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) => const _SecuredStorageValues._(),
+          builder: (context) =>
+              Theme(data: DesignSystemTheme.of(context), child: const _SecuredStorageValues._()),
           settings: const RouteSettings(name: 'securedStorageValuesPage'),
         ),
       );
@@ -1028,57 +1118,60 @@ class _SecuredStorageValues extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
-    appBar: AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: Navigator.of(context).pop,
-        color: Theme.of(context).textTheme.bodyLarge?.color,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final textStyles = theme.textStyles;
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: Navigator.of(context).pop,
+          color: palette.textPrimary,
+        ),
+        forceMaterialTransparency: true,
+        title: Text('Secured stored keys', style: textStyles.textLg.semibold),
       ),
-      forceMaterialTransparency: true,
-      title: const EasyText('Secured stored keys'),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(8),
-      child: SingleChildScrollView(
-        child: FutureBuilder<Map<String, dynamic>>(
-          future: SecureStorageService.instance.readAll(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final data = snapshot.data!;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...data.entries.map(
-                    (e) => RichText(
-                      maxLines: 20,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${e.key}: ',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple,
-                              fontSize: 14,
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: FutureBuilder<Map<String, dynamic>>(
+            future: SecureStorageService.instance.readAll(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final data = snapshot.data!;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...data.entries.map(
+                      (e) => RichText(
+                        maxLines: 20,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${e.key}: ',
+                              style: textStyles.textSm.bold.copyWith(
+                                color: palette.textBrandPrimary,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: '${e.value}',
-                            style: const TextStyle(color: Colors.black87, fontSize: 14),
-                          ),
-                        ],
+                            TextSpan(
+                              text: '${e.value}',
+                              style: textStyles.textSm.regular.copyWith(color: palette.textPrimary),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return EasyText('Error: ${snapshot.error}');
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}', style: textStyles.textMd.regular);
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

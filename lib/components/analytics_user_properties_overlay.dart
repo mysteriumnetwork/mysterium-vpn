@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/date.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/styles/typography/text_styles.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
@@ -57,11 +57,12 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
                               onPressed: onDismissPressed,
                               icon: const Icon(Icons.close),
                             ),
-                            const Expanded(
-                              child: EasyText(
+                            Expanded(
+                              child: Text(
                                 'Analytics User Properties',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyles.of(context).textMd.bold,
                               ),
                             ),
                           ],
@@ -127,6 +128,7 @@ class _UserPropertyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
@@ -143,28 +145,20 @@ class _UserPropertyListItem extends StatelessWidget {
               children: [
                 TextSpan(
                   text: '${property.name24chars}: ',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                  style: textStyles.textMd.bold.copyWith(
                     color: theme.textTheme.bodyLarge?.color?.withValues(alpha: .7),
                   ),
                 ),
                 TextSpan(
                   text: property.value36chars,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Palette.purple,
-                  ),
+                  style: textStyles.textMd.bold.copyWith(color: Palette.purple),
                 ),
               ],
             ),
           ),
-          EasyText(
+          Text(
             'Set at: ${property.setAt.formatWithDayAndTime()}',
-            fontSize: 14,
-            minFontSize: 14,
-            color: theme.palette.subtitleColor,
+            style: textStyles.textSm.regular.copyWith(color: theme.palette.subtitleColor),
           ),
         ],
       ),
