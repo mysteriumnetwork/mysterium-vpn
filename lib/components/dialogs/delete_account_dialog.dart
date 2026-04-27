@@ -27,12 +27,15 @@ Future<void> shownDeleteAccountDialog(
     isScrollControlled: true,
     backgroundColor: Theme.of(context).palette.bgSecondary,
     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.kXl)),
-    builder: (context) => Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: _DeleteAccountDialog(
-        authStore: authStore,
-        analyticsStore: analyticsStore,
-        vpnStore: vpnStore,
+    builder: (context) => SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: _DeleteAccountDialog(
+          authStore: authStore,
+          analyticsStore: analyticsStore,
+          vpnStore: vpnStore,
+        ),
       ),
     ),
   );
