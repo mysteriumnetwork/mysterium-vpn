@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_session_store.dart';
-import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/settings/views/blocker_picker.dart';
 import 'package:mysterium_vpn/features/settings/views/protocol_picker.dart';
@@ -81,11 +80,7 @@ class ConnectionSettings extends StatelessWidget {
         if (!context.mounted) {
           return;
         }
-        final abTestingStore = getIt<ABTestingStore>();
-        final permissionsGranted = await showRequestTunnelPermissionsDialog(
-          context,
-          abTestingStore.tunnelConsentType,
-        );
+        final permissionsGranted = await showRequestTunnelPermissionsDialog(context);
         if (permissionsGranted ?? false) {
           await vpnStore.setupTunnel();
           await vpnStore.manageConnection();

@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/extensions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
@@ -25,14 +24,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
   getIt<AnalyticsStore>().logScreenViewed('subscription_upgrade_modal').ignore();
-  final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
-    builder: (context) => Theme(
-      data: themeData,
-      child: _SubscriptionUpgradeModalPage(
-        onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
-      ),
+    builder: (context) => _SubscriptionUpgradeModalPage(
+      onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
     ),
   );
 }

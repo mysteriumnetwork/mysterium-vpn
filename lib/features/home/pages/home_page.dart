@@ -23,6 +23,7 @@ import 'package:mysterium_vpn/features/vpn/store/vpn_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
             FlutterClipboard.copy(couponCode).then((_) {
               showSnackbar(
                 LocaleKeys.couponCodeCopied.tr(namedArgs: {'couponCode': '"$couponCode"'}),
-                type: MessageType.success,
+                type: SnackbarType.success,
               );
               if (mounted) {
                 showSubscriptionUpgradeModalPage(context);
@@ -141,26 +142,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => HomeStateScope(
     notifier: _homeState,
-    child: Theme(
-      data: DesignSystemTheme.of(context),
-      child: ColoredScaffold(
-        extendBodyBehindAppBar: true,
-        body: Observer(
-          builder: (context) {
-            final isLoading = _authSessionStore.status == AuthStatus.unknown;
-            return Stack(
-              children: [
-                ScreenTypeLayoutBuilder(
-                  mobile: (BuildContext context) => const HomeMobileView(),
-                  tablet: (BuildContext context) => const HomeDesktopView(),
-                  desktop: (BuildContext context) => const HomeDesktopView(),
-                ),
-                if (isLoading)
-                  Positioned.fill(child: LoadingBarrier(color: Theme.of(context).primaryColor)),
-              ],
-            );
-          },
-        ),
+    child: ColoredScaffold(
+      extendBodyBehindAppBar: true,
+      body: Observer(
+        builder: (context) {
+          final isLoading = _authSessionStore.status == AuthStatus.unknown;
+          return Stack(
+            children: [
+              ScreenTypeLayoutBuilder(
+                mobile: (BuildContext context) => const HomeMobileView(),
+                tablet: (BuildContext context) => const HomeDesktopView(),
+                desktop: (BuildContext context) => const HomeDesktopView(),
+              ),
+              if (isLoading)
+                Positioned.fill(child: LoadingBarrier(color: Theme.of(context).primaryColor)),
+            ],
+          );
+        },
       ),
     ),
   );

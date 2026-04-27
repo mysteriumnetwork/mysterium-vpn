@@ -14,7 +14,6 @@ import 'package:mysterium_vpn/features/home/views/locations_map.dart';
 import 'package:mysterium_vpn/features/locations/store/latlng_store.dart';
 import 'package:mysterium_vpn/features/locations/store/locations_store.dart';
 import 'package:mysterium_vpn/features/locations/store/selected_location_store.dart';
-import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
@@ -131,10 +130,8 @@ class _HomeMapState extends State<HomeMap> {
   }
 
   Future<bool> _handleSetupTunnel() async {
-    final abTestingStore = getIt<ABTestingStore>();
     final vpnStore = getIt<VpnStore>();
-    final tunnelConsentType = abTestingStore.tunnelConsentType;
-    final permissionsGranted = await showRequestTunnelPermissionsDialog(context, tunnelConsentType);
+    final permissionsGranted = await showRequestTunnelPermissionsDialog(context);
     if (permissionsGranted ?? false) {
       await vpnStore.setupTunnel();
       return true;

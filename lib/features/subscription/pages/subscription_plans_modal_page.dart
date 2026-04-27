@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/extensions/scroll_controller_extensions.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
@@ -24,11 +23,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
   GetIt.I<AnalyticsStore>().logScreenViewed('subscription_plans_modal').ignore();
-  final themeData = DesignSystemTheme.of(context);
-  await showModal(
-    context,
-    builder: (ctx) => Theme(data: themeData, child: const _SubscriptionPlansModalPage()),
-  );
+  await showModal(context, builder: (ctx) => const _SubscriptionPlansModalPage());
 }
 
 class _SubscriptionPlansModalPage extends StatefulWidget {

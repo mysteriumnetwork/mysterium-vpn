@@ -7,15 +7,14 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
 import 'package:mysterium_vpn/core/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/core/styles/style.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/auth/store/auth_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_purchase_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends StatefulWidget {
@@ -74,28 +73,39 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
   void _subscriptionStatusReaction(SubscriptionStatus? status) {
     if (context.mounted) {
       if (status == SubscriptionStatus.purchased) {
-        showSnackbar(LocaleKeys.subscriptionActive.tr(), type: MessageType.success);
+        showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
         context.beamToReplacementNamed(Routes.main.path);
       } else if (_subscriptionStore.subscriptionConfigFuture.error is ApiException &&
           (_subscriptionStore.subscriptionConfigFuture.error as ApiException).code == 409) {
         showSnackbar((_subscriptionStore.subscriptionConfigFuture.error as ApiException).message);
       } else if (status == SubscriptionStatus.notVerified ||
           status == SubscriptionStatus.verifyingError) {
-        showRetryDialog(
-          onRetry: () {
-            Navigator.of(context).pop();
-            _analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
-            _purchaseStore.retryVerificationProcess();
-          },
-          context: context,
-          asset: Asset.icons.subscription,
-          title: LocaleKeys.subscriptionVerificationFailed.tr(),
-          subtitle: LocaleKeys.failedToVerifySubs.tr(),
-          dismissText: LocaleKeys.cancelBtn.tr(),
-          onDismiss: () {
-            _analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
-            Navigator.of(context).pop();
-          },
+        showModal(
+          context,
+          builder: (context) => AlertModal(
+            type: AlertModalType.error,
+            title: LocaleKeys.subscriptionVerificationFailed.tr(),
+            supportingText: LocaleKeys.failedToVerifySubs.tr(),
+            onClose: () {
+              _analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
+              Navigator.of(context).pop();
+            },
+            primaryButton: ButtonPrimary(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
+                _purchaseStore.retryVerificationProcess();
+              },
+              child: Text(LocaleKeys.retryBtn.tr()),
+            ),
+            secondaryButton: ButtonSecondary(
+              onPressed: () {
+                _analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
+                Navigator.of(context).pop();
+              },
+              child: Text(LocaleKeys.cancelBtn.tr()),
+            ),
+          ),
         );
       }
     }
@@ -123,13 +133,8 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
         confirmText: LocaleKeys.logout.tr(),
         cancelText: LocaleKeys.stayButton.tr(),
         dismissible: false,
-        icon: SvgIcon(asset: Asset.icons.warning),
-        content: Text(
-          LocaleKeys.existingSubscriptionTitle.tr(),
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
-          maxLines: 2,
-          textAlign: TextAlign.center,
-        ),
+        supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
+
         title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
         onConfirm: () => GetIt.I<AuthStore>().logout(),
       );
@@ -147,15 +152,12 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
   @override
   Widget build(BuildContext context) => Observer(
     builder: (context) {
+      final theme = Theme.of(context);
       final storeState = _subscriptionStore.storeState;
       final products = _plansStore.future.value;
 
       final isVerifyingPayment =
           _subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
-      final barrierContentColor = switch (Theme.of(context).brightness) {
-        Brightness.dark => Palette.white,
-        Brightness.light => Palette.purple,
-      }.withValues(alpha: .8);
 
       final isLoading =
           storeState == StoreState.loading ||
@@ -164,8 +166,8 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
           _subscriptionStore.subscriptionStatus == SubscriptionStatus.pending;
 
       if (isLoading) {
-        return LoadingIndicator(
-          message: LocaleKeys.connectingToPaymentProcesor.tr(),
+        return LoadingIndicator.message(
+          LocaleKeys.connectingToPaymentProcesor.tr(),
         ).padding(top: 36);
       } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
         return RetryOnErrorWidget(
@@ -180,15 +182,16 @@ class _SubscriptionStatusContainerState extends State<SubscriptionStatusContaine
         children: [
           widget.child,
           if (isVerifyingPayment)
-            Positioned.fill(
-              child: LoadingBarrier(
-                color: Theme.of(context).primaryColor,
-                child: LoadingIndicator(
-                  radius: 30,
-                  message: LocaleKeys.processingPayment.tr(),
-                  messageColor: barrierContentColor,
-                  indicatorColor: barrierContentColor,
-                ).padding(horizontal: 16),
+            LoadingBarrier(
+              color: theme.palette.bgPopover,
+              child: Center(
+                child: LoadingIndicator.message(
+                  LocaleKeys.processingPayment.tr(),
+                  color: theme.palette.iconBrandSecondary,
+                  style: theme.textStyles.textMd.regular.copyWith(
+                    color: theme.palette.iconBrandSecondary,
+                  ),
+                ),
               ),
             ),
         ],

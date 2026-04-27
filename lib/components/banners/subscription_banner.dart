@@ -1,21 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/subscription/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/service_locator.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class SubscriptionBanner extends HookConsumerWidget {
+class SubscriptionBanner extends StatelessWidget {
   const SubscriptionBanner({super.key = K.subscriptionBanner});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final handleSubscribe = useHandleSubscribe();
-    final subscriptionStore = ref.watch(subscriptionStorePOD);
+  Widget build(BuildContext context) {
+    final subscriptionStore = getIt<SubscriptionStore>();
 
     return Observer(
       builder: (context) => switch (subscriptionStore.subscriptionFuture.status) {
@@ -40,7 +39,7 @@ class SubscriptionBanner extends HookConsumerWidget {
           primaryButton: ButtonPrimary(
             key: K.subscriptionBannerCTA,
             size: ButtonSize.small,
-            onPressed: handleSubscribe,
+            onPressed: () => showSubscriptionUpgradeModalPage(context),
             child: Text(LocaleKeys.noSubscriptionAction.tr()),
           ),
         ),

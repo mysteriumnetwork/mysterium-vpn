@@ -1,7 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/core/enums/enums.dart';
-import 'package:mysterium_vpn/core/styles/palette.dart' as app_palette;
 import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
 import 'package:mysterium_vpn/features/home/views/home_state.dart';
@@ -97,7 +96,6 @@ class _HomeDesktopLeftPanelState extends State<HomeDesktopLeftPanel> with Widget
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Header.logo(
-                    automaticallyImplyLeading: false,
                     showBackButton: false,
                     backgroundColor: palette.bgSidePanel,
                     actions: [
@@ -133,9 +131,11 @@ class _HomeDesktopLeftPanelState extends State<HomeDesktopLeftPanel> with Widget
 }
 
 extension _ColorBrightnessExtension on Color? {
-  Brightness? get brightness => switch (this) {
-    app_palette.Palette.white => Brightness.light,
-    app_palette.Palette.darkBlue => Brightness.dark,
-    _ => null,
-  };
+  Brightness? get brightness {
+    final color = this;
+    if (color == null) {
+      return null;
+    }
+    return color == Palette.white ? Brightness.light : Brightness.dark;
+  }
 }

@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.d
 import 'package:mysterium_vpn/features/subscription/store/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_plans_store.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/models/product_offer.dart';
 
 import 'subscription_limited_time_offer_store_test.mocks.dart';
 

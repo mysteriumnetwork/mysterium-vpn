@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/core/utils/utils.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SettingActionButton extends StatefulWidget {
@@ -39,17 +38,14 @@ class _SettingActionButtonState extends State<SettingActionButton> {
   }
 
   @override
-  Widget build(BuildContext context) => Theme(
-    data: DesignSystemTheme.of(context),
-    child: ButtonPrimary(
-      decoration: ButtonDecoration(
-        decorationColor: widget.backgroundColor,
-        minimumSize: Size(widget.width, widget.height),
-      ),
-      size: ButtonSize.small,
-      onPressed: widget.action == null || _isLoading ? null : _handlePressed,
-      loading: _isLoading ? const ButtonLoading() : null,
-      child: widget.child,
+  Widget build(BuildContext context) => ButtonPrimary(
+    decoration: ButtonDecoration(
+      decorationColor: widget.backgroundColor,
+      minimumSize: Size(widget.width, widget.height),
     ),
+    size: ButtonSize.small,
+    onPressed: widget.action == null || _isLoading ? null : _handlePressed,
+    loading: _isLoading ? const ButtonLoading() : null,
+    child: widget.child,
   );
 }

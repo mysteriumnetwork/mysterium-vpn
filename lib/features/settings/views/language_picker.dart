@@ -1,39 +1,37 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/constants/constants.dart';
 import 'package:mysterium_vpn/core/locale/locale_store.dart';
 import 'package:mysterium_vpn/features/analytics/store/analytics_store.dart';
+import 'package:mysterium_vpn/features/settings/views/settings_picker_card.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/service_locator.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LanguagePicker extends StatelessWidget {
-  const LanguagePicker({required this.store, required this.analyticsStore, super.key});
-  final LocaleStore store;
-  final AnalyticsStore analyticsStore;
+  const LanguagePicker({required this.position, super.key});
+
+  final SettingsCardPosition position;
+
   @override
-  Widget build(BuildContext context) => Observer(
-    builder: (context) => EasyDropdown<Locale>(
-      value: store.currentLocale,
-      onChanged: (Locale? newLocale) async {
-        if (newLocale == null) {
-          return;
-        }
-        await context.setLocale(newLocale);
-        await store.setLocale(newLocale);
-        analyticsStore.logLanguageChange(newLocale.languageCode);
-        return;
-      },
-      items: kSupportedLocales
-          .map<DropdownMenuItem<Locale>>(
-            (locale) => DropdownMenuItem<Locale>(
-              value: locale,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: EasyText(locale.languageCode.tr()),
-              ),
-            ),
-          )
-          .toList(),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final store = getIt<LocaleStore>();
+    final analyticsStore = getIt<AnalyticsStore>();
+
+    return Observer(
+      builder: (_) => SettingsPickerCard<Locale>(
+        title: LocaleKeys.languageSettingLbl.tr(),
+        position: position,
+        value: store.currentLocale,
+        items: kSupportedLocales,
+        labelOf: (locale) => locale.languageCode.tr(),
+        onChanged: (locale) async {
+          await context.setLocale(locale);
+          await store.setLocale(locale);
+          analyticsStore.logLanguageChange(locale.languageCode);
+        },
+      ),
+    );
+  }
 }

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/core/utils/utils.dart';
+import 'package:mysterium_vpn/features/settings/views/setting_category.dart';
 import 'package:mysterium_vpn/features/settings/views/settings_desktop_view.dart';
 import 'package:mysterium_vpn/features/settings/views/version_update_setting.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
