@@ -10,29 +10,20 @@ class ColoredScaffold extends StatelessWidget {
     required this.body,
     this.backgroundColor,
     this.extendBodyBehindAppBar = false,
-    this.forceBackgroundColor = false,
     super.key,
-  }) : assert(
-         forceBackgroundColor == false || backgroundColor != null,
-         'If forceBackgroundColor is true, backgroundColor must be provided',
-       );
+  });
 
   final Widget body;
   final bool extendBodyBehindAppBar;
   final Color? backgroundColor;
-  final bool forceBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final Color backgroundColor;
-    if (forceBackgroundColor) {
-      backgroundColor = this.backgroundColor!;
-    } else {
-      final pallete = Theme.of(context).palette;
-      backgroundColor = checkMediaWidth(context, 750)
-          ? pallete.bgSidePanel
-          : this.backgroundColor ?? pallete.bgPrimary;
-    }
+    final pallete = Theme.of(context).palette;
+    backgroundColor = checkMediaWidth(context, 750)
+        ? pallete.bgSidePanel
+        : this.backgroundColor ?? pallete.bgPrimary;
     return EdgeToEdgeScaffold(
       extendBodyBehindAppBar: extendBodyBehindAppBar,
       backgroundColor: backgroundColor,

@@ -5,12 +5,13 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/components/loading_barrier.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/welcome/welcome_desktop_view.dart';
 import 'package:mysterium_vpn/views/welcome/welcome_mobile_view.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class WelcomePage extends HookConsumerWidget {
   const WelcomePage({super.key});
@@ -30,33 +31,30 @@ class WelcomePage extends HookConsumerWidget {
       });
     }, fireImmediately: true);
 
-    return ColoredScaffold(
-      body: Observer(
-        builder: (context) => Stack(
-          children: [
-            ScreenTypeLayoutBuilder(
-              mobile: (BuildContext context) => WelcomeMobileView(
-                onSignInPressed: () {
-                  analyticsStore.logEvent(AnalyticsEvent.signInButton);
-                  authStore.loginDesktop();
-                },
+    void onSignIn() {
+      analyticsStore.logEvent(AnalyticsEvent.signInButton);
+      authStore.loginDesktop();
+    }
+
+    final designTheme = DesignSystemTheme.of(context);
+
+    return Theme(
+      data: designTheme,
+      child: ColoredScaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: designTheme.palette.bgSidePanel,
+        body: Observer(
+          builder: (context) => Stack(
+            children: [
+              ScreenTypeLayoutBuilder(
+                mobile: (BuildContext context) => WelcomeMobileView(onSignInPressed: onSignIn),
+                tablet: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
+                desktop: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
               ),
-              tablet: (BuildContext context) => WelcomeDesktopView(
-                onSignIn: () {
-                  analyticsStore.logEvent(AnalyticsEvent.signInButton);
-                  authStore.loginDesktop();
-                },
-              ),
-              desktop: (BuildContext context) => WelcomeDesktopView(
-                onSignIn: () {
-                  analyticsStore.logEvent(AnalyticsEvent.signInButton);
-                  authStore.loginDesktop();
-                },
-              ),
-            ),
-            if (authStore.authenticateFeature?.status == FutureStatus.pending)
-              const LoadingBarrier(color: Palette.darkBlue),
-          ],
+              if (authStore.authenticateFeature?.status == FutureStatus.pending)
+                Positioned.fill(child: LoadingBarrier(color: Theme.of(context).palette.bgPopover)),
+            ],
+          ),
         ),
       ),
     );

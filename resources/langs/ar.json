@@ -41,8 +41,6 @@
   "cancelBtn": "الغي",
   "cancelMyAccount": "حذف الحساب",
   "cancelSubscriptionBtn": "إلغاء الاشتراك",
-  "cancelSurveyFeedbackHint": "اكتب ملاحظاتك هنا...",
-  "cancelSurveyTitle": "عذرًا لسماع ذلك. ما هي المشكلة؟",
   "cancelYourSubsMess": "قم بإلغاء اشتراكك في اشتراكات App Store قبل حذف حسابك.",
   "changeSubPlan": "تغيير خطة الاشتراك",
   "checkingEmaillCommunicationsApproval": "جارٍ التحقق من حالة الاتصال بالبريد الإلكتروني...",
@@ -56,7 +54,6 @@
   "closeBtn": "إغلاق",
   "confirm": "أكد",
   "connect": "قطع الاتصال",
-  "connectBestServer": "الاتصال بأفضل خادم...",
   "connected": "متصل",
   "connecting": "جاري الاتصال",
   "connectingInProggress": "الاتصال قيد التقدم .. يرجى الانتظار حتى يتم إنشاء الاتصال.",
@@ -177,10 +174,6 @@
     "one": "{} مدينة",
     "other": "{} مدن"
   },
-  "locationItemNodeCount": {
-    "one": "{} خادم",
-    "other": "{} خوادم"
-  },
   "locationUnavailableAction": "اتصل بأقرب عنوان IP",
   "locationUnavailableSubtitle": "اتصل بأقرب عنوان IP - أو اختره يدويًا",
   "locationUnavailableTitle": "{} غير متاح",
@@ -232,7 +225,6 @@
   "openEmailApp": "افتح تطبيق البريد الإلكتروني",
   "or": "OR",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "أو اختر الدولة يدويًا",
   "otherReason": "أخرى...",
   "paymentMethod": "طريقة الدفع: {method}",
   "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يرجى إكمالها قبل بدء عملية دفع جديدة.",
@@ -286,8 +278,6 @@
   "pushNotificationsPermissionPoint2": "• تنبيهات نشاط الحساب والخدمة",
   "questions": "أسئلة؟",
   "rateConnection": "كيف هي اتصالك؟",
-  "rateConnectionDislike": "نأسف لسماع ذلك! ما هي المشكلة؟",
-  "rateConnectionLike": "سعيد لسماع ذلك! ما الذي أعجبك؟",
   "readOur": "اقرأ ",
   "recentLocations": "المواقع الأخيرة",
   "reconnectBtn": "إعادة الاتصال",
@@ -394,7 +384,6 @@
   "upload": "رفع",
   "userIntentBestSpeed": "أفضل سرعة",
   "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أفضل أداء",
-  "userIntentLabel": "اختر خادمًا متخصصًا",
   "userIntentLowLatency": "كمون منخفض",
   "userIntentLowLatencyDesc": "يتصل تلقائيًا بأقرب خادم لتوفير وصول مستقر وموثوق",
   "userIntentMaxPrivacy": "أقصى قدر من الخصوصية",
@@ -488,7 +477,6 @@
     "one": "{statesNum} الولاية",
     "other": "{statesNum} الولايات"
   },
-  "switchToLocationBtn": "انتقل إلى {switchLocation}",
   "redeemDiscountCode": "استخدم رمز الخصم",
   "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
   "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
@@ -522,5 +510,21 @@
   "settingManageBtn": "يدير",
   "noneLbl": "لا أحد",
   "malwareLbl": "البرامج الضارة",
-  "nsfwLbl": "محتوى غير لائق وبرامج ضارة"
+  "nsfwLbl": "محتوى غير لائق وبرامج ضارة",
+  "userIntentLabel": "خادم متخصص",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "ما الذي أعجبك؟",
+  "rateConnectionDislike": "ما الذي لم يعجبك؟",
+  "cancelSurveyFeedbackHint": "يرجى إدخال المزيد من التفاصيل...",
+  "switchToLocationBtn": "انتقل إلى {}",
+  "noActiveSubsDesc": "ليس لديك اشتراك فعال",
+  "fastLabel": "سريع",
+  "batterySaverLabel": "موفر البطارية",
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "أسباب الإلغاء",
+  "connectBestServer": "أفضل خادم",
+  "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا."
 }

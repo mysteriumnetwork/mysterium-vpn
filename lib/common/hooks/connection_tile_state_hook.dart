@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/dialogs/rate_connection_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 typedef ConnectionTileState = ({
@@ -74,14 +74,12 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
             LocationMode.unsupportedByPlan;
   });
 
-  final isMobile = ScreenType.of(context) <= ScreenType.mobile;
-
   final MainIpCardStatus status;
   var noConnectionTitle = LocaleKeys.connectBestServer.tr();
   var noConnectionDescription = LocaleKeys.orSelectCountryManually.tr();
   final upgradeLabel = needsUpgrade ? LocaleKeys.subscriptionUpgrade.tr() : null;
   var connectLabel = upgradeLabel ?? LocaleKeys.connect.tr();
-  var disconnectLabel = upgradeLabel ?? LocaleKeys.disconnect.tr();
+  final disconnectLabel = upgradeLabel ?? LocaleKeys.disconnect.tr();
 
   if (hasDifferentSelection) {
     final connected = connectedLocation!;
@@ -98,39 +96,19 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     );
     final switchLabel = isSelectedUnavailable
         ? LocaleKeys.locationUnavailableAction.tr()
-        : LocaleKeys.switchToLocationBtn.tr(
-            namedArgs: {'switchLocation': selectedLocation!.getName(context)},
-          );
+        : LocaleKeys.switchToLocationBtn.tr(args: [selectedLocation!.getName(context)]);
 
-    if (isMobile) {
-      status = MainIpCardNewIpPreview(
-        country: connectedCountry,
-        countryIcon: CircleFlag(connected.countryCode, size: 32),
-        city: connectedCity,
-        ipAddress: ipInfo ?? '',
-        serviceQuality: connectedServiceQuality,
-        ipPoolCount: connectedIpPoolCount,
-        previewCountry: selectedLocation!.getName(context),
-        previewCountryIcon: CircleFlag(selectedLocation.countryCode, size: 32),
-        switchLabel: switchLabel,
-      );
-    } else {
-      final selectedParent = locationsStore.findParent(selectedLocation!);
-      final selectedCountry = selectedParent?.getName(context) ?? selectedLocation.getName(context);
-      final selectedCity = selectedParent != null ? selectedLocation.getName(context) : '';
-
-      status = MainIpCardConnected(
-        country: selectedCountry,
-        countryIcon: CircleFlag(selectedLocation.countryCode, size: 32),
-        city: selectedCity,
-        ipAddress: ipInfo ?? '',
-        serviceQuality: connectedServiceQuality,
-        ipPoolCount: connectedIpPoolCount,
-      );
-      if (!needsUpgrade) {
-        disconnectLabel = switchLabel;
-      }
-    }
+    status = MainIpCardNewIpPreview(
+      country: connectedCountry,
+      countryIcon: CircleFlag(connected.countryCode, size: 32),
+      city: connectedCity,
+      ipAddress: ipInfo ?? '',
+      serviceQuality: connectedServiceQuality,
+      ipPoolCount: connectedIpPoolCount,
+      previewCountry: selectedLocation!.getName(context),
+      previewCountryIcon: CircleFlag(selectedLocation.countryCode, size: 32),
+      switchLabel: switchLabel,
+    );
   } else {
     final country = parentLocation?.getName(context) ?? displayLocation?.getName(context) ?? '';
     final city = parentLocation != null ? displayLocation?.getName(context) ?? '' : '';

@@ -105,7 +105,9 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnStore = ref.watch(vpnStorePOD);
-    final connectedLocation = useComputedValue(() => vpnStore.location);
+    final connectedLocation = useComputedValue(
+      () => vpnStore.isConnected ? vpnStore.location : null,
+    );
     final locationsStore = ref.watch(locationsStorePOD);
     final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
@@ -125,7 +127,7 @@ class _Body extends HookConsumerWidget {
       tablet: theme.spacing.xl3,
     );
     final sectionGap = useResponsiveValue<double>(
-      theme.spacing.md,
+      theme.spacing.xl3,
       desktop: theme.spacing.xl3,
       tablet: theme.spacing.xl3,
     );
@@ -155,7 +157,7 @@ class _Body extends HookConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
               sliver: const _UserIntent(),
             ),
-          if (showUserIntents) const SizedBox(height: 20),
+          if (showUserIntents) SizedBox(height: theme.spacing.xl),
           _Locations(
             locations: locations,
             topLocations: topLocations,
@@ -168,7 +170,11 @@ class _Body extends HookConsumerWidget {
     }
     if (future.status == FutureStatus.pending) {
       return MultiSliver(
-        children: const [RecentLocationsLoading(), SizedBox(height: 24), LocationsSliverLoading()],
+        children: [
+          const RecentLocationsLoading(),
+          SizedBox(height: theme.spacing.xl2),
+          const LocationsSliverLoading(),
+        ],
       );
     }
 
@@ -275,12 +281,17 @@ class _Locations extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
+    final theme = Theme.of(context);
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
-    final innerHorizontalPadding = useResponsiveValue<double>(0, desktop: 32, tablet: 32);
+    final innerHorizontalPadding = useResponsiveValue<double>(
+      0,
+      desktop: theme.spacing.xl3,
+      tablet: theme.spacing.xl3,
+    );
 
     useAutoSelectIPType();
 
@@ -310,7 +321,10 @@ class _Locations extends HookConsumerWidget {
                 child: LocationsContainer(key: locationsKey, locationType: locationType),
               ),
               SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: innerHorizontalPadding, vertical: 20),
+                padding: EdgeInsets.symmetric(
+                  horizontal: innerHorizontalPadding,
+                  vertical: theme.spacing.md,
+                ),
                 sliver: MultiSliver(
                   children: [
                     switch (locationType) {

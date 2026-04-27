@@ -41,8 +41,6 @@
   "cancelBtn": "Cancelar",
   "cancelMyAccount": "Cancele minha conta",
   "cancelSubscriptionBtn": "Cancelar assinatura",
-  "cancelSurveyFeedbackHint": "Digite seu feedback aqui...",
-  "cancelSurveyTitle": "Lamentamos ouvir isso. Qual foi o problema?",
   "cancelYourSubsMess": "CANCELE SUA ASSINATURA na página de cobrança antes de excluir sua conta.",
   "changeSubPlan": "Alterar plano de assinatura",
   "checkingEmaillCommunicationsApproval": "Verificando o status de comunicação por e -mail ...",
@@ -56,7 +54,6 @@
   "closeBtn": "Fechar",
   "confirm": "confirme",
   "connect": "Conectar",
-  "connectBestServer": "Conecte -se ao melhor servidor",
   "connected": "Conectada",
   "connecting": "Conectando",
   "connectingInProggress": "Conectando em andamento. Aguarde até que a conexão seja estabelecida.",
@@ -177,10 +174,6 @@
     "one": "{} cidade",
     "other": "{} cidades"
   },
-  "locationItemNodeCount": {
-    "one": "{} servidor",
-    "other": "{} servidores"
-  },
   "locationUnavailableAction": "Conectar ao IP mais próximo",
   "locationUnavailableSubtitle": "Conecte-se ao IP mais próximo – ou escolha manualmente",
   "locationUnavailableTitle": "{} não está disponível",
@@ -232,7 +225,6 @@
   "openEmailApp": "Abra o aplicativo de email",
   "or": "OU",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "Ou selecione o país manualmente",
   "otherReason": "Outro...",
   "paymentMethod": "Método de pagamento: {method}",
   "pendingTransactionMessage": "Você já tem um processo de pagamento em andamento. Conclua-o antes de iniciar um novo.",
@@ -286,8 +278,6 @@
   "pushNotificationsPermissionPoint2": "• Alertas de atividade da conta e do serviço",
   "questions": "Questões?",
   "rateConnection": "Como está sua conexão?",
-  "rateConnectionDislike": "Lamentamos ouvir isso! Qual foi o problema?",
-  "rateConnectionLike": "Que bom ouvir isso! O que você gostou?",
   "readOur": "Leia nosso ",
   "recentLocations": "Locais recentes",
   "reconnectBtn": "Reconectar",
@@ -394,7 +384,6 @@
   "upload": "Carregar",
   "userIntentBestSpeed": "Melhor velocidade",
   "userIntentBestSpeedDesc": "Conecte-se ao servidor disponível mais rápido para um desempenho ideal",
-  "userIntentLabel": "Selecionar servidor especializado",
   "userIntentLowLatency": "Baixa latência",
   "userIntentLowLatencyDesc": "Conecta automaticamente ao servidor mais próximo para um acesso estável e confiável",
   "userIntentMaxPrivacy": "Máxima privacidade",
@@ -488,7 +477,6 @@
     "one": "{statesNum} Estado",
     "other": "{statesNum} Estados"
   },
-  "switchToLocationBtn": "Alternar para {switchLocation}",
   "redeemDiscountCode": "Resgatar código de desconto",
   "couponCodeCopied": "{couponCode} copiado para a área de transferência!",
   "marketingConsentPopupTitle": "Mantenha-se atualizado por e-mail",
@@ -522,5 +510,21 @@
   "settingManageBtn": "Gerenciar",
   "noneLbl": "Nenhum",
   "malwareLbl": "Malware",
-  "nsfwLbl": "Conteúdo impróprio para menores e malware"
+  "nsfwLbl": "Conteúdo impróprio para menores e malware",
+  "userIntentLabel": "Servidor especializado",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "Do que você gostou?",
+  "rateConnectionDislike": "Do que você não gostou?",
+  "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
+  "switchToLocationBtn": "Alternar para {}",
+  "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
+  "fastLabel": "Rápido",
+  "batterySaverLabel": "Economizador de bateria",
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "Motivos para o cancelamento",
+  "connectBestServer": "Melhor servidor",
+  "orSelectCountryManually": "Vamos conectar você ao melhor servidor - ou você pode selecionar um país manualmente."
 }

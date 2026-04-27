@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/components/banners/unauthenticated_banner.dart';
 import 'package:mysterium_vpn/components/banners/version_update_banner.dart';
 import 'package:mysterium_vpn/components/subscription_banner.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeBanner extends HookConsumerWidget {
   const HomeBanner({super.key});
@@ -22,9 +23,10 @@ class HomeBanner extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
+    final spacing = Theme.of(context).spacing;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24),
+        padding: EdgeInsets.only(left: spacing.xl2, right: spacing.xl2),
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),

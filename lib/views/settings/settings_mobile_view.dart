@@ -141,7 +141,11 @@ class _MobileSettingsSubPage extends StatelessWidget {
               style: theme.textStyles.displayXlg.semibold.copyWith(
                 color: theme.palette.textPrimary,
               ),
-            ).padding(horizontal: theme.spacing.md, bottom: theme.spacing.xl),
+            ).padding(
+              horizontal: theme.spacing.md,
+              bottom: theme.spacing.xl2,
+              top: theme.spacing.ms,
+            ),
             Expanded(
               child: scrollable
                   ? SingleChildScrollView(

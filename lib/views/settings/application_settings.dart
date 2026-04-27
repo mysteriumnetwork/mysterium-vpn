@@ -74,7 +74,6 @@ class ApplicationSettings extends ConsumerWidget {
                       color: theme.palette.textTertiary,
                     ),
                   ).padding(bottom: theme.spacing.sm),
-                if (isDesktop) SizedBox(height: theme.spacing.md),
                 if (showPush) PushNotificationsSetting(position: pushPosition),
                 if (showEmail) EmailMarketingSetting(position: emailPosition),
               ],

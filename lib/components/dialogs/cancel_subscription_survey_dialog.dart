@@ -21,6 +21,7 @@ Future<bool?> showCancelSubscriptionSurveyDialog(BuildContext context) async =>
     showBottomSheetDialog<bool?>(
       context,
       mobileConstraints: BoxConstraints(maxHeight: getMediaHeight(context) * 0.95),
+      desktopConstraints: const BoxConstraints(maxWidth: 637, maxHeight: 700),
       builder: (context) => const CancelSubscriptionSurveyDialog(),
     );
 

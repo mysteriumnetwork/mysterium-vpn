@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn_design/styles/styles.dart';
 
 class AnimatedLogoPanel extends HookWidget {
   const AnimatedLogoPanel({super.key});
@@ -10,7 +10,7 @@ class AnimatedLogoPanel extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ColoredBox(
-      color: theme.palette.backgroundColor,
+      color: theme.palette.bgPrimary,
       child: Stack(
         children: [
           Asset.animations.backgroundElements.lottie(),
