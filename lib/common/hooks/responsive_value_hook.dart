@@ -1,8 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 T useResponsiveValue<T>(T fallback, {Size? size, T? mobile, T? tablet, T? desktop}) {
   final screenType = useScreenType(size);
@@ -39,7 +38,10 @@ class _Hook extends Hook<ScreenType> {
 class _HookState extends HookState<ScreenType, _Hook> {
   @override
   ScreenType build(BuildContext context) {
-    final size = hook.size ?? MediaQuery.sizeOf(context);
-    return getScreenType(size);
+    final size = hook.size;
+    if (size != null) {
+      return ScreenType.fromSize(size);
+    }
+    return ScreenType.of(context);
   }
 }

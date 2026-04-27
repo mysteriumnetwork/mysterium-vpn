@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn/views/verify_email_view.dart';
@@ -11,21 +10,18 @@ class VerifyEmailPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final designTheme = DesignSystemTheme.of(context);
+    final theme = Theme.of(context);
 
-    return Theme(
-      data: designTheme,
-      child: UnauthenticatedPageView(
-        child: ColoredScaffold(
-          backgroundColor: designTheme.palette.bgSidePanel,
+    return UnauthenticatedPageView(
+      child: ColoredScaffold(
+        backgroundColor: theme.palette.bgSidePanel,
 
-          body: const SafeArea(
-            child: Column(
-              children: [
-                UnauthenticatedHeader(backHeader: true),
-                Expanded(child: VerifyEmailView()),
-              ],
-            ),
+        body: const SafeArea(
+          child: Column(
+            children: [
+              UnauthenticatedHeader(backHeader: true),
+              Expanded(child: VerifyEmailView()),
+            ],
           ),
         ),
       ),

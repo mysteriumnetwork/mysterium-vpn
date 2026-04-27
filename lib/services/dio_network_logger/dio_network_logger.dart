@@ -249,10 +249,7 @@ class NetworkLoggerScreen extends StatefulWidget {
     context,
     MaterialPageRoute(
       settings: const RouteSettings(name: 'network_logger'),
-      builder: (context) => Theme(
-        data: DesignSystemTheme.of(context),
-        child: NetworkLoggerScreen(eventList: eventList),
-      ),
+      builder: (context) => NetworkLoggerScreen(eventList: eventList),
     ),
   );
 
@@ -430,12 +427,9 @@ class NetworkLoggerEventScreen extends StatelessWidget {
   static Route<void> route({required NetworkEvent event, required NetworkEventList eventList}) =>
       MaterialPageRoute(
         settings: const RouteSettings(name: 'network_logger'),
-        builder: (context) => Theme(
-          data: DesignSystemTheme.of(context),
-          child: StreamBuilder(
-            stream: eventList.stream.where((item) => item.event == event),
-            builder: (context, snapshot) => NetworkLoggerEventScreen(event: event),
-          ),
+        builder: (context) => StreamBuilder(
+          stream: eventList.stream.where((item) => item.event == event),
+          builder: (context, snapshot) => NetworkLoggerEventScreen(event: event),
         ),
       );
 
@@ -926,7 +920,7 @@ class _ConfigPage extends ConsumerWidget {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (context) =>
-              Theme(data: DesignSystemTheme.of(context), child: const _ConfigPage._()),
+              const _ConfigPage._(),
           settings: const RouteSettings(name: 'configPage'),
         ),
       );
@@ -1033,7 +1027,7 @@ class _DeviceInfo extends ConsumerWidget {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (context) =>
-              Theme(data: DesignSystemTheme.of(context), child: const _DeviceInfo._()),
+              const _DeviceInfo._(),
           settings: const RouteSettings(name: 'deviceInfoPage'),
         ),
       );
@@ -1110,7 +1104,7 @@ class _SecuredStorageValues extends ConsumerWidget {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (context) =>
-              Theme(data: DesignSystemTheme.of(context), child: const _SecuredStorageValues._()),
+              const _SecuredStorageValues._(),
           settings: const RouteSettings(name: 'securedStorageValuesPage'),
         ),
       );

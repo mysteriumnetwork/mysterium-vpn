@@ -26,13 +26,13 @@ class UnauthenticatedHeader extends HookConsumerWidget {
       }
     }
 
-    final designTheme = DesignSystemTheme.of(context);
+    final theme = Theme.of(context);
 
     return backHeader
-        ? Header(backgroundColor: designTheme.palette.bgSidePanel, backLabel: LocaleKeys.back.tr())
+        ? Header(backgroundColor: theme.palette.bgSidePanel, backLabel: LocaleKeys.back.tr())
         : Header.logo(
             onBackPressed: handleBackOrHome,
-            backgroundColor: designTheme.palette.bgSidePanel,
+            backgroundColor: theme.palette.bgSidePanel,
             centerTitle: true,
             showBackButton: canBrowseApp,
             actions: [

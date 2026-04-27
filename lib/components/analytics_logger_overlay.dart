@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn_design/styles/typography/text_styles.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsLoggerOverlay extends HookConsumerWidget {
@@ -39,14 +38,14 @@ class AnalyticsLoggerOverlay extends HookConsumerWidget {
         slivers: [
           SliverStack(
             children: [
-              SliverPositioned.fill(child: ColoredBox(color: theme.palette.backgroundColor)),
+              SliverPositioned.fill(child: ColoredBox(color: theme.palette.bgSecondary)),
               SliverSafeArea(
                 bottom: false,
                 sliver: SliverPadding(
                   padding: const EdgeInsets.only(top: 24),
                   sliver: SliverPinnedHeader(
                     child: DecoratedBox(
-                      decoration: BoxDecoration(color: theme.palette.backgroundColor),
+                      decoration: BoxDecoration(color: theme.palette.bgSecondary),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         child: Row(
@@ -187,7 +186,8 @@ class _LogsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList.separated(
     itemCount: items.length,
-    separatorBuilder: (_, _) => const Divider(thickness: 0.5, color: Palette.lightBlue, height: 0),
+    separatorBuilder: (_, _) =>
+        Divider(thickness: 0.5, color: Palette.grayPurple.shade300, height: 0),
     itemBuilder: (context, index) {
       final item = items[index];
       return _LogListItem(value: item);
@@ -221,7 +221,7 @@ class _LogListItem extends StatelessWidget {
             [value.timestamp.formatWithDay(), value.timestamp.formatWithTime()].join(', '),
             style: TextStyles.of(
               context,
-            ).textXs.regular.copyWith(fontSize: 10, color: theme.palette.subtitleColor),
+            ).textXs.regular.copyWith(fontSize: 10, color: theme.palette.textSecondary),
           ),
           Text(
             value.message,
@@ -255,7 +255,7 @@ class _ParamsView extends HookWidget {
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Palette.lightBlue,
+                  color: Palette.grayPurple.shade300,
                   strokeAlign: BorderSide.strokeAlignOutside,
                 ),
                 borderRadius: BorderRadius.circular(6),
@@ -264,7 +264,7 @@ class _ParamsView extends HookWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    color: Palette.purple,
+                    color: Palette.brand,
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: AutoSizeText(
                       params.keys.elementAt(i),

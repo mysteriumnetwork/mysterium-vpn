@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 
 Brightness useScaffoldBrightness() {
   final themeBrightness = Theme.of(useContext()).brightness;
@@ -21,7 +20,7 @@ class _ScaffoldBrightnessHookState extends HookState<Brightness?, _ScaffoldBrigh
   @override
   void initHook() {
     super.initHook();
-    brightness = Scaffold.maybeOf(context)?.widget.backgroundColor.brightness;
+    brightness = Scaffold.maybeOf(context)?.widget.backgroundColor._estimatedBrightness;
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -35,7 +34,7 @@ class _ScaffoldBrightnessHookState extends HookState<Brightness?, _ScaffoldBrigh
   Brightness? build(BuildContext context) => brightness;
 
   void _reEvaluate() {
-    final brightness = Scaffold.maybeOf(context)?.widget.backgroundColor.brightness;
+    final brightness = Scaffold.maybeOf(context)?.widget.backgroundColor._estimatedBrightness;
     if (brightness != this.brightness) {
       setState(() {
         this.brightness = brightness;
@@ -56,10 +55,7 @@ class _ScaffoldBrightnessHookState extends HookState<Brightness?, _ScaffoldBrigh
   }
 }
 
-extension _ColorBrightnessExtension on Color? {
-  Brightness? get brightness => switch (this) {
-    Palette.white => Brightness.light,
-    Palette.darkBlue => Brightness.dark,
-    _ => null,
-  };
+extension on Color? {
+  Brightness? get _estimatedBrightness =>
+      this == null ? null : ThemeData.estimateBrightnessForColor(this!);
 }

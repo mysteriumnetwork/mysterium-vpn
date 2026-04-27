@@ -7,7 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/enums/subscription_status.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart';
@@ -20,21 +19,17 @@ import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_status_container.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_privacy_and_terms.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
   ProviderScope.containerOf(
     context,
     listen: false,
   ).read(analyticsStorePOD).logScreenViewed('subscription_upgrade_modal').ignore();
-  final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
-    builder: (context) => Theme(
-      data: themeData,
-      child: _SubscriptionUpgradeModalPage(
-        onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
-      ),
+    builder: (context) => _SubscriptionUpgradeModalPage(
+      onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
     ),
   );
 }

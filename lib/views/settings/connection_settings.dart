@@ -16,7 +16,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/blocker_picker.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class ConnectionSettings extends HookConsumerWidget {
   const ConnectionSettings({super.key});

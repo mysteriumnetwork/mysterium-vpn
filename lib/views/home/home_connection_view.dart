@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/views/home/home_banner.dart';
 import 'package:mysterium_vpn/views/home/home_map.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeConnectionView extends HookConsumerWidget {
   const HomeConnectionView({super.key});

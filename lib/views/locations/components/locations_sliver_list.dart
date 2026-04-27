@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/screen_type.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
 import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
@@ -10,6 +9,7 @@ import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' show PanelCo
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
 const _kItemHeight = 64.0;

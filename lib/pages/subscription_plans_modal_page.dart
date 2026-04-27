@@ -25,10 +25,9 @@ Future<void> showSubscriptionPlansModalPage(BuildContext context) async {
     context,
     listen: false,
   ).read(analyticsStorePOD).logScreenViewed('subscription_plans_modal').ignore();
-  final themeData = DesignSystemTheme.of(context);
   await showModal(
     context,
-    builder: (ctx) => Theme(data: themeData, child: const _SubscriptionPlansModalPage()),
+    builder: (ctx) => const _SubscriptionPlansModalPage(),
   );
 }
 
