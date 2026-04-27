@@ -27,7 +27,6 @@ class _DialogContent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     final screenType = useScreenType();
-    final palette = Theme.of(context).palette;
     final lastClickedConsent = useState<bool?>(null);
     return Observer(
       builder: (context) {
@@ -63,11 +62,6 @@ class _DialogContent extends HookConsumerWidget {
               lastClickedConsent.value = false;
               _updateMarketingConsent(context, consent: false);
             },
-            decoration: ButtonDecoration(
-              borderColor: palette.borderBrandSecondary,
-              foregroundColor: palette.textSecondary,
-              decorationColor: Palette.white,
-            ),
             loading: isLoading && lastClickedConsent.value == false ? const ButtonLoading() : null,
             child: Text(LocaleKeys.notNowBtn.tr()),
           ),

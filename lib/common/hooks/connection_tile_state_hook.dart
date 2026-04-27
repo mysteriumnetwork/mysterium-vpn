@@ -55,20 +55,22 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final isLocationAvailable = useComputedValue(() => connectionDisplayStore.isLocationAvailable);
   final connectionRated = useComputedValue(() => connectionDisplayStore.connectionRated);
   final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
-  final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
-
   final needsUpgrade = useComputedValue(() {
-    // The location the user intends to connect to: selected (switch scenario) or display.
-    final intentLocation = hasDifferentSelection ? selectedLocation : displayLocation;
+    // Read directly from MobX stores so the Computed tracks these dependencies.
+    // Capturing intermediate hook variables would be stale (closure is fixed at initHook).
+    final hasDiff = connectionDisplayStore.hasDifferentSelection;
+    final selected = selectedLocationStore.value;
+    final display = connectionDisplayStore.displayLocation;
+    final intentLocation = hasDiff ? selected : display;
     return intentLocation != null &&
         LocationMode.from(
               location: intentLocation,
               residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
               unavailableLocations: unavailableLocationsStore.unavailableLocations,
-              subscription: subscription,
-              isConnected: isConnected,
-              isLoading: isLoading,
-              vpnLocation: connectedLocation,
+              subscription: subscriptionStore.subscriptionFuture.value,
+              isConnected: vpnStore.isConnected,
+              isLoading: connectionDisplayStore.isLoading,
+              vpnLocation: vpnStore.location,
               connectingLocation: null,
             ) ==
             LocationMode.unsupportedByPlan;
