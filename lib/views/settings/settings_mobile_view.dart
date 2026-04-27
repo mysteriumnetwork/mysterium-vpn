@@ -30,10 +30,8 @@ class SettingsMobileView extends HookConsumerWidget {
     void pushSubPage(String title, Widget content, {bool scrollable = true}) {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (routeContext) => Theme(
-            data: DesignSystemTheme.of(routeContext),
-            child: _MobileSettingsSubPage(title: title, scrollable: scrollable, child: content),
-          ),
+          builder: (routeContext) =>
+              _MobileSettingsSubPage(title: title, scrollable: scrollable, child: content),
         ),
       );
     }

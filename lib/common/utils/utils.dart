@@ -6,7 +6,6 @@ import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/breakpoints/screen_breakpoints.dart';
 import 'package:mysterium_vpn/common/breakpoints/screen_size_breakpoints.dart';
 import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -15,13 +14,12 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 export 'comparator_utils.dart';
 export 'debouncer.dart';
-export 'design_system_theme.dart';
 export 'disposeable.dart';
 export 'keys.dart';
 export 'mocks.dart';
@@ -48,43 +46,7 @@ double getWindowHeight() =>
     MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first).size.height;
 
 /// Returns the [ScreenType] that the application is currently running on
-ScreenType getScreenType(Size size, [ScreenBreakpoint? breakpoint]) {
-  var deviceWidth = size.width;
-
-  if (kIsWeb || isDesktop()) {
-    deviceWidth = size.width;
-  }
-
-  // Replaces the defaults with the user defined definitions
-  if (breakpoint != null) {
-    if (deviceWidth > breakpoint.desktop) {
-      return ScreenType.desktop;
-    }
-
-    if (deviceWidth > breakpoint.tablet) {
-      return ScreenType.tablet;
-    }
-
-    if (deviceWidth < breakpoint.watch) {
-      return ScreenType.watch;
-    }
-  } else {
-    // If no user defined definitions are passed through use the defaults
-    if (deviceWidth >= BreakpointConfiguration.screenBreakpoints.desktop) {
-      return ScreenType.desktop;
-    }
-
-    if (deviceWidth >= BreakpointConfiguration.screenBreakpoints.tablet) {
-      return ScreenType.tablet;
-    }
-
-    if (deviceWidth < BreakpointConfiguration.screenBreakpoints.watch) {
-      return ScreenType.watch;
-    }
-  }
-
-  return ScreenType.mobile;
-}
+ScreenType getScreenType(Size size) => ScreenType.fromSize(size);
 
 /// Returns the [SizeType] for each device that the application is currently running on
 SizeType getSizeType(Size size, {ScreenSizeBreakpoint? screenSizeBreakpoint}) {
@@ -198,7 +160,7 @@ T getValueForScreenType<T>({
   T? desktop,
   T? watch,
 }) {
-  final deviceScreenType = getScreenType(MediaQuery.of(context).size);
+  final deviceScreenType = ScreenType.of(context);
   // If we're at desktop size
   if (deviceScreenType == ScreenType.desktop) {
     // If we have supplied the desktop layout then display that

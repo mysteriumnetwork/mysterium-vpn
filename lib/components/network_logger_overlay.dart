@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class NetworkLoggerOverlayView extends StatefulHookConsumerWidget {
   const NetworkLoggerOverlayView({required this.child, super.key});
@@ -61,7 +61,7 @@ class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayV
                   }
                 },
                 child: NetworkLoggerButton(
-                  color: Palette.purple,
+                  color: Palette.brand,
                   globalNavKey: Beamer.of(context).navigatorKey,
                 ),
               ),

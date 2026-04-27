@@ -5,7 +5,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/welcome/welcome_desktop_view.dart';
@@ -35,25 +34,22 @@ class WelcomePage extends HookConsumerWidget {
       authStore.loginDesktop();
     }
 
-    final designTheme = DesignSystemTheme.of(context);
+    final theme = Theme.of(context);
 
-    return Theme(
-      data: designTheme,
-      child: ColoredScaffold(
-        extendBodyBehindAppBar: true,
-        backgroundColor: designTheme.palette.bgSidePanel,
-        body: Observer(
-          builder: (context) => Stack(
-            children: [
-              ScreenTypeLayoutBuilder(
-                mobile: (BuildContext context) => WelcomeMobileView(onSignInPressed: onSignIn),
-                tablet: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
-                desktop: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
-              ),
-              if (authStore.authenticateFeature?.status == FutureStatus.pending)
-                Positioned.fill(child: LoadingBarrier(color: Theme.of(context).palette.bgPopover)),
-            ],
-          ),
+    return ColoredScaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: theme.palette.bgSidePanel,
+      body: Observer(
+        builder: (context) => Stack(
+          children: [
+            ScreenTypeLayoutBuilder(
+              mobile: (BuildContext context) => WelcomeMobileView(onSignInPressed: onSignIn),
+              tablet: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
+              desktop: (BuildContext context) => WelcomeDesktopView(onSignIn: onSignIn),
+            ),
+            if (authStore.authenticateFeature?.status == FutureStatus.pending)
+              Positioned.fill(child: LoadingBarrier(color: Theme.of(context).palette.bgPopover)),
+          ],
         ),
       ),
     );

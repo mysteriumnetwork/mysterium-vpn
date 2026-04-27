@@ -27,9 +27,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final canContinue = useState(false);
 
-    return Theme(
-      data: DesignSystemTheme.of(context),
-      child: Observer(
+    return Observer(
         builder: (context) {
           final currentBuildVersion = Env.buildInfo.buildVersion;
           final minAppBuildNumber = getMinAppBuildNumber(
@@ -90,7 +88,6 @@ class MinAppVersionChecker extends HookConsumerWidget {
             );
           }
         },
-      ),
     );
   }
 

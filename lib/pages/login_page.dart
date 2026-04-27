@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/login/login_view.dart';
@@ -14,7 +13,7 @@ class LoginPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
-    final designTheme = DesignSystemTheme.of(context);
+    final theme = Theme.of(context);
     useReaction(() => authSessionStore.authShown, (authShown) {
       if (authShown) {
         return;
@@ -24,13 +23,10 @@ class LoginPage extends HookConsumerWidget {
       });
     }, fireImmediately: true);
 
-    return Theme(
-      data: designTheme,
-      child: UnauthenticatedPageView(
-        child: ColoredScaffold(
-          backgroundColor: designTheme.palette.bgSidePanel,
-          body: const SafeArea(child: SignInView()),
-        ),
+    return UnauthenticatedPageView(
+      child: ColoredScaffold(
+        backgroundColor: theme.palette.bgSidePanel,
+        body: const SafeArea(child: SignInView()),
       ),
     );
   }

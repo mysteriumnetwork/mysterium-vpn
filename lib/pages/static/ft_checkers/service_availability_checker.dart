@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -15,9 +14,7 @@ class ServiceAvailabilityChecker extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(remoteConfigStorePOD);
 
-    return Theme(
-      data: DesignSystemTheme.of(context),
-      child: Observer(
+    return Observer(
         builder: (context) {
           final theme = Theme.of(context);
           if (store.isServiceAvailable) {
@@ -52,7 +49,6 @@ class ServiceAvailabilityChecker extends ConsumerWidget {
             );
           }
         },
-      ),
     );
   }
 }

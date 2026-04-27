@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Contains sizing information to make responsive choices for the current screen
 class ScreenSizeConfiguration {

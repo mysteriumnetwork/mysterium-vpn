@@ -3,9 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/date.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn_design/styles/typography/text_styles.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
@@ -39,14 +38,14 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
         slivers: [
           SliverStack(
             children: [
-              SliverPositioned.fill(child: ColoredBox(color: theme.palette.backgroundColor)),
+              SliverPositioned.fill(child: ColoredBox(color: theme.palette.bgSecondary)),
               SliverSafeArea(
                 bottom: false,
                 sliver: SliverPadding(
                   padding: const EdgeInsets.only(top: 24),
                   sliver: SliverPinnedHeader(
                     child: DecoratedBox(
-                      decoration: BoxDecoration(color: theme.palette.backgroundColor),
+                      decoration: BoxDecoration(color: theme.palette.bgSecondary),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         child: Row(
@@ -113,7 +112,8 @@ class _UserPropertiesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList.separated(
     itemCount: items.length,
-    separatorBuilder: (_, _) => const Divider(thickness: 0.5, color: Palette.lightBlue, height: 0),
+    separatorBuilder: (_, _) =>
+        Divider(thickness: 0.5, color: Palette.grayPurple.shade300, height: 0),
     itemBuilder: (context, index) {
       final item = items[index];
       return _UserPropertyListItem(property: item);
@@ -151,14 +151,14 @@ class _UserPropertyListItem extends StatelessWidget {
                 ),
                 TextSpan(
                   text: property.value36chars,
-                  style: textStyles.textMd.bold.copyWith(color: Palette.purple),
+                  style: textStyles.textMd.bold.copyWith(color: Palette.brand),
                 ),
               ],
             ),
           ),
           Text(
             'Set at: ${property.setAt.formatWithDayAndTime()}',
-            style: textStyles.textSm.regular.copyWith(color: theme.palette.subtitleColor),
+            style: textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
           ),
         ],
       ),

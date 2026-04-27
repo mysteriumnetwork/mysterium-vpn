@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -14,7 +13,7 @@ import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Palette, ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 
 class QAToolbox extends HookConsumerWidget {
   const QAToolbox({super.key});
@@ -496,9 +495,9 @@ class _QAActionButton extends StatelessWidget {
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Palette.lightPurple,
+        color: Palette.brand.shade300,
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Palette.purple),
+        border: Border.all(color: Palette.brand),
       ),
       child: Text(
         label,
