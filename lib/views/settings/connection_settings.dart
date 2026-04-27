@@ -180,13 +180,12 @@ class ConnectionSettings extends HookConsumerWidget {
       await vpnStore.resetApp();
       showSnackbar(
         LocaleKeys.resetAppSuccess.tr(),
-        type: MessageType.success,
+        type: SnackbarType.success,
         action: handleToggleConnection != null
-            ? SnackBarAction(
-                label: LocaleKeys.reconnectBtn.tr(),
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                onPressed: () async {
+            ? IconButton(
+                icon: const Icon(Icons.refresh, size: 16),
+                color: Colors.white,
+                onPressed: () {
                   snackbarKey.currentState?.clearSnackBars();
                   handleToggleConnection();
                 },

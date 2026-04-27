@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, Palette, ScreenType;
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends HookConsumerWidget {
@@ -130,7 +131,7 @@ void _subscriptionStatusReaction(
 ) {
   if (context.mounted) {
     if (status == SubscriptionStatus.purchased) {
-      showSnackbar(LocaleKeys.subscriptionActive.tr(), type: MessageType.success);
+      showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
       context.beamToReplacementNamed(Routes.main.path);
     } else if (store.subscriptionConfigFuture.error is ApiException &&
         (store.subscriptionConfigFuture.error as ApiException).code == 409) {

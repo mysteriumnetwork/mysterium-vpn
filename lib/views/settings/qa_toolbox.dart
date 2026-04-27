@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/analytics_logger_overlay.dart';
@@ -21,6 +20,7 @@ import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Palette, ScreenType;
 
 class QAToolbox extends HookConsumerWidget {
   const QAToolbox({super.key});
@@ -345,12 +345,12 @@ class QAToolbox extends HookConsumerWidget {
 
         showSnackbar(
           'Log preview (from ${foundPath.split(r'\').last}):\n$logPreview',
-          action: SnackBarAction(
-            textColor: Palette.black,
-            label: LocaleKeys.copyBtn.tr(),
+          action: IconButton(
+            icon: const Icon(Icons.copy, size: 16),
+            color: Colors.white,
             onPressed: () => FlutterClipboard.copy(
               logs,
-            ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: MessageType.success)),
+            ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: SnackbarType.success)),
           ),
         );
       } else {
