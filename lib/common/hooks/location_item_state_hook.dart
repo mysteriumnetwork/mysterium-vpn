@@ -49,7 +49,7 @@ LocationItemState useLocationItemState({
       vpnLocation: vpnStore.location,
       connectingLocation: vpnStore.connectingLocation,
     ),
-    [location, subscription],
+    [location, location.isAvailable, subscription],
   );
 
   final countryStatus = switch (locationMode) {

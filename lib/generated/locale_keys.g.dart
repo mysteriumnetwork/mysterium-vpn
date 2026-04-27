@@ -45,8 +45,6 @@ abstract class LocaleKeys {
   static const cancelBtn = 'cancelBtn';
   static const cancelMyAccount = 'cancelMyAccount';
   static const cancelSubscriptionBtn = 'cancelSubscriptionBtn';
-  static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
-  static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const cancelYourSubsMess = 'cancelYourSubsMess';
   static const changeSubPlan = 'changeSubPlan';
   static const checkingEmaillCommunicationsApproval = 'checkingEmaillCommunicationsApproval';
@@ -60,7 +58,6 @@ abstract class LocaleKeys {
   static const closeBtn = 'closeBtn';
   static const confirm = 'confirm';
   static const connect = 'connect';
-  static const connectBestServer = 'connectBestServer';
   static const connected = 'connected';
   static const connecting = 'connecting';
   static const connectingInProggress = 'connectingInProggress';
@@ -178,7 +175,6 @@ abstract class LocaleKeys {
   static const linkExpires = 'linkExpires';
   static const location = 'location';
   static const locationItemCityCount = 'locationItemCityCount';
-  static const locationItemNodeCount = 'locationItemNodeCount';
   static const locationUnavailableAction = 'locationUnavailableAction';
   static const locationUnavailableSubtitle = 'locationUnavailableSubtitle';
   static const locationUnavailableTitle = 'locationUnavailableTitle';
@@ -230,7 +226,6 @@ abstract class LocaleKeys {
   static const openEmailApp = 'openEmailApp';
   static const or = 'or';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
-  static const orSelectCountryManually = 'orSelectCountryManually';
   static const otherReason = 'otherReason';
   static const paymentMethod = 'paymentMethod';
   static const pendingTransactionMessage = 'pendingTransactionMessage';
@@ -284,8 +279,6 @@ abstract class LocaleKeys {
   static const pushNotificationsPermissionPoint2 = 'pushNotificationsPermissionPoint2';
   static const questions = 'questions';
   static const rateConnection = 'rateConnection';
-  static const rateConnectionDislike = 'rateConnectionDislike';
-  static const rateConnectionLike = 'rateConnectionLike';
   static const readOur = 'readOur';
   static const recentLocations = 'recentLocations';
   static const reconnectBtn = 'reconnectBtn';
@@ -388,7 +381,6 @@ abstract class LocaleKeys {
   static const upload = 'upload';
   static const userIntentBestSpeed = 'userIntentBestSpeed';
   static const userIntentBestSpeedDesc = 'userIntentBestSpeedDesc';
-  static const userIntentLabel = 'userIntentLabel';
   static const userIntentLowLatency = 'userIntentLowLatency';
   static const userIntentLowLatencyDesc = 'userIntentLowLatencyDesc';
   static const userIntentMaxPrivacy = 'userIntentMaxPrivacy';
@@ -479,7 +471,6 @@ abstract class LocaleKeys {
   static const ipPoolLabel = 'ipPoolLabel';
   static const connectToTooltip = 'connectToTooltip';
   static const locationItemStatesCount = 'locationItemStatesCount';
-  static const switchToLocationBtn = 'switchToLocationBtn';
   static const redeemDiscountCode = 'redeemDiscountCode';
   static const couponCodeCopied = 'couponCodeCopied';
   static const marketingConsentPopupTitle = 'marketingConsentPopupTitle';
@@ -514,4 +505,17 @@ abstract class LocaleKeys {
   static const noneLbl = 'noneLbl';
   static const malwareLbl = 'malwareLbl';
   static const nsfwLbl = 'nsfwLbl';
+  static const userIntentLabel = 'userIntentLabel';
+  static const locationItemNodeCount = 'locationItemNodeCount';
+  static const rateConnectionLike = 'rateConnectionLike';
+  static const rateConnectionDislike = 'rateConnectionDislike';
+  static const cancelSurveyFeedbackHint = 'cancelSurveyFeedbackHint';
+  static const switchToLocationBtn = 'switchToLocationBtn';
+  static const noActiveSubsDesc = 'noActiveSubsDesc';
+  static const fastLabel = 'fastLabel';
+  static const batterySaverLabel = 'batterySaverLabel';
+  static const protocolLabel = 'protocolLabel';
+  static const cancelSurveyTitle = 'cancelSurveyTitle';
+  static const connectBestServer = 'connectBestServer';
+  static const orSelectCountryManually = 'orSelectCountryManually';
 }

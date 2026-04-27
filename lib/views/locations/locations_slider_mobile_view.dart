@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/components/dragable_indicator.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class LocationsSliderMobileView extends HookConsumerWidget {
@@ -52,9 +53,13 @@ class LocationsSliderMobileView extends HookConsumerWidget {
         SliverSafeArea(
           top: false,
           sliver: SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.md),
             sliver: MultiSliver(
-              children: const [ConnectionTile(), SizedBox(height: 30), LocationsSliverView()],
+              children: [
+                const ConnectionTile(),
+                SizedBox(height: Theme.of(context).spacing.xl3),
+                const LocationsSliverView(),
+              ],
             ),
           ),
         ),

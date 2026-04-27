@@ -41,8 +41,6 @@
   "cancelBtn": "取消",
   "cancelMyAccount": "帐号删除",
   "cancelSubscriptionBtn": "取消订阅",
-  "cancelSurveyFeedbackHint": "请在此输入您的反馈...",
-  "cancelSurveyTitle": "很抱歉听到这个消息。出现了什么问题？",
   "cancelYourSubsMess": "在删除您的帐号之前，请取消您在 App Store 订阅中的订阅。",
   "changeSubPlan": "更改订阅计划",
   "checkingEmaillCommunicationsApproval": "正在检查电子邮件通信状态...",
@@ -56,7 +54,6 @@
   "closeBtn": "关闭",
   "confirm": "确认",
   "connect": "连接",
-  "connectBestServer": "连接到最佳服务器",
   "connected": "连接的",
   "connecting": "正在连接",
   "connectingInProggress": "连接正在进行中。请等到建立连接。",
@@ -177,10 +174,6 @@
     "one": "",
     "other": "{} 个城市"
   },
-  "locationItemNodeCount": {
-    "one": "",
-    "other": "{} 台服务器"
-  },
   "locationUnavailableAction": "连接到最近的 IP",
   "locationUnavailableSubtitle": "连接到最近的 IP，或手动选择",
   "locationUnavailableTitle": "{} 当前不可用",
@@ -232,7 +225,6 @@
   "openEmailApp": "打开电子邮件应用程序",
   "or": "或者",
   "originalMonthlyPrice": "{amount}",
-  "orSelectCountryManually": "或手动选择国家",
   "otherReason": "其他...",
   "paymentMethod": "付款方式：{method}",
   "pendingTransactionMessage": "您已经有一个正在进行的付款流程。请先完成该流程，然后再开始新的付款流程。",
@@ -286,8 +278,6 @@
   "pushNotificationsPermissionPoint2": "• 帐户和服务活动警报",
   "questions": "问题？",
   "rateConnection": "您的连接如何？",
-  "rateConnectionDislike": "很抱歉听到这个！问题是什么？",
-  "rateConnectionLike": "很高兴听到这个！您喜欢什么？",
   "readOur": "阅读我们的 ",
   "recentLocations": "最近的地点",
   "reconnectBtn": "重新连接",
@@ -394,7 +384,6 @@
   "upload": "上传",
   "userIntentBestSpeed": "最佳速度",
   "userIntentBestSpeedDesc": "连接到最快的可用服务器以获得最佳性能",
-  "userIntentLabel": "选择专用服务器",
   "userIntentLowLatency": "低延迟",
   "userIntentLowLatencyDesc": "自动连接到最近的服务器，以实现稳定可靠的访问",
   "userIntentMaxPrivacy": "最大隐私",
@@ -469,7 +458,7 @@
   "subscriptionPlanWireGuardDesc": "WireGuard——速度快，最适合游戏和流媒体播放\n\nOpenVPN——高度可配置的协议，在其他协议失效的情况下也能正常工作（Android 系统不支持）。",
   "subscriptionPlanDoubleVPNDesc": "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
   "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-  "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+  "subscriptionPlanCityLevelDesc": "与大多数 VPN 相比，它能提供更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
   "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
   "notNowBtn": "现在不要",
   "viewAllFeaturesBtn": "查看所有功能",
@@ -488,7 +477,6 @@
     "one": "{statesNum} 州",
     "other": "{statesNum} 个州"
   },
-  "switchToLocationBtn": "切换到 {switchLocation}",
   "redeemDiscountCode": "兑换折扣码",
   "couponCodeCopied": "优惠券代码已复制到剪贴板！",
   "marketingConsentPopupTitle": "通过电子邮件获取最新信息",
@@ -522,5 +510,21 @@
   "settingManageBtn": "管理",
   "noneLbl": "没有任何",
   "malwareLbl": "恶意软件",
-  "nsfwLbl": "NSFW 和恶意软件"
+  "nsfwLbl": "NSFW 和恶意软件",
+  "userIntentLabel": "专业服务器",
+  "locationItemNodeCount": {
+    "one": "{} IP",
+    "other": "{} IPs"
+  },
+  "rateConnectionLike": "你喜欢什么？",
+  "rateConnectionDislike": "你不喜欢什么？",
+  "cancelSurveyFeedbackHint": "请填写更多详情……",
+  "switchToLocationBtn": "切换到 {}",
+  "noActiveSubsDesc": "您没有有效的订阅。",
+  "fastLabel": "快速地",
+  "batterySaverLabel": "省电模式",
+  "protocolLabel": "{} ({})",
+  "cancelSurveyTitle": "取消的原因",
+  "connectBestServer": "最佳服务器",
+  "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。"
 }

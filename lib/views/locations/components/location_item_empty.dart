@@ -23,10 +23,10 @@ class LocationItemEmpty extends StatelessWidget {
       hoverElevation: 0,
       onPressed: null,
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(theme.spacing.ms),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          spacing: 20,
+          spacing: theme.spacing.xl,
           children: [
             Container(
               width: 30,

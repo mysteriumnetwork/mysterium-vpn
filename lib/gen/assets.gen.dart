@@ -926,6 +926,9 @@ class $AssetsLogoProdGen {
 class $AssetsMapTilesDarkGen {
   const $AssetsMapTilesDarkGen();
 
+  /// Directory path: assets/map_tiles/dark/3
+  $AssetsMapTilesDark3Gen get a3 => const $AssetsMapTilesDark3Gen();
+
   /// Directory path: assets/map_tiles/dark/4
   $AssetsMapTilesDark4Gen get a4 => const $AssetsMapTilesDark4Gen();
 }
@@ -933,8 +936,39 @@ class $AssetsMapTilesDarkGen {
 class $AssetsMapTilesLightGen {
   const $AssetsMapTilesLightGen();
 
+  /// Directory path: assets/map_tiles/light/3
+  $AssetsMapTilesLight3Gen get a3 => const $AssetsMapTilesLight3Gen();
+
   /// Directory path: assets/map_tiles/light/4
   $AssetsMapTilesLight4Gen get a4 => const $AssetsMapTilesLight4Gen();
+}
+
+class $AssetsMapTilesDark3Gen {
+  const $AssetsMapTilesDark3Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/0
+  $AssetsMapTilesDark30Gen get a0 => const $AssetsMapTilesDark30Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/1
+  $AssetsMapTilesDark31Gen get a1 => const $AssetsMapTilesDark31Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/2
+  $AssetsMapTilesDark32Gen get a2 => const $AssetsMapTilesDark32Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/3
+  $AssetsMapTilesDark33Gen get a3 => const $AssetsMapTilesDark33Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/4
+  $AssetsMapTilesDark34Gen get a4 => const $AssetsMapTilesDark34Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/5
+  $AssetsMapTilesDark35Gen get a5 => const $AssetsMapTilesDark35Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/6
+  $AssetsMapTilesDark36Gen get a6 => const $AssetsMapTilesDark36Gen();
+
+  /// Directory path: assets/map_tiles/dark/3/7
+  $AssetsMapTilesDark37Gen get a7 => const $AssetsMapTilesDark37Gen();
 }
 
 class $AssetsMapTilesDark4Gen {
@@ -989,6 +1023,34 @@ class $AssetsMapTilesDark4Gen {
   $AssetsMapTilesDark49Gen get a9 => const $AssetsMapTilesDark49Gen();
 }
 
+class $AssetsMapTilesLight3Gen {
+  const $AssetsMapTilesLight3Gen();
+
+  /// Directory path: assets/map_tiles/light/3/0
+  $AssetsMapTilesLight30Gen get a0 => const $AssetsMapTilesLight30Gen();
+
+  /// Directory path: assets/map_tiles/light/3/1
+  $AssetsMapTilesLight31Gen get a1 => const $AssetsMapTilesLight31Gen();
+
+  /// Directory path: assets/map_tiles/light/3/2
+  $AssetsMapTilesLight32Gen get a2 => const $AssetsMapTilesLight32Gen();
+
+  /// Directory path: assets/map_tiles/light/3/3
+  $AssetsMapTilesLight33Gen get a3 => const $AssetsMapTilesLight33Gen();
+
+  /// Directory path: assets/map_tiles/light/3/4
+  $AssetsMapTilesLight34Gen get a4 => const $AssetsMapTilesLight34Gen();
+
+  /// Directory path: assets/map_tiles/light/3/5
+  $AssetsMapTilesLight35Gen get a5 => const $AssetsMapTilesLight35Gen();
+
+  /// Directory path: assets/map_tiles/light/3/6
+  $AssetsMapTilesLight36Gen get a6 => const $AssetsMapTilesLight36Gen();
+
+  /// Directory path: assets/map_tiles/light/3/7
+  $AssetsMapTilesLight37Gen get a7 => const $AssetsMapTilesLight37Gen();
+}
+
 class $AssetsMapTilesLight4Gen {
   const $AssetsMapTilesLight4Gen();
 
@@ -1039,6 +1101,318 @@ class $AssetsMapTilesLight4Gen {
 
   /// Directory path: assets/map_tiles/light/4/9
   $AssetsMapTilesLight49Gen get a9 => const $AssetsMapTilesLight49Gen();
+}
+
+class $AssetsMapTilesDark30Gen {
+  const $AssetsMapTilesDark30Gen();
+
+  /// File path: assets/map_tiles/dark/3/0/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/0/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/0/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark31Gen {
+  const $AssetsMapTilesDark31Gen();
+
+  /// File path: assets/map_tiles/dark/3/1/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/1/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/1/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark32Gen {
+  const $AssetsMapTilesDark32Gen();
+
+  /// File path: assets/map_tiles/dark/3/2/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/2/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/2/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark33Gen {
+  const $AssetsMapTilesDark33Gen();
+
+  /// File path: assets/map_tiles/dark/3/3/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/3/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/3/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark34Gen {
+  const $AssetsMapTilesDark34Gen();
+
+  /// File path: assets/map_tiles/dark/3/4/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/4/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/4/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark35Gen {
+  const $AssetsMapTilesDark35Gen();
+
+  /// File path: assets/map_tiles/dark/3/5/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/5/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/5/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark36Gen {
+  const $AssetsMapTilesDark36Gen();
+
+  /// File path: assets/map_tiles/dark/3/6/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/6/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/6/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesDark37Gen {
+  const $AssetsMapTilesDark37Gen();
+
+  /// File path: assets/map_tiles/dark/3/7/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/dark/3/7/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/dark/3/7/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
 }
 
 class $AssetsMapTilesDark40Gen {
@@ -2447,6 +2821,318 @@ class $AssetsMapTilesDark49Gen {
     a8,
     a9,
   ];
+}
+
+class $AssetsMapTilesLight30Gen {
+  const $AssetsMapTilesLight30Gen();
+
+  /// File path: assets/map_tiles/light/3/0/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/0/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/0/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight31Gen {
+  const $AssetsMapTilesLight31Gen();
+
+  /// File path: assets/map_tiles/light/3/1/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/1/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/1/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight32Gen {
+  const $AssetsMapTilesLight32Gen();
+
+  /// File path: assets/map_tiles/light/3/2/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/2/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/2/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight33Gen {
+  const $AssetsMapTilesLight33Gen();
+
+  /// File path: assets/map_tiles/light/3/3/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/3/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/3/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight34Gen {
+  const $AssetsMapTilesLight34Gen();
+
+  /// File path: assets/map_tiles/light/3/4/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/4/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/4/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight35Gen {
+  const $AssetsMapTilesLight35Gen();
+
+  /// File path: assets/map_tiles/light/3/5/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/5/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/5/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight36Gen {
+  const $AssetsMapTilesLight36Gen();
+
+  /// File path: assets/map_tiles/light/3/6/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/6/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/6/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
+}
+
+class $AssetsMapTilesLight37Gen {
+  const $AssetsMapTilesLight37Gen();
+
+  /// File path: assets/map_tiles/light/3/7/0.png
+  AssetGenImage get a0 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/0.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/1.png
+  AssetGenImage get a1 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/1.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/2.png
+  AssetGenImage get a2 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/2.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/3.png
+  AssetGenImage get a3 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/3.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/4.png
+  AssetGenImage get a4 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/4.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/5.png
+  AssetGenImage get a5 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/5.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/6.png
+  AssetGenImage get a6 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/6.png', size: const Size(256.0, 256.0));
+
+  /// File path: assets/map_tiles/light/3/7/7.png
+  AssetGenImage get a7 =>
+      const AssetGenImage('assets/map_tiles/light/3/7/7.png', size: const Size(256.0, 256.0));
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a0, a1, a2, a3, a4, a5, a6, a7];
 }
 
 class $AssetsMapTilesLight40Gen {
