@@ -133,52 +133,55 @@ Future<T?> _showMaterialBottomSheet<T>(
       final screenHeight = MediaQuery.of(context).size.height;
       return PopScope(
         canPop: isDismissible,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: screenHeight - (screenHeight / 10)),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                if (title != null) ...[
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Center(child: title),
-                  ),
-                ],
-                ...actions.map<Widget>(
-                  (action) => InkWell(
-                    onTap: () {
-                      action.onPressed(coxt);
-                      Beamer.of(coxt).popRoute();
-                    },
-                    child: Padding(
+        child: SafeArea(
+          top: false,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: screenHeight - (screenHeight / 10)),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  if (title != null) ...[
+                    Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Text(
-                        action.title,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
+                      child: Center(child: title),
                     ),
-                  ),
-                ),
-                if (cancelAction != null)
-                  InkWell(
-                    onTap: () {
-                      if (cancelAction.onPressed != null) {
-                        cancelAction.onPressed!(coxt);
-                      } else {
-                        Navigator.of(coxt).pop();
-                      }
-                    },
-                    child: Center(
+                  ],
+                  ...actions.map<Widget>(
+                    (action) => InkWell(
+                      onTap: () {
+                        action.onPressed(coxt);
+                        Beamer.of(coxt).popRoute();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(16),
-                        child: Text(cancelAction.title, textAlign: TextAlign.center),
+                        child: Text(
+                          action.title,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
-              ],
+                  if (cancelAction != null)
+                    InkWell(
+                      onTap: () {
+                        if (cancelAction.onPressed != null) {
+                          cancelAction.onPressed!(coxt);
+                        } else {
+                          Navigator.of(coxt).pop();
+                        }
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text(cancelAction.title, textAlign: TextAlign.center),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),
