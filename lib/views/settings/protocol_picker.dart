@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
-import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -58,14 +55,8 @@ class ProtocolPicker extends ConsumerWidget {
         context,
         confirmText: LocaleKeys.confirm.tr(),
         cancelText: LocaleKeys.cancelBtn.tr(),
-        icon: SvgIcon(asset: Asset.icons.warning),
         title: LocaleKeys.protocolPickerSettingTitle.tr(),
-        content: Text(
-          LocaleKeys.protocolPickerSettingDesc.tr(),
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
-          maxLines: 5,
-          textAlign: TextAlign.center,
-        ),
+        supportingText: LocaleKeys.protocolPickerSettingDesc.tr(),
         onConfirm: () async {
           analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
           await vpnStore.disconnectTunnel();

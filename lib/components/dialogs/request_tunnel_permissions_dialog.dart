@@ -44,7 +44,7 @@ class _RequestTunnelPermissions extends StatelessWidget {
             maxLines: 4,
           ).padding(bottom: 40),
           ButtonPrimary(
-            child: Text(LocaleKeys.allowPermissionsBtn.tr()),
+            child: Text(LocaleKeys.allowBtn.tr()),
             onPressed: () => Navigator.pop(context, true),
           ),
         ],

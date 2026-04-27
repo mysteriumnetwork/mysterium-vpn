@@ -12,11 +12,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/dialogs/adaptive_action_sheet/adaptive_action_sheet.dart';
-import 'package:mysterium_vpn/components/dialogs/no_mail_app_dialog.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/loading_barrier.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -133,14 +129,18 @@ class _Subheader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
     final height = MediaQuery.sizeOf(context).height;
     final children = <Widget>[
       Flexible(
-        child: EasyText(
+        child: Text(
           LocaleKeys.checkYourEmail.tr(),
-          fontSize: useResponsiveValue(20, desktop: 28),
-          fontWeight: FontWeight.w600,
           textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: textStyles.displayXlg.semibold.copyWith(
+            fontSize: useResponsiveValue(20, desktop: 28),
+          ),
         ),
       ),
       SvgIcon(asset: Asset.images.checkEmail, height: min(120, height * .15)),
@@ -205,16 +205,27 @@ class _BulletItem extends StatelessWidget {
   final AutoSizeGroup sizeGroup;
 
   @override
-  Widget build(BuildContext context) => Flexible(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        EasyText('•', autoSizeGroup: sizeGroup),
-        const SizedBox(width: 12),
-        Expanded(child: EasyText(text, maxLines: 3, autoSizeGroup: sizeGroup)),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
+    return Flexible(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText('•', group: sizeGroup, style: textStyles.textMd.regular),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AutoSizeText(
+              text,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              group: sizeGroup,
+              style: textStyles.textMd.regular,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _ResendButton extends HookWidget {
@@ -228,17 +239,17 @@ class _ResendButton extends HookWidget {
     final timer = useCountdownTimer(initialCountdown: 60);
     final resendDisabled = isLoading || timer.countdown > 0;
     final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
+    final loading = isLoading ? const ButtonLoading() : null;
 
-    final child = isLoading
-        ? const LoadingIndicator()
-        : Text(
-            LocaleKeys.sendAgain.plural(timer.countdown),
-            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
-          );
+    final child = Text(
+      LocaleKeys.sendAgain.plural(timer.countdown),
+      style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
+    );
 
     if (isMobile()) {
       return ButtonSecondary(
         onPressed: onPressed,
+        loading: loading,
         decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
         child: child,
       );
@@ -246,6 +257,7 @@ class _ResendButton extends HookWidget {
 
     return ButtonPrimary(
       onPressed: onPressed,
+      loading: loading,
       decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
       child: child,
     );

@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/components/dialogs/adaptive_action_sheet/cancel_action.dart';
-import 'package:mysterium_vpn/components/dialogs/adaptive_action_sheet/sheet_action.dart';
+import 'package:mysterium_vpn/components/components.dart';
 
 Future<T?> showAdaptiveActionSheet<T>({
   required List<BottomSheetAction> actions,

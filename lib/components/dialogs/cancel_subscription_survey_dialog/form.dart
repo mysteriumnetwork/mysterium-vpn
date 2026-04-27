@@ -1,4 +1,4 @@
-part of '../cancel_subscription_survey_dialog.dart';
+part of 'cancel_subscription_survey_dialog.dart';
 
 class _Form extends StatelessWidget {
   const _Form({required this.form, required this.items});

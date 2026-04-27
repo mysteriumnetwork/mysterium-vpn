@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/social_login_button.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -71,6 +71,7 @@ class SignInForm extends HookConsumerWidget {
                                 signInStatus == FutureStatus.pending &&
                                 store.authenticatingType == GrantType.apple,
                             asset: Asset.icons.apple,
+                            iconColor: palette.iconPrimary,
                             label: LocaleKeys.continueWithApple.tr(),
                           ).padding(bottom: 20),
                           SocialLoginButton(
@@ -156,19 +157,18 @@ class SignInForm extends HookConsumerWidget {
                               width: double.infinity,
                               child: ButtonPrimary(
                                 key: K.loginButton,
-                                onPressed: signInStatus != FutureStatus.pending
-                                    ? () => _onSignInWithEmailPressed(
-                                        signInForm,
-                                        context,
-                                        store,
-                                        analyticsStore,
-                                      )
-                                    : null,
-                                child:
+                                onPressed: () => _onSignInWithEmailPressed(
+                                  signInForm,
+                                  context,
+                                  store,
+                                  analyticsStore,
+                                ),
+                                loading:
                                     signInStatus == FutureStatus.pending &&
                                         store.authenticatingType == GrantType.email
-                                    ? const LoadingIndicator()
-                                    : Text(LocaleKeys.continueWithEmail.tr()),
+                                    ? const ButtonLoading()
+                                    : null,
+                                child: Text(LocaleKeys.continueWithEmail.tr()),
                               ),
                             ),
                           ).padding(bottom: height * 0.03, top: height * 0.01),

@@ -9,10 +9,7 @@ import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/retry_widget.dart';
-import 'package:mysterium_vpn/components/user_intent_picker.dart';
-import 'package:mysterium_vpn/components/user_intent_tooltip.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -363,7 +360,12 @@ class _Empty extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SliverToBoxAdapter(
-      child: EasyText(text, color: theme.colorScheme.error, fontWeight: FontWeight.w700),
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textStyles.textMd.bold.copyWith(color: theme.colorScheme.error),
+      ),
     );
   }
 }
