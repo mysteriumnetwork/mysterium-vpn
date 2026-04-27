@@ -12,10 +12,11 @@ import 'package:mysterium_vpn/common/configurations/breakpoint_configuration.dar
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/styles/style.dart';
+import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -308,18 +309,29 @@ bool isMobilePaymentGateway(String? gateway) {
 
 void showSnackbar(
   String message, {
-  SnackbarType type = SnackbarType.error,
-  Widget? action,
+  SnackBarAction? action,
+  MessageType type = MessageType.error,
+  TextAlign textAlign = TextAlign.center,
 }) {
   final snackBar = SnackBar(
-    elevation: 0,
-    backgroundColor: Colors.transparent,
-    padding: EdgeInsets.zero,
+    elevation: 8,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     behavior: SnackBarBehavior.floating,
-    duration: action != null
-        ? const Duration(seconds: 10)
-        : const Duration(seconds: 4),
-    content: Snackbar(message: message, type: type, action: action),
+    backgroundColor: switch (type) {
+      MessageType.error => Palette.pink,
+      MessageType.info => Palette.darkBlue,
+      MessageType.success => Palette.green,
+    },
+    content: Center(
+      child: EasyText(
+        message,
+        maxLines: 3,
+        color: Palette.white,
+        fontWeight: FontWeight.w600,
+        textAlign: textAlign,
+      ),
+    ),
+    action: action,
   );
 
   snackbarKey.currentState
@@ -401,14 +413,14 @@ Future<void> openUrlLink(Uri url, {LaunchMode mode = LaunchMode.platformDefault}
   } catch (e) {
     showSnackbar(
       LocaleKeys.copyLink.tr(),
-      action: IconButton(
-        icon: const Icon(Icons.copy, size: 16),
-        color: Colors.white,
+      action: SnackBarAction(
+        textColor: Palette.purple,
+        label: LocaleKeys.copyBtn.tr(),
         onPressed: () => FlutterClipboard.copy(
           url.toString(),
-        ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: SnackbarType.success)),
+        ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: MessageType.success)),
       ),
-      type: SnackbarType.info,
+      type: MessageType.info,
     );
   }
 }

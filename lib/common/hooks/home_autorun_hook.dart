@@ -5,6 +5,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/message_type.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -16,7 +17,6 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 void useHomeAutorun() {
   final context = useContext();
@@ -95,7 +95,7 @@ void useHomeAutorun() {
               FlutterClipboard.copy(couponCode).then((value) {
                 showSnackbar(
                   LocaleKeys.couponCodeCopied.tr(namedArgs: {'couponCode': '"$couponCode"'}),
-                  type: SnackbarType.success,
+                  type: MessageType.success,
                 );
                 if (context.mounted) {
                   showSubscriptionUpgradeModalPage(context);
