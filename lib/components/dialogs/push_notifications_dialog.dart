@@ -21,7 +21,6 @@ class _DialogContent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     final screenType = useScreenType();
-    final palette = Theme.of(context).palette;
     return PromptDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: screenType == ScreenType.mobile ? 24 : 144),
       buttonsPadding: EdgeInsets.fromLTRB(
@@ -42,11 +41,6 @@ class _DialogContent extends HookConsumerWidget {
         child: Text(LocaleKeys.allowPushNotificationsBtn.tr()),
       ),
       secondaryButton: ButtonSecondary(
-        decoration: ButtonDecoration(
-          borderColor: palette.borderBrandSecondary,
-          foregroundColor: palette.textSecondary,
-          decorationColor: Palette.white,
-        ),
         onPressed: () => _completePushNotificationsFlow(
           context,
           userPreferencesStore: userPreferencesStore,
