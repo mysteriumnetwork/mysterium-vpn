@@ -10,7 +10,6 @@
   "activeSubsPaidVia": "Ya tienes una suscripción activa pagada a través de {store}. Visita {store} para realizar cambios en tu suscripción.",
   "affordable": "Asequible",
   "allLocations": "Todas las ubicaciones",
-  "allowPermissionsBtn": "Permitir",
   "allowPushNotificationsBtn": "Permitir notificaciones",
   "almostThere": "¡Casi llegamos!",
   "and": " y ",
@@ -358,7 +357,6 @@
   "tryAgainBtn": "Intentar otra vez",
   "tryAgainOrContactSupport": "Inténtalo de nuevo en breve o contacta con el soporte si el problema persiste.",
   "turnOnNotificationsBtn": "Activa las notificaciones",
-  "typeDelete": "Escribe ELIMINAR en el campo de texto a continuación para confirmar.",
   "typeFeedback": "Escribe tus comentarios aquí...",
   "typeIssueHere": "Escribe tu problema aquí..",
   "uk": "Ucranio",
@@ -449,7 +447,7 @@
   "plan_2_years_basic": "Básico 2 años",
   "plan_2_years_pro": "Profesional 2 años",
   "pushNotificationsConsentPopupTitle": "Mantente al día con las notificaciones push.",
-  "pushNotificationsConsentPopupDesc": "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones prácticas.",
+  "pushNotificationsConsentPopupDesc": "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones que te resultarán útiles.",
   "notificationsSettingTitle": "Notificaciones",
   "pushNotificationsSetting": "Notificaciones push",
   "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
@@ -526,5 +524,7 @@
   "protocolLabel": "{} ({})",
   "cancelSurveyTitle": "Motivos de cancelación",
   "connectBestServer": "El mejor servidor",
-  "orSelectCountryManually": "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente."
+  "orSelectCountryManually": "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente.",
+  "typeDelete": "Escribe ELIMINAR",
+  "allowBtn": "Permitir"
 }

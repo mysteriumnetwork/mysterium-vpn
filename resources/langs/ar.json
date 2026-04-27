@@ -10,7 +10,6 @@
   "activeSubsPaidVia": "لديك بالفعل اشتراك نشط مدفوع عبر {store}. يرجى زيارة {store} لإجراء تغييرات على اشتراكك.",
   "affordable": "بسعر معقول",
   "allLocations": "جميع المواقع",
-  "allowPermissionsBtn": "يسمح",
   "allowPushNotificationsBtn": "السماح بالإشعارات",
   "almostThere": "اوشكت على الوصول!",
   "and": " و ",
@@ -358,7 +357,6 @@
   "tryAgainBtn": "حاول ثانية",
   "tryAgainOrContactSupport": "يرجى المحاولة مرة أخرى قريبًا أو الاتصال بالدعم إذا استمرت المشكلة.",
   "turnOnNotificationsBtn": "قم بتشغيل الإخطارات",
-  "typeDelete": "اكتب DELETE في حقل النص أدناه للتأكيد.",
   "typeFeedback": "اكتب ملاحظاتك هنا...",
   "typeIssueHere": "اكتب مشكلتك هنا..",
   "uk": "الأوكرانية",
@@ -478,7 +476,7 @@
     "other": "{statesNum} الولايات"
   },
   "redeemDiscountCode": "استخدم رمز الخصم",
-  "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
+  "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
   "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
   "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
   "allowNotificationsBtn": "السماح بالإشعارات",
@@ -526,5 +524,7 @@
   "protocolLabel": "{} ({})",
   "cancelSurveyTitle": "أسباب الإلغاء",
   "connectBestServer": "أفضل خادم",
-  "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا."
+  "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا.",
+  "typeDelete": "اكتب DELETE",
+  "allowBtn": "يسمح"
 }

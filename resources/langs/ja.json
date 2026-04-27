@@ -10,7 +10,6 @@
   "activeSubsPaidVia": "{store} 経由で支払われた有効な定期購入がすでにあります。サブスクリプションを変更するには、{store} にアクセスしてください。",
   "affordable": "手頃な価格",
   "allLocations": "すべての場所",
-  "allowPermissionsBtn": "許可する",
   "allowPushNotificationsBtn": "通知を許可",
   "almostThere": "もうすぐそこです!",
   "and": " および ",
@@ -358,7 +357,6 @@
   "tryAgainBtn": "もう一度やり直してください",
   "tryAgainOrContactSupport": "しばらくしてからもう一度お試しください。問題が解決しない場合はサポートに連絡してください。",
   "turnOnNotificationsBtn": "通知をオンにする",
-  "typeDelete": "確認するには、下のテキストフィールドに「DELETE」と入力します。",
   "typeFeedback": "ここにフィードバックを入力してください...",
   "typeIssueHere": "ここに問題を入力してください。",
   "uk": "ウクライナ語",
@@ -526,5 +524,7 @@
   "protocolLabel": "{} ({})",
   "cancelSurveyTitle": "キャンセル理由",
   "connectBestServer": "最高のサーバー",
-  "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。"
+  "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。",
+  "typeDelete": "「DELETE」と入力してください",
+  "allowBtn": "許可する"
 }

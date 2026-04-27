@@ -26,7 +26,6 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia": "您已经通过 {store} 支付了有效的订阅费用。请访问 {store} 更改您的订阅。",
     "affordable": "价格实惠",
     "allLocations": "所有地点",
-    "allowPermissionsBtn": "允许",
     "allowPushNotificationsBtn": "允许通知",
     "almostThere": "差不多了！",
     "and": " 和 ",
@@ -367,7 +366,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainBtn": "再试一次",
     "tryAgainOrContactSupport": "请稍后再试，若问题仍然存在，请联系支持。",
     "turnOnNotificationsBtn": "打开通知",
-    "typeDelete": "在下面的文本字段中键入 DELETE 进行确认。",
     "typeFeedback": "在这里输入您的反馈...",
     "typeIssueHere": "在这里输入您的问题..",
     "uk": "乌克兰",
@@ -469,7 +467,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-    "subscriptionPlanCityLevelDesc": "与大多数 VPN 相比，它能提供更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
+    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
@@ -533,6 +531,8 @@ class CodegenLoader extends AssetLoader {
     "cancelSurveyTitle": "取消的原因",
     "connectBestServer": "最佳服务器",
     "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。",
+    "typeDelete": "输入 DELETE",
+    "allowBtn": "允许",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -547,7 +547,6 @@ class CodegenLoader extends AssetLoader {
         "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
     "affordable": "Ekonomik",
     "allLocations": "Tüm konumlar",
-    "allowPermissionsBtn": "İzin vermek",
     "allowPushNotificationsBtn": "Bildirimlere İzin Ver",
     "almostThere": "Neredeyse!",
     "and": " Ve ",
@@ -825,7 +824,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Uçlar {}",
+    "purchasePromoEnds": "Sonlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -923,7 +922,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Lütfen kısa süre sonra tekrar deneyin veya sorun devam ederse destekle iletişime geçin.",
     "turnOnNotificationsBtn": "Bildirimleri aç",
-    "typeDelete": "Onaylamak için aşağıdaki metin alanına DELETE yazın!",
     "typeFeedback": "Görüşlerinizi buraya yazın...",
     "typeIssueHere": "Sorununuzu buraya yazın..",
     "uk": "Ukrayna",
@@ -1094,7 +1092,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
-    "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
     "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
     "fastLabel": "Hızlı",
@@ -1104,6 +1102,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "En iyi sunucu",
     "orSelectCountryManually":
         "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz.",
+    "typeDelete": "DELETE yazın",
+    "allowBtn": "İzin vermek",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1117,7 +1117,6 @@ class CodegenLoader extends AssetLoader {
     "activeSubsPaidVia": "{store} 経由で支払われた有効な定期購入がすでにあります。サブスクリプションを変更するには、{store} にアクセスしてください。",
     "affordable": "手頃な価格",
     "allLocations": "すべての場所",
-    "allowPermissionsBtn": "許可する",
     "allowPushNotificationsBtn": "通知を許可",
     "almostThere": "もうすぐそこです!",
     "and": " および ",
@@ -1463,7 +1462,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainBtn": "もう一度やり直してください",
     "tryAgainOrContactSupport": "しばらくしてからもう一度お試しください。問題が解決しない場合はサポートに連絡してください。",
     "turnOnNotificationsBtn": "通知をオンにする",
-    "typeDelete": "確認するには、下のテキストフィールドに「DELETE」と入力します。",
     "typeFeedback": "ここにフィードバックを入力してください...",
     "typeIssueHere": "ここに問題を入力してください。",
     "uk": "ウクライナ語",
@@ -1633,6 +1631,8 @@ class CodegenLoader extends AssetLoader {
     "cancelSurveyTitle": "キャンセル理由",
     "connectBestServer": "最高のサーバー",
     "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。",
+    "typeDelete": "「DELETE」と入力してください",
+    "allowBtn": "許可する",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1649,7 +1649,6 @@ class CodegenLoader extends AssetLoader {
         "Sie haben bereits ein aktives Abonnement, bezahlt über {store}. Bitte besuchen Sie {store}, um Änderungen an Ihrem Abonnement vorzunehmen.",
     "affordable": "Erschwinglich",
     "allLocations": "Alle Standorte",
-    "allowPermissionsBtn": "Erlauben",
     "allowPushNotificationsBtn": "Benachrichtigungen zulassen",
     "almostThere": "Fast fertig!",
     "and": " und der ",
@@ -2045,7 +2044,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Bitte versuche es in Kürze erneut oder kontaktiere den Support, falls das Problem weiterhin besteht.",
     "turnOnNotificationsBtn": "Schalten Sie die Benachrichtigungen ein",
-    "typeDelete": "Geben Sie zur Bestätigung LÖSCHEN in das Textfeld unten ein.",
     "typeFeedback": "Geben Sie hier Ihr Feedback ein...",
     "typeIssueHere": "Geben Sie hier Ihr Problem ein.",
     "uk": "Ukrainisch",
@@ -2115,14 +2113,14 @@ class CodegenLoader extends AssetLoader {
     "subscriptionAllPlansPurchase": "Plan abrufen",
     "subscriptionPlanNameBasic": "Basic",
     "subscriptionPlanNamePlus": "Plus",
-    "subscriptionPlanPF1Basic": "Sichern Sie bis zu 6 Geräte gleichzeitig",
+    "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
     "subscriptionPlanPF2Basic": "57 unterstützte Länder",
     "subscriptionPlanPF3Basic": "10 Server",
     "subscriptionPlanPF4Basic": "VPN-Protokoll",
     "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
     "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
     "subscriptionPlanPF3Plus": "100 Server",
-    "subscriptionPlanPF4Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
+    "subscriptionPlanPF4Plus": "Mehr als 7.500 Wohn-IPs",
     "subscriptionPlanPF5Plus": "VPN-Protokoll",
     "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
     "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
@@ -2158,9 +2156,9 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
         "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
     "notNowBtn": "Nicht jetzt.",
@@ -2231,6 +2229,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Bester Server",
     "orSelectCountryManually":
         "Wir verbinden Sie mit dem besten Server – oder Sie können ein Land manuell auswählen.",
+    "typeDelete": "Geben Sie LÖSCHEN ein",
+    "allowBtn": "Erlauben",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2245,7 +2245,6 @@ class CodegenLoader extends AssetLoader {
         "Você já tem uma assinatura ativa paga via {store}. Visite {store} para fazer alterações em sua assinatura.",
     "affordable": "Acessível",
     "allLocations": "Todos os locais",
-    "allowPermissionsBtn": "Permitir",
     "allowPushNotificationsBtn": "Permitir notificações",
     "almostThere": "Quase lá!",
     "and": " e ",
@@ -2636,7 +2635,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Tente novamente em breve ou entre em contato com o suporte se o problema persistir.",
     "turnOnNotificationsBtn": "Ative as notificações",
-    "typeDelete": "Digite Excluir no campo de texto abaixo para confirmar!",
     "typeFeedback": "Digite seu feedback aqui...",
     "typeIssueHere": "Digite seu problema aqui ..",
     "uk": "Ucraniano",
@@ -2747,7 +2745,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
-        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
+        "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
     "subscriptionPlanCityLevelDesc":
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2820,6 +2818,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Melhor servidor",
     "orSelectCountryManually":
         "Vamos conectar você ao melhor servidor - ou você pode selecionar um país manualmente.",
+    "typeDelete": "Digite EXCLUIR",
+    "allowBtn": "Permitir",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2835,7 +2835,6 @@ class CodegenLoader extends AssetLoader {
         "You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
     "affordable": "Affordable",
     "allLocations": "All locations",
-    "allowPermissionsBtn": "Allow",
     "allowPushNotificationsBtn": "Allow notifications",
     "almostThere": "Almost there!",
     "and": " and ",
@@ -3216,7 +3215,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Please try again shortly or contact support if the issue persists.",
     "turnOnNotificationsBtn": "Turn on the notifications",
-    "typeDelete": "Type DELETE in the text field below to confirm.",
     "typeFeedback": "Type your feedback here...",
     "typeIssueHere": "Type your issue here..",
     "uk": "Ukrainian",
@@ -3397,6 +3395,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Best server",
     "orSelectCountryManually":
         "We'll connect you to the best server - or you can manually select a country.",
+    "typeDelete": "Type DELETE",
+    "allowBtn": "Allow",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3412,7 +3412,6 @@ class CodegenLoader extends AssetLoader {
         "Hai già un abbonamento attivo pagato tramite {store}. Visita {store} per apportare modifiche al tuo abbonamento.",
     "affordable": "Conveniente",
     "allLocations": "Tutti i luoghi",
-    "allowPermissionsBtn": "Permettere",
     "allowPushNotificationsBtn": "Consenti notifiche",
     "almostThere": "Quasi lì!",
     "and": " e ",
@@ -3805,7 +3804,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainBtn": "Riprova",
     "tryAgainOrContactSupport": "Riprova tra poco o contatta il supporto se il problema persiste.",
     "turnOnNotificationsBtn": "Attiva le notifiche",
-    "typeDelete": "Digita ELIMINA nel campo di testo sottostante per confermare.",
     "typeFeedback": "Scrivi il tuo feedback qui...",
     "typeIssueHere": "Scrivi qui il tuo problema..",
     "uk": "Ucraino",
@@ -3877,18 +3875,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi fino a 6 dispositivi contemporaneamente.",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "protocollo VPN",
+    "subscriptionPlanPF4Basic": "Protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi contemporaneamente",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
     "subscriptionPlanPF4Plus": "Oltre 7.500 indirizzi IP residenziali",
-    "subscriptionPlanPF5Plus": "protocollo VPN",
+    "subscriptionPlanPF5Plus": "Protocollo VPN",
     "subscriptionPlanPF6Plus": "Scelte a livello cittadino",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso entro 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti immediatamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "protocollo VPN",
+    "subscriptionPlanWireGuard": "Protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello cittadino",
@@ -3961,7 +3959,7 @@ class CodegenLoader extends AssetLoader {
     "unauthenticatedSettingSubtitle":
         "Accedi per accedere al tuo account e sbloccare tutte le funzionalità.",
     "signInBtn": "Registrazione",
-    "vpnProtocolSettingLbl": "protocollo VPN",
+    "vpnProtocolSettingLbl": "Protocollo VPN",
     "blockerSettingLbl": "Bloccante",
     "light": "Leggero",
     "dark": "Buio",
@@ -3989,6 +3987,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Miglior server",
     "orSelectCountryManually":
         "Ti collegheremo al server migliore, oppure puoi selezionare manualmente un paese.",
+    "typeDelete": "Digita CANCELLA",
+    "allowBtn": "Permettere",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4004,7 +4004,6 @@ class CodegenLoader extends AssetLoader {
         "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
     "affordable": "Abordable",
     "allLocations": "Tous les emplacements",
-    "allowPermissionsBtn": "Permettre",
     "allowPushNotificationsBtn": "Autoriser les notifications",
     "almostThere": "Presque là!",
     "and": " Estonien ",
@@ -4403,7 +4402,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Veuillez réessayer sous peu ou contacter le support si le problème persiste.",
     "turnOnNotificationsBtn": "Activer les notifications",
-    "typeDelete": "Tapez la suppression du champ de texte ci-dessous pour confirmer!",
     "typeFeedback": "Tapez vos commentaires ici...",
     "typeIssueHere": "Tapez votre problème ici.",
     "uk": "Ukrainien",
@@ -4588,6 +4586,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Meilleur serveur",
     "orSelectCountryManually":
         "Nous vous connecterons au meilleur serveur, ou vous pouvez sélectionner manuellement un pays.",
+    "typeDelete": "Tapez SUPPRIMER",
+    "allowBtn": "Permettre",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4603,7 +4603,6 @@ class CodegenLoader extends AssetLoader {
         "Anda sudah memiliki langganan aktif yang dibayar melalui {store}. Kunjungi {store} untuk melakukan perubahan pada langganan Anda.",
     "affordable": "Terjangkau",
     "allLocations": "semua Lokasi",
-    "allowPermissionsBtn": "Mengizinkan",
     "allowPushNotificationsBtn": "Izinkan Notifikasi",
     "almostThere": "Hampir sampai!",
     "and": " Dan ",
@@ -4984,7 +4983,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Silakan coba lagi sebentar lagi atau hubungi dukungan jika masalah terus berlanjut.",
     "turnOnNotificationsBtn": "Nyalakan notifikasi",
-    "typeDelete": "Ketik HAPUS di bidang teks di bawah ini untuk mengonfirmasi.",
     "typeFeedback": "Ketikkan masukan Anda di sini...",
     "typeIssueHere": "Ketik masalah Anda di sini..",
     "uk": "Orang Ukraina",
@@ -5086,7 +5084,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5169,6 +5167,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Server terbaik",
     "orSelectCountryManually":
         "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual.",
+    "typeDelete": "Ketik HAPUS",
+    "allowBtn": "Mengizinkan",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5184,7 +5184,6 @@ class CodegenLoader extends AssetLoader {
         "Ya tienes una suscripción activa pagada a través de {store}. Visita {store} para realizar cambios en tu suscripción.",
     "affordable": "Asequible",
     "allLocations": "Todas las ubicaciones",
-    "allowPermissionsBtn": "Permitir",
     "allowPushNotificationsBtn": "Permitir notificaciones",
     "almostThere": "¡Casi llegamos!",
     "and": " y ",
@@ -5576,7 +5575,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "Inténtalo de nuevo en breve o contacta con el soporte si el problema persiste.",
     "turnOnNotificationsBtn": "Activa las notificaciones",
-    "typeDelete": "Escribe ELIMINAR en el campo de texto a continuación para confirmar.",
     "typeFeedback": "Escribe tus comentarios aquí...",
     "typeIssueHere": "Escribe tu problema aquí..",
     "uk": "Ucranio",
@@ -5677,7 +5675,7 @@ class CodegenLoader extends AssetLoader {
     "plan_2_years_pro": "Profesional 2 años",
     "pushNotificationsConsentPopupTitle": "Mantente al día con las notificaciones push.",
     "pushNotificationsConsentPopupDesc":
-        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones prácticas.",
+        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones que te resultarán útiles.",
     "notificationsSettingTitle": "Notificaciones",
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
@@ -5761,6 +5759,8 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "El mejor servidor",
     "orSelectCountryManually":
         "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente.",
+    "typeDelete": "Escribe ELIMINAR",
+    "allowBtn": "Permitir",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5775,7 +5775,6 @@ class CodegenLoader extends AssetLoader {
         "لديك بالفعل اشتراك نشط مدفوع عبر {store}. يرجى زيارة {store} لإجراء تغييرات على اشتراكك.",
     "affordable": "بسعر معقول",
     "allLocations": "جميع المواقع",
-    "allowPermissionsBtn": "يسمح",
     "allowPushNotificationsBtn": "السماح بالإشعارات",
     "almostThere": "اوشكت على الوصول!",
     "and": " و ",
@@ -6147,7 +6146,6 @@ class CodegenLoader extends AssetLoader {
     "tryAgainOrContactSupport":
         "يرجى المحاولة مرة أخرى قريبًا أو الاتصال بالدعم إذا استمرت المشكلة.",
     "turnOnNotificationsBtn": "قم بتشغيل الإخطارات",
-    "typeDelete": "اكتب DELETE في حقل النص أدناه للتأكيد.",
     "typeFeedback": "اكتب ملاحظاتك هنا...",
     "typeIssueHere": "اكتب مشكلتك هنا..",
     "uk": "الأوكرانية",
@@ -6273,7 +6271,7 @@ class CodegenLoader extends AssetLoader {
     "connectToTooltip": "اتصل بـ {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
     "redeemDiscountCode": "استخدم رمز الخصم",
-    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
+    "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
     "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
     "marketingConsentPopupDesc":
         "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
@@ -6323,6 +6321,8 @@ class CodegenLoader extends AssetLoader {
     "cancelSurveyTitle": "أسباب الإلغاء",
     "connectBestServer": "أفضل خادم",
     "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا.",
+    "typeDelete": "اكتب DELETE",
+    "allowBtn": "يسمح",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
