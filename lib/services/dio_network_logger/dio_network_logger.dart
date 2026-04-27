@@ -919,8 +919,7 @@ class _ConfigPage extends ConsumerWidget {
       }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) =>
-              const _ConfigPage._(),
+          builder: (context) => const _ConfigPage._(),
           settings: const RouteSettings(name: 'configPage'),
         ),
       );
@@ -1026,8 +1025,7 @@ class _DeviceInfo extends ConsumerWidget {
       }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) =>
-              const _DeviceInfo._(),
+          builder: (context) => const _DeviceInfo._(),
           settings: const RouteSettings(name: 'deviceInfoPage'),
         ),
       );
@@ -1103,8 +1101,7 @@ class _SecuredStorageValues extends ConsumerWidget {
       }
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) =>
-              const _SecuredStorageValues._(),
+          builder: (context) => const _SecuredStorageValues._(),
           settings: const RouteSettings(name: 'securedStorageValuesPage'),
         ),
       );

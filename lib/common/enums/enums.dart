@@ -13,7 +13,6 @@ export 'orientation_type.dart';
 export 'protocol_type.dart';
 export 'rate_connection.dart';
 export 'routes.dart';
-export 'size_type.dart';
 export 'storage_keys.dart';
 export 'store_state.dart';
 export 'subscription_status.dart';

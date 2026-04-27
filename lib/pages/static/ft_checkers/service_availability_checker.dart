@@ -15,40 +15,40 @@ class ServiceAvailabilityChecker extends ConsumerWidget {
     final store = ref.watch(remoteConfigStorePOD);
 
     return Observer(
-        builder: (context) {
-          final theme = Theme.of(context);
-          if (store.isServiceAvailable) {
-            return child;
-          } else {
-            return ColoredScaffold(
-              body: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.all(theme.spacing.xl2),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: theme.spacing.xl6),
-                        const Logo(),
-                        const Spacer(),
-                        Text(
-                          store.isServiceAvailableMessage,
-                          textAlign: TextAlign.center,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textStyles.textMd.regular.copyWith(
-                            color: theme.palette.textPrimary,
-                          ),
+      builder: (context) {
+        final theme = Theme.of(context);
+        if (store.isServiceAvailable) {
+          return child;
+        } else {
+          return ColoredScaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(theme.spacing.xl2),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: theme.spacing.xl6),
+                      const Logo(),
+                      const Spacer(),
+                      Text(
+                        store.isServiceAvailableMessage,
+                        textAlign: TextAlign.center,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textStyles.textMd.regular.copyWith(
+                          color: theme.palette.textPrimary,
                         ),
-                        const Spacer(),
-                      ],
-                    ),
+                      ),
+                      const Spacer(),
+                    ],
                   ),
                 ),
               ),
-            );
-          }
-        },
+            ),
+          );
+        }
+      },
     );
   }
 }
