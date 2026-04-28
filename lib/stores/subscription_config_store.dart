@@ -29,16 +29,16 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
   late final List<ReactionDisposer> _reactions;
 
   @readonly
-  late ObservableFuture<SubscriptionConfigResponse?> _future = ObservableFuture(_fetch());
+  late ObservableFuture<SubscriptionConfigResponse?> _future = ObservableFuture.value(null);
 
   @readonly
   late ObservableFuture<GetPlanResponse> _subscriptionPlanFuture = ObservableFuture(
-    _service.fetchSubscriptionPlan(),
+    Completer<GetPlanResponse>().future,
   );
 
   Future<SubscriptionConfigResponse?> _fetch() async {
     final config = await _service.fetchSubscriptionConfig();
-    _service.clearPendingTransactions().ignore();
+    _service.clearPendingTransactions().catchError((Object _) {});
     return config;
   }
 

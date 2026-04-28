@@ -112,6 +112,16 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription(force: force));
   }
 
+  late final _$refreshSubscriptionConfigAsyncAction = AsyncAction(
+    '_SubscriptionStore.refreshSubscriptionConfig',
+    context: context,
+  );
+
+  @override
+  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
+    return _$refreshSubscriptionConfigAsyncAction.run(() => super.refreshSubscriptionConfig());
+  }
+
   late final _$refreshOtherSubscriberAsyncAction = AsyncAction(
     '_SubscriptionStore.refreshOtherSubscriber',
     context: context,
@@ -136,18 +146,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     name: '_SubscriptionStore',
     context: context,
   );
-
-  @override
-  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
-    final _$actionInfo = _$_SubscriptionStoreActionController.startAction(
-      name: '_SubscriptionStore.refreshSubscriptionConfig',
-    );
-    try {
-      return super.refreshSubscriptionConfig();
-    } finally {
-      _$_SubscriptionStoreActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void mockSubscriptionFailureStatus() {

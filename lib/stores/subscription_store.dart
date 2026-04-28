@@ -191,8 +191,16 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() =>
-      _configStore.refreshConfig();
+  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() async {
+    try {
+      return await _configStore.refreshConfig();
+    } catch (e, stack) {
+      if (kDebugMode) {
+        log('Failed to refresh subscription config', error: e, stackTrace: stack);
+      }
+      return null;
+    }
+  }
 
   @action
   Future<String?> refreshOtherSubscriber() async {
