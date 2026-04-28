@@ -65,34 +65,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     );
   }
 
-  late final _$_subscriptionConfigFutureAtom = Atom(
-    name: '_SubscriptionStore._subscriptionConfigFuture',
-    context: context,
-  );
-
-  ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture {
-    _$_subscriptionConfigFutureAtom.reportRead();
-    return super._subscriptionConfigFuture;
-  }
-
-  @override
-  ObservableFuture<api.SubscriptionConfigResponse?> get _subscriptionConfigFuture =>
-      subscriptionConfigFuture;
-
-  bool __subscriptionConfigFutureIsInitialized = false;
-
-  @override
-  set _subscriptionConfigFuture(ObservableFuture<api.SubscriptionConfigResponse?> value) {
-    _$_subscriptionConfigFutureAtom.reportWrite(
-      value,
-      __subscriptionConfigFutureIsInitialized ? super._subscriptionConfigFuture : null,
-      () {
-        super._subscriptionConfigFuture = value;
-        __subscriptionConfigFutureIsInitialized = true;
-      },
-    );
-  }
-
   late final _$_otherSubscriberEmailFutureAtom = Atom(
     name: '_SubscriptionStore._otherSubscriberEmailFuture',
     context: context,
@@ -118,26 +90,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
         __otherSubscriberEmailFutureIsInitialized = true;
       },
     );
-  }
-
-  late final _$_subscriptionStatusAtom = Atom(
-    name: '_SubscriptionStore._subscriptionStatus',
-    context: context,
-  );
-
-  SubscriptionStatus? get subscriptionStatus {
-    _$_subscriptionStatusAtom.reportRead();
-    return super._subscriptionStatus;
-  }
-
-  @override
-  SubscriptionStatus? get _subscriptionStatus => subscriptionStatus;
-
-  @override
-  set _subscriptionStatus(SubscriptionStatus? value) {
-    _$_subscriptionStatusAtom.reportWrite(value, super._subscriptionStatus, () {
-      super._subscriptionStatus = value;
-    });
   }
 
   late final _$_fetchSubscriptionAsyncAction = AsyncAction(

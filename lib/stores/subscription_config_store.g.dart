@@ -29,33 +29,6 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
     });
   }
 
-  late final _$_subscriptionFutureAtom = Atom(
-    name: '_SubscriptionConfigStore._subscriptionFuture',
-    context: context,
-  );
-
-  ObservableFuture<Subscription> get subscriptionFuture {
-    _$_subscriptionFutureAtom.reportRead();
-    return super._subscriptionFuture;
-  }
-
-  @override
-  ObservableFuture<Subscription> get _subscriptionFuture => subscriptionFuture;
-
-  bool __subscriptionFutureIsInitialized = false;
-
-  @override
-  set _subscriptionFuture(ObservableFuture<Subscription> value) {
-    _$_subscriptionFutureAtom.reportWrite(
-      value,
-      __subscriptionFutureIsInitialized ? super._subscriptionFuture : null,
-      () {
-        super._subscriptionFuture = value;
-        __subscriptionFutureIsInitialized = true;
-      },
-    );
-  }
-
   late final _$_subscriptionPlanFutureAtom = Atom(
     name: '_SubscriptionConfigStore._subscriptionPlanFuture',
     context: context,
@@ -81,6 +54,33 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
         __subscriptionPlanFutureIsInitialized = true;
       },
     );
+  }
+
+  late final _$refreshConfigAsyncAction = AsyncAction(
+    '_SubscriptionConfigStore.refreshConfig',
+    context: context,
+  );
+
+  @override
+  Future<SubscriptionConfigResponse?> refreshConfig() {
+    return _$refreshConfigAsyncAction.run(() => super.refreshConfig());
+  }
+
+  late final _$_SubscriptionConfigStoreActionController = ActionController(
+    name: '_SubscriptionConfigStore',
+    context: context,
+  );
+
+  @override
+  void refreshPlan() {
+    final _$actionInfo = _$_SubscriptionConfigStoreActionController.startAction(
+      name: '_SubscriptionConfigStore.refreshPlan',
+    );
+    try {
+      return super.refreshPlan();
+    } finally {
+      _$_SubscriptionConfigStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
