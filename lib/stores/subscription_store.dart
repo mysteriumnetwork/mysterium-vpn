@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -22,11 +23,13 @@ class SubscriptionStore = _SubscriptionStore with _$SubscriptionStore;
 
 abstract class _SubscriptionStore with Store {
   _SubscriptionStore({
+    required api.VpnApi api,
     required SubscriptionService subscriptionService,
     required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
-  }) : _subscriptionService = subscriptionService,
+  }) : _apiSubscription = api.getSubscription(),
+       _subscriptionService = subscriptionService,
        _authSessionStore = authSessionStore,
        _analyticsStore = analyticsStore,
        _remoteConfigStore = remoteConfigStore {
@@ -39,6 +42,7 @@ abstract class _SubscriptionStore with Store {
     }, fireImmediately: true);
   }
 
+  final api.Subscription _apiSubscription;
   final SubscriptionService _subscriptionService;
   final AuthSessionStore _authSessionStore;
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
@@ -223,6 +227,35 @@ abstract class _SubscriptionStore with Store {
     await Future.wait([refreshSubscriptionConfig(), refreshSubscription()]);
 
     await Future.wait([refreshOtherSubscriber()]);
+  }
+
+  Future<api.OrderSummaryResponse> calculateOrderBreakdown({
+    required String planId,
+    required String country,
+    String? state,
+    String? couponCode,
+  }) async {
+    final subscription = _subscriptionFuture.value;
+    final subscriptionId = subscription?.id;
+    if (subscriptionId.isNotNullOrEmpty) {
+      final response = await _apiSubscription.orderUpdateSummary(
+        id: subscriptionId!,
+        planId: planId,
+        currency: 'USD',
+        couponCode: couponCode,
+      );
+      return response.data!;
+    }
+
+    final response = await _apiSubscription.orderSummary(
+      orderSummaryRequest: api.OrderSummaryRequest(
+        planId: planId,
+        country: country,
+        state: state,
+        couponCode: couponCode,
+      ),
+    );
+    return response.data!;
   }
 
   @action
