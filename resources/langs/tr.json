@@ -10,7 +10,6 @@
   "activeSubsPaidVia": "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
   "affordable": "Ekonomik",
   "allLocations": "Tüm konumlar",
-  "allowPermissionsBtn": "İzin vermek",
   "allowPushNotificationsBtn": "Bildirimlere İzin Ver",
   "almostThere": "Neredeyse!",
   "and": " Ve ",
@@ -266,7 +265,7 @@
   "pt": "Portekizce",
   "purchased": "satın alındı",
   "purchasePromoCTA": "Haydi gidelim",
-  "purchasePromoEnds": "Uçlar {}",
+  "purchasePromoEnds": "Sonlar {}",
   "purchasePromoFeatures": "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
   "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
   "purchasePromoPrivacyPolicy": "Gizlilik Politikası",
@@ -358,7 +357,6 @@
   "tryAgainBtn": "Tekrar deneyin",
   "tryAgainOrContactSupport": "Lütfen kısa süre sonra tekrar deneyin veya sorun devam ederse destekle iletişime geçin.",
   "turnOnNotificationsBtn": "Bildirimleri aç",
-  "typeDelete": "Onaylamak için aşağıdaki metin alanına DELETE yazın!",
   "typeFeedback": "Görüşlerinizi buraya yazın...",
   "typeIssueHere": "Sorununuzu buraya yazın..",
   "uk": "Ukrayna",
@@ -518,7 +516,7 @@
   },
   "rateConnectionLike": "Neyi beğendiniz?",
   "rateConnectionDislike": "Neyi beğenmediniz?",
-  "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
+  "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
   "switchToLocationBtn": "Şuna geçin: {}",
   "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
   "fastLabel": "Hızlı",
@@ -526,5 +524,7 @@
   "protocolLabel": "{} ({})",
   "cancelSurveyTitle": "İptal nedenleri",
   "connectBestServer": "En iyi sunucu",
-  "orSelectCountryManually": "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz."
+  "orSelectCountryManually": "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz.",
+  "typeDelete": "DELETE yazın",
+  "allowBtn": "İzin vermek"
 }

@@ -63,8 +63,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
         final storeState = subscriptionStore.storeState;
         final products = plansStore.future.value;
 
-        final isVerifyingPayment =
-            subscriptionStore.subscriptionStatus == SubscriptionStatus.verifying;
+        final isVerifyingPayment = purchaseStore.subscriptionStatus == SubscriptionStatus.verifying;
         final barrierContentColor = switch (Theme.of(context).brightness) {
           Brightness.dark => Palette.white,
           Brightness.light => Palette.purple,
@@ -74,7 +73,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
             storeState == StoreState.loading ||
             subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
             plansStore.future.status == FutureStatus.pending ||
-            subscriptionStore.subscriptionStatus == SubscriptionStatus.pending;
+            purchaseStore.subscriptionStatus == SubscriptionStatus.pending;
 
         if (isLoading) {
           return LoadingIndicator(
@@ -89,7 +88,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
           ).padding(top: 36);
         }
         return ReactionBuilder(
-          builder: (context) => reaction((_) => subscriptionStore.subscriptionStatus, (status) {
+          builder: (context) => reaction((_) => purchaseStore.subscriptionStatus, (status) {
             _subscriptionStatusReaction(
               context,
               status,

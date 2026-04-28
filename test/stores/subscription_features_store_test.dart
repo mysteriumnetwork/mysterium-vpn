@@ -45,6 +45,11 @@ void main() {
       mockSubscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
     when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(null));
+    when(mockConfigStore.subscriptionPlanFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        GetPlanResponse(id: '', description: '', metadata: PlanMetadata()),
+      ),
+    );
   });
 
   group('SubscriptionFeaturesStore', () {
@@ -94,6 +99,22 @@ void main() {
         stripePublishableKey: '',
       );
       when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config));
+
+      final store = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(store.residentialIPsAllowed, true);
+    });
+
+    test('residentialIPsAllowed falls back to plan metadata when config is null', () {
+      when(mockConfigStore.subscriptionPlanFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          GetPlanResponse(
+            id: 'basic',
+            description: '',
+            metadata: PlanMetadata(residentialIpsAllowed: true),
+          ),
+        ),
+      );
 
       final store = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
 
