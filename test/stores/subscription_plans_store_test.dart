@@ -16,7 +16,6 @@ import 'subscription_plans_store_test.mocks.dart';
   MockSpec<SubscriptionService>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<RemoteConfigStore>(),
-  MockSpec<SubscriptionConfigResponse>(),
   MockSpec<PurchasableProduct>(),
   MockSpec<SubscriptionPlanFeatures>(),
   MockSpec<InAppPurchase>(),
@@ -70,9 +69,17 @@ void main() {
       mockSubscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
-    when(
-      mockSubscriptionStore.subscriptionConfigFuture,
-    ).thenAnswer((_) => ObservableFuture.value(MockSubscriptionConfigResponse()));
+    when(mockSubscriptionStore.subscriptionConfigFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        SubscriptionConfigResponse(
+          gateways: [SubscriptionConfigResponseGatewaysInner(name: 'apple', enabled: true)],
+          plans: [],
+          countries: [],
+          stripeReturnUrl: '',
+          stripePublishableKey: '',
+        ),
+      ),
+    );
 
     when(
       mockService.getProductsDetails(any, any),
@@ -101,6 +108,22 @@ void main() {
       );
 
       verify(mockService.getProductsDetails(any, any)).called(1);
+    });
+
+    test('returns empty list when store is not available', () async {
+      when(mockInAppPurchase.isAvailable()).thenAnswer((_) async => false);
+
+      final store = SubscriptionPlansStore(
+        mockService,
+        mockSubscriptionStore,
+        mockRemoteConfigStore,
+        mockInAppPurchase,
+      );
+
+      final products = await store.future;
+
+      expect(products, isEmpty);
+      verifyNever(mockService.getProductsDetails(any, any));
     });
 
     test('returns empty list when subscription config not available', () async {

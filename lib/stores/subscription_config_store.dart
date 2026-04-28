@@ -24,7 +24,9 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
         }
       }, fireImmediately: true),
       reaction((_) => _subscriptionFuture.value?.planId, (plan) {
-        _subscriptionPlanFuture = ObservableFuture(_service.fetchSubscriptionPlan());
+        if (plan != null) {
+          _subscriptionPlanFuture = ObservableFuture(_service.fetchSubscriptionPlan());
+        }
       }, fireImmediately: true),
     ];
   }
@@ -48,7 +50,7 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
 
   Future<SubscriptionConfigResponse?> _fetch() async {
     final config = await _service.fetchSubscriptionConfig();
-    unawaited(_service.clearPendingTransactions());
+    _service.clearPendingTransactions().ignore();
     return config;
   }
 

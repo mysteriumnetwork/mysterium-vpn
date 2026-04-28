@@ -47,6 +47,9 @@ abstract class _SubscriptionFeaturesStore with Store, Disposeable {
     if (_configStore.future.status == FutureStatus.pending) {
       return true;
     }
+    if (metadata == null && _configStore.subscriptionPlanFuture.status == FutureStatus.pending) {
+      return true;
+    }
     return false;
   }
 

@@ -64,6 +64,13 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
       return const [];
     }
 
+    final gateway = config.gateways.firstWhereOrNull(
+      (element) => element.name == getPlatformGateway(),
+    );
+    if (gateway == null || !gateway.enabled) {
+      return const [];
+    }
+
     return _service.getProductsDetails(config, subscription.planId);
   }
 
