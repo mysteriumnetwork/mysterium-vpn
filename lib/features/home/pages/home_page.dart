@@ -154,8 +154,7 @@ class _HomePageState extends State<HomePage> {
                 tablet: (BuildContext context) => const HomeDesktopView(),
                 desktop: (BuildContext context) => const HomeDesktopView(),
               ),
-              if (isLoading)
-               LoadingBarrier(color: Theme.of(context).primaryColor),
+              if (isLoading) LoadingBarrier(color: Theme.of(context).primaryColor),
             ],
           );
         },

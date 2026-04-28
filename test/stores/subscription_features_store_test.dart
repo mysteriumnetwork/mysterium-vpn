@@ -95,13 +95,13 @@ void main() {
   });
 
   group('residentialIPsAllowed', () {
-    test('returns true when metadata is null (default)', () {
+    test('returns false when metadata is null (default)', () {
       when(
         mockSubscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
       when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(null));
 
-      expect(store.residentialIPsAllowed, isTrue);
+      expect(store.residentialIPsAllowed, isFalse);
     });
 
     test('returns value from metadata when present', () {

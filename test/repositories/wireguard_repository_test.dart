@@ -65,9 +65,9 @@ void main() {
       const config = 'cfg with %private_key%';
       await repository.init();
 
-      when(mockService.connect(cfg: anyNamed('cfg'))).thenAnswer(
-        (_) => Future.delayed(const Duration(seconds: 2), () => throw TimeoutException('timeout')),
-      );
+      when(
+        mockService.connect(cfg: anyNamed('cfg')),
+      ).thenAnswer((_) async => throw TimeoutException('timeout'));
 
       await expectLater(repository.connect(config: config), throwsA(isA<TimeoutException>()));
       verify(mockLogger.handle(any, any)).called(1);

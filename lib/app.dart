@@ -21,6 +21,8 @@ import 'package:mysterium_vpn/features/remote_config/store/ab_testing_store.dart
 import 'package:mysterium_vpn/features/remote_config/store/config_cat_user_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/remote_config_store.dart';
 import 'package:mysterium_vpn/features/remote_config/store/texts_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_config_store.dart';
+import 'package:mysterium_vpn/features/subscription/store/subscription_features_store.dart';
 import 'package:mysterium_vpn/features/subscription/store/subscription_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/dns_store.dart';
 import 'package:mysterium_vpn/features/vpn/store/refresh_ip_store.dart';
@@ -151,12 +153,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     getIt<DNSStore>().disposeStore();
     getIt<LocationsStore>().dispose();
     getIt<SubscriptionStore>().dispose();
+    getIt<SubscriptionConfigStore>().dispose();
     getIt<RecentLocationsStore>().dispose();
     getIt<RefreshIPStore>().disposeStore();
     getIt<SmartRefreshStore>().dispose();
     getIt<PushNotificationsStore>().dispose();
     _invalidateIfExists<LocationsStore>();
     _invalidateIfExists<SubscriptionStore>();
+    _invalidateIfExists<SubscriptionConfigStore>();
+    _invalidateIfExists<SubscriptionFeaturesStore>();
     _invalidateIfExists<RecentLocationsStore>();
     _invalidateIfExists<RefreshIPStore>();
   }
