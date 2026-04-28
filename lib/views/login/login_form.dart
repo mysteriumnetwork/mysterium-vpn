@@ -164,11 +164,12 @@ class SignInForm extends HookConsumerWidget {
                                         analyticsStore,
                                       )
                                     : null,
-                                child:
+                                loading:
                                     signInStatus == FutureStatus.pending &&
                                         store.authenticatingType == GrantType.email
-                                    ? const LoadingIndicator()
-                                    : Text(LocaleKeys.continueWithEmail.tr()),
+                                    ? const ButtonLoading()
+                                    : null,
+                                child: Text(LocaleKeys.continueWithEmail.tr()),
                               ),
                             ),
                           ).padding(bottom: height * 0.03, top: height * 0.01),
