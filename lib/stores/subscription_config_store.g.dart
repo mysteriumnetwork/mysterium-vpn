@@ -83,6 +83,16 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
     );
   }
 
+  late final _$refreshConfigAsyncAction = AsyncAction(
+    '_SubscriptionConfigStore.refreshConfig',
+    context: context,
+  );
+
+  @override
+  Future<SubscriptionConfigResponse?> refreshConfig() {
+    return _$refreshConfigAsyncAction.run(() => super.refreshConfig());
+  }
+
   @override
   String toString() {
     return '''

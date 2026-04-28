@@ -3,7 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
-import 'package:vpn_api/vpn_api.dart';
+import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 part 'subscription_features_store.g.dart';
 
@@ -29,10 +29,26 @@ abstract class _SubscriptionFeaturesStore with Store, Disposeable {
   }
 
   @computed
-  bool get residentialIPsAllowed => metadata?.residentialIpsAllowed ?? false;
+  bool get residentialIPsAllowed =>
+      metadata?.residentialIpsAllowed ?? _planMetadata?.residentialIpsAllowed ?? false;
 
   @computed
-  bool get malwareBlockingAllowed => metadata?.malwareBlockingAllowed ?? false;
+  bool get malwareBlockingAllowed =>
+      metadata?.malwareBlockingAllowed ?? _planMetadata?.malwareBlockingAllowed ?? false;
+
+  @computed
+  PlanMetadata? get _planMetadata => _configStore.subscriptionPlanFuture.value?.metadata;
+
+  @computed
+  bool get isLoading {
+    if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
+      return true;
+    }
+    if (_configStore.future.status == FutureStatus.pending) {
+      return true;
+    }
+    return false;
+  }
 
   @override
   void dispose() {}

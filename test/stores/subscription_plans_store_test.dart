@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -18,11 +19,13 @@ import 'subscription_plans_store_test.mocks.dart';
   MockSpec<SubscriptionConfigResponse>(),
   MockSpec<PurchasableProduct>(),
   MockSpec<SubscriptionPlanFeatures>(),
+  MockSpec<InAppPurchase>(),
 ])
 void main() {
   late MockSubscriptionService mockService;
   late MockSubscriptionStore mockSubscriptionStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
+  late MockInAppPurchase mockInAppPurchase;
   late PurchasableProduct planBasicMonthly;
   late PurchasableProduct planBasicAnnual;
   late PurchasableProduct planPlusMonthly;
@@ -34,6 +37,9 @@ void main() {
     mockService = MockSubscriptionService();
     mockSubscriptionStore = MockSubscriptionStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
+    mockInAppPurchase = MockInAppPurchase();
+
+    when(mockInAppPurchase.isAvailable()).thenAnswer((_) async => true);
     planBasicMonthly = MockPurchasableProduct();
     planBasicAnnual = MockPurchasableProduct();
     planPlusAnnual = MockPurchasableProduct();
@@ -83,6 +89,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       final products = await store.future;
@@ -101,6 +108,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       when(
@@ -123,6 +131,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       await store.future;
@@ -140,6 +149,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       await store.future;
@@ -157,6 +167,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       await store.future;
@@ -185,6 +196,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       await store.future;
@@ -213,6 +225,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       await store.future;
@@ -230,6 +243,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       final result = store.findConfig(planBasicMonthly);
@@ -247,6 +261,7 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
       );
 
       await store.future;

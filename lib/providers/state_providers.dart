@@ -187,12 +187,14 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final configStore = ref.watch(subscriptionConfigStorePOD);
 
   final store = SubscriptionStore(
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
     remoteConfigStore: remoteConfigStore,
+    configStore: configStore,
   );
   ref.onDispose(store.dispose);
   return store;
@@ -396,8 +398,14 @@ final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>((ref) {
   final subscriptionService = ref.read(subscriptionServicePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+  final inAppPurchase = ref.read(inAppPurchasePOD);
 
-  final store = SubscriptionPlansStore(subscriptionService, subscriptionStore, remoteConfigStore);
+  final store = SubscriptionPlansStore(
+    subscriptionService,
+    subscriptionStore,
+    remoteConfigStore,
+    inAppPurchase,
+  );
 
   ref.onDispose(store.dispose);
 

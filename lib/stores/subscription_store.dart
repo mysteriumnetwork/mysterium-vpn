@@ -6,12 +6,12 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 // Include generated file
@@ -26,10 +26,12 @@ abstract class _SubscriptionStore with Store {
     required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
+    required SubscriptionConfigStore configStore,
   }) : _subscriptionService = subscriptionService,
        _authSessionStore = authSessionStore,
        _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore {
+       _remoteConfigStore = remoteConfigStore,
+       _configStore = configStore {
     _authReactionDisposer = reaction<bool>((_) => _authSessionStore.isAuthenticated, (
       status,
     ) async {
@@ -44,6 +46,7 @@ abstract class _SubscriptionStore with Store {
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
+  final SubscriptionConfigStore _configStore;
   ReactionDisposer? _authReactionDisposer;
 
   @visibleForTesting
@@ -54,9 +57,8 @@ abstract class _SubscriptionStore with Store {
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
 
-  @readonly
-  late ObservableFuture<api.SubscriptionConfigResponse?> _subscriptionConfigFuture =
-      ObservableFuture(_fetchSubscriptionConfig());
+  ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture =>
+      _configStore.future;
 
   @readonly
   late ObservableFuture<String?> _otherSubscriberEmailFuture = ObservableFuture(
@@ -79,7 +81,7 @@ abstract class _SubscriptionStore with Store {
       return true;
     }
     if (_subscriptionFuture.status == FutureStatus.pending ||
-        _subscriptionConfigFuture.status == FutureStatus.pending) {
+        subscriptionConfigFuture.status == FutureStatus.pending) {
       return true;
     }
 
@@ -87,11 +89,11 @@ abstract class _SubscriptionStore with Store {
   }
 
   @computed
-  StoreState get storeState => switch (_subscriptionConfigFuture.status) {
+  StoreState get storeState => switch (subscriptionConfigFuture.status) {
     FutureStatus.pending => StoreState.loading,
     FutureStatus.rejected => StoreState.notAvailable,
     FutureStatus.fulfilled =>
-      _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
+      subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
   };
 
   @computed
@@ -156,19 +158,6 @@ abstract class _SubscriptionStore with Store {
     return await _subscriptionFuture;
   }
 
-  Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
-    if (Platform.isWindows) {
-      return null;
-    }
-    try {
-      final config = await _subscriptionService.fetchSubscriptionConfig();
-      await _subscriptionService.clearPendingTransactions();
-      return config;
-    } on NotAvailableException catch (_) {
-      return null;
-    }
-  }
-
   Future<String?> _fetchOtherSubscriber() async {
     final subscription = await _subscriptionFuture;
     if (subscription.active) {
@@ -203,12 +192,8 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() async {
-    _subscriptionConfigFuture = _subscriptionConfigFuture.replaceOrReset(
-      _fetchSubscriptionConfig(),
-    );
-    return await _subscriptionConfigFuture;
-  }
+  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() =>
+      _configStore.refreshConfig();
 
   @action
   Future<String?> refreshOtherSubscriber() async {

@@ -65,34 +65,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     );
   }
 
-  late final _$_subscriptionConfigFutureAtom = Atom(
-    name: '_SubscriptionStore._subscriptionConfigFuture',
-    context: context,
-  );
-
-  ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture {
-    _$_subscriptionConfigFutureAtom.reportRead();
-    return super._subscriptionConfigFuture;
-  }
-
-  @override
-  ObservableFuture<api.SubscriptionConfigResponse?> get _subscriptionConfigFuture =>
-      subscriptionConfigFuture;
-
-  bool __subscriptionConfigFutureIsInitialized = false;
-
-  @override
-  set _subscriptionConfigFuture(ObservableFuture<api.SubscriptionConfigResponse?> value) {
-    _$_subscriptionConfigFutureAtom.reportWrite(
-      value,
-      __subscriptionConfigFutureIsInitialized ? super._subscriptionConfigFuture : null,
-      () {
-        super._subscriptionConfigFuture = value;
-        __subscriptionConfigFutureIsInitialized = true;
-      },
-    );
-  }
-
   late final _$_otherSubscriberEmailFutureAtom = Atom(
     name: '_SubscriptionStore._otherSubscriberEmailFuture',
     context: context,
@@ -160,16 +132,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription(force: force));
   }
 
-  late final _$refreshSubscriptionConfigAsyncAction = AsyncAction(
-    '_SubscriptionStore.refreshSubscriptionConfig',
-    context: context,
-  );
-
-  @override
-  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
-    return _$refreshSubscriptionConfigAsyncAction.run(() => super.refreshSubscriptionConfig());
-  }
-
   late final _$refreshOtherSubscriberAsyncAction = AsyncAction(
     '_SubscriptionStore.refreshOtherSubscriber',
     context: context,
@@ -194,6 +156,18 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     name: '_SubscriptionStore',
     context: context,
   );
+
+  @override
+  Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
+    final _$actionInfo = _$_SubscriptionStoreActionController.startAction(
+      name: '_SubscriptionStore.refreshSubscriptionConfig',
+    );
+    try {
+      return super.refreshSubscriptionConfig();
+    } finally {
+      _$_SubscriptionStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void mockSubscriptionFailureStatus() {

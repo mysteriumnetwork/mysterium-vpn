@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -26,7 +25,7 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
       }, fireImmediately: true),
       reaction((_) => _subscriptionFuture.value?.planId, (plan) {
         _subscriptionPlanFuture = ObservableFuture(_service.fetchSubscriptionPlan());
-      }),
+      }, fireImmediately: true),
     ];
   }
 
@@ -48,16 +47,9 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
   );
 
   Future<SubscriptionConfigResponse?> _fetch() async {
-    if (Platform.isWindows) {
-      return null;
-    }
-    try {
-      final config = await _service.fetchSubscriptionConfig();
-      await _service.clearPendingTransactions();
-      return config;
-    } on NotAvailableException catch (_) {
-      return null;
-    }
+    final config = await _service.fetchSubscriptionConfig();
+    unawaited(_service.clearPendingTransactions());
+    return config;
   }
 
   Future<Subscription> _fetchSubscription() async {
@@ -91,6 +83,12 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
       ..setUserProperty(
         AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.userStatus, value: userStatus),
       );
+  }
+
+  @action
+  Future<SubscriptionConfigResponse?> refreshConfig() async {
+    _future = _future.replaceOrReset(_fetch());
+    return await _future;
   }
 
   @override
