@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -20,8 +21,10 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
     this._service,
     this._subscriptionStore,
     this._remoteConfigStore,
-    this._inAppPurchase,
-  ) {
+    this._inAppPurchase, {
+    // ignore: unused_element_parameter
+    @visibleForTesting this.testPlatformGateway,
+  }) {
     _reactions = [
       reaction(
         (_) => _subscriptionStore.subscriptionFuture.value?.planId,
@@ -36,6 +39,7 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
   final RemoteConfigStore _remoteConfigStore;
   final InAppPurchase _inAppPurchase;
   bool? _storeAvailable;
+  final String? testPlatformGateway;
   late final List<ReactionDisposer> _reactions;
 
   @readonly
@@ -47,7 +51,8 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
   }
 
   Future<List<PurchasableProduct>> _fetchProducts() async {
-    if (isWindowsOrLinux()) {
+    final platformGateway = testPlatformGateway ?? getPlatformGateway();
+    if (platformGateway.isEmpty) {
       return const [];
     }
     final storeAvailable = _storeAvailable ??= await _inAppPurchase.isAvailable();
@@ -64,9 +69,7 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
       return const [];
     }
 
-    final gateway = config.gateways.firstWhereOrNull(
-      (element) => element.name == getPlatformGateway(),
-    );
+    final gateway = config.gateways.firstWhereOrNull((element) => element.name == platformGateway);
     if (gateway == null || !gateway.enabled) {
       return const [];
     }

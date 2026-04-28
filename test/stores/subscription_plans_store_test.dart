@@ -97,6 +97,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       final products = await store.future;
@@ -118,6 +119,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       final products = await store.future;
@@ -132,6 +134,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       when(
@@ -155,6 +158,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -173,6 +177,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -191,6 +196,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -220,6 +226,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -249,6 +256,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -267,6 +275,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       final result = store.findConfig(planBasicMonthly);
@@ -285,6 +294,7 @@ void main() {
         mockSubscriptionStore,
         mockRemoteConfigStore,
         mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
