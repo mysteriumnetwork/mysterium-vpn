@@ -144,6 +144,7 @@ class ConnectionSettings extends HookConsumerWidget {
       return;
     }
     analyticsStore.logEvent(AnalyticsEvent.resetAppConfirmShown);
+    final theme = Theme.of(context);
     shownConfirmationDialog(
       context,
       confirmText: LocaleKeys.resetBtn.tr(),
@@ -154,7 +155,7 @@ class ConnectionSettings extends HookConsumerWidget {
         children: [
           Text(
             LocaleKeys.resetAppDialogContent.tr(),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
             maxLines: 4,
             textAlign: TextAlign.center,
           ),
