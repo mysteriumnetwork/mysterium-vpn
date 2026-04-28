@@ -5,5 +5,23 @@
     "*.yaml": "yaml",
     "xstring": "cpp"
   },
-  "dart.flutterSdkPath": ".fvm/versions/3.41.5"
+  "dart.flutterSdkPath": ".fvm/versions/3.41.5",
+  "files.exclude": {
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.gr.dart": true,
+    "**/*.config.dart": true,
+    "**/*.mocks.dart": true,
+    "**/*.chopper.dart": true,
+    "**/*.gen.dart": true
+  },
+  "search.exclude": {
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.gr.dart": true,
+    "**/*.config.dart": true,
+    "**/*.mocks.dart": true,
+    "**/*.chopper.dart": true,
+    "**/*.gen.dart": true
+  }
 }
