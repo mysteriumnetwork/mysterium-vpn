@@ -37,11 +37,14 @@ LocationItemState useLocationItemState({
   final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
 
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
+  final residentialIPsAllowed = useComputedValue(
+    () => subscriptionFeaturesStore.residentialIPsAllowed,
+  );
 
   final locationMode = useComputedValue(
     () => LocationMode.from(
       location: location,
-      residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+      residentialIPsAllowed: residentialIPsAllowed,
       unavailableLocations: unavailableLocationsStore.unavailableLocations,
       subscription: subscription,
       isConnected: vpnStore.isConnected,
@@ -49,7 +52,7 @@ LocationItemState useLocationItemState({
       vpnLocation: vpnStore.location,
       connectingLocation: vpnStore.connectingLocation,
     ),
-    [location, location.isAvailable, subscription],
+    [location, location.isAvailable, subscription, residentialIPsAllowed],
   );
 
   final countryStatus = switch (locationMode) {
