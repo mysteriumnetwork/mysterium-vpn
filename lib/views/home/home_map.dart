@@ -69,7 +69,6 @@ class HomeMap extends HookConsumerWidget {
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
     final handleToggleConnection = useHandleToggleConnection();
-    final handleUpgradePlan = useHandleUpgradePlan();
 
     void handleClearSelectedLocation() {
       selectedLocationStore.value = null;
@@ -94,11 +93,6 @@ class HomeMap extends HookConsumerWidget {
         residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
       );
       if (vpnStore.isConnected && vpnStore.location == resolved) {
-        return;
-      }
-      if (resolved.ipType == IPType.residential &&
-          !subscriptionFeaturesStore.residentialIPsAllowed) {
-        handleUpgradePlan();
         return;
       }
       handleToggleConnection(location: resolved);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/styles/palette.dart';
 import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
 import 'package:mysterium_vpn/components/svg_icon.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -54,6 +53,7 @@ class ProtocolPicker extends ConsumerWidget {
     required AnalyticsStore analyticsStore,
   }) async {
     if (vpnStore.isConnected) {
+      final theme = Theme.of(context);
       shownConfirmationDialog(
         context,
         confirmText: LocaleKeys.confirm.tr(),
@@ -62,7 +62,7 @@ class ProtocolPicker extends ConsumerWidget {
         title: LocaleKeys.protocolPickerSettingTitle.tr(),
         content: Text(
           LocaleKeys.protocolPickerSettingDesc.tr(),
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
+          style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
           maxLines: 5,
           textAlign: TextAlign.center,
         ),
