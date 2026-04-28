@@ -32,13 +32,18 @@ abstract class _SubscriptionStore with Store {
        _analyticsStore = analyticsStore,
        _remoteConfigStore = remoteConfigStore,
        _configStore = configStore {
-    _authReactionDisposer = reaction<bool>((_) => _authSessionStore.isAuthenticated, (
-      status,
-    ) async {
-      if (status) {
-        _subscriptionFuture = ObservableFuture(_fetchSubscription());
-      }
-    }, fireImmediately: true);
+    _reactions = [
+      reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
+        if (status) {
+          _subscriptionFuture = ObservableFuture(_fetchSubscription());
+        }
+      }, fireImmediately: true),
+      reaction((_) => _subscriptionFuture.value?.planId, (planId) {
+        if (planId != null) {
+          _configStore.refreshPlan();
+        }
+      }),
+    ];
   }
 
   final SubscriptionService _subscriptionService;
@@ -47,7 +52,7 @@ abstract class _SubscriptionStore with Store {
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final SubscriptionConfigStore _configStore;
-  ReactionDisposer? _authReactionDisposer;
+  late final List<ReactionDisposer> _reactions;
 
   @visibleForTesting
   bool testIsIOS = false;
@@ -55,7 +60,9 @@ abstract class _SubscriptionStore with Store {
   bool get _isIOS => testIsIOS || Platform.isIOS;
 
   @readonly
-  late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
+  late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
+    Subscription.empty(),
+  );
 
   ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture =>
       _configStore.future;
@@ -65,9 +72,6 @@ abstract class _SubscriptionStore with Store {
     _fetchOtherSubscriber(),
   );
 
-  @readonly
-  SubscriptionStatus? _subscriptionStatus;
-
   @computed
   bool? get isSubscribed => _subscriptionFuture.value?.active;
 
@@ -76,15 +80,10 @@ abstract class _SubscriptionStore with Store {
     if (storeState == StoreState.loading) {
       return true;
     }
-    if (_subscriptionStatus == SubscriptionStatus.pending ||
-        _subscriptionStatus == SubscriptionStatus.verifying) {
-      return true;
-    }
     if (_subscriptionFuture.status == FutureStatus.pending ||
         subscriptionConfigFuture.status == FutureStatus.pending) {
       return true;
     }
-
     return false;
   }
 
@@ -206,8 +205,7 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<void> refreshAll() async {
     await Future.wait([refreshSubscriptionConfig(), refreshSubscription()]);
-
-    await Future.wait([refreshOtherSubscriber()]);
+    await refreshOtherSubscriber();
   }
 
   @action
@@ -216,6 +214,8 @@ abstract class _SubscriptionStore with Store {
   }
 
   FutureOr<void> dispose() async {
-    _authReactionDisposer?.call();
+    for (final disposer in _reactions) {
+      disposer();
+    }
   }
 }

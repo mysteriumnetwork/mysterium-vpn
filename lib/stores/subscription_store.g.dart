@@ -92,26 +92,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     );
   }
 
-  late final _$_subscriptionStatusAtom = Atom(
-    name: '_SubscriptionStore._subscriptionStatus',
-    context: context,
-  );
-
-  SubscriptionStatus? get subscriptionStatus {
-    _$_subscriptionStatusAtom.reportRead();
-    return super._subscriptionStatus;
-  }
-
-  @override
-  SubscriptionStatus? get _subscriptionStatus => subscriptionStatus;
-
-  @override
-  set _subscriptionStatus(SubscriptionStatus? value) {
-    _$_subscriptionStatusAtom.reportWrite(value, super._subscriptionStatus, () {
-      super._subscriptionStatus = value;
-    });
-  }
-
   late final _$_fetchSubscriptionAsyncAction = AsyncAction(
     '_SubscriptionStore._fetchSubscription',
     context: context,

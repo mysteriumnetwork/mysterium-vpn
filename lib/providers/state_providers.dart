@@ -453,9 +453,8 @@ final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
 final subscriptionConfigStorePOD = Provider<SubscriptionConfigStore>((ref) {
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  final analyticsStore = ref.watch(analyticsStorePOD);
 
-  final store = SubscriptionConfigStore(authSessionStore, subscriptionService, analyticsStore);
+  final store = SubscriptionConfigStore(authSessionStore, subscriptionService);
 
   ref.onDispose(store.dispose);
 
