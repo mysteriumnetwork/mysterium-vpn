@@ -72,6 +72,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
               isLoading: connectionDisplayStore.isLoading,
               vpnLocation: vpnStore.location,
               connectingLocation: null,
+              isSubscriptionLoading: subscriptionFeaturesStore.isLoading,
             ) ==
             LocationMode.unsupportedByPlan;
   });

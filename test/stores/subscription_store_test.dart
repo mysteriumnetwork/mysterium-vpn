@@ -1,14 +1,15 @@
 // dart
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:vpn_api/vpn_api.dart' as vpn_api;
 
 import 'subscription_store_test.mocks.dart';
@@ -50,6 +51,7 @@ Future<void> _initEnvWithIosVersion(
   MockSpec<AnalyticsStore>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<DeviceInfoPlugin>(),
+  MockSpec<SubscriptionConfigStore>(),
 ])
 void main() {
   late SubscriptionStore subscriptionStore;
@@ -58,6 +60,7 @@ void main() {
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockDeviceInfoPlugin mockDeviceInfoPlugin;
+  late MockSubscriptionConfigStore mockConfigStore;
 
   final subscriptionExpired = Subscription(
     active: false,
@@ -80,6 +83,7 @@ void main() {
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockDeviceInfoPlugin = MockDeviceInfoPlugin();
+    mockConfigStore = MockSubscriptionConfigStore();
 
     await _initEnvWithIosVersion(mockDeviceInfoPlugin);
 
@@ -89,15 +93,16 @@ void main() {
       mockSubscriptionService.fetchSubscriptionDetails(),
     ).thenAnswer((_) async => subscriptionExpired);
 
-    // Make constructor-time config fetch safe/deterministic.
-    when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());
-    when(mockSubscriptionService.clearPendingTransactions()).thenAnswer((_) async {});
+    // Stub config store with a fulfilled config by default.
+    when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config()));
+    when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());
 
     subscriptionStore = SubscriptionStore(
       subscriptionService: mockSubscriptionService,
       authSessionStore: mockAuthSessionStore,
       analyticsStore: mockAnalyticsStore,
       remoteConfigStore: mockRemoteConfigStore,
+      configStore: mockConfigStore,
     );
 
     clearInteractions(mockSubscriptionService);
@@ -107,26 +112,23 @@ void main() {
 
   group('SubscriptionStore', () {
     test('fetches subscription config successfully', () async {
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenAnswer((_) async => config());
+      when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config()));
 
       await subscriptionStore.refreshSubscriptionConfig();
 
       expect(subscriptionStore.storeState, StoreState.available);
-
-      // `replaceOrReset` may call the supplier more than once; do not assert exact count.
-      verify(mockSubscriptionService.fetchSubscriptionConfig()).called(greaterThan(0));
-      verify(mockSubscriptionService.clearPendingTransactions()).called(greaterThan(0));
+      verify(mockConfigStore.refreshConfig()).called(1);
     });
 
     test('handles subscription config fetch failure (NotAvailableException)', () async {
-      when(mockSubscriptionService.fetchSubscriptionConfig()).thenThrow(NotAvailableException());
+      when(mockConfigStore.refreshConfig()).thenAnswer((_) async => null);
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(null));
 
       await subscriptionStore.refreshSubscriptionConfig();
 
       expect(subscriptionStore.storeState, StoreState.notAvailable);
-
-      verify(mockSubscriptionService.fetchSubscriptionConfig()).called(greaterThan(0));
-      verifyNever(mockSubscriptionService.clearPendingTransactions());
+      verify(mockConfigStore.refreshConfig()).called(1);
     });
 
     test('refreshSubscription triggers fetch when last value is inactive', () async {

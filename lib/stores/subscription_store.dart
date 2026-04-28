@@ -6,13 +6,13 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 // Include generated file
@@ -28,18 +28,25 @@ abstract class _SubscriptionStore with Store {
     required AuthSessionStore authSessionStore,
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
+    required SubscriptionConfigStore configStore,
   }) : _apiSubscription = api.getSubscription(),
        _subscriptionService = subscriptionService,
        _authSessionStore = authSessionStore,
        _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore {
-    _authReactionDisposer = reaction<bool>((_) => _authSessionStore.isAuthenticated, (
-      status,
-    ) async {
-      if (status) {
-        _subscriptionFuture = ObservableFuture(_fetchSubscription());
-      }
-    }, fireImmediately: true);
+       _remoteConfigStore = remoteConfigStore,
+       _configStore = configStore {
+    _reactions = [
+      reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
+        if (status) {
+          _subscriptionFuture = ObservableFuture(_fetchSubscription());
+        }
+      }, fireImmediately: true),
+      reaction((_) => _subscriptionFuture.value?.planId, (planId) {
+        if (planId != null) {
+          _configStore.refreshPlan();
+        }
+      }),
+    ];
   }
 
   final api.Subscription _apiSubscription;
@@ -48,7 +55,8 @@ abstract class _SubscriptionStore with Store {
   final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
-  ReactionDisposer? _authReactionDisposer;
+  final SubscriptionConfigStore _configStore;
+  late final List<ReactionDisposer> _reactions;
 
   @visibleForTesting
   bool testIsIOS = false;
@@ -56,19 +64,17 @@ abstract class _SubscriptionStore with Store {
   bool get _isIOS => testIsIOS || Platform.isIOS;
 
   @readonly
-  late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture(_fetchSubscription());
+  late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
+    Subscription.empty(),
+  );
 
-  @readonly
-  late ObservableFuture<api.SubscriptionConfigResponse?> _subscriptionConfigFuture =
-      ObservableFuture(_fetchSubscriptionConfig());
+  ObservableFuture<api.SubscriptionConfigResponse?> get subscriptionConfigFuture =>
+      _configStore.future;
 
   @readonly
   late ObservableFuture<String?> _otherSubscriberEmailFuture = ObservableFuture(
     _fetchOtherSubscriber(),
   );
-
-  @readonly
-  SubscriptionStatus? _subscriptionStatus;
 
   @computed
   bool? get isSubscribed => _subscriptionFuture.value?.active;
@@ -78,24 +84,19 @@ abstract class _SubscriptionStore with Store {
     if (storeState == StoreState.loading) {
       return true;
     }
-    if (_subscriptionStatus == SubscriptionStatus.pending ||
-        _subscriptionStatus == SubscriptionStatus.verifying) {
-      return true;
-    }
     if (_subscriptionFuture.status == FutureStatus.pending ||
-        _subscriptionConfigFuture.status == FutureStatus.pending) {
+        subscriptionConfigFuture.status == FutureStatus.pending) {
       return true;
     }
-
     return false;
   }
 
   @computed
-  StoreState get storeState => switch (_subscriptionConfigFuture.status) {
+  StoreState get storeState => switch (subscriptionConfigFuture.status) {
     FutureStatus.pending => StoreState.loading,
     FutureStatus.rejected => StoreState.notAvailable,
     FutureStatus.fulfilled =>
-      _subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
+      subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
   };
 
   @computed
@@ -160,19 +161,6 @@ abstract class _SubscriptionStore with Store {
     return await _subscriptionFuture;
   }
 
-  Future<api.SubscriptionConfigResponse?> _fetchSubscriptionConfig() async {
-    if (Platform.isWindows) {
-      return null;
-    }
-    try {
-      final config = await _subscriptionService.fetchSubscriptionConfig();
-      await _subscriptionService.clearPendingTransactions();
-      return config;
-    } on NotAvailableException catch (_) {
-      return null;
-    }
-  }
-
   Future<String?> _fetchOtherSubscriber() async {
     final subscription = await _subscriptionFuture;
     if (subscription.active) {
@@ -208,10 +196,14 @@ abstract class _SubscriptionStore with Store {
 
   @action
   Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() async {
-    _subscriptionConfigFuture = _subscriptionConfigFuture.replaceOrReset(
-      _fetchSubscriptionConfig(),
-    );
-    return await _subscriptionConfigFuture;
+    try {
+      return await _configStore.refreshConfig();
+    } catch (e, stack) {
+      if (kDebugMode) {
+        log('Failed to refresh subscription config', error: e, stackTrace: stack);
+      }
+      return null;
+    }
   }
 
   @action
@@ -225,8 +217,7 @@ abstract class _SubscriptionStore with Store {
   @action
   Future<void> refreshAll() async {
     await Future.wait([refreshSubscriptionConfig(), refreshSubscription()]);
-
-    await Future.wait([refreshOtherSubscriber()]);
+    await refreshOtherSubscriber();
   }
 
   Future<api.OrderSummaryResponse> calculateOrderBreakdown({
@@ -264,6 +255,8 @@ abstract class _SubscriptionStore with Store {
   }
 
   FutureOr<void> dispose() async {
-    _authReactionDisposer?.call();
+    for (final disposer in _reactions) {
+      disposer();
+    }
   }
 }
