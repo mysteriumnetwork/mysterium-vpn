@@ -289,27 +289,12 @@ class RestSubscriptionService extends SubscriptionService {
   @override
   Future<api.SubscriptionConfigResponse> fetchSubscriptionConfig() async {
     try {
-      final isStoreAvailable = await _inAppPurchase.isAvailable();
-      if (!isStoreAvailable) {
-        throw NotAvailableException();
-      }
-
       final res = await _apiSubscription.subscriptionConfig();
       if (res.data == null) {
         throw Exception('No data found');
       }
 
-      final config = res.data!;
-      final gateway = config.gateways.firstWhereOrNull(
-        (element) => element.name == getPlatformGateway(),
-      );
-      if (gateway == null || !gateway.enabled) {
-        throw NotAvailableException();
-      }
-
-      return config;
-    } on NotAvailableException catch (_) {
-      rethrow;
+      return res.data!;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {

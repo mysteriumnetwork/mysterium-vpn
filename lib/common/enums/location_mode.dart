@@ -2,6 +2,7 @@ import 'package:mysterium_vpn/common/enums/ip_type.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 enum LocationMode {
+  loading,
   connecting,
   connected,
   available,
@@ -18,12 +19,16 @@ enum LocationMode {
     required bool isLoading,
     required VPNLocation? vpnLocation,
     required VPNLocation? connectingLocation,
+    bool isSubscriptionLoading = false,
   }) {
     if (isLoading && (location == vpnLocation || location == connectingLocation)) {
       return LocationMode.connecting;
     }
     if (isConnected && location == vpnLocation) {
       return LocationMode.connected;
+    }
+    if (isSubscriptionLoading) {
+      return LocationMode.loading;
     }
     if (subscription == null || !subscription.active) {
       return LocationMode.unsubscribed;

@@ -31,13 +31,28 @@ mixin _$SubscriptionFeaturesStore on _SubscriptionFeaturesStore, Store {
     () => super.malwareBlockingAllowed,
     name: '_SubscriptionFeaturesStore.malwareBlockingAllowed',
   )).value;
+  Computed<PlanMetadata?>? _$_planMetadataComputed;
+
+  @override
+  PlanMetadata? get _planMetadata => (_$_planMetadataComputed ??= Computed<PlanMetadata?>(
+    () => super._planMetadata,
+    name: '_SubscriptionFeaturesStore._planMetadata',
+  )).value;
+  Computed<bool>? _$isLoadingComputed;
+
+  @override
+  bool get isLoading => (_$isLoadingComputed ??= Computed<bool>(
+    () => super.isLoading,
+    name: '_SubscriptionFeaturesStore.isLoading',
+  )).value;
 
   @override
   String toString() {
     return '''
 metadata: ${metadata},
 residentialIPsAllowed: ${residentialIPsAllowed},
-malwareBlockingAllowed: ${malwareBlockingAllowed}
+malwareBlockingAllowed: ${malwareBlockingAllowed},
+isLoading: ${isLoading}
     ''';
   }
 }

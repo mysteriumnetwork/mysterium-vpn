@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -14,14 +15,15 @@ import 'subscription_plans_store_test.mocks.dart';
   MockSpec<SubscriptionService>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<RemoteConfigStore>(),
-  MockSpec<SubscriptionConfigResponse>(),
   MockSpec<PurchasableProduct>(),
   MockSpec<SubscriptionPlanFeatures>(),
+  MockSpec<InAppPurchase>(),
 ])
 void main() {
   late MockSubscriptionService mockService;
   late MockSubscriptionStore mockSubscriptionStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
+  late MockInAppPurchase mockInAppPurchase;
   late PurchasableProduct planBasicMonthly;
   late PurchasableProduct planBasicAnnual;
   late PurchasableProduct planPlusMonthly;
@@ -33,6 +35,9 @@ void main() {
     mockService = MockSubscriptionService();
     mockSubscriptionStore = MockSubscriptionStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
+    mockInAppPurchase = MockInAppPurchase();
+
+    when(mockInAppPurchase.isAvailable()).thenAnswer((_) async => true);
     planBasicMonthly = MockPurchasableProduct();
     planBasicAnnual = MockPurchasableProduct();
     planPlusAnnual = MockPurchasableProduct();
@@ -63,9 +68,17 @@ void main() {
       mockSubscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
-    when(
-      mockSubscriptionStore.subscriptionConfigFuture,
-    ).thenAnswer((_) => ObservableFuture.value(MockSubscriptionConfigResponse()));
+    when(mockSubscriptionStore.subscriptionConfigFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        SubscriptionConfigResponse(
+          gateways: [SubscriptionConfigResponseGatewaysInner(name: 'apple', enabled: true)],
+          plans: [],
+          countries: [],
+          stripeReturnUrl: '',
+          stripePublishableKey: '',
+        ),
+      ),
+    );
 
     when(
       mockService.getProductsDetails(any, any),
@@ -82,6 +95,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       final products = await store.future;
@@ -95,11 +110,30 @@ void main() {
       verify(mockService.getProductsDetails(any, any)).called(1);
     });
 
+    test('returns empty list when store is not available', () async {
+      when(mockInAppPurchase.isAvailable()).thenAnswer((_) async => false);
+
+      final store = SubscriptionPlansStore(
+        mockService,
+        mockSubscriptionStore,
+        mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
+      );
+
+      final products = await store.future;
+
+      expect(products, isEmpty);
+      verifyNever(mockService.getProductsDetails(any, any));
+    });
+
     test('returns empty list when subscription config not available', () async {
       final store = SubscriptionPlansStore(
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       when(
@@ -122,6 +156,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -139,6 +175,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -156,6 +194,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -184,6 +224,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -212,6 +254,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;
@@ -229,6 +273,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       final result = store.findConfig(planBasicMonthly);
@@ -246,6 +292,8 @@ void main() {
         mockService,
         mockSubscriptionStore,
         mockRemoteConfigStore,
+        mockInAppPurchase,
+        testPlatformGateway: 'apple',
       );
 
       await store.future;

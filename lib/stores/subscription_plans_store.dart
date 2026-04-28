@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -14,7 +16,14 @@ part 'subscription_plans_store.g.dart';
 class SubscriptionPlansStore = _SubscriptionPlansStore with _$SubscriptionPlansStore;
 
 abstract class _SubscriptionPlansStore with Store, Disposeable {
-  _SubscriptionPlansStore(this._service, this._subscriptionStore, this._remoteConfigStore) {
+  _SubscriptionPlansStore(
+    this._service,
+    this._subscriptionStore,
+    this._remoteConfigStore,
+    this._inAppPurchase, {
+    // ignore: unused_element_parameter
+    @visibleForTesting this.testPlatformGateway,
+  }) {
     _reactions = [
       reaction(
         (_) => _subscriptionStore.subscriptionFuture.value?.planId,
@@ -27,6 +36,9 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
   final SubscriptionService _service;
   final SubscriptionStore _subscriptionStore;
   final RemoteConfigStore _remoteConfigStore;
+  final InAppPurchase _inAppPurchase;
+  bool? _storeAvailable;
+  final String? testPlatformGateway;
   late final List<ReactionDisposer> _reactions;
 
   @readonly
@@ -38,12 +50,26 @@ abstract class _SubscriptionPlansStore with Store, Disposeable {
   }
 
   Future<List<PurchasableProduct>> _fetchProducts() async {
+    final platformGateway = testPlatformGateway ?? getPlatformGateway();
+    if (platformGateway.isEmpty) {
+      return const [];
+    }
+    final storeAvailable = _storeAvailable ??= await _inAppPurchase.isAvailable();
+    if (!storeAvailable) {
+      return const [];
+    }
+
     final [subscription, config, _] = await Future.wait<Object?>([
       _subscriptionStore.subscriptionFuture,
       _subscriptionStore.subscriptionConfigFuture,
       _remoteConfigStore.configFuture,
     ]);
     if (subscription is! Subscription || config is! SubscriptionConfigResponse) {
+      return const [];
+    }
+
+    final gateway = config.gateways.firstWhereOrNull((element) => element.name == platformGateway);
+    if (gateway == null || !gateway.enabled) {
       return const [];
     }
 
