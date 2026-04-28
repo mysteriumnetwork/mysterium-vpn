@@ -229,16 +229,16 @@ class _ResendButton extends HookWidget {
     final resendDisabled = isLoading || timer.countdown > 0;
     final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
 
-    final child = isLoading
-        ? const LoadingIndicator()
-        : Text(
-            LocaleKeys.sendAgain.plural(timer.countdown),
-            style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
-          );
+    final loading = isLoading ? const ButtonLoading() : null;
+    final child = Text(
+      LocaleKeys.sendAgain.plural(timer.countdown),
+      style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
+    );
 
     if (isMobile()) {
       return ButtonSecondary(
         onPressed: onPressed,
+        loading: loading,
         decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
         child: child,
       );
@@ -246,6 +246,7 @@ class _ResendButton extends HookWidget {
 
     return ButtonPrimary(
       onPressed: onPressed,
+      loading: loading,
       decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
       child: child,
     );
