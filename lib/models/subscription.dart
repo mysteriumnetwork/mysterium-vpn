@@ -10,6 +10,7 @@ part 'subscription.freezed.dart';
 abstract class Subscription with _$Subscription {
   factory Subscription({
     required bool active,
+    String? id,
     String? planId,
     String? gateway,
     DateTime? activeUntil,

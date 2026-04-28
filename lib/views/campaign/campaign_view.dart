@@ -2,16 +2,23 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
 //import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS/macOS features.
 //import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
+part 'campaign_view.freezed.dart';
+part 'campaign_view.g.dart';
 
 Future<void> showCampaignDialog(BuildContext context, Uri campaignUri, String? couponCode) async {
   await showModal<void>(
@@ -23,53 +30,51 @@ Future<void> showCampaignDialog(BuildContext context, Uri campaignUri, String? c
   );
 }
 
-class CampaignWebViewScreen extends StatefulHookConsumerWidget {
+class CampaignWebViewScreen extends HookConsumerWidget {
   const CampaignWebViewScreen({required this.campaignUri, this.couponCode, super.key});
 
   final Uri campaignUri;
   final String? couponCode;
 
   @override
-  ConsumerState<CampaignWebViewScreen> createState() => _WebViewScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
+    final isLoading = useState(true);
+    final handleSubscribe = useHandleSubscribe();
 
-class _WebViewScreenState extends ConsumerState<CampaignWebViewScreen> {
-  late WebViewController _controller;
-  late FutureOr<void> Function({bool manageSubscription}) _handleSubscribe;
+    final controller =
+        useMemoized(() {
+            final controller = WebViewController();
 
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (_) {
-            setState(() => _isLoading = false);
-          },
-          onNavigationRequest: (request) {
-            final uri = Uri.parse(request.url);
-            if (_isAllowedDomain(uri)) {
-              return NavigationDecision.navigate;
-            }
-            return NavigationDecision.prevent;
-          },
-        ),
-      )
-      ..addJavaScriptChannel('CampaignBridge', onMessageReceived: _onJsMessage)
-      ..loadRequest(widget.campaignUri);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _handleSubscribe = useHandleSubscribe();
+            controller
+              ..setJavaScriptMode(JavaScriptMode.unrestricted)
+              ..setNavigationDelegate(
+                NavigationDelegate(
+                  onPageFinished: (_) => isLoading.value = false,
+                  onNavigationRequest: (request) {
+                    final uri = Uri.parse(request.url);
+                    if (_isAllowedDomain(uri)) {
+                      return NavigationDecision.navigate;
+                    }
+                    return NavigationDecision.prevent;
+                  },
+                ),
+              )
+              ..addJavaScriptChannel(
+                'CampaignBridge',
+                onMessageReceived: (msg) =>
+                    _onJsMessage(msg, context, controller, subscriptionStore, handleSubscribe),
+              );
+            return controller;
+          })
+          // For debugging purposes turn this on
+          /*
+    ..setOnJavaScriptAlertDialog((request) async {
+      print('==ALERT ${request.message}');
+      return;
+    });
+    */
+          ..loadRequest(campaignUri);
 
     return ModalScaffold(
       autoApplyPadding: false,
@@ -77,8 +82,8 @@ class _WebViewScreenState extends ConsumerState<CampaignWebViewScreen> {
       showCloseButton: false,
       body: Stack(
         children: [
-          WebViewWidget(controller: _controller),
-          if (_isLoading) const Center(child: CircularProgressIndicator()),
+          WebViewWidget(controller: controller),
+          if (isLoading.value) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );
@@ -91,62 +96,103 @@ class _WebViewScreenState extends ConsumerState<CampaignWebViewScreen> {
         host.endsWith('localhost');
   }
 
-  void _onJsMessage(JavaScriptMessage jsMessage) {
+  void _onJsMessage(
+    JavaScriptMessage jsMessage,
+    BuildContext context,
+    WebViewController controller,
+    SubscriptionStore subscriptionStore,
+    FutureOr<void> Function({bool manageSubscription}) handleSubscribe,
+  ) async {
     final message = _Message.fromJson(jsonDecode(jsMessage.message) as Map<String, dynamic>);
     switch (message.type) {
+      case _MessageType.orderSummary:
+        final request = _OrderSummaryRequest.fromJson(message.payload ?? {});
+        final orderSummary = await subscriptionStore.calculateOrderBreakdown(
+          planId: request.planId,
+          country: request.country,
+          couponCode: request.couponCode,
+        );
+
+        final response = _Message(
+          type: _MessageType.orderSummary,
+          requestId: message.requestId,
+          payload: _OrderSummaryResponse(
+            orderTotal: orderSummary.orderTotal,
+            couponError: orderSummary.couponError,
+          ).toJson(),
+        );
+        await controller.runJavaScript(
+          'window.onCampaignBridgeMessage(${jsonEncode(response.toJson())});',
+        );
+
       case _MessageType.subscribe:
         final _ = _SubscribePayload.fromJson(message.payload ?? {});
-        _handleSubscribe();
+        handleSubscribe();
         break;
+
       case _MessageType.subscriptionUpgrade:
         showSubscriptionUpgradeModalPage(context);
         break;
+
       case _MessageType.unknown:
         throw Exception('Unknown message type: ${message.type}');
     }
   }
 }
 
+@JsonEnum(alwaysCreate: true)
 enum _MessageType {
+  @JsonValue('order_summary')
+  orderSummary,
+  @JsonValue('subscribe')
   subscribe,
+  @JsonValue('subscription_upgrade')
   subscriptionUpgrade,
-  unknown;
-
-  static _MessageType fromString(String? raw) {
-    if (raw == null) {
-      return _MessageType.unknown;
-    }
-    switch (raw) {
-      case 'subscribe':
-        return _MessageType.subscribe;
-      case 'subscription_upgrade':
-        return _MessageType.subscriptionUpgrade;
-      default:
-        return _MessageType.unknown;
-    }
-  }
+  @JsonValue('unknown')
+  unknown,
 }
 
-class _Message {
-  _Message({required this.type, required this.payload});
+@freezed
+abstract class _Message with _$Message {
+  const factory _Message({
+    @JsonKey(name: 'type') required _MessageType type,
+    @JsonKey(name: 'requestId') String? requestId,
+    @JsonKey(name: 'payload') Map<String, dynamic>? payload,
+  }) = _MessageData;
 
-  factory _Message.fromJson(Map<String, dynamic> json) => _Message(
-    type: _MessageType.fromString(json['type'] as String?),
-    payload: json['payload'] as Map<String, dynamic>?,
-  );
-
-  final _MessageType type;
-  final Map<String, dynamic>? payload;
+  factory _Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 }
 
-class _SubscribePayload {
-  _SubscribePayload({required this.planId, required this.couponCode});
+@freezed
+abstract class _OrderSummaryRequest with _$OrderSummaryRequest {
+  factory _OrderSummaryRequest({
+    @JsonKey(name: 'planId') required String planId,
+    @JsonKey(name: 'country') required String country,
+    @JsonKey(name: 'state') required String? state,
+    @JsonKey(name: 'couponCode') required String? couponCode,
+  }) = _OrderSummaryRequestData;
 
-  factory _SubscribePayload.fromJson(Map<String, dynamic> json) => _SubscribePayload(
-    planId: json['planId'] as String? ?? '',
-    couponCode: json['couponCode'] as String? ?? '',
-  );
+  factory _OrderSummaryRequest.fromJson(Map<String, dynamic> json) =>
+      _$OrderSummaryRequestFromJson(json);
+}
 
-  final String planId;
-  final String couponCode;
+@freezed
+abstract class _OrderSummaryResponse with _$OrderSummaryResponse {
+  factory _OrderSummaryResponse({
+    @JsonKey(name: 'orderTotal') required String orderTotal,
+    @JsonKey(name: 'couponError') required String? couponError,
+  }) = _OrderSummaryResponseData;
+
+  factory _OrderSummaryResponse.fromJson(Map<String, dynamic> json) =>
+      _$OrderSummaryResponseFromJson(json);
+}
+
+@freezed
+abstract class _SubscribePayload with _$SubscribePayload {
+  factory _SubscribePayload({
+    @JsonKey(name: 'planId') required String planId,
+    @JsonKey(name: 'couponCode') required String? couponCode,
+  }) = _SubscribePayloadData;
+
+  factory _SubscribePayload.fromJson(Map<String, dynamic> json) => _$SubscribePayloadFromJson(json);
 }
