@@ -33,6 +33,9 @@ enum LocationMode {
     if (subscription == null || !subscription.active) {
       return LocationMode.unsubscribed;
     }
+    if (isSubscriptionLoading) {
+      return LocationMode.loading;
+    }
     if (location.ipType == IPType.residential) {
       if (!residentialIPsAllowed || !location.isAvailable) {
         return LocationMode.unsupportedByPlan;
