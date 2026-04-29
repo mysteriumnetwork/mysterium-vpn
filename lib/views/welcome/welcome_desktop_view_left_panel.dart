@@ -17,7 +17,7 @@ class WelcomeDesktopViewLeftPanel extends StatelessWidget {
         children: [
           const UnauthenticatedHeader(),
           const LoginHeadlines().expanded(),
-          ButtonPrimary(onPressed: onSignInPressed, child: Text(LocaleKeys.signIn.tr())),
+          ButtonPrimary(onPressed: onSignInPressed, child: Text(LocaleKeys.loginSignupLabel.tr())),
         ],
       ).paddingDirectional(
         horizontal: getMediaWidth(context) * 0.02,

@@ -18,7 +18,7 @@ class WelcomeMobileView extends StatelessWidget {
       const Expanded(child: LoginHeadlines()),
       ButtonPrimary(
         onPressed: onSignInPressed,
-        child: Text(LocaleKeys.signIn.tr()),
+        child: Text(LocaleKeys.loginSignupLabel.tr()),
       ).padding(bottom: getMediaHeight(context) * 0.05),
     ],
   );
