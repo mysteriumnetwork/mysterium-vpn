@@ -59,7 +59,8 @@ class _DeleteAccountDialog extends HookWidget {
       builder: (context) => AlertModal(
         type: AlertModalType.error,
         title: LocaleKeys.deleteAccountQuestion.tr(),
-        supportingText: '${LocaleKeys.cancelYourSubsMess.tr()} ${LocaleKeys.typeDelete.tr()}',
+        supportingText:
+            '${LocaleKeys.cancelYourSubsMess.tr()} ${LocaleKeys.typeDelete.tr(args: ['DELETE'])}',
         input: SizedBox(
           height: 40,
           child: TextField(
