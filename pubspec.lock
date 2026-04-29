@@ -314,6 +314,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  copy_with_extension:
+    dependency: transitive
+    description:
+      name: copy_with_extension
+      sha256: d14c803803aaf6604766ee979229574210b3a2843b40129fa29723011a925bec
+      url: "https://pub.dev"
+    source: hosted
+    version: "15.0.0"
   coverage:
     dependency: transitive
     description:
@@ -2155,11 +2163,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.55"
-      resolved-ref: "0a4f793f19e49c639d3b1cb80600f3e0acf485fd"
+      ref: "1.0.63"
+      resolved-ref: ecca0ac742bae81c703c494a2ec76b039d334fd1
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.55+35"
+    version: "1.0.63+43"
   watcher:
     dependency: transitive
     description:
