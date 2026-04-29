@@ -28,6 +28,7 @@ class HomeMobileView extends HookConsumerWidget {
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
     final topSectionHeight = appBarHeight;
     final analyticsStore = ref.read(analyticsStorePOD);
 
@@ -132,7 +133,10 @@ class HomeMobileView extends HookConsumerWidget {
                                 theme.spacing.md,
                                 theme.spacing.ms,
                               ),
-                              child: const LocationsSearch(),
+                              child: Observer(
+                                builder: (context) =>
+                                    LocationsSearch(enabled: !locationsStore.hasNoServers),
+                              ),
                             ),
                           ],
                         ),

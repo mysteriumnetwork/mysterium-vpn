@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -18,6 +19,7 @@ class LocationsSliderMobileView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsStore = ref.watch(analyticsStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
     final panelState = ref.watch(homeStateProvider.select((s) => s.panelState));
 
     useEffect(() {
@@ -55,8 +57,14 @@ class LocationsSliderMobileView extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.md),
             sliver: MultiSliver(
               children: [
-                const ConnectionTile(),
-                SizedBox(height: Theme.of(context).spacing.xl3),
+                Observer(
+                  builder: (context) => locationsStore.hasNoServers
+                      ? const SizedBox.shrink()
+                      : Padding(
+                          padding: EdgeInsets.only(bottom: Theme.of(context).spacing.xl3),
+                          child: const ConnectionTile(),
+                        ),
+                ),
                 const LocationsSliverView(),
               ],
             ),

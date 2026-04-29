@@ -45,6 +45,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
     () => super.isEmpty,
     name: '_LocationsStore.isEmpty',
   )).value;
+  Computed<bool>? _$hasNoServersComputed;
+
+  @override
+  bool get hasNoServers => (_$hasNoServersComputed ??= Computed<bool>(
+    () => super.hasNoServers,
+    name: '_LocationsStore.hasNoServers',
+  )).value;
   Computed<List<IPType>>? _$locationTypesComputed;
 
   @override
@@ -165,6 +172,7 @@ countryCodes: ${countryCodes},
 locations: ${locations},
 topLocations: ${topLocations},
 isEmpty: ${isEmpty},
+hasNoServers: ${hasNoServers},
 locationTypes: ${locationTypes}
     ''';
   }

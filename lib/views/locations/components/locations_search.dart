@@ -7,7 +7,9 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsSearch extends HookConsumerWidget {
-  const LocationsSearch({super.key});
+  const LocationsSearch({this.enabled = true, super.key});
+
+  final bool enabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,6 +41,7 @@ class LocationsSearch extends HookConsumerWidget {
       controller: controller,
       placeholder: LocaleKeys.searchForLocations.tr(),
       onSubmitted: handleSearch,
+      enabled: enabled,
     );
   }
 }

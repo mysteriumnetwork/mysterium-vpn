@@ -20,6 +20,7 @@ import 'package:mysterium_vpn/views/locations/components/location_type_switcher.
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_horizontal_list.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_no_servers_error.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
@@ -62,9 +63,11 @@ class LocationsSliverView extends HookConsumerWidget {
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
         final recentLocations = recentLocationsStore.value;
+        final hasNoServers = locationsStore.hasNoServers;
 
         return _Body(
           future: future,
+          hasNoServers: hasNoServers,
           recentLocations: recentLocations,
           locationType: locationType,
           locations: locations,
@@ -81,6 +84,7 @@ class LocationsSliverView extends HookConsumerWidget {
 class _Body extends HookConsumerWidget {
   const _Body({
     required this.future,
+    required this.hasNoServers,
     required this.recentLocations,
     required this.locationType,
     required this.locations,
@@ -91,6 +95,7 @@ class _Body extends HookConsumerWidget {
   });
 
   final ObservableFuture<VPNLocations> future;
+  final bool hasNoServers;
   final List<VPNLocation> recentLocations;
   final IPType locationType;
   final List<VPNLocation> locations;
@@ -129,6 +134,21 @@ class _Body extends HookConsumerWidget {
       tablet: theme.spacing.xl3,
     );
 
+    if (hasNoServers) {
+      return MultiSliver(
+        children: [
+          SliverPadding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: theme.spacing.xl3,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: LocationsNoServersError(onRetry: locationsStore.refreshAll),
+            ),
+          ),
+        ],
+      );
+    }
     if (future.value != null) {
       return MultiSliver(
         children: [

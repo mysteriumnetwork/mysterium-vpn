@@ -71,7 +71,7 @@ class _DeleteAccountDialog extends HookWidget {
             },
             onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
             decoration: InputDecoration(
-              hintText: LocaleKeys.typeDelete.tr(),
+              hintText: LocaleKeys.typeDelete.tr(args: ['DELETE']),
               hintStyle: textStyles.textMd.regular.copyWith(color: palette.textTertiary),
               filled: true,
               fillColor: palette.bgPrimary,
