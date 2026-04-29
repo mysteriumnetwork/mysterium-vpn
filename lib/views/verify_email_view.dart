@@ -1,34 +1,33 @@
-import 'dart:math';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:open_mail_app/open_mail_app.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class VerifyEmailView extends HookConsumerWidget {
   const VerifyEmailView({super.key});
 
+  static const double _maxContentWidth = 360;
+  static const double _mobileTopGap = 56;
+  static const double _mobileBottomGap = 32;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final authStore = ref.watch(authStorePOD);
-    final analyticsStore = ref.watch(analyticsStorePOD);
+    final spacing = theme.spacing;
+    final palette = theme.palette;
+    final authStore = ref.read(authStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
     return Observer(
       builder: (context) {
@@ -39,50 +38,68 @@ class VerifyEmailView extends HookConsumerWidget {
           await authStore.signInwithEmail(email: authStore.email!);
         }
 
+        Future<void> handleOpenEmailApp() async {
+          analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
+          await openEmailApp(context, analyticsStore);
+        }
+
+        final upper = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const _MailIcon(),
+            SizedBox(height: spacing.xl2),
+            Text(
+              LocaleKeys.checkYourEmail.tr(),
+              textAlign: TextAlign.center,
+              style: theme.textStyles.displayXlg.semibold.copyWith(color: palette.textPrimary),
+            ),
+            SizedBox(height: spacing.xl3),
+            if (authStore.email != null) _EmailMessage(email: authStore.email!),
+            SizedBox(height: spacing.s),
+            _Bullets(items: [LocaleKeys.linkExpires.tr(), LocaleKeys.consumeLink.tr()]),
+          ],
+        );
+
+        final actions = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ButtonPrimary(
+              onPressed: signInStatus == FutureStatus.pending ? null : handleOpenEmailApp,
+              decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
+              child: Text(LocaleKeys.openEmailApp.tr()),
+            ),
+            SizedBox(height: spacing.s),
+            _ResendButton(onPressed: handleResend, isLoading: signInStatus == FutureStatus.pending),
+          ],
+        );
+
+        final body = isDesktop
+            ? _DesktopLayout(
+                maxWidth: _maxContentWidth,
+                gap: spacing.xl3,
+                upper: upper,
+                actions: actions,
+              )
+            : _MobileLayout(
+                hPad: spacing.md,
+                topGap: _mobileTopGap,
+                bottomGap: _mobileBottomGap,
+                upper: upper,
+                actions: actions,
+              );
+
         return Stack(
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 20,
               children: [
-                const _Subheader(),
-                if (authStore.email != null) Flexible(child: _Email(email: authStore.email!)),
-                Expanded(
-                  flex: 2,
-                  child: _Excerpt(
-                    items: [LocaleKeys.linkExpires.tr(), LocaleKeys.consumeLink.tr()],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  spacing: 20,
-                  children: [
-                    Flexible(
-                      child: Visibility(
-                        visible: isMobile(),
-                        child: ButtonPrimary(
-                          child: Text(LocaleKeys.openEmailApp.tr()),
-                          onPressed: () {
-                            analyticsStore.logEvent(AnalyticsEvent.openEmailClicked);
-                            openEmailApp(context, analyticsStore);
-                          },
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: _ResendButton(
-                        onPressed: handleResend,
-                        isLoading: signInStatus == FutureStatus.pending,
-                      ),
-                    ),
-                  ],
-                ),
+                const UnauthenticatedHeader(backHeader: true),
+                Expanded(child: body),
               ],
-            ).padding(vertical: 20, horizontal: getMediaWidth(context) > 650 ? 60 : 20),
+            ),
             if (authStore.authenticateFeature?.status == FutureStatus.pending)
-              LoadingBarrier(color: theme.palette.bgPopover),
+              LoadingBarrier(color: palette.bgPopover),
           ],
         );
       },
@@ -124,106 +141,147 @@ class VerifyEmailView extends HookConsumerWidget {
   }
 }
 
-class _Subheader extends HookWidget {
-  const _Subheader();
+/// 1:2 top/bottom Spacer ratio anchors the block ~1/3 from the top — gives the
+/// Figma 75/154 split below the 64px header on a 699-tall window.
+class _DesktopLayout extends StatelessWidget {
+  const _DesktopLayout({
+    required this.maxWidth,
+    required this.gap,
+    required this.upper,
+    required this.actions,
+  });
+
+  final double maxWidth;
+  final double gap;
+  final Widget upper;
+  final Widget actions;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      const Spacer(),
+      ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            upper,
+            SizedBox(height: gap),
+            actions,
+          ],
+        ),
+      ),
+      const Spacer(flex: 2),
+    ],
+  );
+}
+
+class _MobileLayout extends StatelessWidget {
+  const _MobileLayout({
+    required this.hPad,
+    required this.topGap,
+    required this.bottomGap,
+    required this.upper,
+    required this.actions,
+  });
+
+  final double hPad;
+  final double topGap;
+  final double bottomGap;
+  final Widget upper;
+  final Widget actions;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      Expanded(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(hPad, topGap, hPad, 0),
+          child: upper,
+        ),
+      ),
+      Padding(padding: EdgeInsets.fromLTRB(hPad, 0, hPad, bottomGap), child: actions),
+    ],
+  );
+}
+
+class _MailIcon extends StatelessWidget {
+  const _MailIcon();
 
   @override
   Widget build(BuildContext context) {
-    final textStyles = TextStyles.of(context);
-    final height = MediaQuery.sizeOf(context).height;
-    final children = <Widget>[
-      Flexible(
-        child: Text(
-          LocaleKeys.checkYourEmail.tr(),
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: textStyles.displayXlg.semibold.copyWith(
-            fontSize: useResponsiveValue(20, desktop: 28),
-          ),
+    final palette = Theme.of(context).palette;
+    return Center(
+      child: DecoratedIcon(
+        icon: UntitledUI.mail_05,
+        decoration: IconDecoration(
+          iconSize: 32,
+          iconColor: palette.iconBrandPrimary,
+          backgroundColor: palette.bgSecondarySelected,
+          padding: const EdgeInsets.all(8),
+          borderRadius: BorderRadius.circular(24),
         ),
       ),
-      SvgIcon(asset: Asset.images.checkEmail, height: min(120, height * .15)),
-    ];
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 30,
-      children: useResponsiveValue(children, desktop: children.reversed.toList()),
     );
   }
 }
 
-class _Email extends HookWidget {
-  const _Email({required this.email});
+class _EmailMessage extends StatelessWidget {
+  const _EmailMessage({required this.email});
 
   final String email;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final base = theme.textStyles.textMd.regular.copyWith(color: palette.textTertiary);
+    final emphasised = theme.textStyles.textSm.bold.copyWith(color: palette.textPrimary);
     final text = LocaleKeys.emailSentTo.tr(namedArgs: {'email': email});
     final label = text.replaceAll(email, '').trim();
-    final separator = useResponsiveValue('\n', desktop: ' ');
-    return AutoSizeText.rich(
-      TextSpan(
+
+    return RichText(
+      text: TextSpan(
+        style: base,
         children: [
-          TextSpan(text: label),
-          TextSpan(text: separator),
-          TextSpan(
-            text: email,
-            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600),
-          ),
+          TextSpan(text: '$label '),
+          TextSpan(text: email, style: emphasised),
         ],
       ),
-      maxLines: 2,
-      textAlign: TextAlign.center,
-      style: GoogleFonts.montserrat(fontSize: 16),
     );
   }
 }
 
-class _Excerpt extends HookWidget {
-  const _Excerpt({required this.items});
+class _Bullets extends StatelessWidget {
+  const _Bullets({required this.items});
 
   final List<String> items;
 
   @override
   Widget build(BuildContext context) {
-    final sizeGroup = useMemoized(AutoSizeGroup.new);
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final style = theme.textStyles.textMd.regular.copyWith(color: palette.textTertiary);
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      spacing: 8,
-      children: [for (final item in items) _BulletItem(text: item, sizeGroup: sizeGroup)],
-    );
-  }
-}
-
-class _BulletItem extends StatelessWidget {
-  const _BulletItem({required this.text, required this.sizeGroup});
-
-  final String text;
-  final AutoSizeGroup sizeGroup;
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyles = TextStyles.of(context);
-    return Flexible(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AutoSizeText('•', group: sizeGroup, style: textStyles.textMd.regular),
-          const SizedBox(width: 12),
-          Expanded(
-            child: AutoSizeText(
-              text,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              group: sizeGroup,
-              style: textStyles.textMd.regular,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final item in items)
+          Padding(
+            padding: EdgeInsets.only(top: theme.spacing.s),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: theme.spacing.s, right: theme.spacing.ms),
+                  child: Text('•', style: style),
+                ),
+                Expanded(child: Text(item, style: style)),
+              ],
             ),
           ),
-        ],
-      ),
+      ],
     );
   }
 }
@@ -237,29 +295,14 @@ class _ResendButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final timer = useCountdownTimer(initialCountdown: 60);
-    final resendDisabled = isLoading || timer.countdown > 0;
-    final onPressed = resendDisabled ? null : () => this.onPressed().whenComplete(timer.reset);
-    final loading = isLoading ? const ButtonLoading() : null;
+    final disabled = isLoading || timer.countdown > 0;
+    final tap = disabled ? null : () => onPressed().whenComplete(timer.reset);
 
-    final child = Text(
-      LocaleKeys.sendAgain.plural(timer.countdown),
-      style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700),
-    );
-
-    if (isMobile()) {
-      return ButtonSecondary(
-        onPressed: onPressed,
-        loading: loading,
-        decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
-        child: child,
-      );
-    }
-
-    return ButtonPrimary(
-      onPressed: onPressed,
-      loading: loading,
-      decoration: const ButtonDecoration(minimumSize: Size(200, 50)),
-      child: child,
+    return ButtonSecondary(
+      onPressed: tap,
+      loading: isLoading ? const ButtonLoading() : null,
+      decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
+      child: Text(LocaleKeys.sendAgain.plural(timer.countdown)),
     );
   }
 }

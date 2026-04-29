@@ -5,7 +5,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/login/login_form.dart';
-import 'package:mysterium_vpn_design/styles/styles.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SignInView extends HookConsumerWidget {
   const SignInView({super.key});
@@ -13,6 +13,7 @@ class SignInView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStore = ref.read(authStorePOD);
+    final palette = Theme.of(context).palette;
 
     return Observer(
       builder: (context) => Stack(
@@ -24,7 +25,7 @@ class SignInView extends HookConsumerWidget {
             ],
           ),
           if (authStore.authenticateFeature?.status == FutureStatus.pending)
-            LoadingBarrier(color: Theme.of(context).palette.bgPopover),
+            LoadingBarrier(color: palette.bgPopover),
         ],
       ),
     );

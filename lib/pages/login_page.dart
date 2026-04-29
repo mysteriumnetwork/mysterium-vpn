@@ -4,7 +4,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/login/login_view.dart';
-import 'package:mysterium_vpn/views/unauthenticated_page_view.dart';
 import 'package:mysterium_vpn_design/styles/styles.dart';
 
 class LoginPage extends HookConsumerWidget {
@@ -12,7 +11,7 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authSessionStore = ref.watch(authSessionStorePOD);
+    final authSessionStore = ref.read(authSessionStorePOD);
     final theme = Theme.of(context);
     useReaction(() => authSessionStore.authShown, (authShown) {
       if (authShown) {
@@ -23,11 +22,9 @@ class LoginPage extends HookConsumerWidget {
       });
     }, fireImmediately: true);
 
-    return UnauthenticatedPageView(
-      child: ColoredScaffold(
-        backgroundColor: theme.palette.bgSidePanel,
-        body: const SafeArea(child: SignInView()),
-      ),
+    return ColoredScaffold(
+      backgroundColor: theme.palette.bgSidePanel,
+      body: const SafeArea(child: SignInView()),
     );
   }
 }

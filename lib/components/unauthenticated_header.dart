@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -12,43 +11,32 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 class UnauthenticatedHeader extends HookConsumerWidget {
   const UnauthenticatedHeader({this.backHeader = false, super.key});
 
+  /// When true, shows a back arrow + "Back" label on the left.
   final bool backHeader;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
     final authSessionStore = ref.read(authSessionStorePOD);
     final canBrowseApp = useComputedValue(() => authSessionStore.canBrowseApp);
-    Future<void> handleBackOrHome() async {
-      final beamer = Beamer.of(context);
-      final success = await beamer.popRoute();
-      if (!success) {
-        beamer.beamToNamed(Routes.main.path);
-      }
+
+    Future<void> handleClose() async {
+      Beamer.of(context).beamToNamed(Routes.main.path);
     }
 
-    final theme = Theme.of(context);
-
-    return backHeader
-        ? Header(backgroundColor: theme.palette.bgSidePanel, backLabel: LocaleKeys.back.tr())
-        : Header.logo(
-            onBackPressed: handleBackOrHome,
-            backgroundColor: theme.palette.bgSidePanel,
-            centerTitle: true,
-            showBackButton: canBrowseApp,
-            actions: [
-              IconButton(
-                style: IconButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(32, 32),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                icon: const Icon(UntitledUI.message_question_square, size: 24),
-                onPressed: () => handleOnSupportPage(
-                  context: context,
-                  analyticsStore: ref.read(analyticsStorePOD),
-                ),
-              ),
-            ],
-          );
+    return Header(
+      backgroundColor: palette.bgSidePanel,
+      showBackButton: backHeader,
+      backLabel: backHeader ? LocaleKeys.back.tr() : null,
+      actions: [
+        if (canBrowseApp)
+          CustomIconButton(
+            onPressed: handleClose,
+            minimumSize: const Size(32, 32),
+            icon: Icon(UntitledUI.x_close, size: 24, color: palette.iconPrimary),
+          ),
+      ],
+    );
   }
 }
