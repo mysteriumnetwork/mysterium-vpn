@@ -534,6 +534,7 @@ class CodegenLoader extends AssetLoader {
     "noServersAvailableSub": "网络连接出现问题，没有可用服务器。请稍后再试。",
     "typeDelete": "类型 {}",
     "allowBtn": "允许",
+    "loginSignupLabel": "登录或注册",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1107,6 +1108,7 @@ class CodegenLoader extends AssetLoader {
         "Bağlantı sorunu var ve hiçbir sunucu kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     "typeDelete": "Tip {}",
     "allowBtn": "İzin vermek",
+    "loginSignupLabel": "Giriş yap veya kayıt ol",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1637,6 +1639,7 @@ class CodegenLoader extends AssetLoader {
     "noServersAvailableSub": "接続に問題が発生しており、利用可能なサーバーがありません。しばらくしてからもう一度お試しください。",
     "typeDelete": "タイプ {}",
     "allowBtn": "許可する",
+    "loginSignupLabel": "ログインまたは新規登録",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2237,6 +2240,7 @@ class CodegenLoader extends AssetLoader {
         "Es besteht ein Verbindungsproblem und es sind keine Server verfügbar. Bitte versuchen Sie es später erneut.",
     "typeDelete": "Typ {}",
     "allowBtn": "Erlauben",
+    "loginSignupLabel": "Anmelden oder registrieren",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2828,6 +2832,7 @@ class CodegenLoader extends AssetLoader {
         "Há um problema de conectividade e nenhum servidor está disponível. Tente novamente mais tarde.",
     "typeDelete": "Tipo {}",
     "allowBtn": "Permitir",
+    "loginSignupLabel": "Faça login ou cadastre-se",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3407,6 +3412,7 @@ class CodegenLoader extends AssetLoader {
         "There is connectivity issue and no servers are available. Please try later.",
     "typeDelete": "Type {}",
     "allowBtn": "Allow",
+    "loginSignupLabel": "Log in or sign up",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -4001,6 +4007,7 @@ class CodegenLoader extends AssetLoader {
         "Si è verificato un problema di connessione e non sono disponibili server. Riprova più tardi.",
     "typeDelete": "Tipo {}",
     "allowBtn": "Permettere",
+    "loginSignupLabel": "Accedi o registrati",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4602,6 +4609,7 @@ class CodegenLoader extends AssetLoader {
         "Problème de connexion : aucun serveur n'est disponible. Veuillez réessayer plus tard.",
     "typeDelete": "Taper {}",
     "allowBtn": "Permettre",
+    "loginSignupLabel": "Se connecter ou s'inscrire",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5185,6 +5193,7 @@ class CodegenLoader extends AssetLoader {
         "Terdapat masalah konektivitas dan tidak ada server yang tersedia. Silakan coba lagi nanti.",
     "typeDelete": "Jenis {}",
     "allowBtn": "Mengizinkan",
+    "loginSignupLabel": "Masuk atau daftar",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5779,6 +5788,7 @@ class CodegenLoader extends AssetLoader {
         "Hay un problema de conexión y no hay servidores disponibles. Inténtelo más tarde.",
     "typeDelete": "Tipo {}",
     "allowBtn": "Permitir",
+    "loginSignupLabel": "Inicia sesión o regístrate",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6342,6 +6352,7 @@ class CodegenLoader extends AssetLoader {
     "noServersAvailableSub": "هناك مشكلة في الاتصال ولا توجد خوادم متاحة. يرجى المحاولة لاحقًا.",
     "typeDelete": "يكتب {}",
     "allowBtn": "يسمح",
+    "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

@@ -527,5 +527,6 @@
   "orSelectCountryManually": "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual.",
   "noServersAvailableSub": "Terdapat masalah konektivitas dan tidak ada server yang tersedia. Silakan coba lagi nanti.",
   "typeDelete": "Jenis {}",
-  "allowBtn": "Mengizinkan"
+  "allowBtn": "Mengizinkan",
+  "loginSignupLabel": "Masuk atau daftar"
 }

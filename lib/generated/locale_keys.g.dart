@@ -519,4 +519,5 @@ abstract class LocaleKeys {
   static const noServersAvailableSub = 'noServersAvailableSub';
   static const typeDelete = 'typeDelete';
   static const allowBtn = 'allowBtn';
+  static const loginSignupLabel = 'loginSignupLabel';
 }

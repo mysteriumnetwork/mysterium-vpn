@@ -527,5 +527,6 @@
   "orSelectCountryManually": "Vamos conectar você ao melhor servidor - ou você pode selecionar um país manualmente.",
   "noServersAvailableSub": "Há um problema de conectividade e nenhum servidor está disponível. Tente novamente mais tarde.",
   "typeDelete": "Tipo {}",
-  "allowBtn": "Permitir"
+  "allowBtn": "Permitir",
+  "loginSignupLabel": "Faça login ou cadastre-se"
 }

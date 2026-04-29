@@ -527,5 +527,6 @@
   "orSelectCountryManually": "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz.",
   "noServersAvailableSub": "Bağlantı sorunu var ve hiçbir sunucu kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
   "typeDelete": "Tip {}",
-  "allowBtn": "İzin vermek"
+  "allowBtn": "İzin vermek",
+  "loginSignupLabel": "Giriş yap veya kayıt ol"
 }

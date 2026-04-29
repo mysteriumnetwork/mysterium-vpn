@@ -527,5 +527,6 @@
   "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا.",
   "noServersAvailableSub": "هناك مشكلة في الاتصال ولا توجد خوادم متاحة. يرجى المحاولة لاحقًا.",
   "typeDelete": "يكتب {}",
-  "allowBtn": "يسمح"
+  "allowBtn": "يسمح",
+  "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا"
 }

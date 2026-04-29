@@ -527,5 +527,6 @@
   "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。",
   "noServersAvailableSub": "网络连接出现问题，没有可用服务器。请稍后再试。",
   "typeDelete": "类型 {}",
-  "allowBtn": "允许"
+  "allowBtn": "允许",
+  "loginSignupLabel": "登录或注册"
 }
