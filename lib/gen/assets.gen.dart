@@ -793,6 +793,14 @@ class $AssetsLogoGen {
   SvgGenImage get logoGrey =>
       const SvgGenImage('assets/logo/logo_grey.svg', size: Size(161.0, 21.0));
 
+  /// File path: assets/logo/logo_stacked_dark.svg
+  SvgGenImage get logoStackedDark =>
+      const SvgGenImage('assets/logo/logo_stacked_dark.svg', size: Size(131.0, 66.0));
+
+  /// File path: assets/logo/logo_stacked_light.svg
+  SvgGenImage get logoStackedLight =>
+      const SvgGenImage('assets/logo/logo_stacked_light.svg', size: Size(131.0, 66.0));
+
   /// File path: assets/logo/logo_white.svg
   SvgGenImage get logoWhite =>
       const SvgGenImage('assets/logo/logo_white.svg', size: Size(181.0, 23.0));
@@ -818,6 +826,8 @@ class $AssetsLogoGen {
   List<dynamic> get values => [
     logoBlack,
     logoGrey,
+    logoStackedDark,
+    logoStackedLight,
     logoWhite,
     nativeSplashLogo,
     nativeSplashLogoAndroid12,

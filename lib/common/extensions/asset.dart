@@ -106,6 +106,9 @@ extension $AssetsImagesGenExtensions on $AssetsImagesGen {
 extension $AssetsLogoGenExtensions on $AssetsLogoGen {
   SvgGenImage logo(BuildContext context) =>
       _withBrightness(context, light: logoBlack, dark: logoWhite);
+
+  SvgGenImage logoStacked(BuildContext context) =>
+      _withBrightness(context, light: logoStackedLight, dark: logoStackedDark);
 }
 
 extension $ResourcesLangsGenExtensions on $ResourcesLangsGen {
