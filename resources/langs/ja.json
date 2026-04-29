@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "キャンセル理由",
   "connectBestServer": "最高のサーバー",
   "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。",
-  "typeDelete": "「DELETE」と入力してください",
+  "noServersAvailableSub": "接続に問題が発生しており、利用可能なサーバーがありません。しばらくしてからもう一度お試しください。",
+  "typeDelete": "タイプ {}",
   "allowBtn": "許可する"
 }

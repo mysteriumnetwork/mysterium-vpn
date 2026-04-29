@@ -531,7 +531,8 @@ class CodegenLoader extends AssetLoader {
     "cancelSurveyTitle": "取消的原因",
     "connectBestServer": "最佳服务器",
     "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。",
-    "typeDelete": "输入 DELETE",
+    "noServersAvailableSub": "网络连接出现问题，没有可用服务器。请稍后再试。",
+    "typeDelete": "类型 {}",
     "allowBtn": "允许",
   };
   static const Map<String, dynamic> _tr = {
@@ -853,7 +854,7 @@ class CodegenLoader extends AssetLoader {
     "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin.",
     "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
     "resetAppTitle": "Uygulamayı sıfırla",
-    "resetBtn": "Sıfırla",
+    "resetBtn": "Sıfırlamak",
     "residential": "Ev bağlantısı",
     "retryBtn": "yeniden dene",
     "savePercent": "{}% tasarruf et",
@@ -1102,7 +1103,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "En iyi sunucu",
     "orSelectCountryManually":
         "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz.",
-    "typeDelete": "DELETE yazın",
+    "noServersAvailableSub":
+        "Bağlantı sorunu var ve hiçbir sunucu kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
+    "typeDelete": "Tip {}",
     "allowBtn": "İzin vermek",
   };
   static const Map<String, dynamic> _ja = {
@@ -1631,7 +1634,8 @@ class CodegenLoader extends AssetLoader {
     "cancelSurveyTitle": "キャンセル理由",
     "connectBestServer": "最高のサーバー",
     "orSelectCountryManually": "最適なサーバーに接続いたします。または、国を手動で選択することもできます。",
-    "typeDelete": "「DELETE」と入力してください",
+    "noServersAvailableSub": "接続に問題が発生しており、利用可能なサーバーがありません。しばらくしてからもう一度お試しください。",
+    "typeDelete": "タイプ {}",
     "allowBtn": "許可する",
   };
   static const Map<String, dynamic> _de = {
@@ -2229,7 +2233,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Bester Server",
     "orSelectCountryManually":
         "Wir verbinden Sie mit dem besten Server – oder Sie können ein Land manuell auswählen.",
-    "typeDelete": "Geben Sie LÖSCHEN ein",
+    "noServersAvailableSub":
+        "Es besteht ein Verbindungsproblem und es sind keine Server verfügbar. Bitte versuchen Sie es später erneut.",
+    "typeDelete": "Typ {}",
     "allowBtn": "Erlauben",
   };
   static const Map<String, dynamic> _pt = {
@@ -2818,7 +2824,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Melhor servidor",
     "orSelectCountryManually":
         "Vamos conectar você ao melhor servidor - ou você pode selecionar um país manualmente.",
-    "typeDelete": "Digite EXCLUIR",
+    "noServersAvailableSub":
+        "Há um problema de conectividade e nenhum servidor está disponível. Tente novamente mais tarde.",
+    "typeDelete": "Tipo {}",
     "allowBtn": "Permitir",
   };
   static const Map<String, dynamic> _en = {
@@ -3395,7 +3403,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Best server",
     "orSelectCountryManually":
         "We'll connect you to the best server - or you can manually select a country.",
-    "typeDelete": "Type DELETE",
+    "noServersAvailableSub":
+        "There is connectivity issue and no servers are available. Please try later.",
+    "typeDelete": "Type {}",
     "allowBtn": "Allow",
   };
   static const Map<String, dynamic> _it = {
@@ -3987,7 +3997,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Miglior server",
     "orSelectCountryManually":
         "Ti collegheremo al server migliore, oppure puoi selezionare manualmente un paese.",
-    "typeDelete": "Digita CANCELLA",
+    "noServersAvailableSub":
+        "Si è verificato un problema di connessione e non sono disponibili server. Riprova più tardi.",
+    "typeDelete": "Tipo {}",
     "allowBtn": "Permettere",
   };
   static const Map<String, dynamic> _fr = {
@@ -4586,7 +4598,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Meilleur serveur",
     "orSelectCountryManually":
         "Nous vous connecterons au meilleur serveur, ou vous pouvez sélectionner manuellement un pays.",
-    "typeDelete": "Tapez SUPPRIMER",
+    "noServersAvailableSub":
+        "Problème de connexion : aucun serveur n'est disponible. Veuillez réessayer plus tard.",
+    "typeDelete": "Taper {}",
     "allowBtn": "Permettre",
   };
   static const Map<String, dynamic> _id = {
@@ -5167,7 +5181,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "Server terbaik",
     "orSelectCountryManually":
         "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual.",
-    "typeDelete": "Ketik HAPUS",
+    "noServersAvailableSub":
+        "Terdapat masalah konektivitas dan tidak ada server yang tersedia. Silakan coba lagi nanti.",
+    "typeDelete": "Jenis {}",
     "allowBtn": "Mengizinkan",
   };
   static const Map<String, dynamic> _es = {
@@ -5759,7 +5775,9 @@ class CodegenLoader extends AssetLoader {
     "connectBestServer": "El mejor servidor",
     "orSelectCountryManually":
         "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente.",
-    "typeDelete": "Escribe ELIMINAR",
+    "noServersAvailableSub":
+        "Hay un problema de conexión y no hay servidores disponibles. Inténtelo más tarde.",
+    "typeDelete": "Tipo {}",
     "allowBtn": "Permitir",
   };
   static const Map<String, dynamic> _ar = {
@@ -6321,7 +6339,8 @@ class CodegenLoader extends AssetLoader {
     "cancelSurveyTitle": "أسباب الإلغاء",
     "connectBestServer": "أفضل خادم",
     "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا.",
-    "typeDelete": "اكتب DELETE",
+    "noServersAvailableSub": "هناك مشكلة في الاتصال ولا توجد خوادم متاحة. يرجى المحاولة لاحقًا.",
+    "typeDelete": "يكتب {}",
     "allowBtn": "يسمح",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {

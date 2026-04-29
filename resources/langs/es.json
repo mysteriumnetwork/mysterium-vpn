@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "Motivos de cancelación",
   "connectBestServer": "El mejor servidor",
   "orSelectCountryManually": "Te conectaremos al mejor servidor, o puedes seleccionar un país manualmente.",
-  "typeDelete": "Escribe ELIMINAR",
+  "noServersAvailableSub": "Hay un problema de conexión y no hay servidores disponibles. Inténtelo más tarde.",
+  "typeDelete": "Tipo {}",
   "allowBtn": "Permitir"
 }

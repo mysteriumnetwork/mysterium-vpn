@@ -292,7 +292,7 @@
   "resetAppFailed": "Uygulamayı sıfırlayamadı. Lütfen tekrar deneyin.",
   "resetAppSuccess": "Uygulama başarıyla sıfırlandı.",
   "resetAppTitle": "Uygulamayı sıfırla",
-  "resetBtn": "Sıfırla",
+  "resetBtn": "Sıfırlamak",
   "residential": "Ev bağlantısı",
   "retryBtn": "yeniden dene",
   "savePercent": "{}% tasarruf et",
@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "İptal nedenleri",
   "connectBestServer": "En iyi sunucu",
   "orSelectCountryManually": "Sizi en uygun sunucuya bağlayacağız veya isterseniz manuel olarak bir ülke seçebilirsiniz.",
-  "typeDelete": "DELETE yazın",
+  "noServersAvailableSub": "Bağlantı sorunu var ve hiçbir sunucu kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
+  "typeDelete": "Tip {}",
   "allowBtn": "İzin vermek"
 }

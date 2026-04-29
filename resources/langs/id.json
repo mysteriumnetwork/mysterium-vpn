@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "Alasan pembatalan",
   "connectBestServer": "Server terbaik",
   "orSelectCountryManually": "Kami akan menghubungkan Anda ke server terbaik - atau Anda dapat memilih negara secara manual.",
-  "typeDelete": "Ketik HAPUS",
+  "noServersAvailableSub": "Terdapat masalah konektivitas dan tidak ada server yang tersedia. Silakan coba lagi nanti.",
+  "typeDelete": "Jenis {}",
   "allowBtn": "Mengizinkan"
 }

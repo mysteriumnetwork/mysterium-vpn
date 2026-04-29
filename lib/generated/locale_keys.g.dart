@@ -516,6 +516,7 @@ abstract class LocaleKeys {
   static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const connectBestServer = 'connectBestServer';
   static const orSelectCountryManually = 'orSelectCountryManually';
+  static const noServersAvailableSub = 'noServersAvailableSub';
   static const typeDelete = 'typeDelete';
   static const allowBtn = 'allowBtn';
 }

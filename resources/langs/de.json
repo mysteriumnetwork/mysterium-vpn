@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "Gründe für die Stornierung",
   "connectBestServer": "Bester Server",
   "orSelectCountryManually": "Wir verbinden Sie mit dem besten Server – oder Sie können ein Land manuell auswählen.",
-  "typeDelete": "Geben Sie LÖSCHEN ein",
+  "noServersAvailableSub": "Es besteht ein Verbindungsproblem und es sind keine Server verfügbar. Bitte versuchen Sie es später erneut.",
+  "typeDelete": "Typ {}",
   "allowBtn": "Erlauben"
 }

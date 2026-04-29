@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "取消的原因",
   "connectBestServer": "最佳服务器",
   "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。",
-  "typeDelete": "输入 DELETE",
+  "noServersAvailableSub": "网络连接出现问题，没有可用服务器。请稍后再试。",
+  "typeDelete": "类型 {}",
   "allowBtn": "允许"
 }

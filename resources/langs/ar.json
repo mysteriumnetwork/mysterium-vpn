@@ -525,6 +525,7 @@
   "cancelSurveyTitle": "أسباب الإلغاء",
   "connectBestServer": "أفضل خادم",
   "orSelectCountryManually": "سنقوم بتوصيلك بأفضل خادم - أو يمكنك اختيار بلد يدويًا.",
-  "typeDelete": "اكتب DELETE",
+  "noServersAvailableSub": "هناك مشكلة في الاتصال ولا توجد خوادم متاحة. يرجى المحاولة لاحقًا.",
+  "typeDelete": "يكتب {}",
   "allowBtn": "يسمح"
 }
