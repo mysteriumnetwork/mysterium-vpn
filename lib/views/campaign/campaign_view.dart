@@ -96,7 +96,7 @@ class CampaignWebViewScreen extends HookConsumerWidget {
         host.endsWith('localhost');
   }
 
-  void _onJsMessage(
+  Future<void> _onJsMessage(
     JavaScriptMessage jsMessage,
     BuildContext context,
     WebViewController controller,
@@ -183,6 +183,7 @@ abstract class _OrderSummaryResponse with _$OrderSummaryResponse {
     @JsonKey(name: 'couponError') required String? couponError,
   }) = _OrderSummaryResponseData;
 
+  // ignore: unused_element
   factory _OrderSummaryResponse.fromJson(Map<String, dynamic> json) =>
       _$OrderSummaryResponseFromJson(json);
 }

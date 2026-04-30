@@ -46,6 +46,7 @@ Future<void> _initEnvWithIosVersion(
 }
 
 @GenerateNiceMocks([
+  MockSpec<vpn_api.VpnApi>(),
   MockSpec<SubscriptionService>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<AnalyticsStore>(),
@@ -55,6 +56,7 @@ Future<void> _initEnvWithIosVersion(
 ])
 void main() {
   late SubscriptionStore subscriptionStore;
+  late MockVpnApi mockVpnApi;
   late MockSubscriptionService mockSubscriptionService;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockAnalyticsStore mockAnalyticsStore;
@@ -78,6 +80,7 @@ void main() {
   );
 
   setUp(() async {
+    mockVpnApi = MockVpnApi();
     mockSubscriptionService = MockSubscriptionService();
     mockAuthSessionStore = MockAuthSessionStore();
     mockAnalyticsStore = MockAnalyticsStore();
@@ -98,6 +101,7 @@ void main() {
     when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());
 
     subscriptionStore = SubscriptionStore(
+      api: mockVpnApi,
       subscriptionService: mockSubscriptionService,
       authSessionStore: mockAuthSessionStore,
       analyticsStore: mockAnalyticsStore,
