@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -20,7 +19,8 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sessionStore = ref.watch(authSessionStorePOD);
-    final screenType = useScreenType();
+    final screenType = ScreenType.of(context);
+
     void handleOpenDashboard() {
       final uri = Uri.parse(Env.manageDevicesPage);
       final accessToken = sessionStore.accessToken;

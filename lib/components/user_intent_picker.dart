@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -24,7 +23,7 @@ class UserIntentPicker extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final hasIndicator = useResponsiveValue(false, desktop: true, tablet: true);
+    final hasIndicator = ScreenType.of(context) != ScreenType.mobile;
 
     final child = _List(
       scrollController: scrollController,

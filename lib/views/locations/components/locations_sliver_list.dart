@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/components/sliding_up_panel.dart' show PanelController;
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -52,7 +51,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
-    final screenType = useScreenType();
+    final screenType = ScreenType.of(context);
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1

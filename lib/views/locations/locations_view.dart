@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -123,16 +122,8 @@ class _Body extends HookConsumerWidget {
               userIntentsStore.intentsFuture.status == FutureStatus.pending),
     );
     final theme = Theme.of(context);
-    final horizontalPadding = useResponsiveValue<double>(
-      0,
-      desktop: theme.spacing.xl3,
-      tablet: theme.spacing.xl3,
-    );
-    final sectionGap = useResponsiveValue<double>(
-      theme.spacing.xl3,
-      desktop: theme.spacing.xl3,
-      tablet: theme.spacing.xl3,
-    );
+    final horizontalPadding = ScreenType.of(context) == ScreenType.mobile ? 0.0 : theme.spacing.xl3;
+    final sectionGap = theme.spacing.xl3;
 
     if (hasNoServers) {
       return MultiSliver(
@@ -304,11 +295,9 @@ class _Locations extends HookConsumerWidget {
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
-    final innerHorizontalPadding = useResponsiveValue<double>(
-      0,
-      desktop: theme.spacing.xl3,
-      tablet: theme.spacing.xl3,
-    );
+    final innerHorizontalPadding = ScreenType.of(context) == ScreenType.mobile
+        ? 0.0
+        : theme.spacing.xl3;
 
     useAutoSelectIPType();
 

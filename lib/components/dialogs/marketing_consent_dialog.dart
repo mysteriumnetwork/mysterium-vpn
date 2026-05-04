@@ -5,7 +5,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
 import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -26,7 +25,7 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final screenType = useScreenType();
+    final screenType = ScreenType.of(context);
     final lastClickedConsent = useState<bool?>(null);
     return Observer(
       builder: (context) {

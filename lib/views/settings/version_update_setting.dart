@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
-import 'package:mysterium_vpn/common/hooks/screen_type_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -19,7 +18,7 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
     final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
-    final screenType = useScreenType();
+    final screenType = ScreenType.of(context);
 
     final isDesktop = screenType != ScreenType.mobile;
 
