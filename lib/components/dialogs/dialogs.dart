@@ -4,7 +4,6 @@ export 'confirmation_dialog.dart';
 export 'delete_account_dialog.dart';
 export 'device_limit_dialog.dart';
 export 'marketing_consent_dialog.dart';
-export 'no_mail_app_dialog.dart';
 export 'picker_bottom_sheet.dart';
 export 'push_notifications_dialog.dart';
 export 'rate_connection_dialog.dart';

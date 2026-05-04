@@ -109,7 +109,15 @@ class VerifyEmailView extends HookConsumerWidget {
   Future<void> openEmailApp(BuildContext context, AnalyticsStore analyticsStore) async {
     final result = await OpenMailApp.openMailApp(nativePickerTitle: LocaleKeys.selectEmailApp.tr());
     if (!result.didOpen && !result.canOpen && context.mounted) {
-      shownNoMailAppDialog(context);
+      shownConfirmationDialog(
+        context,
+        type: AlertModalType.info,
+        title: LocaleKeys.openEmailApp.tr(),
+        supportingText: LocaleKeys.noEmailApp.tr(),
+        showCancel: false,
+        confirmText: LocaleKeys.goBackButton.tr(),
+        onConfirm: () {},
+      );
     } else if (!result.didOpen && result.canOpen && context.mounted) {
       final actions = result.options
           .map(
