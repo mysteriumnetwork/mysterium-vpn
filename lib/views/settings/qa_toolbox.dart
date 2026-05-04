@@ -295,6 +295,7 @@ class QAToolbox extends HookConsumerWidget {
             label: 'Subscription upgrade modal',
             onPressed: () => showSubscriptionUpgradeModalPage(context),
           ),
+          _QAActionButton(label: 'No Mail App', onPressed: () => shownNoMailAppDialog(context)),
         ],
       ),
     ],

@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 // ignore: depend_on_referenced_packages
 import 'package:hooks_riverpod/legacy.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart';
+import 'package:mysterium_vpn/components/sliding_up_panel.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';

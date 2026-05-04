@@ -6,7 +6,7 @@ import 'package:flutter/physics.dart';
 
 enum SlideDirection { up, down }
 
-enum PanelState { open, closed }
+enum PanelOpenState { open, closed }
 
 class SlidingUpPanel extends StatefulWidget {
   const SlidingUpPanel({
@@ -40,7 +40,7 @@ class SlidingUpPanel extends StatefulWidget {
     this.parallaxOffset = 0.1,
     this.isDraggable = true,
     this.slideDirection = SlideDirection.up,
-    this.defaultPanelState = PanelState.closed,
+    this.defaultPanelState = PanelOpenState.closed,
     this.header,
     this.footer,
   }) : assert(
@@ -193,7 +193,7 @@ class SlidingUpPanel extends StatefulWidget {
   /// This value defaults to PanelState.CLOSED which indicates that the panel is
   /// in the closed position and must be opened. PanelState.OPEN indicates that
   /// by default the Panel is open and must be swiped closed by the user.
-  final PanelState defaultPanelState;
+  final PanelOpenState defaultPanelState;
 
   @override
   SlidingUpPanelState createState() => SlidingUpPanelState();
@@ -221,7 +221,7 @@ class SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvide
         AnimationController(
           vsync: this,
           duration: const Duration(milliseconds: 300),
-          value: widget.defaultPanelState == PanelState.closed
+          value: widget.defaultPanelState == PanelOpenState.closed
               ? 0.0
               : 1.0, //set the default panel state (i.e. set initial value of _ac)
         )..addListener(() {

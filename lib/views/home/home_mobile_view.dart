@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' hide PanelState;
+import 'package:mysterium_vpn/components/sliding_up_panel.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';

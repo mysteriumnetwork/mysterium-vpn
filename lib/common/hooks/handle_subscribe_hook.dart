@@ -18,7 +18,7 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
       if (!context.mounted) {
         return;
       }
-      await handleOnBillingPage(
+      await _handleOnBillingPage(
         context: context,
         manageSubscriptionPage: remoteConfigStore.manageSubscriptionPage,
         upgradeSubscriptionPage: remoteConfigStore.upgradeSubscriptionPage,
@@ -32,6 +32,47 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
       // ignore and let the flow continue
     }
   }, [beamer]);
+}
+
+FutureOr<void> _handleOnBillingPage({
+  required BuildContext context,
+  required bool subscriptionActive,
+  required String manageSubscriptionPage,
+  required String upgradeSubscriptionPage,
+  required String? gateway,
+  required String? accessToken,
+  required bool manageSubscription,
+  FutureOr<void> Function()? onManageSubscription,
+}) async {
+  final isMobileGateway = isMobilePaymentGateway(gateway);
+
+  if (subscriptionActive && isMobileGateway) {
+    if (gateway != getPlatformGateway()) {
+      showSnackbar(
+        LocaleKeys.activeSubsPaidVia.tr(
+          namedArgs: {'store': Platform.isIOS ? 'Google Play Store' : 'Apple App Store'},
+        ),
+      );
+      return;
+    }
+    await onManageSubscription?.call();
+    return;
+  }
+
+  if (!subscriptionActive && !Platform.isWindows) {
+    await showSubscriptionUpgradeModalPage(context);
+    return;
+  }
+
+  final uri = Uri.parse(manageSubscription ? manageSubscriptionPage : upgradeSubscriptionPage);
+  final httpsUri = Uri(
+    scheme: uri.scheme,
+    host: uri.host,
+    path: uri.path,
+    queryParameters: {'access_token': accessToken ?? ''},
+  );
+
+  await openUrlLink(httpsUri);
 }
 
 FutureOr<void> Function() useHandleUpgradePlan() {
