@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SocialLoginButton extends StatelessWidget {
   const SocialLoginButton({
@@ -21,41 +21,27 @@ class SocialLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final palette = Palette.of(context);
-    final textStyles = Theme.of(context).textStyles;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final spacing = theme.spacing;
+    final isDark = theme.brightness == Brightness.dark;
 
     final backgroundColor = isDark ? Palette.grayDarkAlpha.shade700 : Palette.white;
     final foregroundColor = isDark ? Palette.white : palette.textSecondary;
     final borderColor = isDark ? Palette.grayDarkAlpha.shade700 : palette.borderPrimary;
 
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
-          disabledBackgroundColor: backgroundColor,
-          disabledForegroundColor: foregroundColor,
-          side: BorderSide(color: borderColor),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          textStyle: textStyles.textMd.semibold,
-          minimumSize: const Size(double.infinity, 44),
-          overlayColor: Colors.transparent,
-        ),
-        child: isLoading
-            ? const LoadingIndicator()
-            : Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgIcon(asset: asset, width: 24, height: 24, color: iconColor),
-                  const SizedBox(width: 16),
-                  Flexible(child: Text(label)),
-                ],
-              ),
+    return ButtonSecondary(
+      onPressed: onPressed,
+      size: ButtonSize.large,
+      loading: isLoading ? const ButtonLoading() : null,
+      leading: SvgIcon(asset: asset, width: spacing.xl2, height: spacing.xl2, color: iconColor),
+      decoration: ButtonDecoration(
+        padding: EdgeInsets.symmetric(horizontal: spacing.xl, vertical: spacing.lg),
+        decorationColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        borderColor: borderColor,
       ),
+      child: Text(label),
     );
   }
 }

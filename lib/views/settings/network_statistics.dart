@@ -17,15 +17,13 @@ class NetworkStatistics extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Palette.grayPurple.shade800
-              : Palette.grayLight.shade100,
+          color: Palette.of(context).bgSecondary,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Network Statistics', style: Theme.of(context).textTheme.titleLarge),
+            Text('Network Statistics', style: Theme.of(context).textStyles.textMd.bold),
             const SizedBox(height: 10),
             Wrap(
               runSpacing: 8,
@@ -72,7 +70,7 @@ class _StatisticsItem extends StatelessWidget {
         value,
         style: Theme.of(
           context,
-        ).textTheme.titleMedium?.copyWith(color: Palette.brand, fontWeight: FontWeight.w700),
+        ).textStyles.textMd.bold.copyWith(color: Palette.of(context).textBrandPrimary),
       ),
     ],
   );

@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Palette, Radius;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 /// Overlay for [NetworkLoggerButton].
 class NetworkLoggerOverlay extends StatefulWidget {

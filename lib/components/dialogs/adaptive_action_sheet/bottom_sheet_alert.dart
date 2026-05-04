@@ -4,6 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 Future<T?> showAdaptiveActionSheet<T>({
   required List<BottomSheetAction> actions,
@@ -82,7 +83,7 @@ Future<T?> _showCupertinoBottomSheet<T>(
             child: Text(
               action.title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
+              style: Theme.of(context).textStyles.textLg.bold,
             ),
           ),
         )
@@ -157,7 +158,7 @@ Future<T?> _showMaterialBottomSheet<T>(
                         padding: const EdgeInsets.all(16),
                         child: Text(
                           action.title,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
+                          style: Theme.of(context).textStyles.textLg.bold,
                           textAlign: TextAlign.center,
                         ),
                       ),
