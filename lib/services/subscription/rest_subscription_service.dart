@@ -264,6 +264,7 @@ class RestSubscriptionService extends SubscriptionService {
       final data = res.data!;
 
       return Subscription(
+        id: data.subscriptionId,
         active: data.active,
         planId: data.planId,
         gateway: data.gateway,
