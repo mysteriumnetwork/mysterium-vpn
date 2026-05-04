@@ -183,4 +183,18 @@ void main() {
       );
     });
   });
+
+  group('insertInvalidLocations', () {
+    test('prepends an invalid country to both residential and datacenter lists', () async {
+      await store.dcLocationsFuture;
+      await store.residentialLocationsFuture;
+      final beforeRes = store.residentialLocationsFuture.value!.locations.length;
+      final beforeDc = store.dcLocationsFuture.value!.locations.length;
+
+      store.insertInvalidLocations();
+
+      expect(store.residentialLocationsFuture.value!.locations.length, beforeRes + 1);
+      expect(store.dcLocationsFuture.value!.locations.length, greaterThanOrEqualTo(beforeDc + 1));
+    });
+  });
 }
