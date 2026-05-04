@@ -183,6 +183,7 @@ final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>((ref) {
 });
 
 final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
+  final api = ref.watch(vpnApiPOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -190,6 +191,7 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final configStore = ref.watch(subscriptionConfigStorePOD);
 
   final store = SubscriptionStore(
+    api: api,
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
     analyticsStore: analyticsStore,
