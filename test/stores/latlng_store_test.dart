@@ -9,11 +9,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'latlng_store_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<AssetsService>(),
-  MockSpec<NominatimService>(),
-  MockSpec<RemoteConfigStore>(),
-])
+@GenerateNiceMocks([MockSpec<AssetsService>(), MockSpec<RemoteConfigStore>()])
 void main() {
   late MockAssetsService mockAssetsService;
   late LatLngStore latLngStore;
