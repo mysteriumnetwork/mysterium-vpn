@@ -48,15 +48,15 @@ class VerifyEmailView extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const _MailIcon(),
-            SizedBox(height: spacing.xl2),
+            SizedBox(height: spacing.xl3),
             Text(
               LocaleKeys.checkYourEmail.tr(),
               textAlign: TextAlign.center,
               style: theme.textStyles.displayXlg.semibold.copyWith(color: palette.textPrimary),
             ),
-            SizedBox(height: spacing.xl3),
+            SizedBox(height: spacing.xl4),
             if (authStore.email != null) _EmailMessage(email: authStore.email!),
-            SizedBox(height: spacing.s),
+            SizedBox(height: spacing.md),
             _Bullets(items: [LocaleKeys.linkExpires.tr(), LocaleKeys.consumeLink.tr()]),
           ],
         );
@@ -274,20 +274,18 @@ class _Bullets extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: theme.spacing.md,
       children: [
         for (final item in items)
-          Padding(
-            padding: EdgeInsets.only(top: theme.spacing.s),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: theme.spacing.s, right: theme.spacing.ms),
-                  child: Text('•', style: style),
-                ),
-                Expanded(child: Text(item, style: style)),
-              ],
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: theme.spacing.s, right: theme.spacing.ms),
+                child: Text('•', style: style),
+              ),
+              Expanded(child: Text(item, style: style)),
+            ],
           ),
       ],
     );
