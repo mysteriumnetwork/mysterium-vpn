@@ -9,7 +9,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
@@ -51,7 +50,7 @@ class SignInForm extends HookConsumerWidget {
         final spacing = theme.spacing;
         final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
-        const brand = _Brand();
+        const brand = Brand();
 
         final formContent = Column(
           mainAxisSize: MainAxisSize.min,
@@ -236,13 +235,6 @@ class _MobileLayout extends StatelessWidget {
       ],
     );
   }
-}
-
-class _Brand extends StatelessWidget {
-  const _Brand();
-
-  @override
-  Widget build(BuildContext context) => Center(child: Asset.logo.logoStacked(context).svg());
 }
 
 class _OrDivider extends StatelessWidget {
