@@ -529,5 +529,6 @@
   "typeDelete": "Tip {}",
   "allowBtn": "İzin vermek",
   "loginSignupLabel": "Giriş yap veya kayıt ol",
-  "takeBackTheInternetLbl": "İnterneti geri alalım."
+  "takeBackTheInternetLbl": "İnterneti geri alalım.",
+  "homeLbl": "Ev"
 }

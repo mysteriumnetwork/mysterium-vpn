@@ -529,5 +529,6 @@
   "typeDelete": "Jenis {}",
   "allowBtn": "Mengizinkan",
   "loginSignupLabel": "Masuk atau daftar",
-  "takeBackTheInternetLbl": "Rebut kembali internet."
+  "takeBackTheInternetLbl": "Rebut kembali internet.",
+  "homeLbl": "Rumah"
 }

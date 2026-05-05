@@ -529,5 +529,6 @@
   "typeDelete": "类型 {}",
   "allowBtn": "允许",
   "loginSignupLabel": "登录或注册",
-  "takeBackTheInternetLbl": "夺回互联网的控制权。"
+  "takeBackTheInternetLbl": "夺回互联网的控制权。",
+  "homeLbl": "家"
 }

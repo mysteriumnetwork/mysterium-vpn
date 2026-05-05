@@ -529,5 +529,6 @@
   "typeDelete": "Tipo {}",
   "allowBtn": "Permettere",
   "loginSignupLabel": "Accedi o registrati",
-  "takeBackTheInternetLbl": "Riprendiamoci internet."
+  "takeBackTheInternetLbl": "Riprendiamoci internet.",
+  "homeLbl": "Casa"
 }

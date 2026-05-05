@@ -536,6 +536,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "允许",
     "loginSignupLabel": "登录或注册",
     "takeBackTheInternetLbl": "夺回互联网的控制权。",
+    "homeLbl": "家",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1111,6 +1112,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "İzin vermek",
     "loginSignupLabel": "Giriş yap veya kayıt ol",
     "takeBackTheInternetLbl": "İnterneti geri alalım.",
+    "homeLbl": "Ev",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1643,6 +1645,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "許可する",
     "loginSignupLabel": "ログインまたは新規登録",
     "takeBackTheInternetLbl": "インターネットを取り戻せ。",
+    "homeLbl": "家",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2245,6 +2248,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Erlauben",
     "loginSignupLabel": "Anmelden oder registrieren",
     "takeBackTheInternetLbl": "Holt euch das Internet zurück.",
+    "homeLbl": "Heim",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2838,6 +2842,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Permitir",
     "loginSignupLabel": "Faça login ou cadastre-se",
     "takeBackTheInternetLbl": "Retome o controle da internet.",
+    "homeLbl": "Lar",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3419,6 +3424,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Allow",
     "loginSignupLabel": "Log in or sign up",
     "takeBackTheInternetLbl": "Take back the internet.",
+    "homeLbl": "Home",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -4015,6 +4021,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Permettere",
     "loginSignupLabel": "Accedi o registrati",
     "takeBackTheInternetLbl": "Riprendiamoci internet.",
+    "homeLbl": "Casa",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4618,6 +4625,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Permettre",
     "loginSignupLabel": "Se connecter ou s'inscrire",
     "takeBackTheInternetLbl": "Reprenons le contrôle d'Internet.",
+    "homeLbl": "Maison",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5203,6 +5211,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Mengizinkan",
     "loginSignupLabel": "Masuk atau daftar",
     "takeBackTheInternetLbl": "Rebut kembali internet.",
+    "homeLbl": "Rumah",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5799,6 +5808,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "Permitir",
     "loginSignupLabel": "Inicia sesión o regístrate",
     "takeBackTheInternetLbl": "Recuperemos internet.",
+    "homeLbl": "Hogar",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6364,6 +6374,7 @@ class CodegenLoader extends AssetLoader {
     "allowBtn": "يسمح",
     "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا",
     "takeBackTheInternetLbl": "استعادة الإنترنت.",
+    "homeLbl": "بيت",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

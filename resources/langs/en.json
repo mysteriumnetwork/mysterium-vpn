@@ -529,5 +529,6 @@
   "typeDelete": "Type {}",
   "allowBtn": "Allow",
   "loginSignupLabel": "Log in or sign up",
-  "takeBackTheInternetLbl": "Take back the internet."
+  "takeBackTheInternetLbl": "Take back the internet.",
+  "homeLbl": "Home"
 }

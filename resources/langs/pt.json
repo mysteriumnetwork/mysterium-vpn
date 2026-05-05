@@ -529,5 +529,6 @@
   "typeDelete": "Tipo {}",
   "allowBtn": "Permitir",
   "loginSignupLabel": "Faça login ou cadastre-se",
-  "takeBackTheInternetLbl": "Retome o controle da internet."
+  "takeBackTheInternetLbl": "Retome o controle da internet.",
+  "homeLbl": "Lar"
 }

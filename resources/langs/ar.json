@@ -529,5 +529,6 @@
   "typeDelete": "يكتب {}",
   "allowBtn": "يسمح",
   "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا",
-  "takeBackTheInternetLbl": "استعادة الإنترنت."
+  "takeBackTheInternetLbl": "استعادة الإنترنت.",
+  "homeLbl": "بيت"
 }

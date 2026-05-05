@@ -529,5 +529,6 @@
   "typeDelete": "Taper {}",
   "allowBtn": "Permettre",
   "loginSignupLabel": "Se connecter ou s'inscrire",
-  "takeBackTheInternetLbl": "Reprenons le contrôle d'Internet."
+  "takeBackTheInternetLbl": "Reprenons le contrôle d'Internet.",
+  "homeLbl": "Maison"
 }

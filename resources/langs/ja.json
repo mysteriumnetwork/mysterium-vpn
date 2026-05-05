@@ -529,5 +529,6 @@
   "typeDelete": "タイプ {}",
   "allowBtn": "許可する",
   "loginSignupLabel": "ログインまたは新規登録",
-  "takeBackTheInternetLbl": "インターネットを取り戻せ。"
+  "takeBackTheInternetLbl": "インターネットを取り戻せ。",
+  "homeLbl": "家"
 }

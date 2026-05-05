@@ -521,4 +521,5 @@ abstract class LocaleKeys {
   static const allowBtn = 'allowBtn';
   static const loginSignupLabel = 'loginSignupLabel';
   static const takeBackTheInternetLbl = 'takeBackTheInternetLbl';
+  static const homeLbl = 'homeLbl';
 }
