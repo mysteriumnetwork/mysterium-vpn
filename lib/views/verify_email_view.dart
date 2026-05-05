@@ -94,7 +94,7 @@ class VerifyEmailView extends HookConsumerWidget {
           children: [
             Column(
               children: [
-                const UnauthenticatedHeader(backHeader: true),
+                const UnauthenticatedHeader(),
                 Expanded(child: body),
               ],
             ),

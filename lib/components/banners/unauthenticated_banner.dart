@@ -17,7 +17,7 @@ class UnauthenticatedBanner extends HookWidget {
     }
 
     return AlertModal(
-      type: AlertModalType.warning,
+      type: AlertModalType.info,
       title: LocaleKeys.unauthenticatedBannerTitle.tr(),
       primaryButton: ButtonPrimary(
         size: ButtonSize.small,

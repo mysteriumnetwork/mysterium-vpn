@@ -27,9 +27,6 @@ enum LocationMode {
     if (isConnected && location == vpnLocation) {
       return LocationMode.connected;
     }
-    if (isSubscriptionLoading) {
-      return LocationMode.loading;
-    }
     if (subscription == null || !subscription.active) {
       return LocationMode.unsubscribed;
     }

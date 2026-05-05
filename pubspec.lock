@@ -1348,7 +1348,7 @@ packages:
     description:
       path: "."
       ref: "feat/dialogs-components"
-      resolved-ref: d7fbf4201529f96af748fbc552e838fdd2c9de29
+      resolved-ref: "6b35b71a7262bea39fb60907fefaaf443069c633"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"

@@ -35,7 +35,7 @@ class SubscriptionBanner extends HookConsumerWidget {
           ),
         ),
         FutureStatus.fulfilled => AlertModal(
-          type: AlertModalType.warning,
+          type: AlertModalType.info,
           title: LocaleKeys.noSubscriptionTitle.tr(),
           primaryButton: ButtonPrimary(
             key: K.subscriptionBannerCTA,

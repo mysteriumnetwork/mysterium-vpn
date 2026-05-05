@@ -101,11 +101,6 @@ class HomeMobileView extends HookConsumerWidget {
                               showBackButton: false,
                               actions: [
                                 IconButton(
-                                  style: IconButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: const Size(32, 32),
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
                                   icon: const Icon(UntitledUI.message_question_square, size: 24),
                                   onPressed: () => handleOnSupportPage(
                                     context: context,
@@ -113,11 +108,6 @@ class HomeMobileView extends HookConsumerWidget {
                                   ),
                                 ),
                                 IconButton(
-                                  style: IconButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: const Size(32, 32),
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
                                   icon: const Icon(UntitledUI.settings_01, size: 24),
                                   onPressed: () {
                                     analyticsStore.logEvent(AnalyticsEvent.openSettings);

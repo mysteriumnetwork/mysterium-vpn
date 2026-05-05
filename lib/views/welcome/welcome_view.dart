@@ -1,28 +1,19 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/url_launcher.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class WelcomeView extends HookConsumerWidget {
+class WelcomeView extends StatelessWidget {
   const WelcomeView({required this.onSignIn, super.key});
 
   final VoidCallback onSignIn;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
-    final analyticsStore = ref.read(analyticsStorePOD);
-    final authSessionStore = ref.read(authSessionStorePOD);
-    final canBrowseApp = useComputedValue(() => authSessionStore.canBrowseApp);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -35,25 +26,7 @@ class WelcomeView extends HookConsumerWidget {
 
         return Column(
           children: [
-            Header(
-              backgroundColor: palette.bgSidePanel,
-              showBackButton: canBrowseApp,
-              backLabel: LocaleKeys.homeLbl.tr(),
-              onBackPressed: () => Beamer.of(context).beamToNamed(Routes.main.path),
-              actions: [
-                CustomIconButton(
-                  onPressed: () =>
-                      handleOnSupportPage(context: context, analyticsStore: analyticsStore),
-                  minimumSize: const Size(32, 32),
-                  icon: Icon(
-                    UntitledUI.message_question_square,
-                    size: 24,
-                    color: palette.iconPrimary,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: theme.spacing.md),
+            const UnauthenticatedHeader(),
             const Brand(),
             SizedBox(height: topGap),
             Text(
