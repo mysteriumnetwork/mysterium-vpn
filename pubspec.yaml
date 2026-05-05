@@ -154,7 +154,6 @@ flutter:
     - assets/logo/prod/
     - assets/icons/
     - assets/images/
-    - assets/flags/
     - assets/animations/
     - resources/langs/
     - assets/google_fonts/
