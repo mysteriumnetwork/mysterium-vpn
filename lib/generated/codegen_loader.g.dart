@@ -80,7 +80,6 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "连接限制警报",
     "connectionTimeout": "连接超时。请稍后再试。如果问题仍然存在，请联系支持团队",
     "consistentSpeedReason": "一致的速度",
-    "consumeLink": "单击电子邮件中的链接继续。验证链接只能使用一次，并且只能在请求该链接的设备上使用。",
     "contentBlockerDesc": "阻止恶意软件和成人内容",
     "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
     "continueBtn": "继续",
@@ -183,7 +182,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "断网开关",
     "letsGoBtn": "走吧！",
     "linkCopied": "链接已复制到剪贴板！",
-    "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
     "location": "地点",
     "locationItemCityCount": {"one": "", "other": "{} 个城市"},
     "locationUnavailableAction": "连接到最近的 IP",
@@ -234,7 +232,6 @@ class CodegenLoader extends AssetLoader {
     "off": "离开",
     "on": "在",
     "openBillingPlans": "打开计费计划",
-    "openEmailApp": "打开电子邮件应用程序",
     "or": "或者",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "其他...",
@@ -537,6 +534,9 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "登录或注册",
     "takeBackTheInternetLbl": "夺回互联网的控制权。",
     "homeLbl": "家",
+    "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
+    "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
+    "openEmailApp": "打开电子邮件应用程序",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -610,7 +610,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Bağlantı zaman aşımına uğradı.Lütfen daha sonra tekrar deneyin. Sorun devam ederse, lütfen destek ile iletişime geçin.",
     "consistentSpeedReason": "Tutarlı hız",
-    "consumeLink": "Devam etmek için e-postadaki bağlantıya tıklayın.",
     "contentBlockerDesc":
         "Hem kötü amaçlı yazılımları hem de yetişkinlere yönelik içeriği engelleyin",
     "contentBlockerTitle": "NSFW içeriği ve kötü amaçlı yazılım engelleyici",
@@ -727,8 +726,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Öldürme Anahtarı",
     "letsGoBtn": "Hadi gidelim!",
     "linkCopied": "Bağlantı panoya kopyalandı!",
-    "linkExpires":
-        "Link 30 dakika içinde kullanılmalıdır, bu yüzden bir an önce tıkladığınızdan emin olun. ",
     "location": "Ülke",
     "locationItemCityCount": {"one": "", "other": "{} şehir"},
     "locationUnavailableAction": "En yakın IP'ye bağlan",
@@ -780,7 +777,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Kapalı",
     "on": "Açık",
     "openBillingPlans": "Faturalandırma planlarını aç",
-    "openEmailApp": "E-posta Uygulamasını Aç",
     "or": "VEYA",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Diğer...",
@@ -1113,6 +1109,11 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Giriş yap veya kayıt ol",
     "takeBackTheInternetLbl": "İnterneti geri alalım.",
     "homeLbl": "Ev",
+    "linkExpires":
+        "Bağlantı 30 dakika sonra geçerliliğini yitirecek ve yalnızca bir kez kullanılabilir.",
+    "consumeLink":
+        "Bu özellik yalnızca talep eden cihazda çalışır - devam etmek için e-postanızdaki bağlantıya tıklayın.",
+    "openEmailApp": "E-posta uygulamasını açın",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1180,7 +1181,6 @@ class CodegenLoader extends AssetLoader {
     "connectionLimitExceededTitle": "接続制限アラート",
     "connectionTimeout": "接続がタイムアウトしました。後でもう一度試してください。問題が解決しない場合は、サポートチームにお問い合わせください",
     "consistentSpeedReason": "一貫した速度",
-    "consumeLink": "続行するには、電子メール内のリンクをクリックしてください。検証リンクは、リンクを要求したデバイス上で 1 回だけ使用できます。",
     "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
     "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
     "continueBtn": "続行",
@@ -1285,7 +1285,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "キルスイッチ",
     "letsGoBtn": "行こう！",
     "linkCopied": "リンクをクリップボードにコピーしました！",
-    "linkExpires": "リンクの有効期限は 30 分ですので、お早めにご利用ください。メールをチェックしてみよう",
     "location": "位置",
     "locationItemCityCount": {"one": "", "other": "{} 都市"},
     "locationUnavailableAction": "最寄りのIPに接続",
@@ -1336,7 +1335,6 @@ class CodegenLoader extends AssetLoader {
     "off": "オフ",
     "on": "の上",
     "openBillingPlans": "オープンな料金プラン",
-    "openEmailApp": "メールアプリを開く",
     "or": "または",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "その他...",
@@ -1646,6 +1644,9 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "ログインまたは新規登録",
     "takeBackTheInternetLbl": "インターネットを取り戻せ。",
     "homeLbl": "家",
+    "linkExpires": "このリンクは30分後に期限切れとなり、1回のみ使用できます。",
+    "consumeLink": "この機能は、リクエストを行ったデバイスでのみ動作します。続行するには、メールに記載されているリンクをクリックしてください。",
+    "openEmailApp": "メールアプリを開く",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1722,8 +1723,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Zeitüberschreitung der Verbindung. Bitte versuchen Sie es später noch einmal. Wenn das Problem weiterhin besteht, wenden Sie sich an das Support-Team",
     "consistentSpeedReason": "Konstante Geschwindigkeit",
-    "consumeLink":
-        "Klicken Sie auf den Link in der E-Mail, um fortzufahren. Der Verifizierungslink kann nur einmal und nur auf dem Gerät verwendet werden, das den Link angefordert hat.",
     "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
     "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
     "continueBtn": "Fortfahren",
@@ -1850,8 +1849,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Kill-Switch",
     "letsGoBtn": "Los geht's",
     "linkCopied": "Link in die Zwischenablage kopiert!",
-    "linkExpires":
-        "Der Link läuft in 30 Minuten ab, also nutzen Sie ihn bald. Überprüfen Sie Ihre E-Mails",
     "location": "Standort",
     "locationItemCityCount": {"one": "{} Stadt", "other": "{} Städte"},
     "locationUnavailableAction": "Mit nächster IP verbinden",
@@ -1906,7 +1903,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Aus",
     "on": "An",
     "openBillingPlans": "Offene Abrechnungspläne",
-    "openEmailApp": "Öffnen Sie die E-Mail-App",
     "or": "ODER",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Andere...",
@@ -2249,6 +2245,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Anmelden oder registrieren",
     "takeBackTheInternetLbl": "Holt euch das Internet zurück.",
     "homeLbl": "Heim",
+    "linkExpires": "Der Link ist 30 Minuten gültig und kann nur einmal verwendet werden.",
+    "consumeLink":
+        "Es funktioniert nur auf dem Gerät, das es angefordert hat – klicken Sie auf den Link in Ihrer E-Mail, um fortzufahren.",
+    "openEmailApp": "E-Mail-App öffnen",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2324,8 +2324,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte",
     "consistentSpeedReason": "Velocidade consistente",
-    "consumeLink":
-        "Clique no link no email para continuar. O link de verificação só pode ser usado uma vez e apenas no dispositivo que solicitou o link.",
     "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
     "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
     "continueBtn": "Continuar",
@@ -2445,8 +2443,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "مفتاح القتل",
     "letsGoBtn": "Vamos!",
     "linkCopied": "Link copiado para a área de transferência!",
-    "linkExpires":
-        "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
     "location": "Localização",
     "locationItemCityCount": {"one": "{} cidade", "other": "{} cidades"},
     "locationUnavailableAction": "Conectar ao IP mais próximo",
@@ -2500,7 +2496,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Desligado",
     "on": "Sobre",
     "openBillingPlans": "Planos de cobrança aberta",
-    "openEmailApp": "Abra o aplicativo de email",
     "or": "OU",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Outro...",
@@ -2843,6 +2838,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Faça login ou cadastre-se",
     "takeBackTheInternetLbl": "Retome o controle da internet.",
     "homeLbl": "Lar",
+    "linkExpires": "O link expira em 30 minutos e só pode ser usado uma vez.",
+    "consumeLink":
+        "Só funciona no dispositivo que fez a solicitação - clique no link no seu e-mail para continuar.",
+    "openEmailApp": "Abra o aplicativo de e-mail",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2918,8 +2917,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Connection timed out. Please try again later. If the problem persists, contact the support team",
     "consistentSpeedReason": "Consistent speed",
-    "consumeLink":
-        "Click the link in the email to continue. Verification Link can only be used once and only on the device that requested the link.",
     "contentBlockerDesc": "Block both malware and adult content",
     "contentBlockerTitle": "NSFW content and malware blocker",
     "continueBtn": "Continue",
@@ -3035,7 +3032,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Kill switch",
     "letsGoBtn": "Let's go",
     "linkCopied": "Link copied to clipboard!",
-    "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
     "location": "Location",
     "locationItemCityCount": {"one": "{} City", "other": "{} Cities"},
     "locationUnavailableAction": "Connect to nearest IP",
@@ -3089,7 +3085,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Off",
     "on": "On",
     "openBillingPlans": "Open billing plans",
-    "openEmailApp": "Open Email App",
     "or": "OR",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Other...",
@@ -3425,6 +3420,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Log in or sign up",
     "takeBackTheInternetLbl": "Take back the internet.",
     "homeLbl": "Home",
+    "linkExpires": "The link expires in 30 minutes and can be used only once.",
+    "consumeLink":
+        "It only works on the device that requested it - click the link in your email to continue.",
+    "openEmailApp": "Open email app",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3502,8 +3501,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Connessione scaduta. Per favore riprova più tardi. Se il problema persiste, contatta il team di supporto",
     "consistentSpeedReason": "Velocità costante",
-    "consumeLink":
-        "Fare clic sul collegamento nell'e-mail per continuare. Il collegamento di verifica può essere utilizzato solo una volta e solo sul dispositivo che ha richiesto il collegamento.",
     "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
     "contentBlockerTitle": "Contenuto NSFW e blocco malware",
     "continueBtn": "Continua",
@@ -3625,8 +3622,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Interruttore di Sicurezza",
     "letsGoBtn": "Andiamo!",
     "linkCopied": "Link copiato negli appunti!",
-    "linkExpires":
-        "Il link scade tra 30 minuti, quindi assicurati di usarlo presto. Vai a controllare la tua posta",
     "location": "Posizione",
     "locationItemCityCount": {"one": "{} città", "other": "{} città"},
     "locationUnavailableAction": "Connettiti all’IP più vicino",
@@ -3680,7 +3675,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Spento",
     "on": "SU",
     "openBillingPlans": "Apri i piani di fatturazione",
-    "openEmailApp": "Apri l'app di posta elettronica",
     "or": "O",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Altro...",
@@ -4022,6 +4016,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Accedi o registrati",
     "takeBackTheInternetLbl": "Riprendiamoci internet.",
     "homeLbl": "Casa",
+    "linkExpires": "Il link scade tra 30 minuti e può essere utilizzato una sola volta.",
+    "consumeLink":
+        "Funziona solo sul dispositivo che l'ha richiesto: clicca sul link nella tua email per continuare.",
+    "openEmailApp": "Apri l'app di posta elettronica",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4100,8 +4098,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support",
     "consistentSpeedReason": "Vitesse constante",
-    "consumeLink":
-        "Cliquez sur le lien dans l'e-mail pour continuer. Le lien de vérification ne peut être utilisé qu'une seule fois et uniquement sur l'appareil qui a demandé le lien.",
     "contentBlockerDesc":
         "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
     "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
@@ -4225,8 +4221,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Interrupteur d'arrêt",
     "letsGoBtn": "Allons-y!",
     "linkCopied": "Lien copié dans le presse-papiers!",
-    "linkExpires":
-        "Le lien expire en 30 minutes, alors assurez-vous de l'utiliser bientôt. Allez vérifier votre e-mail",
     "location": "Emplacement",
     "locationItemCityCount": {"one": "{} ville", "other": "{} villes"},
     "locationUnavailableAction": "Se connecter à l’IP la plus proche",
@@ -4281,7 +4275,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Désactivé",
     "on": "Sur",
     "openBillingPlans": "Plans de facturation ouverts",
-    "openEmailApp": "Application de messagerie ouverte",
     "or": "OU",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Autre...",
@@ -4626,6 +4619,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Se connecter ou s'inscrire",
     "takeBackTheInternetLbl": "Reprenons le contrôle d'Internet.",
     "homeLbl": "Maison",
+    "linkExpires": "Le lien expire dans 30 minutes et ne peut être utilisé qu'une seule fois.",
+    "consumeLink":
+        "Cela ne fonctionne que sur l'appareil qui en a fait la demande - cliquez sur le lien dans votre e-mail pour continuer.",
+    "openEmailApp": "Ouvrir l'application de messagerie",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4701,8 +4698,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Waktu koneksi berakhir. Coba lagi nanti. Jika masalah berlanjut, hubungi tim dukungan",
     "consistentSpeedReason": "Kecepatan konsisten",
-    "consumeLink":
-        "Klik tautan di email untuk melanjutkan. Tautan Verifikasi hanya dapat digunakan sekali dan hanya pada perangkat yang meminta tautan.",
     "contentBlockerDesc": "Blokir malware dan konten dewasa",
     "contentBlockerTitle": "Pemblokir konten NSFW dan malware",
     "continueBtn": "Melanjutkan",
@@ -4819,8 +4814,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Sakelar Pembunuh",
     "letsGoBtn": "Ayo pergi!",
     "linkCopied": "Tautan disalin ke papan klip!",
-    "linkExpires":
-        "Tautan kedaluwarsa dalam 30 menit, jadi pastikan untuk segera menggunakannya. Periksa email Anda",
     "location": "Lokasi",
     "locationItemCityCount": {"one": "", "other": "{} kota"},
     "locationUnavailableAction": "Hubungkan ke IP terdekat",
@@ -4873,7 +4866,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Mati",
     "on": "Pada",
     "openBillingPlans": "Buka paket penagihan",
-    "openEmailApp": "Buka Aplikasi Email",
     "or": "ATAU",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Lainnya...",
@@ -5212,6 +5204,11 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Masuk atau daftar",
     "takeBackTheInternetLbl": "Rebut kembali internet.",
     "homeLbl": "Rumah",
+    "linkExpires":
+        "Tautan tersebut akan kedaluwarsa dalam 30 menit dan hanya dapat digunakan sekali.",
+    "consumeLink":
+        "Ini hanya berfungsi pada perangkat yang memintanya - klik tautan di email Anda untuk melanjutkan.",
+    "openEmailApp": "Buka aplikasi email",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5288,8 +5285,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "Tiempo de conexión agotado. Por favor, inténtalo de nuevo más tarde. Si el problema persiste, ponte en contacto con el equipo de soporte",
     "consistentSpeedReason": "Velocidad constante",
-    "consumeLink":
-        "Haz clic en el enlace del correo electrónico para continuar. El enlace de verificación solo se puede usar una vez y solo en el dispositivo que solicitaste el enlace.",
     "contentBlockerDesc": "Bloquee tanto el malware como el contenido para adultos",
     "contentBlockerTitle": "Bloqueador de malware y contenido NSFW",
     "continueBtn": "Continuar",
@@ -5411,8 +5406,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Interruptor de Corte",
     "letsGoBtn": "¡Vamos!",
     "linkCopied": "¡Enlace copiado al portapapeles!",
-    "linkExpires":
-        "El enlace caduca en 30 minutos, así que asegúrate de usarlo pronto. Ve a revisar tu correo electrónico",
     "location": "Ubicación",
     "locationItemCityCount": {"one": "{} ciudad", "other": "{} ciudades"},
     "locationUnavailableAction": "Conectarse a la IP más cercana",
@@ -5466,7 +5459,6 @@ class CodegenLoader extends AssetLoader {
     "off": "Apagado",
     "on": "En",
     "openBillingPlans": "Abrir planes de facturación",
-    "openEmailApp": "Abrir aplicación de correo electrónico",
     "or": "O",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "Otro...",
@@ -5809,6 +5801,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "Inicia sesión o regístrate",
     "takeBackTheInternetLbl": "Recuperemos internet.",
     "homeLbl": "Hogar",
+    "linkExpires": "El enlace caduca en 30 minutos y solo se puede usar una vez.",
+    "consumeLink":
+        "Solo funciona en el dispositivo que lo solicitó; haga clic en el enlace de su correo electrónico para continuar.",
+    "openEmailApp": "Abrir la aplicación de correo electrónico",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -5881,8 +5877,6 @@ class CodegenLoader extends AssetLoader {
     "connectionTimeout":
         "انتهت مدة الاتصال. الرجاء معاودة المحاولة في وقت لاحق. إذا استمرت المشكلة ، فاتصل بفريق الدعم",
     "consistentSpeedReason": "سرعة ثابتة",
-    "consumeLink":
-        "انقر فوق الارتباط في البريد الالكتروني للمتابعة. يمكن استخدام رابط التحقق مرة واحدة فقط على الجهاز الذي طلب الارتباط.",
     "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
     "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
     "continueBtn": "اكمل",
@@ -5995,8 +5989,6 @@ class CodegenLoader extends AssetLoader {
     "killSwitchTooltipTitle": "Interruptor de Desligamento",
     "letsGoBtn": "دعنا نذهب",
     "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-    "linkExpires":
-        "تنتهي صلاحية الرابط في غضون 30 دقيقة ، لذا تأكد من استخدامه قريبًا. اذهب للتحقق من بريدك الإلكتروني",
     "location": "الموقع",
     "locationItemCityCount": {"one": "{} مدينة", "other": "{} مدن"},
     "locationUnavailableAction": "اتصل بأقرب عنوان IP",
@@ -6048,7 +6040,6 @@ class CodegenLoader extends AssetLoader {
     "off": "عن",
     "on": "على",
     "openBillingPlans": "فتح خطط الفواتير",
-    "openEmailApp": "افتح تطبيق البريد الإلكتروني",
     "or": "OR",
     "originalMonthlyPrice": "{amount}",
     "otherReason": "أخرى...",
@@ -6375,6 +6366,10 @@ class CodegenLoader extends AssetLoader {
     "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا",
     "takeBackTheInternetLbl": "استعادة الإنترنت.",
     "homeLbl": "بيت",
+    "linkExpires": "ينتهي صلاحية الرابط خلال 30 دقيقة ولا يمكن استخدامه إلا مرة واحدة.",
+    "consumeLink":
+        "لا يعمل إلا على الجهاز الذي طلبه - انقر على الرابط الموجود في بريدك الإلكتروني للمتابعة.",
+    "openEmailApp": "افتح تطبيق البريد الإلكتروني",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "Connection Limit Alert",
   "connectionTimeout": "Connection timed out. Please try again later. If the problem persists, contact the support team",
   "consistentSpeedReason": "Consistent speed",
-  "consumeLink": "Click the link in the email to continue. Verification Link can only be used once and only on the device that requested the link.",
   "contentBlockerDesc": "Block both malware and adult content",
   "contentBlockerTitle": "NSFW content and malware blocker",
   "continueBtn": "Continue",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "Kill switch",
   "letsGoBtn": "Let's go",
   "linkCopied": "Link copied to clipboard!",
-  "linkExpires": "The link expires in 30 minutes, so be sure to use it soon. Go check your email",
   "location": "Location",
   "locationItemCityCount": {
     "one": "{} City",
@@ -221,7 +219,6 @@
   "off": "Off",
   "on": "On",
   "openBillingPlans": "Open billing plans",
-  "openEmailApp": "Open Email App",
   "or": "OR",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "Other...",
@@ -530,5 +527,8 @@
   "allowBtn": "Allow",
   "loginSignupLabel": "Log in or sign up",
   "takeBackTheInternetLbl": "Take back the internet.",
-  "homeLbl": "Home"
+  "homeLbl": "Home",
+  "linkExpires": "The link expires in 30 minutes and can be used only once.",
+  "consumeLink": "It only works on the device that requested it - click the link in your email to continue.",
+  "openEmailApp": "Open email app"
 }

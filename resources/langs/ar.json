@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "تنبيه تجاوز الحد في الاتصال",
   "connectionTimeout": "انتهت مدة الاتصال. الرجاء معاودة المحاولة في وقت لاحق. إذا استمرت المشكلة ، فاتصل بفريق الدعم",
   "consistentSpeedReason": "سرعة ثابتة",
-  "consumeLink": "انقر فوق الارتباط في البريد الالكتروني للمتابعة. يمكن استخدام رابط التحقق مرة واحدة فقط على الجهاز الذي طلب الارتباط.",
   "contentBlockerDesc": "حظر كل من البرامج الضارة ومحتوى البالغين",
   "contentBlockerTitle": "محتوى NSFW ومانع البرامج الضارة",
   "continueBtn": "اكمل",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "Interruptor de Desligamento",
   "letsGoBtn": "دعنا نذهب",
   "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-  "linkExpires": "تنتهي صلاحية الرابط في غضون 30 دقيقة ، لذا تأكد من استخدامه قريبًا. اذهب للتحقق من بريدك الإلكتروني",
   "location": "الموقع",
   "locationItemCityCount": {
     "one": "{} مدينة",
@@ -221,7 +219,6 @@
   "off": "عن",
   "on": "على",
   "openBillingPlans": "فتح خطط الفواتير",
-  "openEmailApp": "افتح تطبيق البريد الإلكتروني",
   "or": "OR",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "أخرى...",
@@ -530,5 +527,8 @@
   "allowBtn": "يسمح",
   "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا",
   "takeBackTheInternetLbl": "استعادة الإنترنت.",
-  "homeLbl": "بيت"
+  "homeLbl": "بيت",
+  "linkExpires": "ينتهي صلاحية الرابط خلال 30 دقيقة ولا يمكن استخدامه إلا مرة واحدة.",
+  "consumeLink": "لا يعمل إلا على الجهاز الذي طلبه - انقر على الرابط الموجود في بريدك الإلكتروني للمتابعة.",
+  "openEmailApp": "افتح تطبيق البريد الإلكتروني"
 }

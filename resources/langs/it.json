@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "Allarme Limite di Connessione",
   "connectionTimeout": "Connessione scaduta. Per favore riprova più tardi. Se il problema persiste, contatta il team di supporto",
   "consistentSpeedReason": "Velocità costante",
-  "consumeLink": "Fare clic sul collegamento nell'e-mail per continuare. Il collegamento di verifica può essere utilizzato solo una volta e solo sul dispositivo che ha richiesto il collegamento.",
   "contentBlockerDesc": "Blocca sia malware che contenuti per adulti",
   "contentBlockerTitle": "Contenuto NSFW e blocco malware",
   "continueBtn": "Continua",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "Interruttore di Sicurezza",
   "letsGoBtn": "Andiamo!",
   "linkCopied": "Link copiato negli appunti!",
-  "linkExpires": "Il link scade tra 30 minuti, quindi assicurati di usarlo presto. Vai a controllare la tua posta",
   "location": "Posizione",
   "locationItemCityCount": {
     "one": "{} città",
@@ -221,7 +219,6 @@
   "off": "Spento",
   "on": "SU",
   "openBillingPlans": "Apri i piani di fatturazione",
-  "openEmailApp": "Apri l'app di posta elettronica",
   "or": "O",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "Altro...",
@@ -530,5 +527,8 @@
   "allowBtn": "Permettere",
   "loginSignupLabel": "Accedi o registrati",
   "takeBackTheInternetLbl": "Riprendiamoci internet.",
-  "homeLbl": "Casa"
+  "homeLbl": "Casa",
+  "linkExpires": "Il link scade tra 30 minuti e può essere utilizzato una sola volta.",
+  "consumeLink": "Funziona solo sul dispositivo che l'ha richiesto: clicca sul link nella tua email per continuare.",
+  "openEmailApp": "Apri l'app di posta elettronica"
 }

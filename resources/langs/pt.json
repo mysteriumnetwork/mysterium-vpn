@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "Alerta de limite de conexão",
   "connectionTimeout": "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte",
   "consistentSpeedReason": "Velocidade consistente",
-  "consumeLink": "Clique no link no email para continuar. O link de verificação só pode ser usado uma vez e apenas no dispositivo que solicitou o link.",
   "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
   "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
   "continueBtn": "Continuar",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "مفتاح القتل",
   "letsGoBtn": "Vamos!",
   "linkCopied": "Link copiado para a área de transferência!",
-  "linkExpires": "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
   "location": "Localização",
   "locationItemCityCount": {
     "one": "{} cidade",
@@ -221,7 +219,6 @@
   "off": "Desligado",
   "on": "Sobre",
   "openBillingPlans": "Planos de cobrança aberta",
-  "openEmailApp": "Abra o aplicativo de email",
   "or": "OU",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "Outro...",
@@ -530,5 +527,8 @@
   "allowBtn": "Permitir",
   "loginSignupLabel": "Faça login ou cadastre-se",
   "takeBackTheInternetLbl": "Retome o controle da internet.",
-  "homeLbl": "Lar"
+  "homeLbl": "Lar",
+  "linkExpires": "O link expira em 30 minutos e só pode ser usado uma vez.",
+  "consumeLink": "Só funciona no dispositivo que fez a solicitação - clique no link no seu e-mail para continuar.",
+  "openEmailApp": "Abra o aplicativo de e-mail"
 }

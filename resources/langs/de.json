@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "Verbindungslimit-Alarm",
   "connectionTimeout": "Zeitüberschreitung der Verbindung. Bitte versuchen Sie es später noch einmal. Wenn das Problem weiterhin besteht, wenden Sie sich an das Support-Team",
   "consistentSpeedReason": "Konstante Geschwindigkeit",
-  "consumeLink": "Klicken Sie auf den Link in der E-Mail, um fortzufahren. Der Verifizierungslink kann nur einmal und nur auf dem Gerät verwendet werden, das den Link angefordert hat.",
   "contentBlockerDesc": "Blockieren Sie sowohl Malware als auch nicht jugendfreie Inhalte",
   "contentBlockerTitle": "NSFW-Inhalts- und Malware-Blocker",
   "continueBtn": "Fortfahren",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "Kill-Switch",
   "letsGoBtn": "Los geht's",
   "linkCopied": "Link in die Zwischenablage kopiert!",
-  "linkExpires": "Der Link läuft in 30 Minuten ab, also nutzen Sie ihn bald. Überprüfen Sie Ihre E-Mails",
   "location": "Standort",
   "locationItemCityCount": {
     "one": "{} Stadt",
@@ -221,7 +219,6 @@
   "off": "Aus",
   "on": "An",
   "openBillingPlans": "Offene Abrechnungspläne",
-  "openEmailApp": "Öffnen Sie die E-Mail-App",
   "or": "ODER",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "Andere...",
@@ -530,5 +527,8 @@
   "allowBtn": "Erlauben",
   "loginSignupLabel": "Anmelden oder registrieren",
   "takeBackTheInternetLbl": "Holt euch das Internet zurück.",
-  "homeLbl": "Heim"
+  "homeLbl": "Heim",
+  "linkExpires": "Der Link ist 30 Minuten gültig und kann nur einmal verwendet werden.",
+  "consumeLink": "Es funktioniert nur auf dem Gerät, das es angefordert hat – klicken Sie auf den Link in Ihrer E-Mail, um fortzufahren.",
+  "openEmailApp": "E-Mail-App öffnen"
 }

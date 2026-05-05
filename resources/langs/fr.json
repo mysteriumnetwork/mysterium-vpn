@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "Alerte de limite de connexion",
   "connectionTimeout": "Délai de connexion expiré.Veuillez réessayer plus tard.Si le problème persiste, veuillez contacter le support",
   "consistentSpeedReason": "Vitesse constante",
-  "consumeLink": "Cliquez sur le lien dans l'e-mail pour continuer. Le lien de vérification ne peut être utilisé qu'une seule fois et uniquement sur l'appareil qui a demandé le lien.",
   "contentBlockerDesc": "Bloquez à la fois les logiciels malveillants et le contenu réservé aux adultes",
   "contentBlockerTitle": "Bloqueur de contenu NSFW et de logiciels malveillants",
   "continueBtn": "Continuer",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "Interrupteur d'arrêt",
   "letsGoBtn": "Allons-y!",
   "linkCopied": "Lien copié dans le presse-papiers!",
-  "linkExpires": "Le lien expire en 30 minutes, alors assurez-vous de l'utiliser bientôt. Allez vérifier votre e-mail",
   "location": "Emplacement",
   "locationItemCityCount": {
     "one": "{} ville",
@@ -221,7 +219,6 @@
   "off": "Désactivé",
   "on": "Sur",
   "openBillingPlans": "Plans de facturation ouverts",
-  "openEmailApp": "Application de messagerie ouverte",
   "or": "OU",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "Autre...",
@@ -530,5 +527,8 @@
   "allowBtn": "Permettre",
   "loginSignupLabel": "Se connecter ou s'inscrire",
   "takeBackTheInternetLbl": "Reprenons le contrôle d'Internet.",
-  "homeLbl": "Maison"
+  "homeLbl": "Maison",
+  "linkExpires": "Le lien expire dans 30 minutes et ne peut être utilisé qu'une seule fois.",
+  "consumeLink": "Cela ne fonctionne que sur l'appareil qui en a fait la demande - cliquez sur le lien dans votre e-mail pour continuer.",
+  "openEmailApp": "Ouvrir l'application de messagerie"
 }

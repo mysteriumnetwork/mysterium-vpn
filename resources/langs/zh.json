@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "连接限制警报",
   "connectionTimeout": "连接超时。请稍后再试。如果问题仍然存在，请联系支持团队",
   "consistentSpeedReason": "一致的速度",
-  "consumeLink": "单击电子邮件中的链接继续。验证链接只能使用一次，并且只能在请求该链接的设备上使用。",
   "contentBlockerDesc": "阻止恶意软件和成人内容",
   "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
   "continueBtn": "继续",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "断网开关",
   "letsGoBtn": "走吧！",
   "linkCopied": "链接已复制到剪贴板！",
-  "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
   "location": "地点",
   "locationItemCityCount": {
     "one": "",
@@ -221,7 +219,6 @@
   "off": "离开",
   "on": "在",
   "openBillingPlans": "打开计费计划",
-  "openEmailApp": "打开电子邮件应用程序",
   "or": "或者",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "其他...",
@@ -530,5 +527,8 @@
   "allowBtn": "允许",
   "loginSignupLabel": "登录或注册",
   "takeBackTheInternetLbl": "夺回互联网的控制权。",
-  "homeLbl": "家"
+  "homeLbl": "家",
+  "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
+  "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
+  "openEmailApp": "打开电子邮件应用程序"
 }

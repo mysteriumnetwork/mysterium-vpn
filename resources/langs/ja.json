@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "接続制限アラート",
   "connectionTimeout": "接続がタイムアウトしました。後でもう一度試してください。問題が解決しない場合は、サポートチームにお問い合わせください",
   "consistentSpeedReason": "一貫した速度",
-  "consumeLink": "続行するには、電子メール内のリンクをクリックしてください。検証リンクは、リンクを要求したデバイス上で 1 回だけ使用できます。",
   "contentBlockerDesc": "マルウェアとアダルト コンテンツの両方をブロック",
   "contentBlockerTitle": "NSFW コンテンツとマルウェア ブロッカー",
   "continueBtn": "続行",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "キルスイッチ",
   "letsGoBtn": "行こう！",
   "linkCopied": "リンクをクリップボードにコピーしました！",
-  "linkExpires": "リンクの有効期限は 30 分ですので、お早めにご利用ください。メールをチェックしてみよう",
   "location": "位置",
   "locationItemCityCount": {
     "one": "",
@@ -221,7 +219,6 @@
   "off": "オフ",
   "on": "の上",
   "openBillingPlans": "オープンな料金プラン",
-  "openEmailApp": "メールアプリを開く",
   "or": "または",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "その他...",
@@ -530,5 +527,8 @@
   "allowBtn": "許可する",
   "loginSignupLabel": "ログインまたは新規登録",
   "takeBackTheInternetLbl": "インターネットを取り戻せ。",
-  "homeLbl": "家"
+  "homeLbl": "家",
+  "linkExpires": "このリンクは30分後に期限切れとなり、1回のみ使用できます。",
+  "consumeLink": "この機能は、リクエストを行ったデバイスでのみ動作します。続行するには、メールに記載されているリンクをクリックしてください。",
+  "openEmailApp": "メールアプリを開く"
 }
