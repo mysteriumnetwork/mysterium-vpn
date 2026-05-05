@@ -88,7 +88,7 @@ LocationItemState useLocationItemState({
         isLoading: vpnStore.isLoading,
         vpnLocation: vpnStore.location,
         connectingLocation: vpnStore.connectingLocation,
-        isSubscriptionLoading: isSubscriptionLoading,
+        isSubscriptionLoading: subscriptionFeaturesStore.isLoading,
       );
       final childPlusUpgrade = childMode == LocationMode.unsupportedByPlan;
       final status = switch (childMode) {
