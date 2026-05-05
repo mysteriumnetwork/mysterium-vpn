@@ -528,5 +528,6 @@
   "noServersAvailableSub": "Problème de connexion : aucun serveur n'est disponible. Veuillez réessayer plus tard.",
   "typeDelete": "Taper {}",
   "allowBtn": "Permettre",
-  "loginSignupLabel": "Se connecter ou s'inscrire"
+  "loginSignupLabel": "Se connecter ou s'inscrire",
+  "takeBackTheInternetLbl": "Reprenons le contrôle d'Internet."
 }

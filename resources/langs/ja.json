@@ -528,5 +528,6 @@
   "noServersAvailableSub": "接続に問題が発生しており、利用可能なサーバーがありません。しばらくしてからもう一度お試しください。",
   "typeDelete": "タイプ {}",
   "allowBtn": "許可する",
-  "loginSignupLabel": "ログインまたは新規登録"
+  "loginSignupLabel": "ログインまたは新規登録",
+  "takeBackTheInternetLbl": "インターネットを取り戻せ。"
 }

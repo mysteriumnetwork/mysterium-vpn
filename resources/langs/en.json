@@ -528,5 +528,6 @@
   "noServersAvailableSub": "There is connectivity issue and no servers are available. Please try later.",
   "typeDelete": "Type {}",
   "allowBtn": "Allow",
-  "loginSignupLabel": "Log in or sign up"
+  "loginSignupLabel": "Log in or sign up",
+  "takeBackTheInternetLbl": "Take back the internet."
 }

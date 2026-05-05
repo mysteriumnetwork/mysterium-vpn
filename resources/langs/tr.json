@@ -528,5 +528,6 @@
   "noServersAvailableSub": "Bağlantı sorunu var ve hiçbir sunucu kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
   "typeDelete": "Tip {}",
   "allowBtn": "İzin vermek",
-  "loginSignupLabel": "Giriş yap veya kayıt ol"
+  "loginSignupLabel": "Giriş yap veya kayıt ol",
+  "takeBackTheInternetLbl": "İnterneti geri alalım."
 }

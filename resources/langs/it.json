@@ -481,7 +481,7 @@
   "marketingConsentPopupDesc": "Desideri ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
   "allowNotificationsBtn": "Consenti le notifiche",
   "ipTypeDataCenterDisclaimer": "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
-  "ipTypeResidentialDisclaimer": "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+  "ipTypeResidentialDisclaimer": "Indirizzi IP residenziali di abitazioni reali. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
   "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
   "ipTypeResidentialTooltipBody": "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
   "refreshIPAddress": "Aggiornamento dell'indirizzo IP",
@@ -528,5 +528,6 @@
   "noServersAvailableSub": "Si è verificato un problema di connessione e non sono disponibili server. Riprova più tardi.",
   "typeDelete": "Tipo {}",
   "allowBtn": "Permettere",
-  "loginSignupLabel": "Accedi o registrati"
+  "loginSignupLabel": "Accedi o registrati",
+  "takeBackTheInternetLbl": "Riprendiamoci internet."
 }

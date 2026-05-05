@@ -476,7 +476,7 @@
     "other": "{statesNum} الولايات"
   },
   "redeemDiscountCode": "استخدم رمز الخصم",
-  "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
+  "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
   "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
   "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
   "allowNotificationsBtn": "السماح بالإشعارات",
@@ -528,5 +528,6 @@
   "noServersAvailableSub": "هناك مشكلة في الاتصال ولا توجد خوادم متاحة. يرجى المحاولة لاحقًا.",
   "typeDelete": "يكتب {}",
   "allowBtn": "يسمح",
-  "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا"
+  "loginSignupLabel": "سجّل الدخول أو أنشئ حسابًا",
+  "takeBackTheInternetLbl": "استعادة الإنترنت."
 }

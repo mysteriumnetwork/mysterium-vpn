@@ -520,4 +520,5 @@ abstract class LocaleKeys {
   static const typeDelete = 'typeDelete';
   static const allowBtn = 'allowBtn';
   static const loginSignupLabel = 'loginSignupLabel';
+  static const takeBackTheInternetLbl = 'takeBackTheInternetLbl';
 }

@@ -762,6 +762,10 @@ class $AssetsImagesGen {
     size: const Size(1024.0, 1024.0),
   );
 
+  /// File path: assets/images/welcome.png
+  AssetGenImage get welcome =>
+      const AssetGenImage('assets/images/welcome.png', size: const Size(236.0, 236.0));
+
   /// List of all assets
   List<dynamic> get values => [
     checkEmail,
@@ -776,6 +780,7 @@ class $AssetsImagesGen {
     reportLight,
     settings,
     subscriptionUpgrade,
+    welcome,
   ];
 }
 
