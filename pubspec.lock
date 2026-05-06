@@ -1347,8 +1347,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/dialogs-components"
-      resolved-ref: "128459e91f00641192609c6a75c7b971a95ecc16"
+      ref: "0.0.13"
+      resolved-ref: c3615801fa623c7c67fa8825559dadc7bd1d587f
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
@@ -2122,10 +2122,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_web
-      sha256: d0412fcf4c6b31ecfdb7762359b7206ffba3bbffd396c6d9f9c4616ece476c1f
+      sha256: "85c81589622fbc87c1c683aaea164d3604a7777495a79d91e39ffcdec39ddb34"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.2"
+    version: "2.4.3"
   url_launcher_windows:
     dependency: transitive
     description:
