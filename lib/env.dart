@@ -81,10 +81,11 @@ abstract class Env {
     try {
       plugin ??= DeviceInfoPlugin();
       _deviceInfo = await plugin.deviceInfo;
-    } catch (_) {
+    } catch (e, stack) {
       // In case of any error, we assign an empty BaseDeviceInfo to avoid null issues.
       // Since we never access things from _deviceInfo without checking its type first,
       // this should be safe. In this case, deviceName and deviceModel will be 'Unknown'.
+      debugPrint('Env.initDeviceInfo failed: $e\n$stack');
       _deviceInfo = BaseDeviceInfo({});
     }
 

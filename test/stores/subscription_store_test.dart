@@ -28,6 +28,7 @@ IosDeviceInfo _mockIosDeviceInfo({String systemVersion = '17.0'}) => IosDeviceIn
   'physicalRamSize': 0,
   'availableRamSize': 0,
   'isiOSAppOnMac': false,
+  'isiOSAppOnVision': false,
   'utsname': {
     'sysname': 'Darwin',
     'nodename': 'test',
