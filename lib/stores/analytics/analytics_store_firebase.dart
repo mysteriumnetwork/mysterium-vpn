@@ -40,9 +40,10 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
   final Map<String, AnalyticsUserProperty> _pendingProperties = {};
   GrantType? _pendingLogin;
 
-  /// Called by AppInitializer once Firebase has been initialized.
+  /// Called by AppInitializer once Firebase has been initialized. Idempotent
+  /// — repeated calls (e.g. during dev hot-restart) are safe no-ops.
   Future<void> init() async {
-    if (Firebase.apps.isEmpty) {
+    if (_firebaseReady || Firebase.apps.isEmpty) {
       return;
     }
     _firebaseReady = true;
@@ -249,5 +250,20 @@ class _DeferredFirebaseAnalyticsObserver extends NavigatorObserver {
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _inner?.didRemove(route, previousRoute);
+  }
+
+  @override
+  void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {
+    _inner?.didChangeTop(topRoute, previousTopRoute);
+  }
+
+  @override
+  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _inner?.didStartUserGesture(route, previousRoute);
+  }
+
+  @override
+  void didStopUserGesture() {
+    _inner?.didStopUserGesture();
   }
 }

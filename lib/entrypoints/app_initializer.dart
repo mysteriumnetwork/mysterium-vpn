@@ -77,12 +77,22 @@ class AppInitializer {
 
     // Firebase + OneSignal run past the first frame; the splash awaits via
     // deferredInitFuturePOD.
-    unawaited(
-      Future.wait([
+    unawaited(_runDeferredInit());
+  }
+
+  Future<void> _runDeferredInit() async {
+    try {
+      await Future.wait([
         _initFirebaseSDK().then((_) => _onFirebaseReady()),
         _initOneSignal(logger),
-      ]).whenComplete(_deferredInit.complete),
-    );
+      ]);
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    } finally {
+      if (!_deferredInit.isCompleted) {
+        _deferredInit.complete();
+      }
+    }
   }
 
   // ─── Firebase SDK ─────────────────────────────────────────────────────────────
