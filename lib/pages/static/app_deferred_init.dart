@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -18,6 +19,7 @@ import 'package:wireguard_dart/wireguard_dart.dart';
 final _appStartupPOD = FutureProvider<void>((ref) async {
   final logger = ref.read(loggerPOD)..log('App startup initiated');
   await Future.wait([
+    ref.read(deferredInitFuturePOD),
     _initRemoteConfig(ref, logger).timeout(
       const Duration(seconds: 10),
       onTimeout: () => logger.log('Remote config init timed out'),
@@ -32,6 +34,14 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
     ),
     if (Platform.isWindows) _initWindows(),
   ]);
+
+  // Construct pushNotificationsStorePOD here rather than in MyApp.build:
+  // its repository.init() touches OneSignal singletons that are only ready
+  // after deferredInitFuturePOD resolves.
+  ref
+    ..read(smartRefreshStorePOD)
+    ..read(realIPInfoStorePOD)
+    ..read(pushNotificationsStorePOD);
 
   ref.read(loggerPOD).log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
 });

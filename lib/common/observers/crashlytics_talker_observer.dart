@@ -5,8 +5,8 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
-class CrashlitycsLoggerObserver extends TalkerObserver {
-  const CrashlitycsLoggerObserver({required this.analyticsStore});
+class CrashlyticsLoggerObserver extends TalkerObserver {
+  const CrashlyticsLoggerObserver({required this.analyticsStore});
 
   final AnalyticsStore analyticsStore;
 

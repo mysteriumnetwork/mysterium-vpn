@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
-import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -152,10 +151,11 @@ final authServicePOD = Provider<AuthService>((ref) {
     logger: logger,
   );
 });
-final loggerPOD = Provider<Talker>((ref) {
-  final analyticsStore = ref.watch(analyticsStorePOD);
-  return Talker(observer: CrashlitycsLoggerObserver(analyticsStore: analyticsStore));
-});
+
+/// Plain Talker. The Crashlytics-forwarding observer is attached later by
+/// AppInitializer; keeping it Firebase-free here lets the many providers
+/// that transitively watch loggerPOD be built before Firebase is up.
+final loggerPOD = Provider<Talker>((ref) => Talker());
 
 final remoteConfigClientPOD = Provider<ConfigCatClient>(
   (ref) => ConfigCatClient.get(

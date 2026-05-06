@@ -1,6 +1,5 @@
 export 'analytics_logger_overlay.dart';
 export 'analytics_user_properties_overlay.dart';
-export 'animated_logo_panel.dart';
 export 'app_version.dart';
 export 'banners/banners.dart';
 export 'brand.dart';
