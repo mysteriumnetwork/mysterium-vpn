@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/date.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 class NetworkStatistics extends ConsumerWidget {
   const NetworkStatistics({super.key});
@@ -17,13 +17,13 @@ class NetworkStatistics extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
         decoration: BoxDecoration(
-          color: context.c.isDarkMode ? Palette.darkIndigo : Palette.grayContainer,
+          color: Palette.of(context).bgSecondary,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Network Statistics', style: Theme.of(context).textTheme.titleLarge),
+            Text('Network Statistics', style: Theme.of(context).textStyles.textMd.bold),
             const SizedBox(height: 10),
             Wrap(
               runSpacing: 8,
@@ -70,7 +70,7 @@ class _StatisticsItem extends StatelessWidget {
         value,
         style: Theme.of(
           context,
-        ).textTheme.titleMedium?.copyWith(color: Palette.purple, fontWeight: FontWeight.w700),
+        ).textStyles.textMd.bold.copyWith(color: Palette.of(context).textBrandPrimary),
       ),
     ],
   );

@@ -1,8 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoadingBarrier extends StatelessWidget {
@@ -21,10 +20,10 @@ class LoadingBarrier extends StatelessWidget {
         ).height(constraints.maxHeight),
         child ??
             Center(
-              child: LoadingIndicator(
-                radius: radius,
-                message: LocaleKeys.LoggingYouIn.tr(),
-                messageColor: Palette.pink,
+              child: LoadingIndicator.message(
+                LocaleKeys.LoggingYouIn.tr(),
+                size: radius,
+                color: Theme.of(context).palette.iconBrandSecondary,
               ),
             ),
       ],

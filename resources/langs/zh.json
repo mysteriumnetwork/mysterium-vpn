@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "连接限制警报",
   "connectionTimeout": "连接超时。请稍后再试。如果问题仍然存在，请联系支持团队",
   "consistentSpeedReason": "一致的速度",
-  "consumeLink": "单击电子邮件中的链接继续。验证链接只能使用一次，并且只能在请求该链接的设备上使用。",
   "contentBlockerDesc": "阻止恶意软件和成人内容",
   "contentBlockerTitle": "NSFW 内容和恶意软件拦截器",
   "continueBtn": "继续",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "断网开关",
   "letsGoBtn": "走吧！",
   "linkCopied": "链接已复制到剪贴板！",
-  "linkExpires": "该链接将在 30 分钟后过期，因此请务必尽快使用。去查看你的电子邮件",
   "location": "地点",
   "locationItemCityCount": {
     "one": "",
@@ -221,7 +219,6 @@
   "off": "离开",
   "on": "在",
   "openBillingPlans": "打开计费计划",
-  "openEmailApp": "打开电子邮件应用程序",
   "or": "或者",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "其他...",
@@ -483,7 +480,7 @@
   "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
   "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
   "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
-  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
   "refreshIPAddress": "IP地址刷新",
   "getNewIPAddress": "刷新后获取新的 IP 地址",
   "resetAppDesc": "当出现故障时，请重置。",
@@ -525,6 +522,13 @@
   "cancelSurveyTitle": "取消的原因",
   "connectBestServer": "最佳服务器",
   "orSelectCountryManually": "我们会为您连接到最佳服务器——或者您可以手动选择国家/地区。",
-  "typeDelete": "输入 DELETE",
-  "allowBtn": "允许"
+  "noServersAvailableSub": "网络连接出现问题，没有可用服务器。请稍后再试。",
+  "typeDelete": "类型 {}",
+  "allowBtn": "允许",
+  "loginSignupLabel": "登录或注册",
+  "takeBackTheInternetLbl": "夺回互联网的控制权。",
+  "homeLbl": "家",
+  "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
+  "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
+  "openEmailApp": "打开电子邮件应用程序"
 }

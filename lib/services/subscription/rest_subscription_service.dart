@@ -14,7 +14,6 @@ import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
-import 'package:mysterium_vpn/models/product_offer.dart';
 import 'package:mysterium_vpn/services/services.dart' hide Response;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';

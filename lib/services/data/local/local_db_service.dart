@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:mysterium_vpn/services/data/local/box_recovery.dart';
 
 class LocalDBService {
   factory LocalDBService() => instance;
@@ -26,30 +25,18 @@ class LocalDBService {
       ..registerAdapter(const LatLngAdapter(typeId: 6))
       ..registerAdapter(const ProtocolTypeAdapter(typeId: 7));
 
-    try {
-      await Future.wait([
-        Hive.openBox<UserData>('user_data'),
-        Hive.openBox<LatLng>('coordinates_data'),
-      ]);
-    } catch (e) {
-      // If we fail to open the boxes, we log the error and continue.
-      // This can happen if the database is corrupted.
-      // In this case, we delete the boxes and try to open them again.
-      // This will result in loss of data, but at least the app will continue to work.
-      // In a real app, we might want to notify the user about this.
-      debugPrint('Failed to open Hive boxes: $e');
-      Sentry.captureException(
-        e,
-        stackTrace: StackTrace.current,
-        hint: Hint.withMap({'hint': 'Failed to open Hive boxes, deleting and recreating them'}),
-      );
-      await Hive.deleteBoxFromDisk('user_data');
-      await Hive.deleteBoxFromDisk('coordinates_data');
-      await Future.wait([
-        Hive.openBox<UserData>('user_data'),
-        Hive.openBox<LatLng>('coordinates_data'),
-      ]);
-    }
+    await Future.wait([
+      openBoxRecoverable<Box<UserData>>(
+        name: 'user_data',
+        open: () => Hive.openBox<UserData>('user_data'),
+        validateKey: (box, key) async => box.get(key),
+      ),
+      openBoxRecoverable<Box<LatLng>>(
+        name: 'coordinates_data',
+        open: () => Hive.openBox<LatLng>('coordinates_data'),
+        validateKey: (box, key) async => box.get(key),
+      ),
+    ]);
   }
 
   final _userBox = Hive.box<UserData>('user_data');
@@ -59,7 +46,13 @@ class LocalDBService {
   LazyBox<VPNLocations>? _locationsBox;
 
   Future<LazyBox<VPNLocations>> _getLocationsBox() async {
-    _locationsBox ??= await Hive.openLazyBox<VPNLocations>('locations_data');
+    // No open-time per-key validation: locations entries can be large and
+    // iterating them all on first access would risk an ANR. Per-key recovery
+    // happens in [getLocations] via [safeRead] instead.
+    _locationsBox ??= await openBoxRecoverable<LazyBox<VPNLocations>>(
+      name: 'locations_data',
+      open: () => Hive.openLazyBox<VPNLocations>('locations_data'),
+    );
     return _locationsBox!;
   }
 
@@ -199,7 +192,7 @@ class LocalDBService {
 
   Future<VPNLocations?> getLocations(IPType type) async {
     final box = await _getLocationsBox();
-    return box.get(type.name);
+    return safeRead(box, type.name, () => box.get(type.name));
   }
 
   Stream<VPNLocations?> watchLocations(IPType type) async* {

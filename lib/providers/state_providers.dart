@@ -1,10 +1,11 @@
 //state providers
 
+import 'dart:io';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -210,7 +211,7 @@ final analyticsInitPOD = FutureProvider.family<void, FirebaseOptions?>((ref, opt
 });
 
 final analyticsStorePOD = Provider<AnalyticsStore>((ref) {
-  if (isWindowsOrLinux()) {
+  if (_isWindowsOrLinux()) {
     return AnalyticsStoreWindows(
       measurementId: Env.measurementId,
       apiSecret: Env.apiSecret,
@@ -504,3 +505,5 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
 
   return store;
 });
+
+bool _isWindowsOrLinux() => Platform.isWindows || Platform.isLinux;

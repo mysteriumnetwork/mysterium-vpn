@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
-import 'package:mysterium_vpn/common/styles/style.dart' hide Palette;
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -25,13 +24,10 @@ class PromoBanner extends HookConsumerWidget {
         if (banner == null) {
           return const SizedBox.shrink();
         }
-        return Theme(
-          data: Theme.of(context).designSystem,
-          child: _Banner(
-            data: banner,
-            isAuthenticated: isAuthenticated,
-            accessToken: authSessionStore.accessToken,
-          ),
+        return _Banner(
+          data: banner,
+          isAuthenticated: isAuthenticated,
+          accessToken: authSessionStore.accessToken,
         );
       },
     );

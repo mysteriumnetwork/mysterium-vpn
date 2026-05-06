@@ -6,12 +6,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 // Import for Android features.
 //import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS/macOS features.
@@ -23,10 +23,7 @@ part 'campaign_view.g.dart';
 Future<void> showCampaignDialog(BuildContext context, Uri campaignUri, String? couponCode) async {
   await showModal<void>(
     context,
-    builder: (_) => Theme(
-      data: DesignSystemTheme.of(context),
-      child: CampaignWebViewScreen(campaignUri: campaignUri, couponCode: couponCode),
-    ),
+    builder: (_) => CampaignWebViewScreen(campaignUri: campaignUri, couponCode: couponCode),
   );
 }
 

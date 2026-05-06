@@ -51,5 +51,12 @@ void main() {
       await store.toggleRefreshIPWhenConnecting();
       expect(store.refreshIPConnection, isFalse);
     });
+
+    test('disposeStore tears down the auth reaction without error', () {
+      // Calling twice should still not crash since the disposer is null-checked.
+      store
+        ..disposeStore()
+        ..disposeStore();
+    });
   });
 }

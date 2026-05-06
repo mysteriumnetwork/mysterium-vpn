@@ -215,15 +215,3 @@ final wireguradKeyServicePOD = Provider<WireguradKeyService>(
     analyticsStore: ref.watch(analyticsStorePOD),
   ),
 );
-
-final nominatimServicePOD = Provider<NominatimService>(
-  (ref) => NominatimService(
-    LocalDBService.instance,
-    Dio(
-      BaseOptions(
-        baseUrl: 'https://nominatim.openstreetmap.org/',
-        headers: {HttpHeaders.userAgentHeader: Env.userAgent},
-      ),
-    ),
-  ),
-);

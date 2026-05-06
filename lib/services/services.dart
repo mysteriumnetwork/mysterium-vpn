@@ -17,7 +17,6 @@ export 'data/local/secured_storage_service.dart';
 export 'data/local/shared_preferences_service.dart';
 export 'data/network/dio_network_service.dart';
 export 'data/network/network_service.dart';
-export 'data/network/nominatim_service.dart';
 export 'dio_network_logger/dio_network_logger.dart';
 export 'in_app_review/in_app_review.dart';
 export 'in_app_review/in_app_review_service.dart';

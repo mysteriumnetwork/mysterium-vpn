@@ -8,11 +8,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/auto_select_ip_type_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
-import 'package:mysterium_vpn/common/hooks/responsive_value_hook.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/retry_widget.dart';
-import 'package:mysterium_vpn/components/user_intent_picker.dart';
-import 'package:mysterium_vpn/components/user_intent_tooltip.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -23,6 +19,7 @@ import 'package:mysterium_vpn/views/locations/components/location_type_switcher.
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_horizontal_list.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_no_servers_error.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_loading.dart';
 import 'package:mysterium_vpn/views/locations/components/recent_locations_loading.dart';
@@ -65,9 +62,11 @@ class LocationsSliverView extends HookConsumerWidget {
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
         final recentLocations = recentLocationsStore.value;
+        final hasNoServers = locationsStore.hasNoServers;
 
         return _Body(
           future: future,
+          hasNoServers: hasNoServers,
           recentLocations: recentLocations,
           locationType: locationType,
           locations: locations,
@@ -84,6 +83,7 @@ class LocationsSliverView extends HookConsumerWidget {
 class _Body extends HookConsumerWidget {
   const _Body({
     required this.future,
+    required this.hasNoServers,
     required this.recentLocations,
     required this.locationType,
     required this.locations,
@@ -94,6 +94,7 @@ class _Body extends HookConsumerWidget {
   });
 
   final ObservableFuture<VPNLocations> future;
+  final bool hasNoServers;
   final List<VPNLocation> recentLocations;
   final IPType locationType;
   final List<VPNLocation> locations;
@@ -121,17 +122,24 @@ class _Body extends HookConsumerWidget {
               userIntentsStore.intentsFuture.status == FutureStatus.pending),
     );
     final theme = Theme.of(context);
-    final horizontalPadding = useResponsiveValue<double>(
-      0,
-      desktop: theme.spacing.xl3,
-      tablet: theme.spacing.xl3,
-    );
-    final sectionGap = useResponsiveValue<double>(
-      theme.spacing.xl3,
-      desktop: theme.spacing.xl3,
-      tablet: theme.spacing.xl3,
-    );
+    final horizontalPadding = ScreenType.of(context) == ScreenType.mobile ? 0.0 : theme.spacing.xl3;
+    final sectionGap = theme.spacing.xl3;
 
+    if (hasNoServers) {
+      return MultiSliver(
+        children: [
+          SliverPadding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: theme.spacing.xl3,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: LocationsNoServersError(onRetry: locationsStore.refreshAll),
+            ),
+          ),
+        ],
+      );
+    }
     if (future.value != null) {
       return MultiSliver(
         children: [
@@ -287,11 +295,9 @@ class _Locations extends HookConsumerWidget {
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
-    final innerHorizontalPadding = useResponsiveValue<double>(
-      0,
-      desktop: theme.spacing.xl3,
-      tablet: theme.spacing.xl3,
-    );
+    final innerHorizontalPadding = ScreenType.of(context) == ScreenType.mobile
+        ? 0.0
+        : theme.spacing.xl3;
 
     useAutoSelectIPType();
 
@@ -363,7 +369,12 @@ class _Empty extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SliverToBoxAdapter(
-      child: EasyText(text, color: theme.colorScheme.error, fontWeight: FontWeight.w700),
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textStyles.textMd.bold.copyWith(color: theme.colorScheme.error),
+      ),
     );
   }
 }
