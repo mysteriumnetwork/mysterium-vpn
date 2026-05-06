@@ -82,11 +82,25 @@ class AppInitializer {
   }
 
   Future<void> _runDeferredInit() async {
+    final total = Stopwatch()..start();
+    var firebaseInitMs = 0;
+    var oneSignalInitMs = 0;
     try {
       await Future.wait([
-        _initFirebaseSDK().then((_) => _onFirebaseReady()),
-        _initOneSignal(logger),
+        _initFirebaseSDK()
+            .then((ms) => firebaseInitMs = ms)
+            .then((_) => _onFirebaseReady()),
+        _initOneSignal(logger).then((ms) => oneSignalInitMs = ms),
       ]);
+      if (isMobile()) {
+        await PerformanceMonitor.instance.activate();
+        await PerformanceMonitor.instance.recordDeferredInit(
+          firebaseInitMs: firebaseInitMs,
+          oneSignalInitMs: oneSignalInitMs,
+          totalMs: total.elapsedMilliseconds,
+          attributes: {'flavor': Env.flavor.name},
+        );
+      }
     } catch (e, stack) {
       logger.handle(e, stack);
     } finally {
@@ -98,7 +112,8 @@ class AppInitializer {
 
   // ─── Firebase SDK ─────────────────────────────────────────────────────────────
 
-  Future<void> _initFirebaseSDK() async {
+  Future<int> _initFirebaseSDK() async {
+    final sw = Stopwatch()..start();
     try {
       final options = switch (Env.flavor) {
         Flavor.dev => dev.DefaultFirebaseOptions.currentPlatform,
@@ -108,6 +123,7 @@ class AppInitializer {
     } catch (e, stack) {
       logger.handle(e, stack, 'Firebase SDK init error');
     }
+    return sw.elapsedMilliseconds;
   }
 
   Future<void> _onFirebaseReady() async {
@@ -119,10 +135,11 @@ class AppInitializer {
   }
 
   // ─── OneSignal ─────────────────────────────────────────────────────────────
-  Future<void> _initOneSignal(Talker logger) async {
+  Future<int> _initOneSignal(Talker logger) async {
     if (!isMobile()) {
-      return;
+      return 0;
     }
+    final sw = Stopwatch()..start();
     try {
       if (kDebugMode) {
         await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
@@ -131,6 +148,7 @@ class AppInitializer {
     } catch (e) {
       logger.log('OneSignal init error (non-fatal): $e');
     }
+    return sw.elapsedMilliseconds;
   }
 
   // ─── Desktop window ──────────────────────────────────────────────────────
