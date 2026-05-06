@@ -58,7 +58,6 @@ dependencies:
   intl: 0.20.2
   json_annotation: 4.11.0
   latlong2: 0.9.1
-  lottie: 3.3.2
   mobx: 2.6.0
   modal_bottom_sheet: 3.0.0
   money2: 6.3.0

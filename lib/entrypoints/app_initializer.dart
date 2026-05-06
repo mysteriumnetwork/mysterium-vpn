@@ -26,9 +26,10 @@ import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:talker/talker.dart';
 import 'package:window_manager/window_manager.dart';
 
-/// Resolves once OneSignal is initialized. Awaited by the splash so
-/// pushNotificationsStorePOD is only constructed after OneSignal is ready,
-/// while the first frame paints immediately.
+/// Resolves once both Firebase and OneSignal have finished initializing
+/// (including the post-Firebase observer/analytics-store wiring). Awaited by
+/// the splash so dependents are only read once those SDKs are ready, while
+/// the first frame paints immediately.
 final deferredInitFuturePOD = Provider<Future<void>>((ref) => Future.value());
 
 class AppInitializer {
@@ -104,8 +105,8 @@ class AppInitializer {
         Flavor.production => prod.DefaultFirebaseOptions.currentPlatform,
       };
       await providerContainer.read(analyticsInitPOD(options).future);
-    } catch (e) {
-      logger.log('Firebase SDK init error$e');
+    } catch (e, stack) {
+      logger.handle(e, stack, 'Firebase SDK init error');
     }
   }
 
