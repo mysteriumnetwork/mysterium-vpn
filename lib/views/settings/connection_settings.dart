@@ -9,15 +9,14 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/blocker_picker.dart';
 import 'package:mysterium_vpn/views/settings/protocol_picker.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator, ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class ConnectionSettings extends HookConsumerWidget {
   const ConnectionSettings({super.key});
@@ -144,23 +143,12 @@ class ConnectionSettings extends HookConsumerWidget {
       return;
     }
     analyticsStore.logEvent(AnalyticsEvent.resetAppConfirmShown);
-    final theme = Theme.of(context);
     shownConfirmationDialog(
       context,
       confirmText: LocaleKeys.resetBtn.tr(),
       cancelText: LocaleKeys.goBackButton.tr(),
       title: LocaleKeys.resetAppDialogTitle.tr(),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            LocaleKeys.resetAppDialogContent.tr(),
-            style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
-            maxLines: 4,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+      supportingText: LocaleKeys.resetAppDialogContent.tr(),
       onConfirm: () {
         analyticsStore.logEvent(AnalyticsEvent.resetAppConfirm);
         _onResetApp(context, vpnStore, analyticsStore, handleToggleConnection);
@@ -181,13 +169,11 @@ class ConnectionSettings extends HookConsumerWidget {
       await vpnStore.resetApp();
       showSnackbar(
         LocaleKeys.resetAppSuccess.tr(),
-        type: MessageType.success,
+        type: SnackbarType.success,
         action: handleToggleConnection != null
-            ? SnackBarAction(
-                label: LocaleKeys.reconnectBtn.tr(),
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                onPressed: () async {
+            ? IconButton(
+                icon: const Icon(Icons.refresh, size: 16),
+                onPressed: () {
                   snackbarKey.currentState?.clearSnackBars();
                   handleToggleConnection();
                 },

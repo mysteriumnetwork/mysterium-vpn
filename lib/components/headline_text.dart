@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HeadlineText extends ConsumerWidget {
@@ -27,19 +26,23 @@ class HeadlineText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final themeStore = ref.read(themeStorePOD);
     return Observer(
       builder: (context) {
         final themeColor = themeStore.isDarkMode || checkMediaWidth(context, 750)
             ? Palette.white
-            : Palette.darkBlue;
-        return EasyText(
+            : Palette.grayPurple.shade800;
+        return Text(
           text,
-          color: color ?? themeColor,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
           maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
           textAlign: textAlign,
+          style: theme.textStyles.displayXlg.bold.copyWith(
+            color: color ?? themeColor,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+          ),
         ).padding(vertical: 6);
       },
     );

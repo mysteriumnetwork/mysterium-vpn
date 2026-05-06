@@ -3,9 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/date.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
@@ -39,14 +38,14 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
         slivers: [
           SliverStack(
             children: [
-              SliverPositioned.fill(child: ColoredBox(color: theme.palette.backgroundColor)),
+              SliverPositioned.fill(child: ColoredBox(color: theme.palette.bgSecondary)),
               SliverSafeArea(
                 bottom: false,
                 sliver: SliverPadding(
                   padding: const EdgeInsets.only(top: 24),
                   sliver: SliverPinnedHeader(
                     child: DecoratedBox(
-                      decoration: BoxDecoration(color: theme.palette.backgroundColor),
+                      decoration: BoxDecoration(color: theme.palette.bgSecondary),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         child: Row(
@@ -57,11 +56,12 @@ class AnalyticsUserPropertiesOverlay extends HookConsumerWidget {
                               onPressed: onDismissPressed,
                               icon: const Icon(Icons.close),
                             ),
-                            const Expanded(
-                              child: EasyText(
+                            Expanded(
+                              child: Text(
                                 'Analytics User Properties',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyles.of(context).textMd.bold,
                               ),
                             ),
                           ],
@@ -112,7 +112,8 @@ class _UserPropertiesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList.separated(
     itemCount: items.length,
-    separatorBuilder: (_, _) => const Divider(thickness: 0.5, color: Palette.lightBlue, height: 0),
+    separatorBuilder: (_, _) =>
+        Divider(thickness: 0.5, color: Palette.grayPurple.shade300, height: 0),
     itemBuilder: (context, index) {
       final item = items[index];
       return _UserPropertyListItem(property: item);
@@ -127,6 +128,7 @@ class _UserPropertyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
@@ -143,28 +145,20 @@ class _UserPropertyListItem extends StatelessWidget {
               children: [
                 TextSpan(
                   text: '${property.name24chars}: ',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                  style: textStyles.textMd.bold.copyWith(
                     color: theme.textTheme.bodyLarge?.color?.withValues(alpha: .7),
                   ),
                 ),
                 TextSpan(
                   text: property.value36chars,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Palette.purple,
-                  ),
+                  style: textStyles.textMd.bold.copyWith(color: Palette.brand),
                 ),
               ],
             ),
           ),
-          EasyText(
+          Text(
             'Set at: ${property.setAt.formatWithDayAndTime()}',
-            fontSize: 14,
-            minFontSize: 14,
-            color: theme.palette.subtitleColor,
+            style: textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
           ),
         ],
       ),

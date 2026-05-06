@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/render_object_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/packages/sliding_up_panel/panel.dart' hide PanelState;
+import 'package:mysterium_vpn/components/sliding_up_panel.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -28,6 +28,7 @@ class HomeMobileView extends HookConsumerWidget {
     final (appBarKey, appBarBox) = useRenderObject<RenderBox>();
     final appBarHeight = appBarBox?.size.height ?? kToolbarHeight;
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
+    final locationsStore = ref.watch(locationsStorePOD);
     final topSectionHeight = appBarHeight;
     final analyticsStore = ref.read(analyticsStorePOD);
 
@@ -100,11 +101,6 @@ class HomeMobileView extends HookConsumerWidget {
                               showBackButton: false,
                               actions: [
                                 IconButton(
-                                  style: IconButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: const Size(32, 32),
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
                                   icon: const Icon(UntitledUI.message_question_square, size: 24),
                                   onPressed: () => handleOnSupportPage(
                                     context: context,
@@ -112,11 +108,6 @@ class HomeMobileView extends HookConsumerWidget {
                                   ),
                                 ),
                                 IconButton(
-                                  style: IconButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: const Size(32, 32),
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
                                   icon: const Icon(UntitledUI.settings_01, size: 24),
                                   onPressed: () {
                                     analyticsStore.logEvent(AnalyticsEvent.openSettings);
@@ -132,7 +123,10 @@ class HomeMobileView extends HookConsumerWidget {
                                 theme.spacing.md,
                                 theme.spacing.ms,
                               ),
-                              child: const LocationsSearch(),
+                              child: Observer(
+                                builder: (context) =>
+                                    LocationsSearch(enabled: !locationsStore.hasNoServers),
+                              ),
                             ),
                           ],
                         ),

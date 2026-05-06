@@ -8,7 +8,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 typedef LocationItemState = ({
   IpCardStatus countryStatus,
@@ -88,7 +88,7 @@ LocationItemState useLocationItemState({
         isLoading: vpnStore.isLoading,
         vpnLocation: vpnStore.location,
         connectingLocation: vpnStore.connectingLocation,
-        isSubscriptionLoading: isSubscriptionLoading,
+        isSubscriptionLoading: subscriptionFeaturesStore.isLoading,
       );
       final childPlusUpgrade = childMode == LocationMode.unsupportedByPlan;
       final status = switch (childMode) {

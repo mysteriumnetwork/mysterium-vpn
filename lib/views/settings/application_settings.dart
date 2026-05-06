@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/views/settings/email_marketing_setting.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/push_notifications_settings.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide ScreenType;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ApplicationSettings extends ConsumerWidget {

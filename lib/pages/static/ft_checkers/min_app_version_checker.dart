@@ -6,16 +6,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/easy_button.dart';
-import 'package:mysterium_vpn/components/easy_text.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
+import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
@@ -26,6 +23,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final canContinue = useState(false);
 
@@ -43,46 +41,47 @@ class MinAppVersionChecker extends HookConsumerWidget {
             canContinue.value) {
           return child;
         } else {
-          return Scaffold(
-            backgroundColor: Palette.darkBlue,
-            body: Center(
+          return ColoredScaffold(
+            body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 64),
-                    SvgIcon(asset: Asset.logo.splashLogo),
-                    const Spacer(),
-                    EasyText(
-                      LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
-                      textAlign: TextAlign.center,
-                      color: Palette.white,
-                      maxLines: 4,
-                      fontSize: 18,
-                    ),
-                    const SizedBox(height: 40),
-                    EasyButton(
-                      onPressed: () async {
-                        try {
-                          if (Env.buildInfo.installerStore?.toLowerCase().contains(
-                                windowsStandAloneProductId.toLowerCase(),
-                              ) ??
-                              false) {
-                            await openUrlLink(Uri.parse(windowsGithubDownloadLink));
-                          } else {
-                            await openAppStorePage();
+                padding: EdgeInsets.all(theme.spacing.xl2),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: theme.spacing.xl6),
+                      const Logo(),
+                      const Spacer(),
+                      Text(
+                        LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
+                        textAlign: TextAlign.center,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textStyles.textLg.regular.copyWith(
+                          color: theme.palette.textPrimary,
+                        ),
+                      ),
+                      SizedBox(height: theme.spacing.md),
+                      ButtonPrimary(
+                        onPressed: () async {
+                          try {
+                            if (Env.buildInfo.installerStore?.toLowerCase().contains(
+                                  windowsStandAloneProductId.toLowerCase(),
+                                ) ??
+                                false) {
+                              await openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                            } else {
+                              await openAppStorePage();
+                            }
+                          } catch (e) {
+                            // Unable to open the store, unblock the user
+                            canContinue.value = true;
                           }
-                        } catch (e) {
-                          // Unable to open the store, unblock the user
-                          canContinue.value = true;
-                        }
-                      },
-                      text: LocaleKeys.buttonUpdateApp.tr(),
-                    ),
-                    const Spacer(),
-                    SizedBox(height: MediaQuery.of(context).padding.bottom),
-                  ],
+                        },
+                        child: Text(LocaleKeys.buttonUpdateApp.tr()),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
             ),

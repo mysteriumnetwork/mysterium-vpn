@@ -7,19 +7,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/styles/style.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/dialogs/confirmation_dialog.dart';
-import 'package:mysterium_vpn/components/dialogs/retry_dialog.dart';
-import 'package:mysterium_vpn/components/error_widget.dart';
-import 'package:mysterium_vpn/components/loading_barrier.dart';
-import 'package:mysterium_vpn/components/loading_indicator.dart';
-import 'package:mysterium_vpn/components/svg_icon.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends HookConsumerWidget {
@@ -60,14 +54,11 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
 
     return Observer(
       builder: (context) {
+        final theme = Theme.of(context);
         final storeState = subscriptionStore.storeState;
         final products = plansStore.future.value;
 
         final isVerifyingPayment = purchaseStore.subscriptionStatus == SubscriptionStatus.verifying;
-        final barrierContentColor = switch (Theme.of(context).brightness) {
-          Brightness.dark => Palette.white,
-          Brightness.light => Palette.purple,
-        }.withValues(alpha: .8);
 
         final isLoading =
             storeState == StoreState.loading ||
@@ -76,16 +67,17 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
             purchaseStore.subscriptionStatus == SubscriptionStatus.pending;
 
         if (isLoading) {
-          return LoadingIndicator(
-            message: LocaleKeys.connectingToPaymentProcesor.tr(),
-          ).padding(top: 36);
+          return LoadingIndicator.message(
+            LocaleKeys.connectingToPaymentProcesor.tr(),
+            color: theme.palette.iconBrandSecondary,
+          ).center();
         } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
           return RetryOnErrorWidget(
             error: (products?.isEmpty ?? true)
                 ? LocaleKeys.productsNotAvailable.tr()
                 : LocaleKeys.unableToConnectToPaymentProcesor.tr(),
             onRetry: refreshAll,
-          ).padding(top: 36);
+          ).center();
         }
         return ReactionBuilder(
           builder: (context) => reaction((_) => purchaseStore.subscriptionStatus, (status) {
@@ -101,15 +93,16 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
             children: [
               child,
               if (isVerifyingPayment)
-                Positioned.fill(
-                  child: LoadingBarrier(
-                    color: Theme.of(context).primaryColor,
-                    child: LoadingIndicator(
-                      radius: 30,
-                      message: LocaleKeys.processingPayment.tr(),
-                      messageColor: barrierContentColor,
-                      indicatorColor: barrierContentColor,
-                    ).padding(horizontal: 16),
+                LoadingBarrier(
+                  color: theme.palette.bgPopover,
+                  child: Center(
+                    child: LoadingIndicator.message(
+                      LocaleKeys.processingPayment.tr(),
+                      color: theme.palette.iconBrandSecondary,
+                      style: theme.textStyles.textMd.regular.copyWith(
+                        color: theme.palette.iconBrandSecondary,
+                      ),
+                    ),
                   ),
                 ),
             ],
@@ -129,28 +122,39 @@ void _subscriptionStatusReaction(
 ) {
   if (context.mounted) {
     if (status == SubscriptionStatus.purchased) {
-      showSnackbar(LocaleKeys.subscriptionActive.tr(), type: MessageType.success);
+      showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
       context.beamToReplacementNamed(Routes.main.path);
     } else if (store.subscriptionConfigFuture.error is ApiException &&
         (store.subscriptionConfigFuture.error as ApiException).code == 409) {
       showSnackbar((store.subscriptionConfigFuture.error as ApiException).message);
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
-      showRetryDialog(
-        onRetry: () {
-          Navigator.of(context).pop();
-          analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
-          purchaseStore.retryVerificationProcess();
-        },
-        context: context,
-        asset: Asset.icons.subscription,
-        title: LocaleKeys.subscriptionVerificationFailed.tr(),
-        subtitle: LocaleKeys.failedToVerifySubs.tr(),
-        dismissText: LocaleKeys.cancelBtn.tr(),
-        onDismiss: () {
-          analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
-          Navigator.of(context).pop();
-        },
+      showModal(
+        context,
+        builder: (context) => AlertModal(
+          type: AlertModalType.error,
+          title: LocaleKeys.subscriptionVerificationFailed.tr(),
+          supportingText: LocaleKeys.failedToVerifySubs.tr(),
+          onClose: () {
+            analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
+            Navigator.of(context).pop();
+          },
+          primaryButton: ButtonPrimary(
+            onPressed: () {
+              Navigator.of(context).pop();
+              analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
+              purchaseStore.retryVerificationProcess();
+            },
+            child: Text(LocaleKeys.retryBtn.tr()),
+          ),
+          secondaryButton: ButtonSecondary(
+            onPressed: () {
+              analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
+              Navigator.of(context).pop();
+            },
+            child: Text(LocaleKeys.cancelBtn.tr()),
+          ),
+        ),
       );
     }
   }
@@ -177,23 +181,31 @@ Future<void> _checkForExistingSubscription(
     return;
   }
 
-  void showDialog() {
-    shownConfirmationDialog(
+  void showExistingSubscriptionDialog() {
+    showModal(
       context,
-      confirmText: LocaleKeys.logout.tr(),
-      cancelText: LocaleKeys.stayButton.tr(),
-      dismissible: false,
-      icon: SvgIcon(asset: Asset.icons.warning),
-      content: Text(
-        LocaleKeys.existingSubscriptionTitle.tr(),
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Palette.black),
-        maxLines: 2,
-        textAlign: TextAlign.center,
+      allowDismiss: false,
+      builder: (context) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.xl3),
+        child: AlertModal(
+          type: AlertModalType.warning,
+          title: LocaleKeys.existingSubscriptionTitle.tr(),
+          supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
+          primaryButton: ButtonPrimary(
+            onPressed: () {
+              Navigator.of(context).pop();
+              ref.read(authStorePOD).logout();
+            },
+            child: Text(LocaleKeys.logout.tr()),
+          ),
+          secondaryButton: ButtonSecondary(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(LocaleKeys.stayButton.tr()),
+          ),
+        ),
       ),
-      title: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
-      onConfirm: () => ref.read(authStorePOD).logout(),
     );
   }
 
-  Future.microtask(showDialog);
+  Future.microtask(showExistingSubscriptionDialog);
 }

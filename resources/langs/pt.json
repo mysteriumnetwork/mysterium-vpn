@@ -64,7 +64,6 @@
   "connectionLimitExceededTitle": "Alerta de limite de conexão",
   "connectionTimeout": "Tempo limite de conexão. Tente novamente mais tarde. Se o problema persistir, entre em contato com o suporte",
   "consistentSpeedReason": "Velocidade consistente",
-  "consumeLink": "Clique no link no email para continuar. O link de verificação só pode ser usado uma vez e apenas no dispositivo que solicitou o link.",
   "contentBlockerDesc": "Bloqueie malware e conteúdo adulto",
   "contentBlockerTitle": "Conteúdo NSFW e bloqueador de malware",
   "continueBtn": "Continuar",
@@ -167,7 +166,6 @@
   "killSwitchTooltipTitle": "مفتاح القتل",
   "letsGoBtn": "Vamos!",
   "linkCopied": "Link copiado para a área de transferência!",
-  "linkExpires": "O link expira em 30 minutos, portanto, certifique -se de usá -lo em breve. Vá verificar seu e -mail",
   "location": "Localização",
   "locationItemCityCount": {
     "one": "{} cidade",
@@ -221,7 +219,6 @@
   "off": "Desligado",
   "on": "Sobre",
   "openBillingPlans": "Planos de cobrança aberta",
-  "openEmailApp": "Abra o aplicativo de email",
   "or": "OU",
   "originalMonthlyPrice": "{amount}",
   "otherReason": "Outro...",
@@ -455,7 +452,7 @@
   "emailNotificationsSetting": "Notificações por e-mail",
   "subscriptionPlanWireGuardDesc": "WireGuard - protocolo rápido, ideal para jogos e streaming.\nOpenVPN - protocolo altamente configurável que funciona onde outros protocolos falham (não disponível para Android).",
   "subscriptionPlanDoubleVPNDesc": "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
-  "subscriptionPlanResidentialIPsDesc": "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
+  "subscriptionPlanResidentialIPsDesc": "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
   "subscriptionPlanCityLevelDesc": "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
   "subscriptionPlanMalwareBlockerDesc": "Protege seu dispositivo, impedindo ameaças antes que elas o alcancem, funcionando silenciosamente em segundo plano sem interrompê-lo.",
   "notNowBtn": "Agora não",
@@ -525,6 +522,13 @@
   "cancelSurveyTitle": "Motivos para o cancelamento",
   "connectBestServer": "Melhor servidor",
   "orSelectCountryManually": "Vamos conectar você ao melhor servidor - ou você pode selecionar um país manualmente.",
-  "typeDelete": "Digite EXCLUIR",
-  "allowBtn": "Permitir"
+  "noServersAvailableSub": "Há um problema de conectividade e nenhum servidor está disponível. Tente novamente mais tarde.",
+  "typeDelete": "Tipo {}",
+  "allowBtn": "Permitir",
+  "loginSignupLabel": "Faça login ou cadastre-se",
+  "takeBackTheInternetLbl": "Retome o controle da internet.",
+  "homeLbl": "Lar",
+  "linkExpires": "O link expira em 30 minutos e só pode ser usado uma vez.",
+  "consumeLink": "Só funciona no dispositivo que fez a solicitação - clique no link no seu e-mail para continuar.",
+  "openEmailApp": "Abra o aplicativo de e-mail"
 }

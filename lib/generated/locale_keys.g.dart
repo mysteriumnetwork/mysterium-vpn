@@ -68,7 +68,6 @@ abstract class LocaleKeys {
   static const connectionLimitExceededTitle = 'connectionLimitExceededTitle';
   static const connectionTimeout = 'connectionTimeout';
   static const consistentSpeedReason = 'consistentSpeedReason';
-  static const consumeLink = 'consumeLink';
   static const contentBlockerDesc = 'contentBlockerDesc';
   static const contentBlockerTitle = 'contentBlockerTitle';
   static const continueBtn = 'continueBtn';
@@ -171,7 +170,6 @@ abstract class LocaleKeys {
   static const killSwitchTooltipTitle = 'killSwitchTooltipTitle';
   static const letsGoBtn = 'letsGoBtn';
   static const linkCopied = 'linkCopied';
-  static const linkExpires = 'linkExpires';
   static const location = 'location';
   static const locationItemCityCount = 'locationItemCityCount';
   static const locationUnavailableAction = 'locationUnavailableAction';
@@ -222,7 +220,6 @@ abstract class LocaleKeys {
   static const off = 'off';
   static const on = 'on';
   static const openBillingPlans = 'openBillingPlans';
-  static const openEmailApp = 'openEmailApp';
   static const or = 'or';
   static const originalMonthlyPrice = 'originalMonthlyPrice';
   static const otherReason = 'otherReason';
@@ -516,6 +513,13 @@ abstract class LocaleKeys {
   static const cancelSurveyTitle = 'cancelSurveyTitle';
   static const connectBestServer = 'connectBestServer';
   static const orSelectCountryManually = 'orSelectCountryManually';
+  static const noServersAvailableSub = 'noServersAvailableSub';
   static const typeDelete = 'typeDelete';
   static const allowBtn = 'allowBtn';
+  static const loginSignupLabel = 'loginSignupLabel';
+  static const takeBackTheInternetLbl = 'takeBackTheInternetLbl';
+  static const homeLbl = 'homeLbl';
+  static const linkExpires = 'linkExpires';
+  static const consumeLink = 'consumeLink';
+  static const openEmailApp = 'openEmailApp';
 }

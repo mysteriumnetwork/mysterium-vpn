@@ -578,5 +578,47 @@ void main() {
         await storeWithOpenVpn.disposeStore();
       });
     });
+
+    group('Device & App Management', () {
+      test('markDeviceLimitErrorAsShown flips the flag', () {
+        expect(vpnStore.isDeviceLimitErrorShown, isFalse);
+
+        vpnStore.markDeviceLimitErrorAsShown();
+
+        expect(vpnStore.isDeviceLimitErrorShown, isTrue);
+      });
+
+      test('disconnectAllDevices delegates to the active repository', () async {
+        when(mockWireguardRepo.disconnectAllDevices()).thenAnswer((_) async {});
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
+
+        await vpnStore.disconnectAllDevices();
+
+        verify(mockWireguardRepo.disconnectAllDevices()).called(1);
+      });
+
+      test('disconnectAllDevices rethrows underlying errors', () async {
+        when(mockWireguardRepo.disconnectAllDevices()).thenThrow(Exception('boom'));
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
+
+        await expectLater(vpnStore.disconnectAllDevices(), throwsA(isA<Exception>()));
+      });
+
+      test('resetApp delegates to the repository', () async {
+        when(mockWireguardRepo.resetApp()).thenAnswer((_) async {});
+
+        await vpnStore.resetApp();
+
+        verify(mockWireguardRepo.resetApp()).called(1);
+      });
+
+      test('resetApp rethrows underlying errors', () async {
+        when(mockWireguardRepo.resetApp()).thenThrow(Exception('reset failed'));
+
+        await expectLater(vpnStore.resetApp(), throwsA(isA<Exception>()));
+      });
+    });
   });
 }

@@ -126,6 +126,23 @@ abstract class _LocationsStore with Store {
   @computed
   bool? get isEmpty => locationsFuture.value == null ? null : locations.isEmpty;
 
+  /// Whether neither residential nor datacenter locations are available.
+  ///
+  /// True when both futures have settled (not pending) and each one either
+  /// failed to load or returned an empty list. Used to show a connectivity
+  /// error state and hide the connection tile on the home screen.
+  @computed
+  bool get hasNoServers {
+    final dc = _dcLocationsFuture;
+    final res = _residentialLocationsFuture;
+    if (dc.status == FutureStatus.pending || res.status == FutureStatus.pending) {
+      return false;
+    }
+    final dcUnavailable = dc.status == FutureStatus.rejected || (dc.value?.isEmpty ?? true);
+    final resUnavailable = res.status == FutureStatus.rejected || (res.value?.isEmpty ?? true);
+    return dcUnavailable && resUnavailable;
+  }
+
   @computed
   List<IPType> get locationTypes => [
     if (_dcLocationsFuture.value?.isNotEmpty ?? false) IPType.datacenter,

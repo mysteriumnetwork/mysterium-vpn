@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -107,7 +108,7 @@ abstract class _AuthStore with Store {
       if (appLink.query.isEmpty) {
         throw IncorrectMagicLinkException();
       }
-      final code = getMagicLinkCode(appLink.query);
+      final code = _getMagicLinkCode(appLink.query);
       if (code == null) {
         throw IncorrectCodeException();
       }
@@ -353,4 +354,12 @@ abstract class _AuthStore with Store {
       rethrow;
     }
   }
+}
+
+String? _getMagicLinkCode(String query) {
+  if (!query.contains('code=') ||
+      !query.substring(query.indexOf('code=') + 5, query.length).isUUID()) {
+    return null;
+  }
+  return query.substring(query.indexOf('code=') + 5, query.length);
 }
