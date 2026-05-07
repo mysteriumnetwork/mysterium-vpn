@@ -3308,7 +3308,7 @@ class CodegenLoader extends AssetLoader {
     "setupTunnerPermissionsDialogDesc":
         "In order to use Mysterium VPN, we need your permission to install a VPN profile.",
     "setupTunnerPermissionsDialogDisclaimer":
-        "Your anonymity is secure. We do not see, collect or store any of your browsing activity.",
+        "Your anonymity is secure. We don't see, collect or store any of your browsing activity.",
     "setupTunnerPermissionsDialogTitle": "We need your permission",
     "shortDesc": "Short description",
     "signIn": "Sign in to Mysterium VPN",
