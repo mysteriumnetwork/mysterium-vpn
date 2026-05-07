@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
@@ -25,22 +24,14 @@ class LocalDBService {
       ..registerAdapter(const LatLngAdapter(typeId: 6))
       ..registerAdapter(const ProtocolTypeAdapter(typeId: 7));
 
-    await Future.wait([
-      openBoxRecoverable<Box<UserData>>(
-        name: 'user_data',
-        open: () => Hive.openBox<UserData>('user_data'),
-        validateKey: (box, key) async => box.get(key),
-      ),
-      openBoxRecoverable<Box<LatLng>>(
-        name: 'coordinates_data',
-        open: () => Hive.openBox<LatLng>('coordinates_data'),
-        validateKey: (box, key) async => box.get(key),
-      ),
-    ]);
+    await openBoxRecoverable<Box<UserData>>(
+      name: 'user_data',
+      open: () => Hive.openBox<UserData>('user_data'),
+      validateKey: (box, key) async => box.get(key),
+    );
   }
 
   final _userBox = Hive.box<UserData>('user_data');
-  final _coordinatesBox = Hive.box<LatLng>('coordinates_data');
 
   Completer<AuthUser> _userSetCompleter = Completer<AuthUser>();
   LazyBox<VPNLocations>? _locationsBox;
@@ -198,21 +189,6 @@ class LocalDBService {
   Stream<VPNLocations?> watchLocations(IPType type) async* {
     final box = await _getLocationsBox();
     yield* box.watch(key: type.name).asyncMap((_) => getLocations(type));
-  }
-
-  Future<void> putCoordinates(String id, LatLng coordinates) async {
-    await _coordinatesBox.put(id, coordinates);
-  }
-
-  LatLng? getCoordinates(String id) => _coordinatesBox.get(id);
-
-  Future<void> deleteCoordinates(String id) async {
-    await _coordinatesBox.delete(id);
-  }
-
-  Map<String, LatLng> getAllCoordinates() {
-    final coordinates = _coordinatesBox.toMap();
-    return {for (final entry in coordinates.entries) entry.key.toString(): entry.value};
   }
 
   Future<bool> getMarketingConsentShown() async {

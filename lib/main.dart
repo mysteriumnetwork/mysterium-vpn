@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
@@ -33,7 +33,8 @@ void main() async {
 /// crashes during app initialization are not silently swallowed.
 void _setupErrorHandlers(AppInitializer initializer) {
   FlutterError.onError = (details) {
-    initializer.logger.handle(details.exception, details.stack);
+    final diagnostics = details.toDiagnosticsNode(style: DiagnosticsTreeStyle.error).toStringDeep();
+    initializer.logger.handle(details.exception, details.stack, diagnostics);
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {

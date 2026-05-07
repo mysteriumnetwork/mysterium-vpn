@@ -2,9 +2,7 @@
 
 import 'dart:io';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
@@ -219,11 +217,7 @@ final analyticsStorePOD = Provider<AnalyticsStore>((ref) {
     );
   }
 
-  return AnalyticsStoreFirebase(
-    analytics: FirebaseAnalytics.instance,
-    crashlytics: FirebaseCrashlytics.instance,
-    deviceIDStore: ref.watch(deviceIDStorePOD),
-  );
+  return AnalyticsStoreFirebase(deviceIDStore: ref.watch(deviceIDStorePOD));
 });
 
 class IsAppWindowFocusedNotifier extends Notifier<bool> {
