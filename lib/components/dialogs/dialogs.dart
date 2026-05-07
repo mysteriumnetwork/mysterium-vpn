@@ -3,6 +3,7 @@ export 'cancel_subscription_survey_dialog/cancel_subscription_survey_dialog.dart
 export 'confirmation_dialog.dart';
 export 'delete_account_dialog.dart';
 export 'device_limit_dialog.dart';
+export 'logout_confirmation_dialog.dart';
 export 'marketing_consent_dialog.dart';
 export 'picker_bottom_sheet.dart';
 export 'push_notifications_dialog.dart';

@@ -182,13 +182,16 @@ Future<void> _checkForExistingSubscription(
   }
 
   void showExistingSubscriptionDialog() {
-    showModal(
-      context,
-      allowDismiss: false,
-      builder: (context) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.xl3),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        constraints: const BoxConstraints(maxWidth: 350),
         child: AlertModal(
-          type: AlertModalType.warning,
+          screenType: ScreenType.mobile,
+          type: AlertModalType.error,
           title: LocaleKeys.existingSubscriptionTitle.tr(),
           supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
           primaryButton: ButtonPrimary(

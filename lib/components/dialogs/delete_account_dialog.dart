@@ -55,6 +55,7 @@ class _DeleteAccountDialog extends HookWidget {
     final confirmationMessage = useState('');
     final palette = Theme.of(context).palette;
     final textStyles = Theme.of(context).textStyles;
+    final spacing = Theme.of(context).spacing;
     return Observer(
       builder: (context) => AlertModal(
         type: AlertModalType.error,
@@ -62,26 +63,25 @@ class _DeleteAccountDialog extends HookWidget {
         supportingText:
             '${LocaleKeys.cancelYourSubsMess.tr()} ${LocaleKeys.typeDelete.tr(args: ['DELETE'])}',
         input: SizedBox(
-          height: 40,
           child: TextField(
             onChanged: (val) => confirmationMessage.value = val,
             autocorrect: false,
-            style: textStyles.textMd.regular.copyWith(color: palette.textPrimary),
+            style: textStyles.textMd.regular.copyWith(color: palette.gray.shade800),
             onTap: () {
               analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
             },
             onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
             decoration: InputDecoration(
               hintText: LocaleKeys.typeDelete.tr(args: ['DELETE']),
-              hintStyle: textStyles.textMd.regular.copyWith(color: palette.textTertiary),
+              hintStyle: textStyles.textMd.regular.copyWith(color: palette.gray.shade500),
               filled: true,
-              fillColor: palette.bgPrimary,
+              fillColor: Palette.white,
               isDense: true,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              contentPadding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.md),
               border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.kXs)),
               enabledBorder: OutlineInputBorder(
                 borderRadius: const BorderRadius.all(Radius.kXs),
-                borderSide: BorderSide(color: palette.borderPrimary),
+                borderSide: BorderSide(color: palette.gray.shade300),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: const BorderRadius.all(Radius.kXs),
@@ -90,7 +90,7 @@ class _DeleteAccountDialog extends HookWidget {
             ),
           ),
         ),
-        primaryButton: ButtonPrimary(
+        primaryButton: ButtonSecondary(
           onPressed: confirmationMessage.value == 'DELETE'
               ? () async {
                   analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
