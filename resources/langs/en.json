@@ -553,6 +553,6 @@
   "checkSubsStatusTitle": "Getting plan information...",
   "noSubscriptionTitle": "No active plan available",
   "noSubscriptionAction": "Get plan",
-  "checkSubsStatusFailedDesc": "We are not able to retrieve you plan information.",
+  "checkSubsStatusFailedDesc": "We are not able to retrieve your plan information.",
   "checkSubsStatusFailedTitle": "Plan information is not available"
 }

@@ -252,7 +252,7 @@
   "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
   "productUpdates": "製品のアップデートを入手",
   "protocol": "プロトコル",
-  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再接続する必要があります。",
+  "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再度接続する必要があります。",
   "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
   "pt": "ポルトガル語",
   "purchased": "購入した",

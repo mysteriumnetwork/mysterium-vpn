@@ -459,7 +459,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "额外的安全保障。它会将您的互联网流量路由到两个不同的 VPN 服务器，对您的数据进行双重加密，并将您的 IP 地址隐藏在第二台服务器之后。",
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
-    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
+    "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，而大多数 VPN 通常只允许您选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
@@ -1111,7 +1111,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
-    "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
     "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
     "fastLabel": "Hızlı",
@@ -1419,7 +1419,7 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
     "productUpdates": "製品のアップデートを入手",
     "protocol": "プロトコル",
-    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再接続する必要があります。",
+    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再度接続する必要があります。",
     "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
     "pt": "ポルトガル語",
     "purchased": "購入した",
@@ -2192,7 +2192,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionAllPlansPurchase": "Plan abrufen",
     "subscriptionPlanNameBasic": "Basic",
     "subscriptionPlanNamePlus": "Plus",
-    "subscriptionPlanPF1Basic": "Sichern Sie bis zu 6 Geräte gleichzeitig",
+    "subscriptionPlanPF1Basic": "Sichern Sie 6 Geräte gleichzeitig",
     "subscriptionPlanPF2Basic": "57 unterstützte Länder",
     "subscriptionPlanPF3Basic": "10 Server",
     "subscriptionPlanPF4Basic": "VPN-Protokoll",
@@ -2854,7 +2854,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Camada extra de segurança. Direciona seu tráfego de internet por meio de dois servidores VPN diferentes, criptografando seus dados duas vezes e mascarando seu endereço IP por trás de um segundo servidor.",
     "subscriptionPlanResidentialIPsDesc":
-        "Apresente-se como um usuário doméstico comum, permitindo que você acesse serviços de streaming e evite a detecção por VPN.",
+        "Finja ser um usuário doméstico comum, o que permite acessar serviços de streaming e evitar a detecção por VPN.",
     "subscriptionPlanCityLevelDesc":
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -2917,7 +2917,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Do que você gostou?",
     "rateConnectionDislike": "Do que você não gostou?",
-    "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
+    "cancelSurveyFeedbackHint": "Por favor, insira mais detalhes...",
     "switchToLocationBtn": "Alternar para {}",
     "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
     "fastLabel": "Rápido",
@@ -3577,7 +3577,7 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusTitle": "Getting plan information...",
     "noSubscriptionTitle": "No active plan available",
     "noSubscriptionAction": "Get plan",
-    "checkSubsStatusFailedDesc": "We are not able to retrieve you plan information.",
+    "checkSubsStatusFailedDesc": "We are not able to retrieve your plan information.",
     "checkSubsStatusFailedTitle": "Plan information is not available",
   };
   static const Map<String, dynamic> _it = {
@@ -4711,7 +4711,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -5442,7 +5442,7 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusTitle": "Mendapatkan informasi rencana...",
     "noSubscriptionTitle": "Tidak ada paket aktif yang tersedia.",
     "noSubscriptionAction": "Dapatkan rencana",
-    "checkSubsStatusFailedDesc": "Kami tidak dapat mengambil informasi rencana Anda.",
+    "checkSubsStatusFailedDesc": "Kami tidak dapat mengambil informasi paket Anda.",
     "checkSubsStatusFailedTitle": "Informasi rencana tidak tersedia.",
   };
   static const Map<String, dynamic> _es = {
@@ -5939,7 +5939,7 @@ class CodegenLoader extends AssetLoader {
     "plan_2_years_pro": "Profesional 2 años",
     "pushNotificationsConsentPopupTitle": "Mantente al día con las notificaciones push.",
     "pushNotificationsConsentPopupDesc":
-        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones que te resultarán útiles.",
+        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones prácticas.",
     "notificationsSettingTitle": "Notificaciones",
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
@@ -6566,7 +6566,7 @@ class CodegenLoader extends AssetLoader {
     "connectToTooltip": "اتصل بـ {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
     "redeemDiscountCode": "استخدم رمز الخصم",
-    "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
+    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
     "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
     "marketingConsentPopupDesc":
         "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",

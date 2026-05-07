@@ -553,6 +553,6 @@
   "checkSubsStatusTitle": "Mendapatkan informasi rencana...",
   "noSubscriptionTitle": "Tidak ada paket aktif yang tersedia.",
   "noSubscriptionAction": "Dapatkan rencana",
-  "checkSubsStatusFailedDesc": "Kami tidak dapat mengambil informasi rencana Anda.",
+  "checkSubsStatusFailedDesc": "Kami tidak dapat mengambil informasi paket Anda.",
   "checkSubsStatusFailedTitle": "Informasi rencana tidak tersedia."
 }
