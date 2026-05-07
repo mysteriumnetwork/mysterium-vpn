@@ -1323,8 +1323,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.14"
-      resolved-ref: c72db3173a471e3ae52407a762cf41140f319685
+      ref: "feat/state-card"
+      resolved-ref: "510f0a903bcd2d82f8edc8b5c3d94f6ecedc2a96"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
