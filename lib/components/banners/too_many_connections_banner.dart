@@ -23,12 +23,12 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
     }
 
     return AlertModal(
-      type: AlertModalType.warning,
+      type: AlertModalType.error,
       title: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
       supportingText: isConnected
           ? LocaleKeys.tooManyConnectionsBannerDescConnected.tr()
           : LocaleKeys.tooManyConnectionsBannerDesc.tr(),
-      primaryButton: ButtonPrimary(
+      primaryButton: ButtonSecondary(
         size: ButtonSize.small,
         onPressed: handleDisconnect,
         child: Text(
