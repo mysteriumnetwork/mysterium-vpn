@@ -70,7 +70,7 @@ class _Container extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasIndicator = ScreenType.of(context) != ScreenType.mobile;
+    final hasIndicator = ScreenType.of(context) >= ScreenType.tablet;
 
     Widget child = ConstrainedBox(constraints: constraints, child: this.child);
 
