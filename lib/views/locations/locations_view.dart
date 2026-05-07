@@ -122,7 +122,7 @@ class _Body extends HookConsumerWidget {
               userIntentsStore.intentsFuture.status == FutureStatus.pending),
     );
     final theme = Theme.of(context);
-    final horizontalPadding = ScreenType.of(context) == ScreenType.mobile ? 0.0 : theme.spacing.xl3;
+    final horizontalPadding = ScreenType.of(context) >= ScreenType.tablet ? theme.spacing.xl3 : 0.0;
     final sectionGap = theme.spacing.xl3;
 
     if (hasNoServers) {
@@ -133,9 +133,7 @@ class _Body extends HookConsumerWidget {
               horizontal: horizontalPadding,
               vertical: theme.spacing.xl3,
             ),
-            sliver: SliverToBoxAdapter(
-              child: LocationsNoServersError(onRetry: locationsStore.refreshAll),
-            ),
+            sliver: const SliverToBoxAdapter(child: LocationsNoServersError()),
           ),
         ],
       );
@@ -295,9 +293,9 @@ class _Locations extends HookConsumerWidget {
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
-    final innerHorizontalPadding = ScreenType.of(context) == ScreenType.mobile
-        ? 0.0
-        : theme.spacing.xl3;
+    final innerHorizontalPadding = ScreenType.of(context) >= ScreenType.tablet
+        ? theme.spacing.xl3
+        : 0.0;
 
     useAutoSelectIPType();
 

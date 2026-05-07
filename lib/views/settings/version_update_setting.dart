@@ -20,7 +20,7 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
     final analyticsStore = ref.watch(analyticsStorePOD);
     final screenType = ScreenType.of(context);
 
-    final isDesktop = screenType != ScreenType.mobile;
+    final isDesktop = screenType >= ScreenType.tablet;
 
     return Observer(
       builder: (context) {
