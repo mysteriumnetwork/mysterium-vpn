@@ -7,6 +7,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -300,14 +301,20 @@ class _ResendButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timer = useCountdownTimer(initialCountdown: 60);
+    final timer = useCountdownTimer(initialCountdown: Env.flavor.isDev ? 5 : 60);
     final disabled = isLoading || timer.countdown > 0;
     final tap = disabled ? null : () => onPressed().whenComplete(timer.reset);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return ButtonSecondary(
       onPressed: tap,
       loading: isLoading ? const ButtonLoading() : null,
-      decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
+      decoration: ButtonDecoration(
+        minimumSize: const Size(double.infinity, 44),
+        decorationColor: isDark ? Palette.grayDarkAlpha.shade800 : null,
+        borderColor: isDark ? Palette.grayDarkAlpha.shade800 : null,
+        foregroundColor: isDark ? Palette.white : null,
+      ),
       child: Text(LocaleKeys.sendAgain.plural(timer.countdown)),
     );
   }

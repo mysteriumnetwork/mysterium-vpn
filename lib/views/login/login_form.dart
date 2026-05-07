@@ -271,15 +271,14 @@ class _EmailField extends StatelessWidget {
     final palette = theme.palette;
     final textStyles = theme.textStyles;
     final spacing = theme.spacing;
+    final isDark = theme.brightness == Brightness.dark;
+    final labelColor = isDark ? Palette.white : palette.textSecondary;
 
     return AutofillGroup(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            LocaleKeys.email.tr(),
-            style: textStyles.textSm.medium.copyWith(color: palette.textSecondary),
-          ),
+          Text(LocaleKeys.email.tr(), style: textStyles.textSm.medium.copyWith(color: labelColor)),
           SizedBox(height: spacing.s),
           ReactiveTextField(
             key: K.loginEmailField,

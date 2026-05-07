@@ -156,7 +156,7 @@ class AppInitializer {
     await windowManager.ensureInitialized();
     await windowManager.setPreventClose(true);
     final minimumSize = switch (Env.flavor) {
-      Flavor.dev => const Size(400, 600),
+      Flavor.dev => const Size(320, 600),
       Flavor.production => const Size(1040, 700),
     };
     await windowManager.setMinimumSize(minimumSize);
