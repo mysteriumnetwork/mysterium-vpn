@@ -13,7 +13,7 @@ class LocationItemLoading extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: theme.spacing.ms, vertical: theme.spacing.s),
-      constraints: const BoxConstraints(maxWidth: 360, maxHeight: 40),
+      constraints: const BoxConstraints(maxWidth: 360),
       decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(theme.spacing.s)),
       child: Shimmer.fromColors(
         baseColor: color,

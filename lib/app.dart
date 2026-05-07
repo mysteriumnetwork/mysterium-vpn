@@ -35,12 +35,6 @@ class MyApp extends HookConsumerWidget {
     final routeDelegate = ref.read(routerDelegatePOD);
     final localStore = ref.read(localeStorePOD);
 
-    // Eagerly initialise these stores for their side-effects only.
-    ref
-      ..read(smartRefreshStorePOD)
-      ..read(realIPInfoStorePOD)
-      ..read(pushNotificationsStorePOD);
-
     useEffect(() {
       authSessionStore.initStore().whenComplete(authStore.initAuth);
       return null;

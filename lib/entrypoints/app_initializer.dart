@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
+import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
@@ -18,16 +21,29 @@ import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:talker/talker.dart';
 import 'package:window_manager/window_manager.dart';
 
-class AppInitializer {
-  AppInitializer();
+/// Resolves once both Firebase and OneSignal have finished initializing
+/// (including the post-Firebase observer/analytics-store wiring). Awaited by
+/// the splash so dependents are only read once those SDKs are ready, while
+/// the first frame paints immediately.
+final deferredInitFuturePOD = Provider<Future<void>>((ref) => Future.value());
 
-  final ProviderContainer providerContainer = ProviderContainer();
+class AppInitializer {
+  AppInitializer() {
+    providerContainer = ProviderContainer(
+      overrides: [deferredInitFuturePOD.overrideWithValue(_deferredInit.future)],
+    );
+  }
+
+  late final ProviderContainer providerContainer;
   Talker logger = Talker();
+
+  final Completer<void> _deferredInit = Completer<void>();
 
   Widget getApp() => UncontrolledProviderScope(
     container: providerContainer,
@@ -57,32 +73,72 @@ class AppInitializer {
       SecureStorageService.instance.init(),
       EasyLocalization.ensureInitialized(),
       LocalDBService.initialize(),
-      _initFirebaseSDK(),
-      _initOneSignal(logger),
     ]);
 
     logger = providerContainer.read(loggerPOD);
+
+    // Firebase + OneSignal run past the first frame; the splash awaits via
+    // deferredInitFuturePOD.
+    unawaited(_runDeferredInit());
+  }
+
+  Future<void> _runDeferredInit() async {
+    final total = Stopwatch()..start();
+    var firebaseInitMs = 0;
+    var oneSignalInitMs = 0;
+    try {
+      await Future.wait([
+        _initFirebaseSDK().then((ms) => firebaseInitMs = ms).then((_) => _onFirebaseReady()),
+        _initOneSignal(logger).then((ms) => oneSignalInitMs = ms),
+      ]);
+      if (isMobile() && Firebase.apps.isNotEmpty) {
+        await PerformanceMonitor.instance.activate();
+        await PerformanceMonitor.instance.recordDeferredInit(
+          firebaseInitMs: firebaseInitMs,
+          oneSignalInitMs: oneSignalInitMs,
+          totalMs: total.elapsedMilliseconds,
+          attributes: {'flavor': Env.flavor.name},
+        );
+      }
+    } catch (e, stack) {
+      logger.handle(e, stack);
+    } finally {
+      if (!_deferredInit.isCompleted) {
+        _deferredInit.complete();
+      }
+    }
   }
 
   // ─── Firebase SDK ─────────────────────────────────────────────────────────────
 
-  Future<void> _initFirebaseSDK() async {
+  Future<int> _initFirebaseSDK() async {
+    final sw = Stopwatch()..start();
     try {
       final options = switch (Env.flavor) {
         Flavor.dev => dev.DefaultFirebaseOptions.currentPlatform,
         Flavor.production => prod.DefaultFirebaseOptions.currentPlatform,
       };
       await providerContainer.read(analyticsInitPOD(options).future);
-    } catch (e) {
-      logger.log('Firebase SDK init error$e');
+    } catch (e, stack) {
+      logger.handle(e, stack, 'Firebase SDK init error');
+    }
+    return sw.elapsedMilliseconds;
+  }
+
+  Future<void> _onFirebaseReady() async {
+    final analyticsStore = providerContainer.read(analyticsStorePOD);
+    if (analyticsStore is AnalyticsStoreFirebase) {
+      logger.configure(observer: CrashlyticsLoggerObserver(analyticsStore: analyticsStore));
+      await analyticsStore.init();
     }
   }
 
   // ─── OneSignal ─────────────────────────────────────────────────────────────
-  Future<void> _initOneSignal(Talker logger) async {
+  Future<int> _initOneSignal(Talker logger) async {
     if (!isMobile()) {
-      return;
+      return 0;
     }
+    final sw = Stopwatch()..start();
     try {
       if (kDebugMode) {
         await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
@@ -91,6 +147,7 @@ class AppInitializer {
     } catch (e) {
       logger.log('OneSignal init error (non-fatal): $e');
     }
+    return sw.elapsedMilliseconds;
   }
 
   // ─── Desktop window ──────────────────────────────────────────────────────
