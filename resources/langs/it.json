@@ -5,7 +5,6 @@
   "accountName": "Nome account \\ e-mail",
   "accountSignIn": "Accedi",
   "accountSignInTitle": "Non hai effettuato l'accesso",
-  "accountSuccessfullyDeleted": "Il tuo account è stato eliminato con successo. Siamo spiacenti di vederti andare. 😢",
   "activateSubscription": "È necessario un abbonamento attivo per connettersi alla VPN",
   "activeSubsPaidVia": "Hai già un abbonamento attivo pagato tramite {store}. Visita {store} per apportare modifiche al tuo abbonamento.",
   "affordable": "Conveniente",
@@ -273,7 +272,6 @@
   "recentLocations": "Località recenti",
   "reconnectBtn": "Riconnettersi",
   "redeemCode": "Riscatta codice",
-  "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso.",
   "refresh": "Aggiorna",
   "refreshIP": "Aggiorna IP",
   "renewsFor": "Si rinnova per",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "Nessun piano attivo disponibile",
   "noSubscriptionAction": "Ottieni il piano",
   "checkSubsStatusFailedDesc": "Non siamo in grado di recuperare le informazioni relative al tuo piano tariffario.",
-  "checkSubsStatusFailedTitle": "Le informazioni sul piano non sono disponibili"
+  "checkSubsStatusFailedTitle": "Le informazioni sul piano non sono disponibili",
+  "accountSuccessfullyDeleted": "Account eliminato",
+  "redirectToLoginPage": "Il tuo account è stato eliminato con successo. Verrai reindirizzato alla schermata di accesso.",
+  "goToLoginBtn": "Vai ad accedere"
 }

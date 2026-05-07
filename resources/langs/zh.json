@@ -5,7 +5,6 @@
   "accountName": "帐号名\\电子邮件",
   "accountSignIn": "登录",
   "accountSignInTitle": "您尚未登录",
-  "accountSuccessfullyDeleted": "您的帐号已成功删除。我们很伤心看你走。 😢?",
   "activateSubscription": "您需要有效的订阅才能连接到 VPN",
   "activeSubsPaidVia": "您已经通过 {store} 支付了有效的订阅费用。请访问 {store} 更改您的订阅。",
   "affordable": "价格实惠",
@@ -273,7 +272,6 @@
   "recentLocations": "最近的地点",
   "reconnectBtn": "重新连接",
   "redeemCode": "兑换代码",
-  "redirectToLoginPage": "您将被重定向到登录页面。",
   "refresh": "刷新",
   "refreshIP": "刷新 IP",
   "renewsFor": "续订费用为",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "暂无有效计划",
   "noSubscriptionAction": "获取计划",
   "checkSubsStatusFailedDesc": "我们无法获取您的计划信息。",
-  "checkSubsStatusFailedTitle": "暂无计划信息"
+  "checkSubsStatusFailedTitle": "暂无计划信息",
+  "accountSuccessfullyDeleted": "账户已删除",
+  "redirectToLoginPage": "您的账户已成功删除。您将被重定向到登录页面。",
+  "goToLoginBtn": "前往登录"
 }

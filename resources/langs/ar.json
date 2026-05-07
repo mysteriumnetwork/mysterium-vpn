@@ -5,7 +5,6 @@
   "accountName": "اسم الحساب / البريد الإلكتروني",
   "accountSignIn": "لم تقم بتسجيل الدخول",
   "accountSignInTitle": "تسجيل الدخول",
-  "accountSuccessfullyDeleted": "تم حذف حسابك بنجاح. نأسف لمغادرتك. 😢",
   "activateSubscription": "أنت بحاجة إلى اشتراك نشط للاتصال بشبكة VPN",
   "activeSubsPaidVia": "لديك بالفعل اشتراك نشط مدفوع عبر {store}. يرجى زيارة {store} لإجراء تغييرات على اشتراكك.",
   "affordable": "بسعر معقول",
@@ -273,7 +272,6 @@
   "recentLocations": "المواقع الأخيرة",
   "reconnectBtn": "إعادة الاتصال",
   "redeemCode": "استرداد الرمز",
-  "redirectToLoginPage": "ستتم إعادة توجيهك إلى صفحة تسجيل الدخول.",
   "refresh": "تحديث",
   "refreshIP": "تحديث IP",
   "renewsFor": "يتجدد لـ",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "لا توجد خطة فعالة متاحة",
   "noSubscriptionAction": "احصل على الخطة",
   "checkSubsStatusFailedDesc": "لا يمكننا استرداد معلومات خطتك.",
-  "checkSubsStatusFailedTitle": "معلومات الخطة غير متوفرة"
+  "checkSubsStatusFailedTitle": "معلومات الخطة غير متوفرة",
+  "accountSuccessfullyDeleted": "تم حذف الحساب",
+  "redirectToLoginPage": "تم حذف حسابك بنجاح. سيتم إعادة توجيهك إلى شاشة تسجيل الدخول.",
+  "goToLoginBtn": "انتقل إلى صفحة تسجيل الدخول"
 }

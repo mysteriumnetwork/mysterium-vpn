@@ -5,7 +5,6 @@
   "accountName": "Account name \\ email",
   "accountSignIn": "Sign in",
   "accountSignInTitle": "You're not signed in",
-  "accountSuccessfullyDeleted": "Your account has been successfully deleted. We are sorry to see you go. 😢",
   "activateSubscription": "You need an active subscription to connect to VPN",
   "activeSubsPaidVia": "You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
   "affordable": "Affordable",
@@ -273,7 +272,6 @@
   "recentLocations": "Recent locations",
   "reconnectBtn": "Reconnect",
   "redeemCode": "Redeem Code",
-  "redirectToLoginPage": "You will be redirected to the login page.",
   "refresh": "Refresh",
   "refreshIP": "Refresh IP",
   "renewsFor": "Renews for",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "No active plan available",
   "noSubscriptionAction": "Get plan",
   "checkSubsStatusFailedDesc": "We are not able to retrieve your plan information.",
-  "checkSubsStatusFailedTitle": "Plan information is not available"
+  "checkSubsStatusFailedTitle": "Plan information is not available",
+  "accountSuccessfullyDeleted": "Account deleted",
+  "redirectToLoginPage": "Your account has been successfully deleted. You'll be redirected to the log in screen.",
+  "goToLoginBtn": "Go to log in"
 }

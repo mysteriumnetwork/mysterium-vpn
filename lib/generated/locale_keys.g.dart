@@ -9,7 +9,6 @@ abstract class LocaleKeys {
   static const accountName = 'accountName';
   static const accountSignIn = 'accountSignIn';
   static const accountSignInTitle = 'accountSignInTitle';
-  static const accountSuccessfullyDeleted = 'accountSuccessfullyDeleted';
   static const activateSubscription = 'activateSubscription';
   static const activeSubsPaidVia = 'activeSubsPaidVia';
   static const affordable = 'affordable';
@@ -274,7 +273,6 @@ abstract class LocaleKeys {
   static const recentLocations = 'recentLocations';
   static const reconnectBtn = 'reconnectBtn';
   static const redeemCode = 'redeemCode';
-  static const redirectToLoginPage = 'redirectToLoginPage';
   static const refresh = 'refresh';
   static const refreshIP = 'refreshIP';
   static const renewsFor = 'renewsFor';
@@ -546,4 +544,7 @@ abstract class LocaleKeys {
   static const noSubscriptionAction = 'noSubscriptionAction';
   static const checkSubsStatusFailedDesc = 'checkSubsStatusFailedDesc';
   static const checkSubsStatusFailedTitle = 'checkSubsStatusFailedTitle';
+  static const accountSuccessfullyDeleted = 'accountSuccessfullyDeleted';
+  static const redirectToLoginPage = 'redirectToLoginPage';
+  static const goToLoginBtn = 'goToLoginBtn';
 }

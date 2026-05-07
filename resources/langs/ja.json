@@ -5,7 +5,6 @@
   "accountName": "アカウント名\\メールアドレス",
   "accountSignIn": "サインイン",
   "accountSignInTitle": "サインインしていません",
-  "accountSuccessfullyDeleted": "アカウントは正常に削除されました。あなたと離れてみんな悲しいです。 😢?",
   "activateSubscription": "VPN に接続するにはアクティブなサブスクリプションが必要です",
   "activeSubsPaidVia": "{store} 経由で支払われた有効な定期購入がすでにあります。サブスクリプションを変更するには、{store} にアクセスしてください。",
   "affordable": "手頃な価格",
@@ -273,7 +272,6 @@
   "recentLocations": "最近の場所",
   "reconnectBtn": "再接続します",
   "redeemCode": "コードを引き換える",
-  "redirectToLoginPage": "ログインページにリダイレクトされます。",
   "refresh": "更新",
   "refreshIP": "IP をリフレッシュ",
   "renewsFor": "更新料金は",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "有効なプランがありません",
   "noSubscriptionAction": "プランを入手する",
   "checkSubsStatusFailedDesc": "お客様のプラン情報を取得できませんでした。",
-  "checkSubsStatusFailedTitle": "プラン情報は入手できません"
+  "checkSubsStatusFailedTitle": "プラン情報は入手できません",
+  "accountSuccessfullyDeleted": "アカウントが削除されました",
+  "redirectToLoginPage": "アカウントは正常に削除されました。ログイン画面にリダイレクトされます。",
+  "goToLoginBtn": "ログイン画面へ"
 }

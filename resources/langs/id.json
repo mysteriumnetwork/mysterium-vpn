@@ -5,7 +5,6 @@
   "accountName": "Nama akun \\ email",
   "accountSignIn": "Masuk",
   "accountSignInTitle": "Anda belum masuk",
-  "accountSuccessfullyDeleted": "Akun Anda telah berhasil dihapus. Kami menyesal melihat Anda pergi. 😢",
   "activateSubscription": "Anda memerlukan langganan aktif untuk terhubung ke VPN",
   "activeSubsPaidVia": "Anda sudah memiliki langganan aktif yang dibayar melalui {store}. Kunjungi {store} untuk melakukan perubahan pada langganan Anda.",
   "affordable": "Terjangkau",
@@ -273,7 +272,6 @@
   "recentLocations": "Lokasi terkini",
   "reconnectBtn": "Terhubung kembali",
   "redeemCode": "Menebus kode",
-  "redirectToLoginPage": "Anda akan dialihkan ke halaman login.",
   "refresh": "Segarkan",
   "refreshIP": "Segarkan IP",
   "renewsFor": "Diperpanjang untuk",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "Tidak ada paket aktif yang tersedia.",
   "noSubscriptionAction": "Dapatkan rencana",
   "checkSubsStatusFailedDesc": "Kami tidak dapat mengambil informasi paket Anda.",
-  "checkSubsStatusFailedTitle": "Informasi rencana tidak tersedia."
+  "checkSubsStatusFailedTitle": "Informasi rencana tidak tersedia.",
+  "accountSuccessfullyDeleted": "Akun dihapus",
+  "redirectToLoginPage": "Akun Anda telah berhasil dihapus. Anda akan dialihkan ke layar masuk.",
+  "goToLoginBtn": "Silakan masuk"
 }

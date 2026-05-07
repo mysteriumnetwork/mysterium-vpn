@@ -21,7 +21,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "帐号名\\电子邮件",
     "accountSignIn": "登录",
     "accountSignInTitle": "您尚未登录",
-    "accountSuccessfullyDeleted": "您的帐号已成功删除。我们很伤心看你走。 😢?",
     "activateSubscription": "您需要有效的订阅才能连接到 VPN",
     "activeSubsPaidVia": "您已经通过 {store} 支付了有效的订阅费用。请访问 {store} 更改您的订阅。",
     "affordable": "价格实惠",
@@ -286,7 +285,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "最近的地点",
     "reconnectBtn": "重新连接",
     "redeemCode": "兑换代码",
-    "redirectToLoginPage": "您将被重定向到登录页面。",
     "refresh": "刷新",
     "refreshIP": "刷新 IP",
     "renewsFor": "续订费用为",
@@ -561,6 +559,9 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "获取计划",
     "checkSubsStatusFailedDesc": "我们无法获取您的计划信息。",
     "checkSubsStatusFailedTitle": "暂无计划信息",
+    "accountSuccessfullyDeleted": "账户已删除",
+    "redirectToLoginPage": "您的账户已成功删除。您将被重定向到登录页面。",
+    "goToLoginBtn": "前往登录",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -569,7 +570,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Hesap adı \\ e-posta",
     "accountSignIn": "Giriş yap",
     "accountSignInTitle": "Oturum açmadınız",
-    "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi. Gittiğiniz için üzgünüz.😢",
     "activateSubscription": "VPN'e bağlanmak için abonelik almanız gerekiyor.",
     "activeSubsPaidVia":
         "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
@@ -860,7 +860,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Son konumlar",
     "reconnectBtn": "Yeniden bağlanmak",
     "redeemCode": "Kodu Kullan",
-    "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz.",
     "refresh": "Yenile",
     "refreshIP": "IP'yi yenile",
     "renewsFor": "Şunun için yenilenir",
@@ -1165,6 +1164,9 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Planı edinin",
     "checkSubsStatusFailedDesc": "Plan bilgilerinize erişemiyoruz.",
     "checkSubsStatusFailedTitle": "Plan bilgileri mevcut değil.",
+    "accountSuccessfullyDeleted": "Hesap silindi",
+    "redirectToLoginPage": "Hesabınız başarıyla silindi. Giriş ekranına yönlendirileceksiniz.",
+    "goToLoginBtn": "Giriş yap sayfasına git",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1173,7 +1175,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "アカウント名\\メールアドレス",
     "accountSignIn": "サインイン",
     "accountSignInTitle": "サインインしていません",
-    "accountSuccessfullyDeleted": "アカウントは正常に削除されました。あなたと離れてみんな悲しいです。 😢?",
     "activateSubscription": "VPN に接続するにはアクティブなサブスクリプションが必要です",
     "activeSubsPaidVia": "{store} 経由で支払われた有効な定期購入がすでにあります。サブスクリプションを変更するには、{store} にアクセスしてください。",
     "affordable": "手頃な価格",
@@ -1440,7 +1441,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "最近の場所",
     "reconnectBtn": "再接続します",
     "redeemCode": "コードを引き換える",
-    "redirectToLoginPage": "ログインページにリダイレクトされます。",
     "refresh": "更新",
     "refreshIP": "IP をリフレッシュ",
     "renewsFor": "更新料金は",
@@ -1723,6 +1723,9 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "プランを入手する",
     "checkSubsStatusFailedDesc": "お客様のプラン情報を取得できませんでした。",
     "checkSubsStatusFailedTitle": "プラン情報は入手できません",
+    "accountSuccessfullyDeleted": "アカウントが削除されました",
+    "redirectToLoginPage": "アカウントは正常に削除されました。ログイン画面にリダイレクトされます。",
+    "goToLoginBtn": "ログイン画面へ",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1731,8 +1734,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Kontoname \\ E-Mail",
     "accountSignIn": "Anmelden",
     "accountSignInTitle": "Du bist nicht angemeldet",
-    "accountSuccessfullyDeleted":
-        "Ihr Konto wurde erfolgreich gelöscht. Wir bedauern, dass Sie gehen. 😢",
     "activateSubscription":
         "Sie benötigen ein aktives Abonnement, um eine VPN-Verbindung herzustellen",
     "activeSubsPaidVia":
@@ -2038,7 +2039,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Aktuelle Standorte",
     "reconnectBtn": "Erneut verbinden",
     "redeemCode": "Code einlösen",
-    "redirectToLoginPage": "Sie werden zur Anmeldeseite weitergeleitet.",
     "refresh": "Aktualisieren",
     "refreshIP": "IP aktualisieren",
     "renewsFor": "Verlängert für",
@@ -2351,6 +2351,10 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Plan abrufen",
     "checkSubsStatusFailedDesc": "Wir können Ihre Tarifinformationen nicht abrufen.",
     "checkSubsStatusFailedTitle": "Planinformationen sind nicht verfügbar",
+    "accountSuccessfullyDeleted": "Konto gelöscht",
+    "redirectToLoginPage":
+        "Ihr Konto wurde erfolgreich gelöscht. Sie werden zum Anmeldebildschirm weitergeleitet.",
+    "goToLoginBtn": "Zum Anmelden gehen",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2359,7 +2363,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Nome da conta \\ Email",
     "accountSignIn": "Entrar",
     "accountSignInTitle": "VocÃª nÃ£o estÃ¡ conectado",
-    "accountSuccessfullyDeleted": "Sua conta foi excluída com sucesso. Lamentamos sua partida.😢",
     "activateSubscription": "Ative sua assinatura para conectar -se à VPN!",
     "activeSubsPaidVia":
         "Você já tem uma assinatura ativa paga via {store}. Visite {store} para fazer alterações em sua assinatura.",
@@ -2657,7 +2660,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Locais recentes",
     "reconnectBtn": "Reconectar",
     "redeemCode": "Resgatar código",
-    "redirectToLoginPage": "Você será redirecionado para a página de login.",
     "refresh": "Atualizar",
     "refreshIP": "Atualizar IP",
     "renewsFor": "Renova por",
@@ -2970,6 +2972,10 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Obtenha um plano",
     "checkSubsStatusFailedDesc": "Não foi possível recuperar as informações do seu plano.",
     "checkSubsStatusFailedTitle": "As informações do plano não estão disponíveis.",
+    "accountSuccessfullyDeleted": "Conta excluída",
+    "redirectToLoginPage":
+        "Sua conta foi excluída com sucesso. Você será redirecionado para a tela de login.",
+    "goToLoginBtn": "Acesse a página de login.",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -2978,8 +2984,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Account name \\ email",
     "accountSignIn": "Sign in",
     "accountSignInTitle": "You're not signed in",
-    "accountSuccessfullyDeleted":
-        "Your account has been successfully deleted. We are sorry to see you go. 😢",
     "activateSubscription": "You need an active subscription to connect to VPN",
     "activeSubsPaidVia":
         "You already have an active subscription paid via {store}. Please visit {store} to make changes to your subscription.",
@@ -3273,7 +3277,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Recent locations",
     "reconnectBtn": "Reconnect",
     "redeemCode": "Redeem Code",
-    "redirectToLoginPage": "You will be redirected to the login page.",
     "refresh": "Refresh",
     "refreshIP": "Refresh IP",
     "renewsFor": "Renews for",
@@ -3579,6 +3582,10 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Get plan",
     "checkSubsStatusFailedDesc": "We are not able to retrieve your plan information.",
     "checkSubsStatusFailedTitle": "Plan information is not available",
+    "accountSuccessfullyDeleted": "Account deleted",
+    "redirectToLoginPage":
+        "Your account has been successfully deleted. You'll be redirected to the log in screen.",
+    "goToLoginBtn": "Go to log in",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3587,8 +3594,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Nome account \\ e-mail",
     "accountSignIn": "Accedi",
     "accountSignInTitle": "Non hai effettuato l'accesso",
-    "accountSuccessfullyDeleted":
-        "Il tuo account è stato eliminato con successo. Siamo spiacenti di vederti andare. 😢",
     "activateSubscription": "È necessario un abbonamento attivo per connettersi alla VPN",
     "activeSubsPaidVia":
         "Hai già un abbonamento attivo pagato tramite {store}. Visita {store} per apportare modifiche al tuo abbonamento.",
@@ -3889,7 +3894,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Località recenti",
     "reconnectBtn": "Riconnettersi",
     "redeemCode": "Riscatta codice",
-    "redirectToLoginPage": "Verrai reindirizzato alla pagina di accesso.",
     "refresh": "Aggiorna",
     "refreshIP": "Aggiorna IP",
     "renewsFor": "Si rinnova per",
@@ -4202,6 +4206,10 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusFailedDesc":
         "Non siamo in grado di recuperare le informazioni relative al tuo piano tariffario.",
     "checkSubsStatusFailedTitle": "Le informazioni sul piano non sono disponibili",
+    "accountSuccessfullyDeleted": "Account eliminato",
+    "redirectToLoginPage":
+        "Il tuo account è stato eliminato con successo. Verrai reindirizzato alla schermata di accesso.",
+    "goToLoginBtn": "Vai ad accedere",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4210,8 +4218,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Nom du compte \\ e-mail",
     "accountSignIn": "Se connecter",
     "accountSignInTitle": "Vous n'êtes pas connecté",
-    "accountSuccessfullyDeleted":
-        "Votre compte a été supprimé avec succès.Nous sommes désolés de vous voir partir.😢",
     "activateSubscription": "Veuillez activer votre abonnement pour vous connecter à VPN!",
     "activeSubsPaidVia":
         "Vous avez déjà un abonnement actif payé via {store}.Veuillez visiter {store} pour apporter des modifications à votre abonnement.",
@@ -4516,7 +4522,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Emplacements récents",
     "reconnectBtn": "Reconnecter",
     "redeemCode": "Utiliser le code",
-    "redirectToLoginPage": "Vous serez redirigé vers la page de connexion.",
     "refresh": "Rafraîchir",
     "refreshIP": "Actualiser l'IP",
     "renewsFor": "Se renouvelle pour",
@@ -4832,6 +4837,10 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusFailedDesc":
         "Nous ne sommes pas en mesure de récupérer les informations relatives à votre forfait.",
     "checkSubsStatusFailedTitle": "Les informations sur le plan ne sont pas disponibles.",
+    "accountSuccessfullyDeleted": "Compte supprimé",
+    "redirectToLoginPage":
+        "Votre compte a été supprimé avec succès. Vous allez être redirigé vers la page de connexion.",
+    "goToLoginBtn": "Allez vous connecter",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -4840,8 +4849,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Nama akun \\ email",
     "accountSignIn": "Masuk",
     "accountSignInTitle": "Anda belum masuk",
-    "accountSuccessfullyDeleted":
-        "Akun Anda telah berhasil dihapus. Kami menyesal melihat Anda pergi. 😢",
     "activateSubscription": "Anda memerlukan langganan aktif untuk terhubung ke VPN",
     "activeSubsPaidVia":
         "Anda sudah memiliki langganan aktif yang dibayar melalui {store}. Kunjungi {store} untuk melakukan perubahan pada langganan Anda.",
@@ -5133,7 +5140,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Lokasi terkini",
     "reconnectBtn": "Terhubung kembali",
     "redeemCode": "Menebus kode",
-    "redirectToLoginPage": "Anda akan dialihkan ke halaman login.",
     "refresh": "Segarkan",
     "refreshIP": "Segarkan IP",
     "renewsFor": "Diperpanjang untuk",
@@ -5444,6 +5450,9 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Dapatkan rencana",
     "checkSubsStatusFailedDesc": "Kami tidak dapat mengambil informasi paket Anda.",
     "checkSubsStatusFailedTitle": "Informasi rencana tidak tersedia.",
+    "accountSuccessfullyDeleted": "Akun dihapus",
+    "redirectToLoginPage": "Akun Anda telah berhasil dihapus. Anda akan dialihkan ke layar masuk.",
+    "goToLoginBtn": "Silakan masuk",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5452,8 +5461,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "Nombre de cuenta / correo electrónico",
     "accountSignIn": "Iniciar sesión",
     "accountSignInTitle": "No has iniciado sesión",
-    "accountSuccessfullyDeleted":
-        "Tu cuenta ha sido eliminada con éxito. Lamentamos que te vayas. 😢",
     "activateSubscription": "Necesita una suscripción activa para conectarse a VPN",
     "activeSubsPaidVia":
         "Ya tienes una suscripción activa pagada a través de {store}. Visita {store} para realizar cambios en tu suscripción.",
@@ -5753,7 +5760,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "Ubicaciones recientes",
     "reconnectBtn": "Volver a conectar",
     "redeemCode": "Canjear código",
-    "redirectToLoginPage": "Serás redirigido a la página de inicio de sesión.",
     "refresh": "Actualizar",
     "refreshIP": "Actualizar IP",
     "renewsFor": "Se renueva por",
@@ -6066,6 +6072,10 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "Obtener plan",
     "checkSubsStatusFailedDesc": "No podemos recuperar la información de su plan.",
     "checkSubsStatusFailedTitle": "La información del plan no está disponible.",
+    "accountSuccessfullyDeleted": "Cuenta eliminada",
+    "redirectToLoginPage":
+        "Tu cuenta se ha eliminado correctamente. Serás redirigido a la pantalla de inicio de sesión.",
+    "goToLoginBtn": "Ir a iniciar sesión",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6074,7 +6084,6 @@ class CodegenLoader extends AssetLoader {
     "accountName": "اسم الحساب / البريد الإلكتروني",
     "accountSignIn": "لم تقم بتسجيل الدخول",
     "accountSignInTitle": "تسجيل الدخول",
-    "accountSuccessfullyDeleted": "تم حذف حسابك بنجاح. نأسف لمغادرتك. 😢",
     "activateSubscription": "أنت بحاجة إلى اشتراك نشط للاتصال بشبكة VPN",
     "activeSubsPaidVia":
         "لديك بالفعل اشتراك نشط مدفوع عبر {store}. يرجى زيارة {store} لإجراء تغييرات على اشتراكك.",
@@ -6360,7 +6369,6 @@ class CodegenLoader extends AssetLoader {
     "recentLocations": "المواقع الأخيرة",
     "reconnectBtn": "إعادة الاتصال",
     "redeemCode": "استرداد الرمز",
-    "redirectToLoginPage": "ستتم إعادة توجيهك إلى صفحة تسجيل الدخول.",
     "refresh": "تحديث",
     "refreshIP": "تحديث IP",
     "renewsFor": "يتجدد لـ",
@@ -6658,6 +6666,9 @@ class CodegenLoader extends AssetLoader {
     "noSubscriptionAction": "احصل على الخطة",
     "checkSubsStatusFailedDesc": "لا يمكننا استرداد معلومات خطتك.",
     "checkSubsStatusFailedTitle": "معلومات الخطة غير متوفرة",
+    "accountSuccessfullyDeleted": "تم حذف الحساب",
+    "redirectToLoginPage": "تم حذف حسابك بنجاح. سيتم إعادة توجيهك إلى شاشة تسجيل الدخول.",
+    "goToLoginBtn": "انتقل إلى صفحة تسجيل الدخول",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

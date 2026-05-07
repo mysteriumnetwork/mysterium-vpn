@@ -5,7 +5,6 @@
   "accountName": "Hesap adı \\ e-posta",
   "accountSignIn": "Giriş yap",
   "accountSignInTitle": "Oturum açmadınız",
-  "accountSuccessfullyDeleted": "Hesabınız başarıyla silindi. Gittiğiniz için üzgünüz.😢",
   "activateSubscription": "VPN'e bağlanmak için abonelik almanız gerekiyor.",
   "activeSubsPaidVia": "Halihazırda {store} aracılığıyla ödenen etkin bir aboneliğiniz var. Aboneliğinizde değişiklik yapmak için lütfen {store} adresini ziyaret edin.",
   "affordable": "Ekonomik",
@@ -273,7 +272,6 @@
   "recentLocations": "Son konumlar",
   "reconnectBtn": "Yeniden bağlanmak",
   "redeemCode": "Kodu Kullan",
-  "redirectToLoginPage": "Giriş sayfasına yönlendirileceksiniz.",
   "refresh": "Yenile",
   "refreshIP": "IP'yi yenile",
   "renewsFor": "Şunun için yenilenir",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "Mevcut aktif plan bulunmamaktadır.",
   "noSubscriptionAction": "Planı edinin",
   "checkSubsStatusFailedDesc": "Plan bilgilerinize erişemiyoruz.",
-  "checkSubsStatusFailedTitle": "Plan bilgileri mevcut değil."
+  "checkSubsStatusFailedTitle": "Plan bilgileri mevcut değil.",
+  "accountSuccessfullyDeleted": "Hesap silindi",
+  "redirectToLoginPage": "Hesabınız başarıyla silindi. Giriş ekranına yönlendirileceksiniz.",
+  "goToLoginBtn": "Giriş yap sayfasına git"
 }

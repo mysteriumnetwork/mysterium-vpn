@@ -5,7 +5,6 @@
   "accountName": "Kontoname \\ E-Mail",
   "accountSignIn": "Anmelden",
   "accountSignInTitle": "Du bist nicht angemeldet",
-  "accountSuccessfullyDeleted": "Ihr Konto wurde erfolgreich gelöscht. Wir bedauern, dass Sie gehen. 😢",
   "activateSubscription": "Sie benötigen ein aktives Abonnement, um eine VPN-Verbindung herzustellen",
   "activeSubsPaidVia": "Sie haben bereits ein aktives Abonnement, bezahlt über {store}. Bitte besuchen Sie {store}, um Änderungen an Ihrem Abonnement vorzunehmen.",
   "affordable": "Erschwinglich",
@@ -273,7 +272,6 @@
   "recentLocations": "Aktuelle Standorte",
   "reconnectBtn": "Erneut verbinden",
   "redeemCode": "Code einlösen",
-  "redirectToLoginPage": "Sie werden zur Anmeldeseite weitergeleitet.",
   "refresh": "Aktualisieren",
   "refreshIP": "IP aktualisieren",
   "renewsFor": "Verlängert für",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "Kein aktiver Tarif verfügbar",
   "noSubscriptionAction": "Plan abrufen",
   "checkSubsStatusFailedDesc": "Wir können Ihre Tarifinformationen nicht abrufen.",
-  "checkSubsStatusFailedTitle": "Planinformationen sind nicht verfügbar"
+  "checkSubsStatusFailedTitle": "Planinformationen sind nicht verfügbar",
+  "accountSuccessfullyDeleted": "Konto gelöscht",
+  "redirectToLoginPage": "Ihr Konto wurde erfolgreich gelöscht. Sie werden zum Anmeldebildschirm weitergeleitet.",
+  "goToLoginBtn": "Zum Anmelden gehen"
 }

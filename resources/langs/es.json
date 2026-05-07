@@ -5,7 +5,6 @@
   "accountName": "Nombre de cuenta / correo electrónico",
   "accountSignIn": "Iniciar sesión",
   "accountSignInTitle": "No has iniciado sesión",
-  "accountSuccessfullyDeleted": "Tu cuenta ha sido eliminada con éxito. Lamentamos que te vayas. 😢",
   "activateSubscription": "Necesita una suscripción activa para conectarse a VPN",
   "activeSubsPaidVia": "Ya tienes una suscripción activa pagada a través de {store}. Visita {store} para realizar cambios en tu suscripción.",
   "affordable": "Asequible",
@@ -273,7 +272,6 @@
   "recentLocations": "Ubicaciones recientes",
   "reconnectBtn": "Volver a conectar",
   "redeemCode": "Canjear código",
-  "redirectToLoginPage": "Serás redirigido a la página de inicio de sesión.",
   "refresh": "Actualizar",
   "refreshIP": "Actualizar IP",
   "renewsFor": "Se renueva por",
@@ -554,5 +552,8 @@
   "noSubscriptionTitle": "No hay ningún plan activo disponible",
   "noSubscriptionAction": "Obtener plan",
   "checkSubsStatusFailedDesc": "No podemos recuperar la información de su plan.",
-  "checkSubsStatusFailedTitle": "La información del plan no está disponible."
+  "checkSubsStatusFailedTitle": "La información del plan no está disponible.",
+  "accountSuccessfullyDeleted": "Cuenta eliminada",
+  "redirectToLoginPage": "Tu cuenta se ha eliminado correctamente. Serás redirigido a la pantalla de inicio de sesión.",
+  "goToLoginBtn": "Ir a iniciar sesión"
 }
