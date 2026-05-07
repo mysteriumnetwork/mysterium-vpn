@@ -87,9 +87,7 @@ class AppInitializer {
     var oneSignalInitMs = 0;
     try {
       await Future.wait([
-        _initFirebaseSDK()
-            .then((ms) => firebaseInitMs = ms)
-            .then((_) => _onFirebaseReady()),
+        _initFirebaseSDK().then((ms) => firebaseInitMs = ms).then((_) => _onFirebaseReady()),
         _initOneSignal(logger).then((ms) => oneSignalInitMs = ms),
       ]);
       if (isMobile()) {

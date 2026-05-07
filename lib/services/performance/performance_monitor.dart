@@ -17,8 +17,7 @@ class PerformanceMonitor with WidgetsBindingObserver {
       return;
     }
     _activated = true;
-    await FirebasePerformance.instance
-        .setPerformanceCollectionEnabled(!kDebugMode);
+    await FirebasePerformance.instance.setPerformanceCollectionEnabled(!kDebugMode);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -44,8 +43,8 @@ class PerformanceMonitor with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final wasBackgrounded = _lastState == AppLifecycleState.paused ||
-        _lastState == AppLifecycleState.hidden;
+    final wasBackgrounded =
+        _lastState == AppLifecycleState.paused || _lastState == AppLifecycleState.hidden;
     if (state == AppLifecycleState.resumed && wasBackgrounded) {
       unawaited(_traceWarmStart());
     }
