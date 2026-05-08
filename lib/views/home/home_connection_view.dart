@@ -27,7 +27,7 @@ class HomeConnectionView extends HookConsumerWidget {
 
                 top: switch (screenType) {
                   ScreenType.tablet || ScreenType.desktop => 40,
-                  _ => 10,
+                  _ => 8,
                 },
                 child: const HomeBanner(),
               ),

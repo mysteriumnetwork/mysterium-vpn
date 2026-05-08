@@ -35,7 +35,8 @@ Future<void> shownDeleteAccountDialog(
       supportingText: LocaleKeys.redirectToLoginPage.tr(),
       dismissible: false,
       showCancel: false,
-      confirmText: LocaleKeys.continueBtn.tr(),
+      confirmText: LocaleKeys.goToLoginBtn.tr(),
+      confirmVariant: ButtonVariant.secondary,
       onConfirm: () async {
         await vpnStore.disconnectTunnel();
         authStore.logout();
