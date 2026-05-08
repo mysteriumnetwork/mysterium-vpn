@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -30,6 +31,7 @@ LocationItemState useLocationItemState({
   final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final remoteConfig = ref.watch(remoteConfigStorePOD);
+  final isAuthenticated = useIsAuthenticated();
   final handleUpgradePlan = useHandleUpgradePlan();
 
   final children = location.children ?? const <VPNLocation>[];
@@ -45,6 +47,7 @@ LocationItemState useLocationItemState({
   final locationMode = useComputedValue(
     () => LocationMode.from(
       location: location,
+      isAuthenticated: isAuthenticated,
       residentialIPsAllowed: residentialIPsAllowed,
       unavailableLocations: unavailableLocationsStore.unavailableLocations,
       subscription: subscription,
@@ -54,7 +57,14 @@ LocationItemState useLocationItemState({
       connectingLocation: vpnStore.connectingLocation,
       isSubscriptionLoading: isSubscriptionLoading,
     ),
-    [location, location.isAvailable, subscription, residentialIPsAllowed, isSubscriptionLoading],
+    [
+      location,
+      location.isAvailable,
+      subscription,
+      residentialIPsAllowed,
+      isSubscriptionLoading,
+      isAuthenticated,
+    ],
   );
 
   final countryStatus = switch (locationMode) {
@@ -81,6 +91,7 @@ LocationItemState useLocationItemState({
     return children.map((child) {
       final childMode = LocationMode.from(
         location: child,
+        isAuthenticated: isAuthenticated,
         residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
         unavailableLocations: unavailableLocationsStore.unavailableLocations,
         subscription: subscription,
@@ -114,7 +125,7 @@ LocationItemState useLocationItemState({
     // a MobX observable, and locationMode would cause unnecessary Computed churn
     // on every parent-mode change (child modes are re-derived independently and
     // tracked by MobX inside the closure).
-  }, [children, showCitiesAndStates, subscription]);
+  }, [children, showCitiesAndStates, subscription, isAuthenticated]);
 
   final needsUpgrade = locationMode == LocationMode.unsupportedByPlan;
 

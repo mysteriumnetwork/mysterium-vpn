@@ -115,10 +115,52 @@ void main() {
           ),
         ),
       );
+      when(mockConfigStore.fetchedPlanId).thenReturn('basic');
 
       final store = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
 
       expect(store.residentialIPsAllowed, true);
+    });
+
+    test(
+      'residentialIPsAllowed ignores plan metadata when its planId differs from current subscription',
+      () {
+        // Plan future is fulfilled but for an outdated planId — gate should
+        // discard its metadata so residentialIPsAllowed stays false.
+        when(mockConfigStore.subscriptionPlanFuture).thenAnswer(
+          (_) => ObservableFuture.value(
+            GetPlanResponse(
+              id: 'premium',
+              description: '',
+              metadata: PlanMetadata(residentialIpsAllowed: true),
+            ),
+          ),
+        );
+        when(mockConfigStore.fetchedPlanId).thenReturn('premium');
+
+        final store = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+        expect(store.residentialIPsAllowed, false);
+      },
+    );
+
+    test('isLoading is true while plan metadata for the current planId is missing', () {
+      // Active subscription whose planId is not in static config and the
+      // plan future was fetched for a different (stale) planId.
+      when(mockConfigStore.subscriptionPlanFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          GetPlanResponse(
+            id: 'premium',
+            description: '',
+            metadata: PlanMetadata(residentialIpsAllowed: true),
+          ),
+        ),
+      );
+      when(mockConfigStore.fetchedPlanId).thenReturn('premium');
+
+      final store = SubscriptionFeaturesStore(mockSubscriptionStore, mockConfigStore);
+
+      expect(store.isLoading, true);
     });
 
     test('residentialIPsAllowed defaults to false when metadata field is null', () {

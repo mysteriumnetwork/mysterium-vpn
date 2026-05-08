@@ -136,6 +136,8 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final localeStore = ref.watch(localeStorePOD);
 
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
   final store = LocationsStore(
     api.getConnection(),
     filterService,
@@ -145,6 +147,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     remoteConfigStore,
     queryStore,
     localeStore,
+    authSessionStore,
   );
 
   ref.onDispose(store.dispose);
@@ -438,9 +441,10 @@ final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
 final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = SmartRefreshStore(locationsStore, subscriptionStore, logger);
+  final store = SmartRefreshStore(locationsStore, subscriptionStore, authSessionStore, logger);
 
   ref.onDispose(store.dispose);
 

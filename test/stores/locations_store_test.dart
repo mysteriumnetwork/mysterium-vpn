@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -23,6 +24,7 @@ import 'locations_store_test.mocks.dart';
   MockSpec<LocationsQueryStore>(),
   MockSpec<LocaleStore>(),
   MockSpec<LocalDBService>(),
+  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   late LocationsStore store;
@@ -34,6 +36,7 @@ void main() {
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockLocationsQueryStore mockQuery;
   late MockLocaleStore mockLocaleStore;
+  late MockAuthSessionStore mockAuthSessionStore;
 
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
@@ -69,6 +72,11 @@ void main() {
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockQuery = MockLocationsQueryStore();
     mockLocaleStore = MockLocaleStore();
+    mockAuthSessionStore = MockAuthSessionStore();
+    when(
+      mockAuthSessionStore.accessTokenFuture,
+    ).thenAnswer((_) => ObservableFuture.value('test-token'));
+    when(mockAuthSessionStore.accessToken).thenReturn('test-token');
 
     mockResidential = const [
       Mocks.locationResidentialUS,
@@ -117,6 +125,7 @@ void main() {
       mockRemoteConfigStore,
       mockQuery,
       mockLocaleStore,
+      mockAuthSessionStore,
     );
   });
 

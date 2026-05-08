@@ -33,6 +33,7 @@ abstract class _LocationsStore with Store {
     this._config,
     this._query,
     this._locale,
+    this._authSessionStore,
   ) {
     // Attach watchers to listen for database changes and update observable futures.
     // These watchers are all disposed of in the dispose method to avoid memory leaks.
@@ -58,6 +59,7 @@ abstract class _LocationsStore with Store {
   final RemoteConfigStore _config;
   final LocationsQueryStore _query;
   final LocaleStore _locale;
+  final AuthSessionStore _authSessionStore;
 
   late final List<StreamSubscription<Object?>> _streamSubscriptions;
 
@@ -155,6 +157,13 @@ abstract class _LocationsStore with Store {
   /// Even if error occurs, previously cached locations remain available for use. Database is only updated on successful fetch.
   @action
   Future<VPNLocations> _fetch(IPType ipType) async {
+    // Wait for AuthSessionStore.initStore() to finish reading the persisted
+    // token from secure storage. Without this, the very first locations
+    // request after launch races the storage read and goes out without an
+    // Authorization header even when the user is authenticated, and the
+    // backend responds with is_available=false for every location.
+    await _authSessionStore.accessTokenFuture;
+
     try {
       final response = await _connection.connectionLocations(
         ipType: switch (ipType) {
@@ -231,13 +240,32 @@ abstract class _LocationsStore with Store {
     }
   }
 
-  /// Refreshes all location data (both datacenter and residential) from the backend.
-  /// This method is useful for ensuring the app has the latest location data across all types, either on-demand or via auto-refresh.
-  /// If a refresh is already in progress, it waits for the existing future to complete before starting a new one.
-  /// This prevents overlapping refresh operations.
+  /// Refreshes all location data (both datacenter and residential) from the
+  /// backend. When [invalidate] is true the existing futures are flipped to
+  /// pending in the same MobX action so consumers observe a "loading" state
+  /// instead of the stale cached values while the new requests are in flight
+  /// — used after auth changes where the cached `isAvailable` flags are
+  /// known to be wrong for the now-current user.
   @action
-  Future<void> refreshAll() =>
-      Future.wait([refresh(IPType.datacenter), refresh(IPType.residential)]);
+  Future<void> refreshAll({bool invalidate = false}) async {
+    if (invalidate) {
+      final dcFetch = _fetch(IPType.datacenter);
+      final residentialFetch = _fetch(IPType.residential);
+      _dcLocationsFuture = ObservableFuture(dcFetch);
+      _residentialLocationsFuture = ObservableFuture(residentialFetch);
+      try {
+        final results = await Future.wait([dcFetch, residentialFetch]);
+        _dcLocationsFuture = ObservableFuture.value(results[0]);
+        _residentialLocationsFuture = ObservableFuture.value(results[1]);
+      } on ApiException catch (_) {
+        // do nothing. previously cached locations remain available for use
+      } catch (e, stackTrace) {
+        _logger.handle(e, stackTrace);
+      }
+      return;
+    }
+    await Future.wait([refresh(IPType.datacenter), refresh(IPType.residential)]);
+  }
 
   /// Finds a location by its ID, optionally filtering by country code and IP type.
   /// If no exact match is found, it attempts to find a country-level match.

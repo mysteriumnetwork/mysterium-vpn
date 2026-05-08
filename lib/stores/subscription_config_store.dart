@@ -36,6 +36,13 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
     Completer<GetPlanResponse>().future,
   );
 
+  /// The planId that [_subscriptionPlanFuture] was last fetched for. Consumers
+  /// gate their use of the plan response on this matching the current
+  /// subscription's planId — otherwise the response is stale (e.g. after an
+  /// upgrade, before the planId reaction refetches).
+  @readonly
+  String? _fetchedPlanId;
+
   Future<SubscriptionConfigResponse?> _fetch() async {
     final config = await _service.fetchSubscriptionConfig();
     _service.clearPendingTransactions().catchError((Object _) {});
@@ -43,7 +50,8 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
   }
 
   @action
-  void refreshPlan() {
+  void refreshPlan(String planId) {
+    _fetchedPlanId = planId;
     _subscriptionPlanFuture = ObservableFuture(_service.fetchSubscriptionPlan());
   }
 

@@ -56,6 +56,26 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
     );
   }
 
+  late final _$_fetchedPlanIdAtom = Atom(
+    name: '_SubscriptionConfigStore._fetchedPlanId',
+    context: context,
+  );
+
+  String? get fetchedPlanId {
+    _$_fetchedPlanIdAtom.reportRead();
+    return super._fetchedPlanId;
+  }
+
+  @override
+  String? get _fetchedPlanId => fetchedPlanId;
+
+  @override
+  set _fetchedPlanId(String? value) {
+    _$_fetchedPlanIdAtom.reportWrite(value, super._fetchedPlanId, () {
+      super._fetchedPlanId = value;
+    });
+  }
+
   late final _$refreshConfigAsyncAction = AsyncAction(
     '_SubscriptionConfigStore.refreshConfig',
     context: context,
@@ -72,12 +92,12 @@ mixin _$SubscriptionConfigStore on _SubscriptionConfigStore, Store {
   );
 
   @override
-  void refreshPlan() {
+  void refreshPlan(String planId) {
     final _$actionInfo = _$_SubscriptionConfigStoreActionController.startAction(
       name: '_SubscriptionConfigStore.refreshPlan',
     );
     try {
-      return super.refreshPlan();
+      return super.refreshPlan(planId);
     } finally {
       _$_SubscriptionConfigStoreActionController.endAction(_$actionInfo);
     }

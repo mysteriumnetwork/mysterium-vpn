@@ -43,7 +43,7 @@ abstract class _SubscriptionStore with Store {
       }, fireImmediately: true),
       reaction((_) => _subscriptionFuture.value?.planId, (planId) {
         if (planId != null) {
-          _configStore.refreshPlan();
+          _configStore.refreshPlan(planId);
         }
       }),
     ];

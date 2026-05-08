@@ -37,7 +37,16 @@ abstract class _SubscriptionFeaturesStore with Store, Disposeable {
       metadata?.malwareBlockingAllowed ?? _planMetadata?.malwareBlockingAllowed ?? false;
 
   @computed
-  PlanMetadata? get _planMetadata => _configStore.subscriptionPlanFuture.value?.metadata;
+  PlanMetadata? get _planMetadata {
+    // Only trust the plan future when it was fetched for the current planId —
+    // otherwise it's stale (e.g. after an upgrade, before the planId reaction
+    // refetches) and would mis-report residentialIPsAllowed.
+    final currentPlanId = _subscriptionStore.subscriptionFuture.value?.planId;
+    if (currentPlanId == null || currentPlanId != _configStore.fetchedPlanId) {
+      return null;
+    }
+    return _configStore.subscriptionPlanFuture.value?.metadata;
+  }
 
   @computed
   bool get isLoading {
@@ -48,6 +57,13 @@ abstract class _SubscriptionFeaturesStore with Store, Disposeable {
       return true;
     }
     if (metadata == null && _configStore.subscriptionPlanFuture.status == FutureStatus.pending) {
+      return true;
+    }
+    // Active subscription whose planId isn't reflected in either source yet —
+    // covers the microtask gap between subscriptionFuture resolving and the
+    // planId reaction firing refreshPlan().
+    final subscription = _subscriptionStore.subscriptionFuture.value;
+    if ((subscription?.active ?? false) && metadata == null && _planMetadata == null) {
       return true;
     }
     return false;
