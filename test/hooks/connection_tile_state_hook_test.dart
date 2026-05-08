@@ -29,6 +29,7 @@ import 'connection_tile_state_hook_test.mocks.dart';
   MockSpec<ABTestingStore>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<SubscriptionFeaturesStore>(),
+  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   // ---------------------------------------------------------------------------
@@ -57,6 +58,7 @@ void main() {
   late MockABTestingStore mockAbTestingStore;
   late MockSubscriptionStore mockSubscriptionStore;
   late MockSubscriptionFeaturesStore mockSubscriptionFeaturesStore;
+  late MockAuthSessionStore mockAuthSessionStore;
 
   setUp(() {
     capturedState = null;
@@ -70,6 +72,9 @@ void main() {
     mockAbTestingStore = MockABTestingStore();
     mockSubscriptionStore = MockSubscriptionStore();
     mockSubscriptionFeaturesStore = MockSubscriptionFeaturesStore();
+    mockAuthSessionStore = MockAuthSessionStore();
+    when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
+    when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
     // Default stubs — individual tests may override these.
     when(mockConnectionDisplayStore.hasDifferentSelection).thenReturn(false);
@@ -117,6 +122,7 @@ void main() {
       abTestingStorePOD.overrideWithValue(mockAbTestingStore),
       subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
       subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
+      authSessionStorePOD.overrideWithValue(mockAuthSessionStore),
     ],
     child: EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('en', 'US')],

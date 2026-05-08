@@ -52,6 +52,16 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
         }
       });
 
+      // One-shot reconciliation: addPermissionObserver fires only on change,
+      // so if the user already had permission granted before init() ran (the
+      // common case after a relaunch or system-settings grant), the observer
+      // never fires and the user is never opted in. Reconcile the current
+      // state explicitly.
+      if (OneSignal.Notifications.permission &&
+          !(OneSignal.User.pushSubscription.optedIn ?? false)) {
+        OneSignal.User.pushSubscription.optIn();
+      }
+
       _observersInitialized = true;
     } finally {
       _isInitializing = false;
@@ -71,6 +81,16 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<bool> requestPermission() async {
+    // If permission is already granted, there is no system prompt to show.
+    // Just ensure the device is opted in (canRequest() returns false in this
+    // case, so without this branch we'd throw and never opt in).
+    if (OneSignal.Notifications.permission) {
+      if (!(OneSignal.User.pushSubscription.optedIn ?? false)) {
+        OneSignal.User.pushSubscription.optIn();
+      }
+      return true;
+    }
+
     if (!(await OneSignal.Notifications.canRequest())) {
       throw RequestPushNotificationsPermissionsNotAllowed();
     }
@@ -100,8 +120,6 @@ class OnesignalNotificationsRepository implements NotificationsRepository {
   Future<void> login({required String userId, required String userEmail}) async {
     await OneSignal.login(userId);
     await OneSignal.User.addEmail(userEmail);
-    // OneSignal.login() is async - by the time it resolves, SDK permission state is synced
-    await Future.delayed(const Duration(seconds: 1)); // Small delay to ensure state is updated
     if (OneSignal.Notifications.permission && !(OneSignal.User.pushSubscription.optedIn ?? false)) {
       OneSignal.User.pushSubscription.optIn();
     }

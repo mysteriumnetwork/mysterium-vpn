@@ -23,6 +23,7 @@ import 'location_item_state_hook_test.mocks.dart';
   MockSpec<SubscriptionFeaturesStore>(),
   MockSpec<UnavailableLocationsStore>(),
   MockSpec<RemoteConfigStore>(),
+  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   // ---------------------------------------------------------------------------
@@ -57,6 +58,7 @@ void main() {
   late MockSubscriptionFeaturesStore mockSubscriptionFeaturesStore;
   late MockUnavailableLocationsStore mockUnavailableLocationsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
+  late MockAuthSessionStore mockAuthSessionStore;
 
   setUp(() {
     capturedState = null;
@@ -66,6 +68,9 @@ void main() {
     mockSubscriptionFeaturesStore = MockSubscriptionFeaturesStore();
     mockUnavailableLocationsStore = MockUnavailableLocationsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
+    mockAuthSessionStore = MockAuthSessionStore();
+    when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
+    when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
     // Default stubs — individual tests may override these.
     when(mockVpnStore.isConnected).thenReturn(false);
@@ -96,6 +101,7 @@ void main() {
       subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
       unavailableLocationsStorePOD.overrideWithValue(mockUnavailableLocationsStore),
       remoteConfigStorePOD.overrideWithValue(mockRemoteConfigStore),
+      authSessionStorePOD.overrideWithValue(mockAuthSessionStore),
     ],
     child: EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('en', 'US')],

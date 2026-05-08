@@ -237,6 +237,48 @@ void main() {
     });
   });
 
+  group('Auth reaction', () {
+    test('does not call repository.logout() on initial fire when unauthenticated', () async {
+      // Discard the authenticated store from setUp and recreate with no auth user.
+      await store.dispose();
+      reset(mockNotificationsRepository);
+
+      when(mockNotificationsRepository.init()).thenAnswer((_) async {});
+      when(mockNotificationsRepository.getUser()).thenAnswer(
+        (_) => Stream.value(
+          PushNotificationsUser(pushNotificationsId: 'id', userId: 'userId', tags: const {}),
+        ),
+      );
+      when(
+        mockNotificationsRepository.getPermissionStatusStream(),
+      ).thenAnswer((_) => Stream.value(false));
+      when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
+      when(
+        mockNotificationsRepository.getNotificationsStream(),
+      ).thenAnswer((_) => const Stream.empty());
+      when(mockNotificationsRepository.setTags(any)).thenAnswer((_) async {});
+      when(mockNotificationsRepository.logout()).thenAnswer((_) async {});
+
+      when(mockAuthSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
+
+      store = PushNotificationsStore(
+        mockAuthSessionStore,
+        mockRealIPInfoStore,
+        mockSubscriptionStore,
+        mockLogger,
+        mockNotificationsRepository,
+        mockAnalyticsStore,
+        mockLocalDb,
+        mockRemoteConfigStore,
+      )..testIsMobile = true;
+
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      verifyNever(mockNotificationsRepository.logout());
+    });
+  });
+
   group('Computed Properties', () {
     test('user returns string representation of PushNotificationsUser', () async {
       await store.pushNotificationsUser.first;
