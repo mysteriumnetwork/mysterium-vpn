@@ -14,7 +14,7 @@ class _ReasonsField extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final axisCount = ScreenType.of(context) != ScreenType.mobile ? 2 : 1;
+    final axisCount = ScreenType.of(context) >= ScreenType.tablet ? 2 : 1;
 
     void handleToggle(String value) {
       onSelectionChanged(selection.toggle(value));

@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
@@ -136,6 +135,8 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final localeStore = ref.watch(localeStorePOD);
 
+  final authSessionStore = ref.watch(authSessionStorePOD);
+
   final store = LocationsStore(
     api.getConnection(),
     filterService,
@@ -145,6 +146,7 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
     remoteConfigStore,
     queryStore,
     localeStore,
+    authSessionStore,
   );
 
   ref.onDispose(store.dispose);
@@ -337,7 +339,7 @@ final dnsStorePOD = Provider<DNSStore>(
     ref.watch(remoteConfigStorePOD),
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
-    ref.watch(subscriptionFeaturesStorePOD),
+    ref.watch(subscriptionStorePOD),
   ),
 );
 
@@ -438,9 +440,10 @@ final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
 final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final authSessionStore = ref.watch(authSessionStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = SmartRefreshStore(locationsStore, subscriptionStore, logger);
+  final store = SmartRefreshStore(locationsStore, subscriptionStore, authSessionStore, logger);
 
   ref.onDispose(store.dispose);
 
@@ -452,17 +455,6 @@ final subscriptionConfigStorePOD = Provider<SubscriptionConfigStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
 
   final store = SubscriptionConfigStore(authSessionStore, subscriptionService);
-
-  ref.onDispose(store.dispose);
-
-  return store;
-});
-
-final subscriptionFeaturesStorePOD = Provider<SubscriptionFeaturesStore>((ref) {
-  final subscriptionStore = ref.watch(subscriptionStorePOD);
-  final configStore = ref.watch(subscriptionConfigStorePOD);
-
-  final store = SubscriptionFeaturesStore(subscriptionStore, configStore);
 
   ref.onDispose(store.dispose);
 

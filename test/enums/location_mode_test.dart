@@ -25,6 +25,7 @@ void main() {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -40,6 +41,7 @@ void main() {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -56,6 +58,7 @@ void main() {
       final other = makeLocation(id: 'US', countryCode: 'US');
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -73,6 +76,7 @@ void main() {
         final location = makeLocation();
         final result = LocationMode.from(
           location: location,
+          isAuthenticated: true,
           residentialIPsAllowed: true,
           unavailableLocations: const {},
           subscription: activeSubscription,
@@ -91,6 +95,7 @@ void main() {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -107,6 +112,7 @@ void main() {
       final other = makeLocation(id: 'US', countryCode: 'US');
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -120,10 +126,27 @@ void main() {
   });
 
   group('LocationMode.from — unsubscribed', () {
-    test('returns unsubscribed when subscription is null', () {
+    test('unauthenticated user is unsubscribed regardless of subscription value', () {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: false,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: activeSubscription,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+      );
+      expect(result, LocationMode.unsubscribed);
+    });
+
+    test('authenticated user with null subscription is unsubscribed', () {
+      final location = makeLocation();
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: null,
@@ -135,10 +158,11 @@ void main() {
       expect(result, LocationMode.unsubscribed);
     });
 
-    test('returns unsubscribed when subscription.active is false', () {
+    test('authenticated user with inactive subscription is unsubscribed', () {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: inactiveSubscription,
@@ -151,6 +175,42 @@ void main() {
     });
   });
 
+  group('LocationMode.from — loading', () {
+    test('isSubscriptionLoading shows loading even when subscription is empty', () {
+      final location = makeLocation();
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: true,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: inactiveSubscription,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+        isSubscriptionLoading: true,
+      );
+      expect(result, LocationMode.loading);
+    });
+
+    test('unauthenticated short-circuits to unsubscribed even when isSubscriptionLoading', () {
+      final location = makeLocation();
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: false,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: null,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+        isSubscriptionLoading: true,
+      );
+      expect(result, LocationMode.unsubscribed);
+    });
+  });
+
   group('LocationMode.from — unsupportedByPlan', () {
     test(
       'returns unsupportedByPlan for residential location when residentialIPsAllowed is false',
@@ -158,6 +218,7 @@ void main() {
         final location = makeLocation(ipType: IPType.residential);
         final result = LocationMode.from(
           location: location,
+          isAuthenticated: true,
           residentialIPsAllowed: false,
           unavailableLocations: const {},
           subscription: activeSubscription,
@@ -170,27 +231,32 @@ void main() {
       },
     );
 
-    test('returns unsupportedByPlan for residential location that is not available', () {
-      final location = makeLocation(ipType: IPType.residential, isAvailable: false);
-      final result = LocationMode.from(
-        location: location,
-        residentialIPsAllowed: true,
-        unavailableLocations: const {},
-        subscription: activeSubscription,
-        isConnected: false,
-        isLoading: false,
-        vpnLocation: null,
-        connectingLocation: null,
-      );
-      expect(result, LocationMode.unsupportedByPlan);
-    });
+    test(
+      'datacenter location is never unsupportedByPlan even when residentialIPsAllowed is false',
+      () {
+        final location = makeLocation();
+        final result = LocationMode.from(
+          location: location,
+          isAuthenticated: true,
+          residentialIPsAllowed: false,
+          unavailableLocations: const {},
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: false,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, LocationMode.available);
+      },
+    );
   });
 
   group('LocationMode.from — unavailable', () {
-    test('returns unavailable when location is in unavailableLocations', () {
+    test('returns unavailable when datacenter is in unavailableLocations', () {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: {location},
         subscription: activeSubscription,
@@ -202,10 +268,11 @@ void main() {
       expect(result, LocationMode.unavailable);
     });
 
-    test('returns unavailable when location.isAvailable is false (datacenter)', () {
+    test('returns unavailable when datacenter location.isAvailable is false', () {
       final location = makeLocation(isAvailable: false);
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -216,6 +283,47 @@ void main() {
       );
       expect(result, LocationMode.unavailable);
     });
+
+    test(
+      'returns unavailable for residential location that plan supports but server flagged unavailable',
+      () {
+        final location = makeLocation(ipType: IPType.residential, isAvailable: false);
+        final result = LocationMode.from(
+          location: location,
+          isAuthenticated: true,
+          residentialIPsAllowed: true,
+          unavailableLocations: const {},
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: false,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, LocationMode.unavailable);
+      },
+    );
+
+    test(
+      'unsupportedByPlan wins for residential when plan disallows it, even if isAvailable is false',
+      () {
+        // The API returns is_available=false for residential locations on
+        // plans that don't include them. Showing `unavailable` here would
+        // hide the upgrade prompt, so plan-support must win.
+        final location = makeLocation(ipType: IPType.residential, isAvailable: false);
+        final result = LocationMode.from(
+          location: location,
+          isAuthenticated: true,
+          residentialIPsAllowed: false,
+          unavailableLocations: const {},
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: false,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, LocationMode.unsupportedByPlan);
+      },
+    );
   });
 
   group('LocationMode.from — available', () {
@@ -223,6 +331,7 @@ void main() {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -240,6 +349,7 @@ void main() {
         final location = makeLocation(ipType: IPType.residential);
         final result = LocationMode.from(
           location: location,
+          isAuthenticated: true,
           residentialIPsAllowed: true,
           unavailableLocations: const {},
           subscription: activeSubscription,
@@ -258,6 +368,7 @@ void main() {
       final location = makeLocation();
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: activeSubscription,
@@ -274,6 +385,23 @@ void main() {
       // Even with no subscription, a connected+matching location is "connected".
       final result = LocationMode.from(
         location: location,
+        isAuthenticated: true,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: null,
+        isConnected: true,
+        isLoading: false,
+        vpnLocation: location,
+        connectingLocation: null,
+      );
+      expect(result, LocationMode.connected);
+    });
+
+    test('connected takes precedence over unauthenticated unsubscribed', () {
+      final location = makeLocation();
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: false,
         residentialIPsAllowed: true,
         unavailableLocations: const {},
         subscription: null,

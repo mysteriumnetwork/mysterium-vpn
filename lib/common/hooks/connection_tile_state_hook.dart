@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -35,10 +36,10 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final selectedLocationStore = ref.watch(selectedLocationStorePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
-  final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final handleToggleConnection = useHandleToggleConnection();
   final handleUpgradePlan = useHandleUpgradePlan();
+  final isAuthenticated = useIsAuthenticated();
 
   final hasDifferentSelection = useComputedValue(
     () => connectionDisplayStore.hasDifferentSelection,
@@ -65,14 +66,15 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     return intentLocation != null &&
         LocationMode.from(
               location: intentLocation,
-              residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+              isAuthenticated: isAuthenticated,
+              residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
               unavailableLocations: unavailableLocationsStore.unavailableLocations,
               subscription: subscriptionStore.subscriptionFuture.value,
               isConnected: vpnStore.isConnected,
               isLoading: connectionDisplayStore.isLoading,
               vpnLocation: vpnStore.location,
               connectingLocation: null,
-              isSubscriptionLoading: subscriptionFeaturesStore.isLoading,
+              isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
             ) ==
             LocationMode.unsupportedByPlan;
   });

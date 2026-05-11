@@ -9,26 +9,34 @@ import 'package:talker/talker.dart';
 
 import 'smart_refresh_store_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<LocationsStore>(), MockSpec<SubscriptionStore>(), MockSpec<Talker>()])
+@GenerateNiceMocks([
+  MockSpec<LocationsStore>(),
+  MockSpec<SubscriptionStore>(),
+  MockSpec<AuthSessionStore>(),
+  MockSpec<Talker>(),
+])
 void main() {
   late MockLocationsStore locations;
   late MockSubscriptionStore subscriptions;
+  late MockAuthSessionStore authSession;
   late MockTalker logger;
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
     locations = MockLocationsStore();
     subscriptions = MockSubscriptionStore();
+    authSession = MockAuthSessionStore();
     logger = MockTalker();
 
     when(
       subscriptions.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(authSession.isAuthenticated).thenReturn(false);
     when(locations.refreshAll()).thenAnswer((_) async {});
   });
 
   test('constructs and disposes cleanly', () async {
-    final store = SmartRefreshStore(locations, subscriptions, logger);
+    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
     await store.dispose();
   });
 
@@ -38,7 +46,7 @@ void main() {
     // The reaction does not fire on construction (fireImmediately: false), so
     // we cannot easily trigger the refresh path without changing planId from
     // a test. Verify the dispose path does not surface the error to callers.
-    final store = SmartRefreshStore(locations, subscriptions, logger);
+    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
     await store.dispose();
   });
 }

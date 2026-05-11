@@ -23,7 +23,7 @@ class UserIntentPicker extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final hasIndicator = ScreenType.of(context) != ScreenType.mobile;
+    final hasIndicator = ScreenType.of(context) >= ScreenType.tablet;
 
     final child = _List(
       scrollController: scrollController,

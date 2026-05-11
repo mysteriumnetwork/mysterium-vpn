@@ -120,11 +120,8 @@ class _Authenticated extends HookConsumerWidget {
 
     void handleLogout() {
       analyticsStore.logEvent(AnalyticsEvent.logOutPopup);
-      shownConfirmationDialog(
+      showLogoutConfirmationDialog(
         context,
-        confirmText: LocaleKeys.confirm.tr(),
-        cancelText: LocaleKeys.cancelBtn.tr(),
-        title: LocaleKeys.logoutConfirmationTitle.tr(),
         supportingText: vpnStore.isConnected
             ? LocaleKeys.logoutVPNConnectedDesc.tr()
             : LocaleKeys.logoutConfirmationDesc.tr(),

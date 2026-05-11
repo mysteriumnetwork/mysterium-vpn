@@ -129,30 +129,36 @@ void _subscriptionStatusReaction(
       showSnackbar((store.subscriptionConfigFuture.error as ApiException).message);
     } else if (status == SubscriptionStatus.notVerified ||
         status == SubscriptionStatus.verifyingError) {
-      showModal(
-        context,
-        builder: (context) => AlertModal(
-          type: AlertModalType.error,
-          title: LocaleKeys.subscriptionVerificationFailed.tr(),
-          supportingText: LocaleKeys.failedToVerifySubs.tr(),
-          onClose: () {
-            analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
-            Navigator.of(context).pop();
-          },
-          primaryButton: ButtonPrimary(
-            onPressed: () {
-              Navigator.of(context).pop();
-              analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
-              purchaseStore.retryVerificationProcess();
-            },
-            child: Text(LocaleKeys.retryBtn.tr()),
-          ),
-          secondaryButton: ButtonSecondary(
-            onPressed: () {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          constraints: const BoxConstraints(maxWidth: 350),
+          child: AlertModal(
+            type: AlertModalType.error,
+            title: LocaleKeys.subscriptionVerificationFailed.tr(),
+            supportingText: LocaleKeys.failedToVerifySubs.tr(),
+            onClose: () {
               analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
               Navigator.of(context).pop();
             },
-            child: Text(LocaleKeys.cancelBtn.tr()),
+            primaryButton: ButtonPrimary(
+              onPressed: () {
+                Navigator.of(context).pop();
+                analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
+                purchaseStore.retryVerificationProcess();
+              },
+              child: Text(LocaleKeys.retryBtn.tr()),
+            ),
+            secondaryButton: ButtonSecondary(
+              onPressed: () {
+                analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
+                Navigator.of(context).pop();
+              },
+              child: Text(LocaleKeys.cancelBtn.tr()),
+            ),
           ),
         ),
       );
@@ -182,13 +188,16 @@ Future<void> _checkForExistingSubscription(
   }
 
   void showExistingSubscriptionDialog() {
-    showModal(
-      context,
-      allowDismiss: false,
-      builder: (context) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: Theme.of(context).spacing.xl3),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        constraints: const BoxConstraints(maxWidth: 350),
         child: AlertModal(
-          type: AlertModalType.warning,
+          screenType: ScreenType.mobile,
+          type: AlertModalType.info,
           title: LocaleKeys.existingSubscriptionTitle.tr(),
           supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
           primaryButton: ButtonPrimary(

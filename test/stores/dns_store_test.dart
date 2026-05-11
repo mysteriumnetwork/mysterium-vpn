@@ -5,8 +5,6 @@ import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/enums/blocker_type.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_config_store.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:talker/talker.dart';
 
 import 'dns_store_test.mocks.dart';
@@ -17,15 +15,13 @@ import 'dns_store_test.mocks.dart';
   MockSpec<Talker>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
-  MockSpec<SubscriptionConfigStore>(),
-  MockSpec<SubscriptionFeaturesStore>(),
 ])
 void main() {
   late MockLocalDBService mockLocalDBService;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockTalker mockLogger;
   late MockAuthSessionStore mockAuthSessionStore;
-  late MockSubscriptionFeaturesStore mockSubscriptionFeaturesStore;
+  late MockSubscriptionStore mockSubscriptionStore;
   late DNSStore store;
 
   setUp(() {
@@ -33,7 +29,7 @@ void main() {
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockLogger = MockTalker();
     mockAuthSessionStore = MockAuthSessionStore();
-    mockSubscriptionFeaturesStore = MockSubscriptionFeaturesStore();
+    mockSubscriptionStore = MockSubscriptionStore();
 
     when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
 
@@ -42,7 +38,7 @@ void main() {
       mockRemoteConfigStore,
       mockLogger,
       mockAuthSessionStore,
-      mockSubscriptionFeaturesStore,
+      mockSubscriptionStore,
     );
   });
 
@@ -137,7 +133,7 @@ void main() {
     test(
       'returns notSafeContentBlockerDnsAddress if not safe content blocker is enabled',
       () async {
-        when(mockSubscriptionFeaturesStore.malwareBlockingAllowed).thenReturn(true);
+        when(mockSubscriptionStore.malwareBlockingAllowed).thenReturn(true);
         when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(false);
         when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.3');
         when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
@@ -147,7 +143,7 @@ void main() {
     );
 
     test('returns malwareBlockerDnsAddress if malware blocker is enabled', () async {
-      when(mockSubscriptionFeaturesStore.malwareBlockingAllowed).thenReturn(true);
+      when(mockSubscriptionStore.malwareBlockingAllowed).thenReturn(true);
       when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(true);
       when(mockRemoteConfigStore.hideMalwareBlocker).thenReturn(false);
       when(mockRemoteConfigStore.malwareBlockerDnsAddress).thenReturn('8.8.8.8');

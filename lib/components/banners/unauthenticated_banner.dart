@@ -16,14 +16,11 @@ class UnauthenticatedBanner extends HookWidget {
       Beamer.of(context).beamToNamed(Routes.platformLogin.path);
     }
 
-    return AlertModal(
-      type: AlertModalType.info,
-      title: LocaleKeys.unauthenticatedBannerTitle.tr(),
-      primaryButton: ButtonPrimary(
-        size: ButtonSize.small,
-        onPressed: handlePressed,
-        child: Text(LocaleKeys.unauthenticatedBannerBtn.tr()),
-      ),
+    return StateCard(
+      icon: UntitledUI.log_in_02,
+      message: LocaleKeys.unauthenticatedBannerTitle.tr(),
+      actionLabel: LocaleKeys.signInBtn.tr(),
+      onActionPressed: handlePressed,
     );
   }
 }

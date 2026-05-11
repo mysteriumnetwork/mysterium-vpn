@@ -156,7 +156,7 @@ class _SubscriptionUpgradeModalPage extends HookConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              if (screenType != ScreenType.mobile)
+                              if (screenType >= ScreenType.tablet)
                                 SizedBox(height: theme.spacing.xl2),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
