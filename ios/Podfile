@@ -1,6 +1,13 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, "15.0"
 
+# Override the Firebase iOS SDK version hardcoded by firebase_core 4.8.0 (12.12.0).
+# 12.12.1 patches a fatal NSInvalidArgumentException in -[ODCConversionStore writeToFile]
+# triggered via GoogleAppMeasurement → GoogleAdsOnDeviceConversion on fresh installs.
+# Remove this line once a future firebase_core release pins to >= 12.12.1 natively.
+# See: https://github.com/firebase/firebase-ios-sdk/issues/15961
+$FirebaseSDKVersion = '12.12.1'
+
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV["COCOAPODS_DISABLE_STATS"] = "true"
 
