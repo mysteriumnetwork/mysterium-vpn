@@ -303,21 +303,27 @@ void main() {
       },
     );
 
-    test('unavailable takes precedence over unsupportedByPlan for residential locations', () {
-      final location = makeLocation(ipType: IPType.residential, isAvailable: false);
-      final result = LocationMode.from(
-        location: location,
-        isAuthenticated: true,
-        residentialIPsAllowed: false,
-        unavailableLocations: const {},
-        subscription: activeSubscription,
-        isConnected: false,
-        isLoading: false,
-        vpnLocation: null,
-        connectingLocation: null,
-      );
-      expect(result, LocationMode.unavailable);
-    });
+    test(
+      'unsupportedByPlan wins for residential when plan disallows it, even if isAvailable is false',
+      () {
+        // The API returns is_available=false for residential locations on
+        // plans that don't include them. Showing `unavailable` here would
+        // hide the upgrade prompt, so plan-support must win.
+        final location = makeLocation(ipType: IPType.residential, isAvailable: false);
+        final result = LocationMode.from(
+          location: location,
+          isAuthenticated: true,
+          residentialIPsAllowed: false,
+          unavailableLocations: const {},
+          subscription: activeSubscription,
+          isConnected: false,
+          isLoading: false,
+          vpnLocation: null,
+          connectingLocation: null,
+        );
+        expect(result, LocationMode.unsupportedByPlan);
+      },
+    );
   });
 
   group('LocationMode.from — available', () {

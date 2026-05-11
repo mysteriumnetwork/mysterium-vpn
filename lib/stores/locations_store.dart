@@ -163,6 +163,7 @@ abstract class _LocationsStore with Store {
     // Authorization header even when the user is authenticated, and the
     // backend responds with is_available=false for every location.
     await _authSessionStore.accessTokenFuture;
+    final wasAuthenticated = _authSessionStore.isAuthenticated;
 
     try {
       final response = await _connection.connectionLocations(
@@ -179,7 +180,13 @@ abstract class _LocationsStore with Store {
       final locations = config.map((it) => VPNLocation.fromAPICountry(it, ipType: ipType)).toList();
       final data = VPNLocations(locations: locations);
 
-      await _db.setLocations(data, type: ipType);
+      // Skip persisting unauth responses — they mark every location
+      // is_available=false and would poison `_watch`'s cache for the next
+      // `LocationsStore`. Check both pre- and post-request auth state to
+      // also catch a logout that races a request that's already in flight.
+      if (wasAuthenticated && _authSessionStore.isAuthenticated) {
+        await _db.setLocations(data, type: ipType);
+      }
       return data;
     } on ApiException {
       rethrow;

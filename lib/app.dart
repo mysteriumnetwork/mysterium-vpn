@@ -124,6 +124,12 @@ class MyApp extends HookConsumerWidget {
       ref.read(refreshIPStorePOD).disposeStore();
       ref.invalidate(refreshIPStorePOD);
     }
+
+    // SmartRefreshStore watches locations/subscription stores so it gets
+    // auto-invalidated by the lines above. Nothing else reads it, so without
+    // this explicit read the old instance stays disposed and its auth
+    // reaction can't refresh locations on the next login.
+    ref.read(smartRefreshStorePOD);
   }
 
   Future<void> _disposeStore<T>(
