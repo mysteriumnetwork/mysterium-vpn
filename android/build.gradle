@@ -10,7 +10,13 @@ allprojects {
                     if (namespace == null) {
                         namespace project.group
                     }
-                    compileSdk = 36
+                    compileSdk = 37
+                }
+                // Plugins that reference BuildConfig.* at compile time but don't opt-in
+                // via their own buildFeatures block. Required since AGP 8 no longer
+                // generates BuildConfig by default.
+                if (project.name in ['sentry_flutter', 'url_launcher_android']) {
+                    project.android.buildFeatures.buildConfig = true
                 }
             }
         }
@@ -24,23 +30,6 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(':app')
-}
-
-subprojects {
-    configurations.configureEach {
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            if (details.requested.group == 'com.google.android.gms' &&
-                    details.requested.name == 'play-services-basement') {
-                details.useVersion '18.6.0'
-                details.because 'Force usage of play-services-basement version 18.6.0 due to CVE fix'
-            }
-            if (details.requested.group == 'com.google.firebase' &&
-                    details.requested.name == 'firebase-measurement-connector') {
-                details.useVersion '20.0.1'
-                details.because 'Force firebase-measurement-connector to 20.0.1 for consistency and CVE fix'
-            }
-        }
-    }
 }
 
 tasks.register("clean", Delete) {
