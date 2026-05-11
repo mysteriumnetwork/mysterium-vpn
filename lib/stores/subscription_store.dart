@@ -93,7 +93,11 @@ abstract class _SubscriptionStore with Store {
   /// has no planId, or the config doesn't contain that plan.
   @computed
   api.SubscriptionConfigResponsePlansInnerMetadata? get planMetadata {
-    final planId = _subscriptionFuture.value?.planId;
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.active) {
+      return null;
+    }
+    final planId = subscription.planId;
     if (planId == null) {
       return null;
     }

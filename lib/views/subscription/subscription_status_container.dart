@@ -197,7 +197,7 @@ Future<void> _checkForExistingSubscription(
         constraints: const BoxConstraints(maxWidth: 350),
         child: AlertModal(
           screenType: ScreenType.mobile,
-          type: AlertModalType.error,
+          type: AlertModalType.info,
           title: LocaleKeys.existingSubscriptionTitle.tr(),
           supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
           primaryButton: ButtonPrimary(

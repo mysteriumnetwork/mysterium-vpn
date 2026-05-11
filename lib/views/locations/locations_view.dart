@@ -341,11 +341,7 @@ class _Locations extends HookConsumerWidget {
                       stickyHeaderKey: stickyKey,
                     ),
                     if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
-                      _Empty(
-                        text: LocaleKeys.noLocationsKeyword.tr(
-                          namedArgs: {'keyword': searchKeyword},
-                        ),
-                      ),
+                      _Empty(text: LocaleKeys.noLocationsKeyword.tr(args: [searchKeyword])),
                     if ((isEmpty ?? false) && searchKeyword.isEmpty) const LocationItemEmpty(),
                   ],
                 ),

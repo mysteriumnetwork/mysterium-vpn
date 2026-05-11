@@ -535,8 +535,6 @@ abstract class LocaleKeys {
   static const redirectToLoginPage = 'redirectToLoginPage';
   static const goToLoginBtn = 'goToLoginBtn';
   static const authenticationFailed = 'authenticationFailed';
-  static const coudntFindLocations = 'coudntFindLocations';
-  static const failedToConnect = 'failedToConnect';
   static const failedToLoadLocations = 'failedToLoadLocations';
   static const failedToSubscribe = 'failedToSubscribe';
   static const incorrectCode = 'incorrectCode';

@@ -253,25 +253,49 @@ abstract class _LocationsStore with Store {
   /// instead of the stale cached values while the new requests are in flight
   /// — used after auth changes where the cached `isAvailable` flags are
   /// known to be wrong for the now-current user.
+  ///
+  /// Each type is settled independently: if one fetch fails the other's new
+  /// value is still committed, and the failing side restores the previous
+  /// future so consumers don't get stuck on a rejected/empty state.
   @action
   Future<void> refreshAll({bool invalidate = false}) async {
-    if (invalidate) {
-      final dcFetch = _fetch(IPType.datacenter);
-      final residentialFetch = _fetch(IPType.residential);
-      _dcLocationsFuture = ObservableFuture(dcFetch);
-      _residentialLocationsFuture = ObservableFuture(residentialFetch);
-      try {
-        final results = await Future.wait([dcFetch, residentialFetch]);
-        _dcLocationsFuture = ObservableFuture.value(results[0]);
-        _residentialLocationsFuture = ObservableFuture.value(results[1]);
-      } on ApiException catch (_) {
-        // do nothing. previously cached locations remain available for use
-      } catch (e, stackTrace) {
-        _logger.handle(e, stackTrace);
-      }
+    if (!invalidate) {
+      await Future.wait([refresh(IPType.datacenter), refresh(IPType.residential)]);
       return;
     }
-    await Future.wait([refresh(IPType.datacenter), refresh(IPType.residential)]);
+
+    final previousDc = _dcLocationsFuture;
+    final previousResidential = _residentialLocationsFuture;
+
+    final dcFetch = _fetch(IPType.datacenter);
+    final residentialFetch = _fetch(IPType.residential);
+    _dcLocationsFuture = ObservableFuture(dcFetch);
+    _residentialLocationsFuture = ObservableFuture(residentialFetch);
+
+    await Future.wait([
+      _settleInvalidatedFetch(dcFetch, previousDc, (f) => _dcLocationsFuture = f),
+      _settleInvalidatedFetch(
+        residentialFetch,
+        previousResidential,
+        (f) => _residentialLocationsFuture = f,
+      ),
+    ]);
+  }
+
+  Future<void> _settleInvalidatedFetch(
+    Future<VPNLocations> fetch,
+    ObservableFuture<VPNLocations> previous,
+    void Function(ObservableFuture<VPNLocations>) assign,
+  ) async {
+    try {
+      final result = await fetch;
+      assign(ObservableFuture.value(result));
+    } on ApiException catch (_) {
+      assign(previous);
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      assign(previous);
+    }
   }
 
   /// Finds a location by its ID, optionally filtering by country code and IP type.
