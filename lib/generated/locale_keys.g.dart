@@ -28,7 +28,6 @@ abstract class LocaleKeys {
   static const ar = 'ar';
   static const areYouSure = 'areYouSure';
   static const austria = 'austria';
-  static const authenticationFailed = 'authenticationFailed';
   static const back = 'back';
   static const billedEvery6Months = 'billedEvery6Months';
   static const billedEveryMonth = 'billedEveryMonth';
@@ -72,7 +71,6 @@ abstract class LocaleKeys {
   static const continueWithGoogle = 'continueWithGoogle';
   static const copyBtn = 'copyBtn';
   static const copyLink = 'copyLink';
-  static const coudntFindLocations = 'coudntFindLocations';
   static const currentlyOffline = 'currentlyOffline';
   static const currentPrice = 'currentPrice';
   static const dataCenterBannerBtn = 'dataCenterBannerBtn';
@@ -115,13 +113,10 @@ abstract class LocaleKeys {
   static const et = 'et';
   static const existingSubscriptionDesc = 'existingSubscriptionDesc';
   static const existingSubscriptionTitle = 'existingSubscriptionTitle';
-  static const failedToConnect = 'failedToConnect';
   static const failedToConnectError = 'failedToConnectError';
   static const failedToDisconnectAllDevices = 'failedToDisconnectAllDevices';
-  static const failedToLoadLocations = 'failedToLoadLocations';
   static const failedToLogoutAllDevices = 'failedToLogoutAllDevices';
   static const failedToSubmitFeedback = 'failedToSubmitFeedback';
-  static const failedToSubscribe = 'failedToSubscribe';
   static const failedToVerifySubs = 'failedToVerifySubs';
   static const fast = 'fast';
   static const featureToggleMinVersionNotSatisfied = 'featureToggleMinVersionNotSatisfied';
@@ -148,9 +143,7 @@ abstract class LocaleKeys {
   static const highSpeed = 'highSpeed';
   static const history = 'history';
   static const id = 'id';
-  static const incorrectCode = 'incorrectCode';
   static const incorrectLocationReason = 'incorrectLocationReason';
-  static const incorrectMagicLink = 'incorrectMagicLink';
   static const installVpnProfile = 'installVpnProfile';
   static const internetConnectionRestored = 'internetConnectionRestored';
   static const ipTypeDataCenter = 'ipTypeDataCenter';
@@ -203,8 +196,6 @@ abstract class LocaleKeys {
   static const noEmailApp = 'noEmailApp';
   static const noInternetConnection = 'noInternetConnection';
   static const noInternetConnectionSub = 'noInternetConnectionSub';
-  static const noLocations = 'noLocations';
-  static const noLocationsKeyword = 'noLocationsKeyword';
   static const noServersAvailable = 'noServersAvailable';
   static const noThanksBtn = 'noThanksBtn';
   static const notificationsDesktop = 'notificationsDesktop';
@@ -308,16 +299,13 @@ abstract class LocaleKeys {
   static const signMeUpBtn = 'signMeUpBtn';
   static const SixMonths = 'SixMonths';
   static const sixMonthsBonus = 'sixMonthsBonus';
-  static const somethingWentWrong = 'somethingWentWrong';
   static const sr = 'sr';
   static const stableConnectionReason = 'stableConnectionReason';
   static const startTrialBtn = 'startTrialBtn';
   static const status = 'status';
   static const stayButton = 'stayButton';
   static const submitBtn = 'submitBtn';
-  static const subscriptionActive = 'subscriptionActive';
   static const subscriptionDesktop = 'subscriptionDesktop';
-  static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
   static const subscriptionRenewalDisclaimer = 'subscriptionRenewalDisclaimer';
   static const subscriptionUpgradeSuccessMessage = 'subscriptionUpgradeSuccessMessage';
   static const subscriptionUpgradeSuccessTitle = 'subscriptionUpgradeSuccessTitle';
@@ -332,7 +320,6 @@ abstract class LocaleKeys {
   static const theme = 'theme';
   static const then = 'then';
   static const title = 'title';
-  static const tokenAlreadyUsed = 'tokenAlreadyUsed';
   static const toManyRequestsErrorMsg = 'toManyRequestsErrorMsg';
   static const tooManyConnectionsBannerCTADisconnect = 'tooManyConnectionsBannerCTADisconnect';
   static const tooManyConnectionsBannerCTAReconnect = 'tooManyConnectionsBannerCTAReconnect';
@@ -547,4 +534,20 @@ abstract class LocaleKeys {
   static const accountSuccessfullyDeleted = 'accountSuccessfullyDeleted';
   static const redirectToLoginPage = 'redirectToLoginPage';
   static const goToLoginBtn = 'goToLoginBtn';
+  static const authenticationFailed = 'authenticationFailed';
+  static const coudntFindLocations = 'coudntFindLocations';
+  static const failedToConnect = 'failedToConnect';
+  static const failedToLoadLocations = 'failedToLoadLocations';
+  static const failedToSubscribe = 'failedToSubscribe';
+  static const incorrectCode = 'incorrectCode';
+  static const incorrectMagicLink = 'incorrectMagicLink';
+  static const noLocations = 'noLocations';
+  static const noLocationsKeyword = 'noLocationsKeyword';
+  static const somethingWentWrong = 'somethingWentWrong';
+  static const subscriptionProcessCanceled = 'subscriptionProcessCanceled';
+  static const tokenAlreadyUsed = 'tokenAlreadyUsed';
+  static const subscriptionActive = 'subscriptionActive';
+  static const planAlreadyPurchasedMsg = 'planAlreadyPurchasedMsg';
+  static const signInAbortedMsg = 'signInAbortedMsg';
+  static const notAvailableMsg = 'notAvailableMsg';
 }

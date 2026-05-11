@@ -1,9 +1,11 @@
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 Future<void> Function(String id) useHandleSubscribeToProduct() {
@@ -31,7 +33,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
     if ((subscription?.active ?? false) && selectedProduct.id == subscription?.planId) {
       // already subscribed to this product, do nothing
       if (context.mounted) {
-        showSnackbar("You're all set! You already have this plan active");
+        showSnackbar(LocaleKeys.planAlreadyPurchasedMsg.tr());
         Navigator.of(context).pop();
       }
       return;

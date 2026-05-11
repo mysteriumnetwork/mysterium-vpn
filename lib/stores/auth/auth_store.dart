@@ -261,7 +261,7 @@ abstract class _AuthStore with Store {
       }
     } catch (e) {
       e is SignInAborted
-          ? showSnackbar('Sign in aborted')
+          ? showSnackbar(LocaleKeys.signInAbortedMsg.tr())
           : showSnackbar(LocaleKeys.somethingWentWrong.tr());
 
       rethrow;
@@ -288,9 +288,9 @@ abstract class _AuthStore with Store {
       }
     } catch (e) {
       e is NotAvailableException
-          ? showSnackbar('Not available')
+          ? showSnackbar(LocaleKeys.notAvailableMsg.tr())
           : e is SignInAborted
-          ? showSnackbar('Sign in aborted')
+          ? showSnackbar(LocaleKeys.signInAbortedMsg.tr())
           : showSnackbar(LocaleKeys.somethingWentWrong.tr());
 
       rethrow;
