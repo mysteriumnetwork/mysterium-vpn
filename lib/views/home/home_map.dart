@@ -56,7 +56,7 @@ class HomeMap extends HookConsumerWidget {
     final locationsStore = ref.watch(locationsStorePOD);
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
     final vpnStore = ref.watch(vpnStorePOD);
-    final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
+    final subscriptionStore = ref.watch(subscriptionStorePOD);
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
     final locations = useComputedValue(
       () => [
@@ -78,7 +78,7 @@ class HomeMap extends HookConsumerWidget {
       final resolved = resolveMapLocation(
         location: location,
         locationsStore: locationsStore,
-        residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+        residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
       );
       selectedLocationStore.value = resolved;
     }
@@ -90,7 +90,7 @@ class HomeMap extends HookConsumerWidget {
       final resolved = resolveMapLocation(
         location: location,
         locationsStore: locationsStore,
-        residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+        residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
       );
       if (vpnStore.isConnected && vpnStore.location == resolved) {
         return;

@@ -36,7 +36,6 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final selectedLocationStore = ref.watch(selectedLocationStorePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
-  final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final handleToggleConnection = useHandleToggleConnection();
   final handleUpgradePlan = useHandleUpgradePlan();
@@ -68,14 +67,14 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
         LocationMode.from(
               location: intentLocation,
               isAuthenticated: isAuthenticated,
-              residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+              residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
               unavailableLocations: unavailableLocationsStore.unavailableLocations,
               subscription: subscriptionStore.subscriptionFuture.value,
               isConnected: vpnStore.isConnected,
               isLoading: connectionDisplayStore.isLoading,
               vpnLocation: vpnStore.location,
               connectingLocation: null,
-              isSubscriptionLoading: subscriptionFeaturesStore.isLoading,
+              isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
             ) ==
             LocationMode.unsupportedByPlan;
   });

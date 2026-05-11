@@ -28,7 +28,6 @@ LocationItemState useLocationItemState({
   final context = useContext();
   final vpnStore = ref.watch(vpnStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
-  final subscriptionFeaturesStore = ref.watch(subscriptionFeaturesStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final remoteConfig = ref.watch(remoteConfigStorePOD);
   final isAuthenticated = useIsAuthenticated();
@@ -39,10 +38,8 @@ LocationItemState useLocationItemState({
   final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
 
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
-  final residentialIPsAllowed = useComputedValue(
-    () => subscriptionFeaturesStore.residentialIPsAllowed,
-  );
-  final isSubscriptionLoading = useComputedValue(() => subscriptionFeaturesStore.isLoading);
+  final residentialIPsAllowed = useComputedValue(() => subscriptionStore.residentialIPsAllowed);
+  final isSubscriptionLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
 
   final locationMode = useComputedValue(
     () => LocationMode.from(
@@ -92,14 +89,14 @@ LocationItemState useLocationItemState({
       final childMode = LocationMode.from(
         location: child,
         isAuthenticated: isAuthenticated,
-        residentialIPsAllowed: subscriptionFeaturesStore.residentialIPsAllowed,
+        residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
         unavailableLocations: unavailableLocationsStore.unavailableLocations,
         subscription: subscription,
         isConnected: vpnStore.isConnected,
         isLoading: vpnStore.isLoading,
         vpnLocation: vpnStore.location,
         connectingLocation: vpnStore.connectingLocation,
-        isSubscriptionLoading: subscriptionFeaturesStore.isLoading,
+        isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
       );
       final childPlusUpgrade = childMode == LocationMode.unsupportedByPlan;
       final status = switch (childMode) {

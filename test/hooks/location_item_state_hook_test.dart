@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 import 'location_item_state_hook_test.mocks.dart';
@@ -20,7 +19,6 @@ import 'location_item_state_hook_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<VpnStore>(),
   MockSpec<SubscriptionStore>(),
-  MockSpec<SubscriptionFeaturesStore>(),
   MockSpec<UnavailableLocationsStore>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<AuthSessionStore>(),
@@ -55,7 +53,6 @@ void main() {
   // Mocks — declared here, initialised in setUp.
   late MockVpnStore mockVpnStore;
   late MockSubscriptionStore mockSubscriptionStore;
-  late MockSubscriptionFeaturesStore mockSubscriptionFeaturesStore;
   late MockUnavailableLocationsStore mockUnavailableLocationsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockAuthSessionStore mockAuthSessionStore;
@@ -65,7 +62,6 @@ void main() {
 
     mockVpnStore = MockVpnStore();
     mockSubscriptionStore = MockSubscriptionStore();
-    mockSubscriptionFeaturesStore = MockSubscriptionFeaturesStore();
     mockUnavailableLocationsStore = MockUnavailableLocationsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockAuthSessionStore = MockAuthSessionStore();
@@ -82,7 +78,7 @@ void main() {
       mockSubscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
 
-    when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(true);
+    when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
 
     when(mockUnavailableLocationsStore.unavailableLocations).thenReturn(const <VPNLocation>{});
 
@@ -98,7 +94,6 @@ void main() {
     overrides: [
       vpnStorePOD.overrideWithValue(mockVpnStore),
       subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
-      subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
       unavailableLocationsStorePOD.overrideWithValue(mockUnavailableLocationsStore),
       remoteConfigStorePOD.overrideWithValue(mockRemoteConfigStore),
       authSessionStorePOD.overrideWithValue(mockAuthSessionStore),
@@ -171,7 +166,7 @@ void main() {
     testWidgets('needsUpgrade for residential location without permission', (tester) async {
       final location = makeLocation(ipType: IPType.residential);
 
-      when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(false);
+      when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(false);
 
       await tester.pumpWidget(buildHarness(location));
       await tester.pump();

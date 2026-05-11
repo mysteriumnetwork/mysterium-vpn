@@ -1316,7 +1316,7 @@ packages:
     description:
       path: "."
       ref: "feat/state-card"
-      resolved-ref: "849babf3f29dc53a1f47aaa195b000e9c9596def"
+      resolved-ref: "04f58f767c97b309b671cddb876356b642eac528"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"

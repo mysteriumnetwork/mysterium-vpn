@@ -3,7 +3,6 @@ import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/enums/blocker_type.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:talker/talker.dart';
 
 part 'dns_store.g.dart';
@@ -21,7 +20,7 @@ abstract class _DNSStore with Store {
     this._remoteConfigStore,
     this._logger,
     this._authSessionStore,
-    this._subscriptionFeaturesStore,
+    this._subscriptionStore,
   ) {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
@@ -40,7 +39,7 @@ abstract class _DNSStore with Store {
   final RemoteConfigStore _remoteConfigStore;
   final Talker _logger;
   final AuthSessionStore _authSessionStore;
-  final SubscriptionFeaturesStore _subscriptionFeaturesStore;
+  final SubscriptionStore _subscriptionStore;
   ReactionDisposer? _authReactionDisposer;
 
   @computed
@@ -74,12 +73,11 @@ abstract class _DNSStore with Store {
 
   @computed
   bool get hideNotSafeContentBlocker =>
-      _remoteConfigStore.hideNotSafeContentBlocker ||
-      !_subscriptionFeaturesStore.malwareBlockingAllowed;
+      _remoteConfigStore.hideNotSafeContentBlocker || !_subscriptionStore.malwareBlockingAllowed;
 
   @computed
   bool get hideMalwareContentBlocker =>
-      _remoteConfigStore.hideMalwareBlocker || !_subscriptionFeaturesStore.malwareBlockingAllowed;
+      _remoteConfigStore.hideMalwareBlocker || !_subscriptionStore.malwareBlockingAllowed;
 
   @computed
   String get dnsAddress {

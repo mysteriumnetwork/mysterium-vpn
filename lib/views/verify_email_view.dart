@@ -304,17 +304,11 @@ class _ResendButton extends HookWidget {
     final timer = useCountdownTimer(initialCountdown: Env.flavor.isDev ? 5 : 60);
     final disabled = isLoading || timer.countdown > 0;
     final tap = disabled ? null : () => onPressed().whenComplete(timer.reset);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return ButtonSecondary(
       onPressed: tap,
       loading: isLoading ? const ButtonLoading() : null,
-      decoration: ButtonDecoration(
-        minimumSize: const Size(double.infinity, 44),
-        decorationColor: isDark ? Palette.grayDarkAlpha.shade800 : null,
-        borderColor: isDark ? Palette.grayDarkAlpha.shade800 : null,
-        foregroundColor: isDark ? Palette.white : null,
-      ),
+      decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
       child: Text(LocaleKeys.sendAgain.plural(timer.countdown)),
     );
   }

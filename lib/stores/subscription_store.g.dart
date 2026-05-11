@@ -30,6 +30,28 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.storeState,
     name: '_SubscriptionStore.storeState',
   )).value;
+  Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>? _$planMetadataComputed;
+
+  @override
+  api.SubscriptionConfigResponsePlansInnerMetadata? get planMetadata =>
+      (_$planMetadataComputed ??= Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>(
+        () => super.planMetadata,
+        name: '_SubscriptionStore.planMetadata',
+      )).value;
+  Computed<bool>? _$residentialIPsAllowedComputed;
+
+  @override
+  bool get residentialIPsAllowed => (_$residentialIPsAllowedComputed ??= Computed<bool>(
+    () => super.residentialIPsAllowed,
+    name: '_SubscriptionStore.residentialIPsAllowed',
+  )).value;
+  Computed<bool>? _$malwareBlockingAllowedComputed;
+
+  @override
+  bool get malwareBlockingAllowed => (_$malwareBlockingAllowedComputed ??= Computed<bool>(
+    () => super.malwareBlockingAllowed,
+    name: '_SubscriptionStore.malwareBlockingAllowed',
+  )).value;
   Computed<bool>? _$canRedeemCodeComputed;
 
   @override
@@ -165,6 +187,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 isSubscribed: ${isSubscribed},
 isSubscriptionLoading: ${isSubscriptionLoading},
 storeState: ${storeState},
+planMetadata: ${planMetadata},
+residentialIPsAllowed: ${residentialIPsAllowed},
+malwareBlockingAllowed: ${malwareBlockingAllowed},
 canRedeemCode: ${canRedeemCode}
     ''';
   }
