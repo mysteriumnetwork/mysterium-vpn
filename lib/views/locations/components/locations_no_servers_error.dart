@@ -1,17 +1,22 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class LocationsNoServersError extends StatelessWidget {
-  const LocationsNoServersError({required this.onRetry, super.key});
-
-  final VoidCallback onRetry;
+class LocationsNoServersError extends ConsumerWidget {
+  const LocationsNoServersError({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final palette = theme.palette;
+    final locationsStore = ref.watch(locationsStorePOD);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
       child: Column(
@@ -31,16 +36,30 @@ class LocationsNoServersError extends StatelessWidget {
           Text(
             LocaleKeys.noServersAvailable.tr(),
             textAlign: TextAlign.center,
-            style: theme.textStyles.textSm.semibold.copyWith(color: theme.palette.textSecondary),
+            style: theme.textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
           ),
           SizedBox(height: theme.spacing.xs),
           Text(
             LocaleKeys.noServersAvailableSub.tr(),
             textAlign: TextAlign.center,
-            style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
+            style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary),
           ),
           SizedBox(height: theme.spacing.xl),
-          ButtonSecondary(onPressed: onRetry, child: Text(LocaleKeys.retryBtn.tr())),
+          Observer(
+            builder: (context) {
+              final isRefreshing =
+                  locationsStore.residentialLocationsFuture.status == FutureStatus.pending ||
+                  locationsStore.dcLocationsFuture.status == FutureStatus.pending;
+              return SizedBox(
+                width: isDesktop ? null : double.infinity,
+                child: ButtonSecondary(
+                  loading: isRefreshing ? const ButtonLoading() : null,
+                  onPressed: locationsStore.refreshAll,
+                  child: Text(LocaleKeys.retryBtn.tr()),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

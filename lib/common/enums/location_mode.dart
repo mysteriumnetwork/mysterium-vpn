@@ -12,6 +12,7 @@ enum LocationMode {
 
   static LocationMode from({
     required VPNLocation location,
+    required bool isAuthenticated,
     required bool residentialIPsAllowed,
     required Set<VPNLocation> unavailableLocations,
     required Subscription? subscription,
@@ -27,16 +28,23 @@ enum LocationMode {
     if (isConnected && location == vpnLocation) {
       return LocationMode.connected;
     }
-    if (subscription == null || !subscription.active) {
+    if (!isAuthenticated) {
       return LocationMode.unsubscribed;
     }
     if (isSubscriptionLoading) {
       return LocationMode.loading;
     }
-    if (location.ipType == IPType.residential) {
-      if (!residentialIPsAllowed || !location.isAvailable) {
-        return LocationMode.unsupportedByPlan;
-      }
+    if (subscription == null || !subscription.active) {
+      return LocationMode.unsubscribed;
+    }
+    // Plan-support check has to run before the availability check for
+    // residential. On plans that don't include residential IPs the API
+    // returns `is_available: false` for every residential location — if we
+    // returned `unavailable` for those we'd hide the upgrade affordance.
+    // Genuine capacity-side unavailability for a plan that *does* include
+    // residential still falls through to the availability check below.
+    if (location.ipType == IPType.residential && !residentialIPsAllowed) {
+      return LocationMode.unsupportedByPlan;
     }
     if (unavailableLocations.contains(location) || !location.isAvailable) {
       return LocationMode.unavailable;

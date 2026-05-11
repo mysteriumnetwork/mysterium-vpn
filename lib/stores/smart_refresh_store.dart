@@ -12,12 +12,18 @@ part 'smart_refresh_store.g.dart';
 class SmartRefreshStore = _SmartRefreshStore with _$SmartRefreshStore;
 
 abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserver {
-  _SmartRefreshStore(this._locationsStore, this._subscriptionStore, this._logger) {
+  _SmartRefreshStore(
+    this._locationsStore,
+    this._subscriptionStore,
+    this._authSessionStore,
+    this._logger,
+  ) {
     _init();
   }
 
   final LocationsStore _locationsStore;
   final SubscriptionStore _subscriptionStore;
+  final AuthSessionStore _authSessionStore;
   final Talker _logger;
   late final List<ReactionDisposer> _disposers;
   late final Debouncer _subscriptionDebouncer;
@@ -30,6 +36,15 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
         (_) => _subscriptionStore.subscriptionFuture.value?.planId ?? '',
         (_) => _refreshLocations(),
         delay: 200,
+        fireImmediately: false,
+      ),
+      // Locations carry per-user isAvailable flags from the API. Refresh
+      // on every auth-state transition so the cache reflects the current
+      // user — especially after logout/login to the same account, where
+      // planId doesn't change and the planId reaction wouldn't fire.
+      reaction(
+        (_) => _authSessionStore.isAuthenticated,
+        (_) => _refreshLocations(invalidate: true),
         fireImmediately: false,
       ),
     ];
@@ -70,9 +85,9 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
 
   Future<void> _onPause() async {}
 
-  Future<void> _refreshLocations() async {
+  Future<void> _refreshLocations({bool invalidate = false}) async {
     try {
-      await _locationsStore.refreshAll();
+      await _locationsStore.refreshAll(invalidate: invalidate);
     } catch (e, stack) {
       _logger.handle(e, stack);
     }

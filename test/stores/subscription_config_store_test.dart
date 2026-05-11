@@ -46,14 +46,6 @@ void main() {
     verify(service.fetchSubscriptionConfig()).called(1);
   });
 
-  test('refreshPlan exposes a non-null plan future', () async {
-    final store = newStore()..refreshPlan();
-
-    final result = await store.subscriptionPlanFuture;
-
-    expect(result.id, 'plan_monthly');
-  });
-
   test('clearPendingTransactions errors are swallowed', () async {
     when(
       service.clearPendingTransactions(),

@@ -15,35 +15,44 @@ Future<void> shownConfirmationDialog(
   bool showCancel = true,
   String? confirmText,
   String? cancelText,
+  ButtonVariant confirmVariant = ButtonVariant.primary,
 }) => showDialog(
   context: context,
   barrierDismissible: dismissible,
-  builder: (context) => Dialog(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    constraints: const BoxConstraints(maxWidth: 350),
-    child: AlertModal(
-      screenType: ScreenType.mobile,
-      type: type,
-      title: title,
-      showIcon: showIcon,
-      supportingText: supportingText,
-      primaryButton: ButtonPrimary(
-        onPressed: () {
-          Navigator.pop(context);
-          onConfirm();
-        },
-        child: Text(confirmText ?? LocaleKeys.yes.tr()),
+  builder: (context) {
+    void handleConfirm() {
+      Navigator.pop(context);
+      onConfirm();
+    }
+
+    final confirmLabel = Text(confirmText ?? LocaleKeys.yes.tr());
+    final confirmButton = switch (confirmVariant) {
+      ButtonVariant.primary => ButtonPrimary(onPressed: handleConfirm, child: confirmLabel),
+      ButtonVariant.secondary => ButtonSecondary(onPressed: handleConfirm, child: confirmLabel),
+      ButtonVariant.tertiary => ButtonTertiary(onPressed: handleConfirm, child: confirmLabel),
+    };
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      constraints: const BoxConstraints(maxWidth: 350),
+      child: AlertModal(
+        screenType: ScreenType.mobile,
+        type: type,
+        title: title,
+        showIcon: showIcon,
+        supportingText: supportingText,
+        primaryButton: confirmButton,
+        secondaryButton: showCancel
+            ? ButtonSecondary(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onCancel?.call();
+                },
+                child: Text(cancelText ?? LocaleKeys.no.tr()),
+              )
+            : null,
       ),
-      secondaryButton: showCancel
-          ? ButtonSecondary(
-              onPressed: () {
-                Navigator.pop(context);
-                onCancel?.call();
-              },
-              child: Text(cancelText ?? LocaleKeys.no.tr()),
-            )
-          : null,
-    ),
-  ),
+    );
+  },
 );

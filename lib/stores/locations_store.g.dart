@@ -128,6 +128,13 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$refreshAsyncAction.run(() => super.refresh(ipType));
   }
 
+  late final _$refreshAllAsyncAction = AsyncAction('_LocationsStore.refreshAll', context: context);
+
+  @override
+  Future<void> refreshAll({bool invalidate = false}) {
+    return _$refreshAllAsyncAction.run(() => super.refreshAll(invalidate: invalidate));
+  }
+
   late final _$clearAsyncAction = AsyncAction('_LocationsStore.clear', context: context);
 
   @override
@@ -139,18 +146,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
     name: '_LocationsStore',
     context: context,
   );
-
-  @override
-  Future<void> refreshAll() {
-    final _$actionInfo = _$_LocationsStoreActionController.startAction(
-      name: '_LocationsStore.refreshAll',
-    );
-    try {
-      return super.refreshAll();
-    } finally {
-      _$_LocationsStoreActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void insertInvalidLocations() {

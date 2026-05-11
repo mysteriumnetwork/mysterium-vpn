@@ -31,16 +31,10 @@ class _DialogContent extends HookConsumerWidget {
       builder: (context) {
         final isLoading =
             userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending;
+        final isDesktop = screenType >= ScreenType.tablet;
         return PromptDialog(
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: screenType == ScreenType.mobile ? 24 : 144,
-          ),
-          buttonsPadding: EdgeInsets.fromLTRB(
-            screenType == ScreenType.mobile ? 16 : 144,
-            0,
-            screenType == ScreenType.mobile ? 16 : 144,
-            50,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: isDesktop ? 144 : 24),
+          buttonsPadding: EdgeInsets.fromLTRB(isDesktop ? 144 : 16, 0, isDesktop ? 144 : 16, 50),
           image: Asset.images.emailConsent(context).image(),
           title: LocaleKeys.marketingConsentPopupTitle.tr(),
           subtitle: LocaleKeys.marketingConsentPopupDesc.tr(),

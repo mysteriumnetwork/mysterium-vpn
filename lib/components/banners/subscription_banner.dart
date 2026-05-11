@@ -19,30 +19,26 @@ class SubscriptionBanner extends HookConsumerWidget {
 
     return Observer(
       builder: (context) => switch (subscriptionStore.subscriptionFuture.status) {
-        FutureStatus.pending => AlertModal(
-          type: AlertModalType.info,
-          title: LocaleKeys.checkSubsStatusTitle.tr(),
-          supportingText: LocaleKeys.checkSubsStatusDesc.tr(),
+        FutureStatus.pending => StateCard(
+          icon: UntitledUI.shopping_cart_02,
+          message: LocaleKeys.checkSubsStatusTitle.tr(),
         ),
         FutureStatus.rejected => AlertModal(
           type: AlertModalType.error,
           title: LocaleKeys.checkSubsStatusFailedTitle.tr(),
           supportingText: LocaleKeys.checkSubsStatusFailedDesc.tr(),
-          primaryButton: ButtonPrimary(
+          primaryButton: ButtonSecondary(
             size: ButtonSize.small,
             onPressed: subscriptionStore.refreshSubscription,
             child: Text(LocaleKeys.retryBtn.tr()),
           ),
         ),
-        FutureStatus.fulfilled => AlertModal(
-          type: AlertModalType.info,
-          title: LocaleKeys.noSubscriptionTitle.tr(),
-          primaryButton: ButtonPrimary(
-            key: K.subscriptionBannerCTA,
-            size: ButtonSize.small,
-            onPressed: handleSubscribe,
-            child: Text(LocaleKeys.noSubscriptionAction.tr()),
-          ),
+        FutureStatus.fulfilled => StateCard(
+          icon: UntitledUI.shopping_cart_02,
+          message: LocaleKeys.noSubscriptionTitle.tr(),
+          actionLabel: LocaleKeys.noSubscriptionAction.tr(),
+          actionKey: K.subscriptionBannerCTA,
+          onActionPressed: handleSubscribe,
         ),
       },
     );

@@ -122,15 +122,25 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     ]);
   }
 
-  ReactionDisposer _createAuthReaction() =>
-      reaction((_) => _authSessionStore.userFuture.value.toUserData(), (data) async {
-        if (_authSessionStore.userFuture.value == null) {
+  ReactionDisposer _createAuthReaction() {
+    var wasAuthenticated = false;
+    return reaction((_) => _authSessionStore.userFuture.value.toUserData(), (data) async {
+      final isAuthenticated = _authSessionStore.userFuture.value != null;
+      if (!isAuthenticated) {
+        // Skip logout on the initial fire — only logout on a real
+        // authenticated → unauthenticated transition. Calling OneSignal.logout()
+        // on every cold start churns the device record unnecessarily.
+        if (wasAuthenticated) {
           await _handleLogout();
-          return;
         }
+        wasAuthenticated = false;
+        return;
+      }
 
-        await _handleLogin(data);
-      }, fireImmediately: true);
+      wasAuthenticated = true;
+      await _handleLogin(data);
+    }, fireImmediately: true);
+  }
 
   ReactionDisposer _createLocationReaction() =>
       reaction((_) => _ipInfoStore.infoFuture.value.toLocationData(), (data) async {

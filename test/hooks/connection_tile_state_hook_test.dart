@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_features_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
@@ -28,7 +27,7 @@ import 'connection_tile_state_hook_test.mocks.dart';
   MockSpec<UnavailableLocationsStore>(),
   MockSpec<ABTestingStore>(),
   MockSpec<SubscriptionStore>(),
-  MockSpec<SubscriptionFeaturesStore>(),
+  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   // ---------------------------------------------------------------------------
@@ -56,7 +55,7 @@ void main() {
   late MockUnavailableLocationsStore mockUnavailableLocationsStore;
   late MockABTestingStore mockAbTestingStore;
   late MockSubscriptionStore mockSubscriptionStore;
-  late MockSubscriptionFeaturesStore mockSubscriptionFeaturesStore;
+  late MockAuthSessionStore mockAuthSessionStore;
 
   setUp(() {
     capturedState = null;
@@ -69,7 +68,9 @@ void main() {
     mockUnavailableLocationsStore = MockUnavailableLocationsStore();
     mockAbTestingStore = MockABTestingStore();
     mockSubscriptionStore = MockSubscriptionStore();
-    mockSubscriptionFeaturesStore = MockSubscriptionFeaturesStore();
+    mockAuthSessionStore = MockAuthSessionStore();
+    when(mockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);
+    when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
     // Default stubs — individual tests may override these.
     when(mockConnectionDisplayStore.hasDifferentSelection).thenReturn(false);
@@ -99,7 +100,7 @@ void main() {
       mockSubscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
 
-    when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(true);
+    when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -116,7 +117,7 @@ void main() {
       unavailableLocationsStorePOD.overrideWithValue(mockUnavailableLocationsStore),
       abTestingStorePOD.overrideWithValue(mockAbTestingStore),
       subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
-      subscriptionFeaturesStorePOD.overrideWithValue(mockSubscriptionFeaturesStore),
+      authSessionStorePOD.overrideWithValue(mockAuthSessionStore),
     ],
     child: EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('en', 'US')],
@@ -242,7 +243,7 @@ void main() {
         );
         when(mockConnectionDisplayStore.displayLocation).thenReturn(residentialLocation);
         when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
-        when(mockSubscriptionFeaturesStore.residentialIPsAllowed).thenReturn(false);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(false);
 
         await tester.pumpWidget(buildHarness());
         await tester.pump();

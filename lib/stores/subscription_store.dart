@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
@@ -41,11 +42,6 @@ abstract class _SubscriptionStore with Store {
           _subscriptionFuture = ObservableFuture(_fetchSubscription());
         }
       }, fireImmediately: true),
-      reaction((_) => _subscriptionFuture.value?.planId, (planId) {
-        if (planId != null) {
-          _configStore.refreshPlan();
-        }
-      }),
     ];
   }
 
@@ -80,16 +76,9 @@ abstract class _SubscriptionStore with Store {
   bool? get isSubscribed => _subscriptionFuture.value?.active;
 
   @computed
-  bool get isSubscriptionLoading {
-    if (storeState == StoreState.loading) {
-      return true;
-    }
-    if (_subscriptionFuture.status == FutureStatus.pending ||
-        subscriptionConfigFuture.status == FutureStatus.pending) {
-      return true;
-    }
-    return false;
-  }
+  bool get isSubscriptionLoading =>
+      _subscriptionFuture.status == FutureStatus.pending ||
+      subscriptionConfigFuture.status == FutureStatus.pending;
 
   @computed
   StoreState get storeState => switch (subscriptionConfigFuture.status) {
@@ -98,6 +87,29 @@ abstract class _SubscriptionStore with Store {
     FutureStatus.fulfilled =>
       subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
   };
+
+  /// Plan metadata for the current subscription's `planId`, resolved from the
+  /// static subscription config. Returns null if the subscription is inactive,
+  /// has no planId, or the config doesn't contain that plan.
+  @computed
+  api.SubscriptionConfigResponsePlansInnerMetadata? get planMetadata {
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.active) {
+      return null;
+    }
+    final planId = subscription.planId;
+    if (planId == null) {
+      return null;
+    }
+    final plans = subscriptionConfigFuture.value?.plans ?? const [];
+    return plans.firstWhereOrNull((plan) => plan.id == planId)?.metadata;
+  }
+
+  @computed
+  bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
+
+  @computed
+  bool get malwareBlockingAllowed => planMetadata?.malwareBlockingAllowed ?? false;
 
   @computed
   bool get canRedeemCode {
