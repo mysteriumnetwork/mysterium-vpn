@@ -110,6 +110,29 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$evaluatePromptToShowAsyncAction.run(() => super.evaluatePromptToShow());
   }
 
+  late final _$shouldShowNoneSubsOnboardingAsyncAction = AsyncAction(
+    '_UserPreferencesStore.shouldShowNoneSubsOnboarding',
+    context: context,
+  );
+
+  @override
+  @visibleForTesting
+  Future<bool> shouldShowNoneSubsOnboarding() {
+    return _$shouldShowNoneSubsOnboardingAsyncAction.run(
+      () => super.shouldShowNoneSubsOnboarding(),
+    );
+  }
+
+  late final _$setNoneSubsOnboardingShownAsyncAction = AsyncAction(
+    '_UserPreferencesStore.setNoneSubsOnboardingShown',
+    context: context,
+  );
+
+  @override
+  Future<void> setNoneSubsOnboardingShown() {
+    return _$setNoneSubsOnboardingShownAsyncAction.run(() => super.setNoneSubsOnboardingShown());
+  }
+
   late final _$shouldShowMarketingConsentAsyncAction = AsyncAction(
     '_UserPreferencesStore.shouldShowMarketingConsent',
     context: context,

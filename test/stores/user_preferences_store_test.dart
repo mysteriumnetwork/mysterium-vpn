@@ -16,6 +16,7 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<LocalDBService>(),
   MockSpec<PushNotificationsStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<SubscriptionStore>(),
 ])
 void main() {
   late UserPreferencesStore store;
@@ -25,6 +26,7 @@ void main() {
   late MockLocalDBService mockLocalDBService;
   late MockPushNotificationsStore mockPushNotificationsStore;
   late MockAuthSessionStore mockAuthSessionStore;
+  late MockSubscriptionStore mockSubscriptionStore;
   setUp(() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
@@ -32,6 +34,7 @@ void main() {
     mockLocalDBService = MockLocalDBService();
     mockPushNotificationsStore = MockPushNotificationsStore();
     mockAuthSessionStore = MockAuthSessionStore();
+    mockSubscriptionStore = MockSubscriptionStore();
 
     // Default auth state: not authenticated
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
@@ -49,6 +52,9 @@ void main() {
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
     when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
     when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
+    // Default: noneSubsOnboarding has already been shown so it doesn't fire in
+    // unrelated tests. Tests that exercise the onboarding flow override this.
+    when(mockLocalDBService.getNoneSubsOnboardingShown()).thenAnswer((_) async => true);
     when(
       mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
     ).thenAnswer((_) async => false);
@@ -60,6 +66,7 @@ void main() {
       localDBService: mockLocalDBService,
       pushNotificationsStore: mockPushNotificationsStore,
       authSessionStore: mockAuthSessionStore,
+      subscriptionStore: mockSubscriptionStore,
     )..testIsMobile = true;
   });
 
@@ -79,6 +86,7 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
       )..testIsMobile = true;
 
       // Wait for futures to complete
@@ -111,6 +119,7 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete
@@ -141,6 +150,7 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
       )..testIsMobile = true;
 
       // Should not throw
@@ -221,6 +231,70 @@ void main() {
 
       // Even though conditions are met for showing, it should not show again
       expect(store.isPromptShown(UserPromptType.marketingConsent), isTrue);
+    });
+
+    test('isPromptShown returns false for unshown noneSubsOnboarding', () {
+      store.noneSubsOnboardingPromptShown = false;
+      expect(store.isPromptShown(UserPromptType.noneSubsOnboarding), isFalse);
+    });
+
+    test('isPromptShown returns true for shown noneSubsOnboarding', () {
+      store.noneSubsOnboardingPromptShown = true;
+      expect(store.isPromptShown(UserPromptType.noneSubsOnboarding), isTrue);
+    });
+
+    test('markPromptAsShown marks noneSubsOnboarding as shown', () {
+      store
+        ..noneSubsOnboardingPromptShown = false
+        ..markPromptAsShown(UserPromptType.noneSubsOnboarding);
+      expect(store.noneSubsOnboardingPromptShown, isTrue);
+    });
+
+    test('markPromptAsShown sets anyPromptShownThisSession for non-none type', () {
+      store
+        ..anyPromptShownThisSession = false
+        ..markPromptAsShown(UserPromptType.marketingConsent);
+      expect(store.anyPromptShownThisSession, isTrue);
+    });
+
+    test('markPromptAsShown does not set anyPromptShownThisSession for none type', () {
+      store
+        ..anyPromptShownThisSession = false
+        ..markPromptAsShown(UserPromptType.none);
+      expect(store.anyPromptShownThisSession, isFalse);
+    });
+
+    test('evaluatePromptToShow returns none when anyPromptShownThisSession is true', () async {
+      // Conditions that would normally trigger marketingConsent
+      store
+        ..getMarketingConsentFuture = ObservableFuture.value(false)
+        ..anyPromptShownThisSession = true;
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+
+      await store.evaluatePromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.none);
+    });
+
+    test('only one prompt can be shown per session — second evaluation yields none', () async {
+      // First evaluation triggers marketingConsent
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
+
+      await store.evaluatePromptToShow();
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+
+      // Mark it shown — this also flips anyPromptShownThisSession
+      store.markPromptAsShown(UserPromptType.marketingConsent);
+
+      // Re-evaluating should not pick up pushNotifications even though it's eligible
+      await store.evaluatePromptToShow();
+      expect(store.nextPromptToShow, UserPromptType.none);
     });
   });
 
@@ -395,6 +469,7 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
       )..testIsMobile = true;
 
       await store.setMarketingConsentFuture;
@@ -563,6 +638,7 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete
@@ -588,6 +664,7 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete

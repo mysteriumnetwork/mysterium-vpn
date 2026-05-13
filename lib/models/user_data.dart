@@ -28,6 +28,7 @@ class UserData {
     this.protocolType = ProtocolType.wireguard,
     this.pushNotificationsPromptLastShownAt,
     this.appOpenCount = 0,
+    this.noneSubsOnboardingShown = false,
   });
 
   @HiveField(0)
@@ -83,6 +84,9 @@ class UserData {
   @HiveField(16, defaultValue: 0)
   int appOpenCount;
 
+  @HiveField(17, defaultValue: false)
+  bool noneSubsOnboardingShown;
+
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
@@ -114,6 +118,7 @@ recentLocationCodes: $recentLocationCodes
 marketingConsentShown: $marketingConsentShown
 protocolType: $protocolType
 pushNotificationsPromptLastShownAt: $pushNotificationsPromptLastShownAt
+noneSubsOnboardingShown: $noneSubsOnboardingShown
 ''';
 }
 

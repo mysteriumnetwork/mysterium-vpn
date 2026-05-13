@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_preferences_store.g.dart';
 
-enum UserPromptType { none, marketingConsent, pushNotifications }
+enum UserPromptType { none, noneSubsOnboarding, marketingConsent, pushNotifications }
 
 // ignore: library_private_types_in_public_api
 class UserPreferencesStore = _UserPreferencesStore with _$UserPreferencesStore;
@@ -22,12 +22,14 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     required LocalDBService localDBService,
     required PushNotificationsStore pushNotificationsStore,
     required AuthSessionStore authSessionStore,
+    required SubscriptionStore subscriptionStore,
   }) : _apiService = apiService,
        _analyticsStore = analyticsStore,
        _realIPInfo = realIPInfo,
        localDb = localDBService,
        _pushNotificationsStore = pushNotificationsStore,
-       _authSessionStore = authSessionStore {
+       _authSessionStore = authSessionStore,
+       _subscriptionStore = subscriptionStore {
     _authReactionDisposer = reaction<bool>(
       (_) => _authSessionStore.isAuthenticated,
       (status) async {
@@ -52,6 +54,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   final LocalDBService localDb;
   final PushNotificationsStore _pushNotificationsStore;
   final AuthSessionStore _authSessionStore;
+  final SubscriptionStore _subscriptionStore;
   ReactionDisposer? _authReactionDisposer;
 
   @observable
@@ -76,6 +79,15 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   bool marketingConsentPromptShown = false;
 
   @visibleForTesting
+  bool noneSubsOnboardingPromptShown = false;
+
+  // Set true once any prompt is shown in the current app run. We allow at most
+  // one prompt per launch — subsequent evaluations are short-circuited until
+  // the app is restarted.
+  @visibleForTesting
+  bool anyPromptShownThisSession = false;
+
+  @visibleForTesting
   bool testIsMobile = false; // default false, will override in tests
 
   bool get supportsPushNotifications => testIsMobile || isMobile();
@@ -83,6 +95,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @action
   bool isPromptShown(UserPromptType type) {
     switch (type) {
+      case UserPromptType.noneSubsOnboarding:
+        return noneSubsOnboardingPromptShown;
       case UserPromptType.marketingConsent:
         return marketingConsentPromptShown;
       case UserPromptType.pushNotifications:
@@ -95,29 +109,68 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @action
   void markPromptAsShown(UserPromptType type) {
     switch (type) {
+      case UserPromptType.noneSubsOnboarding:
+        noneSubsOnboardingPromptShown = true;
       case UserPromptType.marketingConsent:
         marketingConsentPromptShown = true;
       case UserPromptType.pushNotifications:
         pushNotificationsPromptShown = true;
       case UserPromptType.none:
-        break;
+        return;
     }
+    anyPromptShownThisSession = true;
   }
 
   @visibleForTesting
   @action
   Future<void> evaluatePromptToShow() async {
+    // Cap to one prompt per app launch — chaining onboarding, marketing
+    // consent, and push permission back-to-back would be a jarring first
+    // impression. Restart the app to surface the next eligible prompt.
+    if (anyPromptShownThisSession) {
+      nextPromptToShow = UserPromptType.none;
+      return;
+    }
+    final shouldShowOnboarding = await shouldShowNoneSubsOnboarding();
     final pushPromptShown = await _pushNotificationsStore
         .shouldShowPushNotificationsPermissionPrompt();
     final marketingConsentShown = await shouldShowMarketingConsent();
 
-    if (marketingConsentShown) {
+    // Priority order — onboarding takes precedence so first-time non-subscribers
+    // see the value proposition before any consent/permission ask.
+    if (shouldShowOnboarding) {
+      nextPromptToShow = UserPromptType.noneSubsOnboarding;
+    } else if (marketingConsentShown) {
       nextPromptToShow = UserPromptType.marketingConsent;
     } else if (pushPromptShown) {
       nextPromptToShow = UserPromptType.pushNotifications;
     } else {
       nextPromptToShow = UserPromptType.none;
     }
+  }
+
+  @visibleForTesting
+  @action
+  Future<bool> shouldShowNoneSubsOnboarding() async {
+    final alreadyShown = await localDb.getNoneSubsOnboardingShown();
+    if (alreadyShown) {
+      return false;
+    }
+    try {
+      final subscription = await _subscriptionStore.subscriptionFuture;
+      return !subscription.active;
+    } catch (_) {
+      // Subscription fetch failed (offline, API error, etc.) — skip the
+      // onboarding rather than risk flashing it at a paying user. It will
+      // be re-evaluated on the next launch.
+      return false;
+    }
+  }
+
+  @action
+  Future<void> setNoneSubsOnboardingShown() async {
+    await localDb.setNoneSubsOnboardingShown();
+    await evaluatePromptToShow();
   }
 
   @visibleForTesting

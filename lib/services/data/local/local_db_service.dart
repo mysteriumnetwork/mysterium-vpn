@@ -247,4 +247,21 @@ class LocalDBService {
     userData.appOpenCount = 0;
     await _saveUserData(userData);
   }
+
+  Future<bool> getNoneSubsOnboardingShown() async {
+    final userData = await _loadUserData();
+    return userData.noneSubsOnboardingShown;
+  }
+
+  Future<void> setNoneSubsOnboardingShown() async {
+    final userData = await _loadUserData();
+    userData.noneSubsOnboardingShown = true;
+    await _saveUserData(userData);
+  }
+
+  Future<void> resetNoneSubsOnboardingShown() async {
+    final userData = await _loadUserData();
+    userData.noneSubsOnboardingShown = false;
+    await _saveUserData(userData);
+  }
 }

@@ -240,6 +240,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
   final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
 
   return UserPreferencesStore(
     apiService: apiService,
@@ -248,6 +249,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
     localDBService: LocalDBService.instance,
     pushNotificationsStore: pushNotificationsStore,
     authSessionStore: authSessionStore,
+    subscriptionStore: subscriptionStore,
   );
 });
 

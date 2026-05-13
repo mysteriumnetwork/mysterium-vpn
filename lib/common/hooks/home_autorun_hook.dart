@@ -50,7 +50,18 @@ void useHomeAutorun() {
           if (!userPreferencesStore.isPromptShown(value)) {
             userPreferencesStore.markPromptAsShown(value);
 
-            if (value case UserPromptType.marketingConsent) {
+            if (value case UserPromptType.noneSubsOnboarding) {
+              controller.add(() async {
+                // Persist before showing so a force-quit mid-dialog doesn't
+                // re-surface onboarding on the next launch.
+                await userPreferencesStore.setNoneSubsOnboardingShown();
+                if (!context.mounted) {
+                  return null;
+                }
+                await showOnboardingDialog(context);
+                return null;
+              });
+            } else if (value case UserPromptType.marketingConsent) {
               controller.add(() => showMarketingConsentDialog(context));
             } else if (value case UserPromptType.pushNotifications) {
               controller.add(() => showPushNotificationsPermissionDialog(context));
