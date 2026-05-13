@@ -11,6 +11,12 @@ extension $AssetsImagesGenExtensions on $AssetsImagesGen {
 
   AssetGenImage pnConsent(BuildContext context) =>
       _withBrightness(context, light: pnPermissionsLight, dark: pnPermissionsDark);
+  SvgGenImage onboardingMap(BuildContext context) =>
+      _withBrightness(context, light: onboardingMapLight, dark: onboardingMapDark);
+  AssetGenImage houseOnboarding(BuildContext context) =>
+      _withBrightness(context, light: houseLight, dark: houseDark);
+  AssetGenImage serversOnboarding(BuildContext context) =>
+      _withBrightness(context, light: serversLight, dark: serversDark);
 }
 
 extension $AssetsLogoGenExtensions on $AssetsLogoGen {
