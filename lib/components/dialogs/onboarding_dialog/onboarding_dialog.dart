@@ -175,11 +175,7 @@ class _OnboardingContent extends StatelessWidget {
 /// Scrollable body that fills the remaining viewport when content fits and
 /// scrolls when the viewport is shorter than the content.
 class _OnboardingBody extends StatelessWidget {
-  const _OnboardingBody({
-    required this.step,
-    required this.isMobile,
-    required this.onContinue,
-  });
+  const _OnboardingBody({required this.step, required this.isMobile, required this.onContinue});
 
   final _Step step;
   final bool isMobile;
