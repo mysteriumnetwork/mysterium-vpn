@@ -68,7 +68,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.15
+      ref: feat/onboarding-flow
   onesignal_flutter: 5.5.3
   open_mail_app:
     git:
