@@ -1324,7 +1324,7 @@ packages:
     description:
       path: "."
       ref: "feat/onboarding-flow"
-      resolved-ref: "3a64979bd2a61016a259a7c32f9a8dae111f922f"
+      resolved-ref: "5f107fd87bbf2ad20a82123dcce1501f2ecca7f1"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
