@@ -200,13 +200,15 @@ class _OnboardingBody extends StatelessWidget {
     final spacing = Theme.of(context).spacing;
     final hPad = isMobile ? spacing.xl2 : spacing.xl3;
     final topGap = isMobile ? _kHeaderContentGapMobile : _kHeaderContentGapDesktop;
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
     final isLast = step == _Step.values.last;
+
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(hPad, topGap, hPad, spacing.xl3),
+            padding: EdgeInsets.fromLTRB(hPad, topGap, hPad, spacing.xl3 + bottomInset),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
