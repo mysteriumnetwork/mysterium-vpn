@@ -149,10 +149,6 @@
   "italy": "إيطاليا",
   "iUnderstandBtn": "أنا أفهم",
   "ja": "اليابانية",
-  "killSwitch": "Kill-switch",
-  "killSwitchDesc": "يوقف الوصول إلى الإنترنت في حالة انقطاع الاتصال بـ VPN، لمنع عرض عنوان IP الخاص بك.",
-  "killSwitchTooltipMessage": "يمنع حركة المرور على الإنترنت عند فقدان الاتصال بخادم VPN. مفتاح القتل دائمًا قيد التشغيل عند الاتصال بـ MysteriumVPN.",
-  "killSwitchTooltipTitle": "Interruptor de Desligamento",
   "letsGoBtn": "دعنا نذهب",
   "linkCopied": "تم نسخ الرابط إلى الحافظة!",
   "location": "الموقع",
@@ -419,7 +415,7 @@
   "plan_yearly_basic": "السنة السنوية الأساسية",
   "plan_monthly_basic": "اشتراك شهري أساسي",
   "plan_monthly_pro": "برو مونثلي",
-  "plan_yearly_pro": "برو سنوي",
+  "plan_yearly_pro": "برو أنوال",
   "subscriptionUpgrade": "يرقي",
   "plan_2_years_basic": "سنتان أساسيتان",
   "plan_2_years_pro": "محترف لمدة عامين",
@@ -453,7 +449,7 @@
     "other": "{statesNum} الولايات"
   },
   "redeemDiscountCode": "استخدم رمز الخصم",
-  "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
+  "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
   "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
   "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
   "allowNotificationsBtn": "السماح بالإشعارات",
@@ -542,7 +538,7 @@
   "checkSubsStatusFailedTitle": "معلومات الخطة غير متوفرة",
   "accountSuccessfullyDeleted": "تم حذف الحساب",
   "redirectToLoginPage": "تم حذف حسابك بنجاح. سيتم إعادة توجيهك إلى شاشة تسجيل الدخول.",
-  "goToLoginBtn": "انتقل إلى صفحة تسجيل الدخول",
+  "goToLoginBtn": "انتقل إلى تسجيل الدخول",
   "authenticationFailed": "تعذر تسجيل الدخول. يرجى المحاولة مرة أخرى.",
   "failedToLoadLocations": "لم نتمكن من تحميل المواقع. يرجى المحاولة مرة أخرى.",
   "failedToSubscribe": "حدث خطأ ما في اشتراكك. يرجى المحاولة مرة أخرى!",
@@ -556,5 +552,9 @@
   "subscriptionActive": "خبر رائع! اشتراكك الآن فعال.",
   "planAlreadyPurchasedMsg": "أنت جاهز تماماً! هذه الخطة مفعلة لديك بالفعل.",
   "signInAbortedMsg": "تم إلغاء تسجيل الدخول",
-  "notAvailableMsg": "غير متوفر"
+  "notAvailableMsg": "غير متوفر",
+  "killSwitch": "مفتاح الإيقاف",
+  "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
+  "dns": "حماية نظام أسماء النطاقات (DNS)",
+  "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)"
 }

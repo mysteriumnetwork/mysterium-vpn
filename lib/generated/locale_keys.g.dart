@@ -153,10 +153,6 @@ abstract class LocaleKeys {
   static const italy = 'italy';
   static const iUnderstandBtn = 'iUnderstandBtn';
   static const ja = 'ja';
-  static const killSwitch = 'killSwitch';
-  static const killSwitchDesc = 'killSwitchDesc';
-  static const killSwitchTooltipMessage = 'killSwitchTooltipMessage';
-  static const killSwitchTooltipTitle = 'killSwitchTooltipTitle';
   static const letsGoBtn = 'letsGoBtn';
   static const linkCopied = 'linkCopied';
   static const location = 'location';
@@ -548,4 +544,8 @@ abstract class LocaleKeys {
   static const planAlreadyPurchasedMsg = 'planAlreadyPurchasedMsg';
   static const signInAbortedMsg = 'signInAbortedMsg';
   static const notAvailableMsg = 'notAvailableMsg';
+  static const killSwitch = 'killSwitch';
+  static const killSwitchDesc = 'killSwitchDesc';
+  static const dns = 'dns';
+  static const dnsDesc = 'dnsDesc';
 }
