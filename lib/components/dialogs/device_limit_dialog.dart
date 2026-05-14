@@ -10,7 +10,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> showDeviceLimitDialog(BuildContext context) async {
-  await showModal(context, builder: (_) => const _DialogContent());
+  await showModal(
+    context,
+    builder: (_) => const _DialogContent(),
+  );
 }
 
 class _DialogContent extends HookConsumerWidget {
@@ -19,7 +22,6 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sessionStore = ref.watch(authSessionStorePOD);
-    final screenType = ScreenType.of(context);
 
     void handleOpenDashboard() {
       final uri = Uri.parse(Env.manageDevicesPage);
@@ -36,14 +38,11 @@ class _DialogContent extends HookConsumerWidget {
       openUrlLink(targetUri, mode: LaunchMode.externalApplication);
     }
 
-    final isDesktop = screenType >= ScreenType.tablet;
     return PromptDialog(
       image: Asset.images.devicesLimit.svg(),
       title: LocaleKeys.deviceLimitReachedTitle.tr(),
       subtitle: LocaleKeys.deviceLimitReachedDesc.tr(),
-      contentPadding: EdgeInsets.symmetric(horizontal: isDesktop ? 144 : 24),
-      buttonsPadding: EdgeInsets.fromLTRB(isDesktop ? 144 : 16, 0, isDesktop ? 144 : 16, 50),
-      primaryButton: ButtonPrimary(
+     primaryButton: ButtonPrimary(
         onPressed: handleOpenDashboard,
         child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
       ),

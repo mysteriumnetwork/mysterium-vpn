@@ -18,12 +18,8 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final screenType = ScreenType.of(context);
-    final isDesktop = screenType >= ScreenType.tablet;
     return PromptDialog(
-      contentPadding: EdgeInsets.symmetric(horizontal: isDesktop ? 144 : 24),
-      buttonsPadding: EdgeInsets.fromLTRB(isDesktop ? 144 : 16, 0, isDesktop ? 144 : 16, 50),
-      image: Asset.images.pnConsent(context).image(),
+    image: Asset.images.pnConsent(context).image(),
       title: LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
       subtitle: LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
       primaryButton: ButtonPrimary(

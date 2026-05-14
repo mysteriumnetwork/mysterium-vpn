@@ -12,11 +12,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
-  await showModal<void>(
-    context,
-    builder: (_) => const _DialogContent(),
-    desktopConstraints: const BoxConstraints(maxWidth: 600, maxHeight: 400),
-  );
+  await showModal<void>(context, builder: (_) => const _DialogContent());
 }
 
 class _DialogContent extends HookConsumerWidget {
@@ -25,16 +21,12 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final screenType = ScreenType.of(context);
     final lastClickedConsent = useState<bool?>(null);
     return Observer(
       builder: (context) {
         final isLoading =
             userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending;
-        final isDesktop = screenType >= ScreenType.tablet;
         return PromptDialog(
-          contentPadding: EdgeInsets.symmetric(horizontal: isDesktop ? 144 : 24),
-          buttonsPadding: EdgeInsets.fromLTRB(isDesktop ? 144 : 16, 0, isDesktop ? 144 : 16, 50),
           image: Asset.images.emailConsent(context).image(),
           title: LocaleKeys.marketingConsentPopupTitle.tr(),
           subtitle: LocaleKeys.marketingConsentPopupDesc.tr(),
