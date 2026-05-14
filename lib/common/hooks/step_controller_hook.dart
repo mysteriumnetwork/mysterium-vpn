@@ -21,22 +21,36 @@ class StepController {
 }
 
 /// Holds the current step index in a stepped flow and exposes guarded
-/// [StepController.next] / [StepController.back] callbacks. [count] must be
-/// at least 1.
-StepController useStepController(int count) {
+/// [StepController.next] / [StepController.back] callbacks.
+///
+/// [count] must be at least 1. [initialStep] is the step the controller
+/// starts on — useful for resuming an interrupted flow from a persisted
+/// position. [onStepChange] fires after every successful step transition
+/// (forward or back) so callers can persist the new position.
+StepController useStepController(
+  int count, {
+  int initialStep = 0,
+  ValueChanged<int>? onStepChange,
+}) {
   assert(count > 0, 'count must be > 0');
-  final state = useState(0);
+  assert(initialStep >= 0 && initialStep < count, 'initialStep must be in [0, count)');
+  final state = useState(initialStep);
+  void update(int newStep) {
+    state.value = newStep;
+    onStepChange?.call(newStep);
+  }
+
   return StepController(
     step: state.value,
     isLast: state.value >= count - 1,
     next: () {
       if (state.value < count - 1) {
-        state.value += 1;
+        update(state.value + 1);
       }
     },
     back: () {
       if (state.value > 0) {
-        state.value -= 1;
+        update(state.value - 1);
       }
     },
   );

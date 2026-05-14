@@ -52,13 +52,14 @@ void useHomeAutorun() {
 
             if (value case UserPromptType.noneSubsOnboarding) {
               controller.add(() async {
-                // Persist before showing so a force-quit mid-dialog doesn't
-                // re-surface onboarding on the next launch.
-                await userPreferencesStore.setNoneSubsOnboardingShown();
+                final initialStep = await userPreferencesStore.getNoneSubsOnboardingStep();
                 if (!context.mounted) {
                   return null;
                 }
-                await showOnboardingDialog(context);
+                await showOnboardingDialog(context, initialStep: initialStep);
+                // Force-quit kills the process before reaching this line, so
+                // the in-progress step persisted from the dialog survives.
+                await userPreferencesStore.setNoneSubsOnboardingCompleted();
                 return null;
               });
             } else if (value case UserPromptType.marketingConsent) {

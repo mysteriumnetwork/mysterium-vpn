@@ -79,21 +79,35 @@ void Function(AnalyticsEvent event) _useOnboardingAnalytics(int step) {
 
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
-Future<void> showOnboardingDialog(BuildContext context) => showDialog(
+/// Opens the non-subscriber onboarding dialog. [initialStep] is the step to
+/// resume from — pass the value persisted by
+/// [UserPreferencesStore.getNoneSubsOnboardingStep] so an interrupted flow
+/// picks up where it left off.
+Future<void> showOnboardingDialog(BuildContext context, {int initialStep = 0}) => showDialog(
   context: context,
   barrierDismissible: false,
   useSafeArea: false,
-  builder: (_) => const _OnboardingDialog(),
+  builder: (_) => _OnboardingDialog(initialStep: initialStep),
 );
 
 // ─── Dialog ───────────────────────────────────────────────────────────────────
 
 class _OnboardingDialog extends HookWidget {
-  const _OnboardingDialog();
+  const _OnboardingDialog({required this.initialStep});
+
+  final int initialStep;
 
   @override
   Widget build(BuildContext context) {
-    final controller = useStepController(_Step.values.length);
+    final userPreferences = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
+    // Clamp the persisted step in case the step count has shrunk since it
+    // was last saved (e.g. removed step in a future build).
+    final safeInitialStep = initialStep.clamp(0, _Step.values.length - 1);
+    final controller = useStepController(
+      _Step.values.length,
+      initialStep: safeInitialStep,
+      onStepChange: userPreferences.setNoneSubsOnboardingStep,
+    );
     final step = _Step.values[controller.step];
     final track = _useOnboardingAnalytics(controller.step);
     final handleSubscribe = useHandleSubscribe();

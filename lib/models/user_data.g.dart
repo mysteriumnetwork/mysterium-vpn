@@ -33,14 +33,15 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       protocolType: fields[14] == null ? ProtocolType.wireguard : fields[14] as ProtocolType,
       pushNotificationsPromptLastShownAt: fields[15] as DateTime?,
       appOpenCount: fields[16] == null ? 0 : (fields[16] as num).toInt(),
-      noneSubsOnboardingShown: fields[17] == null ? false : fields[17] as bool,
+      noneSubsOnboardingCompleted: fields[17] == null ? false : fields[17] as bool,
+      noneSubsOnboardingStep: fields[18] == null ? 0 : (fields[18] as num).toInt(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(18)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -74,7 +75,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(16)
       ..write(obj.appOpenCount)
       ..writeByte(17)
-      ..write(obj.noneSubsOnboardingShown);
+      ..write(obj.noneSubsOnboardingCompleted)
+      ..writeByte(18)
+      ..write(obj.noneSubsOnboardingStep);
   }
 
   @override

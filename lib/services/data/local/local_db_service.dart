@@ -248,20 +248,35 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
-  Future<bool> getNoneSubsOnboardingShown() async {
+  Future<bool> getNoneSubsOnboardingCompleted() async {
     final userData = await _loadUserData();
-    return userData.noneSubsOnboardingShown;
+    return userData.noneSubsOnboardingCompleted;
   }
 
-  Future<void> setNoneSubsOnboardingShown() async {
+  Future<void> setNoneSubsOnboardingCompleted() async {
     final userData = await _loadUserData();
-    userData.noneSubsOnboardingShown = true;
+    userData.noneSubsOnboardingCompleted = true;
     await _saveUserData(userData);
   }
 
-  Future<void> resetNoneSubsOnboardingShown() async {
+  /// Clears both the completion flag and the saved step so onboarding starts
+  /// over from step 0 on the next launch. Used by the QA toolbox.
+  Future<void> resetNoneSubsOnboarding() async {
     final userData = await _loadUserData();
-    userData.noneSubsOnboardingShown = false;
+    userData
+      ..noneSubsOnboardingCompleted = false
+      ..noneSubsOnboardingStep = 0;
+    await _saveUserData(userData);
+  }
+
+  Future<int> getNoneSubsOnboardingStep() async {
+    final userData = await _loadUserData();
+    return userData.noneSubsOnboardingStep;
+  }
+
+  Future<void> setNoneSubsOnboardingStep(int step) async {
+    final userData = await _loadUserData();
+    userData.noneSubsOnboardingStep = step;
     await _saveUserData(userData);
   }
 }

@@ -103,7 +103,7 @@ class QAToolbox extends HookConsumerWidget {
         _QAActionButton(
           label: 'Reset Onboarding',
           onPressed: () async {
-            await LocalDBService.instance.resetNoneSubsOnboardingShown();
+            await LocalDBService.instance.resetNoneSubsOnboarding();
             showSnackbar('Onboarding flag reset — will show on next launch');
           },
         ),

@@ -152,8 +152,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   @action
   Future<bool> shouldShowNoneSubsOnboarding() async {
-    final alreadyShown = await localDb.getNoneSubsOnboardingShown();
-    if (alreadyShown) {
+    final alreadyCompleted = await localDb.getNoneSubsOnboardingCompleted();
+    if (alreadyCompleted) {
       return false;
     }
     try {
@@ -168,10 +168,19 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   }
 
   @action
-  Future<void> setNoneSubsOnboardingShown() async {
-    await localDb.setNoneSubsOnboardingShown();
+  Future<void> setNoneSubsOnboardingCompleted() async {
+    await localDb.setNoneSubsOnboardingCompleted();
     await evaluatePromptToShow();
   }
+
+  /// Returns the step the user was last on inside the onboarding dialog
+  /// (default 0 when onboarding has never been opened). Used to resume from
+  /// the same step after an interrupted run.
+  @action
+  Future<int> getNoneSubsOnboardingStep() async => localDb.getNoneSubsOnboardingStep();
+
+  @action
+  Future<void> setNoneSubsOnboardingStep(int step) async => localDb.setNoneSubsOnboardingStep(step);
 
   @visibleForTesting
   @action

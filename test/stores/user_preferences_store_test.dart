@@ -54,7 +54,7 @@ void main() {
     when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
     // Default: noneSubsOnboarding has already been shown so it doesn't fire in
     // unrelated tests. Tests that exercise the onboarding flow override this.
-    when(mockLocalDBService.getNoneSubsOnboardingShown()).thenAnswer((_) async => true);
+    when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
     when(
       mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
     ).thenAnswer((_) async => false);
@@ -262,6 +262,29 @@ void main() {
         ..anyPromptShownThisSession = false
         ..markPromptAsShown(UserPromptType.none);
       expect(store.anyPromptShownThisSession, isFalse);
+    });
+
+    test('getNoneSubsOnboardingStep delegates to localDb', () async {
+      when(mockLocalDBService.getNoneSubsOnboardingStep()).thenAnswer((_) async => 2);
+
+      final step = await store.getNoneSubsOnboardingStep();
+
+      expect(step, 2);
+      verify(mockLocalDBService.getNoneSubsOnboardingStep()).called(1);
+    });
+
+    test('setNoneSubsOnboardingStep persists the step without re-evaluating prompts', () async {
+      await store.setNoneSubsOnboardingStep(1);
+
+      verify(mockLocalDBService.setNoneSubsOnboardingStep(1)).called(1);
+      // Step updates happen mid-dialog and must not cascade into prompt
+      // re-evaluation (which would otherwise short-circuit other prompts).
+      verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+    });
+
+    test('shouldShowNoneSubsOnboarding skips when already completed', () async {
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
+      expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
     });
 
     test('evaluatePromptToShow returns none when anyPromptShownThisSession is true', () async {
