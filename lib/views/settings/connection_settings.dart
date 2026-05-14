@@ -99,6 +99,28 @@ class ConnectionSettings extends HookConsumerWidget {
           builders.add((pos) => ProtocolPicker(position: pos));
         }
 
+        // DNS — always on for every authenticated session.
+        builders.add(
+          (pos) => SettingsCard(
+            title: LocaleKeys.dns.tr(),
+            subtitle: LocaleKeys.dnsDesc.tr(),
+            position: pos,
+            trailing: const ReadOnlySwitch(value: true),
+          ),
+        );
+
+        // Kill switch — supported only by the WireGuard tunnel, always on.
+        if (vpnProtocolStore.protocol == ProtocolType.wireguard) {
+          builders.add(
+            (pos) => SettingsCard(
+              title: LocaleKeys.killSwitch.tr(),
+              subtitle: LocaleKeys.killSwitchDesc.tr(),
+              position: pos,
+              trailing: const ReadOnlySwitch(value: true),
+            ),
+          );
+        }
+
         final total = builders.length;
         if (total == 0) {
           return const SizedBox.shrink();
