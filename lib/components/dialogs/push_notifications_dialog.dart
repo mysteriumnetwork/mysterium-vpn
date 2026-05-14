@@ -19,7 +19,7 @@ class _DialogContent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     return PromptDialog(
-    image: Asset.images.pnConsent(context).image(),
+      image: Asset.images.pnConsent(context).image(),
       title: LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
       subtitle: LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
       primaryButton: ButtonPrimary(

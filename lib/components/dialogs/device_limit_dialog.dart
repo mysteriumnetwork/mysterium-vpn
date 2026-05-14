@@ -10,10 +10,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> showDeviceLimitDialog(BuildContext context) async {
-  await showModal(
-    context,
-    builder: (_) => const _DialogContent(),
-  );
+  await showModal(context, builder: (_) => const _DialogContent());
 }
 
 class _DialogContent extends HookConsumerWidget {
@@ -42,7 +39,7 @@ class _DialogContent extends HookConsumerWidget {
       image: Asset.images.devicesLimit.svg(),
       title: LocaleKeys.deviceLimitReachedTitle.tr(),
       subtitle: LocaleKeys.deviceLimitReachedDesc.tr(),
-     primaryButton: ButtonPrimary(
+      primaryButton: ButtonPrimary(
         onPressed: handleOpenDashboard,
         child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
       ),
