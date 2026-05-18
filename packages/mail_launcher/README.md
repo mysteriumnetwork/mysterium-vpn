@@ -56,4 +56,9 @@ on Android 11+:
 ### macOS
 
 No manifest changes required. Enumeration uses `NSWorkspace.urlsForApplications(toOpen:)`
-and launch uses `NSWorkspace.openApplication(at:)`, both sandbox-safe.
+and launch uses `NSWorkspace.openApplication(at:)` — both are Launch Services APIs that
+work from App-Sandboxed apps with just the default `com.apple.security.app-sandbox`
+entitlement. No file-access (`files.user-selected.*`) or temporary-exception entitlements
+are required, since the plugin only queries app registrations and hands URLs off to the
+system to launch in their own process. Minimum deployment target: macOS 12 (required by
+`urlsForApplications(toOpen:)`).
