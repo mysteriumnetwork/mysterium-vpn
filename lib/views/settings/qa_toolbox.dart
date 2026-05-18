@@ -100,6 +100,13 @@ class QAToolbox extends HookConsumerWidget {
             showSnackbar('App open count reset successfully');
           },
         ),
+        _QAActionButton(
+          label: 'Reset Onboarding',
+          onPressed: () async {
+            await LocalDBService.instance.resetNoneSubsOnboarding();
+            showSnackbar('Onboarding flag reset — will show on next launch');
+          },
+        ),
       ],
     );
   }
@@ -293,6 +300,7 @@ class QAToolbox extends HookConsumerWidget {
                 showCampaignDialog(context, Uri.parse('http://localhost:3000/campaign'), ''),
           ),
           _QAActionButton(label: 'Device Limit', onPressed: () => showDeviceLimitDialog(context)),
+          _QAActionButton(label: 'Onboarding', onPressed: () => showOnboardingDialog(context)),
           _QAActionButton(
             label: 'Push Notifications',
             onPressed: () => showPushNotificationsPermissionDialog(context),

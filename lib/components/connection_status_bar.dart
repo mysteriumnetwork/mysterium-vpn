@@ -18,8 +18,6 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
     return ConnectionBar(
       label: _statusText(connectionStatus, isFetchingConfig),
-      killSwitchLabel: LocaleKeys.killSwitchTooltipTitle.tr(),
-      killSwitchDescription: LocaleKeys.killSwitchTooltipMessage.tr(),
       status: _mapStatus(connectionStatus, isFetchingConfig),
     );
   }

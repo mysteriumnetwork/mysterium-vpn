@@ -16,6 +16,8 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<LocalDBService>(),
   MockSpec<PushNotificationsStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<SubscriptionStore>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late UserPreferencesStore store;
@@ -25,6 +27,8 @@ void main() {
   late MockLocalDBService mockLocalDBService;
   late MockPushNotificationsStore mockPushNotificationsStore;
   late MockAuthSessionStore mockAuthSessionStore;
+  late MockSubscriptionStore mockSubscriptionStore;
+  late MockRemoteConfigStore mockRemoteConfigStore;
   setUp(() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
@@ -32,6 +36,8 @@ void main() {
     mockLocalDBService = MockLocalDBService();
     mockPushNotificationsStore = MockPushNotificationsStore();
     mockAuthSessionStore = MockAuthSessionStore();
+    mockSubscriptionStore = MockSubscriptionStore();
+    mockRemoteConfigStore = MockRemoteConfigStore();
 
     // Default auth state: not authenticated
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
@@ -49,9 +55,15 @@ void main() {
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
     when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
     when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
+    // Default: noneSubsOnboarding has already been shown so it doesn't fire in
+    // unrelated tests. Tests that exercise the onboarding flow override this.
+    when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
     when(
       mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
     ).thenAnswer((_) async => false);
+    // Default: FF is on so existing tests don't have to opt in. Tests that
+    // exercise the kill switch override this.
+    when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
 
     store = UserPreferencesStore(
       apiService: mockApiService,
@@ -60,6 +72,8 @@ void main() {
       localDBService: mockLocalDBService,
       pushNotificationsStore: mockPushNotificationsStore,
       authSessionStore: mockAuthSessionStore,
+      subscriptionStore: mockSubscriptionStore,
+      remoteConfigStore: mockRemoteConfigStore,
     )..testIsMobile = true;
   });
 
@@ -79,6 +93,8 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for futures to complete
@@ -111,6 +127,8 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete
@@ -141,6 +159,8 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Should not throw
@@ -221,6 +241,168 @@ void main() {
 
       // Even though conditions are met for showing, it should not show again
       expect(store.isPromptShown(UserPromptType.marketingConsent), isTrue);
+    });
+
+    test('isPromptShown returns false for unshown noneSubsOnboarding', () {
+      store.noneSubsOnboardingPromptShown = false;
+      expect(store.isPromptShown(UserPromptType.noneSubsOnboarding), isFalse);
+    });
+
+    test('isPromptShown returns true for shown noneSubsOnboarding', () {
+      store.noneSubsOnboardingPromptShown = true;
+      expect(store.isPromptShown(UserPromptType.noneSubsOnboarding), isTrue);
+    });
+
+    test('markPromptAsShown marks noneSubsOnboarding as shown', () {
+      store
+        ..noneSubsOnboardingPromptShown = false
+        ..markPromptAsShown(UserPromptType.noneSubsOnboarding);
+      expect(store.noneSubsOnboardingPromptShown, isTrue);
+    });
+
+    test('markPromptAsShown sets anyPromptShownThisSession for non-none type', () {
+      store
+        ..anyPromptShownThisSession = false
+        ..markPromptAsShown(UserPromptType.marketingConsent);
+      expect(store.anyPromptShownThisSession, isTrue);
+    });
+
+    test('markPromptAsShown does not set anyPromptShownThisSession for none type', () {
+      store
+        ..anyPromptShownThisSession = false
+        ..markPromptAsShown(UserPromptType.none);
+      expect(store.anyPromptShownThisSession, isFalse);
+    });
+
+    test('getNoneSubsOnboardingStep delegates to localDb', () async {
+      when(mockLocalDBService.getNoneSubsOnboardingStep()).thenAnswer((_) async => 2);
+
+      final step = await store.getNoneSubsOnboardingStep();
+
+      expect(step, 2);
+      verify(mockLocalDBService.getNoneSubsOnboardingStep()).called(1);
+    });
+
+    test('setNoneSubsOnboardingStep persists the step without re-evaluating prompts', () async {
+      await store.setNoneSubsOnboardingStep(1);
+
+      verify(mockLocalDBService.setNoneSubsOnboardingStep(1)).called(1);
+      // Step updates happen mid-dialog and must not cascade into prompt
+      // re-evaluation (which would otherwise short-circuit other prompts).
+      verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+    });
+
+    test('shouldShowNoneSubsOnboarding skips when already completed', () async {
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
+      expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+    });
+
+    test('shouldShowNoneSubsOnboarding skips when canShowNoSubsOnboardingFlow FF is off', () async {
+      // FF kill switch wins even if the user has never completed onboarding
+      // and has no active subscription.
+      when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+      expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+
+      // FF short-circuits — neither the persistence layer nor the
+      // subscription fetch should be consulted.
+      verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+      verifyNever(mockSubscriptionStore.subscriptionFuture);
+    });
+
+    test(
+      'shouldShowNoneSubsOnboarding returns true when FF on, not completed, no subscription',
+      () async {
+        when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+        when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+        when(
+          mockSubscriptionStore.subscriptionFuture,
+        ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+        expect(await store.shouldShowNoneSubsOnboarding(), isTrue);
+      },
+    );
+
+    test(
+      'shouldShowNoneSubsOnboarding returns false when user has an active subscription',
+      () async {
+        // Protect paying users from seeing the non-subscriber pitch.
+        when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+        when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+        when(mockSubscriptionStore.subscriptionFuture).thenAnswer(
+          (_) =>
+              ObservableFuture.value(Subscription(active: true, expired: false, recurring: true)),
+        );
+
+        expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+      },
+    );
+
+    test('shouldShowNoneSubsOnboarding returns false when subscription lookup throws', () async {
+      // Offline / API errors must not flash onboarding at a possibly-paying
+      // user; eligibility is re-evaluated on the next launch.
+      when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
+
+      expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+    });
+
+    test('evaluatePromptToShow falls through to marketing when FF disables onboarding', () async {
+      // Onboarding would normally be eligible (not completed, no active sub).
+      when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+      // Marketing consent is eligible (3rd app open, no consent yet).
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+
+      await store.evaluatePromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+    });
+
+    test('evaluatePromptToShow returns none when anyPromptShownThisSession is true', () async {
+      // Conditions that would normally trigger marketingConsent
+      store
+        ..getMarketingConsentFuture = ObservableFuture.value(false)
+        ..anyPromptShownThisSession = true;
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+
+      await store.evaluatePromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.none);
+    });
+
+    test('only one prompt can be shown per session — second evaluation yields none', () async {
+      // First evaluation triggers marketingConsent
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
+
+      await store.evaluatePromptToShow();
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+
+      // Mark it shown — this also flips anyPromptShownThisSession
+      store.markPromptAsShown(UserPromptType.marketingConsent);
+
+      // Re-evaluating should not pick up pushNotifications even though it's eligible
+      await store.evaluatePromptToShow();
+      expect(store.nextPromptToShow, UserPromptType.none);
     });
   });
 
@@ -395,6 +577,8 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       await store.setMarketingConsentFuture;
@@ -563,6 +747,8 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete
@@ -588,6 +774,8 @@ void main() {
         localDBService: mockLocalDBService,
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
+        subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete

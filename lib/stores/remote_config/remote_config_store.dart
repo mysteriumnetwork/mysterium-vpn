@@ -58,6 +58,7 @@ enum _FeatureToggleKey {
   pricingMonthly,
   countriesWithStates,
   hideReedemCode,
+  canShowNoSubsOnboardingFlow,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -575,6 +576,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.hideReedemCode.name] as bool;
     }
     return false;
+  }
+
+  @computed
+  bool get canShowNoSubsOnboardingFlow {
+    if (config.containsKey(_FeatureToggleKey.canShowNoSubsOnboardingFlow.name)) {
+      return config[_FeatureToggleKey.canShowNoSubsOnboardingFlow.name] as bool;
+    }
+    return true;
   }
 
   Map<String, String> get asUserProperties =>

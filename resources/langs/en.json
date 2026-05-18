@@ -149,10 +149,6 @@
   "italy": "Italy",
   "iUnderstandBtn": "I understand",
   "ja": "Japanese",
-  "killSwitch": "Kill-Switch",
-  "killSwitchDesc": "Stops internet access if VPN disconnects, to prevent exposing your IP address.",
-  "killSwitchTooltipMessage": "Blocks internet traffic when connection to a vpn server is lost. Kill-switch is always on when you connect to MysteriumVPN.",
-  "killSwitchTooltipTitle": "Kill switch",
   "letsGoBtn": "Let's go",
   "linkCopied": "Link copied to clipboard!",
   "location": "Location",
@@ -556,5 +552,9 @@
   "subscriptionActive": "Great news! Your subscription is now active.",
   "planAlreadyPurchasedMsg": "You're all set! You already have this plan active.",
   "signInAbortedMsg": "Sign in aborted",
-  "notAvailableMsg": "Not available"
+  "notAvailableMsg": "Not available",
+  "killSwitch": "Kill switch",
+  "killSwitchDesc": "Blocks internet if VPN drops",
+  "dns": "DNS protection",
+  "dnsDesc": "Prevents DNS leaks"
 }
