@@ -83,7 +83,12 @@ void Function(AnalyticsEvent event) _useOnboardingAnalytics(int step) {
 /// resume from — pass the value persisted by
 /// [UserPreferencesStore.getNoneSubsOnboardingStep] so an interrupted flow
 /// picks up where it left off.
-Future<void> showOnboardingDialog(BuildContext context, {int initialStep = 0}) => showDialog(
+///
+/// Resolves with `true` when the user finishes the last step and taps "See
+/// Plans" — the caller is expected to invoke the subscribe flow afterward
+/// using its own (still-mounted) context. Resolves with `null` for any other
+/// close path (X tap, system back).
+Future<bool?> showOnboardingDialog(BuildContext context, {int initialStep = 0}) => showDialog<bool>(
   context: context,
   barrierDismissible: false,
   useSafeArea: false,
@@ -110,7 +115,6 @@ class _OnboardingDialog extends HookWidget {
     );
     final step = _Step.values[controller.step];
     final track = _useOnboardingAnalytics(controller.step);
-    final handleSubscribe = useHandleSubscribe();
 
     void onClose() {
       track(AnalyticsEvent.onboardingCloseClick);
@@ -122,11 +126,13 @@ class _OnboardingDialog extends HookWidget {
       controller.back();
     }
 
-    Future<void> onContinue() async {
+    void onContinue() {
       if (controller.isLast) {
         track(AnalyticsEvent.onboardingSeePlansClick);
-        Navigator.of(context).pop();
-        await handleSubscribe();
+        // Pop with `true` so the caller can run `handleSubscribe()` on a
+        // still-mounted parent context — invoking it here would race with
+        // the route disposal and leave the subscribe page unmounted.
+        Navigator.of(context).pop(true);
         return;
       }
       track(AnalyticsEvent.onboardingContinueClick);
