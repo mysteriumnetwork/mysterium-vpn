@@ -1191,6 +1191,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.2"
+  mail_launcher:
+    dependency: "direct main"
+    description:
+      path: "packages/mail_launcher"
+      relative: true
+    source: path
+    version: "0.1.0"
   markdown:
     dependency: transitive
     description:
@@ -1368,15 +1375,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.3"
-  open_mail_app:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "0.4.5"
-      resolved-ref: "093b74207bf9ad78b85d32dcd950f66c0fcbc837"
-      url: "https://github.com/KristijanMitrik/open-mail-app-flutter.git"
-    source: git
-    version: "0.4.4"
   open_store:
     dependency: "direct main"
     description:

@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mail_launcher/mail_launcher.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -12,7 +15,6 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:open_mail_app/open_mail_app.dart';
 
 class VerifyEmailView extends HookConsumerWidget {
   const VerifyEmailView({super.key});
@@ -108,45 +110,73 @@ class VerifyEmailView extends HookConsumerWidget {
   }
 
   Future<void> openEmailApp(BuildContext context, AnalyticsStore analyticsStore) async {
-    final result = await OpenMailApp.openMailApp(nativePickerTitle: LocaleKeys.selectEmailApp.tr());
-    if (!result.didOpen && !result.canOpen && context.mounted) {
-      shownConfirmationDialog(
-        context,
-        type: AlertModalType.info,
-        title: LocaleKeys.openEmailApp.tr(),
-        supportingText: LocaleKeys.noEmailApp.tr(),
-        showCancel: false,
-        confirmText: LocaleKeys.goBackButton.tr(),
-        onConfirm: () {},
-      );
-    } else if (!result.didOpen && result.canOpen && context.mounted) {
-      final actions = result.options
+    if (Platform.isWindows || Platform.isLinux) {
+      /// The mail_launcher package does not support Windows or Linux
+      _showNoEmailAppDialog(context);
+      return;
+    }
+
+    final apps = await MailLauncher.installed();
+    if (!context.mounted) {
+      return;
+    }
+    if (apps.isEmpty) {
+      _showNoEmailAppDialog(context);
+      return;
+    }
+    if (apps.length == 1) {
+      await MailLauncher.open(apps.first);
+      return;
+    }
+    _showMailPicker(
+      context: context,
+      analyticsStore: analyticsStore,
+      actions: apps
           .map(
-            (option) => BottomSheetAction(
-              title: option.name,
+            (app) => BottomSheetAction(
+              title: app.name,
               onPressed: (_) {
-                OpenMailApp.openSpecificMailApp(option);
+                MailLauncher.open(app);
                 analyticsStore.logEvent(
                   AnalyticsEvent.emailProviderClicked,
-                  parameters: {'provider': option.name},
+                  parameters: {'provider': app.name},
                 );
               },
             ),
           )
-          .toList();
-      showAdaptiveActionSheet(
-        title: Text(LocaleKeys.selectEmailApp.tr()),
-        context: context,
-        actions: [...actions],
-        cancelAction: CancelAction(
-          title: LocaleKeys.cancelBtn.tr(),
-          onPressed: (ctx) {
-            analyticsStore.logEvent(AnalyticsEvent.emailProviderCancel);
-            Navigator.of(ctx).pop();
-          },
-        ),
-      );
-    }
+          .toList(),
+    );
+  }
+
+  void _showMailPicker({
+    required BuildContext context,
+    required AnalyticsStore analyticsStore,
+    required List<BottomSheetAction> actions,
+  }) {
+    showAdaptiveActionSheet(
+      title: Text(LocaleKeys.selectEmailApp.tr()),
+      context: context,
+      actions: actions,
+      cancelAction: CancelAction(
+        title: LocaleKeys.cancelBtn.tr(),
+        onPressed: (ctx) {
+          analyticsStore.logEvent(AnalyticsEvent.emailProviderCancel);
+          Navigator.of(ctx).pop();
+        },
+      ),
+    );
+  }
+
+  void _showNoEmailAppDialog(BuildContext context) {
+    shownConfirmationDialog(
+      context,
+      type: AlertModalType.info,
+      title: LocaleKeys.openEmailApp.tr(),
+      supportingText: LocaleKeys.noEmailApp.tr(),
+      showCancel: false,
+      confirmText: LocaleKeys.goBackButton.tr(),
+      onConfirm: () {},
+    );
   }
 }
 
