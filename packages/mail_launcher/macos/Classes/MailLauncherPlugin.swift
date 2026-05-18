@@ -3,6 +3,17 @@ import FlutterMacOS
 
 private let channelName = "network.mysterium/mail_launcher"
 
+/// Apps that register a `mailto:` handler but are not mail clients.
+/// Zoom, Teams, Slack etc. claim the scheme to deep-link into their own flows
+/// (meeting invites, etc.). Filter them out so the picker only shows real mail apps.
+private let excludedBundleIds: Set<String> = [
+  "us.zoom.xos",
+  "com.microsoft.teams",
+  "com.microsoft.teams2",
+  "com.tinyspeck.slackmacgap",
+  "com.skype.skype",
+]
+
 public final class MailLauncherPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger)
@@ -33,6 +44,7 @@ public final class MailLauncherPlugin: NSObject, FlutterPlugin {
     var apps: [[String: String]] = []
     for url in urls {
       guard let bundleId = Bundle(url: url)?.bundleIdentifier else { continue }
+      guard !excludedBundleIds.contains(bundleId) else { continue }
       guard seen.insert(bundleId).inserted else { continue }
       let name = FileManager.default.displayName(atPath: url.path)
       apps.append(["name": name, "identifier": bundleId])
