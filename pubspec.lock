@@ -1323,8 +1323,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/onboarding-flow"
-      resolved-ref: "5f107fd87bbf2ad20a82123dcce1501f2ecca7f1"
+      ref: "0.0.16"
+      resolved-ref: "4c1bd14d42ad16cf172dc8deda72e1c2e2146882"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
