@@ -149,10 +149,6 @@
   "italy": "Itália",
   "iUnderstandBtn": "Eu entendo",
   "ja": "Japonês",
-  "killSwitch": "Botão de desligar",
-  "killSwitchDesc": "Interrompe o acesso à Internet se a VPN for desconectada, para evitar a exposição do seu endereço IP.",
-  "killSwitchTooltipMessage": "Bloqueia o tráfego da Internet quando a conexão com um servidor VPN é perdida. O interruptor de desligamento está sempre ativado quando você se conecta ao MysteriumVPN.",
-  "killSwitchTooltipTitle": "مفتاح القتل",
   "letsGoBtn": "Vamos!",
   "linkCopied": "Link copiado para a área de transferência!",
   "location": "Localização",
@@ -556,5 +552,9 @@
   "subscriptionActive": "Ótima notícia! Sua assinatura já está ativa.",
   "planAlreadyPurchasedMsg": "Está tudo pronto! Seu plano já está ativo.",
   "signInAbortedMsg": "Login cancelado",
-  "notAvailableMsg": "Não disponível"
+  "notAvailableMsg": "Não disponível",
+  "killSwitch": "interruptor de segurança",
+  "killSwitchDesc": "Bloqueia a internet se a VPN cair.",
+  "dns": "Proteção de DNS",
+  "dnsDesc": "Impede vazamentos de DNS"
 }

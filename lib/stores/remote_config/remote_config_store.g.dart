@@ -352,6 +352,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.hideReedemCode,
     name: 'RemoteConfigStoreBase.hideReedemCode',
   )).value;
+  Computed<bool>? _$canShowNoSubsOnboardingFlowComputed;
+
+  @override
+  bool get canShowNoSubsOnboardingFlow => (_$canShowNoSubsOnboardingFlowComputed ??= Computed<bool>(
+    () => super.canShowNoSubsOnboardingFlow,
+    name: 'RemoteConfigStoreBase.canShowNoSubsOnboardingFlow',
+  )).value;
 
   @override
   String toString() {
@@ -402,7 +409,8 @@ gatewaysSupportingUpgrade: ${gatewaysSupportingUpgrade},
 checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
 pricingMonthly: ${pricingMonthly},
 countriesWithStates: ${countriesWithStates},
-hideReedemCode: ${hideReedemCode}
+hideReedemCode: ${hideReedemCode},
+canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow}
     ''';
   }
 }

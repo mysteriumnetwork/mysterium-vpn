@@ -28,6 +28,8 @@ class UserData {
     this.protocolType = ProtocolType.wireguard,
     this.pushNotificationsPromptLastShownAt,
     this.appOpenCount = 0,
+    this.noneSubsOnboardingCompleted = false,
+    this.noneSubsOnboardingStep = 0,
   });
 
   @HiveField(0)
@@ -83,6 +85,18 @@ class UserData {
   @HiveField(16, defaultValue: 0)
   int appOpenCount;
 
+  /// True once the user has finished onboarding (last-step "See Plans") or
+  /// dismissed it (X button / system back). Force-quit mid-dialog leaves this
+  /// false so onboarding re-surfaces on the next launch.
+  @HiveField(17, defaultValue: false)
+  bool noneSubsOnboardingCompleted;
+
+  /// Index of the step the user was last viewing in the onboarding dialog.
+  /// Used to resume from that step after an interruption. Reset is not
+  /// needed once [noneSubsOnboardingCompleted] is true — onboarding won't open.
+  @HiveField(18, defaultValue: 0)
+  int noneSubsOnboardingStep;
+
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
       ...locations,
@@ -114,6 +128,8 @@ recentLocationCodes: $recentLocationCodes
 marketingConsentShown: $marketingConsentShown
 protocolType: $protocolType
 pushNotificationsPromptLastShownAt: $pushNotificationsPromptLastShownAt
+noneSubsOnboardingCompleted: $noneSubsOnboardingCompleted
+noneSubsOnboardingStep: $noneSubsOnboardingStep
 ''';
 }
 

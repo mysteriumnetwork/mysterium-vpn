@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -53,9 +54,8 @@ class PushNotificationsSetting extends ConsumerWidget {
           subtitle: isDesktop ? LocaleKeys.pushNotificationsSettingDesc.tr() : null,
           subtitleWidget: subtitleWidget,
           position: position,
-          trailing: Switch(
+          trailing: ReadOnlySwitch(
             value: pushNotificationsStore.pushNotificationsPermissionGranted,
-            onChanged: null,
           ),
         );
       },

@@ -149,10 +149,6 @@
   "italy": "Italia",
   "iUnderstandBtn": "Lo entiendo",
   "ja": "Japonés",
-  "killSwitch": "Interruptor de apagado",
-  "killSwitchDesc": "Detiene el acceso a Internet si la VPN se desconecta, para evitar exponer tu dirección IP.",
-  "killSwitchTooltipMessage": "Bloquea el tráfico de internet cuando se pierde la conexión con un servidor VPN. El interruptor de corte siempre está activado cuando te conectas a MysteriumVPN.",
-  "killSwitchTooltipTitle": "Interruptor de Corte",
   "letsGoBtn": "¡Vamos!",
   "linkCopied": "¡Enlace copiado al portapapeles!",
   "location": "Ubicación",
@@ -556,5 +552,9 @@
   "subscriptionActive": "¡Buenas noticias! Tu suscripción ya está activa.",
   "planAlreadyPurchasedMsg": "¡Listo! Ya tienes este plan activo.",
   "signInAbortedMsg": "Iniciar sesión abortado",
-  "notAvailableMsg": "No disponible"
+  "notAvailableMsg": "No disponible",
+  "killSwitch": "Interruptor de apagado",
+  "killSwitchDesc": "Bloquea internet si se cae la VPN.",
+  "dns": "protección DNS",
+  "dnsDesc": "Evita fugas de DNS"
 }

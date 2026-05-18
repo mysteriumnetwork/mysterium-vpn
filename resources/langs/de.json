@@ -149,10 +149,6 @@
   "italy": "Italien",
   "iUnderstandBtn": "Ich verstehe",
   "ja": "Japanisch",
-  "killSwitch": "Notausschalter",
-  "killSwitchDesc": "Stoppt den Internetzugang, wenn die VPN-Verbindung getrennt wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
-  "killSwitchTooltipMessage": "Blockiert den Internetverkehr, wenn die Verbindung zu einem VPN-Server verloren geht. Der Kill-Switch ist immer aktiviert, wenn Sie sich mit MysteriumVPN verbinden.",
-  "killSwitchTooltipTitle": "Kill-Switch",
   "letsGoBtn": "Los geht's",
   "linkCopied": "Link in die Zwischenablage kopiert!",
   "location": "Standort",
@@ -433,7 +429,7 @@
   "subscriptionPlanWireGuardDesc": "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming\nOpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar)",
   "subscriptionPlanDoubleVPNDesc": "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
   "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
-  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
   "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
   "notNowBtn": "Nicht jetzt.",
   "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
@@ -556,5 +552,9 @@
   "subscriptionActive": "Tolle Neuigkeiten! Ihr Abonnement ist jetzt aktiv.",
   "planAlreadyPurchasedMsg": "Alles ist bereit! Dieser Plan ist bereits aktiv.",
   "signInAbortedMsg": "Anmeldung abgebrochen",
-  "notAvailableMsg": "Nicht verfügbar"
+  "notAvailableMsg": "Nicht verfügbar",
+  "killSwitch": "Not-Aus-Schalter",
+  "killSwitchDesc": "Blockiert die Internetverbindung, wenn die VPN-Verbindung abbricht.",
+  "dns": "DNS-Schutz",
+  "dnsDesc": "Verhindert DNS-Leaks"
 }

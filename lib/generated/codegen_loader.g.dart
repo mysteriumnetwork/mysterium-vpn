@@ -165,10 +165,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "意大利",
     "iUnderstandBtn": "我明白了",
     "ja": "日本人",
-    "killSwitch": "终止开关",
-    "killSwitchDesc": "如果VPN断开连接，则停止互联网访问，以防止暴露您的IP地址。",
-    "killSwitchTooltipMessage": "当与VPN服务器的连接丢失时，阻止互联网流量。连接到MysteriumVPN时，断网开关始终开启。",
-    "killSwitchTooltipTitle": "断网开关",
     "letsGoBtn": "走吧！",
     "linkCopied": "链接已复制到剪贴板！",
     "location": "地点",
@@ -469,7 +465,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
     "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
     "ipTypeResidentialTooltipBody":
-        "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+        "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
     "refreshIPAddress": "IP地址刷新",
     "getNewIPAddress": "刷新后获取新的 IP 地址",
     "resetAppDesc": "当出现故障时，请重置。",
@@ -563,6 +559,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "一切就绪！您的计划已激活。",
     "signInAbortedMsg": "登录已中止",
     "notAvailableMsg": "无法使用",
+    "killSwitch": "终止开关",
+    "killSwitchDesc": "VPN断开时会阻止互联网连接",
+    "dns": "DNS保护",
+    "dnsDesc": "防止 DNS 泄漏",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -733,12 +733,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "İtalya",
     "iUnderstandBtn": "Anladım",
     "ja": "Japonca",
-    "killSwitch": "Kapatma anahtarı",
-    "killSwitchDesc":
-        "IP adresinizin açığa çıkmasını önlemek için VPN bağlantısı kesilirse internet erişimini durdurur.",
-    "killSwitchTooltipMessage":
-        "VPN sunucusuna bağlantı kesildiğinde internet trafiğini engeller. MysteriumVPN'e bağlandığınızda öldürme anahtarı her zaman açıktır.",
-    "killSwitchTooltipTitle": "Öldürme Anahtarı",
     "letsGoBtn": "Hadi gidelim!",
     "linkCopied": "Bağlantı panoya kopyalandı!",
     "location": "Ülke",
@@ -835,7 +829,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Uçlar {}",
+    "purchasePromoEnds": "Sonlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -1098,7 +1092,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
-    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
     "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
     "fastLabel": "Hızlı",
@@ -1169,6 +1163,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "Her şey hazır! Bu plan zaten aktif durumda.",
     "signInAbortedMsg": "Giriş işlemi iptal edildi",
     "notAvailableMsg": "Müsait değil",
+    "killSwitch": "Acil durdurma düğmesi",
+    "killSwitchDesc": "VPN bağlantısı kesilirse internet erişimini engeller.",
+    "dns": "DNS koruması",
+    "dnsDesc": "DNS sızıntılarını önler.",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1322,11 +1320,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "イタリア",
     "iUnderstandBtn": "理解しました",
     "ja": "日本語",
-    "killSwitch": "緊急停止装置",
-    "killSwitchDesc": "VPNが切断された場合にインターネットアクセスを停止し、IPアドレスの露出を防止します。",
-    "killSwitchTooltipMessage":
-        "VPNサーバーへの接続が失われたときにインターネットトラフィックをブロックします。MysteriumVPNに接続すると、キルスイッチは常にオンになります。",
-    "killSwitchTooltipTitle": "キルスイッチ",
     "letsGoBtn": "行こう！",
     "linkCopied": "リンクをクリップボードにコピーしました！",
     "location": "位置",
@@ -1729,6 +1722,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "準備完了です！このプランは既に有効になっています。",
     "signInAbortedMsg": "サインインが中断されました",
     "notAvailableMsg": "利用不可",
+    "killSwitch": "キルスイッチ",
+    "killSwitchDesc": "VPN接続が切断された場合、インターネット接続を遮断します。",
+    "dns": "DNS保護",
+    "dnsDesc": "DNSリークを防止します",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -1907,12 +1904,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Italien",
     "iUnderstandBtn": "Ich verstehe",
     "ja": "Japanisch",
-    "killSwitch": "Notausschalter",
-    "killSwitchDesc":
-        "Stoppt den Internetzugang, wenn die VPN-Verbindung getrennt wird, um die Offenlegung Ihrer IP-Adresse zu verhindern.",
-    "killSwitchTooltipMessage":
-        "Blockiert den Internetverkehr, wenn die Verbindung zu einem VPN-Server verloren geht. Der Kill-Switch ist immer aktiviert, wenn Sie sich mit MysteriumVPN verbinden.",
-    "killSwitchTooltipTitle": "Kill-Switch",
     "letsGoBtn": "Los geht's",
     "linkCopied": "Link in die Zwischenablage kopiert!",
     "location": "Standort",
@@ -2223,7 +2214,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc":
         "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
         "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
     "notNowBtn": "Nicht jetzt.",
@@ -2358,6 +2349,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "Alles ist bereit! Dieser Plan ist bereits aktiv.",
     "signInAbortedMsg": "Anmeldung abgebrochen",
     "notAvailableMsg": "Nicht verfügbar",
+    "killSwitch": "Not-Aus-Schalter",
+    "killSwitchDesc": "Blockiert die Internetverbindung, wenn die VPN-Verbindung abbricht.",
+    "dns": "DNS-Schutz",
+    "dnsDesc": "Verhindert DNS-Leaks",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2532,12 +2527,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Itália",
     "iUnderstandBtn": "Eu entendo",
     "ja": "Japonês",
-    "killSwitch": "Botão de desligar",
-    "killSwitchDesc":
-        "Interrompe o acesso à Internet se a VPN for desconectada, para evitar a exposição do seu endereço IP.",
-    "killSwitchTooltipMessage":
-        "Bloqueia o tráfego da Internet quando a conexão com um servidor VPN é perdida. O interruptor de desligamento está sempre ativado quando você se conecta ao MysteriumVPN.",
-    "killSwitchTooltipTitle": "مفتاح القتل",
     "letsGoBtn": "Vamos!",
     "linkCopied": "Link copiado para a área de transferência!",
     "location": "Localização",
@@ -2980,6 +2969,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "Está tudo pronto! Seu plano já está ativo.",
     "signInAbortedMsg": "Login cancelado",
     "notAvailableMsg": "Não disponível",
+    "killSwitch": "interruptor de segurança",
+    "killSwitchDesc": "Bloqueia a internet se a VPN cair.",
+    "dns": "Proteção de DNS",
+    "dnsDesc": "Impede vazamentos de DNS",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3149,12 +3142,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Italy",
     "iUnderstandBtn": "I understand",
     "ja": "Japanese",
-    "killSwitch": "Kill-Switch",
-    "killSwitchDesc":
-        "Stops internet access if VPN disconnects, to prevent exposing your IP address.",
-    "killSwitchTooltipMessage":
-        "Blocks internet traffic when connection to a vpn server is lost. Kill-switch is always on when you connect to MysteriumVPN.",
-    "killSwitchTooltipTitle": "Kill switch",
     "letsGoBtn": "Let's go",
     "linkCopied": "Link copied to clipboard!",
     "location": "Location",
@@ -3590,6 +3577,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "You're all set! You already have this plan active.",
     "signInAbortedMsg": "Sign in aborted",
     "notAvailableMsg": "Not available",
+    "killSwitch": "Kill switch",
+    "killSwitchDesc": "Blocks internet if VPN drops",
+    "dns": "DNS protection",
+    "dnsDesc": "Prevents DNS leaks",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -3765,12 +3756,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Italia",
     "iUnderstandBtn": "Ho capito",
     "ja": "Giapponese",
-    "killSwitch": "Kill switch",
-    "killSwitchDesc":
-        "Interrompe l'accesso a Internet se la VPN si disconnette, per evitare di esporre il tuo indirizzo IP.",
-    "killSwitchTooltipMessage":
-        "Blocca il traffico internet quando la connessione a un server VPN viene persa. L'interruttore di sicurezza è sempre attivo quando ti connetti a MysteriumVPN.",
-    "killSwitchTooltipTitle": "Interruttore di Sicurezza",
     "letsGoBtn": "Andiamo!",
     "linkCopied": "Link copiato negli appunti!",
     "location": "Posizione",
@@ -4039,18 +4024,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi fino a 6 dispositivi contemporaneamente.",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "protocollo VPN",
+    "subscriptionPlanPF4Basic": "Protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi contemporaneamente",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
     "subscriptionPlanPF4Plus": "Oltre 7.500 indirizzi IP residenziali",
-    "subscriptionPlanPF5Plus": "protocollo VPN",
+    "subscriptionPlanPF5Plus": "Protocollo VPN",
     "subscriptionPlanPF6Plus": "Scelte a livello cittadino",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso entro 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti immediatamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "protocollo VPN",
+    "subscriptionPlanWireGuard": "Protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello cittadino",
@@ -4123,7 +4108,7 @@ class CodegenLoader extends AssetLoader {
     "unauthenticatedSettingSubtitle":
         "Accedi per accedere al tuo account e sbloccare tutte le funzionalità.",
     "signInBtn": "Registrazione",
-    "vpnProtocolSettingLbl": "protocollo VPN",
+    "vpnProtocolSettingLbl": "Protocollo VPN",
     "blockerSettingLbl": "Bloccante",
     "light": "Leggero",
     "dark": "Buio",
@@ -4213,6 +4198,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "Tutto pronto! Il tuo piano è già attivo.",
     "signInAbortedMsg": "Accesso interrotto",
     "notAvailableMsg": "Non disponibile",
+    "killSwitch": "Interruttore di spegnimento",
+    "killSwitchDesc": "Blocca la connessione internet se la VPN si disconnette",
+    "dns": "Protezione DNS",
+    "dnsDesc": "Previene le fughe DNS",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4390,12 +4379,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Italie",
     "iUnderstandBtn": "Je comprends",
     "ja": "Japonais",
-    "killSwitch": "Antidémarreur",
-    "killSwitchDesc":
-        "Arrête l'accès à Internet si le VPN se déconnecte, pour éviter d'exposer votre adresse IP.",
-    "killSwitchTooltipMessage":
-        "Bloque le trafic internet lorsque la connexion à un serveur VPN est perdue. L'interrupteur d'arrêt est toujours activé lorsque vous vous connectez à MysteriumVPN.",
-    "killSwitchTooltipTitle": "Interrupteur d'arrêt",
     "letsGoBtn": "Allons-y!",
     "linkCopied": "Lien copié dans le presse-papiers!",
     "location": "Emplacement",
@@ -4707,7 +4690,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
-        "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
+        "Apparaissez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
     "subscriptionPlanCityLevelDesc":
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -4826,7 +4809,7 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusFailedTitle": "Les informations sur le plan ne sont pas disponibles.",
     "accountSuccessfullyDeleted": "Compte supprimé",
     "redirectToLoginPage":
-        "Votre compte a été supprimé avec succès. Vous serez redirigé vers l'écran de connexion.",
+        "Votre compte a été supprimé avec succès. Vous allez être redirigé vers la page de connexion.",
     "goToLoginBtn": "Allez vous connecter",
     "authenticationFailed": "Impossible de se connecter. Veuillez réessayer.",
     "failedToLoadLocations": "Impossible de charger les emplacements. Veuillez réessayer.",
@@ -4843,6 +4826,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "C'est tout bon ! Votre forfait est déjà actif.",
     "signInAbortedMsg": "Connexion interrompue",
     "notAvailableMsg": "Pas disponible",
+    "killSwitch": "Interrupteur d'arrêt d'urgence",
+    "killSwitchDesc": "Bloque l'accès à Internet si le VPN se déconnecte.",
+    "dns": "Protection DNS",
+    "dnsDesc": "Empêche les fuites DNS",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5012,12 +4999,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Italia",
     "iUnderstandBtn": "Saya mengerti",
     "ja": "Jepang",
-    "killSwitch": "Membunuh beralih",
-    "killSwitchDesc":
-        "Menghentikan akses internet jika VPN terputus, untuk mencegah mengekspos alamat IP Anda.",
-    "killSwitchTooltipMessage":
-        "Memblokir lalu lintas internet ketika koneksi ke server VPN terputus. Sakelar pembunuh selalu aktif saat Anda terhubung ke MysteriumVPN.",
-    "killSwitchTooltipTitle": "Sakelar Pembunuh",
     "letsGoBtn": "Ayo pergi!",
     "linkCopied": "Tautan disalin ke papan klip!",
     "location": "Lokasi",
@@ -5311,7 +5292,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5451,10 +5432,14 @@ class CodegenLoader extends AssetLoader {
     "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
     "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
     "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-    "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
+    "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
     "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
     "signInAbortedMsg": "Login gagal",
     "notAvailableMsg": "Tidak tersedia",
+    "killSwitch": "Saklar pemutus daya",
+    "killSwitchDesc": "Memblokir internet jika koneksi VPN terputus.",
+    "dns": "Perlindungan DNS",
+    "dnsDesc": "Mencegah kebocoran DNS",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -5631,12 +5616,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "Italia",
     "iUnderstandBtn": "Lo entiendo",
     "ja": "Japonés",
-    "killSwitch": "Interruptor de apagado",
-    "killSwitchDesc":
-        "Detiene el acceso a Internet si la VPN se desconecta, para evitar exponer tu dirección IP.",
-    "killSwitchTooltipMessage":
-        "Bloquea el tráfico de internet cuando se pierde la conexión con un servidor VPN. El interruptor de corte siempre está activado cuando te conectas a MysteriumVPN.",
-    "killSwitchTooltipTitle": "Interruptor de Corte",
     "letsGoBtn": "¡Vamos!",
     "linkCopied": "¡Enlace copiado al portapapeles!",
     "location": "Ubicación",
@@ -6079,6 +6058,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "¡Listo! Ya tienes este plan activo.",
     "signInAbortedMsg": "Iniciar sesión abortado",
     "notAvailableMsg": "No disponible",
+    "killSwitch": "Interruptor de apagado",
+    "killSwitchDesc": "Bloquea internet si se cae la VPN.",
+    "dns": "protección DNS",
+    "dnsDesc": "Evita fugas de DNS",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6244,12 +6227,6 @@ class CodegenLoader extends AssetLoader {
     "italy": "إيطاليا",
     "iUnderstandBtn": "أنا أفهم",
     "ja": "اليابانية",
-    "killSwitch": "Kill-switch",
-    "killSwitchDesc":
-        "يوقف الوصول إلى الإنترنت في حالة انقطاع الاتصال بـ VPN، لمنع عرض عنوان IP الخاص بك.",
-    "killSwitchTooltipMessage":
-        "يمنع حركة المرور على الإنترنت عند فقدان الاتصال بخادم VPN. مفتاح القتل دائمًا قيد التشغيل عند الاتصال بـ MysteriumVPN.",
-    "killSwitchTooltipTitle": "Interruptor de Desligamento",
     "letsGoBtn": "دعنا نذهب",
     "linkCopied": "تم نسخ الرابط إلى الحافظة!",
     "location": "الموقع",
@@ -6527,7 +6504,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو سنوي",
+    "plan_yearly_pro": "برو أنوال",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -6564,7 +6541,7 @@ class CodegenLoader extends AssetLoader {
     "connectToTooltip": "اتصل بـ {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
     "redeemDiscountCode": "استخدم رمز الخصم",
-    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
+    "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
     "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
     "marketingConsentPopupDesc":
         "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
@@ -6658,7 +6635,7 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusFailedTitle": "معلومات الخطة غير متوفرة",
     "accountSuccessfullyDeleted": "تم حذف الحساب",
     "redirectToLoginPage": "تم حذف حسابك بنجاح. سيتم إعادة توجيهك إلى شاشة تسجيل الدخول.",
-    "goToLoginBtn": "انتقل إلى صفحة تسجيل الدخول",
+    "goToLoginBtn": "انتقل إلى تسجيل الدخول",
     "authenticationFailed": "تعذر تسجيل الدخول. يرجى المحاولة مرة أخرى.",
     "failedToLoadLocations": "لم نتمكن من تحميل المواقع. يرجى المحاولة مرة أخرى.",
     "failedToSubscribe": "حدث خطأ ما في اشتراكك. يرجى المحاولة مرة أخرى!",
@@ -6673,6 +6650,10 @@ class CodegenLoader extends AssetLoader {
     "planAlreadyPurchasedMsg": "أنت جاهز تماماً! هذه الخطة مفعلة لديك بالفعل.",
     "signInAbortedMsg": "تم إلغاء تسجيل الدخول",
     "notAvailableMsg": "غير متوفر",
+    "killSwitch": "مفتاح الإيقاف",
+    "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
+    "dns": "حماية نظام أسماء النطاقات (DNS)",
+    "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

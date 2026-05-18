@@ -149,10 +149,6 @@
   "italy": "意大利",
   "iUnderstandBtn": "我明白了",
   "ja": "日本人",
-  "killSwitch": "终止开关",
-  "killSwitchDesc": "如果VPN断开连接，则停止互联网访问，以防止暴露您的IP地址。",
-  "killSwitchTooltipMessage": "当与VPN服务器的连接丢失时，阻止互联网流量。连接到MysteriumVPN时，断网开关始终开启。",
-  "killSwitchTooltipTitle": "断网开关",
   "letsGoBtn": "走吧！",
   "linkCopied": "链接已复制到剪贴板！",
   "location": "地点",
@@ -460,7 +456,7 @@
   "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
   "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
   "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
-  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+  "ipTypeResidentialTooltipBody": "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
   "refreshIPAddress": "IP地址刷新",
   "getNewIPAddress": "刷新后获取新的 IP 地址",
   "resetAppDesc": "当出现故障时，请重置。",
@@ -556,5 +552,9 @@
   "subscriptionActive": "好消息！您的订阅已激活。",
   "planAlreadyPurchasedMsg": "一切就绪！您的计划已激活。",
   "signInAbortedMsg": "登录已中止",
-  "notAvailableMsg": "无法使用"
+  "notAvailableMsg": "无法使用",
+  "killSwitch": "终止开关",
+  "killSwitchDesc": "VPN断开时会阻止互联网连接",
+  "dns": "DNS保护",
+  "dnsDesc": "防止 DNS 泄漏"
 }

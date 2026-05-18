@@ -137,7 +137,13 @@ enum AnalyticsEvent {
   pushNotificationReceived,
   pushNotificationClicked,
   redeemCodeOpenSuccess,
-  redeemCodeOpenError;
+  redeemCodeOpenError,
+  onboardingShown,
+  onboardingStepView,
+  onboardingContinueClick,
+  onboardingBackClick,
+  onboardingCloseClick,
+  onboardingSeePlansClick;
 
   String get formattedName => name.toSnakeCase;
 }

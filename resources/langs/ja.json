@@ -149,10 +149,6 @@
   "italy": "イタリア",
   "iUnderstandBtn": "理解しました",
   "ja": "日本語",
-  "killSwitch": "緊急停止装置",
-  "killSwitchDesc": "VPNが切断された場合にインターネットアクセスを停止し、IPアドレスの露出を防止します。",
-  "killSwitchTooltipMessage": "VPNサーバーへの接続が失われたときにインターネットトラフィックをブロックします。MysteriumVPNに接続すると、キルスイッチは常にオンになります。",
-  "killSwitchTooltipTitle": "キルスイッチ",
   "letsGoBtn": "行こう！",
   "linkCopied": "リンクをクリップボードにコピーしました！",
   "location": "位置",
@@ -556,5 +552,9 @@
   "subscriptionActive": "素晴らしいお知らせです！お客様の購読が有効になりました。",
   "planAlreadyPurchasedMsg": "準備完了です！このプランは既に有効になっています。",
   "signInAbortedMsg": "サインインが中断されました",
-  "notAvailableMsg": "利用不可"
+  "notAvailableMsg": "利用不可",
+  "killSwitch": "キルスイッチ",
+  "killSwitchDesc": "VPN接続が切断された場合、インターネット接続を遮断します。",
+  "dns": "DNS保護",
+  "dnsDesc": "DNSリークを防止します"
 }
