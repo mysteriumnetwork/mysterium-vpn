@@ -1,0 +1,28 @@
+name: mail_launcher
+description: Launches installed mail apps to inbox on iOS, Android, and macOS.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: 6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.mysteriumvpn.mail_launcher
+        pluginClass: MailLauncherPlugin
+      ios:
+        pluginClass: MailLauncherPlugin
+      macos:
+        pluginClass: MailLauncherPlugin

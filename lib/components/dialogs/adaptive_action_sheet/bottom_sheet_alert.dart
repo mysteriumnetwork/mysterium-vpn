@@ -40,7 +40,7 @@ Future<T?> _show<T>(
   double? androidBorderRadius, {
   bool isDismissible = true,
 }) {
-  if (Platform.isIOS) {
+  if (Platform.isIOS || Platform.isMacOS) {
     return _showCupertinoBottomSheet(
       context,
       title,
