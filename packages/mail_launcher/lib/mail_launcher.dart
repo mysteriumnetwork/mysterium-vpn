@@ -8,8 +8,8 @@ class MailApp {
   /// Display name (e.g. "Gmail").
   final String name;
 
-  /// Opaque platform identifier — bundle ID on iOS/macOS, package name on Android.
-  /// Pass to [MailLauncher.open] to launch this app.
+  /// Opaque platform identifier — URL scheme on iOS, bundle ID on macOS,
+  /// package name on Android. Treat as a token; pass to [MailLauncher.open].
   final String identifier;
 }
 
@@ -24,19 +24,23 @@ class MailLauncher {
     if (!_supported) {
       return const [];
     }
-    final raw = await _channel.invokeListMethod<Map<Object?, Object?>>('listInstalled');
-    if (raw == null) {
+    try {
+      final raw = await _channel.invokeListMethod<Map<Object?, Object?>>('listInstalled');
+      if (raw == null) {
+        return const [];
+      }
+      return raw
+          .map(
+            (entry) => MailApp(
+              name: (entry['name'] as String?) ?? '',
+              identifier: (entry['identifier'] as String?) ?? '',
+            ),
+          )
+          .where((app) => app.identifier.isNotEmpty)
+          .toList(growable: false);
+    } on PlatformException {
       return const [];
     }
-    return raw
-        .map(
-          (entry) => MailApp(
-            name: (entry['name'] as String?) ?? '',
-            identifier: (entry['identifier'] as String?) ?? '',
-          ),
-        )
-        .where((app) => app.identifier.isNotEmpty)
-        .toList(growable: false);
   }
 
   /// Launches [app] (typically to its inbox). Returns `true` on success.

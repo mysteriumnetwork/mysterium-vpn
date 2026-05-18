@@ -125,7 +125,7 @@ class VerifyEmailView extends HookConsumerWidget {
       return;
     }
     if (apps.length == 1) {
-      await MailLauncher.open(apps.first);
+      _openMailApp(apps.first, analyticsStore);
       return;
     }
     _showMailPicker(
@@ -135,16 +135,18 @@ class VerifyEmailView extends HookConsumerWidget {
           .map(
             (app) => BottomSheetAction(
               title: app.name,
-              onPressed: (_) {
-                MailLauncher.open(app);
-                analyticsStore.logEvent(
-                  AnalyticsEvent.emailProviderClicked,
-                  parameters: {'provider': app.name},
-                );
-              },
+              onPressed: (_) => _openMailApp(app, analyticsStore),
             ),
           )
           .toList(),
+    );
+  }
+
+  void _openMailApp(MailApp app, AnalyticsStore analyticsStore) {
+    MailLauncher.open(app);
+    analyticsStore.logEvent(
+      AnalyticsEvent.emailProviderClicked,
+      parameters: {'provider': app.name},
     );
   }
 
