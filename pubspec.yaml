@@ -61,6 +61,8 @@ dependencies:
   intl: 0.20.2
   json_annotation: 4.11.0
   latlong2: 0.9.1
+  mail_launcher:
+    path: ./packages/mail_launcher
   mobx: 2.6.0
   modal_bottom_sheet: 3.0.0
   money2: 6.3.0
@@ -70,10 +72,6 @@ dependencies:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
       ref: 0.0.16
   onesignal_flutter: 5.5.3
-  open_mail_app:
-    git:
-      url: https://github.com/KristijanMitrik/open-mail-app-flutter.git
-      ref: 0.4.5
   open_store: 0.5.0
   openvpn_dart:
     git:
