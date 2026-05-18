@@ -17,6 +17,7 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<PushNotificationsStore>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late UserPreferencesStore store;
@@ -27,6 +28,7 @@ void main() {
   late MockPushNotificationsStore mockPushNotificationsStore;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockSubscriptionStore mockSubscriptionStore;
+  late MockRemoteConfigStore mockRemoteConfigStore;
   setUp(() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
@@ -35,6 +37,7 @@ void main() {
     mockPushNotificationsStore = MockPushNotificationsStore();
     mockAuthSessionStore = MockAuthSessionStore();
     mockSubscriptionStore = MockSubscriptionStore();
+    mockRemoteConfigStore = MockRemoteConfigStore();
 
     // Default auth state: not authenticated
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
@@ -58,6 +61,9 @@ void main() {
     when(
       mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
     ).thenAnswer((_) async => false);
+    // Default: FF is on so existing tests don't have to opt in. Tests that
+    // exercise the kill switch override this.
+    when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
 
     store = UserPreferencesStore(
       apiService: mockApiService,
@@ -67,6 +73,7 @@ void main() {
       pushNotificationsStore: mockPushNotificationsStore,
       authSessionStore: mockAuthSessionStore,
       subscriptionStore: mockSubscriptionStore,
+      remoteConfigStore: mockRemoteConfigStore,
     )..testIsMobile = true;
   });
 
@@ -87,6 +94,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for futures to complete
@@ -120,6 +128,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete
@@ -151,6 +160,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Should not throw
@@ -285,6 +295,54 @@ void main() {
     test('shouldShowNoneSubsOnboarding skips when already completed', () async {
       when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
       expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+    });
+
+    test('shouldShowNoneSubsOnboarding skips when canShowNoSubsOnboardingFlow FF is off', () async {
+      // FF kill switch wins even if the user has never completed onboarding
+      // and has no active subscription.
+      when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+      expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+
+      // FF short-circuits — neither the persistence layer nor the
+      // subscription fetch should be consulted.
+      verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+      verifyNever(mockSubscriptionStore.subscriptionFuture);
+    });
+
+    test(
+      'shouldShowNoneSubsOnboarding returns true when FF on, not completed, no subscription',
+      () async {
+        when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+        when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+        when(
+          mockSubscriptionStore.subscriptionFuture,
+        ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+        expect(await store.shouldShowNoneSubsOnboarding(), isTrue);
+      },
+    );
+
+    test('evaluatePromptToShow falls through to marketing when FF disables onboarding', () async {
+      // Onboarding would normally be eligible (not completed, no active sub).
+      when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+      // Marketing consent is eligible (3rd app open, no consent yet).
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+
+      await store.evaluatePromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
     });
 
     test('evaluatePromptToShow returns none when anyPromptShownThisSession is true', () async {
@@ -493,6 +551,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       await store.setMarketingConsentFuture;
@@ -662,6 +721,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete
@@ -688,6 +748,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
       // Wait for auth reaction and initStore to complete

@@ -23,13 +23,15 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     required PushNotificationsStore pushNotificationsStore,
     required AuthSessionStore authSessionStore,
     required SubscriptionStore subscriptionStore,
+    required RemoteConfigStore remoteConfigStore,
   }) : _apiService = apiService,
        _analyticsStore = analyticsStore,
        _realIPInfo = realIPInfo,
        localDb = localDBService,
        _pushNotificationsStore = pushNotificationsStore,
        _authSessionStore = authSessionStore,
-       _subscriptionStore = subscriptionStore {
+       _subscriptionStore = subscriptionStore,
+       _remoteConfigStore = remoteConfigStore {
     _authReactionDisposer = reaction<bool>(
       (_) => _authSessionStore.isAuthenticated,
       (status) async {
@@ -55,6 +57,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   final PushNotificationsStore _pushNotificationsStore;
   final AuthSessionStore _authSessionStore;
   final SubscriptionStore _subscriptionStore;
+  final RemoteConfigStore _remoteConfigStore;
   ReactionDisposer? _authReactionDisposer;
 
   @observable
@@ -152,6 +155,9 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   @action
   Future<bool> shouldShowNoneSubsOnboarding() async {
+    if (!_remoteConfigStore.canShowNoSubsOnboardingFlow) {
+      return false;
+    }
     final alreadyCompleted = await localDb.getNoneSubsOnboardingCompleted();
     if (alreadyCompleted) {
       return false;

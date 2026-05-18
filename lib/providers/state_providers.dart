@@ -241,6 +241,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   return UserPreferencesStore(
     apiService: apiService,
@@ -250,6 +251,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
     pushNotificationsStore: pushNotificationsStore,
     authSessionStore: authSessionStore,
     subscriptionStore: subscriptionStore,
+    remoteConfigStore: remoteConfigStore,
   );
 });
 
