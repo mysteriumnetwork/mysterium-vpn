@@ -44,7 +44,9 @@ class _ExposedStep extends StatelessWidget {
               child: OnboardingItem(
                 leading: const _LeadingIcon(icon: UntitledUI.globe_05),
                 label: LocaleKeys.ipAddressLbl.tr(),
-                value: '84.122.47.219',
+                // RFC 5737 documentation-reserved range — never assigned to
+                // a real network, safe to display in illustrative UI.
+                value: '203.0.113.42',
                 trailing: const _StatusDot(exposed: true),
               ),
             ),

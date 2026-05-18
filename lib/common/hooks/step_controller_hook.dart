@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -26,18 +28,33 @@ class StepController {
 /// [count] must be at least 1. [initialStep] is the step the controller
 /// starts on — useful for resuming an interrupted flow from a persisted
 /// position. [onStepChange] fires after every successful step transition
-/// (forward or back) so callers can persist the new position.
+/// (forward or back) so callers can persist the new position; it may return
+/// a [Future] (e.g. to await a disk write) and any error it throws is
+/// reported via [FlutterError.reportError] instead of becoming an unhandled
+/// asynchronous error.
 StepController useStepController(
   int count, {
   int initialStep = 0,
-  ValueChanged<int>? onStepChange,
+  FutureOr<void> Function(int)? onStepChange,
 }) {
   assert(count > 0, 'count must be > 0');
   assert(initialStep >= 0 && initialStep < count, 'initialStep must be in [0, count)');
   final state = useState(initialStep);
   void update(int newStep) {
     state.value = newStep;
-    onStepChange?.call(newStep);
+    final result = onStepChange?.call(newStep);
+    if (result is Future<void>) {
+      result.catchError((Object error, StackTrace stack) {
+        FlutterError.reportError(
+          FlutterErrorDetails(
+            exception: error,
+            stack: stack,
+            library: 'step_controller_hook',
+            context: ErrorDescription('while persisting step $newStep'),
+          ),
+        );
+      });
+    }
   }
 
   return StepController(

@@ -115,8 +115,15 @@ class _OnboardingDialog extends HookWidget {
     );
     final step = _Step.values[controller.step];
     final track = _useOnboardingAnalytics(controller.step);
+    // True when the dialog is popped via an in-dialog CTA (X button or last
+    // step's "See Plans"). The [PopScope] handler uses it to recognise the
+    // remaining pop path (system back / predictive back) and fire the close
+    // analytics event for it — without this flag the X path would
+    // double-fire (once from [onClose], once from the handler).
+    final closedExplicitly = useRef(false);
 
     void onClose() {
+      closedExplicitly.value = true;
       track(AnalyticsEvent.onboardingCloseClick);
       Navigator.of(context).pop();
     }
@@ -128,6 +135,7 @@ class _OnboardingDialog extends HookWidget {
 
     void onContinue() {
       if (controller.isLast) {
+        closedExplicitly.value = true;
         track(AnalyticsEvent.onboardingSeePlansClick);
         // Pop with `true` so the caller can run `handleSubscribe()` on a
         // still-mounted parent context — invoking it here would race with
@@ -139,13 +147,20 @@ class _OnboardingDialog extends HookWidget {
       controller.next();
     }
 
-    return Dialog.fullscreen(
-      backgroundColor: Theme.of(context).palette.bgSidePanel,
-      child: _OnboardingContent(
-        step: step,
-        onClose: onClose,
-        onBack: onBack,
-        onContinue: onContinue,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop && !closedExplicitly.value) {
+          track(AnalyticsEvent.onboardingCloseClick);
+        }
+      },
+      child: Dialog.fullscreen(
+        backgroundColor: Theme.of(context).palette.bgSidePanel,
+        child: _OnboardingContent(
+          step: step,
+          onClose: onClose,
+          onBack: onBack,
+          onContinue: onContinue,
+        ),
       ),
     );
   }

@@ -16,15 +16,19 @@ class _ComparisonStep extends StatelessWidget {
   // Visual gap between back-card content and the front card's left border.
   static const _kContentGapBeforeFront = 4.0;
 
-  // Force LTR for the comparison composition: the data centre card sits to
-  // the left and Mysterium to the right regardless of locale. Only the text
-  // glyphs inside each card follow their natural direction.
+  // The comparison composition's POSITIONING is LTR (data centre on the
+  // left, Mysterium on the right) regardless of locale, but each card's
+  // text content still follows the ambient direction so Arabic/Hebrew copy
+  // renders with the correct paragraph direction. The outer Directionality
+  // pins the Stack layout to LTR; an inner Directionality on each card
+  // restores the inherited direction for the text glyphs.
   @override
   Widget build(BuildContext context) {
     final compact = _isCompact(context);
     final overlap = compact ? _kHorizontalOverlapMobile : _kHorizontalOverlapDesktop;
     final frontDrop = compact ? _kFrontDropMobile : _kFrontDropDesktop;
     final layoutWidth = _kBackWidth + _kFrontWidth - overlap;
+    final ambientDirection = Directionality.of(context);
     return Directionality(
       textDirection: TextDirection.ltr,
       child: FittedBox(
@@ -40,36 +44,42 @@ class _ComparisonStep extends StatelessWidget {
               // configured drop below the back card's bottom.
               Padding(
                 padding: EdgeInsets.only(bottom: frontDrop),
-                child: OnboardingComparisonCard(
-                  variant: OnboardingComparisonCardVariant.dataCentre,
-                  pillLabel: LocaleKeys.dataCentreComparisonCardLbl.tr(),
-                  title: LocaleKeys.dataCentreComparisonCardTitle.tr(),
-                  items: [
-                    LocaleKeys.dataCentreComparisonCardItem1.tr(),
-                    LocaleKeys.dataCentreComparisonCardItem2.tr(),
-                    LocaleKeys.dataCentreComparisonCardItem3.tr(),
-                  ],
-                  image: Asset.images.serversOnboarding(context).provider(),
-                  width: _kBackWidth,
-                  pillMaxWidth: 120,
-                  contentTrailingPadding: overlap + _kContentGapBeforeFront,
+                child: Directionality(
+                  textDirection: ambientDirection,
+                  child: OnboardingComparisonCard(
+                    variant: OnboardingComparisonCardVariant.dataCentre,
+                    pillLabel: LocaleKeys.dataCentreComparisonCardLbl.tr(),
+                    title: LocaleKeys.dataCentreComparisonCardTitle.tr(),
+                    items: [
+                      LocaleKeys.dataCentreComparisonCardItem1.tr(),
+                      LocaleKeys.dataCentreComparisonCardItem2.tr(),
+                      LocaleKeys.dataCentreComparisonCardItem3.tr(),
+                    ],
+                    image: Asset.images.serversOnboarding(context).provider(),
+                    width: _kBackWidth,
+                    pillMaxWidth: 120,
+                    contentTrailingPadding: overlap + _kContentGapBeforeFront,
+                  ),
                 ),
               ),
               Positioned(
                 right: 0,
                 bottom: 0,
-                child: OnboardingComparisonCard(
-                  variant: OnboardingComparisonCardVariant.residential,
-                  pillLabel: LocaleKeys.residentialCentreComparisonCardLbl.tr(),
-                  title: 'Mysterium VPN',
-                  items: [
-                    LocaleKeys.residentialCentreComparisonCardItem1.tr(),
-                    LocaleKeys.residentialCentreComparisonCardItem2.tr(),
-                    LocaleKeys.residentialCentreComparisonCardItem3.tr(),
-                  ],
-                  image: Asset.images.houseOnboarding(context).provider(),
-                  width: _kFrontWidth,
-                  pillMaxWidth: 120,
+                child: Directionality(
+                  textDirection: ambientDirection,
+                  child: OnboardingComparisonCard(
+                    variant: OnboardingComparisonCardVariant.residential,
+                    pillLabel: LocaleKeys.residentialCentreComparisonCardLbl.tr(),
+                    title: 'Mysterium VPN',
+                    items: [
+                      LocaleKeys.residentialCentreComparisonCardItem1.tr(),
+                      LocaleKeys.residentialCentreComparisonCardItem2.tr(),
+                      LocaleKeys.residentialCentreComparisonCardItem3.tr(),
+                    ],
+                    image: Asset.images.houseOnboarding(context).provider(),
+                    width: _kFrontWidth,
+                    pillMaxWidth: 120,
+                  ),
                 ),
               ),
             ],

@@ -325,4 +325,30 @@ void main() {
       expect(store.pricingMonthly, isTrue);
     });
   });
+
+  group('RemoteConfigStore.canShowNoSubsOnboardingFlow', () {
+    test('returns true if key is not present in config (default)', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.canShowNoSubsOnboardingFlow, isTrue);
+    });
+
+    test('returns true if config has true value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'canShowNoSubsOnboardingFlow': true});
+      await store.configFuture;
+      expect(store.canShowNoSubsOnboardingFlow, isTrue);
+    });
+
+    test('returns false if config has false value (kill switch flipped)', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'canShowNoSubsOnboardingFlow': false});
+      await store.configFuture;
+      expect(store.canShowNoSubsOnboardingFlow, isFalse);
+    });
+  });
 }

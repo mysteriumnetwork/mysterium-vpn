@@ -327,6 +327,33 @@ void main() {
       },
     );
 
+    test(
+      'shouldShowNoneSubsOnboarding returns false when user has an active subscription',
+      () async {
+        // Protect paying users from seeing the non-subscriber pitch.
+        when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+        when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+        when(mockSubscriptionStore.subscriptionFuture).thenAnswer(
+          (_) =>
+              ObservableFuture.value(Subscription(active: true, expired: false, recurring: true)),
+        );
+
+        expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+      },
+    );
+
+    test('shouldShowNoneSubsOnboarding returns false when subscription lookup throws', () async {
+      // Offline / API errors must not flash onboarding at a possibly-paying
+      // user; eligibility is re-evaluated on the next launch.
+      when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(
+        mockSubscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
+
+      expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
+    });
+
     test('evaluatePromptToShow falls through to marketing when FF disables onboarding', () async {
       // Onboarding would normally be eligible (not completed, no active sub).
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);

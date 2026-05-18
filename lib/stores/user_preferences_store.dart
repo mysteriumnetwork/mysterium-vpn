@@ -134,22 +134,24 @@ abstract class _UserPreferencesStore with Store, Disposeable {
       nextPromptToShow = UserPromptType.none;
       return;
     }
-    final shouldShowOnboarding = await shouldShowNoneSubsOnboarding();
-    final pushPromptShown = await _pushNotificationsStore
-        .shouldShowPushNotificationsPermissionPrompt();
-    final marketingConsentShown = await shouldShowMarketingConsent();
-
-    // Priority order — onboarding takes precedence so first-time non-subscribers
-    // see the value proposition before any consent/permission ask.
-    if (shouldShowOnboarding) {
+    // Priority order — onboarding takes precedence so first-time
+    // non-subscribers see the value proposition before any consent /
+    // permission ask. Each check runs only after the previous one has been
+    // ruled out so a slow / failing downstream call (marketing consent API,
+    // push permission probe) can't delay or block onboarding.
+    if (await shouldShowNoneSubsOnboarding()) {
       nextPromptToShow = UserPromptType.noneSubsOnboarding;
-    } else if (marketingConsentShown) {
-      nextPromptToShow = UserPromptType.marketingConsent;
-    } else if (pushPromptShown) {
-      nextPromptToShow = UserPromptType.pushNotifications;
-    } else {
-      nextPromptToShow = UserPromptType.none;
+      return;
     }
+    if (await shouldShowMarketingConsent()) {
+      nextPromptToShow = UserPromptType.marketingConsent;
+      return;
+    }
+    if (await _pushNotificationsStore.shouldShowPushNotificationsPermissionPrompt()) {
+      nextPromptToShow = UserPromptType.pushNotifications;
+      return;
+    }
+    nextPromptToShow = UserPromptType.none;
   }
 
   @visibleForTesting
