@@ -23,6 +23,10 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
   final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
   final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
+  // Captured against the home view's context so it survives the onboarding
+  // dialog being popped — invoking it inside the dialog would race with the
+  // route's disposal and short-circuit at `context.mounted`.
+  final handleSubscribe = useHandleSubscribe();
 
   return useEffect(
     () {
@@ -50,7 +54,25 @@ void useHomeAutorun() {
           if (!userPreferencesStore.isPromptShown(value)) {
             userPreferencesStore.markPromptAsShown(value);
 
-            if (value case UserPromptType.marketingConsent) {
+            if (value case UserPromptType.noneSubsOnboarding) {
+              controller.add(() async {
+                final initialStep = await userPreferencesStore.getNoneSubsOnboardingStep();
+                if (!context.mounted) {
+                  return null;
+                }
+                final shouldSubscribe = await showOnboardingDialog(
+                  context,
+                  initialStep: initialStep,
+                );
+                // Force-quit kills the process before reaching this line, so
+                // the in-progress step persisted from the dialog survives.
+                await userPreferencesStore.setNoneSubsOnboardingCompleted();
+                if (shouldSubscribe == true && context.mounted) {
+                  await handleSubscribe();
+                }
+                return null;
+              });
+            } else if (value case UserPromptType.marketingConsent) {
               controller.add(() => showMarketingConsentDialog(context));
             } else if (value case UserPromptType.pushNotifications) {
               controller.add(() => showPushNotificationsPermissionDialog(context));

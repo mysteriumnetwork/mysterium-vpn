@@ -145,6 +145,22 @@ class $AssetsImagesGen {
     size: const Size(103.0, 79.0),
   );
 
+  /// File path: assets/images/house_dark.png
+  AssetGenImage get houseDark =>
+      const AssetGenImage('assets/images/house_dark.png', size: const Size(112.0, 112.0));
+
+  /// File path: assets/images/house_light.png
+  AssetGenImage get houseLight =>
+      const AssetGenImage('assets/images/house_light.png', size: const Size(112.0, 112.0));
+
+  /// File path: assets/images/onboarding_map_dark.svg
+  SvgGenImage get onboardingMapDark =>
+      const SvgGenImage('assets/images/onboarding_map_dark.svg', size: Size(591.0, 281.0));
+
+  /// File path: assets/images/onboarding_map_light.svg
+  SvgGenImage get onboardingMapLight =>
+      const SvgGenImage('assets/images/onboarding_map_light.svg', size: Size(591.0, 281.0));
+
   /// File path: assets/images/pn_permissions_dark.png
   AssetGenImage get pnPermissionsDark =>
       const AssetGenImage('assets/images/pn_permissions_dark.png', size: const Size(90.0, 89.0));
@@ -152,6 +168,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/pn_permissions_light.png
   AssetGenImage get pnPermissionsLight =>
       const AssetGenImage('assets/images/pn_permissions_light.png', size: const Size(90.0, 89.0));
+
+  /// File path: assets/images/servers_dark.png
+  AssetGenImage get serversDark =>
+      const AssetGenImage('assets/images/servers_dark.png', size: const Size(112.0, 112.0));
+
+  /// File path: assets/images/servers_light.png
+  AssetGenImage get serversLight =>
+      const AssetGenImage('assets/images/servers_light.png', size: const Size(112.0, 112.0));
 
   /// File path: assets/images/welcome.png
   AssetGenImage get welcome =>
@@ -162,8 +186,14 @@ class $AssetsImagesGen {
     devicesLimit,
     emailPermissionsDark,
     emailPermissionsLight,
+    houseDark,
+    houseLight,
+    onboardingMapDark,
+    onboardingMapLight,
     pnPermissionsDark,
     pnPermissionsLight,
+    serversDark,
+    serversLight,
     welcome,
   ];
 }

@@ -110,6 +110,51 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$evaluatePromptToShowAsyncAction.run(() => super.evaluatePromptToShow());
   }
 
+  late final _$shouldShowNoneSubsOnboardingAsyncAction = AsyncAction(
+    '_UserPreferencesStore.shouldShowNoneSubsOnboarding',
+    context: context,
+  );
+
+  @override
+  @visibleForTesting
+  Future<bool> shouldShowNoneSubsOnboarding() {
+    return _$shouldShowNoneSubsOnboardingAsyncAction.run(
+      () => super.shouldShowNoneSubsOnboarding(),
+    );
+  }
+
+  late final _$setNoneSubsOnboardingCompletedAsyncAction = AsyncAction(
+    '_UserPreferencesStore.setNoneSubsOnboardingCompleted',
+    context: context,
+  );
+
+  @override
+  Future<void> setNoneSubsOnboardingCompleted() {
+    return _$setNoneSubsOnboardingCompletedAsyncAction.run(
+      () => super.setNoneSubsOnboardingCompleted(),
+    );
+  }
+
+  late final _$getNoneSubsOnboardingStepAsyncAction = AsyncAction(
+    '_UserPreferencesStore.getNoneSubsOnboardingStep',
+    context: context,
+  );
+
+  @override
+  Future<int> getNoneSubsOnboardingStep() {
+    return _$getNoneSubsOnboardingStepAsyncAction.run(() => super.getNoneSubsOnboardingStep());
+  }
+
+  late final _$setNoneSubsOnboardingStepAsyncAction = AsyncAction(
+    '_UserPreferencesStore.setNoneSubsOnboardingStep',
+    context: context,
+  );
+
+  @override
+  Future<void> setNoneSubsOnboardingStep(int step) {
+    return _$setNoneSubsOnboardingStepAsyncAction.run(() => super.setNoneSubsOnboardingStep(step));
+  }
+
   late final _$shouldShowMarketingConsentAsyncAction = AsyncAction(
     '_UserPreferencesStore.shouldShowMarketingConsent',
     context: context,
