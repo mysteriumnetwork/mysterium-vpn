@@ -61,9 +61,11 @@ final apiStorePOD = Provider<MqttStore>((ref) {
 
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
-final homeTabsStorePOD = Provider<HomeTabsStore>(
-  (ref) => HomeTabsStore(ref.watch(authSessionStorePOD)),
-);
+final homeTabsStorePOD = Provider<HomeTabsStore>((ref) {
+  final store = HomeTabsStore(ref.watch(authSessionStorePOD));
+  ref.onDispose(store.dispose);
+  return store;
+});
 
 final vpnStorePOD = Provider<VpnStore>((ref) {
   final externalApiService = ref.watch(externalApiServicePOD);

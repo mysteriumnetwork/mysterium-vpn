@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -120,5 +122,19 @@ void main() {
     // reads several other stores (plans, purchase, analytics, auth). It
     // would need ~5 extra mocks to render without crashing; the branching
     // itself is already covered by the three tests above.
+
+    testWidgets('shows a loader while subscriptionFuture is pending', (tester) async {
+      // Pending future — must not commit to a branch yet, even if the
+      // web-flow computed has already flipped (e.g. Windows).
+      final pending = ObservableFuture<Subscription>(Completer<Subscription>().future);
+      when(subscriptionStore.subscriptionFuture).thenAnswer((_) => pending);
+      when(subscriptionStore.useWebFlow).thenReturn(true);
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(find.byType(LoadingIndicator), findsOneWidget);
+      expect(find.textContaining('Manage on the web'), findsNothing);
+    });
   });
 }

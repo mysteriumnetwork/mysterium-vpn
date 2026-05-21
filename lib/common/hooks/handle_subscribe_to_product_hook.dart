@@ -8,8 +8,13 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-Future<void> Function(String id) useHandleSubscribeToProduct() {
+/// `onAfterRedirect` runs after we've handed off to a web checkout or
+/// determined the user is already on the requested plan — modal callers
+/// pass `Navigator.of(ctx).pop` so the picker dismisses; tab callers leave
+/// it null (popping there would tear the home page off the beam stack).
+Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAfterRedirect}) {
   final context = useContext();
+  final onAfterRedirectRef = useRef(onAfterRedirect)..value = onAfterRedirect;
   return useCallback((String id) async {
     if (!context.mounted) {
       return;
@@ -34,7 +39,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       // already subscribed to this product, do nothing
       if (context.mounted) {
         showSnackbar(LocaleKeys.planAlreadyPurchasedMsg.tr());
-        Navigator.of(context).pop();
+        onAfterRedirectRef.value?.call();
       }
       return;
     }
@@ -51,7 +56,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       );
       await openUrlLink(uri);
       if (context.mounted) {
-        Navigator.of(context).pop();
+        onAfterRedirectRef.value?.call();
       }
       return;
     }

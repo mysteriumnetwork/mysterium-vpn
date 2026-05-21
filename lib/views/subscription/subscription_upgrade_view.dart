@@ -49,6 +49,11 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final scrollController = useScrollController();
 
+    // Kept in a ref so [useReaction] (which only captures its callback once)
+    // always invokes the freshest [onPurchaseComplete] when the parent
+    // rebuilds with a different callback.
+    final onPurchaseCompleteRef = useRef(onPurchaseComplete)..value = onPurchaseComplete;
+
     // Success snackbar + verification dialogs are handled by the enclosing
     // [SubscriptionStatusContainer]'s reaction — don't duplicate them here.
     // [onPurchaseComplete] only fires on a real purchase so the verification
@@ -59,7 +64,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
         showError(purchaseStore.subscriptionError);
       }
       if (status == SubscriptionStatus.purchased) {
-        onPurchaseComplete?.call();
+        onPurchaseCompleteRef.value?.call();
         subscriptionStore.refreshAll().ignore();
       }
     });
@@ -134,7 +139,9 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
               isOffer: true,
             );
             final planWithDuration = '${planData.name} 1-${planData.periodLabel.capitalize()}';
-            final handleSubscribe = useHandleSubscribeToProduct();
+            final handleSubscribe = useHandleSubscribeToProduct(
+              onAfterRedirect: onPurchaseComplete,
+            );
 
             Future<void> handlePurchase() async {
               await handleSubscribe(product.id);

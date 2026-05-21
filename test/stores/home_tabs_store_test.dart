@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -11,10 +12,14 @@ import 'home_tabs_store_test.mocks.dart';
 void main() {
   late HomeTabsStore store;
   late MockAuthSessionStore authSessionStore;
+  late Observable<bool> isAuthenticatedSignal;
 
   setUp(() {
     authSessionStore = MockAuthSessionStore();
-    when(authSessionStore.isAuthenticated).thenReturn(false);
+    // Back the mock with a real Observable so MobX reactions inside the
+    // store fire when the auth flag flips.
+    isAuthenticatedSignal = Observable(false);
+    when(authSessionStore.isAuthenticated).thenAnswer((_) => isAuthenticatedSignal.value);
     store = HomeTabsStore(authSessionStore);
   });
 
@@ -104,6 +109,36 @@ void main() {
         // Setting again should not change the value (guarded by ==).
         ..openSettingsSubPage(SettingCategory.account);
       expect(store.settingsSubPage, SettingCategory.account);
+    });
+  });
+
+  group('HomeTabsStore auth reset', () {
+    test('resets selected tab, sub-page and focus flag when auth flips', () {
+      store
+        ..openSettingsSubPage(SettingCategory.account)
+        ..openLocationsSearch();
+      expect(store.selected, HomeTab.locations);
+      expect(store.settingsSubPage, SettingCategory.account);
+      expect(store.pendingLocationsSearchFocus, isTrue);
+
+      runInAction(() => isAuthenticatedSignal.value = true);
+
+      expect(store.selected, HomeTab.map);
+      expect(store.settingsSubPage, isNull);
+      expect(store.pendingLocationsSearchFocus, isFalse);
+    });
+
+    test('also resets on logout (true -> false)', () {
+      runInAction(() => isAuthenticatedSignal.value = true);
+      store
+        ..trySelect(HomeTab.products)
+        ..openSettingsSubPage(SettingCategory.connection);
+      expect(store.selected, HomeTab.products);
+
+      runInAction(() => isAuthenticatedSignal.value = false);
+
+      expect(store.selected, HomeTab.map);
+      expect(store.settingsSubPage, isNull);
     });
   });
 }

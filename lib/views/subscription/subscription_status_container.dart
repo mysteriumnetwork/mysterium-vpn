@@ -196,9 +196,16 @@ Future<void> _checkForExistingSubscription(
   if (email == null) {
     return;
   }
-  store.markExistingSubscriptionDialogShown();
 
-  void showExistingSubscriptionDialog() {
+  Future.microtask(() {
+    // Container may have unmounted while [refreshOtherSubscriber] was in
+    // flight (e.g. the user switched tabs). Only flip the session flag once
+    // the dialog actually goes up — otherwise a missed render would silence
+    // the prompt for the rest of the session.
+    if (!context.mounted) {
+      return;
+    }
+    store.markExistingSubscriptionDialogShown();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -225,7 +232,5 @@ Future<void> _checkForExistingSubscription(
         ),
       ),
     );
-  }
-
-  Future.microtask(showExistingSubscriptionDialog);
+  });
 }

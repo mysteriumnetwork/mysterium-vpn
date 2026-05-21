@@ -9,9 +9,21 @@ part 'home_tabs_store.g.dart';
 class HomeTabsStore = _HomeTabsStore with _$HomeTabsStore;
 
 abstract class _HomeTabsStore with Store {
-  _HomeTabsStore(this._authSessionStore);
+  _HomeTabsStore(this._authSessionStore) {
+    // Reset session-scoped UI state on every auth transition so the next
+    // user (or the same user re-logging in) starts from a clean Map tab
+    // with no settings sub-page open. Without this the store outlives
+    // logout (it's a non-autoDispose Provider) and an auth-gated tab the
+    // previous session left selected (or selected via deep-link while
+    // unauthed) would be visible immediately on the next sign-in.
+    _authReactionDisposer = reaction<bool>(
+      (_) => _authSessionStore.isAuthenticated,
+      (_) => _resetSessionState(),
+    );
+  }
 
   final AuthSessionStore _authSessionStore;
+  late final ReactionDisposer _authReactionDisposer;
 
   @observable
   HomeTab selected = HomeTab.map;
@@ -40,6 +52,17 @@ abstract class _HomeTabsStore with Store {
     }
     selected = tab;
     return true;
+  }
+
+  @action
+  void _resetSessionState() {
+    selected = HomeTab.map;
+    settingsSubPage = null;
+    pendingLocationsSearchFocus = false;
+  }
+
+  void dispose() {
+    _authReactionDisposer();
   }
 
   @action

@@ -75,6 +75,18 @@ mixin _$HomeTabsStore on _HomeTabsStore, Store {
   }
 
   @override
+  void _resetSessionState() {
+    final _$actionInfo = _$_HomeTabsStoreActionController.startAction(
+      name: '_HomeTabsStore._resetSessionState',
+    );
+    try {
+      return super._resetSessionState();
+    } finally {
+      _$_HomeTabsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void openLocationsSearch() {
     final _$actionInfo = _$_HomeTabsStoreActionController.startAction(
       name: '_HomeTabsStore.openLocationsSearch',

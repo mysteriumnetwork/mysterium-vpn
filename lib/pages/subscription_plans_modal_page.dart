@@ -43,7 +43,9 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
     final tabController = useTabController(initialLength: 2);
     final scrollController = useScrollController();
     final selectedProduct = useState<PurchasableProduct?>(null);
-    final handleSubscribe = useHandleSubscribeToProduct();
+    final handleSubscribe = useHandleSubscribeToProduct(
+      onAfterRedirect: () => Navigator.of(context).pop(),
+    );
     final isLoading = useState(false);
 
     useReaction(() => purchaseStore.subscriptionStatus, (status) {
