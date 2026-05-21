@@ -548,4 +548,25 @@ abstract class LocaleKeys {
   static const killSwitchDesc = 'killSwitchDesc';
   static const dns = 'dns';
   static const dnsDesc = 'dnsDesc';
+  static const testSus = 'testSus';
+  static const subscriptionPlanNamePro = 'subscriptionPlanNamePro';
+  static const productsTitle = 'productsTitle';
+  static const productsManageSubtitle = 'productsManageSubtitle';
+  static const productsExploreSubtitle = 'productsExploreSubtitle';
+  static const productsActivePlanWebSyncAlert = 'productsActivePlanWebSyncAlert';
+  static const productsMaxPlanAlert = 'productsMaxPlanAlert';
+  static const productsAllPlansLbl = 'productsAllPlansLbl';
+  static const productsDuration1Month = 'productsDuration1Month';
+  static const productsDuration1Year = 'productsDuration1Year';
+  static const productsDuration2Year = 'productsDuration2Year';
+  static const productsBasicDescription = 'productsBasicDescription';
+  static const productsPlusDescription = 'productsPlusDescription';
+  static const productsProDescription = 'productsProDescription';
+  static const manageOnWebBtn = 'manageOnWebBtn';
+  static const navMap = 'navMap';
+  static const navLocations = 'navLocations';
+  static const navProducts = 'navProducts';
+  static const noLocationsFound = 'noLocationsFound';
+  static const tryAnotherLocation = 'tryAnotherLocation';
+  static const clearSearchBtn = 'clearSearchBtn';
 }
