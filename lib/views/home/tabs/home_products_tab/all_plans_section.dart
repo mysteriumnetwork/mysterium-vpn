@@ -60,19 +60,19 @@ class _PlanTierCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: theme.spacing.ms, vertical: theme.spacing.lg),
       decoration: BoxDecoration(
         color: theme.palette.bgPrimary,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: const BorderRadius.all(Radius.kS),
         border: Border.all(color: theme.palette.borderPrimary),
       ),
       child: Row(
         children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: theme.palette.bgSecondarySelected,
-              borderRadius: BorderRadius.circular(4),
+          DecoratedIcon(
+            icon: icon,
+            decoration: IconDecoration(
+              backgroundColor: theme.palette.bgSecondarySelected,
+              iconColor: theme.palette.textBrandPrimary,
+              padding: const EdgeInsets.all(8),
+              borderRadius: const BorderRadius.all(Radius.kXxxs),
             ),
-            child: Icon(icon, size: 16, color: theme.palette.textBrandPrimary),
           ),
           SizedBox(width: theme.spacing.s),
           Text(
