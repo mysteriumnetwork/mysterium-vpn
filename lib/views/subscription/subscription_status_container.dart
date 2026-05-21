@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -46,10 +47,15 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
       return null;
     }, []);
 
-    useEffect(() {
-      _checkForExistingSubscription(subscriptionStore, context, ref);
-      return null;
-    }, const []);
+    // Fire on mount (fireImmediately) AND on every false→true auth flip,
+    // so a logout/login cycle while the container stays mounted (IndexedStack)
+    // still re-runs the check. Guarded by hasShownExistingSubscriptionDialog.
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    useReaction<bool>(() => authSessionStore.isAuthenticated, (isAuthed) {
+      if (isAuthed) {
+        _checkForExistingSubscription(subscriptionStore, context, ref);
+      }
+    }, fireImmediately: true);
 
     return Observer(
       builder: (context) {
