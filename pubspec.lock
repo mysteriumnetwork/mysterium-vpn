@@ -1323,7 +1323,7 @@ packages:
     description:
       path: "."
       ref: "feat/bottom-nav-bar"
-      resolved-ref: "68aa085d1d4eb6b129c5def114c641ed398c95fd"
+      resolved-ref: faac4d49ab46de8de14b8b466be6e19378a43e71
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"

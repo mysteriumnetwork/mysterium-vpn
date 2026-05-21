@@ -48,6 +48,7 @@ class HomeDesktopScaffold extends HookConsumerWidget {
             for (var i = 0; i < tabs.length; i++)
               NavRailItem(
                 icon: tabs[i].icon,
+                label: tabs[i].label(),
                 onTap: () {
                   if (!store.trySelect(tabs[i])) {
                     Beamer.of(context).beamToNamed(Routes.platformLogin.path);
