@@ -351,4 +351,30 @@ void main() {
       expect(store.canShowNoSubsOnboardingFlow, isFalse);
     });
   });
+
+  group('RemoteConfigStore.hideProductsTab', () {
+    test('returns false if key is not present in config (default)', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.hideProductsTab, isFalse);
+    });
+
+    test('returns true if config has true value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'hideProductsTab': true});
+      await store.configFuture;
+      expect(store.hideProductsTab, isTrue);
+    });
+
+    test('returns false if config has false value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'hideProductsTab': false});
+      await store.configFuture;
+      expect(store.hideProductsTab, isFalse);
+    });
+  });
 }
