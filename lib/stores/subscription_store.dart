@@ -40,10 +40,8 @@ abstract class _SubscriptionStore with Store {
        _configStore = configStore {
     _reactions = [
       reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
-        // Reset session-scoped dialog memoization so a new login (or
-        // re-login as a different user) gets the existing-subscription
-        // prompt again if applicable.
         _hasShownExistingSubscriptionDialog = false;
+        _existingSubscriptionCheck = null;
         if (status) {
           _subscriptionFuture = ObservableFuture(_fetchSubscription());
         }
@@ -60,12 +58,7 @@ abstract class _SubscriptionStore with Store {
   final SubscriptionConfigStore _configStore;
   late final List<ReactionDisposer> _reactions;
 
-  /// Session-scoped flag — set once after the "you already have an active
-  /// subscription as X, log out?" dialog has been shown in the current
-  /// session, so the dialog doesn't pop up again every time the user re-
-  /// opens the upgrade / plans modal (each open creates a fresh
-  /// `SubscriptionStatusContainer`, which would otherwise re-trigger the
-  /// check). Reset on auth-state changes so a new login can re-prompt.
+  /// Once-per-session gate for the existing-subscription dialog.
   bool _hasShownExistingSubscriptionDialog = false;
 
   bool get hasShownExistingSubscriptionDialog => _hasShownExistingSubscriptionDialog;
@@ -74,16 +67,19 @@ abstract class _SubscriptionStore with Store {
     _hasShownExistingSubscriptionDialog = true;
   }
 
+  // Single-flight; reset on auth flip below.
+  Future<String?>? _existingSubscriptionCheck;
+
+  Future<String?> checkForExistingSubscriber() =>
+      _existingSubscriptionCheck ??= refreshOtherSubscriber();
+
   @visibleForTesting
   bool testIsIOS = false;
 
   @visibleForTesting
   bool testIsWindows = false;
 
-  /// When any `testIsX` flag is set, the platform getters use ONLY the test
-  /// values (so a test running on macOS isn't leaked through when the test
-  /// is simulating iOS / Windows). When no test flag is set, falls back to
-  /// the real `Platform`.
+  /// When any `testIsX` is set, getters use only those (host `Platform` ignored).
   bool get _useTestPlatform => testIsIOS || testIsWindows;
 
   bool get _isIOS => _useTestPlatform ? testIsIOS : Platform.isIOS;
@@ -139,15 +135,8 @@ abstract class _SubscriptionStore with Store {
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
 
-  /// `true` when the Products tab should surface the "manage on web" CTA
-  /// instead of the in-app upgrade picker — i.e. there's no in-app path for
-  /// this user. That's only Windows (no IAP at all) and active subs on
-  /// non-mobile gateways that aren't in `gatewaysSupportingUpgrade`
-  /// (PayPal / CoinGate). Stripe/Adyen subs fall through to the upgrade
-  /// picker (purchase redirects to web checkout via
-  /// `useHandleSubscribeToProduct`); mobile-gateway mismatches (e.g. Apple
-  /// sub viewed on Android) also fall through so the user can see the plan
-  /// list and gets a "paid via X store" snackbar on purchase attempt.
+  /// True when no in-app upgrade path exists: Windows, or active sub on a
+  /// non-mobile gateway not in `gatewaysSupportingUpgrade` (PayPal/CoinGate).
   @computed
   bool get useWebFlow {
     if (_isWindows) {

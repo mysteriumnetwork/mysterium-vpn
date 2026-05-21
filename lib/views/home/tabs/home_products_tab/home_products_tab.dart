@@ -28,13 +28,8 @@ class HomeProductsTab extends HookConsumerWidget {
       color: theme.palette.bgSidePanel,
       child: Observer(
         builder: (context) {
-          // Wait for the subscription to load before branching — without
-          // this gate, `useWebFlow` returns true on Windows (and false
-          // elsewhere) immediately, so the wrong tab variant renders
-          // before we know what plan the user is on. On Windows that means
-          // [_ManageOnWebView]'s "Manage on Web" CTA would route through
-          // [useHandleSubscribe]'s "no active sub" branch and pop an
-          // upgrade modal instead of the manage page.
+          // useWebFlow short-circuits true on Windows; wait for the sub
+          // so we don't pick a branch with stale data.
           if (subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
             return const Center(child: LoadingIndicator());
           }

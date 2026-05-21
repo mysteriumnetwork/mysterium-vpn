@@ -113,32 +113,33 @@ void main() {
   });
 
   group('HomeTabsStore auth reset', () {
-    test('resets selected tab, sub-page and focus flag when auth flips', () {
+    test('does NOT reset on login (false -> true) so the user keeps the tab they were on', () {
       store
         ..openSettingsSubPage(SettingCategory.account)
         ..openLocationsSearch();
       expect(store.selected, HomeTab.locations);
       expect(store.settingsSubPage, SettingCategory.account);
-      expect(store.pendingLocationsSearchFocus, isTrue);
 
       runInAction(() => isAuthenticatedSignal.value = true);
 
-      expect(store.selected, HomeTab.map);
-      expect(store.settingsSubPage, isNull);
-      expect(store.pendingLocationsSearchFocus, isFalse);
+      // Tab + sub-page survive the login transition.
+      expect(store.selected, HomeTab.locations);
+      expect(store.settingsSubPage, SettingCategory.account);
     });
 
-    test('also resets on logout (true -> false)', () {
+    test('resets selected tab, sub-page and focus flag on logout (true -> false)', () {
       runInAction(() => isAuthenticatedSignal.value = true);
       store
         ..trySelect(HomeTab.products)
-        ..openSettingsSubPage(SettingCategory.connection);
-      expect(store.selected, HomeTab.products);
+        ..openSettingsSubPage(SettingCategory.connection)
+        ..openLocationsSearch();
+      expect(store.selected, HomeTab.locations);
 
       runInAction(() => isAuthenticatedSignal.value = false);
 
       expect(store.selected, HomeTab.map);
       expect(store.settingsSubPage, isNull);
+      expect(store.pendingLocationsSearchFocus, isFalse);
     });
   });
 }

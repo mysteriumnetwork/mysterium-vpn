@@ -32,13 +32,8 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
   /// Invoked when the user taps "See all plans".
   final VoidCallback onShowAllPlansPressed;
 
-  /// Invoked after a successful purchase (`SubscriptionStatus.purchased`)
-  /// completes, and also forwarded to [useHandleSubscribeToProduct] as its
-  /// `onAfterRedirect` — so it also fires after a web-checkout hand-off or
-  /// when the user tapped a plan they're already on. Modal usage typically
-  /// passes `Navigator.pop` here; tab usage leaves it null. Not fired on
-  /// canceled / error / verification-failed flows, which the enclosing
-  /// `SubscriptionStatusContainer`'s reaction handles separately.
+  /// Fires on purchase success, web-checkout hand-off, or "already on this
+  /// plan". Modal callers pass [Navigator.pop]; tab callers leave it null.
   final VoidCallback? onPurchaseComplete;
 
   /// Padding applied to the scrollable content. Defaults to
@@ -54,16 +49,10 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final scrollController = useScrollController();
 
-    // Kept in a ref so [useReaction] (which only captures its callback once)
-    // always invokes the freshest [onPurchaseComplete] when the parent
-    // rebuilds with a different callback.
+    // useReaction captures its callback once; ref keeps the latest.
     final onPurchaseCompleteRef = useRef(onPurchaseComplete)..value = onPurchaseComplete;
 
-    // Success snackbar + verification dialogs are handled by the enclosing
-    // [SubscriptionStatusContainer]'s reaction — don't duplicate them here.
-    // [onPurchaseComplete] only fires on a real purchase so the verification
-    // retry dialog (notVerified / verifyingError) can still surface for the
-    // caller — popping the modal early would unmount its context first.
+    // SubscriptionStatusContainer handles snackbars/verification dialogs.
     useReaction(() => purchaseStore.subscriptionStatus, (status) {
       if (status?.isError ?? false) {
         showError(purchaseStore.subscriptionError);

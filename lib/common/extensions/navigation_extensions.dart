@@ -43,25 +43,16 @@ extension NavigationExtensions on BeamerDelegate {
 
     final tab = HomeTab.fromPath(url);
     if (tab != null) {
-      // Fold mobile-only tabs into Map on tablet/desktop — Locations lives
-      // inside the Map view there, so deep-linking `/locations` should land
-      // on Map. Without this, [trySelect] would set selected = locations
-      // even though the desktop scaffold can't render it, leaving
-      // `store.selected` and the visible tab out of sync.
+      // Mobile-only tabs (Locations) fold into Map on desktop.
       final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
       final targetTab = (tab.mobileOnly && isDesktop) ? HomeTab.map : tab;
 
       final tabsStore = ProviderScope.containerOf(context, listen: false).read(homeTabsStorePOD);
       if (!tabsStore.trySelect(targetTab)) {
-        // Auth-gated tab (e.g. Products) hit while unauthenticated — kick
-        // the user to the login route so they can come back to the tab.
         beamToNamed(Routes.platformLogin.path);
         return;
       }
-      // Beam to /main only when the user isn't already there — re-beaming
-      // the current location pushes onto Beamer's history and rebuilds the
-      // home shell. When already on /main the scaffold's MobX [Observer]
-      // picks up the tab change via [trySelect] without a route swap.
+      // Skip re-beam when already on /main; the Observer picks up trySelect.
       if (configuration.uri.path != Routes.main.path) {
         beamToNamed(Routes.main.path);
       }

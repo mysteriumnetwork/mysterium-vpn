@@ -10,16 +10,14 @@ class HomeTabsStore = _HomeTabsStore with _$HomeTabsStore;
 
 abstract class _HomeTabsStore with Store {
   _HomeTabsStore(this._authSessionStore) {
-    // Reset session-scoped UI state on every auth transition so the next
-    // user (or the same user re-logging in) starts from a clean Map tab
-    // with no settings sub-page open. Without this the store outlives
-    // logout (it's a non-autoDispose Provider) and an auth-gated tab the
-    // previous session left selected (or selected via deep-link while
-    // unauthed) would be visible immediately on the next sign-in.
-    _authReactionDisposer = reaction<bool>(
-      (_) => _authSessionStore.isAuthenticated,
-      (_) => _resetSessionState(),
-    );
+    // Reset on logout only — keep the tab the user picked while unauthed.
+    _authReactionDisposer = reaction<bool>((_) => _authSessionStore.isAuthenticated, (
+      authenticated,
+    ) {
+      if (!authenticated) {
+        _resetSessionState();
+      }
+    });
   }
 
   final AuthSessionStore _authSessionStore;

@@ -8,10 +8,8 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-/// `onAfterRedirect` runs after we've handed off to a web checkout or
-/// determined the user is already on the requested plan — modal callers
-/// pass `Navigator.of(ctx).pop` so the picker dismisses; tab callers leave
-/// it null (popping there would tear the home page off the beam stack).
+/// [onAfterRedirect] fires after web-checkout hand-off or "already on this
+/// plan" — modal callers pass [Navigator.pop]; tab callers leave it null.
 Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAfterRedirect}) {
   final context = useContext();
   final onAfterRedirectRef = useRef(onAfterRedirect)..value = onAfterRedirect;
@@ -61,11 +59,8 @@ Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAf
       return;
     }
 
-    // Guard the IAP branch against a cross-platform mobile mismatch (e.g.
-    // an active Apple sub viewed from Android). Without this, the hook
-    // would happily start a Play Store IAP alongside the existing App Store
-    // subscription — the Products tab now surfaces the upgrade picker to
-    // these users, so the check has to live here.
+    // Cross-platform mobile mismatch: don't start a new IAP alongside the
+    // active sub on the other store.
     if ((subscription?.active ?? false) &&
         isMobilePaymentGateway(gateway) &&
         !(subscription?.isGatewayOnCurrentPlatform ?? true)) {

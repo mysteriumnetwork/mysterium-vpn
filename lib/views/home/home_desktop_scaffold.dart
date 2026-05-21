@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -27,6 +28,15 @@ class HomeDesktopScaffold extends HookConsumerWidget {
     final selected = useComputedValue(() => store.selected);
 
     final tabs = HomeTab.desktopTabs();
+
+    // Normalize when a mobile-only tab survives a resize to desktop.
+    useEffect(() {
+      if (!tabs.contains(selected)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => store.trySelect(HomeTab.map));
+      }
+      return null;
+    }, [selected]);
+
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
 
     return Row(

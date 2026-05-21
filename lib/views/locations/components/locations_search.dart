@@ -15,8 +15,9 @@ class LocationsSearch extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useTextEditingController();
     final locationsQuery = ref.read(locationsQueryStorePOD);
+    // Seed from store; the reaction below doesn't fireImmediately.
+    final controller = useTextEditingController(text: locationsQuery.searchTrimmed);
 
     void handleSearch(String? value) {
       final keyword = value?.trim() ?? '';

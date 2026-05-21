@@ -46,9 +46,6 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
       return null;
     }, []);
 
-    // Run once per mount. The previous `[ref, subscriptionStore, context]`
-    // deps array caused the check (and its dialog) to re-fire on every
-    // rebuild because [BuildContext] isn't reference-stable across rebuilds.
     useEffect(() {
       _checkForExistingSubscription(subscriptionStore, context, ref);
       return null;
@@ -186,23 +183,21 @@ Future<void> _checkForExistingSubscription(
   BuildContext context,
   WidgetRef ref,
 ) async {
-  // Show at most once per session — each upgrade / plans modal open mounts
-  // a fresh container that would otherwise re-trigger the prompt. The flag
-  // resets on auth-state changes so a new login can re-prompt.
+  // Once per session — a new login re-arms via the auth reaction.
   if (store.hasShownExistingSubscriptionDialog) {
     return;
   }
-  final email = await store.refreshOtherSubscriber();
+  final email = await store.checkForExistingSubscriber();
   if (email == null) {
     return;
   }
 
   Future.microtask(() {
-    // Container may have unmounted while [refreshOtherSubscriber] was in
-    // flight (e.g. the user switched tabs). Only flip the session flag once
-    // the dialog actually goes up — otherwise a missed render would silence
-    // the prompt for the rest of the session.
     if (!context.mounted) {
+      return;
+    }
+    // Re-check: two containers can observe the same resolved Future and race.
+    if (store.hasShownExistingSubscriptionDialog) {
       return;
     }
     store.markExistingSubscriptionDialogShown();
