@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 extension NavigationExtensions on BeamerDelegate {
   /// Navigates based on the given [url], handling internal routes and external links.
@@ -42,8 +43,16 @@ extension NavigationExtensions on BeamerDelegate {
 
     final tab = HomeTab.fromPath(url);
     if (tab != null) {
+      // Fold mobile-only tabs into Map on tablet/desktop — Locations lives
+      // inside the Map view there, so deep-linking `/locations` should land
+      // on Map. Without this, [trySelect] would set selected = locations
+      // even though the desktop scaffold can't render it, leaving
+      // `store.selected` and the visible tab out of sync.
+      final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+      final targetTab = (tab.mobileOnly && isDesktop) ? HomeTab.map : tab;
+
       final tabsStore = ProviderScope.containerOf(context, listen: false).read(homeTabsStorePOD);
-      if (!tabsStore.trySelect(tab)) {
+      if (!tabsStore.trySelect(targetTab)) {
         // Auth-gated tab (e.g. Products) hit while unauthenticated — kick
         // the user to the login route so they can come back to the tab.
         beamToNamed(Routes.platformLogin.path);

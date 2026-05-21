@@ -32,8 +32,13 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
   /// Invoked when the user taps "See all plans".
   final VoidCallback onShowAllPlansPressed;
 
-  /// Invoked after a successful (or canceled) purchase completes. Modal usage
-  /// typically passes `Navigator.pop` here; tab usage leaves it null.
+  /// Invoked after a successful purchase (`SubscriptionStatus.purchased`)
+  /// completes, and also forwarded to [useHandleSubscribeToProduct] as its
+  /// `onAfterRedirect` — so it also fires after a web-checkout hand-off or
+  /// when the user tapped a plan they're already on. Modal usage typically
+  /// passes `Navigator.pop` here; tab usage leaves it null. Not fired on
+  /// canceled / error / verification-failed flows, which the enclosing
+  /// `SubscriptionStatusContainer`'s reaction handles separately.
   final VoidCallback? onPurchaseComplete;
 
   /// Padding applied to the scrollable content. Defaults to

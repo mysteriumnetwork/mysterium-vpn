@@ -4343,7 +4343,7 @@ class CodegenLoader extends AssetLoader {
     "manageOnWebBtn": "Gestisci sul web",
     "navMap": "Mappa",
     "navLocations": "Posizioni",
-    "navProducts": "Libri",
+    "navProducts": "Prodotti",
     "noLocationsFound": "Nessuna posizione trovata",
     "tryAnotherLocation": "Prova a cercare un'altra località",
     "clearSearchBtn": "Cancella ricerca",
