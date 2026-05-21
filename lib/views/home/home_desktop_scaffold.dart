@@ -1,6 +1,5 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -25,18 +24,9 @@ class HomeDesktopScaffold extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(homeTabsStorePOD);
-    final remoteConfig = ref.watch(remoteConfigStorePOD);
     final selected = useComputedValue(() => store.selected);
-    final hideProductsTab = useComputedValue(() => remoteConfig.hideProductsTab);
 
-    final tabs = useMemoized(
-      () => [
-        for (final tab in HomeTab.desktopTabs())
-          if (!(hideProductsTab && tab == HomeTab.products)) tab,
-      ],
-      [hideProductsTab],
-    );
-
+    final tabs = HomeTab.desktopTabs();
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
 
     return Row(

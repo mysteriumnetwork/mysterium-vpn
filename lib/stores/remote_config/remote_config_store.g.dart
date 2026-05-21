@@ -359,13 +359,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.canShowNoSubsOnboardingFlow,
     name: 'RemoteConfigStoreBase.canShowNoSubsOnboardingFlow',
   )).value;
-  Computed<bool>? _$hideProductsTabComputed;
-
-  @override
-  bool get hideProductsTab => (_$hideProductsTabComputed ??= Computed<bool>(
-    () => super.hideProductsTab,
-    name: 'RemoteConfigStoreBase.hideProductsTab',
-  )).value;
 
   @override
   String toString() {
@@ -417,8 +410,7 @@ checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
 pricingMonthly: ${pricingMonthly},
 countriesWithStates: ${countriesWithStates},
 hideReedemCode: ${hideReedemCode},
-canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow},
-hideProductsTab: ${hideProductsTab}
+canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow}
     ''';
   }
 }
