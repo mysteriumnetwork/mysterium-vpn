@@ -56,6 +56,22 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       return;
     }
 
+    // Guard the IAP branch against a cross-platform mobile mismatch (e.g.
+    // an active Apple sub viewed from Android). Without this, the hook
+    // would happily start a Play Store IAP alongside the existing App Store
+    // subscription — the Products tab now surfaces the upgrade picker to
+    // these users, so the check has to live here.
+    if ((subscription?.active ?? false) &&
+        isMobilePaymentGateway(gateway) &&
+        !(subscription?.isGatewayOnCurrentPlatform ?? true)) {
+      if (context.mounted) {
+        showSnackbar(
+          LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': subscription!.gatewayName}),
+        );
+      }
+      return;
+    }
+
     await purchaseStore.subscribeToPackage(product: selectedProduct.productDetails);
   }, [context]);
 }

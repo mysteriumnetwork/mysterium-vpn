@@ -356,6 +356,10 @@ void main() {
         await subscriptionStore.refreshSubscription();
       }
 
+      setUp(() {
+        when(mockRemoteConfigStore.gatewaysSupportingUpgrade).thenReturn({'stripe', 'adyen'});
+      });
+
       test('returns true on Windows regardless of subscription', () async {
         subscriptionStore.testIsWindows = true;
         expect(subscriptionStore.useWebFlow, isTrue);
@@ -366,51 +370,56 @@ void main() {
         expect(subscriptionStore.useWebFlow, isFalse);
       });
 
-      test('returns false when active apple sub matches iOS', () async {
-        subscriptionStore.testIsIOS = true;
+      test('returns false for active apple sub (any platform)', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
         );
         expect(subscriptionStore.useWebFlow, isFalse);
       });
 
-      test('returns false when active apple sub matches macOS', () async {
-        subscriptionStore.testIsMacOS = true;
-        await primeSubscription(
-          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
-        );
-        expect(subscriptionStore.useWebFlow, isFalse);
-      });
-
-      test('returns false when active google sub matches Android', () async {
-        subscriptionStore.testIsAndroid = true;
+      test('returns false for active google sub (any platform)', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
         );
         expect(subscriptionStore.useWebFlow, isFalse);
       });
 
-      test('returns true for non-mobile gateway (stripe)', () async {
+      test('returns false for stripe (supports in-app upgrade picker)', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
         );
-        expect(subscriptionStore.useWebFlow, isTrue);
+        expect(subscriptionStore.useWebFlow, isFalse);
       });
 
-      test('returns true for cross-platform mobile gateway (google sub on iOS)', () async {
-        subscriptionStore.testIsIOS = true;
+      test('returns false for adyen (supports in-app upgrade picker)', () async {
         await primeSubscription(
-          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+          Subscription(active: true, gateway: 'adyen', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.useWebFlow, isFalse);
+      });
+
+      test('returns true for paypal (no in-app upgrade path)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'paypal', planId: 'plan_yearly_pro'),
         );
         expect(subscriptionStore.useWebFlow, isTrue);
       });
 
-      test('returns true for cross-platform mobile gateway (apple sub on Android)', () async {
-        subscriptionStore.testIsAndroid = true;
+      test('returns true for coingate (no in-app upgrade path)', () async {
         await primeSubscription(
-          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+          Subscription(active: true, gateway: 'coingate', planId: 'plan_yearly_pro'),
         );
         expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('honors remote-config additions to gatewaysSupportingUpgrade', () async {
+        when(
+          mockRemoteConfigStore.gatewaysSupportingUpgrade,
+        ).thenReturn({'stripe', 'adyen', 'paypal'});
+        await primeSubscription(
+          Subscription(active: true, gateway: 'paypal', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.useWebFlow, isFalse);
       });
     });
 

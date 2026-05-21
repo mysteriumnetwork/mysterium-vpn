@@ -78,37 +78,17 @@ abstract class _SubscriptionStore with Store {
   bool testIsIOS = false;
 
   @visibleForTesting
-  bool testIsAndroid = false;
-
-  @visibleForTesting
-  bool testIsMacOS = false;
-
-  @visibleForTesting
   bool testIsWindows = false;
 
   /// When any `testIsX` flag is set, the platform getters use ONLY the test
-  /// values (so a test running on macOS can simulate Android by setting
-  /// `testIsAndroid = true` and the real macOS isn't leaked through).
-  /// When no test flag is set, falls back to the real `Platform`.
-  bool get _useTestPlatform => testIsIOS || testIsAndroid || testIsMacOS || testIsWindows;
+  /// values (so a test running on macOS isn't leaked through when the test
+  /// is simulating iOS / Windows). When no test flag is set, falls back to
+  /// the real `Platform`.
+  bool get _useTestPlatform => testIsIOS || testIsWindows;
 
   bool get _isIOS => _useTestPlatform ? testIsIOS : Platform.isIOS;
 
-  bool get _isAndroid => _useTestPlatform ? testIsAndroid : Platform.isAndroid;
-
-  bool get _isMacOS => _useTestPlatform ? testIsMacOS : Platform.isMacOS;
-
   bool get _isWindows => _useTestPlatform ? testIsWindows : Platform.isWindows;
-
-  /// Whether the active subscription's gateway matches the gateway that the
-  /// current platform can purchase through. Lives on the store (not on the
-  /// [Subscription] model) so tests can simulate Android/iOS/macOS without
-  /// touching `dart:io`'s `Platform`.
-  bool _gatewayMatchesCurrentPlatform(String? gateway) => switch (gateway?.toLowerCase()) {
-    'apple' => _isIOS || _isMacOS,
-    'google' => _isAndroid,
-    _ => false,
-  };
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
@@ -159,12 +139,15 @@ abstract class _SubscriptionStore with Store {
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
 
-  /// `true` when the user can't perform an in-app upgrade — either they're
-  /// on a desktop platform without IAP (Windows), or they have an active
-  /// subscription paid through a non-mobile gateway (Stripe/Adyen/PayPal/
-  /// CoinGate), or through a mobile gateway from a different store
-  /// (cross-platform mismatch). Callers should surface a "manage on the
-  /// web" CTA instead of the IAP purchase flow in these cases.
+  /// `true` when the Products tab should surface the "manage on web" CTA
+  /// instead of the in-app upgrade picker — i.e. there's no in-app path for
+  /// this user. That's only Windows (no IAP at all) and active subs on
+  /// non-mobile gateways that aren't in `gatewaysSupportingUpgrade`
+  /// (PayPal / CoinGate). Stripe/Adyen subs fall through to the upgrade
+  /// picker (purchase redirects to web checkout via
+  /// `useHandleSubscribeToProduct`); mobile-gateway mismatches (e.g. Apple
+  /// sub viewed on Android) also fall through so the user can see the plan
+  /// list and gets a "paid via X store" snackbar on purchase attempt.
   @computed
   bool get useWebFlow {
     if (_isWindows) {
@@ -174,14 +157,15 @@ abstract class _SubscriptionStore with Store {
     if (subscription == null || !subscription.active) {
       return false;
     }
-    final gateway = subscription.gateway;
+    final gateway = subscription.gateway?.toLowerCase();
     if (gateway == null) {
       return false;
     }
-    if (!isMobilePaymentGateway(gateway)) {
-      return true;
+    if (isMobilePaymentGateway(gateway) ||
+        _remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway)) {
+      return false;
     }
-    return !_gatewayMatchesCurrentPlatform(gateway);
+    return true;
   }
 
   /// `true` when the active subscription is already on the highest tier +
