@@ -557,7 +557,6 @@
   "killSwitchDesc": "Bloque l'accès à Internet si le VPN se déconnecte.",
   "dns": "Protection DNS",
   "dnsDesc": "Empêche les fuites DNS",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "Pro",
   "productsTitle": "Produits VPN",
   "productsManageSubtitle": "Gérer et mettre à jour en ligne",

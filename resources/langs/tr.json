@@ -557,7 +557,6 @@
   "killSwitchDesc": "VPN bağlantısı kesilirse internet erişimini engeller.",
   "dns": "DNS koruması",
   "dnsDesc": "DNS sızıntılarını önler.",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "Profesyonel",
   "productsTitle": "VPN ürünleri",
   "productsManageSubtitle": "Web üzerinden yönetin ve yükseltin",

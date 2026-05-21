@@ -557,7 +557,6 @@
   "killSwitchDesc": "Blocks internet if VPN drops",
   "dns": "DNS protection",
   "dnsDesc": "Prevents DNS leaks",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "Pro",
   "productsTitle": "VPN products",
   "productsManageSubtitle": "Manage and upgrade on web",

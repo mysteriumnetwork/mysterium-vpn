@@ -557,7 +557,6 @@
   "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
   "dns": "حماية نظام أسماء النطاقات (DNS)",
   "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "محترف",
   "productsTitle": "منتجات VPN",
   "productsManageSubtitle": "إدارة وتحديث الموقع الإلكتروني",

@@ -548,7 +548,6 @@ abstract class LocaleKeys {
   static const killSwitchDesc = 'killSwitchDesc';
   static const dns = 'dns';
   static const dnsDesc = 'dnsDesc';
-  static const testSus = 'testSus';
   static const subscriptionPlanNamePro = 'subscriptionPlanNamePro';
   static const productsTitle = 'productsTitle';
   static const productsManageSubtitle = 'productsManageSubtitle';

@@ -557,7 +557,6 @@
   "killSwitchDesc": "VPN接続が切断された場合、インターネット接続を遮断します。",
   "dns": "DNS保護",
   "dnsDesc": "DNSリークを防止します",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "プロ",
   "productsTitle": "VPN製品",
   "productsManageSubtitle": "ウェブ上で管理およびアップグレード",

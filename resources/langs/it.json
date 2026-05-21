@@ -557,7 +557,6 @@
   "killSwitchDesc": "Blocca la connessione internet se la VPN si disconnette",
   "dns": "Protezione DNS",
   "dnsDesc": "Previene le fughe DNS",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "Pro",
   "productsTitle": "prodotti VPN",
   "productsManageSubtitle": "Gestisci e aggiorna sul web",

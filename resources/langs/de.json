@@ -557,7 +557,6 @@
   "killSwitchDesc": "Blockiert die Internetverbindung, wenn die VPN-Verbindung abbricht.",
   "dns": "DNS-Schutz",
   "dnsDesc": "Verhindert DNS-Leaks",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "Pro",
   "productsTitle": "VPN-Produkte",
   "productsManageSubtitle": "Verwaltung und Aktualisierung im Web",

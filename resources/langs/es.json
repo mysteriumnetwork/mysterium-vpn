@@ -557,7 +557,6 @@
   "killSwitchDesc": "Bloquea internet si se cae la VPN.",
   "dns": "protección DNS",
   "dnsDesc": "Evita fugas de DNS",
-  "testSus": "mkdsa",
   "subscriptionPlanNamePro": "Pro",
   "productsTitle": "productos VPN",
   "productsManageSubtitle": "Gestionar y actualizar en la web",
