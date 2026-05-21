@@ -39,9 +39,16 @@ class HomeProductsTab extends HookConsumerWidget {
           if (subscriptionStore.useWebFlow) {
             return const _ManageOnWebView();
           }
-          return SubscriptionStatusContainer(
-            child: SubscriptionUpgradeView(
-              onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
+          return BackgroundGradient(
+            child: SubscriptionStatusContainer(
+              child: SubscriptionUpgradeView(
+                onShowAllPlansPressed: () => showSubscriptionPlansModalPage(context),
+                // Tab variant has no app-bar above; Figma spec is 40px below safe area.
+                contentPadding: ModalPadding.insets(
+                  context,
+                  add: EdgeInsets.only(top: theme.spacing.xl4),
+                ),
+              ),
             ),
           );
         },

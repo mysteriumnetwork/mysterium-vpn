@@ -135,8 +135,9 @@ abstract class _SubscriptionStore with Store {
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
 
-  /// True when no in-app upgrade path exists: Windows, or active sub on a
-  /// non-mobile gateway not in `gatewaysSupportingUpgrade` (PayPal/CoinGate).
+  /// True when the Products tab should route the user to the web instead of
+  /// the in-app upgrade picker: Windows (always), or an active subscription
+  /// paid through any non-mobile gateway (Stripe/Adyen/PayPal/CoinGate).
   @computed
   bool get useWebFlow {
     if (_isWindows) {
@@ -150,11 +151,7 @@ abstract class _SubscriptionStore with Store {
     if (gateway == null) {
       return false;
     }
-    if (isMobilePaymentGateway(gateway) ||
-        _remoteConfigStore.gatewaysSupportingUpgrade.contains(gateway)) {
-      return false;
-    }
-    return true;
+    return !isMobilePaymentGateway(gateway);
   }
 
   /// `true` when the active subscription is already on the highest tier +

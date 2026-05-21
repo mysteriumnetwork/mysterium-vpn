@@ -85,13 +85,21 @@ void main() {
       expect(find.textContaining('Manage on the web'), findsNothing);
     });
 
-    testWidgets('renders ManageOnWebView when useWebFlow is true', (tester) async {
+    testWidgets('renders ManageOnWebView with active-sub copy when useWebFlow is true', (
+      tester,
+    ) async {
       when(subscriptionStore.useWebFlow).thenReturn(true);
+      // Active subscription (e.g. credit card / PayPal paid on web).
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        ),
+      );
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();
 
-      // ManageOnWebView's CTA button label.
+      // ManageOnWebView's active-sub CTA button label.
       expect(
         find.textContaining(RegExp('Manage on the web|manageOnWebBtn')),
         findsOneWidget,
@@ -99,7 +107,35 @@ void main() {
       );
       // Should not be the max-plan variant.
       expect(find.textContaining('highest plan'), findsNothing);
+      // Should not show the first-time-buyer copy.
+      expect(find.textContaining('Subscribe on the web'), findsNothing);
     });
+
+    testWidgets(
+      'renders ManageOnWebView with first-time-buyer copy on Windows with no active sub',
+      (tester) async {
+        // Windows first-time buyer: useWebFlow is true even though there is
+        // no active subscription. Must NOT show the "you already have an
+        // active plan" alert.
+        when(subscriptionStore.useWebFlow).thenReturn(true);
+        when(
+          subscriptionStore.subscriptionFuture,
+        ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+
+        await tester.pumpWidget(buildHarness());
+        await tester.pump();
+
+        // First-time-buyer CTA + subtitle.
+        expect(
+          find.textContaining(RegExp('Subscribe on the web|subscribeOnWebBtn')),
+          findsWidgets,
+          reason: 'Subscribe on the web copy should be on screen',
+        );
+        // Active-sub copy must not be present.
+        expect(find.textContaining('already have an active plan'), findsNothing);
+        expect(find.textContaining('Manage on the web'), findsNothing);
+      },
+    );
 
     testWidgets('prefers MaxPlanView over ManageOnWebView when both flags are true', (
       tester,

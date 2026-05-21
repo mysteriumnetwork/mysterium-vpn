@@ -42,10 +42,12 @@ class HomeMobileScaffold extends HookConsumerWidget {
       },
       child: Column(
         children: [
-          _MobileTabHeader(
-            tab: selected,
-            onBack: inSettingsSubPage ? store.closeSettingsSubPage : null,
-          ),
+          // Products tab supplies its own full-bleed layout.
+          if (selected != HomeTab.products || inSettingsSubPage)
+            _MobileTabHeader(
+              tab: selected,
+              onBack: inSettingsSubPage ? store.closeSettingsSubPage : null,
+            ),
           Expanded(
             child: IndexedStack(
               index: selectedIndex,

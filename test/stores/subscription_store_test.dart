@@ -356,10 +356,6 @@ void main() {
         await subscriptionStore.refreshSubscription();
       }
 
-      setUp(() {
-        when(mockRemoteConfigStore.gatewaysSupportingUpgrade).thenReturn({'stripe', 'adyen'});
-      });
-
       test('returns true on Windows regardless of subscription', () async {
         subscriptionStore.testIsWindows = true;
         expect(subscriptionStore.useWebFlow, isTrue);
@@ -384,42 +380,32 @@ void main() {
         expect(subscriptionStore.useWebFlow, isFalse);
       });
 
-      test('returns false for stripe (supports in-app upgrade picker)', () async {
+      test('returns true for active stripe sub (credit card -> web)', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
         );
-        expect(subscriptionStore.useWebFlow, isFalse);
+        expect(subscriptionStore.useWebFlow, isTrue);
       });
 
-      test('returns false for adyen (supports in-app upgrade picker)', () async {
+      test('returns true for active adyen sub (credit card -> web)', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'adyen', planId: 'plan_yearly_pro'),
         );
-        expect(subscriptionStore.useWebFlow, isFalse);
+        expect(subscriptionStore.useWebFlow, isTrue);
       });
 
-      test('returns true for paypal (no in-app upgrade path)', () async {
+      test('returns true for active paypal sub', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'paypal', planId: 'plan_yearly_pro'),
         );
         expect(subscriptionStore.useWebFlow, isTrue);
       });
 
-      test('returns true for coingate (no in-app upgrade path)', () async {
+      test('returns true for active coingate sub', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'coingate', planId: 'plan_yearly_pro'),
         );
         expect(subscriptionStore.useWebFlow, isTrue);
-      });
-
-      test('honors remote-config additions to gatewaysSupportingUpgrade', () async {
-        when(
-          mockRemoteConfigStore.gatewaysSupportingUpgrade,
-        ).thenReturn({'stripe', 'adyen', 'paypal'});
-        await primeSubscription(
-          Subscription(active: true, gateway: 'paypal', planId: 'plan_yearly_pro'),
-        );
-        expect(subscriptionStore.useWebFlow, isFalse);
       });
     });
 
