@@ -9,6 +9,8 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
+import 'package:mysterium_vpn/common/utils/subscription_plan_resolver.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -38,6 +40,10 @@ abstract class _SubscriptionStore with Store {
        _configStore = configStore {
     _reactions = [
       reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
+        // Reset session-scoped dialog memoization so a new login (or
+        // re-login as a different user) gets the existing-subscription
+        // prompt again if applicable.
+        _hasShownExistingSubscriptionDialog = false;
         if (status) {
           _subscriptionFuture = ObservableFuture(_fetchSubscription());
         }
@@ -54,10 +60,55 @@ abstract class _SubscriptionStore with Store {
   final SubscriptionConfigStore _configStore;
   late final List<ReactionDisposer> _reactions;
 
+  /// Session-scoped flag — set once after the "you already have an active
+  /// subscription as X, log out?" dialog has been shown in the current
+  /// session, so the dialog doesn't pop up again every time the user re-
+  /// opens the upgrade / plans modal (each open creates a fresh
+  /// `SubscriptionStatusContainer`, which would otherwise re-trigger the
+  /// check). Reset on auth-state changes so a new login can re-prompt.
+  bool _hasShownExistingSubscriptionDialog = false;
+
+  bool get hasShownExistingSubscriptionDialog => _hasShownExistingSubscriptionDialog;
+
+  void markExistingSubscriptionDialogShown() {
+    _hasShownExistingSubscriptionDialog = true;
+  }
+
   @visibleForTesting
   bool testIsIOS = false;
 
-  bool get _isIOS => testIsIOS || Platform.isIOS;
+  @visibleForTesting
+  bool testIsAndroid = false;
+
+  @visibleForTesting
+  bool testIsMacOS = false;
+
+  @visibleForTesting
+  bool testIsWindows = false;
+
+  /// When any `testIsX` flag is set, the platform getters use ONLY the test
+  /// values (so a test running on macOS can simulate Android by setting
+  /// `testIsAndroid = true` and the real macOS isn't leaked through).
+  /// When no test flag is set, falls back to the real `Platform`.
+  bool get _useTestPlatform => testIsIOS || testIsAndroid || testIsMacOS || testIsWindows;
+
+  bool get _isIOS => _useTestPlatform ? testIsIOS : Platform.isIOS;
+
+  bool get _isAndroid => _useTestPlatform ? testIsAndroid : Platform.isAndroid;
+
+  bool get _isMacOS => _useTestPlatform ? testIsMacOS : Platform.isMacOS;
+
+  bool get _isWindows => _useTestPlatform ? testIsWindows : Platform.isWindows;
+
+  /// Whether the active subscription's gateway matches the gateway that the
+  /// current platform can purchase through. Lives on the store (not on the
+  /// [Subscription] model) so tests can simulate Android/iOS/macOS without
+  /// touching `dart:io`'s `Platform`.
+  bool _gatewayMatchesCurrentPlatform(String? gateway) => switch (gateway?.toLowerCase()) {
+    'apple' => _isIOS || _isMacOS,
+    'google' => _isAndroid,
+    _ => false,
+  };
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
@@ -107,6 +158,52 @@ abstract class _SubscriptionStore with Store {
 
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
+
+  /// `true` when the user can't perform an in-app upgrade — either they're
+  /// on a desktop platform without IAP (Windows), or they have an active
+  /// subscription paid through a non-mobile gateway (Stripe/Adyen/PayPal/
+  /// CoinGate), or through a mobile gateway from a different store
+  /// (cross-platform mismatch). Callers should surface a "manage on the
+  /// web" CTA instead of the IAP purchase flow in these cases.
+  @computed
+  bool get useWebFlow {
+    if (_isWindows) {
+      return true;
+    }
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.active) {
+      return false;
+    }
+    final gateway = subscription.gateway;
+    if (gateway == null) {
+      return false;
+    }
+    if (!isMobilePaymentGateway(gateway)) {
+      return true;
+    }
+    return !_gatewayMatchesCurrentPlatform(gateway);
+  }
+
+  /// `true` when the active subscription is already on the highest tier +
+  /// longest duration plan available for its gateway. No further upgrade
+  /// is possible in that case.
+  @computed
+  bool get isOnMaxPlan {
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.active) {
+      return false;
+    }
+    final gateway = subscription.gateway?.toLowerCase();
+    if (gateway == null) {
+      return false;
+    }
+    final config = subscriptionConfigFuture.value;
+    if (config == null) {
+      return false;
+    }
+    final maxPlanId = maxPlanIdForGateway(gateway, config, _remoteConfigStore.planFeatures);
+    return maxPlanId != null && subscription.planId == maxPlanId;
+  }
 
   @computed
   bool get malwareBlockingAllowed => planMetadata?.malwareBlockingAllowed ?? false;

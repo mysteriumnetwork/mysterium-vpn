@@ -83,7 +83,6 @@ enum AnalyticsEvent {
   connectToVpn,
   disconnectFromVpn,
   appLaunch,
-  panelMoved,
   resetApp,
   resetAppConfirmShown,
   resetAppConfirm,

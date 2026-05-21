@@ -20,20 +20,18 @@ class HomeBanner extends HookConsumerWidget {
     }
 
     final spacing = Theme.of(context).spacing;
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(left: spacing.xl2, right: spacing.xl2),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxWidth),
-            child: switch (banner) {
-              BannerType.subscription => const SubscriptionBanner(),
-              BannerType.unauthenticated => const UnauthenticatedBanner(),
-              BannerType.tooManyConnections => const TooManyConnectionsBanner(),
-              BannerType.appUpdateAvailable => const AppVersionUpdateBanner(),
-              _ => const SizedBox.shrink(),
-            },
-          ),
+    return Padding(
+      padding: EdgeInsets.only(left: spacing.xl2, right: spacing.xl2),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: switch (banner) {
+            BannerType.subscription => const SubscriptionBanner(),
+            BannerType.unauthenticated => const UnauthenticatedBanner(),
+            BannerType.tooManyConnections => const TooManyConnectionsBanner(),
+            BannerType.appUpdateAvailable => const AppVersionUpdateBanner(),
+            _ => const SizedBox.shrink(),
+          },
         ),
       ),
     );

@@ -18,6 +18,7 @@ import 'package:mysterium_vpn/views/locations/components/location_item_empty.dar
 import 'package:mysterium_vpn/views/locations/components/location_type_switcher.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_container.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_empty_search_result.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_horizontal_list.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_no_servers_error.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_sliver_list.dart';
@@ -113,8 +114,10 @@ class _Body extends HookConsumerWidget {
     final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final userIntentsStore = ref.watch(userIntentsStorePOD);
+    final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final isAuthenticated = useIsAuthenticated();
     final recentsFutureStatus = useComputedValue(() => recentLocationsStore.future.status);
+    final isSearching = useComputedValue(() => locationsQueryStore.searchTrimmed.isNotEmpty);
     final showUserIntents = useComputedValue(
       () =>
           remoteConfigStore.showUserIntents &&
@@ -141,29 +144,31 @@ class _Body extends HookConsumerWidget {
     if (future.value != null) {
       return MultiSliver(
         children: [
-          if (isAuthenticated && recentsFutureStatus == FutureStatus.pending) ...[
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              sliver: const RecentLocationsLoading(),
-            ),
-            SizedBox(height: sectionGap),
-          ] else if (recentLocations.isNotEmpty) ...[
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              sliver: _RecentLocations(
-                recentLocations: recentLocations,
-                onLocationTapped: onRecentLocationTapped,
-                connectedLocation: connectedLocation,
+          if (!isSearching) ...[
+            if (isAuthenticated && recentsFutureStatus == FutureStatus.pending) ...[
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                sliver: const RecentLocationsLoading(),
               ),
-            ),
-            SizedBox(height: sectionGap),
+              SizedBox(height: sectionGap),
+            ] else if (recentLocations.isNotEmpty) ...[
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                sliver: _RecentLocations(
+                  recentLocations: recentLocations,
+                  onLocationTapped: onRecentLocationTapped,
+                  connectedLocation: connectedLocation,
+                ),
+              ),
+              SizedBox(height: sectionGap),
+            ],
+            if (showUserIntents)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                sliver: const _UserIntent(),
+              ),
+            if (showUserIntents) SizedBox(height: theme.spacing.xl),
           ],
-          if (showUserIntents)
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              sliver: const _UserIntent(),
-            ),
-          if (showUserIntents) SizedBox(height: theme.spacing.xl),
           _Locations(
             locations: locations,
             topLocations: topLocations,
@@ -331,17 +336,26 @@ class _Locations extends HookConsumerWidget {
                 ),
                 sliver: MultiSliver(
                   children: [
-                    switch (locationType) {
-                      IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                      _ => LocationsDisclaimer.residential(),
-                    },
+                    if (searchKeyword.isEmpty)
+                      switch (locationType) {
+                        IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                        _ => LocationsDisclaimer.residential(),
+                      },
                     ScrollableLocationsSliverList(
                       items: locations,
                       onItemPressed: onLocationTapped,
                       stickyHeaderKey: stickyKey,
                     ),
                     if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
-                      _Empty(text: LocaleKeys.noLocationsKeyword.tr(args: [searchKeyword])),
+                      SliverLayoutBuilder(
+                        builder: (context, sliverConstraints) => SliverToBoxAdapter(
+                          child: LocationsEmptySearchResult(
+                            availableHeight: sliverConstraints.remainingPaintExtent,
+                            onClear: () =>
+                                locationsQueryStore.setSearch('', debounce: Duration.zero),
+                          ),
+                        ),
+                      ),
                     if ((isEmpty ?? false) && searchKeyword.isEmpty) const LocationItemEmpty(),
                   ],
                 ),
@@ -350,25 +364,6 @@ class _Locations extends HookConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Empty extends StatelessWidget {
-  const _Empty({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SliverToBoxAdapter(
-      child: Text(
-        text,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: theme.textStyles.textMd.bold.copyWith(color: theme.colorScheme.error),
-      ),
     );
   }
 }

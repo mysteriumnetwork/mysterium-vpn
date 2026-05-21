@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
-import 'package:mysterium_vpn/components/sliding_up_panel.dart' show PanelController;
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -59,16 +58,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
     final isDesktop = screenType == ScreenType.desktop;
 
-    final isPanelFullyOpen = ref.watch(
-      homeStateProvider.select((s) {
-        final pc = s.panelController;
-        if (!pc.isAttached) {
-          return true;
-        }
-        return pc.isPanelOpen;
-      }),
-    );
-
     final homeState = ref.read(homeStateProvider);
 
     final selectedLocationStore = ref.watch(selectedLocationStorePOD);
@@ -93,9 +82,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
     // --- Scroll-to-selected effect ---
     useEffect(() {
       if (priorityIndex == -1) {
-        return null;
-      }
-      if (!isDesktop && !isPanelFullyOpen) {
         return null;
       }
 
@@ -124,7 +110,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         context: context,
         countryCode: effectivePriorityCountryCode,
         stickyHeaderKey: stickyHeaderKey,
-        panelController: homeState.panelController,
         scrollController: sc,
         isDesktop: isDesktop,
         priorityIndex: priorityIndex,
@@ -139,7 +124,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
       );
 
       return null;
-    }, [effectivePriorityCountryCode, isPanelFullyOpen, selectedCC]);
+    }, [effectivePriorityCountryCode, selectedCC]);
 
     // Force rebuild when overrides change.
     // ignore: unused_local_variable
@@ -185,7 +170,6 @@ Future<void> _scrollToCountry({
   required BuildContext context,
   required String countryCode,
   required GlobalKey? stickyHeaderKey,
-  required PanelController panelController,
   required ScrollController scrollController,
   required bool isDesktop,
   required int priorityIndex,
@@ -201,10 +185,6 @@ Future<void> _scrollToCountry({
   await WidgetsBinding.instance.endOfFrame;
   if (isStale()) {
     return;
-  }
-
-  if (!isDesktop && panelController.isAttached) {
-    panelController.enableScrolling();
   }
 
   // Step 2: Bring the item into view.

@@ -56,7 +56,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       }
       if (status != null && !status.isLoading) {
         if (status == SubscriptionStatus.purchased) {
-          showSnackbar(LocaleKeys.subscriptionActive.tr());
+          showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
         }
         Navigator.of(context).pop();
         subscriptionStore.refreshAll().ignore();
@@ -97,9 +97,6 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     SizedBox(height: Theme.of(context).spacing.lg),
                     ButtonPrimary(
                       onPressed: subscriptionStore.refreshSubscription,
-                      decoration: ButtonDecoration(
-                        decorationColor: Theme.of(context).palette.bgBrandPrimary,
-                      ),
                       child: Text(LocaleKeys.retryBtn.tr()),
                     ),
                   ],
@@ -241,10 +238,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     ButtonPrimary(
                       onPressed: handlePurchasePressed,
                       loading: isLoading.value ? const ButtonLoading() : null,
-                      decoration: ButtonDecoration(
-                        decorationColor: theme.palette.bgBrandPrimary,
-                        padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
-                      ),
+
                       child: Text(
                         (subscriptionStore.isSubscribed ?? false)
                             ? LocaleKeys.subscriptionAllPlansUpgrade.tr()

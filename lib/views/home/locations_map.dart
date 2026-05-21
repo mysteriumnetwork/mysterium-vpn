@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/map_controller_hook.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/world_map_tiles_layer.dart';
 import 'package:mysterium_vpn/views/locations/location_markers_layer.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -46,14 +45,9 @@ class LocationsMap extends HookConsumerWidget {
 
     void handleMove(LatLng point) {
       final zoom = controller.camera.zoom;
-      var offset = const Offset(0, -30);
-      if (screenType <= ScreenType.mobile) {
-        offset = switch (ref.read(homeStateProvider).panelState) {
-          PanelState.closed => const Offset(0, -100),
-          PanelState.snap => const Offset(0, -180),
-          PanelState.open => const Offset(0, -180),
-        };
-      }
+      // Lift the marker above the ConnectionTile that overlays the bottom of
+      // the mobile map; desktop's panel sits to the side so just a small lift.
+      final offset = screenType <= ScreenType.mobile ? const Offset(0, -180) : const Offset(0, -30);
       controller.move(point, zoom, offset: offset);
     }
 

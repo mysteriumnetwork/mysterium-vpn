@@ -8,8 +8,9 @@ import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
-import 'package:mysterium_vpn/views/home/home_mobile_view.dart';
+import 'package:mysterium_vpn/views/home/home_desktop_scaffold.dart';
+import 'package:mysterium_vpn/views/home/home_mobile_scaffold.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -31,11 +32,11 @@ class HomePage extends HookConsumerWidget {
       body: Stack(
         children: [
           ScreenTypeLayoutBuilder(
-            mobile: (BuildContext context) => const HomeMobileView(),
-            tablet: (BuildContext context) => const HomeDesktopView(),
-            desktop: (BuildContext context) => const HomeDesktopView(),
+            mobile: (BuildContext context) => const HomeMobileScaffold(),
+            tablet: (BuildContext context) => const HomeDesktopScaffold(),
+            desktop: (BuildContext context) => const HomeDesktopScaffold(),
           ),
-          if (isLoading) LoadingBarrier(color: Theme.of(context).primaryColor),
+          if (isLoading) LoadingBarrier(color: Theme.of(context).palette.bgPopover),
         ],
       ),
     );

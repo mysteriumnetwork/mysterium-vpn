@@ -64,15 +64,30 @@ LocationItemState useLocationItemState({
     ],
   );
 
-  final countryStatus = switch (locationMode) {
-    LocationMode.connecting => IpCardStatus.connecting,
-    LocationMode.connected => IpCardStatus.connected,
-    LocationMode.loading => IpCardStatus.loading,
-    LocationMode.unavailable => IpCardStatus.disabled,
-    _ => IpCardStatus.idle,
-  };
+  // When a child city of this country is the active VPN location, surface the
+  // country itself as "connected · <city>" — matches the Figma collapsed row.
+  final connectedChild = useComputedValue(() {
+    final vpnLoc = vpnStore.location;
+    if (!vpnStore.isConnected || vpnLoc == null) {
+      return null;
+    }
+    if (vpnLoc.countryCode != location.countryCode || vpnLoc.isCountry) {
+      return null;
+    }
+    return vpnLoc;
+  }, [location.countryCode]);
 
-  final subtitle = showCitiesAndStates
+  final countryStatus = connectedChild != null
+      ? IpCardStatus.connected
+      : switch (locationMode) {
+          LocationMode.connecting => IpCardStatus.connecting,
+          LocationMode.connected => IpCardStatus.connected,
+          LocationMode.loading => IpCardStatus.loading,
+          LocationMode.unavailable => IpCardStatus.disabled,
+          _ => IpCardStatus.idle,
+        };
+
+  final defaultSubtitle = showCitiesAndStates
       ? locationHasStates
             ? LocaleKeys.locationItemStatesCount.plural(
                 children.length,
@@ -80,6 +95,10 @@ LocationItemState useLocationItemState({
               )
             : LocaleKeys.locationItemCityCount.plural(children.length)
       : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0);
+
+  final subtitle = connectedChild != null
+      ? '${LocaleKeys.connected.tr()} · ${connectedChild.getName(context)}'
+      : defaultSubtitle;
 
   final items = useComputedValue(() {
     if (!showCitiesAndStates) {

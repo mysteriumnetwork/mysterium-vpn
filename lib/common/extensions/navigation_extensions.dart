@@ -1,11 +1,13 @@
 import 'package:beamer/beamer.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 
 extension NavigationExtensions on BeamerDelegate {
   /// Navigates based on the given [url], handling internal routes and external links.
@@ -35,6 +37,25 @@ extension NavigationExtensions on BeamerDelegate {
         return;
       }
       authenticatedRoutes[url]!.call();
+      return;
+    }
+
+    final tab = HomeTab.fromPath(url);
+    if (tab != null) {
+      final tabsStore = ProviderScope.containerOf(context, listen: false).read(homeTabsStorePOD);
+      if (!tabsStore.trySelect(tab)) {
+        // Auth-gated tab (e.g. Products) hit while unauthenticated — kick
+        // the user to the login route so they can come back to the tab.
+        beamToNamed(Routes.platformLogin.path);
+        return;
+      }
+      // Beam to /main only when the user isn't already there — re-beaming
+      // the current location pushes onto Beamer's history and rebuilds the
+      // home shell. When already on /main the scaffold's MobX [Observer]
+      // picks up the tab change via [trySelect] without a route swap.
+      if (configuration.uri.path != Routes.main.path) {
+        beamToNamed(Routes.main.path);
+      }
       return;
     }
 

@@ -81,6 +81,7 @@ class ExpandableLocationItem extends HookConsumerWidget {
       status: countryStatus,
       plusUpgrade: needsUpgrade,
       expanded: isExpanded,
+      searchHighlight: query,
       onExpansionChanged: onExpansionChanged,
       onConnect: onConnect,
     );
