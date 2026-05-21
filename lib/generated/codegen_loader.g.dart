@@ -583,6 +583,9 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "未找到任何位置",
     "tryAnotherLocation": "尝试搜索其他位置",
     "clearSearchBtn": "清除搜索",
+    "productsSubscribeWebSubtitle": "在网站上订阅",
+    "productsSubscribeWebAlert": "订阅服务在网页上管理。您的套餐将自动同步到应用程序中。",
+    "subscribeOnWebBtn": "在网站上订阅",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1208,6 +1211,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "Hiçbir konum bulunamadı.",
     "tryAnotherLocation": "Başka bir konum aramayı deneyin.",
     "clearSearchBtn": "Arama sonuçlarını temizle",
+    "productsSubscribeWebSubtitle": "İnternet üzerinden abone olun",
+    "productsSubscribeWebAlert":
+        "Abonelikler web üzerinden yönetilir. Planınız uygulamaya otomatik olarak senkronize edilecektir.",
+    "subscribeOnWebBtn": "İnternet üzerinden abone olun",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1787,6 +1794,9 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "場所が見つかりませんでした",
     "tryAnotherLocation": "別の場所を検索してみてください",
     "clearSearchBtn": "検索をクリアする",
+    "productsSubscribeWebSubtitle": "ウェブサイトで購読する",
+    "productsSubscribeWebAlert": "購読管理はウェブサイトで行います。プランはアプリに自動的に同期されます。",
+    "subscribeOnWebBtn": "ウェブサイトで購読する",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2435,6 +2445,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "Keine Standorte gefunden",
     "tryAnotherLocation": "Versuchen Sie, nach einem anderen Ort zu suchen.",
     "clearSearchBtn": "Suche löschen",
+    "productsSubscribeWebSubtitle": "Abonnieren Sie im Web",
+    "productsSubscribeWebAlert":
+        "Abonnements werden im Web verwaltet. Ihr Tarif wird automatisch mit der App synchronisiert.",
+    "subscribeOnWebBtn": "Abonnieren Sie im Web",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -3040,7 +3054,7 @@ class CodegenLoader extends AssetLoader {
     "authenticationFailed": "Não foi possível efetuar o login. Tente novamente.",
     "failedToLoadLocations": "Não foi possível carregar as localizações. Tente novamente.",
     "failedToSubscribe": "Ocorreu um problema com a sua assinatura. Por favor, tente novamente!",
-    "incorrectCode": "Código incorreto. Por favor, tente novamente.",
+    "incorrectCode": "Código incorreto. Tente novamente.",
     "incorrectMagicLink": "Link mágico incorreto. Tente novamente.",
     "noLocations": "Não foi possível encontrar nenhuma localização.",
     "noLocationsKeyword": "Não foi possível encontrar nenhuma localização para \"{}\"",
@@ -3076,6 +3090,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "Nenhum local encontrado",
     "tryAnotherLocation": "Tente pesquisar em outro local.",
     "clearSearchBtn": "Limpar pesquisa",
+    "productsSubscribeWebSubtitle": "Assine na web",
+    "productsSubscribeWebAlert":
+        "As assinaturas são gerenciadas na web. Seu plano será sincronizado automaticamente com o aplicativo.",
+    "subscribeOnWebBtn": "Assine na web",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3705,6 +3723,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "No locations found",
     "tryAnotherLocation": "Try searching for another location",
     "clearSearchBtn": "Clear search",
+    "productsSubscribeWebSubtitle": "Subscribe on the web",
+    "productsSubscribeWebAlert":
+        "Subscriptions are managed on the web. Your plan will sync to the app automatically.",
+    "subscribeOnWebBtn": "Subscribe on the web",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -4347,6 +4369,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "Nessuna posizione trovata",
     "tryAnotherLocation": "Prova a cercare un'altra località",
     "clearSearchBtn": "Cancella ricerca",
+    "productsSubscribeWebSubtitle": "Iscriviti sul web",
+    "productsSubscribeWebAlert":
+        "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
+    "subscribeOnWebBtn": "Iscriviti sul web",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4996,6 +5022,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "Aucun emplacement trouvé",
     "tryAnotherLocation": "Essayez de rechercher un autre lieu",
     "clearSearchBtn": "Recherche propre",
+    "productsSubscribeWebSubtitle": "Abonnez-vous sur le web",
+    "productsSubscribeWebAlert":
+        "Les abonnements sont gérés sur le web. Votre forfait sera automatiquement synchronisé avec l'application.",
+    "subscribeOnWebBtn": "Abonnez-vous sur le web",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5627,6 +5657,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "Tidak ada lokasi yang ditemukan.",
     "tryAnotherLocation": "Coba cari lokasi lain",
     "clearSearchBtn": "Hapus pencarian",
+    "productsSubscribeWebSubtitle": "Berlangganan di web",
+    "productsSubscribeWebAlert":
+        "Langganan dikelola melalui web. Paket Anda akan disinkronkan ke aplikasi secara otomatis.",
+    "subscribeOnWebBtn": "Berlangganan di web",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -6270,6 +6304,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "No se encontraron ubicaciones",
     "tryAnotherLocation": "Intenta buscar otra ubicación",
     "clearSearchBtn": "Borrar búsqueda",
+    "productsSubscribeWebSubtitle": "Suscríbete en la web",
+    "productsSubscribeWebAlert":
+        "Las suscripciones se gestionan a través de la web. Tu plan se sincronizará automáticamente con la aplicación.",
+    "subscribeOnWebBtn": "Suscríbete en la web",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6883,6 +6921,10 @@ class CodegenLoader extends AssetLoader {
     "noLocationsFound": "لم يتم العثور على مواقع",
     "tryAnotherLocation": "حاول البحث عن موقع آخر",
     "clearSearchBtn": "مسح البحث",
+    "productsSubscribeWebSubtitle": "اشترك عبر الإنترنت",
+    "productsSubscribeWebAlert":
+        "تتم إدارة الاشتراكات عبر الإنترنت. سيتم مزامنة خطتك مع التطبيق تلقائيًا.",
+    "subscribeOnWebBtn": "اشترك عبر الإنترنت",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

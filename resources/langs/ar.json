@@ -576,5 +576,8 @@
   "navProducts": "منتجات",
   "noLocationsFound": "لم يتم العثور على مواقع",
   "tryAnotherLocation": "حاول البحث عن موقع آخر",
-  "clearSearchBtn": "مسح البحث"
+  "clearSearchBtn": "مسح البحث",
+  "productsSubscribeWebSubtitle": "اشترك عبر الإنترنت",
+  "productsSubscribeWebAlert": "تتم إدارة الاشتراكات عبر الإنترنت. سيتم مزامنة خطتك مع التطبيق تلقائيًا.",
+  "subscribeOnWebBtn": "اشترك عبر الإنترنت"
 }

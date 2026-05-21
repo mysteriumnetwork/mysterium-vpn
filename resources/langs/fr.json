@@ -576,5 +576,8 @@
   "navProducts": "Produits",
   "noLocationsFound": "Aucun emplacement trouvé",
   "tryAnotherLocation": "Essayez de rechercher un autre lieu",
-  "clearSearchBtn": "Recherche propre"
+  "clearSearchBtn": "Recherche propre",
+  "productsSubscribeWebSubtitle": "Abonnez-vous sur le web",
+  "productsSubscribeWebAlert": "Les abonnements sont gérés sur le web. Votre forfait sera automatiquement synchronisé avec l'application.",
+  "subscribeOnWebBtn": "Abonnez-vous sur le web"
 }

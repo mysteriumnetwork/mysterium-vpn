@@ -576,5 +576,8 @@
   "navProducts": "Produk",
   "noLocationsFound": "Tidak ada lokasi yang ditemukan.",
   "tryAnotherLocation": "Coba cari lokasi lain",
-  "clearSearchBtn": "Hapus pencarian"
+  "clearSearchBtn": "Hapus pencarian",
+  "productsSubscribeWebSubtitle": "Berlangganan di web",
+  "productsSubscribeWebAlert": "Langganan dikelola melalui web. Paket Anda akan disinkronkan ke aplikasi secara otomatis.",
+  "subscribeOnWebBtn": "Berlangganan di web"
 }

@@ -576,5 +576,8 @@
   "navProducts": "Produkte",
   "noLocationsFound": "Keine Standorte gefunden",
   "tryAnotherLocation": "Versuchen Sie, nach einem anderen Ort zu suchen.",
-  "clearSearchBtn": "Suche löschen"
+  "clearSearchBtn": "Suche löschen",
+  "productsSubscribeWebSubtitle": "Abonnieren Sie im Web",
+  "productsSubscribeWebAlert": "Abonnements werden im Web verwaltet. Ihr Tarif wird automatisch mit der App synchronisiert.",
+  "subscribeOnWebBtn": "Abonnieren Sie im Web"
 }

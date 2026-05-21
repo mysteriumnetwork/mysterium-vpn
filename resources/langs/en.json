@@ -576,5 +576,8 @@
   "navProducts": "Products",
   "noLocationsFound": "No locations found",
   "tryAnotherLocation": "Try searching for another location",
-  "clearSearchBtn": "Clear search"
+  "clearSearchBtn": "Clear search",
+  "productsSubscribeWebSubtitle": "Subscribe on the web",
+  "productsSubscribeWebAlert": "Subscriptions are managed on the web. Your plan will sync to the app automatically.",
+  "subscribeOnWebBtn": "Subscribe on the web"
 }

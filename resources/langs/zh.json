@@ -576,5 +576,8 @@
   "navProducts": "产品",
   "noLocationsFound": "未找到任何位置",
   "tryAnotherLocation": "尝试搜索其他位置",
-  "clearSearchBtn": "清除搜索"
+  "clearSearchBtn": "清除搜索",
+  "productsSubscribeWebSubtitle": "在网站上订阅",
+  "productsSubscribeWebAlert": "订阅服务在网页上管理。您的套餐将自动同步到应用程序中。",
+  "subscribeOnWebBtn": "在网站上订阅"
 }

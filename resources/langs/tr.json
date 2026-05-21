@@ -576,5 +576,8 @@
   "navProducts": "Ürünler",
   "noLocationsFound": "Hiçbir konum bulunamadı.",
   "tryAnotherLocation": "Başka bir konum aramayı deneyin.",
-  "clearSearchBtn": "Arama sonuçlarını temizle"
+  "clearSearchBtn": "Arama sonuçlarını temizle",
+  "productsSubscribeWebSubtitle": "İnternet üzerinden abone olun",
+  "productsSubscribeWebAlert": "Abonelikler web üzerinden yönetilir. Planınız uygulamaya otomatik olarak senkronize edilecektir.",
+  "subscribeOnWebBtn": "İnternet üzerinden abone olun"
 }

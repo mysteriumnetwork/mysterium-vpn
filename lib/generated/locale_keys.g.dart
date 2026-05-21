@@ -568,4 +568,7 @@ abstract class LocaleKeys {
   static const noLocationsFound = 'noLocationsFound';
   static const tryAnotherLocation = 'tryAnotherLocation';
   static const clearSearchBtn = 'clearSearchBtn';
+  static const productsSubscribeWebSubtitle = 'productsSubscribeWebSubtitle';
+  static const productsSubscribeWebAlert = 'productsSubscribeWebAlert';
+  static const subscribeOnWebBtn = 'subscribeOnWebBtn';
 }

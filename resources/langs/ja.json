@@ -576,5 +576,8 @@
   "navProducts": "製品",
   "noLocationsFound": "場所が見つかりませんでした",
   "tryAnotherLocation": "別の場所を検索してみてください",
-  "clearSearchBtn": "検索をクリアする"
+  "clearSearchBtn": "検索をクリアする",
+  "productsSubscribeWebSubtitle": "ウェブサイトで購読する",
+  "productsSubscribeWebAlert": "購読管理はウェブサイトで行います。プランはアプリに自動的に同期されます。",
+  "subscribeOnWebBtn": "ウェブサイトで購読する"
 }
