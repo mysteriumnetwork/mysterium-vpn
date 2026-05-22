@@ -579,5 +579,6 @@
   "clearSearchBtn": "Recherche propre",
   "productsSubscribeWebSubtitle": "Abonnez-vous sur le web",
   "productsSubscribeWebAlert": "Les abonnements sont gérés sur le web. Votre forfait sera automatiquement synchronisé avec l'application.",
-  "subscribeOnWebBtn": "Abonnez-vous sur le web"
+  "subscribeOnWebBtn": "Abonnez-vous sur le web",
+  "subscriptionAllPlansCurrentPlan": "Plan actuel"
 }

@@ -586,6 +586,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebSubtitle": "在网站上订阅",
     "productsSubscribeWebAlert": "订阅服务在网页上管理。您的套餐将自动同步到应用程序中。",
     "subscribeOnWebBtn": "在网站上订阅",
+    "subscriptionAllPlansCurrentPlan": "当前计划",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1215,6 +1216,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Abonelikler web üzerinden yönetilir. Planınız uygulamaya otomatik olarak senkronize edilecektir.",
     "subscribeOnWebBtn": "İnternet üzerinden abone olun",
+    "subscriptionAllPlansCurrentPlan": "Mevcut plan",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1797,6 +1799,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebSubtitle": "ウェブサイトで購読する",
     "productsSubscribeWebAlert": "購読管理はウェブサイトで行います。プランはアプリに自動的に同期されます。",
     "subscribeOnWebBtn": "ウェブサイトで購読する",
+    "subscriptionAllPlansCurrentPlan": "現在の計画",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2449,6 +2452,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Abonnements werden im Web verwaltet. Ihr Tarif wird automatisch mit der App synchronisiert.",
     "subscribeOnWebBtn": "Abonnieren Sie im Web",
+    "subscriptionAllPlansCurrentPlan": "Aktueller Plan",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -3094,6 +3098,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "As assinaturas são gerenciadas na web. Seu plano será sincronizado automaticamente com o aplicativo.",
     "subscribeOnWebBtn": "Assine na web",
+    "subscriptionAllPlansCurrentPlan": "Plano atual",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3727,6 +3732,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Subscriptions are managed on the web. Your plan will sync to the app automatically.",
     "subscribeOnWebBtn": "Subscribe on the web",
+    "subscriptionAllPlansCurrentPlan": "Current plan",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -4373,6 +4379,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
     "subscribeOnWebBtn": "Iscriviti sul web",
+    "subscriptionAllPlansCurrentPlan": "Piano attuale",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -5026,6 +5033,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Les abonnements sont gérés sur le web. Votre forfait sera automatiquement synchronisé avec l'application.",
     "subscribeOnWebBtn": "Abonnez-vous sur le web",
+    "subscriptionAllPlansCurrentPlan": "Plan actuel",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5661,6 +5669,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Langganan dikelola melalui web. Paket Anda akan disinkronkan ke aplikasi secara otomatis.",
     "subscribeOnWebBtn": "Berlangganan di web",
+    "subscriptionAllPlansCurrentPlan": "Rencana saat ini",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -6308,6 +6317,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "Las suscripciones se gestionan a través de la web. Tu plan se sincronizará automáticamente con la aplicación.",
     "subscribeOnWebBtn": "Suscríbete en la web",
+    "subscriptionAllPlansCurrentPlan": "Plan actual",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6925,6 +6935,7 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert":
         "تتم إدارة الاشتراكات عبر الإنترنت. سيتم مزامنة خطتك مع التطبيق تلقائيًا.",
     "subscribeOnWebBtn": "اشترك عبر الإنترنت",
+    "subscriptionAllPlansCurrentPlan": "الخطة الحالية",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

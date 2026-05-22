@@ -579,5 +579,6 @@
   "clearSearchBtn": "検索をクリアする",
   "productsSubscribeWebSubtitle": "ウェブサイトで購読する",
   "productsSubscribeWebAlert": "購読管理はウェブサイトで行います。プランはアプリに自動的に同期されます。",
-  "subscribeOnWebBtn": "ウェブサイトで購読する"
+  "subscribeOnWebBtn": "ウェブサイトで購読する",
+  "subscriptionAllPlansCurrentPlan": "現在の計画"
 }

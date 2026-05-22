@@ -571,4 +571,5 @@ abstract class LocaleKeys {
   static const productsSubscribeWebSubtitle = 'productsSubscribeWebSubtitle';
   static const productsSubscribeWebAlert = 'productsSubscribeWebAlert';
   static const subscribeOnWebBtn = 'subscribeOnWebBtn';
+  static const subscriptionAllPlansCurrentPlan = 'subscriptionAllPlansCurrentPlan';
 }

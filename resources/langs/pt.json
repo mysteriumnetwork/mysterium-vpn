@@ -579,5 +579,6 @@
   "clearSearchBtn": "Limpar pesquisa",
   "productsSubscribeWebSubtitle": "Assine na web",
   "productsSubscribeWebAlert": "As assinaturas são gerenciadas na web. Seu plano será sincronizado automaticamente com o aplicativo.",
-  "subscribeOnWebBtn": "Assine na web"
+  "subscribeOnWebBtn": "Assine na web",
+  "subscriptionAllPlansCurrentPlan": "Plano atual"
 }

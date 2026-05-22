@@ -579,5 +579,6 @@
   "clearSearchBtn": "Cancella ricerca",
   "productsSubscribeWebSubtitle": "Iscriviti sul web",
   "productsSubscribeWebAlert": "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
-  "subscribeOnWebBtn": "Iscriviti sul web"
+  "subscribeOnWebBtn": "Iscriviti sul web",
+  "subscriptionAllPlansCurrentPlan": "Piano attuale"
 }

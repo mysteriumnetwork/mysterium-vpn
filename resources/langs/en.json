@@ -579,5 +579,6 @@
   "clearSearchBtn": "Clear search",
   "productsSubscribeWebSubtitle": "Subscribe on the web",
   "productsSubscribeWebAlert": "Subscriptions are managed on the web. Your plan will sync to the app automatically.",
-  "subscribeOnWebBtn": "Subscribe on the web"
+  "subscribeOnWebBtn": "Subscribe on the web",
+  "subscriptionAllPlansCurrentPlan": "Current plan"
 }

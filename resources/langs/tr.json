@@ -579,5 +579,6 @@
   "clearSearchBtn": "Arama sonuçlarını temizle",
   "productsSubscribeWebSubtitle": "İnternet üzerinden abone olun",
   "productsSubscribeWebAlert": "Abonelikler web üzerinden yönetilir. Planınız uygulamaya otomatik olarak senkronize edilecektir.",
-  "subscribeOnWebBtn": "İnternet üzerinden abone olun"
+  "subscribeOnWebBtn": "İnternet üzerinden abone olun",
+  "subscriptionAllPlansCurrentPlan": "Mevcut plan"
 }

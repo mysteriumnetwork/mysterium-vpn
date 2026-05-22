@@ -579,5 +579,6 @@
   "clearSearchBtn": "مسح البحث",
   "productsSubscribeWebSubtitle": "اشترك عبر الإنترنت",
   "productsSubscribeWebAlert": "تتم إدارة الاشتراكات عبر الإنترنت. سيتم مزامنة خطتك مع التطبيق تلقائيًا.",
-  "subscribeOnWebBtn": "اشترك عبر الإنترنت"
+  "subscribeOnWebBtn": "اشترك عبر الإنترنت",
+  "subscriptionAllPlansCurrentPlan": "الخطة الحالية"
 }

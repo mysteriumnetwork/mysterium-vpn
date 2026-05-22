@@ -579,5 +579,6 @@
   "clearSearchBtn": "Hapus pencarian",
   "productsSubscribeWebSubtitle": "Berlangganan di web",
   "productsSubscribeWebAlert": "Langganan dikelola melalui web. Paket Anda akan disinkronkan ke aplikasi secara otomatis.",
-  "subscribeOnWebBtn": "Berlangganan di web"
+  "subscribeOnWebBtn": "Berlangganan di web",
+  "subscriptionAllPlansCurrentPlan": "Rencana saat ini"
 }
