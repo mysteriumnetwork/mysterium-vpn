@@ -39,6 +39,7 @@ class ConnectionTile extends HookConsumerWidget {
           noConnectionTitle: noConnectionTitle,
           noConnectionDescription: noConnectionDescription,
           connectionRatingLabel: LocaleKeys.rateConnection.tr(),
+          showConnectionRating: false,
           onConnect: onToggle,
           onDisconnect: onToggle,
           onRefreshIp: onRefreshIP,

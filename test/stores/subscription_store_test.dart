@@ -76,8 +76,8 @@ void main() {
     gateways: [],
     plans: [],
     countries: [],
-    stripeReturnUrl: '',
     stripePublishableKey: '',
+    stripeReturnUrl: '',
   );
 
   setUp(() async {
@@ -349,6 +349,169 @@ void main() {
         subscriptionStore.testIsIOS = true;
 
         expect(subscriptionStore.canRedeemCode, isFalse);
+      });
+    });
+
+    group('useWebFlow', () {
+      Future<void> primeSubscription(Subscription subscription) async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => subscription);
+        await subscriptionStore.refreshSubscription();
+      }
+
+      test('returns true on Windows regardless of subscription', () async {
+        subscriptionStore.testIsWindows = true;
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('returns false when subscription is inactive', () async {
+        await primeSubscription(Subscription.empty());
+        expect(subscriptionStore.useWebFlow, isFalse);
+      });
+
+      test('returns false for active apple sub (any platform)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.useWebFlow, isFalse);
+      });
+
+      test('returns false for active google sub (any platform)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.useWebFlow, isFalse);
+      });
+
+      test('returns true for active stripe sub (credit card -> web)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('returns true for active adyen sub (credit card -> web)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'adyen', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('returns true for active paypal sub', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'paypal', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('returns true for active coingate sub', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'coingate', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+    });
+
+    group('isOnMaxPlan', () {
+      late vpn_api.SubscriptionConfigResponse configWithPlans;
+
+      vpn_api.SubscriptionConfigResponsePlansInner plan({
+        required String id,
+        required List<String> supportedGateways,
+        String intervalUnit = 'month',
+        int intervalAmount = 1,
+      }) => vpn_api.SubscriptionConfigResponsePlansInner(
+        id: id,
+        interval: vpn_api.SubscriptionConfigResponsePlansInnerInterval(
+          unit: vpn_api.SubscriptionConfigResponsePlansInnerIntervalUnitEnum.values.firstWhere(
+            (u) => u.value == intervalUnit,
+          ),
+          amount: intervalAmount,
+        ),
+        price: vpn_api.SubscriptionConfigResponsePlansInnerPrice(USD: 0),
+        prices: const [],
+        supportedGateways: supportedGateways,
+        metadata: vpn_api.SubscriptionConfigResponsePlansInnerMetadata(),
+      );
+
+      setUp(() {
+        configWithPlans = vpn_api.SubscriptionConfigResponse(
+          gateways: const [],
+          plans: [
+            plan(id: 'plan_yearly_plus', supportedGateways: ['google'], intervalUnit: 'year'),
+            plan(
+              id: 'plan_2_years_pro',
+              supportedGateways: ['stripe'],
+              intervalUnit: 'year',
+              intervalAmount: 2,
+            ),
+            plan(id: 'plan_yearly_pro', supportedGateways: ['stripe'], intervalUnit: 'year'),
+          ],
+          countries: const [],
+          stripePublishableKey: '',
+          stripeReturnUrl: '',
+        );
+        when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlans));
+        when(mockRemoteConfigStore.planFeatures).thenReturn([
+          SubscriptionPlanFeatures(
+            name: 'Plus',
+            planIds: {'plan_yearly_plus'},
+            previewFeatures: const {},
+            detailedFeatures: const {},
+          ),
+          SubscriptionPlanFeatures(
+            name: 'Pro',
+            planIds: {'plan_yearly_pro', 'plan_2_years_pro'},
+            previewFeatures: const {},
+            detailedFeatures: const {},
+          ),
+        ]);
+      });
+
+      Future<void> primeSubscription(Subscription subscription) async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => subscription);
+        await subscriptionStore.refreshSubscription();
+        await subscriptionStore.refreshSubscriptionConfig();
+      }
+
+      test('returns false when subscription is inactive', () async {
+        await primeSubscription(Subscription.empty());
+        expect(subscriptionStore.isOnMaxPlan, isFalse);
+      });
+
+      test('returns true when google sub is on yearly Plus (mobile max)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isTrue);
+      });
+
+      test('returns true when stripe sub is on 2-year Pro (web max)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_2_years_pro'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isTrue);
+      });
+
+      test('returns false when stripe sub is on yearly Pro (1-year < 2-year)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isFalse);
+      });
+
+      test('returns false when config is missing', () async {
+        when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(null));
+        when(mockConfigStore.refreshConfig()).thenAnswer((_) async => null);
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isFalse);
       });
     });
   });

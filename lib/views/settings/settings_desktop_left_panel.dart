@@ -7,16 +7,23 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/setting_category.dart';
-import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
+
+/// Category highlighted on initial load before the user picks one (desktop's
+/// left panel always shows a selected entry; mobile defaults to the main
+/// list, so the shared store starts at `null`).
+const _defaultDesktopCategory = SettingCategory.account;
 
 class SettingsDesktopLeftPanel extends HookConsumerWidget {
   const SettingsDesktopLeftPanel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settingCategory = ref.watch(selectedCategoryProvider);
+    final tabsStore = ref.watch(homeTabsStorePOD);
+    final settingCategory = useComputedValue(
+      () => tabsStore.settingsSubPage ?? _defaultDesktopCategory,
+    );
     final remoteConfig = ref.watch(remoteConfigStorePOD);
     final enableQaHelpers = useComputedValue(() => remoteConfig.enableQaHelpers);
     final theme = Theme.of(context);
@@ -30,16 +37,25 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Header(
-            backLabel: LocaleKeys.backHomeLbl.tr(),
-            backgroundColor: theme.palette.bgSidePanel,
-          ),
-          Text(
-            LocaleKeys.settings.tr(),
-            style: theme.textStyles.displayXlg.semibold.copyWith(
-              color: theme.palette.textSecondary,
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: theme.spacing.xl3,
+              vertical: theme.spacing.xl,
             ),
-          ).padding(horizontal: theme.spacing.xl3, bottom: theme.spacing.xl3),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    LocaleKeys.settings.tr(),
+                    style: theme.textStyles.displayXlg.semibold.copyWith(
+                      color: theme.palette.textPrimary,
+                    ),
+                  ),
+                ),
+                const HelpSupportIconButton(),
+              ],
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl3),
@@ -52,7 +68,7 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
                         icon: Icon(category.icon, size: 20),
                         label: category.trKey.tr(),
                         current: settingCategory == category,
-                        onTap: () => _updateCategory(ref, category),
+                        onTap: () => tabsStore.openSettingsSubPage(category),
                       ),
                   NavItem(
                     icon: const Icon(UntitledUI.message_question_square, size: 20),
@@ -73,9 +89,5 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
         ],
       ).backgroundColor(theme.palette.bgSidePanel),
     ).width(346);
-  }
-
-  void _updateCategory(WidgetRef ref, SettingCategory category) {
-    ref.read(selectedCategoryProvider.notifier).category = category;
   }
 }

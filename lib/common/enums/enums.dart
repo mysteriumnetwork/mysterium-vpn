@@ -6,6 +6,7 @@ export 'blocker_type.dart';
 export 'connection_action.dart';
 export 'exception_severity.dart';
 export 'grant_type.dart';
+export 'home_tab.dart';
 export 'ip_type.dart';
 export 'location_mode.dart';
 export 'marketing_analytics_event.dart';

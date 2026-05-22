@@ -9,6 +9,8 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
+import 'package:mysterium_vpn/common/utils/subscription_plan_resolver.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -38,6 +40,8 @@ abstract class _SubscriptionStore with Store {
        _configStore = configStore {
     _reactions = [
       reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
+        _hasShownExistingSubscriptionDialog = false;
+        _existingSubscriptionCheck = null;
         if (status) {
           _subscriptionFuture = ObservableFuture(_fetchSubscription());
         }
@@ -54,10 +58,33 @@ abstract class _SubscriptionStore with Store {
   final SubscriptionConfigStore _configStore;
   late final List<ReactionDisposer> _reactions;
 
+  /// Once-per-session gate for the existing-subscription dialog.
+  bool _hasShownExistingSubscriptionDialog = false;
+
+  bool get hasShownExistingSubscriptionDialog => _hasShownExistingSubscriptionDialog;
+
+  void markExistingSubscriptionDialogShown() {
+    _hasShownExistingSubscriptionDialog = true;
+  }
+
+  // Single-flight; reset on auth flip below.
+  Future<String?>? _existingSubscriptionCheck;
+
+  Future<String?> checkForExistingSubscriber() =>
+      _existingSubscriptionCheck ??= refreshOtherSubscriber();
+
   @visibleForTesting
   bool testIsIOS = false;
 
-  bool get _isIOS => testIsIOS || Platform.isIOS;
+  @visibleForTesting
+  bool testIsWindows = false;
+
+  /// When any `testIsX` is set, getters use only those (host `Platform` ignored).
+  bool get _useTestPlatform => testIsIOS || testIsWindows;
+
+  bool get _isIOS => _useTestPlatform ? testIsIOS : Platform.isIOS;
+
+  bool get _isWindows => _useTestPlatform ? testIsWindows : Platform.isWindows;
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
@@ -107,6 +134,46 @@ abstract class _SubscriptionStore with Store {
 
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
+
+  /// True when the Products tab should route the user to the web instead of
+  /// the in-app upgrade picker: Windows (always), or an active subscription
+  /// paid through any non-mobile gateway (Stripe/Adyen/PayPal/CoinGate).
+  @computed
+  bool get useWebFlow {
+    if (_isWindows) {
+      return true;
+    }
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.active) {
+      return false;
+    }
+    final gateway = subscription.gateway?.toLowerCase();
+    if (gateway == null) {
+      return false;
+    }
+    return !isMobilePaymentGateway(gateway);
+  }
+
+  /// `true` when the active subscription is already on the highest tier +
+  /// longest duration plan available for its gateway. No further upgrade
+  /// is possible in that case.
+  @computed
+  bool get isOnMaxPlan {
+    final subscription = _subscriptionFuture.value;
+    if (subscription == null || !subscription.active) {
+      return false;
+    }
+    final gateway = subscription.gateway?.toLowerCase();
+    if (gateway == null) {
+      return false;
+    }
+    final config = subscriptionConfigFuture.value;
+    if (config == null) {
+      return false;
+    }
+    final maxPlanId = maxPlanIdForGateway(gateway, config, _remoteConfigStore.planFeatures);
+    return maxPlanId != null && subscription.planId == maxPlanId;
+  }
 
   @computed
   bool get malwareBlockingAllowed => planMetadata?.malwareBlockingAllowed ?? false;

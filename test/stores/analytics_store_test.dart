@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:mysterium_vpn/views/home/home_state.dart';
 
 class _FakeAnalyticsStore with AnalyticsStore {
   final List<GrantType> loginCalls = [];
@@ -151,13 +150,6 @@ void main() {
       await store.logTabChange(IPType.residential);
 
       expect((await entry).params, {'tab': IPType.residential.name});
-    });
-
-    test('logPanelMoved embeds state name', () async {
-      final entry = nextLog();
-      await store.logPanelMoved(PanelState.open);
-
-      expect((await entry).params, {'state': PanelState.open.name});
     });
 
     test('logRefreshIP embeds ip when provided', () async {

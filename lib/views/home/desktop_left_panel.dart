@@ -1,11 +1,9 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
@@ -24,7 +22,15 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
 
-    ref.read(homeStateProvider).scrollController = scrollController;
+    useEffect(() {
+      final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
+      return () {
+        if (homeState.scrollController == scrollController) {
+          homeState.scrollController = null;
+        }
+      };
+    }, [scrollController]);
+
     final pallete = Theme.of(context).palette;
     final spacing = Theme.of(context).spacing;
     return DecoratedBox(
@@ -56,22 +62,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                   Header.logo(
                     showBackButton: false,
                     backgroundColor: pallete.bgSidePanel,
-                    actions: [
-                      IconButton(
-                        icon: const Icon(UntitledUI.message_question_square, size: 24),
-                        onPressed: () => handleOnSupportPage(
-                          context: context,
-                          analyticsStore: ref.read(analyticsStorePOD),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(UntitledUI.settings_01, size: 24),
-                        onPressed: () {
-                          analyticsStore.logEvent(AnalyticsEvent.openSettings);
-                          context.beamToNamed(Routes.settings.path);
-                        },
-                      ),
-                    ],
+                    actions: const [HelpSupportIconButton()],
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),

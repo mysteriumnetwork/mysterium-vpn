@@ -45,6 +45,20 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.residentialIPsAllowed,
     name: '_SubscriptionStore.residentialIPsAllowed',
   )).value;
+  Computed<bool>? _$useWebFlowComputed;
+
+  @override
+  bool get useWebFlow => (_$useWebFlowComputed ??= Computed<bool>(
+    () => super.useWebFlow,
+    name: '_SubscriptionStore.useWebFlow',
+  )).value;
+  Computed<bool>? _$isOnMaxPlanComputed;
+
+  @override
+  bool get isOnMaxPlan => (_$isOnMaxPlanComputed ??= Computed<bool>(
+    () => super.isOnMaxPlan,
+    name: '_SubscriptionStore.isOnMaxPlan',
+  )).value;
   Computed<bool>? _$malwareBlockingAllowedComputed;
 
   @override
@@ -189,6 +203,8 @@ isSubscriptionLoading: ${isSubscriptionLoading},
 storeState: ${storeState},
 planMetadata: ${planMetadata},
 residentialIPsAllowed: ${residentialIPsAllowed},
+useWebFlow: ${useWebFlow},
+isOnMaxPlan: ${isOnMaxPlan},
 malwareBlockingAllowed: ${malwareBlockingAllowed},
 canRedeemCode: ${canRedeemCode}
     ''';

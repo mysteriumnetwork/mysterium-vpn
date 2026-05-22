@@ -16,8 +16,6 @@ enum SettingCategory {
   final String trKey;
   final IconData icon;
 
-  bool get scrollable => this != account;
-
   Widget get content => switch (this) {
     account => const AccountSettings(),
     connection => const ConnectionSettings(),

@@ -8,8 +8,11 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
-Future<void> Function(String id) useHandleSubscribeToProduct() {
+/// [onAfterRedirect] fires after web-checkout hand-off or "already on this
+/// plan" — modal callers pass [Navigator.pop]; tab callers leave it null.
+Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAfterRedirect}) {
   final context = useContext();
+  final onAfterRedirectRef = useRef(onAfterRedirect)..value = onAfterRedirect;
   return useCallback((String id) async {
     if (!context.mounted) {
       return;
@@ -34,7 +37,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       // already subscribed to this product, do nothing
       if (context.mounted) {
         showSnackbar(LocaleKeys.planAlreadyPurchasedMsg.tr());
-        Navigator.of(context).pop();
+        onAfterRedirectRef.value?.call();
       }
       return;
     }
@@ -51,7 +54,20 @@ Future<void> Function(String id) useHandleSubscribeToProduct() {
       );
       await openUrlLink(uri);
       if (context.mounted) {
-        Navigator.of(context).pop();
+        onAfterRedirectRef.value?.call();
+      }
+      return;
+    }
+
+    // Cross-platform mobile mismatch: don't start a new IAP alongside the
+    // active sub on the other store.
+    if ((subscription?.active ?? false) &&
+        isMobilePaymentGateway(gateway) &&
+        !(subscription?.isGatewayOnCurrentPlatform ?? true)) {
+      if (context.mounted) {
+        showSnackbar(
+          LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': subscription!.gatewayName}),
+        );
       }
       return;
     }
