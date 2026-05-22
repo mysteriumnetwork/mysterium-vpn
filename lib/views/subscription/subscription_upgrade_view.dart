@@ -112,20 +112,16 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                 (p) => store.findConfig(p).name == bestConfig.name && p.duration == 1,
               );
             }, [product, store.annualProducts, store.monthlyProducts]);
-
-            final features = useMemoized(
-              () => store
-                  .findConfig(product)
-                  .previewFeatures
-                  .where(
-                    (feature) =>
-                        feature != 'subscriptionPlanPF4Basic' &&
-                        feature != 'subscriptionPlanPF5Plus',
-                  )
-                  .map((it) => it.tr())
-                  .toList(),
-              [product, context.locale],
-            );
+            final features = store
+                .findConfig(product)
+                .previewFeatures
+                .where(
+                  (feature) =>
+                      feature != 'subscriptionPlanPF4Basic' &&
+                      feature != 'subscriptionPlanPF5Plus',
+                )
+                .map((it) => it.tr())
+                .toList();
 
             final planData = usePlanData(
               product: product,
