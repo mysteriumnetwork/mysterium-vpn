@@ -33,11 +33,14 @@ class HomeProductsTab extends HookConsumerWidget {
           if (subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
             return const Center(child: LoadingIndicator());
           }
-          if (subscriptionStore.isOnMaxPlan) {
-            return const _MaxPlanView();
-          }
+          // Web-paid subs (and Windows) always route to the web — even when
+          // the user is technically on the max plan for their gateway,
+          // managing/cancelling happens online.
           if (subscriptionStore.useWebFlow) {
             return const _ManageOnWebView();
+          }
+          if (subscriptionStore.isOnMaxPlan) {
+            return const _MaxPlanView();
           }
           return BackgroundGradient(
             child: SubscriptionStatusContainer(

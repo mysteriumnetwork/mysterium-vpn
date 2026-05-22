@@ -137,20 +137,26 @@ void main() {
       },
     );
 
-    testWidgets('prefers MaxPlanView over ManageOnWebView when both flags are true', (
+    testWidgets('prefers ManageOnWebView over MaxPlanView when both flags are true', (
       tester,
     ) async {
-      // Defensive: max plan is checked first in HomeProductsTab.build,
-      // so an active sub on the max plan that also matches the web-flow
-      // criteria should still render the max-plan variant.
+      // Web-paid subs always route through the web, even when the user
+      // happens to be on the gateway's max plan (e.g. Annual Basic on
+      // Stripe where Basic is the only stripe-supported tier). The
+      // "manage on the web" CTA must win over the read-only max-plan view.
       when(subscriptionStore.isOnMaxPlan).thenReturn(true);
       when(subscriptionStore.useWebFlow).thenReturn(true);
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_basic'),
+        ),
+      );
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();
 
-      expect(find.textContaining(RegExp('highest plan|productsMaxPlanAlert')), findsOneWidget);
-      expect(find.textContaining('Manage on the web'), findsNothing);
+      expect(find.textContaining(RegExp('Manage on the web|manageOnWebBtn')), findsOneWidget);
+      expect(find.textContaining('highest plan'), findsNothing);
     });
 
     // The default "upgrade view" branch (both flags false) wraps the
