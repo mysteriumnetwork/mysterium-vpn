@@ -117,8 +117,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                 .previewFeatures
                 .where(
                   (feature) =>
-                      feature != 'subscriptionPlanPF4Basic' &&
-                      feature != 'subscriptionPlanPF5Plus',
+                      feature != 'subscriptionPlanPF4Basic' && feature != 'subscriptionPlanPF5Plus',
                 )
                 .map((it) => it.tr())
                 .toList();
