@@ -28,20 +28,46 @@ extension NavigationExtensions on BeamerDelegate {
     required BuildContext context,
     required String? accessToken,
   }) async {
+    final uri = Uri.tryParse(url);
+    if (uri == null) {
+      return;
+    }
+
+    if (uri.scheme == 'http' || uri.scheme == 'https') {
+      final queryParameters = Map<String, String>.from(uri.queryParameters);
+      if (accessToken != null && Env.webAppUrl == uri.host) {
+        queryParameters['access_token'] = accessToken;
+      }
+
+      final httpsUri = Uri(
+        scheme: uri.scheme,
+        host: uri.host,
+        path: uri.path,
+        queryParameters: queryParameters,
+      );
+
+      await openUrlLink(httpsUri);
+      return;
+    }
+
+    // Match in-app routes on the URI path so query params, fragments, and a
+    // trailing slash don't cause us to silently fall through.
+    final path = _normalizeInAppPath(uri);
+
     final authenticatedRoutes = {
       '/subscribe': () => showSubscriptionPlansModalPage(context),
       '/subscription-upgrade': () => showSubscriptionUpgradeModalPage(context),
     };
 
-    if (authenticatedRoutes.containsKey(url)) {
+    if (authenticatedRoutes.containsKey(path)) {
       if (!isAuthenticated) {
         return;
       }
-      authenticatedRoutes[url]!.call();
+      authenticatedRoutes[path]!.call();
       return;
     }
 
-    final tab = HomeTab.fromPath(url);
+    final tab = HomeTab.fromPath(path);
     if (tab != null) {
       // Mobile-only tabs (Locations) fold into Map on desktop.
       final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
@@ -59,34 +85,17 @@ extension NavigationExtensions on BeamerDelegate {
       return;
     }
 
-    final route = Routes.values.firstWhereOrNull((it) => it.name == url || it.path == url);
+    final route = Routes.values.firstWhereOrNull((it) => it.name == path || it.path == path);
     if (route != null) {
       beamToNamed(route.path);
-      return;
     }
+  }
 
-    final uri = Uri.tryParse(url);
-
-    if (uri == null) {
-      return;
+  String _normalizeInAppPath(Uri uri) {
+    final path = uri.path;
+    if (path.length > 1 && path.endsWith('/')) {
+      return path.substring(0, path.length - 1);
     }
-
-    // Only open if it's a valid HTTP(S) URL
-    if (uri.scheme != 'http' && uri.scheme != 'https') {
-      return;
-    }
-    final queryParameters = Map<String, String>.from(uri.queryParameters);
-    if (accessToken != null && Env.webAppUrl == uri.host) {
-      queryParameters['access_token'] = accessToken;
-    }
-
-    final httpsUri = Uri(
-      scheme: uri.scheme,
-      host: uri.host,
-      path: uri.path,
-      queryParameters: queryParameters,
-    );
-
-    await openUrlLink(httpsUri);
+    return path;
   }
 }
