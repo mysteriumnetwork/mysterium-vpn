@@ -72,8 +72,13 @@ void main() {
     recurring: false,
   );
 
-  vpn_api.SubscriptionConfigResponse config() =>
-      vpn_api.SubscriptionConfigResponse(gateways: [], plans: [], countries: []);
+  vpn_api.SubscriptionConfigResponse config() => vpn_api.SubscriptionConfigResponse(
+    gateways: [],
+    plans: [],
+    countries: [],
+    stripePublishableKey: '',
+    stripeReturnUrl: '',
+  );
 
   setUp(() async {
     mockVpnApi = MockVpnApi();
@@ -445,6 +450,8 @@ void main() {
             plan(id: 'plan_yearly_pro', supportedGateways: ['stripe'], intervalUnit: 'year'),
           ],
           countries: const [],
+          stripePublishableKey: '',
+          stripeReturnUrl: '',
         );
         when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlans));
         when(mockRemoteConfigStore.planFeatures).thenReturn([

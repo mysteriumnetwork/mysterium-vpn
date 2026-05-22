@@ -80,6 +80,8 @@ void main() {
         gateways: const [],
         plans: const [],
         countries: const [],
+        stripePublishableKey: '',
+        stripeReturnUrl: '',
       );
       when(apiSubscription.subscriptionConfig()).thenAnswer((_) async => response(200, config));
 

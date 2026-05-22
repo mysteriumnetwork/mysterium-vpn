@@ -74,6 +74,8 @@ void main() {
           gateways: [SubscriptionConfigResponseGatewaysInner(name: 'apple', enabled: true)],
           plans: [],
           countries: [],
+          stripePublishableKey: '',
+          stripeReturnUrl: '',
         ),
       ),
     );

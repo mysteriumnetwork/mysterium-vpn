@@ -23,7 +23,13 @@ SubscriptionConfigResponsePlansInner _plan({
 );
 
 SubscriptionConfigResponse _config(List<SubscriptionConfigResponsePlansInner> plans) =>
-    SubscriptionConfigResponse(gateways: const [], plans: plans, countries: const []);
+    SubscriptionConfigResponse(
+      gateways: const [],
+      plans: plans,
+      countries: const [],
+      stripePublishableKey: '',
+      stripeReturnUrl: '',
+    );
 
 SubscriptionPlanFeatures _tier(String name, Set<String> planIds) => SubscriptionPlanFeatures(
   name: name,
