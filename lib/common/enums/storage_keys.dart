@@ -24,7 +24,6 @@ enum StorageKeys {
   lastLoggedInUser,
   ipInfo,
   ipType,
-  panelState,
   deviceId,
   pushNotificationsPermissionPromptShown,
 }

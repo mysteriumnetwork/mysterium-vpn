@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {
@@ -197,10 +196,6 @@ mixin AnalyticsStore {
   Future<void> logAppLaunchEvent() async {
     final params = {'platform': defaultTargetPlatform.name};
     logEvent(AnalyticsEvent.appLaunch, parameters: params);
-  }
-
-  Future<void> logPanelMoved(PanelState state) async {
-    await logEvent(AnalyticsEvent.panelMoved, parameters: {'state': state.name});
   }
 
   Future<void> logRefreshIP([String? currentIP]) async {

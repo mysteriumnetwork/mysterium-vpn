@@ -16,9 +16,14 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class AccountSettings extends HookConsumerWidget {
-  const AccountSettings({super.key});
+  const AccountSettings({super.key, this.asSliver = false});
+
+  /// When `true`, the widget returns slivers (for embedding inside a parent
+  /// [CustomScrollView]) instead of a self-contained scrollable widget.
+  final bool asSliver;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,15 +31,17 @@ class AccountSettings extends HookConsumerWidget {
     final authStatus = useComputedValue(() => authSessionStore.status);
 
     return switch (authStatus) {
-      AuthStatus.authenticated => const _Authenticated(),
-      AuthStatus.unauthenticated => const _Unauthenticated(),
-      _ => const SizedBox.shrink(),
+      AuthStatus.authenticated => _Authenticated(asSliver: asSliver),
+      AuthStatus.unauthenticated => _Unauthenticated(asSliver: asSliver),
+      _ => asSliver ? const SliverToBoxAdapter(child: SizedBox.shrink()) : const SizedBox.shrink(),
     };
   }
 }
 
 class _Unauthenticated extends HookConsumerWidget {
-  const _Unauthenticated();
+  const _Unauthenticated({this.asSliver = false});
+
+  final bool asSliver;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +50,7 @@ class _Unauthenticated extends HookConsumerWidget {
     final spacing = theme.spacing;
     void handleSignIn() => context.beamToNamed(Routes.platformLogin.path);
 
-    return Padding(
+    final body = Padding(
       padding: EdgeInsets.fromLTRB(
         isDesktop ? spacing.xl3 : spacing.md,
         isDesktop ? spacing.xl7 : spacing.xl6,
@@ -91,11 +98,18 @@ class _Unauthenticated extends HookConsumerWidget {
         ),
       ),
     );
+
+    if (asSliver) {
+      return SliverFillRemaining(hasScrollBody: false, child: body);
+    }
+    return body;
   }
 }
 
 class _Authenticated extends HookConsumerWidget {
-  const _Authenticated();
+  const _Authenticated({this.asSliver = false});
+
+  final bool asSliver;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -195,35 +209,37 @@ class _Authenticated extends HookConsumerWidget {
       );
     }
 
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-          sliver: SliverToBoxAdapter(child: cards),
-        ),
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ButtonSecondary(
-                  onPressed: handleLogout,
-                  child: Text(
-                    LocaleKeys.logout.tr(),
-                    style: theme.textStyles.textMd.semibold.copyWith(
-                      color: theme.palette.textErrorPrimary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+    final cardsSliver = SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+      sliver: SliverToBoxAdapter(child: cards),
     );
+    final logoutSliver = SliverFillRemaining(
+      hasScrollBody: false,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ButtonSecondary(
+              onPressed: handleLogout,
+              child: Text(
+                LocaleKeys.logout.tr(),
+                style: theme.textStyles.textMd.semibold.copyWith(
+                  color: theme.palette.textErrorPrimary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (asSliver) {
+      return MultiSliver(children: [cardsSliver, logoutSliver]);
+    }
+
+    return CustomScrollView(slivers: [cardsSliver, logoutSliver]);
   }
 }
 

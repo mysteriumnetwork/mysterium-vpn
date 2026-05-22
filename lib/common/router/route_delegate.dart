@@ -16,7 +16,7 @@ final routerDelegatePOD = Provider<BeamerDelegate>((ref) {
     navigatorObservers: [...analyticsStore.navigationObservers(), SentryNavigatorObserver()],
     guards: [
       BeamGuard(
-        pathPatterns: [Routes.main.path, Routes.settings.path],
+        pathPatterns: [Routes.main.path],
         check: (context, state) => authSessionStore.canBrowseApp,
         beamToNamed: (_, _) => Routes.platformLogin.path,
       ),

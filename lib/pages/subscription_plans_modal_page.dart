@@ -43,7 +43,9 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
     final tabController = useTabController(initialLength: 2);
     final scrollController = useScrollController();
     final selectedProduct = useState<PurchasableProduct?>(null);
-    final handleSubscribe = useHandleSubscribeToProduct();
+    final handleSubscribe = useHandleSubscribeToProduct(
+      onAfterRedirect: () => Navigator.of(context).pop(),
+    );
     final isLoading = useState(false);
 
     useReaction(() => purchaseStore.subscriptionStatus, (status) {
@@ -56,7 +58,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       }
       if (status != null && !status.isLoading) {
         if (status == SubscriptionStatus.purchased) {
-          showSnackbar(LocaleKeys.subscriptionActive.tr());
+          showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
         }
         Navigator.of(context).pop();
         subscriptionStore.refreshAll().ignore();
@@ -97,9 +99,6 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     SizedBox(height: Theme.of(context).spacing.lg),
                     ButtonPrimary(
                       onPressed: subscriptionStore.refreshSubscription,
-                      decoration: ButtonDecoration(
-                        decorationColor: Theme.of(context).palette.bgBrandPrimary,
-                      ),
                       child: Text(LocaleKeys.retryBtn.tr()),
                     ),
                   ],
@@ -142,6 +141,9 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                             builder: (context) {
                               final monthly = store.monthlyProducts;
                               final annual = store.annualProducts;
+                              final currentProduct = ref
+                                  .watch(subscriptionUpgradeStorePOD)
+                                  .currentProduct;
                               return HookBuilder(
                                 builder: (context) {
                                   final products = useListenableSelector(
@@ -157,14 +159,18 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                                   useEffect(() {
                                     void listener() {
                                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                                        selectedProduct.value = productsRef.value.first;
+                                        final firstSelectable = productsRef.value.firstWhereOrNull(
+                                          (p) => p.id != currentProduct?.id,
+                                        );
+                                        selectedProduct.value =
+                                            firstSelectable ?? productsRef.value.firstOrNull;
                                       });
                                     }
 
                                     listener();
                                     tabController.addListener(listener);
                                     return () => tabController.removeListener(listener);
-                                  }, [tabController, selectedProduct, productsRef]);
+                                  }, [tabController, selectedProduct, productsRef, currentProduct]);
 
                                   return RadioGroup<PurchasableProduct>(
                                     groupValue: selectedProduct.value,
@@ -172,6 +178,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                                     child: _SubscriptionPlans(
                                       products: products,
                                       allProducts: [...annual, ...monthly],
+                                      currentProduct: currentProduct,
                                       onCompareFeaturesPressed: () =>
                                           scrollController.scrollToKey(tableKey),
                                     ),
@@ -241,10 +248,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     ButtonPrimary(
                       onPressed: handlePurchasePressed,
                       loading: isLoading.value ? const ButtonLoading() : null,
-                      decoration: ButtonDecoration(
-                        decorationColor: theme.palette.bgBrandPrimary,
-                        padding: EdgeInsets.symmetric(vertical: theme.spacing.lg, horizontal: 18),
-                      ),
+
                       child: Text(
                         (subscriptionStore.isSubscribed ?? false)
                             ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
@@ -280,11 +284,13 @@ class _SubscriptionPlans extends HookWidget {
   const _SubscriptionPlans({
     required this.products,
     required this.allProducts,
+    required this.currentProduct,
     required this.onCompareFeaturesPressed,
   });
 
   final List<PurchasableProduct> products;
   final List<PurchasableProduct> allProducts;
+  final PurchasableProduct? currentProduct;
   final VoidCallback onCompareFeaturesPressed;
 
   @override
@@ -316,10 +322,18 @@ class _SubscriptionPlans extends HookWidget {
             for (final product in products)
               if (isDesktop)
                 Expanded(
-                  child: _Plan(value: product, allProducts: allProducts),
+                  child: _Plan(
+                    value: product,
+                    allProducts: allProducts,
+                    isCurrentPlan: product.id == currentProduct?.id,
+                  ),
                 )
               else
-                _Plan(value: product, allProducts: allProducts),
+                _Plan(
+                  value: product,
+                  allProducts: allProducts,
+                  isCurrentPlan: product.id == currentProduct?.id,
+                ),
           ],
         ),
       ),
@@ -328,10 +342,11 @@ class _SubscriptionPlans extends HookWidget {
 }
 
 class _Plan extends HookWidget {
-  const _Plan({required this.value, required this.allProducts});
+  const _Plan({required this.value, required this.allProducts, required this.isCurrentPlan});
 
   final PurchasableProduct value;
   final List<PurchasableProduct> allProducts;
+  final bool isCurrentPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -352,6 +367,7 @@ class _Plan extends HookWidget {
       features: features,
       viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
       viewLessLabel: LocaleKeys.viewLessBtn.tr(),
+      currentPlanLabel: isCurrentPlan ? LocaleKeys.subscriptionAllPlansCurrentPlan.tr() : null,
     );
   }
 

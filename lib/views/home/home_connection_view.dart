@@ -24,7 +24,6 @@ class HomeConnectionView extends HookConsumerWidget {
               Positioned(
                 left: 0,
                 right: 0,
-
                 top: switch (screenType) {
                   ScreenType.tablet || ScreenType.desktop => 40,
                   _ => 8,

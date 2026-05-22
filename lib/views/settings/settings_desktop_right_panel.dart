@@ -1,35 +1,40 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/setting_category.dart';
-import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
+
+/// Mirrors the constant in `settings_desktop_left_panel.dart` — the desktop
+/// view always has a category selected, while mobile starts on the main list
+/// (sub-page = null). Falling back here keeps the right panel populated on
+/// first load.
+const _defaultDesktopCategory = SettingCategory.account;
 
 class SettingsDesktopRightPanel extends HookConsumerWidget {
   const SettingsDesktopRightPanel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settingCategory = ref.watch(selectedCategoryProvider);
+    final tabsStore = ref.watch(homeTabsStorePOD);
+    final settingCategory = useComputedValue(
+      () => tabsStore.settingsSubPage ?? _defaultDesktopCategory,
+    );
     final theme = Theme.of(context);
 
     return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _ContentPanelHeader(category: settingCategory),
-            const PromoBanner(),
-            const AppVersionUpdateSetting(),
-            settingCategory.content,
-          ],
-        )
-        .scrollable()
-        .backgroundColor(theme.palette.bgPrimary)
-        .height(getMediaHeight(context))
-        .width(getMediaWidth(context) - 346);
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _ContentPanelHeader(category: settingCategory),
+        const PromoBanner(),
+        const AppVersionUpdateSetting(),
+        settingCategory.content,
+      ],
+    ).scrollable().backgroundColor(theme.palette.bgPrimary);
   }
 }
 

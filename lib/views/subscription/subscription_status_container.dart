@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -47,10 +47,15 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
       return null;
     }, []);
 
-    useEffect(() {
-      _checkForExistingSubscription(subscriptionStore, context, ref);
-      return null;
-    }, [ref, subscriptionStore, context]);
+    // Fire on mount (fireImmediately) AND on every false→true auth flip,
+    // so a logout/login cycle while the container stays mounted (IndexedStack)
+    // still re-runs the check. Guarded by hasShownExistingSubscriptionDialog.
+    final authSessionStore = ref.watch(authSessionStorePOD);
+    useReaction<bool>(() => authSessionStore.isAuthenticated, (isAuthed) {
+      if (isAuthed) {
+        _checkForExistingSubscription(subscriptionStore, context, ref);
+      }
+    }, fireImmediately: true);
 
     return Observer(
       builder: (context) {
@@ -63,8 +68,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
         final isLoading =
             storeState == StoreState.loading ||
             subscriptionStore.subscriptionFuture.status == FutureStatus.pending ||
-            plansStore.future.status == FutureStatus.pending ||
-            purchaseStore.subscriptionStatus == SubscriptionStatus.pending;
+            plansStore.future.status == FutureStatus.pending;
 
         if (isLoading) {
           return LoadingIndicator.message(
@@ -122,8 +126,11 @@ void _subscriptionStatusReaction(
 ) {
   if (context.mounted) {
     if (status == SubscriptionStatus.purchased) {
+      // Container only surfaces the success snackbar — callers (modals,
+      // tab) decide whether to close, navigate, or stay put via their own
+      // post-purchase hooks. Beaming to /main from here would tear down the
+      // route tree even when the caller is already at /main (Products tab).
       showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
-      context.beamToReplacementNamed(Routes.main.path);
     } else if (store.subscriptionConfigFuture.error is ApiException &&
         (store.subscriptionConfigFuture.error as ApiException).code == 409) {
       showSnackbar((store.subscriptionConfigFuture.error as ApiException).message);
@@ -182,12 +189,24 @@ Future<void> _checkForExistingSubscription(
   BuildContext context,
   WidgetRef ref,
 ) async {
-  final email = await store.refreshOtherSubscriber();
+  // Once per session — a new login re-arms via the auth reaction.
+  if (store.hasShownExistingSubscriptionDialog) {
+    return;
+  }
+  final email = await store.checkForExistingSubscriber();
   if (email == null) {
     return;
   }
 
-  void showExistingSubscriptionDialog() {
+  Future.microtask(() {
+    if (!context.mounted) {
+      return;
+    }
+    // Re-check: two containers can observe the same resolved Future and race.
+    if (store.hasShownExistingSubscriptionDialog) {
+      return;
+    }
+    store.markExistingSubscriptionDialogShown();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -214,7 +233,5 @@ Future<void> _checkForExistingSubscription(
         ),
       ),
     );
-  }
-
-  Future.microtask(showExistingSubscriptionDialog);
+  });
 }
