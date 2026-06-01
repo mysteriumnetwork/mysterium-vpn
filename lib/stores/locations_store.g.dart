@@ -20,24 +20,27 @@ mixin _$LocationsStore on _LocationsStore, Store {
   Computed<Set<String>>? _$countryCodesComputed;
 
   @override
-  Set<String> get countryCodes => (_$countryCodesComputed ??= Computed<Set<String>>(
-    () => super.countryCodes,
-    name: '_LocationsStore.countryCodes',
-  )).value;
+  Set<String> get countryCodes =>
+      (_$countryCodesComputed ??= Computed<Set<String>>(
+        () => super.countryCodes,
+        name: '_LocationsStore.countryCodes',
+      )).value;
   Computed<List<VPNLocation>>? _$locationsComputed;
 
   @override
-  List<VPNLocation> get locations => (_$locationsComputed ??= Computed<List<VPNLocation>>(
-    () => super.locations,
-    name: '_LocationsStore.locations',
-  )).value;
+  List<VPNLocation> get locations =>
+      (_$locationsComputed ??= Computed<List<VPNLocation>>(
+        () => super.locations,
+        name: '_LocationsStore.locations',
+      )).value;
   Computed<List<VPNLocation>>? _$topLocationsComputed;
 
   @override
-  List<VPNLocation> get topLocations => (_$topLocationsComputed ??= Computed<List<VPNLocation>>(
-    () => super.topLocations,
-    name: '_LocationsStore.topLocations',
-  )).value;
+  List<VPNLocation> get topLocations =>
+      (_$topLocationsComputed ??= Computed<List<VPNLocation>>(
+        () => super.topLocations,
+        name: '_LocationsStore.topLocations',
+      )).value;
   Computed<bool?>? _$isEmptyComputed;
 
   @override
@@ -55,10 +58,11 @@ mixin _$LocationsStore on _LocationsStore, Store {
   Computed<List<IPType>>? _$locationTypesComputed;
 
   @override
-  List<IPType> get locationTypes => (_$locationTypesComputed ??= Computed<List<IPType>>(
-    () => super.locationTypes,
-    name: '_LocationsStore.locationTypes',
-  )).value;
+  List<IPType> get locationTypes =>
+      (_$locationTypesComputed ??= Computed<List<IPType>>(
+        () => super.locationTypes,
+        name: '_LocationsStore.locationTypes',
+      )).value;
 
   late final _$_dcLocationsFutureAtom = Atom(
     name: '_LocationsStore._dcLocationsFuture',
@@ -98,7 +102,8 @@ mixin _$LocationsStore on _LocationsStore, Store {
   }
 
   @override
-  ObservableFuture<VPNLocations> get _residentialLocationsFuture => residentialLocationsFuture;
+  ObservableFuture<VPNLocations> get _residentialLocationsFuture =>
+      residentialLocationsFuture;
 
   bool __residentialLocationsFutureIsInitialized = false;
 
@@ -106,7 +111,9 @@ mixin _$LocationsStore on _LocationsStore, Store {
   set _residentialLocationsFuture(ObservableFuture<VPNLocations> value) {
     _$_residentialLocationsFutureAtom.reportWrite(
       value,
-      __residentialLocationsFutureIsInitialized ? super._residentialLocationsFuture : null,
+      __residentialLocationsFutureIsInitialized
+          ? super._residentialLocationsFuture
+          : null,
       () {
         super._residentialLocationsFuture = value;
         __residentialLocationsFutureIsInitialized = true;
@@ -114,28 +121,42 @@ mixin _$LocationsStore on _LocationsStore, Store {
     );
   }
 
-  late final _$_fetchAsyncAction = AsyncAction('_LocationsStore._fetch', context: context);
+  late final _$_fetchAsyncAction = AsyncAction(
+    '_LocationsStore._fetch',
+    context: context,
+  );
 
   @override
   Future<VPNLocations> _fetch(IPType ipType) {
     return _$_fetchAsyncAction.run(() => super._fetch(ipType));
   }
 
-  late final _$refreshAsyncAction = AsyncAction('_LocationsStore.refresh', context: context);
+  late final _$refreshAsyncAction = AsyncAction(
+    '_LocationsStore.refresh',
+    context: context,
+  );
 
   @override
   Future<void> refresh([IPType? ipType]) {
     return _$refreshAsyncAction.run(() => super.refresh(ipType));
   }
 
-  late final _$refreshAllAsyncAction = AsyncAction('_LocationsStore.refreshAll', context: context);
+  late final _$refreshAllAsyncAction = AsyncAction(
+    '_LocationsStore.refreshAll',
+    context: context,
+  );
 
   @override
   Future<void> refreshAll({bool invalidate = false}) {
-    return _$refreshAllAsyncAction.run(() => super.refreshAll(invalidate: invalidate));
+    return _$refreshAllAsyncAction.run(
+      () => super.refreshAll(invalidate: invalidate),
+    );
   }
 
-  late final _$clearAsyncAction = AsyncAction('_LocationsStore.clear', context: context);
+  late final _$clearAsyncAction = AsyncAction(
+    '_LocationsStore.clear',
+    context: context,
+  );
 
   @override
   Future<void> clear() {

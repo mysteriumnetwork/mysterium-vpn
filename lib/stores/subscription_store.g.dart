@@ -19,10 +19,11 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   Computed<bool>? _$isSubscriptionLoadingComputed;
 
   @override
-  bool get isSubscriptionLoading => (_$isSubscriptionLoadingComputed ??= Computed<bool>(
-    () => super.isSubscriptionLoading,
-    name: '_SubscriptionStore.isSubscriptionLoading',
-  )).value;
+  bool get isSubscriptionLoading =>
+      (_$isSubscriptionLoadingComputed ??= Computed<bool>(
+        () => super.isSubscriptionLoading,
+        name: '_SubscriptionStore.isSubscriptionLoading',
+      )).value;
   Computed<StoreState>? _$storeStateComputed;
 
   @override
@@ -30,21 +31,25 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.storeState,
     name: '_SubscriptionStore.storeState',
   )).value;
-  Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>? _$planMetadataComputed;
+  Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>?
+  _$planMetadataComputed;
 
   @override
   api.SubscriptionConfigResponsePlansInnerMetadata? get planMetadata =>
-      (_$planMetadataComputed ??= Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>(
-        () => super.planMetadata,
-        name: '_SubscriptionStore.planMetadata',
-      )).value;
+      (_$planMetadataComputed ??=
+              Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>(
+                () => super.planMetadata,
+                name: '_SubscriptionStore.planMetadata',
+              ))
+          .value;
   Computed<bool>? _$residentialIPsAllowedComputed;
 
   @override
-  bool get residentialIPsAllowed => (_$residentialIPsAllowedComputed ??= Computed<bool>(
-    () => super.residentialIPsAllowed,
-    name: '_SubscriptionStore.residentialIPsAllowed',
-  )).value;
+  bool get residentialIPsAllowed =>
+      (_$residentialIPsAllowedComputed ??= Computed<bool>(
+        () => super.residentialIPsAllowed,
+        name: '_SubscriptionStore.residentialIPsAllowed',
+      )).value;
   Computed<bool>? _$useWebFlowComputed;
 
   @override
@@ -62,10 +67,11 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   Computed<bool>? _$malwareBlockingAllowedComputed;
 
   @override
-  bool get malwareBlockingAllowed => (_$malwareBlockingAllowedComputed ??= Computed<bool>(
-    () => super.malwareBlockingAllowed,
-    name: '_SubscriptionStore.malwareBlockingAllowed',
-  )).value;
+  bool get malwareBlockingAllowed =>
+      (_$malwareBlockingAllowedComputed ??= Computed<bool>(
+        () => super.malwareBlockingAllowed,
+        name: '_SubscriptionStore.malwareBlockingAllowed',
+      )).value;
   Computed<bool>? _$canRedeemCodeComputed;
 
   @override
@@ -112,7 +118,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   }
 
   @override
-  ObservableFuture<String?> get _otherSubscriberEmailFuture => otherSubscriberEmailFuture;
+  ObservableFuture<String?> get _otherSubscriberEmailFuture =>
+      otherSubscriberEmailFuture;
 
   bool __otherSubscriberEmailFutureIsInitialized = false;
 
@@ -120,7 +127,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   set _otherSubscriberEmailFuture(ObservableFuture<String?> value) {
     _$_otherSubscriberEmailFutureAtom.reportWrite(
       value,
-      __otherSubscriberEmailFutureIsInitialized ? super._otherSubscriberEmailFuture : null,
+      __otherSubscriberEmailFutureIsInitialized
+          ? super._otherSubscriberEmailFuture
+          : null,
       () {
         super._otherSubscriberEmailFuture = value;
         __otherSubscriberEmailFutureIsInitialized = true;
@@ -135,7 +144,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<Subscription> _fetchSubscription() {
-    return _$_fetchSubscriptionAsyncAction.run(() => super._fetchSubscription());
+    return _$_fetchSubscriptionAsyncAction.run(
+      () => super._fetchSubscription(),
+    );
   }
 
   late final _$refreshSubscriptionAsyncAction = AsyncAction(
@@ -145,7 +156,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<Subscription> refreshSubscription({bool force = false}) {
-    return _$refreshSubscriptionAsyncAction.run(() => super.refreshSubscription(force: force));
+    return _$refreshSubscriptionAsyncAction.run(
+      () => super.refreshSubscription(force: force),
+    );
   }
 
   late final _$refreshSubscriptionConfigAsyncAction = AsyncAction(
@@ -155,7 +168,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<api.SubscriptionConfigResponse?> refreshSubscriptionConfig() {
-    return _$refreshSubscriptionConfigAsyncAction.run(() => super.refreshSubscriptionConfig());
+    return _$refreshSubscriptionConfigAsyncAction.run(
+      () => super.refreshSubscriptionConfig(),
+    );
   }
 
   late final _$refreshOtherSubscriberAsyncAction = AsyncAction(
@@ -165,7 +180,9 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
 
   @override
   Future<String?> refreshOtherSubscriber() {
-    return _$refreshOtherSubscriberAsyncAction.run(() => super.refreshOtherSubscriber());
+    return _$refreshOtherSubscriberAsyncAction.run(
+      () => super.refreshOtherSubscriber(),
+    );
   }
 
   late final _$refreshAllAsyncAction = AsyncAction(

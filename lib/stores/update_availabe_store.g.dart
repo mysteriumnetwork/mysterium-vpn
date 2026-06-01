@@ -12,10 +12,11 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
   Computed<bool>? _$appUpdateAvailableComputed;
 
   @override
-  bool get appUpdateAvailable => (_$appUpdateAvailableComputed ??= Computed<bool>(
-    () => super.appUpdateAvailable,
-    name: '_UpdateAvailableStore.appUpdateAvailable',
-  )).value;
+  bool get appUpdateAvailable =>
+      (_$appUpdateAvailableComputed ??= Computed<bool>(
+        () => super.appUpdateAvailable,
+        name: '_UpdateAvailableStore.appUpdateAvailable',
+      )).value;
 
   late final _$updateAvailabilityFutureAtom = Atom(
     name: '_UpdateAvailableStore.updateAvailabilityFuture',
@@ -34,7 +35,9 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
   set updateAvailabilityFuture(ObservableFuture<UpdateAvailability?> value) {
     _$updateAvailabilityFutureAtom.reportWrite(
       value,
-      _updateAvailabilityFutureIsInitialized ? super.updateAvailabilityFuture : null,
+      _updateAvailabilityFutureIsInitialized
+          ? super.updateAvailabilityFuture
+          : null,
       () {
         super.updateAvailabilityFuture = value;
         _updateAvailabilityFutureIsInitialized = true;
@@ -49,7 +52,9 @@ mixin _$UpdateAvailableStore on _UpdateAvailableStore, Store {
 
   @override
   Future<UpdateAvailability?> _getNewVersionStatus() {
-    return _$_getNewVersionStatusAsyncAction.run(() => super._getNewVersionStatus());
+    return _$_getNewVersionStatusAsyncAction.run(
+      () => super._getNewVersionStatus(),
+    );
   }
 
   @override

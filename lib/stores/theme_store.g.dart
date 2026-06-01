@@ -17,7 +17,10 @@ mixin _$ThemeStore on _ThemeStore, Store {
     name: '_ThemeStore.isDarkMode',
   )).value;
 
-  late final _$themeModeAtom = Atom(name: '_ThemeStore.themeMode', context: context);
+  late final _$themeModeAtom = Atom(
+    name: '_ThemeStore.themeMode',
+    context: context,
+  );
 
   @override
   ThemeMode get themeMode {
@@ -32,7 +35,10 @@ mixin _$ThemeStore on _ThemeStore, Store {
     });
   }
 
-  late final _$systemThemeAtom = Atom(name: '_ThemeStore.systemTheme', context: context);
+  late final _$systemThemeAtom = Atom(
+    name: '_ThemeStore.systemTheme',
+    context: context,
+  );
 
   @override
   bool get systemTheme {
@@ -47,7 +53,10 @@ mixin _$ThemeStore on _ThemeStore, Store {
     });
   }
 
-  late final _$setThemeTypeAsyncAction = AsyncAction('_ThemeStore.setThemeType', context: context);
+  late final _$setThemeTypeAsyncAction = AsyncAction(
+    '_ThemeStore.setThemeType',
+    context: context,
+  );
 
   @override
   Future<void> setThemeType(ThemeMode mode) {

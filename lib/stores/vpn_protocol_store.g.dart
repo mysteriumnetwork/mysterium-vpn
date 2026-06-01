@@ -19,10 +19,11 @@ mixin _$VpnProtocolStore on _VpnProtocolStore, Store {
   Computed<bool>? _$isProtocolPickerAvailableComputed;
 
   @override
-  bool get isProtocolPickerAvailable => (_$isProtocolPickerAvailableComputed ??= Computed<bool>(
-    () => super.isProtocolPickerAvailable,
-    name: '_VpnProtocolStore.isProtocolPickerAvailable',
-  )).value;
+  bool get isProtocolPickerAvailable =>
+      (_$isProtocolPickerAvailableComputed ??= Computed<bool>(
+        () => super.isProtocolPickerAvailable,
+        name: '_VpnProtocolStore.isProtocolPickerAvailable',
+      )).value;
 
   late final _$protocolFutureAtom = Atom(
     name: '_VpnProtocolStore.protocolFuture',

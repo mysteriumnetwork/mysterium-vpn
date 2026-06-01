@@ -12,31 +12,35 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
   Computed<VPNLocation?>? _$displayLocationComputed;
 
   @override
-  VPNLocation? get displayLocation => (_$displayLocationComputed ??= Computed<VPNLocation?>(
-    () => super.displayLocation,
-    name: '_ConnectionDisplayStore.displayLocation',
-  )).value;
+  VPNLocation? get displayLocation =>
+      (_$displayLocationComputed ??= Computed<VPNLocation?>(
+        () => super.displayLocation,
+        name: '_ConnectionDisplayStore.displayLocation',
+      )).value;
   Computed<VPNLocation?>? _$parentLocationComputed;
 
   @override
-  VPNLocation? get parentLocation => (_$parentLocationComputed ??= Computed<VPNLocation?>(
-    () => super.parentLocation,
-    name: '_ConnectionDisplayStore.parentLocation',
-  )).value;
+  VPNLocation? get parentLocation =>
+      (_$parentLocationComputed ??= Computed<VPNLocation?>(
+        () => super.parentLocation,
+        name: '_ConnectionDisplayStore.parentLocation',
+      )).value;
   Computed<VPNLocation?>? _$targetLocationComputed;
 
   @override
-  VPNLocation? get targetLocation => (_$targetLocationComputed ??= Computed<VPNLocation?>(
-    () => super.targetLocation,
-    name: '_ConnectionDisplayStore.targetLocation',
-  )).value;
+  VPNLocation? get targetLocation =>
+      (_$targetLocationComputed ??= Computed<VPNLocation?>(
+        () => super.targetLocation,
+        name: '_ConnectionDisplayStore.targetLocation',
+      )).value;
   Computed<bool>? _$isLocationAvailableComputed;
 
   @override
-  bool get isLocationAvailable => (_$isLocationAvailableComputed ??= Computed<bool>(
-    () => super.isLocationAvailable,
-    name: '_ConnectionDisplayStore.isLocationAvailable',
-  )).value;
+  bool get isLocationAvailable =>
+      (_$isLocationAvailableComputed ??= Computed<bool>(
+        () => super.isLocationAvailable,
+        name: '_ConnectionDisplayStore.isLocationAvailable',
+      )).value;
   Computed<String?>? _$connectionIPComputed;
 
   @override
@@ -61,10 +65,11 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
   Computed<UserIntent?>? _$connectionIntentComputed;
 
   @override
-  UserIntent? get connectionIntent => (_$connectionIntentComputed ??= Computed<UserIntent?>(
-    () => super.connectionIntent,
-    name: '_ConnectionDisplayStore.connectionIntent',
-  )).value;
+  UserIntent? get connectionIntent =>
+      (_$connectionIntentComputed ??= Computed<UserIntent?>(
+        () => super.connectionIntent,
+        name: '_ConnectionDisplayStore.connectionIntent',
+      )).value;
   Computed<RateConnectionRequestModeEnum?>? _$connectionRatedComputed;
 
   @override
@@ -76,10 +81,11 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
   Computed<bool>? _$hasDifferentSelectionComputed;
 
   @override
-  bool get hasDifferentSelection => (_$hasDifferentSelectionComputed ??= Computed<bool>(
-    () => super.hasDifferentSelection,
-    name: '_ConnectionDisplayStore.hasDifferentSelection',
-  )).value;
+  bool get hasDifferentSelection =>
+      (_$hasDifferentSelectionComputed ??= Computed<bool>(
+        () => super.hasDifferentSelection,
+        name: '_ConnectionDisplayStore.hasDifferentSelection',
+      )).value;
 
   @override
   String toString() {
