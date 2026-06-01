@@ -9,10 +9,7 @@ part of 'home_tabs_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeTabsStore on _HomeTabsStore, Store {
-  late final _$selectedAtom = Atom(
-    name: '_HomeTabsStore.selected',
-    context: context,
-  );
+  late final _$selectedAtom = Atom(name: '_HomeTabsStore.selected', context: context);
 
   @override
   HomeTab get selected {
@@ -40,19 +37,12 @@ mixin _$HomeTabsStore on _HomeTabsStore, Store {
 
   @override
   set pendingLocationsSearchFocus(bool value) {
-    _$pendingLocationsSearchFocusAtom.reportWrite(
-      value,
-      super.pendingLocationsSearchFocus,
-      () {
-        super.pendingLocationsSearchFocus = value;
-      },
-    );
+    _$pendingLocationsSearchFocusAtom.reportWrite(value, super.pendingLocationsSearchFocus, () {
+      super.pendingLocationsSearchFocus = value;
+    });
   }
 
-  late final _$settingsSubPageAtom = Atom(
-    name: '_HomeTabsStore.settingsSubPage',
-    context: context,
-  );
+  late final _$settingsSubPageAtom = Atom(name: '_HomeTabsStore.settingsSubPage', context: context);
 
   @override
   SettingCategory? get settingsSubPage {

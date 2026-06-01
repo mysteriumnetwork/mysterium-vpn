@@ -18,15 +18,14 @@ _ConfigCatUserCustom _$ConfigCatUserCustomFromJson(Map<String, dynamic> json) =>
       recurring: json['recurring'] as String?,
     );
 
-Map<String, dynamic> _$ConfigCatUserCustomToJson(
-  _ConfigCatUserCustom instance,
-) => <String, dynamic>{
-  'platform': instance.platform,
-  'version': instance.version,
-  'city': instance.city,
-  'subscriptionSource': instance.subscriptionSource,
-  'subscriptionPlan': instance.subscriptionPlan,
-  'expirationDate': instance.expirationDate,
-  'subscriptionDuration': instance.subscriptionDuration,
-  'recurring': instance.recurring,
-};
+Map<String, dynamic> _$ConfigCatUserCustomToJson(_ConfigCatUserCustom instance) =>
+    <String, dynamic>{
+      'platform': instance.platform,
+      'version': instance.version,
+      'city': instance.city,
+      'subscriptionSource': instance.subscriptionSource,
+      'subscriptionPlan': instance.subscriptionPlan,
+      'expirationDate': instance.expirationDate,
+      'subscriptionDuration': instance.subscriptionDuration,
+      'recurring': instance.recurring,
+    };

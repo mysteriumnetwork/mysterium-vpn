@@ -8,8 +8,7 @@ part of 'subscription_limited_time_offer_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$SubscriptionLimitedTimeOfferStore
-    on _SubscriptionLimitedTimeOfferStore, Store {
+mixin _$SubscriptionLimitedTimeOfferStore on _SubscriptionLimitedTimeOfferStore, Store {
   Computed<int>? _$discountPercentComputed;
 
   @override
@@ -23,37 +22,27 @@ mixin _$SubscriptionLimitedTimeOfferStore
     context: context,
   );
 
-  ObservableFuture<
-    ({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?
-  >
+  ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
   get future {
     _$_futureAtom.reportRead();
     return super._future;
   }
 
   @override
-  ObservableFuture<
-    ({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?
-  >
+  ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
   get _future => future;
 
   bool __futureIsInitialized = false;
 
   @override
   set _future(
-    ObservableFuture<
-      ({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?
-    >
+    ObservableFuture<({DateTime expiryDate, ProductOffer offer, PurchasableProduct product})?>
     value,
   ) {
-    _$_futureAtom.reportWrite(
-      value,
-      __futureIsInitialized ? super._future : null,
-      () {
-        super._future = value;
-        __futureIsInitialized = true;
-      },
-    );
+    _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
+      super._future = value;
+      __futureIsInitialized = true;
+    });
   }
 
   late final _$mockOfferAsyncAction = AsyncAction(

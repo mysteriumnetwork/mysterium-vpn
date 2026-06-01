@@ -25,13 +25,8 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
   );
 
   @override
-  Future<void> logEvent(
-    AnalyticsEvent event, {
-    Map<String, dynamic>? parameters,
-  }) {
-    return _$logEventAsyncAction.run(
-      () => super.logEvent(event, parameters: parameters),
-    );
+  Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) {
+    return _$logEventAsyncAction.run(() => super.logEvent(event, parameters: parameters));
   }
 
   late final _$setUserIdAsyncAction = AsyncAction(
@@ -51,9 +46,7 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
 
   @override
   Future<void> setUserProperty(AnalyticsUserProperty property) {
-    return _$setUserPropertyAsyncAction.run(
-      () => super.setUserProperty(property),
-    );
+    return _$setUserPropertyAsyncAction.run(() => super.setUserProperty(property));
   }
 
   late final _$setLoginAsyncAction = AsyncAction(
@@ -73,9 +66,7 @@ mixin _$AnalyticsStoreFirebase on _AnalyticsStoreFirebase, Store {
 
   @override
   Future<void> logScreenViewed(String screenName) {
-    return _$logScreenViewedAsyncAction.run(
-      () => super.logScreenViewed(screenName),
-    );
+    return _$logScreenViewedAsyncAction.run(() => super.logScreenViewed(screenName));
   }
 
   late final _$setConsentsAsyncAction = AsyncAction(

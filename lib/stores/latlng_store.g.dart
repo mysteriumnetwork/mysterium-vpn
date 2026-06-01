@@ -20,8 +20,7 @@ mixin _$LatLngStore on _LatLngStore, Store {
   }
 
   @override
-  ObservableFuture<Map<String, LatLng>> get _countryCoordinatesFuture =>
-      countryCoordinatesFuture;
+  ObservableFuture<Map<String, LatLng>> get _countryCoordinatesFuture => countryCoordinatesFuture;
 
   bool __countryCoordinatesFutureIsInitialized = false;
 
@@ -29,9 +28,7 @@ mixin _$LatLngStore on _LatLngStore, Store {
   set _countryCoordinatesFuture(ObservableFuture<Map<String, LatLng>> value) {
     _$_countryCoordinatesFutureAtom.reportWrite(
       value,
-      __countryCoordinatesFutureIsInitialized
-          ? super._countryCoordinatesFuture
-          : null,
+      __countryCoordinatesFutureIsInitialized ? super._countryCoordinatesFuture : null,
       () {
         super._countryCoordinatesFuture = value;
         __countryCoordinatesFutureIsInitialized = true;

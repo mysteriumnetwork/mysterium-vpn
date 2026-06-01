@@ -30,13 +30,9 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   set setMarketingConsentFuture(ObservableFuture<void>? value) {
-    _$setMarketingConsentFutureAtom.reportWrite(
-      value,
-      super.setMarketingConsentFuture,
-      () {
-        super.setMarketingConsentFuture = value;
-      },
-    );
+    _$setMarketingConsentFutureAtom.reportWrite(value, super.setMarketingConsentFuture, () {
+      super.setMarketingConsentFuture = value;
+    });
   }
 
   late final _$updateMarketingConsentFutureAtom = Atom(
@@ -52,13 +48,9 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   set updateMarketingConsentFuture(ObservableFuture<void> value) {
-    _$updateMarketingConsentFutureAtom.reportWrite(
-      value,
-      super.updateMarketingConsentFuture,
-      () {
-        super.updateMarketingConsentFuture = value;
-      },
-    );
+    _$updateMarketingConsentFutureAtom.reportWrite(value, super.updateMarketingConsentFuture, () {
+      super.updateMarketingConsentFuture = value;
+    });
   }
 
   late final _$getMarketingConsentFutureAtom = Atom(
@@ -74,13 +66,9 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   set getMarketingConsentFuture(ObservableFuture<bool>? value) {
-    _$getMarketingConsentFutureAtom.reportWrite(
-      value,
-      super.getMarketingConsentFuture,
-      () {
-        super.getMarketingConsentFuture = value;
-      },
-    );
+    _$getMarketingConsentFutureAtom.reportWrite(value, super.getMarketingConsentFuture, () {
+      super.getMarketingConsentFuture = value;
+    });
   }
 
   late final _$nextPromptToShowAtom = Atom(
@@ -119,9 +107,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   @override
   @visibleForTesting
   Future<void> evaluatePromptToShow() {
-    return _$evaluatePromptToShowAsyncAction.run(
-      () => super.evaluatePromptToShow(),
-    );
+    return _$evaluatePromptToShowAsyncAction.run(() => super.evaluatePromptToShow());
   }
 
   late final _$shouldShowNoneSubsOnboardingAsyncAction = AsyncAction(
@@ -156,9 +142,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   Future<int> getNoneSubsOnboardingStep() {
-    return _$getNoneSubsOnboardingStepAsyncAction.run(
-      () => super.getNoneSubsOnboardingStep(),
-    );
+    return _$getNoneSubsOnboardingStepAsyncAction.run(() => super.getNoneSubsOnboardingStep());
   }
 
   late final _$setNoneSubsOnboardingStepAsyncAction = AsyncAction(
@@ -168,9 +152,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   Future<void> setNoneSubsOnboardingStep(int step) {
-    return _$setNoneSubsOnboardingStepAsyncAction.run(
-      () => super.setNoneSubsOnboardingStep(step),
-    );
+    return _$setNoneSubsOnboardingStepAsyncAction.run(() => super.setNoneSubsOnboardingStep(step));
   }
 
   late final _$shouldShowMarketingConsentAsyncAction = AsyncAction(
@@ -181,9 +163,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   @override
   @visibleForTesting
   Future<bool> shouldShowMarketingConsent() {
-    return _$shouldShowMarketingConsentAsyncAction.run(
-      () => super.shouldShowMarketingConsent(),
-    );
+    return _$shouldShowMarketingConsentAsyncAction.run(() => super.shouldShowMarketingConsent());
   }
 
   late final _$setMarketingConsentShownAsyncAction = AsyncAction(
@@ -194,9 +174,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   @override
   @visibleForTesting
   Future<void> setMarketingConsentShown() {
-    return _$setMarketingConsentShownAsyncAction.run(
-      () => super.setMarketingConsentShown(),
-    );
+    return _$setMarketingConsentShownAsyncAction.run(() => super.setMarketingConsentShown());
   }
 
   late final _$createMarketingContactAsyncAction = AsyncAction(
@@ -206,9 +184,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   Future<void> createMarketingContact() {
-    return _$createMarketingContactAsyncAction.run(
-      () => super.createMarketingContact(),
-    );
+    return _$createMarketingContactAsyncAction.run(() => super.createMarketingContact());
   }
 
   late final _$updateMarketingContactAsyncAction = AsyncAction(
@@ -217,13 +193,9 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   );
 
   @override
-  Future<void> updateMarketingContact({
-    required bool consent,
-    bool fromPopup = false,
-  }) {
+  Future<void> updateMarketingContact({required bool consent, bool fromPopup = false}) {
     return _$updateMarketingContactAsyncAction.run(
-      () =>
-          super.updateMarketingContact(consent: consent, fromPopup: fromPopup),
+      () => super.updateMarketingContact(consent: consent, fromPopup: fromPopup),
     );
   }
 
@@ -234,9 +206,7 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
 
   @override
   Future<bool> getMarketingConsent() {
-    return _$getMarketingConsentAsyncAction.run(
-      () => super.getMarketingConsent(),
-    );
+    return _$getMarketingConsentAsyncAction.run(() => super.getMarketingConsent());
   }
 
   late final _$setPushNotificationsShownAsyncAction = AsyncAction(

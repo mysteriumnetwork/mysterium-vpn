@@ -12,11 +12,10 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
   Computed<DateTime?>? _$latestHandshakeComputed;
 
   @override
-  DateTime? get latestHandshake =>
-      (_$latestHandshakeComputed ??= Computed<DateTime?>(
-        () => super.latestHandshake,
-        name: '_NetworkStatisticsStore.latestHandshake',
-      )).value;
+  DateTime? get latestHandshake => (_$latestHandshakeComputed ??= Computed<DateTime?>(
+    () => super.latestHandshake,
+    name: '_NetworkStatisticsStore.latestHandshake',
+  )).value;
   Computed<int>? _$totalDownloadComputed;
 
   @override
@@ -34,11 +33,10 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
   Computed<double>? _$totalDownloadInMBComputed;
 
   @override
-  double get totalDownloadInMB =>
-      (_$totalDownloadInMBComputed ??= Computed<double>(
-        () => super.totalDownloadInMB,
-        name: '_NetworkStatisticsStore.totalDownloadInMB',
-      )).value;
+  double get totalDownloadInMB => (_$totalDownloadInMBComputed ??= Computed<double>(
+    () => super.totalDownloadInMB,
+    name: '_NetworkStatisticsStore.totalDownloadInMB',
+  )).value;
   Computed<double>? _$totalUploadInMBComputed;
 
   @override
@@ -110,9 +108,7 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
 
   @override
   Future<void> _getTunnelStatistics() {
-    return _$_getTunnelStatisticsAsyncAction.run(
-      () => super._getTunnelStatistics(),
-    );
+    return _$_getTunnelStatisticsAsyncAction.run(() => super._getTunnelStatistics());
   }
 
   @override

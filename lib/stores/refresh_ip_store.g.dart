@@ -12,11 +12,10 @@ mixin _$RefreshIPStore on _RefreshIPStore, Store {
   Computed<bool>? _$refreshIPConnectionComputed;
 
   @override
-  bool get refreshIPConnection =>
-      (_$refreshIPConnectionComputed ??= Computed<bool>(
-        () => super.refreshIPConnection,
-        name: '_RefreshIPStore.refreshIPConnection',
-      )).value;
+  bool get refreshIPConnection => (_$refreshIPConnectionComputed ??= Computed<bool>(
+    () => super.refreshIPConnection,
+    name: '_RefreshIPStore.refreshIPConnection',
+  )).value;
 
   late final _$refreshIPFutureAtom = Atom(
     name: '_RefreshIPStore.refreshIPFuture',

@@ -12,43 +12,38 @@ mixin _$DNSStore on _DNSStore, Store {
   Computed<bool>? _$malwareContentBlockerComputed;
 
   @override
-  bool get malwareContentBlocker =>
-      (_$malwareContentBlockerComputed ??= Computed<bool>(
-        () => super.malwareContentBlocker,
-        name: '_DNSStore.malwareContentBlocker',
-      )).value;
+  bool get malwareContentBlocker => (_$malwareContentBlockerComputed ??= Computed<bool>(
+    () => super.malwareContentBlocker,
+    name: '_DNSStore.malwareContentBlocker',
+  )).value;
   Computed<bool>? _$notSafeContentBlockerComputed;
 
   @override
-  bool get notSafeContentBlocker =>
-      (_$notSafeContentBlockerComputed ??= Computed<bool>(
-        () => super.notSafeContentBlocker,
-        name: '_DNSStore.notSafeContentBlocker',
-      )).value;
+  bool get notSafeContentBlocker => (_$notSafeContentBlockerComputed ??= Computed<bool>(
+    () => super.notSafeContentBlocker,
+    name: '_DNSStore.notSafeContentBlocker',
+  )).value;
   Computed<BlockerType>? _$blockerTypeComputed;
 
   @override
-  BlockerType get blockerType =>
-      (_$blockerTypeComputed ??= Computed<BlockerType>(
-        () => super.blockerType,
-        name: '_DNSStore.blockerType',
-      )).value;
+  BlockerType get blockerType => (_$blockerTypeComputed ??= Computed<BlockerType>(
+    () => super.blockerType,
+    name: '_DNSStore.blockerType',
+  )).value;
   Computed<bool>? _$hideNotSafeContentBlockerComputed;
 
   @override
-  bool get hideNotSafeContentBlocker =>
-      (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(
-        () => super.hideNotSafeContentBlocker,
-        name: '_DNSStore.hideNotSafeContentBlocker',
-      )).value;
+  bool get hideNotSafeContentBlocker => (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(
+    () => super.hideNotSafeContentBlocker,
+    name: '_DNSStore.hideNotSafeContentBlocker',
+  )).value;
   Computed<bool>? _$hideMalwareContentBlockerComputed;
 
   @override
-  bool get hideMalwareContentBlocker =>
-      (_$hideMalwareContentBlockerComputed ??= Computed<bool>(
-        () => super.hideMalwareContentBlocker,
-        name: '_DNSStore.hideMalwareContentBlocker',
-      )).value;
+  bool get hideMalwareContentBlocker => (_$hideMalwareContentBlockerComputed ??= Computed<bool>(
+    () => super.hideMalwareContentBlocker,
+    name: '_DNSStore.hideMalwareContentBlocker',
+  )).value;
   Computed<String>? _$dnsAddressComputed;
 
   @override
@@ -70,13 +65,9 @@ mixin _$DNSStore on _DNSStore, Store {
 
   @override
   set malwareContentBlockerFuture(ObservableFuture<bool> value) {
-    _$malwareContentBlockerFutureAtom.reportWrite(
-      value,
-      super.malwareContentBlockerFuture,
-      () {
-        super.malwareContentBlockerFuture = value;
-      },
-    );
+    _$malwareContentBlockerFutureAtom.reportWrite(value, super.malwareContentBlockerFuture, () {
+      super.malwareContentBlockerFuture = value;
+    });
   }
 
   late final _$notSafeContentBlockerFutureAtom = Atom(
@@ -92,13 +83,9 @@ mixin _$DNSStore on _DNSStore, Store {
 
   @override
   set notSafeContentBlockerFuture(ObservableFuture<bool> value) {
-    _$notSafeContentBlockerFutureAtom.reportWrite(
-      value,
-      super.notSafeContentBlockerFuture,
-      () {
-        super.notSafeContentBlockerFuture = value;
-      },
-    );
+    _$notSafeContentBlockerFutureAtom.reportWrite(value, super.notSafeContentBlockerFuture, () {
+      super.notSafeContentBlockerFuture = value;
+    });
   }
 
   late final _$_getAndSetMalwareBlockerContentAsyncAction = AsyncAction(
@@ -132,9 +119,7 @@ mixin _$DNSStore on _DNSStore, Store {
 
   @override
   Future<void> toggleMalwareBlocker() {
-    return _$toggleMalwareBlockerAsyncAction.run(
-      () => super.toggleMalwareBlocker(),
-    );
+    return _$toggleMalwareBlockerAsyncAction.run(() => super.toggleMalwareBlocker());
   }
 
   late final _$toggleNotSafeContentBlockerAsyncAction = AsyncAction(
@@ -144,15 +129,10 @@ mixin _$DNSStore on _DNSStore, Store {
 
   @override
   Future<void> toggleNotSafeContentBlocker() {
-    return _$toggleNotSafeContentBlockerAsyncAction.run(
-      () => super.toggleNotSafeContentBlocker(),
-    );
+    return _$toggleNotSafeContentBlockerAsyncAction.run(() => super.toggleNotSafeContentBlocker());
   }
 
-  late final _$_DNSStoreActionController = ActionController(
-    name: '_DNSStore',
-    context: context,
-  );
+  late final _$_DNSStoreActionController = ActionController(name: '_DNSStore', context: context);
 
   @override
   Future<bool> getMalwareContentBlocker() {
