@@ -45,10 +45,7 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     name: '_AuthSessionStore.canBrowseApp',
   )).value;
 
-  late final _$statusAtom = Atom(
-    name: '_AuthSessionStore.status',
-    context: context,
-  );
+  late final _$statusAtom = Atom(name: '_AuthSessionStore.status', context: context);
 
   @override
   AuthStatus get status {
@@ -63,10 +60,7 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     });
   }
 
-  late final _$authShownAtom = Atom(
-    name: '_AuthSessionStore.authShown',
-    context: context,
-  );
+  late final _$authShownAtom = Atom(name: '_AuthSessionStore.authShown', context: context);
 
   @override
   bool get authShown {
@@ -135,10 +129,7 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     );
   }
 
-  late final _$_userFutureAtom = Atom(
-    name: '_AuthSessionStore._userFuture',
-    context: context,
-  );
+  late final _$_userFutureAtom = Atom(name: '_AuthSessionStore._userFuture', context: context);
 
   ObservableFuture<AuthUser?> get userFuture {
     _$_userFutureAtom.reportRead();
@@ -152,20 +143,13 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
 
   @override
   set _userFuture(ObservableFuture<AuthUser?> value) {
-    _$_userFutureAtom.reportWrite(
-      value,
-      __userFutureIsInitialized ? super._userFuture : null,
-      () {
-        super._userFuture = value;
-        __userFutureIsInitialized = true;
-      },
-    );
+    _$_userFutureAtom.reportWrite(value, __userFutureIsInitialized ? super._userFuture : null, () {
+      super._userFuture = value;
+      __userFutureIsInitialized = true;
+    });
   }
 
-  late final _$initStoreAsyncAction = AsyncAction(
-    '_AuthSessionStore.initStore',
-    context: context,
-  );
+  late final _$initStoreAsyncAction = AsyncAction('_AuthSessionStore.initStore', context: context);
 
   @override
   Future<void> initStore() {
@@ -191,9 +175,7 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
 
   @override
   Future<void> setAuthenticatedUser(AuthUser user) {
-    return _$setAuthenticatedUserAsyncAction.run(
-      () => super.setAuthenticatedUser(user),
-    );
+    return _$setAuthenticatedUserAsyncAction.run(() => super.setAuthenticatedUser(user));
   }
 
   late final _$setUnauthenticatedAsyncAction = AsyncAction(
@@ -203,9 +185,7 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
 
   @override
   Future<void> setUnauthenticated() {
-    return _$setUnauthenticatedAsyncAction.run(
-      () => super.setUnauthenticated(),
-    );
+    return _$setUnauthenticatedAsyncAction.run(() => super.setUnauthenticated());
   }
 
   @override

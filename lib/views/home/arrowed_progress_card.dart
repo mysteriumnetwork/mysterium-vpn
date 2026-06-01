@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -64,7 +65,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
               progressValue: _index / totalTooltips,
               title: tooltipContent.title,
               description: tooltipContent.description,
-              actionlabel: tooltipContent.actionLabel,
+              actionLabel: tooltipContent.actionLabel.tr(),
               onActionPressed: () => tooltipContent.onActionPressed(),
             ),
           ],

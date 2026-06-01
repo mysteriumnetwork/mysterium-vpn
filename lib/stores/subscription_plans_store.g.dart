@@ -50,10 +50,7 @@ mixin _$SubscriptionPlansStore on _SubscriptionPlansStore, Store {
         name: '_SubscriptionPlansStore.bestValueProducts',
       )).value;
 
-  late final _$_futureAtom = Atom(
-    name: '_SubscriptionPlansStore._future',
-    context: context,
-  );
+  late final _$_futureAtom = Atom(name: '_SubscriptionPlansStore._future', context: context);
 
   ObservableFuture<List<PurchasableProduct>> get future {
     _$_futureAtom.reportRead();
@@ -67,14 +64,10 @@ mixin _$SubscriptionPlansStore on _SubscriptionPlansStore, Store {
 
   @override
   set _future(ObservableFuture<List<PurchasableProduct>> value) {
-    _$_futureAtom.reportWrite(
-      value,
-      __futureIsInitialized ? super._future : null,
-      () {
-        super._future = value;
-        __futureIsInitialized = true;
-      },
-    );
+    _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
+      super._future = value;
+      __futureIsInitialized = true;
+    });
   }
 
   late final _$_SubscriptionPlansStoreActionController = ActionController(

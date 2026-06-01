@@ -442,6 +442,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
     "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
+    "subscriptionOnboardingTooltip1Title": "以您的方式探索各地",
+    "subscriptionOnboardingTooltip1Description": "浏览地图或从侧边栏探索地点。",
+    "subscriptionOnboardingTooltip2Title": "管理您的计划",
+    "subscriptionOnboardingTooltip2Description": "根据您的账户权限，购买、升级或查看可用的套餐。",
+    "subscriptionOnboardingTooltip3Title": "加强您的防护",
+    "subscriptionOnboardingTooltip3Description": "探索VPN协议和恶意软件拦截等高级功能。",
+    "subscriptionOnboardingTooltip4Title": "保持私密",
+    "subscriptionOnboardingTooltip4Description": "我们会为您连接到最佳服务器。",
+    "subscriptionOnboardingTooltip5Title": "搜索和连接速度更快",
+    "subscriptionOnboardingTooltip5Description": "通过搜索功能快速查找国家、城市和服务器。",
+    "subscriptionOnboardingTooltip6Title": "浏览 VPN 位置",
+    "subscriptionOnboardingTooltip6Description": "在一个地方探索各个国家和城市。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
     "viewLessBtn": "收起",
@@ -508,7 +520,7 @@ class CodegenLoader extends AssetLoader {
     "typeDelete": "类型 {}",
     "allowBtn": "允许",
     "loginSignupLabel": "登录或注册",
-    "takeBackTheInternetLbl": "夺回互联网。",
+    "takeBackTheInternetLbl": "夺回互联网的控制权。",
     "homeLbl": "家",
     "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
     "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
@@ -1058,6 +1070,22 @@ class CodegenLoader extends AssetLoader {
         "Çoğu VPN'in aksine, daha hassas konum kontrolü sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
     "subscriptionPlanMalwareBlockerDesc":
         "Cihazınıza ulaşmadan önce tehditleri durdurarak onu korur, sizi rahatsız etmeden arka planda sessizce çalışır.",
+    "subscriptionOnboardingTooltip1Title": "Mekanları kendi tarzınızda keşfedin.",
+    "subscriptionOnboardingTooltip1Description":
+        "Haritayı inceleyin veya yan menüden konumları keşfedin.",
+    "subscriptionOnboardingTooltip2Title": "Planınızı yönetin",
+    "subscriptionOnboardingTooltip2Description":
+        "Hesabınıza erişim bilgilerinize bağlı olarak satın alma, yükseltme veya mevcut planları görüntüleme işlemlerini gerçekleştirin.",
+    "subscriptionOnboardingTooltip3Title": "Korumanızı artırın",
+    "subscriptionOnboardingTooltip3Description":
+        "VPN protokolleri ve kötü amaçlı yazılım engelleme gibi gelişmiş özellikleri keşfedin.",
+    "subscriptionOnboardingTooltip4Title": "Gizliliğinizi korumak için bağlanın.",
+    "subscriptionOnboardingTooltip4Description": "Sizi en iyi sunucuya bağlayacağız.",
+    "subscriptionOnboardingTooltip5Title": "Daha hızlı arama yapın ve bağlantı kurun",
+    "subscriptionOnboardingTooltip5Description":
+        "Arama özelliğiyle ülkeleri, şehirleri ve sunucuları hızlıca bulun.",
+    "subscriptionOnboardingTooltip6Title": "VPN konumlarına göz atın",
+    "subscriptionOnboardingTooltip6Description": "Ülkeleri ve şehirleri tek bir yerden keşfedin.",
     "notNowBtn": "Şimdi değil",
     "viewAllFeaturesBtn": "Tüm özellikleri görüntüle",
     "viewLessBtn": "Daha az göster",
@@ -1456,7 +1484,7 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
     "productUpdates": "製品のアップデートを入手",
     "protocol": "プロトコル",
-    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再度接続する必要があります。",
+    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再接続する必要があります。",
     "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
     "pt": "ポルトガル語",
     "purchased": "購入した",
@@ -1652,6 +1680,19 @@ class CodegenLoader extends AssetLoader {
         "ほとんどのVPNよりも精度の高い位置情報制御を提供します。一般的なVPNでは、国全体または州全体しか選択できないのが一般的です。",
     "subscriptionPlanMalwareBlockerDesc":
         "脅威がデバイスに到達する前に阻止することでデバイスを保護し、バックグラウンドで静かに動作するため、ユーザーの操作を妨げることはありません。",
+    "subscriptionOnboardingTooltip1Title": "自分らしい方法で場所を探索しよう",
+    "subscriptionOnboardingTooltip1Description": "地図を閲覧するか、サイドバーから場所を検索してください。",
+    "subscriptionOnboardingTooltip2Title": "プランを管理する",
+    "subscriptionOnboardingTooltip2Description":
+        "アカウントのアクセス権限に基づいて、プランの購入、アップグレード、または利用可能なプランの確認ができます。",
+    "subscriptionOnboardingTooltip3Title": "保護機能を強化しましょう",
+    "subscriptionOnboardingTooltip3Description": "VPNプロトコルやマルウェア対策などの高度な機能を活用しましょう。",
+    "subscriptionOnboardingTooltip4Title": "プライバシーを守るために接続してください",
+    "subscriptionOnboardingTooltip4Description": "最適なサーバーに接続いたします。",
+    "subscriptionOnboardingTooltip5Title": "より速く検索して接続する",
+    "subscriptionOnboardingTooltip5Description": "検索機能を使って、国、都市、サーバーを素早く見つけましょう。",
+    "subscriptionOnboardingTooltip6Title": "VPN接続先を閲覧する",
+    "subscriptionOnboardingTooltip6Description": "一つの場所で、国や都市を探索しよう。",
     "notNowBtn": "今じゃない",
     "viewAllFeaturesBtn": "すべての機能を表示",
     "viewLessBtn": "詳細を表示しない",
@@ -1747,9 +1788,9 @@ class CodegenLoader extends AssetLoader {
     "onboardingStep1Desc": "あなたのIPアドレスと位置情報は、ウェブサイト、トラッカー、公共Wi-Fiネットワークから閲覧可能です。",
     "onboardingStep2Title": "ワンタップであなたの本当の身元を隠しましょう",
     "onboardingStep2Desc":
-        "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、および位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
+        "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
     "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
-    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なります。",
+    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
     "checkSubsStatusTitle": "プラン情報を取得中...",
     "noSubscriptionTitle": "有効なプランがありません",
     "noSubscriptionAction": "プランを入手する",
@@ -2290,7 +2331,23 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanCityLevelDesc":
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+    "subscriptionOnboardingTooltip1Title": "Erkunden Sie Orte auf Ihre Weise",
+    "subscriptionOnboardingTooltip1Description":
+        "Stöbern Sie auf der Karte oder erkunden Sie Orte über die Seitenleiste.",
+    "subscriptionOnboardingTooltip2Title": "Verwalten Sie Ihren Plan",
+    "subscriptionOnboardingTooltip2Description":
+        "Je nach Ihren Kontozugriffen können Sie Tarife erwerben, upgraden oder verfügbare Tarife einsehen.",
+    "subscriptionOnboardingTooltip3Title": "Erhöhen Sie Ihren Schutz",
+    "subscriptionOnboardingTooltip3Description":
+        "Entdecken Sie erweiterte Funktionen wie VPN-Protokolle und Malware-Blockierung.",
+    "subscriptionOnboardingTooltip4Title": "Verbinden Sie sich, um Ihre Privatsphäre zu wahren.",
+    "subscriptionOnboardingTooltip4Description": "Wir verbinden Sie mit dem besten Server.",
+    "subscriptionOnboardingTooltip5Title": "Schneller suchen und verbinden",
+    "subscriptionOnboardingTooltip5Description":
+        "Finden Sie mit der Suche schnell Länder, Städte und Server.",
+    "subscriptionOnboardingTooltip6Title": "VPN-Standorte durchsuchen",
+    "subscriptionOnboardingTooltip6Description": "Entdecken Sie Länder und Städte an einem Ort.",
     "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
@@ -2940,6 +2997,22 @@ class CodegenLoader extends AssetLoader {
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege seu dispositivo, impedindo ameaças antes que elas o alcancem, funcionando silenciosamente em segundo plano sem interrompê-lo.",
+    "subscriptionOnboardingTooltip1Title": "Explore lugares do seu jeito",
+    "subscriptionOnboardingTooltip1Description":
+        "Navegue pelo mapa ou explore locais na barra lateral.",
+    "subscriptionOnboardingTooltip2Title": "Gerencie seu plano",
+    "subscriptionOnboardingTooltip2Description":
+        "Compre, atualize ou visualize os planos disponíveis de acordo com o seu nível de acesso à conta.",
+    "subscriptionOnboardingTooltip3Title": "Aumente sua proteção",
+    "subscriptionOnboardingTooltip3Description":
+        "Explore funcionalidades avançadas como protocolos VPN e bloqueio de malware.",
+    "subscriptionOnboardingTooltip4Title": "Conecte-se para manter a privacidade",
+    "subscriptionOnboardingTooltip4Description": "Vamos conectar você ao melhor servidor.",
+    "subscriptionOnboardingTooltip5Title": "Pesquise e conecte-se mais rapidamente",
+    "subscriptionOnboardingTooltip5Description":
+        "Encontre rapidamente países, cidades e servidores com a ferramenta de busca.",
+    "subscriptionOnboardingTooltip6Title": "Navegue pelos locais da VPN",
+    "subscriptionOnboardingTooltip6Description": "Explore países e cidades em um só lugar.",
     "notNowBtn": "Agora não",
     "viewAllFeaturesBtn": "Ver todas as funcionalidades",
     "viewLessBtn": "Ver menos",
@@ -3576,6 +3649,22 @@ class CodegenLoader extends AssetLoader {
         "Provides more precise location control than most VPNs, which typically limit you to selecting entire countries or states.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protects your device by stopping threats before they can reach it, running quietly in the background without interrupting you.",
+    "subscriptionOnboardingTooltip1Title": "Explore locations your way",
+    "subscriptionOnboardingTooltip1Description":
+        "Browse the map or explore locations from the sidebar.",
+    "subscriptionOnboardingTooltip2Title": "Manage your plan",
+    "subscriptionOnboardingTooltip2Description":
+        "Purchase, upgrade or view available plans based on your account access.",
+    "subscriptionOnboardingTooltip3Title": "Boost your protection",
+    "subscriptionOnboardingTooltip3Description":
+        "Explore advanced features like VPN protocols and malware blocking.",
+    "subscriptionOnboardingTooltip4Title": "Connect to stay private",
+    "subscriptionOnboardingTooltip4Description": "We will connect you to the best server.",
+    "subscriptionOnboardingTooltip5Title": "Search and connect faster",
+    "subscriptionOnboardingTooltip5Description":
+        "Quickly find countries, cities and servers with search.",
+    "subscriptionOnboardingTooltip6Title": "Browse VPN locations",
+    "subscriptionOnboardingTooltip6Description": "Explore countries and cities in one place.",
     "notNowBtn": "Not now",
     "viewAllFeaturesBtn": "View all features",
     "viewLessBtn": "View less",
@@ -4176,18 +4265,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi fino a 6 dispositivi contemporaneamente.",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "protocollo VPN",
+    "subscriptionPlanPF4Basic": "Protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi contemporaneamente",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
     "subscriptionPlanPF4Plus": "Oltre 7.500 indirizzi IP residenziali",
-    "subscriptionPlanPF5Plus": "protocollo VPN",
+    "subscriptionPlanPF5Plus": "Protocollo VPN",
     "subscriptionPlanPF6Plus": "Scelte a livello cittadino",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso entro 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti immediatamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "protocollo VPN",
+    "subscriptionPlanWireGuard": "Protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello cittadino",
@@ -4220,6 +4309,22 @@ class CodegenLoader extends AssetLoader {
         "Offre un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, funzionando silenziosamente in background senza interromperti.",
+    "subscriptionOnboardingTooltip1Title": "Esplora i luoghi a modo tuo",
+    "subscriptionOnboardingTooltip1Description":
+        "Consulta la mappa o esplora le località dalla barra laterale.",
+    "subscriptionOnboardingTooltip2Title": "Gestisci il tuo piano",
+    "subscriptionOnboardingTooltip2Description":
+        "Acquista, aggiorna o visualizza i piani disponibili in base al tuo livello di accesso all'account.",
+    "subscriptionOnboardingTooltip3Title": "Aumenta la tua protezione",
+    "subscriptionOnboardingTooltip3Description":
+        "Scopri funzionalità avanzate come i protocolli VPN e il blocco del malware.",
+    "subscriptionOnboardingTooltip4Title": "Connettiti per mantenere la tua privacy",
+    "subscriptionOnboardingTooltip4Description": "Ti collegheremo al server migliore.",
+    "subscriptionOnboardingTooltip5Title": "Cerca e connettiti più velocemente",
+    "subscriptionOnboardingTooltip5Description":
+        "Trova rapidamente paesi, città e server con la funzione di ricerca.",
+    "subscriptionOnboardingTooltip6Title": "Esplora le posizioni VPN",
+    "subscriptionOnboardingTooltip6Description": "Esplora paesi e città in un unico luogo.",
     "notNowBtn": "Non adesso",
     "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
     "viewLessBtn": "Visualizza meno",
@@ -4244,7 +4349,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
     "ipTypeResidentialDisclaimer":
-        "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
+        "Indirizzi IP residenziali di abitazioni reali. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
     "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
     "ipTypeResidentialTooltipBody":
         "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
@@ -4260,7 +4365,7 @@ class CodegenLoader extends AssetLoader {
     "unauthenticatedSettingSubtitle":
         "Accedi per accedere al tuo account e sbloccare tutte le funzionalità.",
     "signInBtn": "Registrazione",
-    "vpnProtocolSettingLbl": "protocollo VPN",
+    "vpnProtocolSettingLbl": "Protocollo VPN",
     "blockerSettingLbl": "Bloccante",
     "light": "Leggero",
     "dark": "Buio",
@@ -4873,6 +4978,23 @@ class CodegenLoader extends AssetLoader {
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protège votre appareil en bloquant les menaces avant qu'elles ne l'atteignent, fonctionnant discrètement en arrière-plan sans vous interrompre.",
+    "subscriptionOnboardingTooltip1Title": "Explorez les lieux à votre façon",
+    "subscriptionOnboardingTooltip1Description":
+        "Parcourez la carte ou explorez les lieux depuis la barre latérale.",
+    "subscriptionOnboardingTooltip2Title": "Gérez votre plan",
+    "subscriptionOnboardingTooltip2Description":
+        "Achetez, mettez à niveau ou consultez les forfaits disponibles en fonction de votre accès au compte.",
+    "subscriptionOnboardingTooltip3Title": "Renforcez votre protection",
+    "subscriptionOnboardingTooltip3Description":
+        "Explorez des fonctionnalités avancées telles que les protocoles VPN et le blocage des logiciels malveillants.",
+    "subscriptionOnboardingTooltip4Title": "Connectez-vous pour rester privé",
+    "subscriptionOnboardingTooltip4Description": "Nous vous connecterons au meilleur serveur.",
+    "subscriptionOnboardingTooltip5Title": "Recherchez et connectez-vous plus rapidement",
+    "subscriptionOnboardingTooltip5Description":
+        "Trouvez rapidement des pays, des villes et des serveurs grâce à la recherche.",
+    "subscriptionOnboardingTooltip6Title": "Consultez les emplacements VPN",
+    "subscriptionOnboardingTooltip6Description":
+        "Explorez les pays et les villes en un seul endroit.",
     "notNowBtn": "Pas maintenant",
     "viewAllFeaturesBtn": "Afficher toutes les fonctionnalités",
     "viewLessBtn": "Afficher moins",
@@ -4897,7 +5019,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeDataCenterDisclaimer":
         "Adresses IP hébergées sur des serveurs rapides et performants pour des besoins VPN rapides : choisissez cette option pour des connexions stables.",
     "ipTypeResidentialDisclaimer":
-        "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevrez peut donc changer.",
+        "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevez peut donc changer.",
     "ipTypeResidentialTooltipTitle": "Pourquoi le lien est-il perdu ?",
     "ipTypeResidentialTooltipBody":
         "Les adresses IP domestiques dépendent de personnes réelles. En cas de perte de connexion, vous serez instantanément reconnecté à l'adresse IP disponible la plus proche. Pour une connexion stable, choisissez une adresse IP haut débit.",
@@ -4955,7 +5077,7 @@ class CodegenLoader extends AssetLoader {
     "ipAddressLbl": "Adresse IP",
     "madridLbl": "Madrid, Espagne 🇪🇸",
     "locationLbl": "Emplacement",
-    "vodafoneLbl": "Vodafone Iberia",
+    "vodafoneLbl": "Vodafone Ibérie",
     "protectedLbl": "PROTÉGÉ",
     "unprotectedLbl": "NON PROTÉGÉ",
     "berlinLbl": "Berlin, Allemagne 🇩🇪",
@@ -4987,7 +5109,7 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusFailedTitle": "Les informations sur le plan ne sont pas disponibles.",
     "accountSuccessfullyDeleted": "Compte supprimé",
     "redirectToLoginPage":
-        "Votre compte a été supprimé avec succès. Vous serez redirigé vers l'écran de connexion.",
+        "Votre compte a été supprimé avec succès. Vous allez être redirigé vers la page de connexion.",
     "goToLoginBtn": "Allez vous connecter",
     "authenticationFailed": "Impossible de se connecter. Veuillez réessayer.",
     "failedToLoadLocations": "Impossible de charger les emplacements. Veuillez réessayer.",
@@ -5496,7 +5618,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5509,6 +5631,23 @@ class CodegenLoader extends AssetLoader {
         "Menyediakan kontrol lokasi yang lebih tepat daripada kebanyakan VPN, yang biasanya membatasi Anda untuk memilih seluruh negara atau wilayah.",
     "subscriptionPlanMalwareBlockerDesc":
         "Melindungi perangkat Anda dengan menghentikan ancaman sebelum mencapai perangkat, berjalan dengan tenang di latar belakang tanpa mengganggu Anda.",
+    "subscriptionOnboardingTooltip1Title": "Jelajahi lokasi sesuai keinginan Anda.",
+    "subscriptionOnboardingTooltip1Description":
+        "Telusuri peta atau jelajahi lokasi dari bilah sisi.",
+    "subscriptionOnboardingTooltip2Title": "Kelola rencana Anda",
+    "subscriptionOnboardingTooltip2Description":
+        "Beli, tingkatkan, atau lihat paket yang tersedia berdasarkan akses akun Anda.",
+    "subscriptionOnboardingTooltip3Title": "Tingkatkan perlindungan Anda",
+    "subscriptionOnboardingTooltip3Description":
+        "Jelajahi fitur-fitur canggih seperti protokol VPN dan pemblokiran malware.",
+    "subscriptionOnboardingTooltip4Title": "Terhubung untuk menjaga privasi",
+    "subscriptionOnboardingTooltip4Description": "Kami akan menghubungkan Anda ke server terbaik.",
+    "subscriptionOnboardingTooltip5Title": "Cari dan terhubung lebih cepat",
+    "subscriptionOnboardingTooltip5Description":
+        "Temukan negara, kota, dan server dengan cepat menggunakan fitur pencarian.",
+    "subscriptionOnboardingTooltip6Title": "Telusuri lokasi VPN",
+    "subscriptionOnboardingTooltip6Description":
+        "Jelajahi berbagai negara dan kota di satu tempat.",
     "notNowBtn": "Tidak sekarang",
     "viewAllFeaturesBtn": "Lihat semua fitur",
     "viewLessBtn": "Tampilkan lebih sedikit",
@@ -5636,9 +5775,9 @@ class CodegenLoader extends AssetLoader {
     "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
     "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
     "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-    "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
+    "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
     "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
-    "signInAbortedMsg": "Login gagal.",
+    "signInAbortedMsg": "Login gagal",
     "notAvailableMsg": "Tidak tersedia",
     "killSwitch": "Saklar pemutus daya",
     "killSwitchDesc": "Memblokir internet jika koneksi VPN terputus.",
@@ -6159,6 +6298,22 @@ class CodegenLoader extends AssetLoader {
         "Ofrece un control de ubicación más preciso que la mayoría de las VPN, que normalmente te limitan a seleccionar países o estados completos.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege tu dispositivo deteniendo las amenazas antes de que puedan alcanzarlo, funcionando discretamente en segundo plano sin interrumpirte.",
+    "subscriptionOnboardingTooltip1Title": "Explora los lugares a tu manera.",
+    "subscriptionOnboardingTooltip1Description":
+        "Consulta el mapa o explora las ubicaciones desde la barra lateral.",
+    "subscriptionOnboardingTooltip2Title": "Gestiona tu plan",
+    "subscriptionOnboardingTooltip2Description":
+        "Compra, actualiza o consulta los planes disponibles según el acceso a tu cuenta.",
+    "subscriptionOnboardingTooltip3Title": "Refuerza tu protección",
+    "subscriptionOnboardingTooltip3Description":
+        "Descubre funciones avanzadas como los protocolos VPN y el bloqueo de malware.",
+    "subscriptionOnboardingTooltip4Title": "Conéctate para mantener tu privacidad",
+    "subscriptionOnboardingTooltip4Description": "Te conectaremos al mejor servidor.",
+    "subscriptionOnboardingTooltip5Title": "Busca y conéctate más rápido",
+    "subscriptionOnboardingTooltip5Description":
+        "Encuentra rápidamente países, ciudades y servidores con la función de búsqueda.",
+    "subscriptionOnboardingTooltip6Title": "Explorar ubicaciones de VPN",
+    "subscriptionOnboardingTooltip6Description": "Explora países y ciudades en un solo lugar.",
     "notNowBtn": "Ahora no",
     "viewAllFeaturesBtn": "Ver todas las características",
     "viewLessBtn": "Ver menos",
@@ -6760,7 +6915,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو سنوي",
+    "plan_yearly_pro": "برو أنوال",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -6782,6 +6937,22 @@ class CodegenLoader extends AssetLoader {
         "يوفر تحكمًا أكثر دقة في الموقع مقارنة بمعظم شبكات VPN، والتي عادةً ما تحد من اختيارك لبلدان أو ولايات بأكملها.",
     "subscriptionPlanMalwareBlockerDesc":
         "يحمي جهازك عن طريق إيقاف التهديدات قبل أن تتمكن من الوصول إليه، ويعمل بهدوء في الخلفية دون مقاطعتك.",
+    "subscriptionOnboardingTooltip1Title": "استكشف المواقع على طريقتك الخاصة",
+    "subscriptionOnboardingTooltip1Description":
+        "تصفح الخريطة أو استكشف المواقع من الشريط الجانبي.",
+    "subscriptionOnboardingTooltip2Title": "إدارة خطتك",
+    "subscriptionOnboardingTooltip2Description":
+        "قم بشراء أو ترقية أو عرض الخطط المتاحة بناءً على صلاحيات الوصول إلى حسابك.",
+    "subscriptionOnboardingTooltip3Title": "عزز حمايتك",
+    "subscriptionOnboardingTooltip3Description":
+        "استكشف الميزات المتقدمة مثل بروتوكولات VPN وحظر البرامج الضارة.",
+    "subscriptionOnboardingTooltip4Title": "اتصل للحفاظ على خصوصيتك",
+    "subscriptionOnboardingTooltip4Description": "سنقوم بتوصيلك بأفضل خادم.",
+    "subscriptionOnboardingTooltip5Title": "ابحث واتصل بشكل أسرع",
+    "subscriptionOnboardingTooltip5Description":
+        "اعثر بسرعة على البلدان والمدن والخوادم باستخدام البحث.",
+    "subscriptionOnboardingTooltip6Title": "تصفح مواقع VPN",
+    "subscriptionOnboardingTooltip6Description": "استكشف البلدان والمدن في مكان واحد.",
     "notNowBtn": "ليس الآن",
     "viewAllFeaturesBtn": "عرض جميع الميزات",
     "viewLessBtn": "عرض أقل",

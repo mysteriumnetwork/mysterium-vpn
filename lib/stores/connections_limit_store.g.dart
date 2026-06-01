@@ -22,13 +22,9 @@ mixin _$ConnectionsLimitStore on _ConnectionsLimitStore, Store {
 
   @override
   set connectionLimitReached(bool value) {
-    _$connectionLimitReachedAtom.reportWrite(
-      value,
-      super.connectionLimitReached,
-      () {
-        super.connectionLimitReached = value;
-      },
-    );
+    _$connectionLimitReachedAtom.reportWrite(value, super.connectionLimitReached, () {
+      super.connectionLimitReached = value;
+    });
   }
 
   @override

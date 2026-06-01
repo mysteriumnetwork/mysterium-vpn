@@ -17,10 +17,7 @@ mixin _$LocationsQueryStore on _LocationsQueryStore, Store {
     name: '_LocationsQueryStore.searchTrimmed',
   )).value;
 
-  late final _$_searchAtom = Atom(
-    name: '_LocationsQueryStore._search',
-    context: context,
-  );
+  late final _$_searchAtom = Atom(name: '_LocationsQueryStore._search', context: context);
 
   String get search {
     _$_searchAtom.reportRead();
@@ -34,20 +31,13 @@ mixin _$LocationsQueryStore on _LocationsQueryStore, Store {
 
   @override
   set _search(String value) {
-    _$_searchAtom.reportWrite(
-      value,
-      __searchIsInitialized ? super._search : null,
-      () {
-        super._search = value;
-        __searchIsInitialized = true;
-      },
-    );
+    _$_searchAtom.reportWrite(value, __searchIsInitialized ? super._search : null, () {
+      super._search = value;
+      __searchIsInitialized = true;
+    });
   }
 
-  late final _$_ipTypeAtom = Atom(
-    name: '_LocationsQueryStore._ipType',
-    context: context,
-  );
+  late final _$_ipTypeAtom = Atom(name: '_LocationsQueryStore._ipType', context: context);
 
   IPType get ipType {
     _$_ipTypeAtom.reportRead();
@@ -61,14 +51,10 @@ mixin _$LocationsQueryStore on _LocationsQueryStore, Store {
 
   @override
   set _ipType(IPType value) {
-    _$_ipTypeAtom.reportWrite(
-      value,
-      __ipTypeIsInitialized ? super._ipType : null,
-      () {
-        super._ipType = value;
-        __ipTypeIsInitialized = true;
-      },
-    );
+    _$_ipTypeAtom.reportWrite(value, __ipTypeIsInitialized ? super._ipType : null, () {
+      super._ipType = value;
+      __ipTypeIsInitialized = true;
+    });
   }
 
   late final _$setIPTypeAsyncAction = AsyncAction(
@@ -87,10 +73,7 @@ mixin _$LocationsQueryStore on _LocationsQueryStore, Store {
   );
 
   @override
-  void setSearch(
-    String value, {
-    Duration debounce = const Duration(milliseconds: 500),
-  }) {
+  void setSearch(String value, {Duration debounce = const Duration(milliseconds: 500)}) {
     final _$actionInfo = _$_LocationsQueryStoreActionController.startAction(
       name: '_LocationsQueryStore.setSearch',
     );
