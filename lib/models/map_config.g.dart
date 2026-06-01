@@ -7,9 +7,14 @@ part of 'map_config.dart';
 // **************************************************************************
 
 MapConfig _$MapConfigFromJson(Map<String, dynamic> json) => MapConfig(
-  zoomLevels: (json['zoomLevels'] as List<dynamic>?)?.map((e) => e as num).toList() ?? const [4, 5],
+  zoomLevels:
+      (json['zoomLevels'] as List<dynamic>?)?.map((e) => e as num).toList() ??
+      const [4, 5],
   tileZoomLevels:
-      (json['tileZoomLevels'] as List<dynamic>?)?.map((e) => e as num).toList() ?? const [3, 4],
+      (json['tileZoomLevels'] as List<dynamic>?)
+          ?.map((e) => e as num)
+          .toList() ??
+      const [3, 4],
   initialZoom: json['initialZoom'] as num? ?? 4,
   tileUrlTemplates:
       (json['tileUrlTemplates'] as Map<String, dynamic>?)?.map(

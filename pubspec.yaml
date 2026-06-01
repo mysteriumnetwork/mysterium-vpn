@@ -68,9 +68,10 @@ dependencies:
   money2: 6.3.0
   mqtt5_client: 4.17.0
   mysterium_vpn_design:
-    git:
-      url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.17
+    path: ../mysterium-vpn-design
+    # git:
+    #   url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
+    #   ref: 0.0.17
   onesignal_flutter: 5.5.3
   open_store: 0.5.0
   openvpn_dart:
@@ -83,6 +84,7 @@ dependencies:
   sentry_flutter: 9.19.0
   shared_preferences: 2.5.5
   shimmer: 3.0.0
+  showcaseview: 5.0.2
   sign_in_with_apple: 8.0.0
   sliver_tools: ^0.2.12
   stack_trace: 1.12.1
@@ -133,7 +135,6 @@ dependency_overrides:
       path: flutter_secure_storage_windows
       ref: 9.2.6
 
-
 msix_config:
   display_name: Mysterium VPN
   publisher_display_name: UAB MN Technologijos
@@ -155,7 +156,7 @@ flutter:
     - resources/langs/
     - assets/google_fonts/
     - assets/data/
-     # BEGIN auto-generated assets
+      # BEGIN auto-generated assets
     - assets/map_tiles/light/
     - assets/map_tiles/light/4/
     - assets/map_tiles/light/4/9/

@@ -12,10 +12,15 @@ mixin _$RealIPInfoStore on _RealIPInfoStore, Store {
   Computed<IPInfo?>? _$infoComputed;
 
   @override
-  IPInfo? get info =>
-      (_$infoComputed ??= Computed<IPInfo?>(() => super.info, name: '_RealIPInfoStore.info')).value;
+  IPInfo? get info => (_$infoComputed ??= Computed<IPInfo?>(
+    () => super.info,
+    name: '_RealIPInfoStore.info',
+  )).value;
 
-  late final _$infoFutureAtom = Atom(name: '_RealIPInfoStore.infoFuture', context: context);
+  late final _$infoFutureAtom = Atom(
+    name: '_RealIPInfoStore.infoFuture',
+    context: context,
+  );
 
   @override
   ObservableFuture<IPInfo?> get infoFuture {
@@ -27,13 +32,20 @@ mixin _$RealIPInfoStore on _RealIPInfoStore, Store {
 
   @override
   set infoFuture(ObservableFuture<IPInfo?> value) {
-    _$infoFutureAtom.reportWrite(value, _infoFutureIsInitialized ? super.infoFuture : null, () {
-      super.infoFuture = value;
-      _infoFutureIsInitialized = true;
-    });
+    _$infoFutureAtom.reportWrite(
+      value,
+      _infoFutureIsInitialized ? super.infoFuture : null,
+      () {
+        super.infoFuture = value;
+        _infoFutureIsInitialized = true;
+      },
+    );
   }
 
-  late final _$refreshAsyncAction = AsyncAction('_RealIPInfoStore.refresh', context: context);
+  late final _$refreshAsyncAction = AsyncAction(
+    '_RealIPInfoStore.refresh',
+    context: context,
+  );
 
   @override
   Future<void> refresh() {

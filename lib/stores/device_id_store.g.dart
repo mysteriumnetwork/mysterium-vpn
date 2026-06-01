@@ -17,7 +17,10 @@ mixin _$DeviceIDStore on _DeviceIDStore, Store {
     name: '_DeviceIDStore.deviceId',
   )).value;
 
-  late final _$deviceIdFutureAtom = Atom(name: '_DeviceIDStore.deviceIdFuture', context: context);
+  late final _$deviceIdFutureAtom = Atom(
+    name: '_DeviceIDStore.deviceIdFuture',
+    context: context,
+  );
 
   @override
   ObservableFuture<String> get deviceIdFuture {
@@ -39,7 +42,10 @@ mixin _$DeviceIDStore on _DeviceIDStore, Store {
     );
   }
 
-  late final _$getDeviceIdAsyncAction = AsyncAction('_DeviceIDStore.getDeviceId', context: context);
+  late final _$getDeviceIdAsyncAction = AsyncAction(
+    '_DeviceIDStore.getDeviceId',
+    context: context,
+  );
 
   @override
   Future<String> getDeviceId() {

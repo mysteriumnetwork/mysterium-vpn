@@ -40,7 +40,10 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
         name: '_RateConnectionStore.showReasons',
       )).value;
 
-  late final _$feedbackAtom = Atom(name: '_RateConnectionStore.feedback', context: context);
+  late final _$feedbackAtom = Atom(
+    name: '_RateConnectionStore.feedback',
+    context: context,
+  );
 
   @override
   String get feedback {
@@ -62,7 +65,9 @@ mixin _$RateConnectionStore on _RateConnectionStore, Store {
 
   @override
   Future<void> submitRateConnection() {
-    return _$submitRateConnectionAsyncAction.run(() => super.submitRateConnection());
+    return _$submitRateConnectionAsyncAction.run(
+      () => super.submitRateConnection(),
+    );
   }
 
   late final _$_RateConnectionStoreActionController = ActionController(

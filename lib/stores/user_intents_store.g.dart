@@ -12,19 +12,24 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
   Computed<Set<UserIntent>>? _$userIntentsComputed;
 
   @override
-  Set<UserIntent> get userIntents => (_$userIntentsComputed ??= Computed<Set<UserIntent>>(
-    () => super.userIntents,
-    name: '_UserIntentsStore.userIntents',
-  )).value;
+  Set<UserIntent> get userIntents =>
+      (_$userIntentsComputed ??= Computed<Set<UserIntent>>(
+        () => super.userIntents,
+        name: '_UserIntentsStore.userIntents',
+      )).value;
   Computed<Set<UserIntent>>? _$intentsComputed;
 
   @override
-  Set<UserIntent> get intents => (_$intentsComputed ??= Computed<Set<UserIntent>>(
-    () => super.intents,
-    name: '_UserIntentsStore.intents',
-  )).value;
+  Set<UserIntent> get intents =>
+      (_$intentsComputed ??= Computed<Set<UserIntent>>(
+        () => super.intents,
+        name: '_UserIntentsStore.intents',
+      )).value;
 
-  late final _$userIntentAtom = Atom(name: '_UserIntentsStore.userIntent', context: context);
+  late final _$userIntentAtom = Atom(
+    name: '_UserIntentsStore.userIntent',
+    context: context,
+  );
 
   @override
   UserIntent? get userIntent {
@@ -77,7 +82,8 @@ mixin _$UserIntentsStore on _UserIntentsStore, Store {
   }
 
   @override
-  ObservableFuture<Set<UserIntent>> get _localIntentsFuture => localIntentsFuture;
+  ObservableFuture<Set<UserIntent>> get _localIntentsFuture =>
+      localIntentsFuture;
 
   bool __localIntentsFutureIsInitialized = false;
 

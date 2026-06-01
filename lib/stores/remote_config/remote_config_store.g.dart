@@ -12,17 +12,19 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<bool>? _$isServiceAvailableComputed;
 
   @override
-  bool get isServiceAvailable => (_$isServiceAvailableComputed ??= Computed<bool>(
-    () => super.isServiceAvailable,
-    name: 'RemoteConfigStoreBase.isServiceAvailable',
-  )).value;
+  bool get isServiceAvailable =>
+      (_$isServiceAvailableComputed ??= Computed<bool>(
+        () => super.isServiceAvailable,
+        name: 'RemoteConfigStoreBase.isServiceAvailable',
+      )).value;
   Computed<String>? _$isServiceAvailableMessageComputed;
 
   @override
-  String get isServiceAvailableMessage => (_$isServiceAvailableMessageComputed ??= Computed<String>(
-    () => super.isServiceAvailableMessage,
-    name: 'RemoteConfigStoreBase.isServiceAvailableMessage',
-  )).value;
+  String get isServiceAvailableMessage =>
+      (_$isServiceAvailableMessageComputed ??= Computed<String>(
+        () => super.isServiceAvailableMessage,
+        name: 'RemoteConfigStoreBase.isServiceAvailableMessage',
+      )).value;
   Computed<bool>? _$hideDeleteAccountComputed;
 
   @override
@@ -33,10 +35,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<String>? _$minMacosBuildNumberComputed;
 
   @override
-  String get minMacosBuildNumber => (_$minMacosBuildNumberComputed ??= Computed<String>(
-    () => super.minMacosBuildNumber,
-    name: 'RemoteConfigStoreBase.minMacosBuildNumber',
-  )).value;
+  String get minMacosBuildNumber =>
+      (_$minMacosBuildNumberComputed ??= Computed<String>(
+        () => super.minMacosBuildNumber,
+        name: 'RemoteConfigStoreBase.minMacosBuildNumber',
+      )).value;
   Computed<String>? _$minWindowsStandAloneBuildNumberComputed;
 
   @override
@@ -48,45 +51,51 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<String>? _$minWindowsBuildNumberComputed;
 
   @override
-  String get minWindowsBuildNumber => (_$minWindowsBuildNumberComputed ??= Computed<String>(
-    () => super.minWindowsBuildNumber,
-    name: 'RemoteConfigStoreBase.minWindowsBuildNumber',
-  )).value;
+  String get minWindowsBuildNumber =>
+      (_$minWindowsBuildNumberComputed ??= Computed<String>(
+        () => super.minWindowsBuildNumber,
+        name: 'RemoteConfigStoreBase.minWindowsBuildNumber',
+      )).value;
   Computed<String>? _$minAndroidBuildNumberComputed;
 
   @override
-  String get minAndroidBuildNumber => (_$minAndroidBuildNumberComputed ??= Computed<String>(
-    () => super.minAndroidBuildNumber,
-    name: 'RemoteConfigStoreBase.minAndroidBuildNumber',
-  )).value;
+  String get minAndroidBuildNumber =>
+      (_$minAndroidBuildNumberComputed ??= Computed<String>(
+        () => super.minAndroidBuildNumber,
+        name: 'RemoteConfigStoreBase.minAndroidBuildNumber',
+      )).value;
   Computed<String>? _$minIosBuildNumberComputed;
 
   @override
-  String get minIosBuildNumber => (_$minIosBuildNumberComputed ??= Computed<String>(
-    () => super.minIosBuildNumber,
-    name: 'RemoteConfigStoreBase.minIosBuildNumber',
-  )).value;
+  String get minIosBuildNumber =>
+      (_$minIosBuildNumberComputed ??= Computed<String>(
+        () => super.minIosBuildNumber,
+        name: 'RemoteConfigStoreBase.minIosBuildNumber',
+      )).value;
   Computed<bool>? _$hideMalwareBlockerComputed;
 
   @override
-  bool get hideMalwareBlocker => (_$hideMalwareBlockerComputed ??= Computed<bool>(
-    () => super.hideMalwareBlocker,
-    name: 'RemoteConfigStoreBase.hideMalwareBlocker',
-  )).value;
+  bool get hideMalwareBlocker =>
+      (_$hideMalwareBlockerComputed ??= Computed<bool>(
+        () => super.hideMalwareBlocker,
+        name: 'RemoteConfigStoreBase.hideMalwareBlocker',
+      )).value;
   Computed<bool>? _$hideNotSafeContentBlockerComputed;
 
   @override
-  bool get hideNotSafeContentBlocker => (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(
-    () => super.hideNotSafeContentBlocker,
-    name: 'RemoteConfigStoreBase.hideNotSafeContentBlocker',
-  )).value;
+  bool get hideNotSafeContentBlocker =>
+      (_$hideNotSafeContentBlockerComputed ??= Computed<bool>(
+        () => super.hideNotSafeContentBlocker,
+        name: 'RemoteConfigStoreBase.hideNotSafeContentBlocker',
+      )).value;
   Computed<String>? _$malwareBlockerDnsAddressComputed;
 
   @override
-  String get malwareBlockerDnsAddress => (_$malwareBlockerDnsAddressComputed ??= Computed<String>(
-    () => super.malwareBlockerDnsAddress,
-    name: 'RemoteConfigStoreBase.malwareBlockerDnsAddress',
-  )).value;
+  String get malwareBlockerDnsAddress =>
+      (_$malwareBlockerDnsAddressComputed ??= Computed<String>(
+        () => super.malwareBlockerDnsAddress,
+        name: 'RemoteConfigStoreBase.malwareBlockerDnsAddress',
+      )).value;
   Computed<String>? _$notSafeContentBlockerDnsAddressComputed;
 
   @override
@@ -120,17 +129,19 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<bool>? _$hideResetAppSettingComputed;
 
   @override
-  bool get hideResetAppSetting => (_$hideResetAppSettingComputed ??= Computed<bool>(
-    () => super.hideResetAppSetting,
-    name: 'RemoteConfigStoreBase.hideResetAppSetting',
-  )).value;
+  bool get hideResetAppSetting =>
+      (_$hideResetAppSettingComputed ??= Computed<bool>(
+        () => super.hideResetAppSetting,
+        name: 'RemoteConfigStoreBase.hideResetAppSetting',
+      )).value;
   Computed<bool>? _$browseUnauthenticatedComputed;
 
   @override
-  bool get browseUnauthenticated => (_$browseUnauthenticatedComputed ??= Computed<bool>(
-    () => super.browseUnauthenticated,
-    name: 'RemoteConfigStoreBase.browseUnauthenticated',
-  )).value;
+  bool get browseUnauthenticated =>
+      (_$browseUnauthenticatedComputed ??= Computed<bool>(
+        () => super.browseUnauthenticated,
+        name: 'RemoteConfigStoreBase.browseUnauthenticated',
+      )).value;
   Computed<bool>? _$shouldCheckUdpComputed;
 
   @override
@@ -141,17 +152,19 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<String>? _$latestStableAppVersionComputed;
 
   @override
-  String get latestStableAppVersion => (_$latestStableAppVersionComputed ??= Computed<String>(
-    () => super.latestStableAppVersion,
-    name: 'RemoteConfigStoreBase.latestStableAppVersion',
-  )).value;
+  String get latestStableAppVersion =>
+      (_$latestStableAppVersionComputed ??= Computed<String>(
+        () => super.latestStableAppVersion,
+        name: 'RemoteConfigStoreBase.latestStableAppVersion',
+      )).value;
   Computed<bool>? _$isRateConnectionAvailableComputed;
 
   @override
-  bool get isRateConnectionAvailable => (_$isRateConnectionAvailableComputed ??= Computed<bool>(
-    () => super.isRateConnectionAvailable,
-    name: 'RemoteConfigStoreBase.isRateConnectionAvailable',
-  )).value;
+  bool get isRateConnectionAvailable =>
+      (_$isRateConnectionAvailableComputed ??= Computed<bool>(
+        () => super.isRateConnectionAvailable,
+        name: 'RemoteConfigStoreBase.isRateConnectionAvailable',
+      )).value;
   Computed<Set<String>?>? _$cancelSubscriptionReasonKeysComputed;
 
   @override
@@ -163,10 +176,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<bool>? _$useStoreVersionCheckerComputed;
 
   @override
-  bool get useStoreVersionChecker => (_$useStoreVersionCheckerComputed ??= Computed<bool>(
-    () => super.useStoreVersionChecker,
-    name: 'RemoteConfigStoreBase.useStoreVersionChecker',
-  )).value;
+  bool get useStoreVersionChecker =>
+      (_$useStoreVersionCheckerComputed ??= Computed<bool>(
+        () => super.useStoreVersionChecker,
+        name: 'RemoteConfigStoreBase.useStoreVersionChecker',
+      )).value;
   Computed<bool>? _$enableQaHelpersComputed;
 
   @override
@@ -177,10 +191,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<bool>? _$showCitiesAndStatesComputed;
 
   @override
-  bool get showCitiesAndStates => (_$showCitiesAndStatesComputed ??= Computed<bool>(
-    () => super.showCitiesAndStates,
-    name: 'RemoteConfigStoreBase.showCitiesAndStates',
-  )).value;
+  bool get showCitiesAndStates =>
+      (_$showCitiesAndStatesComputed ??= Computed<bool>(
+        () => super.showCitiesAndStates,
+        name: 'RemoteConfigStoreBase.showCitiesAndStates',
+      )).value;
   Computed<Set<String>>? _$countriesWithCitiesOnMapComputed;
 
   @override
@@ -215,10 +230,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<int>? _$recentLocationsLimitComputed;
 
   @override
-  int get recentLocationsLimit => (_$recentLocationsLimitComputed ??= Computed<int>(
-    () => super.recentLocationsLimit,
-    name: 'RemoteConfigStoreBase.recentLocationsLimit',
-  )).value;
+  int get recentLocationsLimit =>
+      (_$recentLocationsLimitComputed ??= Computed<int>(
+        () => super.recentLocationsLimit,
+        name: 'RemoteConfigStoreBase.recentLocationsLimit',
+      )).value;
   Computed<MapConfig>? _$mapConfigComputed;
 
   @override
@@ -245,10 +261,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<String?>? _$limitedTimeOfferIdComputed;
 
   @override
-  String? get limitedTimeOfferId => (_$limitedTimeOfferIdComputed ??= Computed<String?>(
-    () => super.limitedTimeOfferId,
-    name: 'RemoteConfigStoreBase.limitedTimeOfferId',
-  )).value;
+  String? get limitedTimeOfferId =>
+      (_$limitedTimeOfferIdComputed ??= Computed<String?>(
+        () => super.limitedTimeOfferId,
+        name: 'RemoteConfigStoreBase.limitedTimeOfferId',
+      )).value;
   Computed<DateTime?>? _$limitedTimeOfferExpiryDateComputed;
 
   @override
@@ -260,17 +277,19 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<String?>? _$limitedTimeOfferImageComputed;
 
   @override
-  String? get limitedTimeOfferImage => (_$limitedTimeOfferImageComputed ??= Computed<String?>(
-    () => super.limitedTimeOfferImage,
-    name: 'RemoteConfigStoreBase.limitedTimeOfferImage',
-  )).value;
+  String? get limitedTimeOfferImage =>
+      (_$limitedTimeOfferImageComputed ??= Computed<String?>(
+        () => super.limitedTimeOfferImage,
+        name: 'RemoteConfigStoreBase.limitedTimeOfferImage',
+      )).value;
   Computed<bool>? _$isProtocolPickerAvailableComputed;
 
   @override
-  bool get isProtocolPickerAvailable => (_$isProtocolPickerAvailableComputed ??= Computed<bool>(
-    () => super.isProtocolPickerAvailable,
-    name: 'RemoteConfigStoreBase.isProtocolPickerAvailable',
-  )).value;
+  bool get isProtocolPickerAvailable =>
+      (_$isProtocolPickerAvailableComputed ??= Computed<bool>(
+        () => super.isProtocolPickerAvailable,
+        name: 'RemoteConfigStoreBase.isProtocolPickerAvailable',
+      )).value;
   Computed<List<SubscriptionPlanFeatures>>? _$planFeaturesComputed;
 
   @override
@@ -282,24 +301,27 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<Set<String>>? _$plansBestValueComputed;
 
   @override
-  Set<String> get plansBestValue => (_$plansBestValueComputed ??= Computed<Set<String>>(
-    () => super.plansBestValue,
-    name: 'RemoteConfigStoreBase.plansBestValue',
-  )).value;
+  Set<String> get plansBestValue =>
+      (_$plansBestValueComputed ??= Computed<Set<String>>(
+        () => super.plansBestValue,
+        name: 'RemoteConfigStoreBase.plansBestValue',
+      )).value;
   Computed<String>? _$upgradeSubscriptionPageComputed;
 
   @override
-  String get upgradeSubscriptionPage => (_$upgradeSubscriptionPageComputed ??= Computed<String>(
-    () => super.upgradeSubscriptionPage,
-    name: 'RemoteConfigStoreBase.upgradeSubscriptionPage',
-  )).value;
+  String get upgradeSubscriptionPage =>
+      (_$upgradeSubscriptionPageComputed ??= Computed<String>(
+        () => super.upgradeSubscriptionPage,
+        name: 'RemoteConfigStoreBase.upgradeSubscriptionPage',
+      )).value;
   Computed<String>? _$manageSubscriptionPageComputed;
 
   @override
-  String get manageSubscriptionPage => (_$manageSubscriptionPageComputed ??= Computed<String>(
-    () => super.manageSubscriptionPage,
-    name: 'RemoteConfigStoreBase.manageSubscriptionPage',
-  )).value;
+  String get manageSubscriptionPage =>
+      (_$manageSubscriptionPageComputed ??= Computed<String>(
+        () => super.manageSubscriptionPage,
+        name: 'RemoteConfigStoreBase.manageSubscriptionPage',
+      )).value;
   Computed<PromotionalBanner?>? _$promotionalBannerComputed;
 
   @override
@@ -327,10 +349,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<Uri>? _$checkoutWebRedirectUrlComputed;
 
   @override
-  Uri get checkoutWebRedirectUrl => (_$checkoutWebRedirectUrlComputed ??= Computed<Uri>(
-    () => super.checkoutWebRedirectUrl,
-    name: 'RemoteConfigStoreBase.checkoutWebRedirectUrl',
-  )).value;
+  Uri get checkoutWebRedirectUrl =>
+      (_$checkoutWebRedirectUrlComputed ??= Computed<Uri>(
+        () => super.checkoutWebRedirectUrl,
+        name: 'RemoteConfigStoreBase.checkoutWebRedirectUrl',
+      )).value;
   Computed<bool>? _$pricingMonthlyComputed;
 
   @override
@@ -341,10 +364,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<Set<String>>? _$countriesWithStatesComputed;
 
   @override
-  Set<String> get countriesWithStates => (_$countriesWithStatesComputed ??= Computed<Set<String>>(
-    () => super.countriesWithStates,
-    name: 'RemoteConfigStoreBase.countriesWithStates',
-  )).value;
+  Set<String> get countriesWithStates =>
+      (_$countriesWithStatesComputed ??= Computed<Set<String>>(
+        () => super.countriesWithStates,
+        name: 'RemoteConfigStoreBase.countriesWithStates',
+      )).value;
   Computed<bool>? _$hideReedemCodeComputed;
 
   @override
@@ -355,10 +379,11 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   Computed<bool>? _$canShowNoSubsOnboardingFlowComputed;
 
   @override
-  bool get canShowNoSubsOnboardingFlow => (_$canShowNoSubsOnboardingFlowComputed ??= Computed<bool>(
-    () => super.canShowNoSubsOnboardingFlow,
-    name: 'RemoteConfigStoreBase.canShowNoSubsOnboardingFlow',
-  )).value;
+  bool get canShowNoSubsOnboardingFlow =>
+      (_$canShowNoSubsOnboardingFlowComputed ??= Computed<bool>(
+        () => super.canShowNoSubsOnboardingFlow,
+        name: 'RemoteConfigStoreBase.canShowNoSubsOnboardingFlow',
+      )).value;
 
   @override
   String toString() {

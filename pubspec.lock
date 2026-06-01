@@ -1321,11 +1321,9 @@ packages:
   mysterium_vpn_design:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.0.17"
-      resolved-ref: d3f0f98da3ea392fc7718b7b38afb2a45fcd16da
-      url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
-    source: git
+      path: "../mysterium-vpn-design"
+      relative: true
+    source: path
     version: "0.0.4"
   native_toolchain_c:
     dependency: transitive
@@ -1792,6 +1790,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.2"
+  showcaseview:
+    dependency: "direct main"
+    description:
+      name: showcaseview
+      sha256: c92a9ea98c3a13191a88f93c1d75cbc3ba419f16e385ada89b1ee10f22f1bd96
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
   sign_in_with_apple:
     dependency: "direct main"
     description:

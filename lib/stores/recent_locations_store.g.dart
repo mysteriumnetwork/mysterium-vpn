@@ -12,12 +12,16 @@ mixin _$RecentLocationsStore on _RecentLocationsStore, Store {
   Computed<List<VPNLocation>>? _$valueComputed;
 
   @override
-  List<VPNLocation> get value => (_$valueComputed ??= Computed<List<VPNLocation>>(
-    () => super.value,
-    name: '_RecentLocationsStore.value',
-  )).value;
+  List<VPNLocation> get value =>
+      (_$valueComputed ??= Computed<List<VPNLocation>>(
+        () => super.value,
+        name: '_RecentLocationsStore.value',
+      )).value;
 
-  late final _$_futureAtom = Atom(name: '_RecentLocationsStore._future', context: context);
+  late final _$_futureAtom = Atom(
+    name: '_RecentLocationsStore._future',
+    context: context,
+  );
 
   ObservableFuture<List<VPNLocation>> get future {
     _$_futureAtom.reportRead();
@@ -31,10 +35,14 @@ mixin _$RecentLocationsStore on _RecentLocationsStore, Store {
 
   @override
   set _future(ObservableFuture<List<VPNLocation>> value) {
-    _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
-      super._future = value;
-      __futureIsInitialized = true;
-    });
+    _$_futureAtom.reportWrite(
+      value,
+      __futureIsInitialized ? super._future : null,
+      () {
+        super._future = value;
+        __futureIsInitialized = true;
+      },
+    );
   }
 
   @override

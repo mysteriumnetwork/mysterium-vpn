@@ -17,7 +17,10 @@ mixin _$ConfigCatUserStore on _ConfigCatUserStore, Store {
     name: '_ConfigCatUserStore.user',
   )).value;
 
-  late final _$_futureAtom = Atom(name: '_ConfigCatUserStore._future', context: context);
+  late final _$_futureAtom = Atom(
+    name: '_ConfigCatUserStore._future',
+    context: context,
+  );
 
   ObservableFuture<ConfigCatUser> get future {
     _$_futureAtom.reportRead();
@@ -31,10 +34,14 @@ mixin _$ConfigCatUserStore on _ConfigCatUserStore, Store {
 
   @override
   set _future(ObservableFuture<ConfigCatUser> value) {
-    _$_futureAtom.reportWrite(value, __futureIsInitialized ? super._future : null, () {
-      super._future = value;
-      __futureIsInitialized = true;
-    });
+    _$_futureAtom.reportWrite(
+      value,
+      __futureIsInitialized ? super._future : null,
+      () {
+        super._future = value;
+        __futureIsInitialized = true;
+      },
+    );
   }
 
   @override
