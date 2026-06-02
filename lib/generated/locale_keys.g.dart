@@ -428,24 +428,37 @@ abstract class LocaleKeys {
   static const subscriptionPlanResidentialIPsDesc = 'subscriptionPlanResidentialIPsDesc';
   static const subscriptionPlanCityLevelDesc = 'subscriptionPlanCityLevelDesc';
   static const subscriptionPlanMalwareBlockerDesc = 'subscriptionPlanMalwareBlockerDesc';
-  static const subscriptionOnboardingTooltip1Title = 'subscriptionOnboardingTooltip1Title';
-  static const subscriptionOnboardingTooltip1Description =
-      'subscriptionOnboardingTooltip1Description';
-  static const subscriptionOnboardingTooltip2Title = 'subscriptionOnboardingTooltip2Title';
-  static const subscriptionOnboardingTooltip2Description =
-      'subscriptionOnboardingTooltip2Description';
-  static const subscriptionOnboardingTooltip3Title = 'subscriptionOnboardingTooltip3Title';
-  static const subscriptionOnboardingTooltip3Description =
-      'subscriptionOnboardingTooltip3Description';
-  static const subscriptionOnboardingTooltip4Title = 'subscriptionOnboardingTooltip4Title';
-  static const subscriptionOnboardingTooltip4Description =
-      'subscriptionOnboardingTooltip4Description';
-  static const subscriptionOnboardingTooltip5Title = 'subscriptionOnboardingTooltip5Title';
-  static const subscriptionOnboardingTooltip5Description =
-      'subscriptionOnboardingTooltip5Description';
-  static const subscriptionOnboardingTooltip6Title = 'subscriptionOnboardingTooltip6Title';
-  static const subscriptionOnboardingTooltip6Description =
-      'subscriptionOnboardingTooltip6Description';
+  static const subscriptionOnboardingPromptTitle = 'subscriptionOnboardingPromptTitle';
+  static const subscriptionOnboardingPromptDescription = 'subscriptionOnboardingPromptDescription';
+  static const subscriptionOnboardingStartTourLabel = 'subscriptionOnboardingStartTourLabel';
+  static const subscriptionOnboardingCancelTourLabel = 'subscriptionOnboardingCancelTourLabel';
+  static const subscriptionOnboardingMapDesktopTitle = 'subscriptionOnboardingMapDesktopTitle';
+  static const subscriptionOnboardingMapDesktopDescription =
+      'subscriptionOnboardingMapDesktopDescription';
+  static const subscriptionOnboardingMapMobileTitle = 'subscriptionOnboardingMapMobileTitle';
+  static const subscriptionOnboardingMapMobileDescription =
+      'subscriptionOnboardingMapMobileDescription';
+  static const subscriptionOnboardingManagePlanTitle = 'subscriptionOnboardingManagePlanTitle';
+  static const subscriptionOnboardingManagePlanDescription =
+      'subscriptionOnboardingManagePlanDescription';
+  static const subscriptionOnboardingBoostProtectionTitle =
+      'subscriptionOnboardingBoostProtectionTitle';
+  static const subscriptionOnboardingBoostProtectionDescription =
+      'subscriptionOnboardingBoostProtectionDescription';
+  static const subscriptionOnboardingConnectTitle = 'subscriptionOnboardingConnectTitle';
+  static const subscriptionOnboardingConnectDescription =
+      'subscriptionOnboardingConnectDescription';
+  static const subscriptionOnboardingSearchTitle = 'subscriptionOnboardingSearchTitle';
+  static const subscriptionOnboardingSearchDescription = 'subscriptionOnboardingSearchDescription';
+  static const subscriptionOnboardingVPNLocationsTitle = 'subscriptionOnboardingVPNLocationsTitle';
+  static const subscriptionOnboardingVPNLocationsDesktopDescription =
+      'subscriptionOnboardingVPNLocationsDesktopDescription';
+  static const subscriptionOnboardingVPNLocationsMobileDescription =
+      'subscriptionOnboardingVPNLocationsMobileDescription';
+  static const subscriptionOnboardingSetupCompleteTitle =
+      'subscriptionOnboardingSetupCompleteTitle';
+  static const subscriptionOnboardingSetupCompleteDescription =
+      'subscriptionOnboardingSetupCompleteDescription';
   static const notNowBtn = 'notNowBtn';
   static const viewAllFeaturesBtn = 'viewAllFeaturesBtn';
   static const viewLessBtn = 'viewLessBtn';
