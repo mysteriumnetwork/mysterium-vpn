@@ -7,11 +7,14 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
+import 'package:mysterium_vpn/views/home/home_subscription_onboarding.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_locations_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_map_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
 import 'package:mysterium_vpn/views/settings/settings_mobile_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeMobileScaffold extends HookConsumerWidget {
   const HomeMobileScaffold({super.key});
@@ -32,6 +35,8 @@ class HomeMobileScaffold extends HookConsumerWidget {
     final tabs = HomeTab.mobileTabs();
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
     final inSettingsSubPage = selected == HomeTab.settings && settingsSubPage != null;
+
+    final (tooltipContents, globalKeys) = useSubscriptionOnboarding(keysCount: 6);
 
     return PopScope(
       canPop: !inSettingsSubPage,
@@ -56,12 +61,28 @@ class HomeMobileScaffold extends HookConsumerWidget {
           ),
           BottomNavBar(
             selectedIndex: selectedIndex,
+            itemWrapper: ({required context, required index, required item, required child}) =>
+                ArrowedProgressCard(
+                  tooltipIndex: index,
+                  totalTooltips: tooltipContents.length,
+                  tooltipContent: tooltipContents[index],
+                  globalKey: globalKeys[index],
+                  tooltipPosition: TooltipPosition.top,
+                  child: child,
+                ),
             onDestinationSelected: (i) {
               if (!store.trySelect(tabs[i])) {
                 Beamer.of(context).beamToNamed(Routes.platformLogin.path);
               }
             },
-            items: [for (final tab in tabs) BottomNavBarItem(icon: tab.icon, label: tab.label())],
+            // items: [for (final tab in tabs) BottomNavBarItem(icon: tab.icon, label: tab.label())],
+            items: tabs
+                .asMap()
+                .entries
+                .map(
+                  (entry) => BottomNavBarItem(icon: entry.value.icon, label: entry.value.label()),
+                )
+                .toList(),
           ),
         ],
       ),
