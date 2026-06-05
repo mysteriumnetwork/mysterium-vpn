@@ -39,7 +39,7 @@ class _Dialog extends StatelessWidget {
           children: [
             ModalHeader(
               title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
-              titleStyle: textStyles.textMd.semibold.copyWith(color: palette.textWhite),
+              titleStyle: textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
               description: LocaleKeys.subscriptionOnboardingPromptDescription.tr(),
               descriptionStyle: textStyles.textXs.regular.copyWith(color: palette.textTertiary),
               emblem: SizedBox(
@@ -68,7 +68,7 @@ class _Dialog extends StatelessWidget {
                         },
                         child: Text(
                           LocaleKeys.subscriptionOnboardingStartTourLabel.tr(),
-                          style: textStyles.textSm.semibold,
+                          style: textStyles.textSm.semibold.copyWith(color: palette.textWhite),
                         ),
                       ),
                     ),
@@ -86,7 +86,7 @@ class _Dialog extends StatelessWidget {
                         },
                         child: Text(
                           LocaleKeys.subscriptionOnboardingCancelTourLabel.tr(),
-                          style: textStyles.textSm.semibold,
+                          style: textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
                         ),
                       ),
                     ),
