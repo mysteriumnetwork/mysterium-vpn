@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/hooks/subscription_onboarding_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
-import 'package:mysterium_vpn/views/home/home_subscription_onboarding.dart';
+import 'package:mysterium_vpn/views/home/home_setup_subscription_onboarding.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_locations_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_map_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
@@ -36,7 +37,8 @@ class HomeMobileScaffold extends HookConsumerWidget {
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
     final inSettingsSubPage = selected == HomeTab.settings && settingsSubPage != null;
 
-    final (tooltipContents, globalKeys) = useSubscriptionOnboarding(keysCount: 6);
+    final (tooltipContents, globalKeys) = setupSubscriptionOnboarding(keysCount: 6);
+    useSubscriptionOnboarding(globalKeys);
 
     return PopScope(
       canPop: !inSettingsSubPage,
@@ -75,7 +77,6 @@ class HomeMobileScaffold extends HookConsumerWidget {
                 Beamer.of(context).beamToNamed(Routes.platformLogin.path);
               }
             },
-            // items: [for (final tab in tabs) BottomNavBarItem(icon: tab.icon, label: tab.label())],
             items: tabs
                 .asMap()
                 .entries

@@ -142,7 +142,12 @@ enum AnalyticsEvent {
   onboardingContinueClick,
   onboardingBackClick,
   onboardingCloseClick,
-  onboardingSeePlansClick;
+  onboardingSeePlansClick,
+  onboardingSubscribedStarted,
+  onboardingSubscribedStepViewed,
+  onboardingSubscribedStepCompleted,
+  onboardingSubscribedSkipped,
+  onboardingSubscribedFinished;
 
   String get formattedName => name.toSnakeCase;
 }

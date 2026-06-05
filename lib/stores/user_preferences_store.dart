@@ -154,6 +154,15 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     nextPromptToShow = UserPromptType.none;
   }
 
+  @action
+  Future<void> setSubscriptionOnboardingShown() async {
+    await localDb.setSubscriptionOnboardingShown();
+    await evaluatePromptToShow();
+  }
+
+  @action
+  Future<bool> getSubscriptionOnboardingShown() async => localDb.getSubscriptionOnboardingShown();
+
   @visibleForTesting
   @action
   Future<bool> shouldShowNoneSubsOnboarding() async {

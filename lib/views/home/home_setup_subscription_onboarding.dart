@@ -4,10 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/tooltip_content.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-(List<TooltipContent>, List<GlobalKey<State<StatefulWidget>>>) useSubscriptionOnboarding({
+(List<TooltipContent>, List<GlobalKey<State<StatefulWidget>>>) setupSubscriptionOnboarding({
   required int keysCount,
 }) {
   final tooltipContents = _getTooltipContents();
@@ -15,28 +14,6 @@ import 'package:showcaseview/showcaseview.dart';
   final globalKeys = useMemoized(
     () => List.generate(keysCount, (index) => GlobalKey<State<StatefulWidget>>()),
   );
-
-  useEffect(() {
-    ShowcaseView.register(
-      globalFloatingActionWidget: (context) => FloatingActionWidget(
-        top: 50,
-        right: 50,
-        child: FloatingButton(
-          label: 'Skip',
-          icon: Icons.close,
-          onPressed: () => ShowcaseView.get().dismiss(),
-        ),
-      ),
-    );
-
-    // TODO: Testing delete after
-    Future.microtask(() async {
-      await Future.delayed(const Duration(seconds: 3));
-      ShowcaseView.get().startShowCase(globalKeys);
-    });
-
-    return ShowcaseView.get().unregister;
-  }, []);
 
   return (tooltipContents, globalKeys);
 }
