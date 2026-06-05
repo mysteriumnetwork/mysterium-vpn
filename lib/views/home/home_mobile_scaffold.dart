@@ -5,11 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_onboarding_hook.dart';
+import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
-import 'package:mysterium_vpn/views/home/home_setup_subscription_onboarding.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_locations_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_map_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
@@ -37,8 +37,9 @@ class HomeMobileScaffold extends HookConsumerWidget {
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
     final inSettingsSubPage = selected == HomeTab.settings && settingsSubPage != null;
 
-    final (tooltipContents, globalKeys) = setupSubscriptionOnboarding(keysCount: 6);
-    useSubscriptionOnboarding(globalKeys);
+    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    final tooltipContents = onboarding.tooltipContents;
+    useSubscriptionOnboarding();
 
     return PopScope(
       canPop: !inSettingsSubPage,
@@ -65,10 +66,10 @@ class HomeMobileScaffold extends HookConsumerWidget {
             selectedIndex: selectedIndex,
             itemWrapper: ({required context, required index, required item, required child}) =>
                 ArrowedProgressCard(
-                  tooltipIndex: index,
+                  tooltipIndex: onboarding.indexForTab(tabs[index]),
                   totalTooltips: tooltipContents.length,
-                  tooltipContent: tooltipContents[index],
-                  globalKey: globalKeys[index],
+                  tooltipContent: tooltipContents[onboarding.indexForTab(tabs[index])],
+                  globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.top,
                   child: child,
                 ),

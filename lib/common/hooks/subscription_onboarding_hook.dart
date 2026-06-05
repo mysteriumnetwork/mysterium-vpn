@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_onboarding_dialog.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -15,7 +16,7 @@ import 'package:mysterium_vpn_design/widgets/floating_button.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 /// Shows the subscription onboarding dialog if the user is subscribed and the onboarding has not been shown yet.
-void useSubscriptionOnboarding(List<GlobalKey<State<StatefulWidget>>> globalKeys) {
+void useSubscriptionOnboarding() {
   final context = useContext();
   final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
   final subscriptionStore = useProvider<SubscriptionStore>(subscriptionStorePOD);
@@ -23,6 +24,7 @@ void useSubscriptionOnboarding(List<GlobalKey<State<StatefulWidget>>> globalKeys
   final homeTabsStore = useProvider<HomeTabsStore>(homeTabsStorePOD);
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
   final userPrefStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
+  final onboarding = useProvider<SubscriptionOnboardingSetup>(subscriptionOnboardingSetupPOD);
 
   useMemoized(() {
     ShowcaseView.register(
@@ -77,7 +79,7 @@ void useSubscriptionOnboarding(List<GlobalKey<State<StatefulWidget>>> globalKeys
             }
             Future.delayed(
               const Duration(milliseconds: 500),
-            ).then((_) => ShowcaseView.get().startShowCase(globalKeys));
+            ).then((_) => ShowcaseView.get().startShowCase(onboarding.keys));
           },
           onCancelTour: () {
             analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped).ignore();
