@@ -27,8 +27,10 @@ class HomeMapTab extends HookConsumerWidget {
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: Observer(
               builder: (context) => ArrowedProgressCard(
-                tooltipIndex: SubscriptionOnboardingSetup.searchIndex,
-                totalTooltips: onboarding.tooltipContents.length,
+                tooltipIndex: onboarding.displayIndexForStep(
+                  SubscriptionOnboardingSetup.searchIndex,
+                ),
+                totalTooltips: onboarding.visibleStepsCount,
                 tooltipContent: onboarding.searchTooltipContent,
                 globalKey: onboarding.searchKey,
                 tooltipPosition: TooltipPosition.bottom,

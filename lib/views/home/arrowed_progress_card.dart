@@ -35,6 +35,11 @@ class ArrowedProgressCard extends HookConsumerWidget {
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;
 
+  EdgeInsets get _tooltipMargin => switch (tooltipPosition) {
+    TooltipPosition.bottom => EdgeInsets.zero,
+    _ => const EdgeInsets.only(top: 50),
+  };
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.watch(themeStorePOD);
@@ -96,7 +101,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
       tooltipPosition: tooltipPosition,
       onTargetRectUpdate: updateArrowPosition,
       container: Container(
-        margin: const EdgeInsets.only(top: 50),
+        margin: _tooltipMargin,
         width: 343,
         child: Stack(
           key: tooltipStackKey,

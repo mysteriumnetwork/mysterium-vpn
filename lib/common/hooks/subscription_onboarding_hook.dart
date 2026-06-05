@@ -79,7 +79,7 @@ void useSubscriptionOnboarding() {
             }
             Future.delayed(
               const Duration(milliseconds: 500),
-            ).then((_) => ShowcaseView.get().startShowCase(onboarding.keys));
+            ).then((_) => ShowcaseView.get().startShowCase(onboarding.orderedKeys));
           },
           onCancelTour: () {
             analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped).ignore();

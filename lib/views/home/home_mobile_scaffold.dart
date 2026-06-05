@@ -66,8 +66,8 @@ class HomeMobileScaffold extends HookConsumerWidget {
             selectedIndex: selectedIndex,
             itemWrapper: ({required context, required index, required item, required child}) =>
                 ArrowedProgressCard(
-                  tooltipIndex: onboarding.indexForTab(tabs[index]),
-                  totalTooltips: tooltipContents.length,
+                  tooltipIndex: onboarding.displayIndexForTab(tabs[index]),
+                  totalTooltips: onboarding.visibleStepsCount,
                   tooltipContent: tooltipContents[onboarding.indexForTab(tabs[index])],
                   globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.top,
