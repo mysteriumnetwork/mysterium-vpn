@@ -72,8 +72,10 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
                       builder: (context) => ArrowedProgressCard(
-                        tooltipIndex: SubscriptionOnboardingSetup.searchIndex,
-                        totalTooltips: onboarding.tooltipContents.length,
+                        tooltipIndex: onboarding.displayIndexForStep(
+                          SubscriptionOnboardingSetup.searchIndex,
+                        ),
+                        totalTooltips: onboarding.visibleStepsCount,
                         tooltipContent: onboarding.searchTooltipContent,
                         globalKey: onboarding.searchKey,
                         tooltipPosition: TooltipPosition.bottom,

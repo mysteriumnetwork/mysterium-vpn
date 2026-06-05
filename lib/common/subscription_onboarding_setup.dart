@@ -26,6 +26,16 @@ class SubscriptionOnboardingSetup {
 
   final List<GlobalKey<State<StatefulWidget>>> keys;
 
+  List<int> get orderedIndexes => isDesktop()
+      ? [mapIndex, productsIndex, settingsIndex, connectButtonIndex, searchIndex, locationsIndex]
+      : [mapIndex, locationsIndex, productsIndex, settingsIndex, connectButtonIndex, searchIndex];
+
+  List<GlobalKey<State<StatefulWidget>>> get orderedKeys => [
+    for (final index in orderedIndexes) keys[index],
+  ];
+
+  int get visibleStepsCount => orderedIndexes.length;
+
   List<TooltipContent> get tooltipContents =>
       isDesktop() ? _desktopTooltipContents : _mobileTooltipContents;
 
@@ -38,6 +48,13 @@ class SubscriptionOnboardingSetup {
   TooltipContent get searchTooltipContent => tooltipContents[searchIndex];
 
   GlobalKey<State<StatefulWidget>> keyForTab(HomeTab tab) => keys[indexForTab(tab)];
+
+  int displayIndexForStep(int stepIndex) {
+    final index = orderedIndexes.indexOf(stepIndex);
+    return index == -1 ? stepIndex : index;
+  }
+
+  int displayIndexForTab(HomeTab tab) => displayIndexForStep(indexForTab(tab));
 
   int indexForTab(HomeTab tab) => switch (tab) {
     HomeTab.map => mapIndex,

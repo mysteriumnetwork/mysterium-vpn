@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
+import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 /// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
 const _kItemHeight = 64.0;
@@ -51,6 +56,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
     final screenType = ScreenType.of(context);
+    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1
@@ -134,20 +140,78 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
     return SliverLayoutBuilder(
       builder: (context, constraints) {
         precedingExtent.value = constraints.precedingScrollExtent;
+        final showcaseStartIndex = _showcaseStartIndex(
+          constraints: constraints,
+          itemCount: items.length,
+          enabled: isDesktop,
+        );
 
         return SliverList.separated(
-          itemCount: items.length,
+          itemCount: showcaseStartIndex == null ? items.length : items.length - 1,
           separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
           itemBuilder: (_, index) {
-            final cc = items[index].countryCode;
-            return ExpandableLocationItem(
-              key: _LocationKey(cc),
-              location: items[index],
-              onTap: onItemPressed,
-              mapSelectedCountryCode: effectivePriorityCountryCode,
-              expansionOverride: expansionOverrides.value[cc],
+            if (index == showcaseStartIndex) {
+              final start = showcaseStartIndex!;
+              final firstLocation = items[start];
+              final secondLocation = items[start + 1];
+
+              return ArrowedProgressCard(
+                tooltipIndex: onboarding.displayIndexForStep(
+                  SubscriptionOnboardingSetup.locationsIndex,
+                ),
+                totalTooltips: onboarding.visibleStepsCount,
+                tooltipContent:
+                    onboarding.tooltipContents[SubscriptionOnboardingSetup.locationsIndex],
+                globalKey: onboarding.keyForTab(HomeTab.locations),
+                tooltipPosition: TooltipPosition.right,
+                child: Column(
+                  children: [
+                    _LocationListItem(
+                      location: firstLocation,
+                      onItemPressed: onItemPressed,
+                      effectivePriorityCountryCode: effectivePriorityCountryCode,
+                      expansionOverride: expansionOverrides.value[firstLocation.countryCode],
+                      onExpansionChanged: (expanded) {
+                        expansionOverrides.value = {
+                          ...expansionOverrides.value,
+                          firstLocation.countryCode: expanded,
+                        };
+                        overridesVersion.value++;
+                      },
+                    ),
+                    const SizedBox(height: _kSeparatorHeight),
+                    _LocationListItem(
+                      location: secondLocation,
+                      onItemPressed: onItemPressed,
+                      effectivePriorityCountryCode: effectivePriorityCountryCode,
+                      expansionOverride: expansionOverrides.value[secondLocation.countryCode],
+                      onExpansionChanged: (expanded) {
+                        expansionOverrides.value = {
+                          ...expansionOverrides.value,
+                          secondLocation.countryCode: expanded,
+                        };
+                        overridesVersion.value++;
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            final itemIndex = showcaseStartIndex != null && index > showcaseStartIndex
+                ? index + 1
+                : index;
+
+            return _LocationListItem(
+              location: items[itemIndex],
+              onItemPressed: onItemPressed,
+              effectivePriorityCountryCode: effectivePriorityCountryCode,
+              expansionOverride: expansionOverrides.value[items[itemIndex].countryCode],
               onExpansionChanged: (expanded) {
-                expansionOverrides.value = {...expansionOverrides.value, cc: expanded};
+                expansionOverrides.value = {
+                  ...expansionOverrides.value,
+                  items[itemIndex].countryCode: expanded,
+                };
                 overridesVersion.value++;
               },
             );
@@ -156,6 +220,50 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
       },
     );
   }
+}
+
+class _LocationListItem extends StatelessWidget {
+  const _LocationListItem({
+    required this.location,
+    required this.onItemPressed,
+    required this.effectivePriorityCountryCode,
+    required this.onExpansionChanged,
+    this.expansionOverride,
+  });
+
+  final VPNLocation location;
+  final void Function(VPNLocation item) onItemPressed;
+  final String? effectivePriorityCountryCode;
+  final bool? expansionOverride;
+  final ValueChanged<bool> onExpansionChanged;
+
+  @override
+  Widget build(BuildContext context) => ExpandableLocationItem(
+    key: _LocationKey(location.countryCode),
+    location: location,
+    onTap: onItemPressed,
+    mapSelectedCountryCode: effectivePriorityCountryCode,
+    expansionOverride: expansionOverride,
+    onExpansionChanged: onExpansionChanged,
+  );
+}
+
+int? _showcaseStartIndex({
+  required SliverConstraints constraints,
+  required int itemCount,
+  required bool enabled,
+}) {
+  if (!enabled || itemCount < 2) {
+    return null;
+  }
+
+  final firstVisibleIndex = (constraints.scrollOffset / _kItemStride).floor();
+  final visibleCount = (constraints.remainingPaintExtent / _kItemStride).floor().clamp(
+    2,
+    itemCount,
+  );
+
+  return (firstVisibleIndex + visibleCount - 2).clamp(0, itemCount - 2);
 }
 
 // ---------------------------------------------------------------------------
