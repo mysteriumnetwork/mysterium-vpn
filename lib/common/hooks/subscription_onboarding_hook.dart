@@ -49,15 +49,15 @@ void useSubscriptionOnboarding(List<GlobalKey<State<StatefulWidget>>> globalKeys
 
     Future.microtask(() async {
       // If the user is not subscribed, don't show the onboarding
-      if (subscription == null || !subscription.active) {
+      /* if (subscription == null || !subscription.active) {
         return null;
-      }
+      } */
 
       // If the onboarding has already been shown, don't show it again
-      final didShowSubscriptionOnboarding = await userPrefStore.getSubscriptionOnboardingShown();
+      /* final didShowSubscriptionOnboarding = await userPrefStore.getSubscriptionOnboardingShown();
       if (didShowSubscriptionOnboarding) {
         return;
-      }
+      } */
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         userPrefStore.setSubscriptionOnboardingShown().ignore();
