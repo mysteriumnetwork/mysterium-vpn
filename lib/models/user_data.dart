@@ -30,6 +30,7 @@ class UserData {
     this.appOpenCount = 0,
     this.noneSubsOnboardingCompleted = false,
     this.noneSubsOnboardingStep = 0,
+    this.subscriptionOnboardingShown = false,
   });
 
   @HiveField(0)
@@ -96,6 +97,9 @@ class UserData {
   /// needed once [noneSubsOnboardingCompleted] is true — onboarding won't open.
   @HiveField(18, defaultValue: 0)
   int noneSubsOnboardingStep;
+
+  @HiveField(19, defaultValue: false)
+  bool subscriptionOnboardingShown;
 
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
