@@ -33,6 +33,10 @@ class SubscriptionOnboardingSetup {
 
   TooltipContent get connectButtonTooltipContent => tooltipContents[connectButtonIndex];
 
+  GlobalKey<State<StatefulWidget>> get searchKey => keys[searchIndex];
+
+  TooltipContent get searchTooltipContent => tooltipContents[searchIndex];
+
   GlobalKey<State<StatefulWidget>> keyForTab(HomeTab tab) => keys[indexForTab(tab)];
 
   int indexForTab(HomeTab tab) => switch (tab) {

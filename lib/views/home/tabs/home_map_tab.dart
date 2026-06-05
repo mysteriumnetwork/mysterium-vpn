@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_tappable_search.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeMapTab extends HookConsumerWidget {
   const HomeMapTab({super.key});
@@ -14,6 +17,7 @@ class HomeMapTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
+    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
 
     return Column(
       children: [
@@ -22,9 +26,16 @@ class HomeMapTab extends HookConsumerWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: Observer(
-              builder: (context) => LocationsTappableSearch(
-                enabled: !locationsStore.hasNoServers,
-                onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
+              builder: (context) => ArrowedProgressCard(
+                tooltipIndex: SubscriptionOnboardingSetup.searchIndex,
+                totalTooltips: onboarding.tooltipContents.length,
+                tooltipContent: onboarding.searchTooltipContent,
+                globalKey: onboarding.searchKey,
+                tooltipPosition: TooltipPosition.bottom,
+                child: LocationsTappableSearch(
+                  enabled: !locationsStore.hasNoServers,
+                  onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
+                ),
               ),
             ),
           ),
