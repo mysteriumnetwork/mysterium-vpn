@@ -2,10 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
+import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -28,6 +31,16 @@ class ConnectionTile extends HookConsumerWidget {
     ) = useConnectionTileState(
       ref,
     );
+    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    Widget buttonWrapper({required BuildContext context, required Widget child}) =>
+        ArrowedProgressCard(
+          tooltipIndex: SubscriptionOnboardingSetup.connectButtonIndex,
+          totalTooltips: onboarding.tooltipContents.length,
+          tooltipContent: onboarding.connectButtonTooltipContent,
+          globalKey: onboarding.connectButtonKey,
+          tooltipPosition: TooltipPosition.top,
+          child: child,
+        );
 
     return Column(
       children: [
@@ -49,6 +62,7 @@ class ConnectionTile extends HookConsumerWidget {
           onSwitchCountry: onToggle,
           refreshIpTooltip: LocaleKeys.refreshIP.tr(),
           connectionRating: connectionRating,
+          buttonWrapper: buttonWrapper,
         ),
         if (Env.flavor.isDev) const _DevProtocolLabel(),
       ],
