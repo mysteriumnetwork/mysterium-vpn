@@ -102,21 +102,15 @@ class _ResidentialEducationTriggerState extends ConsumerState<ResidentialEducati
       switch (action) {
         case EducationAction.showModal when canShowModal:
           analytics.logEvent(AnalyticsEvent.residentialEducationShown);
-          await eduStore.markModalShown(now);
-          if (!mounted) {
-            return;
-          }
           await showResidentialEducationModal(context);
+          // Persist only after the modal is dismissed (per spec).
+          await eduStore.markModalShown(now);
           analytics.logEvent(AnalyticsEvent.residentialEducationDismissed);
 
-        // Reminder skipped without burning the 30-day clock when its anchor
-        // isn't on screen — it retries on the next qualifying connect.
+        // Reminder skipped without burning the clock when its anchor isn't on
+        // screen — it retries on the next qualifying connect.
         case EducationAction.showReminder when canShowReminder:
           analytics.logEvent(AnalyticsEvent.residentialReminderShown);
-          await eduStore.markReminderShown(now);
-          if (!mounted) {
-            return;
-          }
           await showInfoPopover(
             context: context,
             anchorKey: widget.connectedCardKey,
@@ -124,6 +118,8 @@ class _ResidentialEducationTriggerState extends ConsumerState<ResidentialEducati
             body: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
             actionLabel: LocaleKeys.residentialEducationGotIt.tr(),
           );
+          // Persist only after the reminder is dismissed (per spec).
+          await eduStore.markReminderShown(now);
           analytics.logEvent(AnalyticsEvent.residentialReminderDismissed);
 
         case _:
