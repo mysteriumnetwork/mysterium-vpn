@@ -43,6 +43,7 @@ class ConnectionTile extends HookConsumerWidget {
         globalKey: onboarding.connectButtonKey,
         tooltipPosition: TooltipPosition.top,
         icon: onboarding.connectButtonTooltipContent.icon,
+        onActionPressed: () => ShowcaseView.get().next(),
         child: child,
       );
     }

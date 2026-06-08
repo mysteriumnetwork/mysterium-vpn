@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -10,7 +9,6 @@ abstract class TooltipContent with _$TooltipContent {
   factory TooltipContent({
     required String title,
     required String description,
-    required VoidCallback onActionPressed,
     required IconData? icon,
     @Default(LocaleKeys.continueBtn) String actionLabel,
   }) = _TooltipContent;

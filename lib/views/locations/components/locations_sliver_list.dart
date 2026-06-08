@@ -164,6 +164,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
                 globalKey: onboarding.keyForTab(HomeTab.locations),
                 tooltipPosition: TooltipPosition.right,
                 icon: onboarding.tooltipContents[SubscriptionOnboardingSetup.locationsIndex].icon,
+                onActionPressed: () => ShowcaseView.get().next(),
                 child: Column(
                   children: [
                     _LocationListItem(

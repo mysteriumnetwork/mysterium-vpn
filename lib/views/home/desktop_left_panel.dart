@@ -83,6 +83,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                           globalKey: onboarding.searchKey,
                           tooltipPosition: TooltipPosition.bottom,
                           icon: onboarding.searchTooltipContent.icon,
+                          onActionPressed: () => ShowcaseView.get().next(),
                           child: LocationsSearch(enabled: !locationsStore.hasNoServers),
                         );
                       },

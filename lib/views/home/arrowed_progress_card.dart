@@ -17,6 +17,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
     required this.tooltipContent,
     required this.tooltipIndex,
     required this.totalTooltips,
+    required this.onActionPressed,
     this.icon,
     super.key,
   });
@@ -27,6 +28,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
   final TooltipContent tooltipContent;
   final int tooltipIndex;
   final int totalTooltips;
+  final VoidCallback onActionPressed;
   final IconData? icon;
 
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
@@ -120,7 +122,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
               title: tooltipContent.title,
               description: tooltipContent.description,
               actionLabel: _actionLabel,
-              onActionPressed: () => tooltipContent.onActionPressed(),
+              onActionPressed: onActionPressed,
             ),
             _TooltipArrow(
               color: arrowColor,

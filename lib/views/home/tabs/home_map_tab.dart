@@ -36,6 +36,7 @@ class HomeMapTab extends HookConsumerWidget {
                   globalKey: onboarding.searchKey,
                   tooltipPosition: TooltipPosition.bottom,
                   icon: onboarding.searchTooltipContent.icon,
+                  onActionPressed: () => ShowcaseView.get().next(),
                   child: LocationsTappableSearch(
                     enabled: !locationsStore.hasNoServers,
                     onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
