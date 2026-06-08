@@ -32,6 +32,10 @@ class ArrowedProgressCard extends HookConsumerWidget {
 
   int get _index => tooltipIndex + 1;
 
+  bool get _isLastStep => _index == totalTooltips;
+
+  String get _actionLabel => _isLastStep ? 'Complete' : tooltipContent.actionLabel.tr();
+
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;
 
@@ -113,7 +117,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
               progressValue: _index / totalTooltips,
               title: tooltipContent.title,
               description: tooltipContent.description,
-              actionLabel: tooltipContent.actionLabel.tr(),
+              actionLabel: _actionLabel,
               onActionPressed: () => tooltipContent.onActionPressed(),
             ),
             _TooltipArrow(
