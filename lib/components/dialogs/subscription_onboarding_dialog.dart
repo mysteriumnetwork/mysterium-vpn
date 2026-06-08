@@ -11,13 +11,8 @@ void showSubscriptionOnboardingDialog({
   showDialog(
     context: context,
     barrierDismissible: false,
-
-    builder: (context) => _Dialog(
-      title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
-      description: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
-      onStartTour: onStartTour,
-      onCancelTour: onCancelTour,
-    ),
+    builder: (context) =>
+        _StartSubscriptionOnboardingDialog(onStartTour: onStartTour, onCancelTour: onCancelTour),
   );
 }
 
@@ -25,25 +20,107 @@ void showSubscriptionOnboardingCompleteDialog({required BuildContext context}) {
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (context) => _Dialog(
-      title: LocaleKeys.subscriptionOnboardingSetupCompleteTitle.tr(),
-      description: LocaleKeys.subscriptionOnboardingSetupCompleteDescription.tr(),
-    ),
+    builder: (context) => const _CompleteSubscriptionOnboardingDialog(),
   );
 }
 
-class _Dialog extends StatelessWidget {
-  const _Dialog({
+class _StartSubscriptionOnboardingDialog extends StatelessWidget {
+  const _StartSubscriptionOnboardingDialog({required this.onStartTour, required this.onCancelTour});
+
+  final VoidCallback onStartTour;
+  final VoidCallback onCancelTour;
+
+  @override
+  Widget build(BuildContext context) {
+    final spacing = Theme.of(context).spacing;
+    final textStyles = Theme.of(context).textStyles;
+    final palette = Theme.of(context).palette;
+
+    return _SubscriptionOnboardingDialogFrame(
+      title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
+      description: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
+      emblemIcon: UntitledUI.flag_05,
+      emblemColor: palette.iconBrandSecondary,
+      emblemBackgroundColor: palette.bgSecondarySelected,
+      actions: [
+        SizedBox(height: spacing.xl2),
+        Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ButtonPrimary(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onStartTour();
+                    },
+                    child: Text(
+                      LocaleKeys.subscriptionOnboardingStartTourLabel.tr(),
+                      style: textStyles.textSm.semibold.copyWith(color: palette.textWhite),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: spacing.s),
+            Row(
+              children: [
+                Expanded(
+                  child: ButtonTertiary(
+                    decoration: ButtonDecoration(padding: EdgeInsets.all(spacing.none)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onCancelTour();
+                    },
+                    child: Text(
+                      LocaleKeys.subscriptionOnboardingCancelTourLabel.tr(),
+                      style: textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _CompleteSubscriptionOnboardingDialog extends StatelessWidget {
+  const _CompleteSubscriptionOnboardingDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = Theme.of(context).palette;
+
+    return _SubscriptionOnboardingDialogFrame(
+      title: LocaleKeys.subscriptionOnboardingSetupCompleteTitle.tr(),
+      description: LocaleKeys.subscriptionOnboardingSetupCompleteDescription.tr(),
+      emblemIcon: UntitledUI.check,
+      emblemColor: palette.iconSuccessPrimary,
+      emblemBackgroundColor: palette.bgSuccess,
+      actions: const [],
+    );
+  }
+}
+
+class _SubscriptionOnboardingDialogFrame extends StatelessWidget {
+  const _SubscriptionOnboardingDialogFrame({
     required this.title,
     required this.description,
-    this.onStartTour,
-    this.onCancelTour,
+    required this.emblemIcon,
+    required this.emblemColor,
+    required this.emblemBackgroundColor,
+    required this.actions,
   });
 
-  final VoidCallback? onStartTour;
-  final VoidCallback? onCancelTour;
   final String title;
   final String description;
+  final IconData emblemIcon;
+  final Color emblemColor;
+  final Color emblemBackgroundColor;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -69,58 +146,16 @@ class _Dialog extends StatelessWidget {
                 width: 32,
                 height: 32,
                 child: CircleAvatar(
-                  backgroundColor: palette.bgSecondarySelected,
+                  backgroundColor: emblemBackgroundColor,
                   child: Padding(
                     padding: EdgeInsets.all(spacing.sm),
-                    child: Icon(Icons.flag_outlined, size: 20, color: palette.iconBrandSecondary),
+                    child: Icon(emblemIcon, size: 20, color: emblemColor),
                   ),
                 ),
               ),
               emblemSpacing: spacing.md,
             ),
-            SizedBox(height: spacing.xl2),
-            Column(
-              children: [
-                if (onStartTour != null)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ButtonPrimary(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            onStartTour?.call();
-                          },
-                          child: Text(
-                            LocaleKeys.subscriptionOnboardingStartTourLabel.tr(),
-                            style: textStyles.textSm.semibold.copyWith(color: palette.textWhite),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                SizedBox(height: spacing.s),
-                if (onCancelTour != null)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ButtonTertiary(
-                          decoration: ButtonDecoration(padding: EdgeInsets.all(spacing.none)),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            onCancelTour?.call();
-                          },
-                          child: Text(
-                            LocaleKeys.subscriptionOnboardingCancelTourLabel.tr(),
-                            style: textStyles.textSm.semibold.copyWith(
-                              color: palette.textSecondary,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+            ...actions,
           ],
         ),
       ),
