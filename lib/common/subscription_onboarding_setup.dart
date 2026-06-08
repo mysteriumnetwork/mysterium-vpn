@@ -8,13 +8,10 @@ import 'package:mysterium_vpn/models/tooltip_content.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 final subscriptionOnboardingSetupPOD = Provider<SubscriptionOnboardingSetup>(
-  (ref) => SubscriptionOnboardingSetup(),
+  (ref) => _SubscriptionOnboardingSetup(),
 );
 
-class SubscriptionOnboardingSetup {
-  SubscriptionOnboardingSetup()
-    : keys = List.generate(totalSteps, (_) => GlobalKey<State<StatefulWidget>>());
-
+abstract interface class SubscriptionOnboardingSetup {
   static const totalSteps = 6;
 
   static const mapIndex = 0;
@@ -24,43 +21,101 @@ class SubscriptionOnboardingSetup {
   static const settingsIndex = 4;
   static const searchIndex = 5;
 
+  List<GlobalKey<State<StatefulWidget>>> get orderedKeys;
+
+  int get visibleStepsCount;
+
+  List<TooltipContent> get tooltipContents;
+
+  GlobalKey<State<StatefulWidget>> get connectButtonKey;
+
+  TooltipContent get connectButtonTooltipContent;
+
+  GlobalKey<State<StatefulWidget>> get searchKey;
+
+  TooltipContent get searchTooltipContent;
+
+  GlobalKey<State<StatefulWidget>> keyForTab(HomeTab tab);
+
+  int displayIndexForStep(int stepIndex);
+
+  int displayIndexForTab(HomeTab tab);
+
+  int indexForTab(HomeTab tab);
+}
+
+class _SubscriptionOnboardingSetup implements SubscriptionOnboardingSetup {
+  _SubscriptionOnboardingSetup()
+    : keys = List.generate(
+        SubscriptionOnboardingSetup.totalSteps,
+        (_) => GlobalKey<State<StatefulWidget>>(),
+      );
+
   final List<GlobalKey<State<StatefulWidget>>> keys;
 
   List<int> get orderedIndexes => isDesktop()
-      ? [mapIndex, productsIndex, settingsIndex, connectButtonIndex, searchIndex, locationsIndex]
-      : [mapIndex, locationsIndex, productsIndex, settingsIndex, connectButtonIndex, searchIndex];
+      ? [
+          SubscriptionOnboardingSetup.mapIndex,
+          SubscriptionOnboardingSetup.productsIndex,
+          SubscriptionOnboardingSetup.settingsIndex,
+          SubscriptionOnboardingSetup.connectButtonIndex,
+          SubscriptionOnboardingSetup.searchIndex,
+          SubscriptionOnboardingSetup.locationsIndex,
+        ]
+      : [
+          SubscriptionOnboardingSetup.mapIndex,
+          SubscriptionOnboardingSetup.locationsIndex,
+          SubscriptionOnboardingSetup.productsIndex,
+          SubscriptionOnboardingSetup.settingsIndex,
+          SubscriptionOnboardingSetup.connectButtonIndex,
+          SubscriptionOnboardingSetup.searchIndex,
+        ];
 
+  @override
   List<GlobalKey<State<StatefulWidget>>> get orderedKeys => [
     for (final index in orderedIndexes) keys[index],
   ];
 
+  @override
   int get visibleStepsCount => orderedIndexes.length;
 
+  @override
   List<TooltipContent> get tooltipContents =>
       isDesktop() ? _desktopTooltipContents : _mobileTooltipContents;
 
-  GlobalKey<State<StatefulWidget>> get connectButtonKey => keys[connectButtonIndex];
+  @override
+  GlobalKey<State<StatefulWidget>> get connectButtonKey =>
+      keys[SubscriptionOnboardingSetup.connectButtonIndex];
 
-  TooltipContent get connectButtonTooltipContent => tooltipContents[connectButtonIndex];
+  @override
+  TooltipContent get connectButtonTooltipContent =>
+      tooltipContents[SubscriptionOnboardingSetup.connectButtonIndex];
 
-  GlobalKey<State<StatefulWidget>> get searchKey => keys[searchIndex];
+  @override
+  GlobalKey<State<StatefulWidget>> get searchKey => keys[SubscriptionOnboardingSetup.searchIndex];
 
-  TooltipContent get searchTooltipContent => tooltipContents[searchIndex];
+  @override
+  TooltipContent get searchTooltipContent =>
+      tooltipContents[SubscriptionOnboardingSetup.searchIndex];
 
+  @override
   GlobalKey<State<StatefulWidget>> keyForTab(HomeTab tab) => keys[indexForTab(tab)];
 
+  @override
   int displayIndexForStep(int stepIndex) {
     final index = orderedIndexes.indexOf(stepIndex);
     return index == -1 ? stepIndex : index;
   }
 
+  @override
   int displayIndexForTab(HomeTab tab) => displayIndexForStep(indexForTab(tab));
 
+  @override
   int indexForTab(HomeTab tab) => switch (tab) {
-    HomeTab.map => mapIndex,
-    HomeTab.locations => locationsIndex,
-    HomeTab.products => productsIndex,
-    HomeTab.settings => settingsIndex,
+    HomeTab.map => SubscriptionOnboardingSetup.mapIndex,
+    HomeTab.locations => SubscriptionOnboardingSetup.locationsIndex,
+    HomeTab.products => SubscriptionOnboardingSetup.productsIndex,
+    HomeTab.settings => SubscriptionOnboardingSetup.settingsIndex,
   };
 }
 

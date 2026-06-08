@@ -24,7 +24,7 @@ void useSubscriptionOnboarding() {
   final homeTabsStore = useProvider<HomeTabsStore>(homeTabsStorePOD);
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
   final userPrefStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
-  final onboarding = useProvider<SubscriptionOnboardingSetup>(subscriptionOnboardingSetupPOD);
+  final SubscriptionOnboardingSetup onboarding = useProvider(subscriptionOnboardingSetupPOD);
 
   useMemoized(() {
     ShowcaseView.register(
@@ -37,6 +37,9 @@ void useSubscriptionOnboarding() {
           icon: Icons.close,
         ),
       ),
+      onComplete: (index, key) =>
+          analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedStepViewed).ignore(),
+      onFinish: () {},
     );
     return null;
   });

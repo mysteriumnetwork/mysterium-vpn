@@ -25,6 +25,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
     final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    const searchIndex = SubscriptionOnboardingSetup.searchIndex;
 
     useEffect(() {
       final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
@@ -72,9 +73,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
                       builder: (context) => ArrowedProgressCard(
-                        tooltipIndex: onboarding.displayIndexForStep(
-                          SubscriptionOnboardingSetup.searchIndex,
-                        ),
+                        tooltipIndex: onboarding.displayIndexForStep(searchIndex),
                         totalTooltips: onboarding.visibleStepsCount,
                         tooltipContent: onboarding.searchTooltipContent,
                         globalKey: onboarding.searchKey,
