@@ -431,6 +431,8 @@
   "subscriptionPlanResidentialIPsDesc": "Appari come un normale utente domestico, consentendoti di accedere ai servizi di streaming ed evitando di essere rilevato dalla VPN.",
   "subscriptionPlanCityLevelDesc": "Offre un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
   "subscriptionPlanMalwareBlockerDesc": "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, funzionando silenziosamente in background senza interromperti.",
+  "skipBtn": "Saltare",
+  "completeBtn": "Completare",
   "subscriptionOnboardingPromptTitle": "Fai un breve tour",
   "subscriptionOnboardingPromptDescription": "Impara a usare l'app aggiornata e scopri dove si trovano ora le funzionalità principali.",
   "subscriptionOnboardingStartTourLabel": "Inizia il tour",

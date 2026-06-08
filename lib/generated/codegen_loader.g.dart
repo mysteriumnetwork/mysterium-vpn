@@ -442,10 +442,12 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
     "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
+    "skipBtn": "跳过",
+    "completeBtn": "完全的",
     "subscriptionOnboardingPromptTitle": "快速参观",
     "subscriptionOnboardingPromptDescription": "熟悉更新后的应用程序，并发现主要功能现在位于何处。",
     "subscriptionOnboardingStartTourLabel": "开始游览",
-    "subscriptionOnboardingCancelTourLabel": "暂且跳过",
+    "subscriptionOnboardingCancelTourLabel": "暂时跳过",
     "subscriptionOnboardingMapDesktopTitle": "以您的方式探索各地",
     "subscriptionOnboardingMapDesktopDescription": "浏览地图或从侧边栏探索地点。",
     "subscriptionOnboardingMapMobileTitle": "从地图连接",
@@ -486,7 +488,7 @@ class CodegenLoader extends AssetLoader {
     "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
     "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
     "ipTypeResidentialTooltipBody":
-        "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
+        "家庭IP地址依赖于真人用户。如果该用户的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
     "refreshIPAddress": "IP地址刷新",
     "getNewIPAddress": "刷新后获取新的 IP 地址",
     "resetAppDesc": "当出现故障时，请重置。",
@@ -874,7 +876,7 @@ class CodegenLoader extends AssetLoader {
     "pt": "Portekizce",
     "purchased": "satın alındı",
     "purchasePromoCTA": "Haydi gidelim",
-    "purchasePromoEnds": "Uçlar {}",
+    "purchasePromoEnds": "Sonlar {}",
     "purchasePromoFeatures":
         "[\"100'den fazla ülke\", \"19.000'den fazla konut IP adresi\", \"7 günlük para iade garantisi\"]",
     "purchasePromoPPTOC": "{} ve {} sayfalarımızı okuyun.",
@@ -1079,6 +1081,8 @@ class CodegenLoader extends AssetLoader {
         "Çoğu VPN'in aksine, daha hassas konum kontrolü sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
     "subscriptionPlanMalwareBlockerDesc":
         "Cihazınıza ulaşmadan önce tehditleri durdurarak onu korur, sizi rahatsız etmeden arka planda sessizce çalışır.",
+    "skipBtn": "Atlamak",
+    "completeBtn": "Tamamlamak",
     "subscriptionOnboardingPromptTitle": "Kısa bir tur atın",
     "subscriptionOnboardingPromptDescription":
         "Güncellenen uygulamayı keşfedin ve önemli özelliklerin artık nerede bulunduğunu öğrenin.",
@@ -1703,6 +1707,8 @@ class CodegenLoader extends AssetLoader {
         "ほとんどのVPNよりも精度の高い位置情報制御を提供します。一般的なVPNでは、国全体または州全体しか選択できないのが一般的です。",
     "subscriptionPlanMalwareBlockerDesc":
         "脅威がデバイスに到達する前に阻止することでデバイスを保護し、バックグラウンドで静かに動作するため、ユーザーの操作を妨げることはありません。",
+    "skipBtn": "スキップ",
+    "completeBtn": "完了",
     "subscriptionOnboardingPromptTitle": "簡単なツアーをご覧ください",
     "subscriptionOnboardingPromptDescription": "アップデートされたアプリの使い方を覚えて、主要な機能がどこにあるのかを確認しましょう。",
     "subscriptionOnboardingStartTourLabel": "ツアー開始",
@@ -1822,7 +1828,7 @@ class CodegenLoader extends AssetLoader {
     "onboardingStep2Desc":
         "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
     "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
-    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なります。",
+    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
     "checkSubsStatusTitle": "プラン情報を取得中...",
     "noSubscriptionTitle": "有効なプランがありません",
     "noSubscriptionAction": "プランを入手する",
@@ -1842,7 +1848,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionProcessCanceled": "購読内容の変更が完了していません。",
     "tokenAlreadyUsed": "トークンは既に使用されています。もう一度お試しください。\n\n",
     "subscriptionActive": "素晴らしいお知らせです！お客様の購読が有効になりました。",
-    "planAlreadyPurchasedMsg": "準備完了です！このプランは既に有効になっています。",
+    "planAlreadyPurchasedMsg": "これで準備完了です！このプランは既に有効になっています。",
     "signInAbortedMsg": "サインインが中断されました",
     "notAvailableMsg": "利用不可",
     "killSwitch": "キルスイッチ",
@@ -2359,11 +2365,13 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
     "subscriptionPlanCityLevelDesc":
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+    "skipBtn": "Überspringen",
+    "completeBtn": "Vollständig",
     "subscriptionOnboardingPromptTitle": "Machen Sie eine kurze Tour",
     "subscriptionOnboardingPromptDescription":
         "Machen Sie sich mit der aktualisierten App vertraut und entdecken Sie, wo sich die wichtigsten Funktionen jetzt befinden.",
@@ -3043,6 +3051,8 @@ class CodegenLoader extends AssetLoader {
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege seu dispositivo, impedindo ameaças antes que elas o alcancem, funcionando silenciosamente em segundo plano sem interrompê-lo.",
+    "skipBtn": "Pular",
+    "completeBtn": "Completo",
     "subscriptionOnboardingPromptTitle": "Faça um tour rápido",
     "subscriptionOnboardingPromptDescription":
         "Aprenda a usar o aplicativo atualizado e descubra onde estão agora os principais recursos.",
@@ -3191,7 +3201,7 @@ class CodegenLoader extends AssetLoader {
     "authenticationFailed": "Não foi possível efetuar o login. Tente novamente.",
     "failedToLoadLocations": "Não foi possível carregar as localizações. Tente novamente.",
     "failedToSubscribe": "Ocorreu um problema com a sua assinatura. Por favor, tente novamente!",
-    "incorrectCode": "Código incorreto. Por favor, tente novamente.",
+    "incorrectCode": "Código incorreto. Tente novamente.",
     "incorrectMagicLink": "Link mágico incorreto. Tente novamente.",
     "noLocations": "Não foi possível encontrar nenhuma localização.",
     "noLocationsKeyword": "Não foi possível encontrar nenhuma localização para \"{}\"",
@@ -3709,6 +3719,8 @@ class CodegenLoader extends AssetLoader {
         "Provides more precise location control than most VPNs, which typically limit you to selecting entire countries or states.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protects your device by stopping threats before they can reach it, running quietly in the background without interrupting you.",
+    "skipBtn": "Skip",
+    "completeBtn": "Complete",
     "subscriptionOnboardingPromptTitle": "Take a quick tour",
     "subscriptionOnboardingPromptDescription":
         "Learn your way around the updated app and discover where key features now live.",
@@ -4383,6 +4395,8 @@ class CodegenLoader extends AssetLoader {
         "Offre un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, funzionando silenziosamente in background senza interromperti.",
+    "skipBtn": "Saltare",
+    "completeBtn": "Completare",
     "subscriptionOnboardingPromptTitle": "Fai un breve tour",
     "subscriptionOnboardingPromptDescription":
         "Impara a usare l'app aggiornata e scopri dove si trovano ora le funzionalità principali.",
@@ -5057,15 +5071,17 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
-        "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
+        "Apparaissez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
     "subscriptionPlanCityLevelDesc":
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protège votre appareil en bloquant les menaces avant qu'elles ne l'atteignent, fonctionnant discrètement en arrière-plan sans vous interrompre.",
+    "skipBtn": "Sauter",
+    "completeBtn": "Complet",
     "subscriptionOnboardingPromptTitle": "Faites un tour rapide",
     "subscriptionOnboardingPromptDescription":
         "Familiarisez-vous avec l'application mise à jour et découvrez où se trouvent désormais les fonctionnalités clés.",
@@ -5121,7 +5137,7 @@ class CodegenLoader extends AssetLoader {
         "Adresses IP hébergées sur des serveurs rapides et performants pour des besoins VPN rapides : choisissez cette option pour des connexions stables.",
     "ipTypeResidentialDisclaimer":
         "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevrez peut donc changer.",
-    "ipTypeResidentialTooltipTitle": "Pourquoi le lien est-il perdu ?",
+    "ipTypeResidentialTooltipTitle": "Pourquoi le lien est-il perdu ?",
     "ipTypeResidentialTooltipBody":
         "Les adresses IP domestiques dépendent de personnes réelles. En cas de perte de connexion, vous serez instantanément reconnecté à l'adresse IP disponible la plus proche. Pour une connexion stable, choisissez une adresse IP haut débit.",
     "refreshIPAddress": "Actualisation de l'adresse IP",
@@ -5210,7 +5226,7 @@ class CodegenLoader extends AssetLoader {
     "checkSubsStatusFailedTitle": "Les informations sur le plan ne sont pas disponibles.",
     "accountSuccessfullyDeleted": "Compte supprimé",
     "redirectToLoginPage":
-        "Votre compte a été supprimé avec succès. Vous allez être redirigé vers la page de connexion.",
+        "Votre compte a été supprimé avec succès. Vous serez redirigé vers l'écran de connexion.",
     "goToLoginBtn": "Allez vous connecter",
     "authenticationFailed": "Impossible de se connecter. Veuillez réessayer.",
     "failedToLoadLocations": "Impossible de charger les emplacements. Veuillez réessayer.",
@@ -5719,7 +5735,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5732,6 +5748,8 @@ class CodegenLoader extends AssetLoader {
         "Menyediakan kontrol lokasi yang lebih tepat daripada kebanyakan VPN, yang biasanya membatasi Anda untuk memilih seluruh negara atau wilayah.",
     "subscriptionPlanMalwareBlockerDesc":
         "Melindungi perangkat Anda dengan menghentikan ancaman sebelum mencapai perangkat, berjalan dengan tenang di latar belakang tanpa mengganggu Anda.",
+    "skipBtn": "Melewati",
+    "completeBtn": "Menyelesaikan",
     "subscriptionOnboardingPromptTitle": "Ikuti tur singkat",
     "subscriptionOnboardingPromptDescription":
         "Pelajari cara menggunakan aplikasi yang telah diperbarui dan temukan letak fitur-fitur utama sekarang.",
@@ -5889,7 +5907,7 @@ class CodegenLoader extends AssetLoader {
     "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
     "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
     "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-    "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
+    "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
     "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
     "signInAbortedMsg": "Login gagal",
     "notAvailableMsg": "Tidak tersedia",
@@ -6412,9 +6430,11 @@ class CodegenLoader extends AssetLoader {
         "Ofrece un control de ubicación más preciso que la mayoría de las VPN, que normalmente te limitan a seleccionar países o estados completos.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege tu dispositivo deteniendo las amenazas antes de que puedan alcanzarlo, funcionando discretamente en segundo plano sin interrumpirte.",
+    "skipBtn": "Saltar",
+    "completeBtn": "Completo",
     "subscriptionOnboardingPromptTitle": "Haz un recorrido rápido",
     "subscriptionOnboardingPromptDescription":
-        "Familiarícese con la aplicación actualizada y descubra dónde se encuentran ahora las funciones principales.",
+        "Familiarízate con la aplicación actualizada y descubre dónde se encuentran ahora las funciones principales.",
     "subscriptionOnboardingStartTourLabel": "Iniciar recorrido",
     "subscriptionOnboardingCancelTourLabel": "Saltar por ahora",
     "subscriptionOnboardingMapDesktopTitle": "Explora los lugares a tu manera.",
@@ -7043,7 +7063,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو أنوال",
+    "plan_yearly_pro": "برو سنوي",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -7065,6 +7085,8 @@ class CodegenLoader extends AssetLoader {
         "يوفر تحكمًا أكثر دقة في الموقع مقارنة بمعظم شبكات VPN، والتي عادةً ما تحد من اختيارك لبلدان أو ولايات بأكملها.",
     "subscriptionPlanMalwareBlockerDesc":
         "يحمي جهازك عن طريق إيقاف التهديدات قبل أن تتمكن من الوصول إليه، ويعمل بهدوء في الخلفية دون مقاطعتك.",
+    "skipBtn": "يتخطى",
+    "completeBtn": "مكتمل",
     "subscriptionOnboardingPromptTitle": "قم بجولة سريعة",
     "subscriptionOnboardingPromptDescription":
         "تعرّف على كيفية استخدام التطبيق المحدث واكتشف مكان وجود الميزات الرئيسية الآن.",
@@ -7217,7 +7239,7 @@ class CodegenLoader extends AssetLoader {
     "signInAbortedMsg": "تم إلغاء تسجيل الدخول",
     "notAvailableMsg": "غير متوفر",
     "killSwitch": "مفتاح الإيقاف",
-    "killSwitchDesc": "يحجب الإنترنت في حالة انقطاع اتصال VPN",
+    "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
     "dns": "حماية نظام أسماء النطاقات (DNS)",
     "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)",
     "subscriptionPlanNamePro": "محترف",
