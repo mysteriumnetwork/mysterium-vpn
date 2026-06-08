@@ -26,6 +26,9 @@ void useSubscriptionOnboarding() {
   final userPrefStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
   final SubscriptionOnboardingSetup onboarding = useProvider(subscriptionOnboardingSetupPOD);
 
+  Map<String, dynamic>? stepAnalyticsParams(int? index) =>
+      index == null ? null : {'step': index + 1};
+
   useMemoized(() {
     ShowcaseView.register(
       globalFloatingActionWidget: (context) => FloatingActionWidget(
@@ -37,9 +40,22 @@ void useSubscriptionOnboarding() {
           icon: Icons.close,
         ),
       ),
-      onComplete: (index, key) =>
-          analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedStepViewed).ignore(),
-      onFinish: () => showSubscriptionOnboardingCompleteDialog(context: context),
+      onStart: (index, key) => analyticsStore
+          .logEvent(
+            AnalyticsEvent.onboardingSubscribedStepViewed,
+            parameters: stepAnalyticsParams(index),
+          )
+          .ignore(),
+      onComplete: (index, key) => analyticsStore
+          .logEvent(
+            AnalyticsEvent.onboardingSubscribedStepCompleted,
+            parameters: stepAnalyticsParams(index),
+          )
+          .ignore(),
+      onFinish: () {
+        analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedFinished).ignore();
+        showSubscriptionOnboardingCompleteDialog(context: context);
+      },
     );
     return null;
   });
