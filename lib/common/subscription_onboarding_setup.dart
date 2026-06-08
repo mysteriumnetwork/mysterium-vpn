@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/tooltip_content.dart';
 import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 final subscriptionOnboardingSetupPOD = Provider<SubscriptionOnboardingSetup>(
   (ref) => _SubscriptionOnboardingSetup(),
@@ -125,37 +124,31 @@ List<TooltipContent> get _mobileTooltipContents => [
     title: LocaleKeys.subscriptionOnboardingMapMobileTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingMapMobileDescription.tr(),
     icon: UntitledUI.map_01,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingVPNLocationsMobileDescription.tr(),
     icon: UntitledUI.flag_01,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingManagePlanTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingManagePlanDescription.tr(),
     icon: UntitledUI.star_06,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingConnectTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingConnectDescription.tr(),
     icon: UntitledUI.rocket_02,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription.tr(),
     icon: UntitledUI.lock_01,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingSearchTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingSearchDescription.tr(),
     icon: UntitledUI.search_sm,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
 ];
 
@@ -164,36 +157,30 @@ List<TooltipContent> get _desktopTooltipContents => [
     title: LocaleKeys.subscriptionOnboardingMapDesktopDescription.tr(),
     description: LocaleKeys.subscriptionOnboardingMapDesktopDescription.tr(),
     icon: UntitledUI.map_01,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingVPNLocationsDesktopDescription.tr(),
     icon: UntitledUI.star_06,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingManagePlanTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingManagePlanDescription.tr(),
     icon: UntitledUI.rocket_02,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingConnectTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingConnectDescription.tr(),
     icon: UntitledUI.lock_01,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription.tr(),
     icon: UntitledUI.search_sm,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
   TooltipContent(
     title: LocaleKeys.subscriptionOnboardingSearchTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingSearchDescription.tr(),
     icon: UntitledUI.flag_01,
-    onActionPressed: () => ShowcaseView.get().next(),
   ),
 ];

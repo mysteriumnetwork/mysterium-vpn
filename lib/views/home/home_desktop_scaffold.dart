@@ -63,6 +63,7 @@ class HomeDesktopScaffold extends HookConsumerWidget {
                   globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.right,
                   icon: tooltipContents[onboarding.indexForTab(tabs[index])].icon,
+                  onActionPressed: () => ShowcaseView.get().next(),
                   child: child,
                 ),
               ),

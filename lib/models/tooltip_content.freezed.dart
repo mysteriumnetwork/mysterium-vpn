@@ -12,9 +12,9 @@ part of 'tooltip_content.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$TooltipContent implements DiagnosticableTreeMixin {
+mixin _$TooltipContent {
 
- String get title; String get description; VoidCallback get onActionPressed; IconData? get icon; String get actionLabel;
+ String get title; String get description; IconData? get icon; String get actionLabel;
 /// Create a copy of TooltipContent
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -22,25 +22,19 @@ mixin _$TooltipContent implements DiagnosticableTreeMixin {
 $TooltipContentCopyWith<TooltipContent> get copyWith => _$TooltipContentCopyWithImpl<TooltipContent>(this as TooltipContent, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'TooltipContent'))
-    ..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('onActionPressed', onActionPressed))..add(DiagnosticsProperty('icon', icon))..add(DiagnosticsProperty('actionLabel', actionLabel));
-}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TooltipContent&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.onActionPressed, onActionPressed) || other.onActionPressed == onActionPressed)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.actionLabel, actionLabel) || other.actionLabel == actionLabel));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TooltipContent&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.actionLabel, actionLabel) || other.actionLabel == actionLabel));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,description,onActionPressed,icon,actionLabel);
+int get hashCode => Object.hash(runtimeType,title,description,icon,actionLabel);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'TooltipContent(title: $title, description: $description, onActionPressed: $onActionPressed, icon: $icon, actionLabel: $actionLabel)';
+String toString() {
+  return 'TooltipContent(title: $title, description: $description, icon: $icon, actionLabel: $actionLabel)';
 }
 
 
@@ -51,7 +45,7 @@ abstract mixin class $TooltipContentCopyWith<$Res>  {
   factory $TooltipContentCopyWith(TooltipContent value, $Res Function(TooltipContent) _then) = _$TooltipContentCopyWithImpl;
 @useResult
 $Res call({
- String title, String description, VoidCallback onActionPressed, IconData? icon, String actionLabel
+ String title, String description, IconData? icon, String actionLabel
 });
 
 
@@ -68,12 +62,11 @@ class _$TooltipContentCopyWithImpl<$Res>
 
 /// Create a copy of TooltipContent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? onActionPressed = null,Object? icon = freezed,Object? actionLabel = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? icon = freezed,Object? actionLabel = null,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,onActionPressed: null == onActionPressed ? _self.onActionPressed : onActionPressed // ignore: cast_nullable_to_non_nullable
-as VoidCallback,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as IconData?,actionLabel: null == actionLabel ? _self.actionLabel : actionLabel // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -160,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description,  VoidCallback onActionPressed,  IconData? icon,  String actionLabel)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description,  IconData? icon,  String actionLabel)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TooltipContent() when $default != null:
-return $default(_that.title,_that.description,_that.onActionPressed,_that.icon,_that.actionLabel);case _:
+return $default(_that.title,_that.description,_that.icon,_that.actionLabel);case _:
   return orElse();
 
 }
@@ -181,10 +174,10 @@ return $default(_that.title,_that.description,_that.onActionPressed,_that.icon,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description,  VoidCallback onActionPressed,  IconData? icon,  String actionLabel)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description,  IconData? icon,  String actionLabel)  $default,) {final _that = this;
 switch (_that) {
 case _TooltipContent():
-return $default(_that.title,_that.description,_that.onActionPressed,_that.icon,_that.actionLabel);case _:
+return $default(_that.title,_that.description,_that.icon,_that.actionLabel);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +194,10 @@ return $default(_that.title,_that.description,_that.onActionPressed,_that.icon,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description,  VoidCallback onActionPressed,  IconData? icon,  String actionLabel)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description,  IconData? icon,  String actionLabel)?  $default,) {final _that = this;
 switch (_that) {
 case _TooltipContent() when $default != null:
-return $default(_that.title,_that.description,_that.onActionPressed,_that.icon,_that.actionLabel);case _:
+return $default(_that.title,_that.description,_that.icon,_that.actionLabel);case _:
   return null;
 
 }
@@ -215,13 +208,12 @@ return $default(_that.title,_that.description,_that.onActionPressed,_that.icon,_
 /// @nodoc
 
 
-class _TooltipContent with DiagnosticableTreeMixin implements TooltipContent {
-   _TooltipContent({required this.title, required this.description, required this.onActionPressed, required this.icon, this.actionLabel = LocaleKeys.continueBtn});
+class _TooltipContent implements TooltipContent {
+   _TooltipContent({required this.title, required this.description, required this.icon, this.actionLabel = LocaleKeys.continueBtn});
   
 
 @override final  String title;
 @override final  String description;
-@override final  VoidCallback onActionPressed;
 @override final  IconData? icon;
 @override@JsonKey() final  String actionLabel;
 
@@ -232,25 +224,19 @@ class _TooltipContent with DiagnosticableTreeMixin implements TooltipContent {
 _$TooltipContentCopyWith<_TooltipContent> get copyWith => __$TooltipContentCopyWithImpl<_TooltipContent>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'TooltipContent'))
-    ..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('onActionPressed', onActionPressed))..add(DiagnosticsProperty('icon', icon))..add(DiagnosticsProperty('actionLabel', actionLabel));
-}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TooltipContent&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.onActionPressed, onActionPressed) || other.onActionPressed == onActionPressed)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.actionLabel, actionLabel) || other.actionLabel == actionLabel));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TooltipContent&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.actionLabel, actionLabel) || other.actionLabel == actionLabel));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,description,onActionPressed,icon,actionLabel);
+int get hashCode => Object.hash(runtimeType,title,description,icon,actionLabel);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'TooltipContent(title: $title, description: $description, onActionPressed: $onActionPressed, icon: $icon, actionLabel: $actionLabel)';
+String toString() {
+  return 'TooltipContent(title: $title, description: $description, icon: $icon, actionLabel: $actionLabel)';
 }
 
 
@@ -261,7 +247,7 @@ abstract mixin class _$TooltipContentCopyWith<$Res> implements $TooltipContentCo
   factory _$TooltipContentCopyWith(_TooltipContent value, $Res Function(_TooltipContent) _then) = __$TooltipContentCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String description, VoidCallback onActionPressed, IconData? icon, String actionLabel
+ String title, String description, IconData? icon, String actionLabel
 });
 
 
@@ -278,12 +264,11 @@ class __$TooltipContentCopyWithImpl<$Res>
 
 /// Create a copy of TooltipContent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? onActionPressed = null,Object? icon = freezed,Object? actionLabel = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? icon = freezed,Object? actionLabel = null,}) {
   return _then(_TooltipContent(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,onActionPressed: null == onActionPressed ? _self.onActionPressed : onActionPressed // ignore: cast_nullable_to_non_nullable
-as VoidCallback,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as IconData?,actionLabel: null == actionLabel ? _self.actionLabel : actionLabel // ignore: cast_nullable_to_non_nullable
 as String,
   ));
