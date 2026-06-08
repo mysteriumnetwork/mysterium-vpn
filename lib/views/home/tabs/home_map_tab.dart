@@ -18,7 +18,6 @@ class HomeMapTab extends HookConsumerWidget {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
-    const searchIndex = SubscriptionOnboardingSetup.searchIndex;
 
     return Column(
       children: [
@@ -27,17 +26,22 @@ class HomeMapTab extends HookConsumerWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: Observer(
-              builder: (context) => ArrowedProgressCard(
-                tooltipIndex: onboarding.displayIndexForStep(searchIndex),
-                totalTooltips: onboarding.visibleStepsCount,
-                tooltipContent: onboarding.searchTooltipContent,
-                globalKey: onboarding.searchKey,
-                tooltipPosition: TooltipPosition.bottom,
-                child: LocationsTappableSearch(
-                  enabled: !locationsStore.hasNoServers,
-                  onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
-                ),
-              ),
+              builder: (context) {
+                final stepIndex = onboarding.stepIndex(SubscriptionOnboardingSetup.searchIndex);
+
+                return ArrowedProgressCard(
+                  tooltipIndex: stepIndex,
+                  totalTooltips: onboarding.visibleStepsCount,
+                  tooltipContent: onboarding.searchTooltipContent,
+                  globalKey: onboarding.searchKey,
+                  tooltipPosition: TooltipPosition.bottom,
+                  icon: onboarding.searchTooltipContent.icon,
+                  child: LocationsTappableSearch(
+                    enabled: !locationsStore.hasNoServers,
+                    onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
+                  ),
+                );
+              },
             ),
           ),
         ),

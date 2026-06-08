@@ -57,7 +57,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
     final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
     final screenType = ScreenType.of(context);
     final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
-    const locationsIndex = SubscriptionOnboardingSetup.locationsIndex;
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1
@@ -155,13 +154,16 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
               final start = showcaseStartIndex!;
               final firstLocation = items[start];
               final secondLocation = items[start + 1];
+              final stepIndex = onboarding.stepIndex(SubscriptionOnboardingSetup.locationsIndex);
 
               return ArrowedProgressCard(
-                tooltipIndex: onboarding.displayIndexForStep(locationsIndex),
+                tooltipIndex: stepIndex,
                 totalTooltips: onboarding.visibleStepsCount,
-                tooltipContent: onboarding.tooltipContents[locationsIndex],
+                tooltipContent:
+                    onboarding.tooltipContents[SubscriptionOnboardingSetup.locationsIndex],
                 globalKey: onboarding.keyForTab(HomeTab.locations),
                 tooltipPosition: TooltipPosition.right,
+                icon: onboarding.tooltipContents[SubscriptionOnboardingSetup.locationsIndex].icon,
                 child: Column(
                   children: [
                     _LocationListItem(
