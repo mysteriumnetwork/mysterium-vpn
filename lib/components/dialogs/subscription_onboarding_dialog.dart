@@ -127,7 +127,12 @@ class _SubscriptionOnboardingDialogFrame extends StatelessWidget {
     return Dialog(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      constraints: const BoxConstraints(maxWidth: 350),
+      constraints: const BoxConstraints(
+        minWidth: 343,
+        maxWidth: 343,
+        minHeight: 236,
+        maxHeight: 236,
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: spacing.xl, vertical: spacing.md),
         child: Column(
