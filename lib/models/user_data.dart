@@ -30,6 +30,9 @@ class UserData {
     this.appOpenCount = 0,
     this.noneSubsOnboardingCompleted = false,
     this.noneSubsOnboardingStep = 0,
+    this.residentialEducationModalShown = false,
+    this.residentialReminderShownAt,
+    this.residentialConnectCount = 0,
   });
 
   @HiveField(0)
@@ -96,6 +99,18 @@ class UserData {
   /// needed once [noneSubsOnboardingCompleted] is true — onboarding won't open.
   @HiveField(18, defaultValue: 0)
   int noneSubsOnboardingStep;
+
+  /// Whether the one-time residential-IP education modal has been shown.
+  @HiveField(19, defaultValue: false)
+  bool residentialEducationModalShown;
+
+  /// When the last residential-IP education reminder/exposure happened.
+  @HiveField(20)
+  DateTime? residentialReminderShownAt;
+
+  /// Number of qualifying residential connections (gates the education modal).
+  @HiveField(21, defaultValue: 0)
+  int residentialConnectCount;
 
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [
