@@ -68,10 +68,11 @@ mysterium-vpn (lib/)
 - Brand home badge (circular, `bg-brand-secondary` tint, `home_03` glyph).
 - Title `How Residential IPs work` (textLg/semibold, centered).
 - Subtitle `Residential IPs are different from high-speed IPs. Here's what to expect.` (textSm/regular tertiary, centered).
-- Three blocks, each = leading `DecoratedIcon` badge + bold title (textSm/semibold) + body (textSm/regular tertiary):
-  1. `home_03` — **Real household devices** — "Residential IPs come from real household devices, making your traffic look like regular internet usage."
-  2. availability-off glyph (exact `UntitledUI` name resolved from Figma at implementation; visually an eye/availability-off icon) — **Availability can change** — "Because these IPs are provided by real devices, some nodes may go offline unexpectedly."
-  3. `refresh_cw_*` — **Automatic reconnection** — "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP."
+- Three blocks, each = leading `DecoratedIcon` badge (bg `bg-info-icon`/#f5f5f5, 32px) + bold title (textXs/semibold) + body (textXs/regular tertiary). Confirmed `UntitledUI` glyphs:
+  1. `UntitledUI.home_03` — **Real household devices** — "Residential IPs come from real household devices, making your traffic look like regular internet usage."
+  2. `UntitledUI.cloud_off` — **Availability can change** — "Because these IPs are provided by real devices, some nodes may go offline unexpectedly."
+  3. `UntitledUI.refresh_cw_02` — **Automatic reconnection** — "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP."
+- The modal surface is **light** (bg-modals #fdfdfd, dark text #252b37, brand badge tint #f9e8ff) per Figma — even though the app shell is dark. Colors come from design tokens.
 - Primary button **Got it** (full-width on mobile; auto-width centered on desktop).
 - Presentation: `showBottomSheetDialog` → bottom sheet on mobile (drag handle, no ✕, dismiss via Got it / outside tap / slide down), centered modal on desktop (✕ shown, dismiss via Got it / outside click / ✕). Background dims and the VPN stays connected (both inherent to the wrapper).
 
@@ -92,14 +93,20 @@ Persisted fields:
 - `DateTime? lastReminderShownAt` (default `null`)
 - `int residentialConnectCount` (default `0`)
 
-Pure decision (no `BuildContext`; unit-testable). Called only after a connect
-has **sustained** connected-on-residential for 2s:
+Side-effecting recorder and a **pure** decision are split (so the truth-table
+tests have independent inputs and the recorder gets its own Hive round-trip
+test). Both are called only after a connect has **sustained**
+connected-on-residential for 2s:
 
 ```dart
 enum EducationAction { none, showModal, showReminder }
 
-EducationAction decideOnResidentialConnect(DateTime now) {
-  residentialConnectCount += 1;            // persist
+/// Side effect: increments + persists the connect counter. Call once per
+/// qualifying (sustained-2s, user-initiated) residential connect.
+void recordResidentialConnect();
+
+/// Pure read of current persisted state. No mutation.
+EducationAction decide(DateTime now) {
   if (!educationModalShown && residentialConnectCount >= 2) {
     return EducationAction.showModal;
   }
@@ -111,16 +118,27 @@ EducationAction decideOnResidentialConnect(DateTime now) {
   return EducationAction.none;
 }
 
-void markModalShown();          // educationModalShown = true; persist
-void markReminderShown(now);    // lastReminderShownAt = now; persist
+/// educationModalShown = true AND seed lastReminderShownAt = now.
+/// Seeding the reminder clock here treats the modal as the first
+/// "education exposure", so the next reminder is gated 30 days out and a
+/// reminder cannot fire on the connect immediately following the modal.
+void markModalShown(DateTime now);
+
+/// lastReminderShownAt = now; persist.
+void markReminderShown(DateTime now);
 ```
 
-Counting rule (explicit): a residential connect contributes to
-`residentialConnectCount` only once it has stayed connected-on-residential for
-the full 2s window. Sub-2s connects do not count and never trigger UI.
-
-`reminderShownToday` semantics: reminder fires at most once per 30 days from the
-last reminder/education exposure.
+Counting rules (explicit):
+- A residential connect contributes to `residentialConnectCount` only once it
+  has stayed connected-on-residential for the full 2s window. Sub-2s connects
+  do not count and never trigger UI.
+- The modal fires on the **first qualifying connect where
+  `residentialConnectCount >= 2 && !educationModalShown`**. Pre-existing
+  connects (before this feature shipped) are **not** retroactively counted, so
+  for current users the modal effectively appears on their 2nd residential
+  connect after the update.
+- `markModalShown(now)` seeds `lastReminderShownAt = now`; the reminder is then
+  gated to at most once per 30 days from the last education/reminder exposure.
 
 ### 3. Trigger orchestration — `useResidentialEducationTrigger()`
 
@@ -138,35 +156,58 @@ Hook flow:
 3. After 2s, re-check **guards**:
    - still `vpnStore.isConnected`
    - still residential (`location.ipType == residential`)
-   - current route is the home shell (Map / Locations / connection visible) —
-     not Settings/Products/auth/etc.
-   - no education UI already open (single in-flight flag)
-4. If all pass → `action = store.decideOnResidentialConnect(DateTime.now())`:
-   - `showModal` → present `ResidentialEducationModal` via `showBottomSheetDialog`; on first present call `store.markModalShown()`; log analytics.
-   - `showReminder` → present `InfoPopover` (dark variant) anchored to the connected card; `store.markReminderShown(now)`; log analytics.
-   - `none` → do nothing.
-5. Single in-flight flag cleared when the surface is dismissed.
+   - **tab guard** via `homeTabsStorePOD.selected` (MobX, not a router): the
+     concrete check is `selected == HomeTab.map || selected == HomeTab.locations`
+     for the **modal**, and `selected == HomeTab.map` for the **reminder** (the
+     connected card it anchors to lives on the map/connection view; on desktop
+     `HomeTab.locations` is `mobileOnly`, so desktop is always `map` + side
+     panel). Settings/Products tabs → abort.
+   - `store.uiInFlight == false` (single-instance guard — see below).
+4. If all pass → `store.recordResidentialConnect()`, then
+   `action = store.decide(DateTime.now())`:
+   - `showModal` → set `uiInFlight`, present `ResidentialEducationModal` via
+     `showBottomSheetDialog`; call `store.markModalShown(now)`; log analytics.
+   - `showReminder` (only valid on `HomeTab.map`) → set `uiInFlight`, present
+     `InfoPopover` (dark variant) anchored to the connected card;
+     `store.markReminderShown(now)`; log analytics.
+   - `none` → do nothing (counter already incremented).
+5. **Single-instance guard**: a non-persisted `bool uiInFlight` lives on the
+   **store** (not hook-local) so it is global regardless of which scaffold is
+   mounted. Set when a surface opens, cleared when it dismisses. This prevents
+   two instances under rapid reconnects and under any transient double-mount.
 
 ### 4. Entry points & wiring
 
-- **Info icon** on the Residential IPs description card
-  (`locations_disclaimer.dart`): replace the current `TooltipIcon`
-  (Flutter `Tooltip`) with a tap target that opens `InfoPopover` (light
-  variant), anchored to the icon. Log `residentialInfoTooltipShown`.
-- **Reminder** reuses `InfoPopover` (dark variant) anchored to the connected
-  residential card on Map (desktop: over the map; mobile: compact popover near
-  the connected card area).
-- **Trigger hook** mounted once in each platform scaffold.
+- **Info icon**: the residential card's info icon is currently rendered
+  *inside* the design-lib `MinimalAlert` from the `tooltipTitle`/`tooltipBody`
+  params (it builds a `TooltipIcon.titled` internally — there is **no**
+  `TooltipIcon` to replace in the app file). The real change: add an optional
+  `titleAction`/`onInfoTap` slot to `MinimalAlert` (design lib) so a caller can
+  supply a custom trailing widget next to the title. `LocationsDisclaimer.residential()`
+  passes an `InfoPopover` trigger (light variant) into that slot instead of the
+  `tooltipTitle`/`tooltipBody` path. The existing tooltip path stays for other
+  `MinimalAlert` callers (e.g. products_browsing_view). Log
+  `residentialInfoTooltipShown` on open.
+- **Reminder** reuses `InfoPopover` (dark variant), shown only on `HomeTab.map`,
+  anchored to the connected residential card (desktop: the connection card in
+  the right panel over the map; mobile: the connection card on the map tab).
+  The tail direction flips (above/below the anchor) based on available space so
+  it stays on-screen near viewport edges. If, at trigger time, no anchor target
+  is mounted, the reminder is skipped (counter still recorded).
+- **Trigger hook** mounted once in each platform scaffold; the responsive
+  scaffold switch guarantees only one scaffold is mounted at a time, and the
+  store-level `uiInFlight` guard covers any transient overlap.
 
 ### 5. Edge cases → mechanism
 
 | Edge case | Handled by |
 |---|---|
-| Navigate away during 2s delay | Route guard re-checked at presentation; abort if not on home shell. |
+| Navigate away during 2s delay | Tab guard (`homeTabsStorePOD.selected`) re-checked at presentation; abort if not on the allowed tab(s). |
 | Connection fails | Guard re-check (`isConnected == false`) → abort. |
-| Switch Residential→High-speed before connected | Epoch only bumps on connected success; ipType re-checked at 2s → abort. |
+| Switch Residential→High-speed before connected | `userConnectEpoch` only bumps on connected success; `ipType` re-checked at 2s → abort. |
+| IP refresh/fallback within the 2s window | `userConnectEpoch` does not bump on refresh; if the refresh stays residential, guards still pass and the connect counts (intended). If a refresh switches away from residential, the `ipType` guard aborts. |
 | App killed during 2s delay | Timer is in-memory only; nothing persisted → not shown next launch unless a new trigger occurs. |
-| Rapid repeated reconnects | Prior timer cancelled on new epoch; single in-flight flag → at most one instance. |
+| Rapid repeated reconnects | Prior timer cancelled on new epoch; store-level `uiInFlight` → at most one instance. |
 | Once-per-device for modal | `educationModalShown` device-local flag. |
 | State reset across restart/screen/disconnect | Device-local Hive persistence. |
 
@@ -182,12 +223,18 @@ New `en.json` keys (names indicative):
 - `residentialEducationBlock3Title` = "Automatic reconnection"
 - `residentialEducationBlock3Body` = "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP."
 - `residentialEducationGotIt` = "Got it" (reuse an existing `gotIt` key if present)
-- Shared popover: `ipTypeResidentialTooltipTitle` = "Why can my IP change?",
-  `ipTypeResidentialTooltipBody` = "Residential IPs come from real households, so availability may change.\n\nIf IP goes offline, the app reconnects you to the nearest available residential IP."
 
-The info-icon tooltip and the reminder share the same "Why can my IP change?"
-copy (standardize on this shorter Figma wording; updates the two task-1 tooltip
-keys). English only; other locales handled by the translation flow.
+**Shared popover copy — reuse existing keys, do NOT mutate translated strings.**
+`ipTypeResidentialTooltipTitle` (already exactly "Why can my IP change?") and
+`ipTypeResidentialTooltipBody` already exist and are translated across all
+locale files. The info-icon popover and the reminder both reuse these keys
+**as-is**. We do **not** rewrite the English body to the slightly shorter Figma
+reminder wording — that would silently desync the existing translations. The
+minor copy delta vs the Figma reminder is accepted; changing it would be an
+explicit, separately-scoped change that also re-runs the translation flow.
+
+Only the new education-modal keys above are added (English); their translations
+are handled later by the translation flow.
 
 ### 7. Analytics
 
@@ -196,15 +243,19 @@ New `AnalyticsEvent`s (auto snake_cased), logged via `analyticsStore.logEvent`:
 - `residentialEducationDismissed`
 - `residentialReminderShown`
 - `residentialReminderDismissed`
-- `residentialInfoTooltipShown`
+- `residentialInfoTooltipShown` / `residentialInfoTooltipDismissed` (symmetric, for funnels)
 
 ### 8. Testing
 
-- **Unit** (`ResidentialEducationStore.decide`): truth table over
+- **Unit** (`ResidentialEducationStore`): pure `decide(now)` truth table over
   `residentialConnectCount` ∈ {1,2,3}, `educationModalShown` ∈ {false,true},
-  `lastReminderShownAt` ∈ {null, <30d, ≥30d}. Hive round-trip persistence.
-- **Widget**: modal renders title + subtitle + 3 blocks + Got it; bottom sheet
-  on mobile vs centered modal on desktop by `ScreenType`; `InfoPopover` dismiss
+  `lastReminderShownAt` ∈ {null, <30d, ≥30d} — including the row that
+  `markModalShown(now)` seeds the reminder clock so a reminder cannot fire on
+  the immediately-following connect. `recordResidentialConnect()` increment +
+  Hive round-trip persistence as a separate test.
+- **Widget**: modal renders title + subtitle + 3 blocks + Got it; **bottom sheet
+  for `ScreenType < tablet`, centered modal for `ScreenType >= tablet`** (tablet
+  groups with desktop — confirm `showBottomSheetDialog` threshold); `InfoPopover` dismiss
   via Got it and via outside tap; light/dark variants.
 - **Trigger** (fake timer/clock): shows after 2s; aborts on early disconnect,
   IP-switch, route-change; single instance under rapid reconnects.
