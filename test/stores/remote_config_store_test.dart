@@ -326,6 +326,78 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.residentialEducationConnectThreshold', () {
+    test('returns 2 if key is not present in config (default)', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.residentialEducationConnectThreshold, 2);
+    });
+
+    test('returns config value when a positive int', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'residentialEducationConnectThreshold': 3});
+      await store.configFuture;
+      expect(store.residentialEducationConnectThreshold, 3);
+    });
+
+    test('falls back to default when value is zero or negative', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'residentialEducationConnectThreshold': 0});
+      await store.configFuture;
+      expect(store.residentialEducationConnectThreshold, 2);
+    });
+
+    test('falls back to default when value is not an int', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'residentialEducationConnectThreshold': '3'});
+      await store.configFuture;
+      expect(store.residentialEducationConnectThreshold, 2);
+    });
+  });
+
+  group('RemoteConfigStore.residentialReminderInterval', () {
+    test('returns 30 days if key is not present in config (default)', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.residentialReminderInterval, const Duration(days: 30));
+    });
+
+    test('interprets the config value as minutes', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'residentialReminderIntervalMinutes': 2});
+      await store.configFuture;
+      expect(store.residentialReminderInterval, const Duration(minutes: 2));
+    });
+
+    test('falls back to default when value is zero or negative', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'residentialReminderIntervalMinutes': 0});
+      await store.configFuture;
+      expect(store.residentialReminderInterval, const Duration(days: 30));
+    });
+
+    test('falls back to default when value is not an int', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'residentialReminderIntervalMinutes': '5'});
+      await store.configFuture;
+      expect(store.residentialReminderInterval, const Duration(days: 30));
+    });
+  });
+
   group('RemoteConfigStore.canShowNoSubsOnboardingFlow', () {
     test('returns true if key is not present in config (default)', () async {
       store = createStore();

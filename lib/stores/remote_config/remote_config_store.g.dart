@@ -359,6 +359,22 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.canShowNoSubsOnboardingFlow,
     name: 'RemoteConfigStoreBase.canShowNoSubsOnboardingFlow',
   )).value;
+  Computed<int>? _$residentialEducationConnectThresholdComputed;
+
+  @override
+  int get residentialEducationConnectThreshold =>
+      (_$residentialEducationConnectThresholdComputed ??= Computed<int>(
+        () => super.residentialEducationConnectThreshold,
+        name: 'RemoteConfigStoreBase.residentialEducationConnectThreshold',
+      )).value;
+  Computed<Duration>? _$residentialReminderIntervalComputed;
+
+  @override
+  Duration get residentialReminderInterval =>
+      (_$residentialReminderIntervalComputed ??= Computed<Duration>(
+        () => super.residentialReminderInterval,
+        name: 'RemoteConfigStoreBase.residentialReminderInterval',
+      )).value;
 
   @override
   String toString() {
@@ -410,7 +426,9 @@ checkoutWebRedirectUrl: ${checkoutWebRedirectUrl},
 pricingMonthly: ${pricingMonthly},
 countriesWithStates: ${countriesWithStates},
 hideReedemCode: ${hideReedemCode},
-canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow}
+canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow},
+residentialEducationConnectThreshold: ${residentialEducationConnectThreshold},
+residentialReminderInterval: ${residentialReminderInterval}
     ''';
   }
 }

@@ -59,6 +59,8 @@ enum _FeatureToggleKey {
   countriesWithStates,
   hideReedemCode,
   canShowNoSubsOnboardingFlow,
+  residentialEducationConnectThreshold,
+  residentialReminderIntervalMinutes,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -584,6 +586,33 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.canShowNoSubsOnboardingFlow.name] as bool;
     }
     return true;
+  }
+
+  /// Number of residential connections required before the full education
+  /// modal is shown (i.e. it shows on the Nth connect).
+  @computed
+  int get residentialEducationConnectThreshold {
+    if (config.containsKey(_FeatureToggleKey.residentialEducationConnectThreshold.name)) {
+      final raw = config[_FeatureToggleKey.residentialEducationConnectThreshold.name];
+      if (raw is int && raw > 0) {
+        return raw;
+      }
+    }
+    return 2;
+  }
+
+  /// Minimum number of minutes between residential-IP education reminders.
+  /// In minutes (not days) so QA can set it to 1–2 minutes in ConfigCat.
+  /// Falls back to 30 days when unset.
+  @computed
+  Duration get residentialReminderInterval {
+    if (config.containsKey(_FeatureToggleKey.residentialReminderIntervalMinutes.name)) {
+      final raw = config[_FeatureToggleKey.residentialReminderIntervalMinutes.name];
+      if (raw is int && raw > 0) {
+        return Duration(minutes: raw);
+      }
+    }
+    return const Duration(days: 30);
   }
 
   Map<String, String> get asUserProperties =>
