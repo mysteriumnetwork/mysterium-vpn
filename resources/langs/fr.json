@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "Les adresses IP résidentielles sont différentes des adresses IP haut débit. Voici à quoi vous pouvez vous attendre.",
   "residentialEducationBlock1Title": "De véritables appareils ménagers",
   "residentialEducationBlock1Body": "Les adresses IP résidentielles proviennent de véritables appareils domestiques, ce qui donne à votre trafic l'apparence d'une utilisation internet classique.",
-  "residentialEducationBlock2Title": "Étant donné que ces adresses IP sont fournies par des appareils réels, certains nœuds peuvent se déconnecter de manière inattendue.",
+  "residentialEducationBlock2Title": "La disponibilité peut changer",
   "residentialEducationBlock3Title": "Reconnexion automatique",
   "residentialEducationBlock3Body": "Si votre adresse IP actuelle devient indisponible, l'application vous reconnecte à l'adresse IP résidentielle disponible la plus proche.",
   "residentialEducationGotIt": "J'ai compris",

@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "家庭用IPアドレスは高速IPアドレスとは異なります。その違いについてご説明します。",
   "residentialEducationBlock1Title": "実際の家庭用機器",
   "residentialEducationBlock1Body": "家庭用IPアドレスは実際の家庭用機器から割り当てられるため、トラフィックは通常のインターネット利用のように見えます。",
-  "residentialEducationBlock2Title": "これらのIPアドレスは実際のデバイスから提供されるため、一部のノードが予期せずオフラインになる場合があります。",
+  "residentialEducationBlock2Title": "在庫状況は変更される場合があります",
   "residentialEducationBlock3Title": "自動再接続",
   "residentialEducationBlock3Body": "現在使用しているIPアドレスが利用できなくなった場合、アプリは最寄りの利用可能な家庭用IPアドレスに自動的に再接続します。",
   "residentialEducationGotIt": "わかった",

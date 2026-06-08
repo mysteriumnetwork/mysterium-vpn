@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "Residential IPs are different from high-speed IPs. Here's what to expect.",
   "residentialEducationBlock1Title": "Real household devices",
   "residentialEducationBlock1Body": "Residential IPs come from real household devices, making your traffic look like regular internet usage.",
-  "residentialEducationBlock2Title": "Because these IPs are provided by real devices, some nodes may go offline unexpectedly.",
+  "residentialEducationBlock2Title": "Availability can change",
   "residentialEducationBlock3Title": "Automatic reconnection",
   "residentialEducationBlock3Body": "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP.",
   "residentialEducationGotIt": "Got it",

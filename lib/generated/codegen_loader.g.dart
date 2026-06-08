@@ -614,7 +614,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationSubtitle": "住宅IP地址与高速IP地址有所不同。以下是您需要了解的内容。",
     "residentialEducationBlock1Title": "真正的家用电器",
     "residentialEducationBlock1Body": "住宅 IP 地址来自真实的家庭设备，使您的流量看起来像是正常的互联网使用情况。",
-    "residentialEducationBlock2Title": "由于这些 IP 地址是由真实设备提供的，因此某些节点可能会意外离线。",
+    "residentialEducationBlock2Title": "供应情况可能会发生变化",
     "residentialEducationBlock3Title": "自动重新连接",
     "residentialEducationBlock3Body": "如果您的当前 IP 地址不可用，该应用程序会将您重新连接到最近的可用住宅 IP 地址。",
     "residentialEducationGotIt": "知道了",
@@ -1287,8 +1287,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Gerçek ev aletleri",
     "residentialEducationBlock1Body":
         "Konut IP adresleri gerçek ev cihazlarından gelir, bu da trafiğinizin normal internet kullanımı gibi görünmesini sağlar.",
-    "residentialEducationBlock2Title":
-        "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir.",
+    "residentialEducationBlock2Title": "Müsaitlik durumu değişebilir.",
     "residentialEducationBlock3Title": "Otomatik yeniden bağlantı",
     "residentialEducationBlock3Body":
         "Mevcut IP adresiniz kullanılamaz hale gelirse, uygulama sizi en yakın kullanılabilir ev IP adresine yeniden bağlar.",
@@ -1904,7 +1903,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationSubtitle": "家庭用IPアドレスは高速IPアドレスとは異なります。その違いについてご説明します。",
     "residentialEducationBlock1Title": "実際の家庭用機器",
     "residentialEducationBlock1Body": "家庭用IPアドレスは実際の家庭用機器から割り当てられるため、トラフィックは通常のインターネット利用のように見えます。",
-    "residentialEducationBlock2Title": "これらのIPアドレスは実際のデバイスから提供されるため、一部のノードが予期せずオフラインになる場合があります。",
+    "residentialEducationBlock2Title": "在庫状況は変更される場合があります",
     "residentialEducationBlock3Title": "自動再接続",
     "residentialEducationBlock3Body":
         "現在使用しているIPアドレスが利用できなくなった場合、アプリは最寄りの利用可能な家庭用IPアドレスに自動的に再接続します。",
@@ -2600,8 +2599,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Reale Haushaltsgeräte",
     "residentialEducationBlock1Body":
         "Residential IPs stammen von echten Haushaltsgeräten, wodurch Ihr Datenverkehr wie eine normale Internetnutzung aussieht.",
-    "residentialEducationBlock2Title":
-        "Da diese IPs von realen Geräten bereitgestellt werden, kann es vorkommen, dass einige Knoten unerwartet offline gehen.",
+    "residentialEducationBlock2Title": "Die Verfügbarkeit kann sich ändern",
     "residentialEducationBlock3Title": "Automatische Wiederverbindung",
     "residentialEducationBlock3Body":
         "Falls Ihre aktuelle IP-Adresse nicht mehr verfügbar ist, verbindet Sie die App automatisch mit der nächstgelegenen verfügbaren Wohn-IP-Adresse.",
@@ -3291,8 +3289,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Eletrodomésticos reais",
     "residentialEducationBlock1Body":
         "Os IPs residenciais provêm de dispositivos domésticos reais, fazendo com que seu tráfego pareça um uso normal da internet.",
-    "residentialEducationBlock2Title":
-        "Como esses endereços IP são fornecidos por dispositivos reais, alguns nós podem ficar offline inesperadamente.",
+    "residentialEducationBlock2Title": "A disponibilidade pode mudar.",
     "residentialEducationBlock3Title": "Reconexão automática",
     "residentialEducationBlock3Body":
         "Caso seu endereço IP atual fique indisponível, o aplicativo o reconectará ao endereço IP residencial disponível mais próximo.",
@@ -3970,8 +3967,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Real household devices",
     "residentialEducationBlock1Body":
         "Residential IPs come from real household devices, making your traffic look like regular internet usage.",
-    "residentialEducationBlock2Title":
-        "Because these IPs are provided by real devices, some nodes may go offline unexpectedly.",
+    "residentialEducationBlock2Title": "Availability can change",
     "residentialEducationBlock3Title": "Automatic reconnection",
     "residentialEducationBlock3Body":
         "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP.",
@@ -4663,8 +4659,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Veri elettrodomestici",
     "residentialEducationBlock1Body":
         "Gli indirizzi IP residenziali provengono da dispositivi domestici reali, facendo apparire il tuo traffico come un normale utilizzo di Internet.",
-    "residentialEducationBlock2Title":
-        "Poiché questi indirizzi IP sono forniti da dispositivi reali, alcuni nodi potrebbero disconnettersi inaspettatamente.",
+    "residentialEducationBlock2Title": "La disponibilità può variare",
     "residentialEducationBlock3Title": "Riconnessione automatica",
     "residentialEducationBlock3Body":
         "Se il tuo indirizzo IP attuale non è più disponibile, l'app ti riconnette automaticamente all'indirizzo IP residenziale disponibile più vicino.",
@@ -5363,8 +5358,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "De véritables appareils ménagers",
     "residentialEducationBlock1Body":
         "Les adresses IP résidentielles proviennent de véritables appareils domestiques, ce qui donne à votre trafic l'apparence d'une utilisation internet classique.",
-    "residentialEducationBlock2Title":
-        "Étant donné que ces adresses IP sont fournies par des appareils réels, certains nœuds peuvent se déconnecter de manière inattendue.",
+    "residentialEducationBlock2Title": "La disponibilité peut changer",
     "residentialEducationBlock3Title": "Reconnexion automatique",
     "residentialEducationBlock3Body":
         "Si votre adresse IP actuelle devient indisponible, l'application vous reconnecte à l'adresse IP résidentielle disponible la plus proche.",
@@ -6044,8 +6038,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Perangkat rumah tangga sungguhan",
     "residentialEducationBlock1Body":
         "IP residensial berasal dari perangkat rumah tangga sungguhan, sehingga lalu lintas Anda terlihat seperti penggunaan internet biasa.",
-    "residentialEducationBlock2Title":
-        "Karena IP ini disediakan oleh perangkat nyata, beberapa node mungkin offline secara tiba-tiba.",
+    "residentialEducationBlock2Title": "Ketersediaan dapat berubah",
     "residentialEducationBlock3Title": "Penyambungan ulang otomatis",
     "residentialEducationBlock3Body":
         "Jika IP Anda saat ini tidak tersedia, aplikasi akan menghubungkan Anda kembali ke IP residensial terdekat yang tersedia.",
@@ -6738,8 +6731,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "Dispositivos domésticos reales",
     "residentialEducationBlock1Body":
         "Las direcciones IP residenciales provienen de dispositivos domésticos reales, lo que hace que tu tráfico parezca un uso normal de Internet.",
-    "residentialEducationBlock2Title":
-        "Debido a que estas direcciones IP son proporcionadas por dispositivos reales, algunos nodos pueden desconectarse inesperadamente.",
+    "residentialEducationBlock2Title": "La disponibilidad puede cambiar.",
     "residentialEducationBlock3Title": "Reconexión automática",
     "residentialEducationBlock3Body":
         "Si tu IP actual deja de estar disponible, la aplicación te reconecta a la IP residencial disponible más cercana.",
@@ -7398,8 +7390,7 @@ class CodegenLoader extends AssetLoader {
     "residentialEducationBlock1Title": "أجهزة منزلية حقيقية",
     "residentialEducationBlock1Body":
         "تأتي عناوين IP السكنية من أجهزة منزلية حقيقية، مما يجعل حركة مرور البيانات الخاصة بك تبدو وكأنها استخدام عادي للإنترنت.",
-    "residentialEducationBlock2Title":
-        "نظراً لأن عناوين IP هذه يتم توفيرها بواسطة أجهزة حقيقية، فقد تتعطل بعض العقد بشكل غير متوقع.",
+    "residentialEducationBlock2Title": "قد يتغير التوفر",
     "residentialEducationBlock3Title": "إعادة الاتصال التلقائي",
     "residentialEducationBlock3Body":
         "إذا أصبح عنوان IP الحالي الخاص بك غير متاح، فسيعيد التطبيق توصيلك بأقرب عنوان IP سكني متاح.",

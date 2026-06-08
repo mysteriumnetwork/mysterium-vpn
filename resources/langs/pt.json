@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "IPs residenciais são diferentes de IPs de alta velocidade. Veja o que esperar.",
   "residentialEducationBlock1Title": "Eletrodomésticos reais",
   "residentialEducationBlock1Body": "Os IPs residenciais provêm de dispositivos domésticos reais, fazendo com que seu tráfego pareça um uso normal da internet.",
-  "residentialEducationBlock2Title": "Como esses endereços IP são fornecidos por dispositivos reais, alguns nós podem ficar offline inesperadamente.",
+  "residentialEducationBlock2Title": "A disponibilidade pode mudar.",
   "residentialEducationBlock3Title": "Reconexão automática",
   "residentialEducationBlock3Body": "Caso seu endereço IP atual fique indisponível, o aplicativo o reconectará ao endereço IP residencial disponível mais próximo.",
   "residentialEducationGotIt": "Entendi",

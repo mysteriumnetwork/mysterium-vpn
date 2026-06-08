@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "住宅IP地址与高速IP地址有所不同。以下是您需要了解的内容。",
   "residentialEducationBlock1Title": "真正的家用电器",
   "residentialEducationBlock1Body": "住宅 IP 地址来自真实的家庭设备，使您的流量看起来像是正常的互联网使用情况。",
-  "residentialEducationBlock2Title": "由于这些 IP 地址是由真实设备提供的，因此某些节点可能会意外离线。",
+  "residentialEducationBlock2Title": "供应情况可能会发生变化",
   "residentialEducationBlock3Title": "自动重新连接",
   "residentialEducationBlock3Body": "如果您的当前 IP 地址不可用，该应用程序会将您重新连接到最近的可用住宅 IP 地址。",
   "residentialEducationGotIt": "知道了",

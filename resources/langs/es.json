@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "Las direcciones IP residenciales son diferentes de las direcciones IP de alta velocidad. Esto es lo que puede esperar.",
   "residentialEducationBlock1Title": "Dispositivos domésticos reales",
   "residentialEducationBlock1Body": "Las direcciones IP residenciales provienen de dispositivos domésticos reales, lo que hace que tu tráfico parezca un uso normal de Internet.",
-  "residentialEducationBlock2Title": "Debido a que estas direcciones IP son proporcionadas por dispositivos reales, algunos nodos pueden desconectarse inesperadamente.",
+  "residentialEducationBlock2Title": "La disponibilidad puede cambiar.",
   "residentialEducationBlock3Title": "Reconexión automática",
   "residentialEducationBlock3Body": "Si tu IP actual deja de estar disponible, la aplicación te reconecta a la IP residencial disponible más cercana.",
   "residentialEducationGotIt": "Entiendo",

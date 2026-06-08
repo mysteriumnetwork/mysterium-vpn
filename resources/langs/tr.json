@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "Konut IP adresleri, yüksek hızlı IP adreslerinden farklıdır. İşte neler beklemeniz gerektiği.",
   "residentialEducationBlock1Title": "Gerçek ev aletleri",
   "residentialEducationBlock1Body": "Konut IP adresleri gerçek ev cihazlarından gelir, bu da trafiğinizin normal internet kullanımı gibi görünmesini sağlar.",
-  "residentialEducationBlock2Title": "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir.",
+  "residentialEducationBlock2Title": "Müsaitlik durumu değişebilir.",
   "residentialEducationBlock3Title": "Otomatik yeniden bağlantı",
   "residentialEducationBlock3Body": "Mevcut IP adresiniz kullanılamaz hale gelirse, uygulama sizi en yakın kullanılabilir ev IP adresine yeniden bağlar.",
   "residentialEducationGotIt": "Anladım",

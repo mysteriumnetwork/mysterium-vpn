@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "Gli indirizzi IP residenziali sono diversi dagli indirizzi IP ad alta velocità. Ecco cosa aspettarsi.",
   "residentialEducationBlock1Title": "Veri elettrodomestici",
   "residentialEducationBlock1Body": "Gli indirizzi IP residenziali provengono da dispositivi domestici reali, facendo apparire il tuo traffico come un normale utilizzo di Internet.",
-  "residentialEducationBlock2Title": "Poiché questi indirizzi IP sono forniti da dispositivi reali, alcuni nodi potrebbero disconnettersi inaspettatamente.",
+  "residentialEducationBlock2Title": "La disponibilità può variare",
   "residentialEducationBlock3Title": "Riconnessione automatica",
   "residentialEducationBlock3Body": "Se il tuo indirizzo IP attuale non è più disponibile, l'app ti riconnette automaticamente all'indirizzo IP residenziale disponibile più vicino.",
   "residentialEducationGotIt": "Fatto",

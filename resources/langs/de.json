@@ -608,7 +608,7 @@
   "residentialEducationSubtitle": "Heim-IP-Adressen unterscheiden sich von Hochgeschwindigkeits-IP-Adressen. Hier erfahren Sie, was Sie erwartet.",
   "residentialEducationBlock1Title": "Reale Haushaltsgeräte",
   "residentialEducationBlock1Body": "Residential IPs stammen von echten Haushaltsgeräten, wodurch Ihr Datenverkehr wie eine normale Internetnutzung aussieht.",
-  "residentialEducationBlock2Title": "Da diese IPs von realen Geräten bereitgestellt werden, kann es vorkommen, dass einige Knoten unerwartet offline gehen.",
+  "residentialEducationBlock2Title": "Die Verfügbarkeit kann sich ändern",
   "residentialEducationBlock3Title": "Automatische Wiederverbindung",
   "residentialEducationBlock3Body": "Falls Ihre aktuelle IP-Adresse nicht mehr verfügbar ist, verbindet Sie die App automatisch mit der nächstgelegenen verfügbaren Wohn-IP-Adresse.",
   "residentialEducationGotIt": "Habe es",
