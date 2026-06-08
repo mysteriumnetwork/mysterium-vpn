@@ -39,7 +39,7 @@ void useSubscriptionOnboarding() {
       ),
       onComplete: (index, key) =>
           analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedStepViewed).ignore(),
-      onFinish: () {},
+      onFinish: () => showSubscriptionOnboardingCompleteDialog(context: context),
     );
     return null;
   });
