@@ -1322,8 +1322,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.17"
-      resolved-ref: d3f0f98da3ea392fc7718b7b38afb2a45fcd16da
+      ref: "feat/info-popover"
+      resolved-ref: "919316ae272b75447727cee28641b7c32e377820"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
