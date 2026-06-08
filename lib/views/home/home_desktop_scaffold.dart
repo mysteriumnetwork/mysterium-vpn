@@ -62,6 +62,7 @@ class HomeDesktopScaffold extends HookConsumerWidget {
                   tooltipContent: tooltipContents[onboarding.indexForTab(tabs[index])],
                   globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.right,
+                  icon: tooltipContents[onboarding.indexForTab(tabs[index])].icon,
                   child: child,
                 ),
               ),

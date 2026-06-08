@@ -17,6 +17,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
     required this.tooltipContent,
     required this.tooltipIndex,
     required this.totalTooltips,
+    this.icon,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
   final TooltipContent tooltipContent;
   final int tooltipIndex;
   final int totalTooltips;
+  final IconData? icon;
 
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
   static const double _cornerInset = 24;
@@ -112,7 +114,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ProgressCard(
-              icon: Icons.search,
+              icon: icon,
               progressLabel: '$_index/$totalTooltips',
               progressValue: _index / totalTooltips,
               title: tooltipContent.title,

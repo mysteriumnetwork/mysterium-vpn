@@ -71,6 +71,7 @@ class HomeMobileScaffold extends HookConsumerWidget {
                   tooltipContent: tooltipContents[onboarding.indexForTab(tabs[index])],
                   globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.top,
+                  icon: tooltipContents[onboarding.indexForTab(tabs[index])].icon,
                   child: child,
                 ),
             onDestinationSelected: (i) {

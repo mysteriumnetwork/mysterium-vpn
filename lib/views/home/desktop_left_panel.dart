@@ -25,7 +25,6 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
     final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
-    const searchIndex = SubscriptionOnboardingSetup.searchIndex;
 
     useEffect(() {
       final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
@@ -72,14 +71,21 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                   Padding(
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
-                      builder: (context) => ArrowedProgressCard(
-                        tooltipIndex: onboarding.displayIndexForStep(searchIndex),
-                        totalTooltips: onboarding.visibleStepsCount,
-                        tooltipContent: onboarding.searchTooltipContent,
-                        globalKey: onboarding.searchKey,
-                        tooltipPosition: TooltipPosition.bottom,
-                        child: LocationsSearch(enabled: !locationsStore.hasNoServers),
-                      ),
+                      builder: (context) {
+                        final stepIndex = onboarding.stepIndex(
+                          SubscriptionOnboardingSetup.searchIndex,
+                        );
+
+                        return ArrowedProgressCard(
+                          tooltipIndex: stepIndex,
+                          totalTooltips: onboarding.visibleStepsCount,
+                          tooltipContent: onboarding.searchTooltipContent,
+                          globalKey: onboarding.searchKey,
+                          tooltipPosition: TooltipPosition.bottom,
+                          icon: onboarding.searchTooltipContent.icon,
+                          child: LocationsSearch(enabled: !locationsStore.hasNoServers),
+                        );
+                      },
                     ),
                   ),
                 ],
