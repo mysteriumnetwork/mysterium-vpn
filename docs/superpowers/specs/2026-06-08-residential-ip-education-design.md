@@ -173,8 +173,11 @@ Hook flow:
    - `none` → do nothing (counter already incremented).
 5. **Single-instance guard**: a non-persisted `bool uiInFlight` lives on the
    **store** (not hook-local) so it is global regardless of which scaffold is
-   mounted. Set when a surface opens, cleared when it dismisses. This prevents
-   two instances under rapid reconnects and under any transient double-mount.
+   mounted. Set when a surface opens; **cleared in `whenComplete`/`finally` of
+   the presentation Future** (`showBottomSheetDialog` Future, or the
+   `InfoPopover` dismiss callback) so an early dismissal, outside-tap, or
+   exception cannot wedge the guard `true` and permanently suppress all future
+   education UI device-wide. The `none` branch never sets it.
 
 ### 4. Entry points & wiring
 
@@ -193,7 +196,11 @@ Hook flow:
   the right panel over the map; mobile: the connection card on the map tab).
   The tail direction flips (above/below the anchor) based on available space so
   it stays on-screen near viewport edges. If, at trigger time, no anchor target
-  is mounted, the reminder is skipped (counter still recorded).
+  is mounted, the reminder is skipped and **the 30-day clock is not advanced**
+  (`markReminderShown` not called) — it will simply be re-attempted on the next
+  qualifying residential connect (intended; no backoff). Log
+  `residentialInfoTooltipDismissed` / `residentialReminderDismissed` when the
+  respective popover closes (Got it or outside tap).
 - **Trigger hook** mounted once in each platform scaffold; the responsive
   scaffold switch guarantees only one scaffold is mounted at a time, and the
   store-level `uiInFlight` guard covers any transient overlap.
@@ -254,8 +261,8 @@ New `AnalyticsEvent`s (auto snake_cased), logged via `analyticsStore.logEvent`:
   the immediately-following connect. `recordResidentialConnect()` increment +
   Hive round-trip persistence as a separate test.
 - **Widget**: modal renders title + subtitle + 3 blocks + Got it; **bottom sheet
-  for `ScreenType < tablet`, centered modal for `ScreenType >= tablet`** (tablet
-  groups with desktop — confirm `showBottomSheetDialog` threshold); `InfoPopover` dismiss
+  for `ScreenType < tablet`, centered modal for `ScreenType >= tablet`**
+  (confirmed: `showBottomSheetDialog` uses `isDesktop = screenType >= ScreenType.tablet`); `InfoPopover` dismiss
   via Got it and via outside tap; light/dark variants.
 - **Trigger** (fake timer/clock): shows after 2s; aborts on early disconnect,
   IP-switch, route-change; single instance under rapid reconnects.
