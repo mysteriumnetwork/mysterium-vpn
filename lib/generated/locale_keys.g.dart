@@ -428,6 +428,8 @@ abstract class LocaleKeys {
   static const subscriptionPlanResidentialIPsDesc = 'subscriptionPlanResidentialIPsDesc';
   static const subscriptionPlanCityLevelDesc = 'subscriptionPlanCityLevelDesc';
   static const subscriptionPlanMalwareBlockerDesc = 'subscriptionPlanMalwareBlockerDesc';
+  static const skipBtn = 'skipBtn';
+  static const completeBtn = 'completeBtn';
   static const subscriptionOnboardingPromptTitle = 'subscriptionOnboardingPromptTitle';
   static const subscriptionOnboardingPromptDescription = 'subscriptionOnboardingPromptDescription';
   static const subscriptionOnboardingStartTourLabel = 'subscriptionOnboardingStartTourLabel';

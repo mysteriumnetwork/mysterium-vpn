@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -6,6 +7,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_onboarding_dialog.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth/auth_session_store.dart';
@@ -36,7 +38,7 @@ void useSubscriptionOnboarding() {
         right: 50,
         child: FloatingButton(
           onPressed: () => ShowcaseView.get().dismiss(),
-          label: 'Skip',
+          label: LocaleKeys.skipBtn.tr(),
           icon: Icons.close,
         ),
       ),

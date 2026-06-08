@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/tooltip_content.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/styles/colors/palette.dart';
@@ -38,7 +39,8 @@ class ArrowedProgressCard extends HookConsumerWidget {
 
   bool get _isLastStep => _index == totalTooltips;
 
-  String get _actionLabel => _isLastStep ? 'Complete' : tooltipContent.actionLabel.tr();
+  String get _actionLabel =>
+      _isLastStep ? LocaleKeys.completeBtn.tr() : tooltipContent.actionLabel.tr();
 
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;

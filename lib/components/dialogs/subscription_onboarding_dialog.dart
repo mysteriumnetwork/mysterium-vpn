@@ -34,7 +34,7 @@ class _StartSubscriptionOnboardingDialog extends StatelessWidget {
 
     return _SubscriptionOnboardingDialogFrame(
       title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
-      description: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
+      description: LocaleKeys.subscriptionOnboardingPromptDescription.tr(),
       emblemIcon: UntitledUI.flag_05,
       emblemColor: palette.iconBrandSecondary,
       emblemBackgroundColor: palette.bgSecondarySelected,
