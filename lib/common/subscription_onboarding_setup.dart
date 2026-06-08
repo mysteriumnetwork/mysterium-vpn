@@ -154,7 +154,7 @@ List<TooltipContent> get _mobileTooltipContents => [
 
 List<TooltipContent> get _desktopTooltipContents => [
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingMapDesktopDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingMapDesktopTitle.tr(),
     description: LocaleKeys.subscriptionOnboardingMapDesktopDescription.tr(),
     icon: UntitledUI.map_01,
   ),

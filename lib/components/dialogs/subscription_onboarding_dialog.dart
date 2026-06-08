@@ -17,11 +17,7 @@ void showSubscriptionOnboardingDialog({
 }
 
 void showSubscriptionOnboardingCompleteDialog({required BuildContext context}) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const _CompleteSubscriptionOnboardingDialog(),
-  );
+  showDialog(context: context, builder: (context) => const _CompleteSubscriptionOnboardingDialog());
 }
 
 class _StartSubscriptionOnboardingDialog extends StatelessWidget {
