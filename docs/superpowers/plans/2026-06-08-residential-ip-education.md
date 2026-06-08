@@ -105,7 +105,14 @@ Spec: `docs/superpowers/specs/2026-06-08-residential-ip-education-design.md`
 - Modify: `lib/services/data/local/local_db_service.dart` (register + open a `residential_education` box)
 - Create (if needed): a tiny typed model or use primitive keys in a dynamic box.
 
-**Design:** Simplest robust option — a dynamic `Box` named `residential_education` (no adapter/typeId churn), with string keys: `modalShown` (bool), `lastReminderShownAt` (int millisSinceEpoch?), `connectCount` (int). Open it in `LocalDBService.init()` alongside `user_data` via `openBoxRecoverable`. Expose getters/setters on `LocalDBService` (`getEducationModalShown()`, `setEducationModalShown(bool)`, `getEducationReminderAt()/set`, `getResidentialConnectCount()/set`).
+**Design:** Simplest robust option — a dynamic `Box` named `residential_education` (no adapter/typeId churn; existing typeIds 3–7 untouched), with string keys: `modalShown` (bool), `lastReminderShownAt` (int millisSinceEpoch), `connectCount` (int). Open it inside **`LocalDBService.initialize()`** (the real method name — NOT `init()`) alongside `user_data`:
+```dart
+await openBoxRecoverable<Box>(
+  // ...recoverable args matching the user_data call...
+  open: () => Hive.openBox('residential_education'),
+);
+```
+Expose getters/setters on `LocalDBService`: `getEducationModalShown()/setEducationModalShown(bool)`, `getEducationReminderAt()` (returns `DateTime?` from stored millis) `/setEducationReminderAt(DateTime)`, `getResidentialConnectCount()/setResidentialConnectCount(int)`.
 
 - [ ] **Step 1: Failing test** — `test/services/.../local_db_service` (or store test in B3) drives these getters/setters; round-trip persists. (If LocalDBService is hard to unit-test directly, cover persistence through the store in B3 with an in-memory Hive temp dir.)
 - [ ] **Step 2: Run** → FAIL.
@@ -259,14 +266,26 @@ Plus: `recordResidentialConnect` increments + persists (reopen store → count s
 
 **Design:** A hook returning void, mounted in the home scaffolds. Internals:
 - `ref.watch` vpnStore, residentialEducationStore, homeTabsStore, analyticsStore.
-- A MobX `reaction` (via existing `useReaction`/`autorun` hook pattern) on `vpnStore.userConnectEpoch`.
-- On change: if `vpnStore.location?.ipType == IPType.residential`, (re)start a 2s `Timer` (store in `useRef`, cancel previous; cancel on dispose).
+- A MobX `reaction` via the existing **`useReaction`** hook (NOT `useAutorun`) on `vpnStore.userConnectEpoch`.
+- On change (inside the reaction `effect`, which is fire-and-forget): if `vpnStore.location?.ipType == IPType.residential`, (re)start a 2s `Timer` stored in `useRef` (cancel previous; cancel on dispose). Use `Timer` (not `Future.delayed`) so `fakeAsync` controls it in tests.
 - After 2s, guards: `vpnStore.isConnected`, `location.ipType == residential`, tab guard, `!store.uiInFlight`. For modal: `selected ∈ {map, locations}`; for reminder: `selected == map`.
 - `store.recordResidentialConnect()`; `final action = store.decide(now)`.
-  - `showModal`: `store.uiInFlight = true`; `analyticsStore.logEvent(residentialEducationShown)`; `await showBottomSheetDialog(context, builder: (_) => ResidentialEducationModal(...localized..., onGotIt: () => Navigator.pop()))`; in `whenComplete`: `store.markModalShown(now)` (first time), `logEvent(residentialEducationDismissed)`, `store.uiInFlight = false`.
-  - `showReminder` (only if `selected == map` and a connected-card anchor key is available): `store.uiInFlight = true`; `logEvent(residentialReminderShown)`; `await showInfoPopover(... dark, anchorKey: connectedCardKey ...)`; `whenComplete`: `store.markReminderShown(now)`, `logEvent(residentialReminderDismissed)`, `uiInFlight=false`. If no anchor available → skip (do NOT mark; uiInFlight stays false).
+  - `showModal`: `store.uiInFlight = true`; `analyticsStore.logEvent(residentialEducationShown)`. Note `showBottomSheetDialog` returns **`FutureOr<T?>`**, so do NOT chain `.whenComplete`. Instead:
+    ```dart
+    store.uiInFlight = true;
+    try {
+      analyticsStore.logEvent(AnalyticsEvent.residentialEducationShown);
+      store.markModalShown(now); // seed clock; mark shown (idempotent)
+      await Future.value(showBottomSheetDialog<void>(context,
+        builder: (_) => ResidentialEducationModal(/* localized */, onGotIt: () => Navigator.of(context).pop())));
+      analyticsStore.logEvent(AnalyticsEvent.residentialEducationDismissed);
+    } finally {
+      store.uiInFlight = false; // clears even on exception
+    }
+    ```
+  - `showReminder` (only if `selected == map`): same `try/finally` shape with `Future.value(showInfoPopover(...))`, dark variant, anchored to the connection-bar key (see D4); on success path `store.markReminderShown(now)` + `residentialReminderShown`/`Dismissed` events. If the anchor key has no `currentContext` (not mounted) → skip presentation entirely (do NOT set `uiInFlight`, do NOT `markReminderShown`); it retries next qualifying connect.
   - `none`: nothing.
-- The connected-card `GlobalKey` is provided by the scaffold/home view (Task D4) via a small provider or passed into the hook.
+- The reminder anchor `GlobalKey` comes from `homeStateProvider` (Task D4).
 
 - [ ] **Step 1: Failing tests** (fake timer + fakeAsync): epoch bump on residential → after 2s modal shown when count hits 2; disconnect before 2s → not shown; ipType switched at 2s → not shown; tab switched to settings → not shown; second rapid epoch bump → single instance.
 - [ ] **Step 2: Run** → FAIL.
@@ -277,14 +296,18 @@ Plus: `recordResidentialConnect` increments + persists (reopen store → count s
 ### Task D4: Wire hook + connected-card anchor into home scaffolds
 
 **Files:**
+- Modify: `lib/views/home/home_state.dart` (add `connectedCardKey = GlobalKey()` to `_HomeState`)
+- Modify: `lib/components/connection_status_bar.dart` (attach the key to the bar's root box)
 - Modify: `lib/views/home/home_mobile_scaffold.dart`, `lib/views/home/home_desktop_scaffold.dart` (call `useResidentialEducationTrigger(...)`)
-- Modify: the connected-card widget (mobile map connection card / desktop right panel card) to attach the anchor `GlobalKey` (expose via a provider or `homeStateProvider`).
 
-- [ ] **Step 1:** Add an anchor `GlobalKey` to `homeStateProvider` (or a dedicated provider); attach it to the connected residential card's root box on the map.
-- [ ] **Step 2:** Mount `useResidentialEducationTrigger()` in both scaffolds (only one is mounted per platform at a time).
-- [ ] **Step 3:** `fvm flutter analyze lib/views/home/`.
-- [ ] **Step 4: Manual smoke** (optional, see Phase E).
-- [ ] **Step 5: Commit** `feat: wire residential education trigger + reminder anchor`.
+**Anchor decision:** There is **no discrete "connected residential card"** widget — `HomeConnectionView` (both platforms, incl. `desktop_right_panel.dart`) is `ConnectionStatusBar` + `Stack(HomeMap, HomeBanner)`. Anchor the reminder to **`ConnectionStatusBar`** (the "Connected" bar, present on both mobile and desktop), via the `connectedCardKey` on `homeStateProvider`. **Fallback (spec-allowed):** if anchored tail-tracking proves flaky, present the reminder at a **fixed placement** near the bottom of the connection area with no tail — keep this as the simpler escape hatch.
+
+- [ ] **Step 1:** Add `final connectedCardKey = GlobalKey();` to `_HomeState` (`home_state.dart`); it's already exposed via `homeStateProvider`.
+- [ ] **Step 2:** Wrap `ConnectionStatusBar`'s root with that key (`KeyedSubtree`/attach to the outermost box).
+- [ ] **Step 3:** Mount `useResidentialEducationTrigger()` in both scaffolds (only one is mounted per platform at a time); pass `homeStateProvider`'s `connectedCardKey`.
+- [ ] **Step 4:** `fvm flutter analyze lib/views/home/ lib/components/connection_status_bar.dart`.
+- [ ] **Step 5: Manual smoke** (optional, see Phase E).
+- [ ] **Step 6: Commit** `feat: wire residential education trigger + reminder anchor`.
 
 ---
 
