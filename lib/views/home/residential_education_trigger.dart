@@ -18,9 +18,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// Mount once in the home shell, wrapping its content. [connectedCardKey]
 /// anchors the reminder popover to the connection card on the map.
 ///
-/// Guards (re-checked after the dwell): still connected, still residential, the
-/// active home tab allows it, and no education surface already in flight. If any
-/// fail the surface is skipped — see the spec for the full edge-case matrix.
+/// Guards (re-checked right before presenting — after the dwell and the state
+/// read): still connected, still residential, the active home tab allows it,
+/// and no education surface already in flight. If any fail the surface is
+/// skipped — see the spec for the full edge-case matrix.
 class ResidentialEducationTrigger extends ConsumerStatefulWidget {
   const ResidentialEducationTrigger({
     required this.connectedCardKey,
@@ -69,36 +70,37 @@ class _ResidentialEducationTriggerState extends ConsumerState<ResidentialEducati
     if (!mounted) {
       return;
     }
-    final vpnStore = ref.read(vpnStorePOD);
     final eduStore = ref.read(residentialEducationStorePOD);
     final tabsStore = ref.read(homeTabsStorePOD);
     final analytics = ref.read(analyticsStorePOD);
     final remoteConfig = ref.read(remoteConfigStorePOD);
 
-    // Guards re-checked after the dwell window.
-    if (!vpnStore.isConnected || vpnStore.location?.ipType != IPType.residential) {
+    // After the dwell window: only count the connect if it held.
+    if (!_connectedOnResidential) {
       return;
     }
     if (!eduStore.tryBeginUi()) {
       return;
     }
 
-    final tab = tabsStore.selected;
     final now = DateTime.now();
-    // The modal may show on the map or locations tab; the reminder anchors to
-    // the connection card, which only lives on the map tab.
-    final canShowModal = tab == HomeTab.map || tab == HomeTab.locations;
-    final canShowReminder = tab == HomeTab.map && widget.connectedCardKey.currentContext != null;
-
     try {
       final action = await eduStore.recordConnectAndDecide(
         now,
         connectThreshold: remoteConfig.residentialEducationConnectThreshold,
         reminderInterval: remoteConfig.residentialReminderInterval,
       );
-      if (!mounted) {
+      // Re-evaluate every guard after the storage round-trip: the user may have
+      // disconnected or switched tabs while it was in flight.
+      if (!mounted || !_connectedOnResidential) {
         return;
       }
+      final tab = tabsStore.selected;
+      // The modal may show on the map or locations tab; the reminder anchors to
+      // the connection card, which only lives on the map tab.
+      final canShowModal = tab == HomeTab.map || tab == HomeTab.locations;
+      final canShowReminder = tab == HomeTab.map && widget.connectedCardKey.currentContext != null;
+
       switch (action) {
         case EducationAction.showModal when canShowModal:
           analytics.logEvent(AnalyticsEvent.residentialEducationShown);
@@ -128,6 +130,12 @@ class _ResidentialEducationTriggerState extends ConsumerState<ResidentialEducati
     } finally {
       eduStore.endUi();
     }
+  }
+
+  /// Read fresh on each call so guards reflect state at the moment they run.
+  bool get _connectedOnResidential {
+    final vpnStore = ref.read(vpnStorePOD);
+    return vpnStore.isConnected && vpnStore.location?.ipType == IPType.residential;
   }
 
   @override
