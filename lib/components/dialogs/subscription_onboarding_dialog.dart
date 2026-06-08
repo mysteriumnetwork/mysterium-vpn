@@ -12,15 +12,38 @@ void showSubscriptionOnboardingDialog({
     context: context,
     barrierDismissible: false,
 
-    builder: (context) => _Dialog(onStartTour: onStartTour, onCancelTour: onCancelTour),
+    builder: (context) => _Dialog(
+      title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
+      description: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
+      onStartTour: onStartTour,
+      onCancelTour: onCancelTour,
+    ),
+  );
+}
+
+void showSubscriptionOnboardingCompleteDialog({required BuildContext context}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => _Dialog(
+      title: LocaleKeys.subscriptionOnboardingSetupCompleteTitle.tr(),
+      description: LocaleKeys.subscriptionOnboardingSetupCompleteDescription.tr(),
+    ),
   );
 }
 
 class _Dialog extends StatelessWidget {
-  const _Dialog({required this.onStartTour, required this.onCancelTour});
+  const _Dialog({
+    required this.title,
+    required this.description,
+    this.onStartTour,
+    this.onCancelTour,
+  });
 
-  final VoidCallback onStartTour;
-  final VoidCallback onCancelTour;
+  final VoidCallback? onStartTour;
+  final VoidCallback? onCancelTour;
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +61,9 @@ class _Dialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ModalHeader(
-              title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
+              title: title,
               titleStyle: textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
-              description: LocaleKeys.subscriptionOnboardingPromptDescription.tr(),
+              description: description,
               descriptionStyle: textStyles.textXs.regular.copyWith(color: palette.textTertiary),
               emblem: SizedBox(
                 width: 32,
@@ -58,40 +81,44 @@ class _Dialog extends StatelessWidget {
             SizedBox(height: spacing.xl2),
             Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: ButtonPrimary(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          onStartTour();
-                        },
-                        child: Text(
-                          LocaleKeys.subscriptionOnboardingStartTourLabel.tr(),
-                          style: textStyles.textSm.semibold.copyWith(color: palette.textWhite),
+                if (onStartTour != null)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ButtonPrimary(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onStartTour?.call();
+                          },
+                          child: Text(
+                            LocaleKeys.subscriptionOnboardingStartTourLabel.tr(),
+                            style: textStyles.textSm.semibold.copyWith(color: palette.textWhite),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 SizedBox(height: spacing.s),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ButtonTertiary(
-                        decoration: ButtonDecoration(padding: EdgeInsets.all(spacing.none)),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          onCancelTour();
-                        },
-                        child: Text(
-                          LocaleKeys.subscriptionOnboardingCancelTourLabel.tr(),
-                          style: textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
+                if (onCancelTour != null)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ButtonTertiary(
+                          decoration: ButtonDecoration(padding: EdgeInsets.all(spacing.none)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onCancelTour?.call();
+                          },
+                          child: Text(
+                            LocaleKeys.subscriptionOnboardingCancelTourLabel.tr(),
+                            style: textStyles.textSm.semibold.copyWith(
+                              color: palette.textSecondary,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
               ],
             ),
           ],
