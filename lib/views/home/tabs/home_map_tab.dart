@@ -18,6 +18,7 @@ class HomeMapTab extends HookConsumerWidget {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
     final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    const searchIndex = SubscriptionOnboardingSetup.searchIndex;
 
     return Column(
       children: [
@@ -27,9 +28,7 @@ class HomeMapTab extends HookConsumerWidget {
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: Observer(
               builder: (context) => ArrowedProgressCard(
-                tooltipIndex: onboarding.displayIndexForStep(
-                  SubscriptionOnboardingSetup.searchIndex,
-                ),
+                tooltipIndex: onboarding.displayIndexForStep(searchIndex),
                 totalTooltips: onboarding.visibleStepsCount,
                 tooltipContent: onboarding.searchTooltipContent,
                 globalKey: onboarding.searchKey,

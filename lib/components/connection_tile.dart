@@ -32,11 +32,10 @@ class ConnectionTile extends HookConsumerWidget {
       ref,
     );
     final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    const connectButtonIndex = SubscriptionOnboardingSetup.connectButtonIndex;
     Widget buttonWrapper({required BuildContext context, required Widget child}) =>
         ArrowedProgressCard(
-          tooltipIndex: onboarding.displayIndexForStep(
-            SubscriptionOnboardingSetup.connectButtonIndex,
-          ),
+          tooltipIndex: onboarding.displayIndexForStep(connectButtonIndex),
           totalTooltips: onboarding.visibleStepsCount,
           tooltipContent: onboarding.connectButtonTooltipContent,
           globalKey: onboarding.connectButtonKey,
