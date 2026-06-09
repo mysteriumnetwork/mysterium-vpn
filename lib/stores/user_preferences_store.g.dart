@@ -134,6 +134,19 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     );
   }
 
+  late final _$shouldShowSubscriptionOnboardingAsyncAction = AsyncAction(
+    '_UserPreferencesStore.shouldShowSubscriptionOnboarding',
+    context: context,
+  );
+
+  @override
+  @visibleForTesting
+  Future<bool> shouldShowSubscriptionOnboarding() {
+    return _$shouldShowSubscriptionOnboardingAsyncAction.run(
+      () => super.shouldShowSubscriptionOnboarding(),
+    );
+  }
+
   late final _$shouldShowNoneSubsOnboardingAsyncAction = AsyncAction(
     '_UserPreferencesStore.shouldShowNoneSubsOnboarding',
     context: context,
