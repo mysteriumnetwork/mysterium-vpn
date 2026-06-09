@@ -44,9 +44,9 @@ FutureOr<void> _handleOnBillingPage({
   required bool manageSubscription,
   FutureOr<void> Function()? onManageSubscription,
 }) async {
-  // Normalize once: gateway values are compared case-insensitively everywhere
-  // (getPlatformGateway/storeNameForGateway are lowercase), so a capitalized
-  // value from the backend must not read as "foreign" on the right platform.
+  // getPlatformGateway() returns a lowercase gateway id, so normalize the
+  // subscription's gateway before comparing — otherwise a capitalized value
+  // from the backend would read as "foreign" on the correct platform.
   final normalizedGateway = gateway?.toLowerCase();
   final isMobileGateway = isMobilePaymentGateway(normalizedGateway);
 
