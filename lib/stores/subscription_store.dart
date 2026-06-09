@@ -172,10 +172,8 @@ abstract class _SubscriptionStore with Store {
     if (_isWindows) {
       return true;
     }
-    if (!isActive || gateway == null) {
-      return false;
-    }
-    return !isMobilePaymentGateway(gateway);
+    // Otherwise, web flow only for an active sub paid through a web gateway.
+    return isActive && gateway != null && !isMobilePaymentGateway(gateway);
   }
 
   /// True when the active subscription was paid through a mobile store

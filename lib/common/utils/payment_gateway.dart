@@ -11,10 +11,8 @@ String getPlatformGateway() {
 }
 
 bool isMobilePaymentGateway(String? gateway) {
-  if (gateway == 'google' || gateway == 'apple') {
-    return true;
-  }
-  return false;
+  final normalized = gateway?.toLowerCase();
+  return normalized == 'google' || normalized == 'apple';
 }
 
 /// Human-readable store name for a mobile gateway, used in messages that
