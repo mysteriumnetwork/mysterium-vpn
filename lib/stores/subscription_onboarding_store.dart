@@ -39,6 +39,8 @@ abstract class _SubscriptionOnboardingStore with Store {
 
   Future<void> markShown() => _localDb.setSubscriptionOnboardingShown();
 
+  Future<void> clearShown() => _localDb.resetSubscriptionOnboardingShown();
+
   void trackSkipped() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped).ignore();
 

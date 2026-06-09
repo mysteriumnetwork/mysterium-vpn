@@ -270,6 +270,12 @@ class LocalDBService {
     await _saveUserData(userData);
   }
 
+  Future<void> resetSubscriptionOnboardingShown() async {
+    final userData = await _loadUserData();
+    userData.subscriptionOnboardingShown = false;
+    await _saveUserData(userData);
+  }
+
   /// Clears both the completion flag and the saved step so onboarding starts
   /// over from step 0 on the next launch. Used by the QA toolbox.
   Future<void> resetNoneSubsOnboarding() async {
