@@ -240,6 +240,18 @@ final isAppWindowFocused = NotifierProvider<IsAppWindowFocusedNotifier, bool>(
   IsAppWindowFocusedNotifier.new,
 );
 
+final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>((ref) {
+  final store = SubscriptionOnboardingStore(
+    analyticsStore: ref.watch(analyticsStorePOD),
+    homeTabsStore: ref.watch(homeTabsStorePOD),
+    subscriptionStore: ref.watch(subscriptionStorePOD),
+    localDBService: LocalDBService.instance,
+  );
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
 final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -247,6 +259,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final pushNotificationsStore = ref.watch(pushNotificationsStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final subscriptionOnboardingStore = ref.watch(subscriptionOnboardingStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   return UserPreferencesStore(
@@ -257,6 +270,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
     pushNotificationsStore: pushNotificationsStore,
     authSessionStore: authSessionStore,
     subscriptionStore: subscriptionStore,
+    subscriptionOnboardingStore: subscriptionOnboardingStore,
     remoteConfigStore: remoteConfigStore,
   );
 });

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
@@ -17,7 +16,7 @@ class HomeMapTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
-    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
 
     return Column(
       children: [
@@ -27,7 +26,7 @@ class HomeMapTab extends HookConsumerWidget {
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: Observer(
               builder: (context) {
-                final stepIndex = onboarding.stepIndex(SubscriptionOnboardingSetup.searchIndex);
+                final stepIndex = onboarding.searchStepIndex;
 
                 return ArrowedProgressCard(
                   tooltipIndex: stepIndex,
@@ -36,7 +35,7 @@ class HomeMapTab extends HookConsumerWidget {
                   globalKey: onboarding.searchKey,
                   tooltipPosition: TooltipPosition.bottom,
                   icon: onboarding.searchTooltipContent.icon,
-                  onActionPressed: () => ShowcaseView.get().next(),
+                  onActionPressed: () => onboarding.showNextTip(stepIndex),
                   child: LocationsTappableSearch(
                     enabled: !locationsStore.hasNoServers,
                     onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),

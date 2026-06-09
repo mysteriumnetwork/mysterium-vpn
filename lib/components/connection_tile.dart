@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
-import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -31,10 +30,10 @@ class ConnectionTile extends HookConsumerWidget {
     ) = useConnectionTileState(
       ref,
     );
-    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
 
     Widget buttonWrapper({required BuildContext context, required Widget child}) {
-      final stepIndex = onboarding.stepIndex(SubscriptionOnboardingSetup.connectButtonIndex);
+      final stepIndex = onboarding.connectButtonStepIndex;
 
       return ArrowedProgressCard(
         tooltipIndex: stepIndex,
@@ -43,7 +42,7 @@ class ConnectionTile extends HookConsumerWidget {
         globalKey: onboarding.connectButtonKey,
         tooltipPosition: TooltipPosition.top,
         icon: onboarding.connectButtonTooltipContent.icon,
-        onActionPressed: () => ShowcaseView.get().next(),
+        onActionPressed: () => onboarding.showNextTip(stepIndex),
         child: child,
       );
     }

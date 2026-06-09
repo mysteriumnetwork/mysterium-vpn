@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
-import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
@@ -24,7 +23,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     final scrollController = useScrollController()
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
-    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
 
     useEffect(() {
       final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
@@ -72,9 +71,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
                       builder: (context) {
-                        final stepIndex = onboarding.stepIndex(
-                          SubscriptionOnboardingSetup.searchIndex,
-                        );
+                        final stepIndex = onboarding.searchStepIndex;
 
                         return ArrowedProgressCard(
                           tooltipIndex: stepIndex,
@@ -83,7 +80,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                           globalKey: onboarding.searchKey,
                           tooltipPosition: TooltipPosition.bottom,
                           icon: onboarding.searchTooltipContent.icon,
-                          onActionPressed: () => ShowcaseView.get().next(),
+                          onActionPressed: () => onboarding.showNextTip(stepIndex),
                           child: LocationsSearch(enabled: !locationsStore.hasNoServers),
                         );
                       },
