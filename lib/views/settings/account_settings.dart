@@ -166,7 +166,10 @@ class _Authenticated extends HookConsumerWidget {
       );
     }
 
-    final email = authSessionStore.user?.username ?? '';
+    // `user` is populated asynchronously by fetchAuthUser after login, so read
+    // it reactively — otherwise the email stays blank until the widget is
+    // rebuilt for another reason (e.g. switching settings tabs).
+    final email = useComputedValue(() => authSessionStore.user?.username ?? '');
     final showDeleteAccount = !remoteConfigStore.hideDeleteAccount;
 
     final cards = Column(

@@ -79,12 +79,30 @@ abstract class _SubscriptionStore with Store {
   @visibleForTesting
   bool testIsWindows = false;
 
+  @visibleForTesting
+  bool testIsAndroid = false;
+
+  @visibleForTesting
+  bool testIsMacOS = false;
+
   /// When any `testIsX` is set, getters use only those (host `Platform` ignored).
-  bool get _useTestPlatform => testIsIOS || testIsWindows;
+  bool get _useTestPlatform => testIsIOS || testIsWindows || testIsAndroid || testIsMacOS;
 
   bool get _isIOS => _useTestPlatform ? testIsIOS : Platform.isIOS;
 
   bool get _isWindows => _useTestPlatform ? testIsWindows : Platform.isWindows;
+
+  bool get _isAndroid => _useTestPlatform ? testIsAndroid : Platform.isAndroid;
+
+  bool get _isMacOS => _useTestPlatform ? testIsMacOS : Platform.isMacOS;
+
+  /// Whether the active subscription's store gateway can be managed on the
+  /// current platform: Apple on iOS/macOS, Google on Android.
+  bool _isGatewayOnCurrentPlatform(String? gateway) => switch (gateway?.toLowerCase()) {
+    'apple' => _isIOS || _isMacOS,
+    'google' => _isAndroid,
+    _ => false,
+  };
 
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
@@ -136,22 +154,46 @@ abstract class _SubscriptionStore with Store {
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
 
   /// True when the Products tab should route the user to the web instead of
-  /// the in-app upgrade picker: Windows (always), or an active subscription
-  /// paid through any non-mobile gateway (Stripe/Adyen/PayPal/CoinGate).
+  /// the in-app upgrade picker: Windows (no active store sub), or an active
+  /// subscription paid through any non-mobile gateway (Stripe/Adyen/PayPal/
+  /// CoinGate).
+  ///
+  /// Active mobile-store (Apple/Google) subs are never routed to the web —
+  /// they can only be managed in their originating store, even on Windows —
+  /// so they fall through to [isStoreSubOnForeignPlatform] instead.
   @computed
   bool get useWebFlow {
+    final subscription = _subscriptionFuture.value;
+    final isActive = subscription?.active ?? false;
+    final gateway = subscription?.gateway?.toLowerCase();
+    if (isActive && isMobilePaymentGateway(gateway)) {
+      return false;
+    }
     if (_isWindows) {
       return true;
     }
+    if (!isActive || gateway == null) {
+      return false;
+    }
+    return !isMobilePaymentGateway(gateway);
+  }
+
+  /// True when the active subscription was paid through a mobile store
+  /// (Apple/Google) but the current platform can't manage that store (e.g. an
+  /// Apple sub opened on Windows/Android, or a Google sub on iOS/macOS/
+  /// Windows). Such subs can never move to web billing, so the Products tab
+  /// must direct the user back to the originating store.
+  @computed
+  bool get isStoreSubOnForeignPlatform {
     final subscription = _subscriptionFuture.value;
     if (subscription == null || !subscription.active) {
       return false;
     }
     final gateway = subscription.gateway?.toLowerCase();
-    if (gateway == null) {
+    if (!isMobilePaymentGateway(gateway)) {
       return false;
     }
-    return !isMobilePaymentGateway(gateway);
+    return !_isGatewayOnCurrentPlatform(gateway);
   }
 
   /// `true` when the active subscription is already on the highest tier +

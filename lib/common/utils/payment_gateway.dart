@@ -16,3 +16,12 @@ bool isMobilePaymentGateway(String? gateway) {
   }
   return false;
 }
+
+/// Human-readable store name for a mobile gateway, used in messages that
+/// direct the user to manage their subscription where it was purchased.
+/// Derived from the subscription's gateway, never the current platform.
+String storeNameForGateway(String? gateway) => switch (gateway?.toLowerCase()) {
+  'apple' => 'Apple App Store',
+  'google' => 'Google Play Store',
+  _ => '',
+};

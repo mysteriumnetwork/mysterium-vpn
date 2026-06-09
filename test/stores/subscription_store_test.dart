@@ -361,8 +361,24 @@ void main() {
         await subscriptionStore.refreshSubscription();
       }
 
-      test('returns true on Windows regardless of subscription', () async {
+      test('returns true on Windows with no active subscription (first-time buyer)', () async {
         subscriptionStore.testIsWindows = true;
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('returns false for active store sub on Windows (managed in store, not web)', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.useWebFlow, isFalse);
+      });
+
+      test('returns true for active web (stripe) sub on Windows', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
         expect(subscriptionStore.useWebFlow, isTrue);
       });
 
@@ -411,6 +427,86 @@ void main() {
           Subscription(active: true, gateway: 'coingate', planId: 'plan_yearly_pro'),
         );
         expect(subscriptionStore.useWebFlow, isTrue);
+      });
+    });
+
+    group('isStoreSubOnForeignPlatform', () {
+      Future<void> primeSubscription(Subscription subscription) async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => subscription);
+        await subscriptionStore.refreshSubscription();
+      }
+
+      test('returns false when subscription is inactive', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(Subscription.empty());
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns false for active web (stripe) sub on any platform', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns true for apple sub on Windows', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns true for apple sub on Android', () async {
+        subscriptionStore.testIsAndroid = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns false for apple sub on iOS (matching store)', () async {
+        subscriptionStore.testIsIOS = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns false for apple sub on macOS (matching store)', () async {
+        subscriptionStore.testIsMacOS = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns true for google sub on Windows', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns true for google sub on iOS', () async {
+        subscriptionStore.testIsIOS = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns false for google sub on Android (matching store)', () async {
+        subscriptionStore.testIsAndroid = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
       });
     });
 

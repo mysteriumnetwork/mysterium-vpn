@@ -48,10 +48,11 @@ FutureOr<void> _handleOnBillingPage({
 
   if (subscriptionActive && isMobileGateway) {
     if (gateway != getPlatformGateway()) {
+      // Direct the user to the store that actually holds the subscription,
+      // derived from its gateway — not the current platform (which is wrong
+      // on desktop, where the platform gateway is empty).
       showSnackbar(
-        LocaleKeys.activeSubsPaidVia.tr(
-          namedArgs: {'store': Platform.isIOS ? 'Google Play Store' : 'Apple App Store'},
-        ),
+        LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': storeNameForGateway(gateway)}),
       );
       return;
     }
