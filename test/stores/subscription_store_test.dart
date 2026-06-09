@@ -601,6 +601,22 @@ void main() {
         expect(subscriptionStore.isOnMaxPlan, isFalse);
       });
 
+      test('returns true for primer sub on 2-year Pro (web orchestration max)', () async {
+        // Primer is absent from the plan config's supportedGateways; its max
+        // falls back to the 2-year Pro plan.
+        await primeSubscription(
+          Subscription(active: true, gateway: 'primer', planId: 'plan_2_years_pro'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isTrue);
+      });
+
+      test('returns false for primer sub on a lower plan (upgrade still possible)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'primer', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isFalse);
+      });
+
       test('returns false when config is missing', () async {
         when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(null));
         when(mockConfigStore.refreshConfig()).thenAnswer((_) async => null);

@@ -112,6 +112,22 @@ void main() {
       expect(maxPlanIdForGateway('stripe', config, planFeatures), 'plan_monthly_basic');
     });
 
+    test('falls back to the known max plan for a web gateway absent from supportedGateways', () {
+      // Primer is a web payment-orchestration layer that the plan config does
+      // not enumerate in supportedGateways, so config ranking finds nothing —
+      // its max must fall back to the 2-year Pro plan.
+      final config = _config([
+        _plan(id: 'plan_yearly_pro', supportedGateways: ['stripe'], intervalUnit: 'year'),
+        _plan(
+          id: 'plan_2_years_pro',
+          supportedGateways: ['stripe'],
+          intervalUnit: 'year',
+          intervalAmount: 2,
+        ),
+      ]);
+      expect(maxPlanIdForGateway('primer', config, planFeatures), 'plan_2_years_pro');
+    });
+
     test('ranks a duration variant not enumerated in planFeatures by its tier token', () {
       // Production planFeatures often lists only monthly/yearly ids per tier
       // and omits the 2-year variant. The 2-year Pro plan must still be ranked

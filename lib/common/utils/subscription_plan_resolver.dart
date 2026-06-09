@@ -1,6 +1,14 @@
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
 
+/// Max plan ids for gateways the plan config doesn't enumerate in
+/// `supportedGateways`. Primer is a web payment-orchestration layer that fronts
+/// the underlying web providers; its catalog matches the web plans, whose top
+/// plan is the 2-year Pro. Used only as a fallback when config ranking finds
+/// no eligible plan, so the config stays the source of truth if it ever lists
+/// the gateway directly.
+const Map<String, String> _fallbackMaxPlanIdByGateway = {'primer': 'plan_2_years_pro'};
+
 /// Picks the highest tier + longest duration plan available for [gateway]
 /// from the subscription config. Tier ordering comes from [planFeatures]
 /// (the remote-config-driven list where later entries are higher tiers).
@@ -52,7 +60,8 @@ String? maxPlanIdForGateway(
       .map((p) => (id: p.id, tier: tierIndex(p.id), months: durationMonths(p)))
       .toList();
   if (ranked.isEmpty) {
-    return null;
+    // Gateway isn't represented in any plan's supportedGateways (e.g. Primer).
+    return _fallbackMaxPlanIdByGateway[gateway.toLowerCase()];
   }
 
   ranked.sort((a, b) {
