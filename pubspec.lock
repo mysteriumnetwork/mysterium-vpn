@@ -1321,9 +1321,11 @@ packages:
   mysterium_vpn_design:
     dependency: "direct main"
     description:
-      path: "../mysterium-vpn-design"
-      relative: true
-    source: path
+      path: "."
+      ref: "features/nav_item_wrapper"
+      resolved-ref: "5187c109662ec924a7582af0e844a36ddae2bf16"
+      url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
+    source: git
     version: "0.0.4"
   native_toolchain_c:
     dependency: transitive
