@@ -150,7 +150,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   @action
   Future<void> evaluatePromptToShow() async {
-    if (await _subscriptionOnboardingStore.shouldShow()) {
+    if (await shouldShowSubscriptionOnboarding()) {
       nextPromptToShow = UserPromptType.subscriptionOnboarding;
       return;
     }
@@ -190,6 +190,15 @@ abstract class _UserPreferencesStore with Store, Disposeable {
 
   @action
   Future<bool> getSubscriptionOnboardingShown() async => localDb.getSubscriptionOnboardingShown();
+
+  @visibleForTesting
+  @action
+  Future<bool> shouldShowSubscriptionOnboarding() async {
+    if (!_remoteConfigStore.canShowSubscriptionOnboardingFlow) {
+      return false;
+    }
+    return _subscriptionOnboardingStore.shouldShow();
+  }
 
   @visibleForTesting
   @action

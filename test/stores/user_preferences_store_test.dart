@@ -69,6 +69,7 @@ void main() {
     // Default: FF is on so existing tests don't have to opt in. Tests that
     // exercise the kill switch override this.
     when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+    when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
 
     store = UserPreferencesStore(
       apiService: mockApiService,
@@ -418,6 +419,52 @@ void main() {
 
       expect(store.nextPromptToShow, UserPromptType.subscriptionOnboarding);
       verifyNever(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt());
+    });
+
+    test(
+      'evaluatePromptToShow skips subscription onboarding when remote config disables it',
+      () async {
+        // arange
+        when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
+        when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+        store.getMarketingConsentFuture = ObservableFuture.value(false);
+        when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+        when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+
+        // act
+        await store.evaluatePromptToShow();
+
+        // assert
+        expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+        verifyNever(mockSubscriptionOnboardingStore.markShown());
+      },
+    );
+
+    test('shouldShowSubscriptionOnboarding returns false when remoteConfig disables it', () async {
+      // arrange
+      when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+      // act
+      final result = await store.shouldShowSubscriptionOnboarding();
+
+      // assert
+      expect(result, isFalse);
+      verifyNever(mockSubscriptionOnboardingStore.shouldShow());
+    });
+
+    test('shouldShowSubscriptionOnboarding delegates when remotConfig enables it', () async {
+      // arrange
+      when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+      // act
+      final result = await store.shouldShowSubscriptionOnboarding();
+
+      // assert
+      expect(result, isTrue);
+      verify(mockSubscriptionOnboardingStore.shouldShow()).called(1);
     });
 
     test(
