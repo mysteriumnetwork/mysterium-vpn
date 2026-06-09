@@ -41,7 +41,7 @@ class HomeDesktopScaffold extends HookConsumerWidget {
 
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
 
-    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,

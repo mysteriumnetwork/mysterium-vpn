@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -240,16 +241,22 @@ final isAppWindowFocused = NotifierProvider<IsAppWindowFocusedNotifier, bool>(
   IsAppWindowFocusedNotifier.new,
 );
 
-final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>((ref) {
-  final store = SubscriptionOnboardingStore(
+final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>(
+  (ref) => SubscriptionOnboardingStore(
     analyticsStore: ref.watch(analyticsStorePOD),
-    homeTabsStore: ref.watch(homeTabsStorePOD),
     subscriptionStore: ref.watch(subscriptionStorePOD),
     localDBService: LocalDBService.instance,
-  );
-  ref.onDispose(store.dispose);
+  ),
+);
 
-  return store;
+final subscriptionOnboardingShowcasePOD = Provider<SubscriptionOnboardingShowcase>((ref) {
+  final showcase = SubscriptionOnboardingShowcase(
+    subscriptionOnboardingStore: ref.watch(subscriptionOnboardingStorePOD),
+    homeTabsStore: ref.watch(homeTabsStorePOD),
+  );
+  ref.onDispose(showcase.dispose);
+
+  return showcase;
 });
 
 final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {

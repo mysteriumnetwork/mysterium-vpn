@@ -54,7 +54,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
     final screenType = ScreenType.of(context);
-    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1

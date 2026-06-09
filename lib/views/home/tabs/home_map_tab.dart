@@ -16,7 +16,7 @@ class HomeMapTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
-    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
 
     return Column(
       children: [
