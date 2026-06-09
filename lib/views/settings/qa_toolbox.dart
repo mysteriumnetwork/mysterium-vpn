@@ -321,7 +321,23 @@ class QAToolbox extends HookConsumerWidget {
               onConfirm: () {},
             ),
           ),
-          _QAActionButton(label: 'Subscription Onboarding', onPressed: () {}),
+          _QAActionButton(
+            label: 'Subscription Onboarding',
+            onPressed: () => ref.read(subscriptionOnboardingShowcasePOD).showPrompt(context),
+          ),
+          _QAActionButton(
+            label: 'Clear Subscription Onboarding',
+            onPressed: () async {
+              try {
+                await ref.read(subscriptionOnboardingStorePOD).clearShown();
+                showSnackbar(
+                  'Subscription onboarding cleared, restart app to re-trigger automatically',
+                );
+              } catch (e) {
+                showSnackbar('Error clearing subscription onboarding: $e');
+              }
+            },
+          ),
         ],
       ),
     ],

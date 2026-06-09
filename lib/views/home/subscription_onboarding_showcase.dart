@@ -151,7 +151,7 @@ class SubscriptionOnboardingShowcase {
       }
     }
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 200));
     if (!context.mounted) {
       return;
     }
