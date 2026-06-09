@@ -321,6 +321,7 @@ class QAToolbox extends HookConsumerWidget {
               onConfirm: () {},
             ),
           ),
+          _QAActionButton(label: 'Subscription Onboarding', onPressed: () {}),
         ],
       ),
     ],

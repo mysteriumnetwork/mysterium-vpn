@@ -23,7 +23,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     final scrollController = useScrollController()
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
-    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
 
     useEffect(() {
       final homeState = ref.read(homeStateProvider)..scrollController = scrollController;

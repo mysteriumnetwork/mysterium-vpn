@@ -30,7 +30,7 @@ class ConnectionTile extends HookConsumerWidget {
     ) = useConnectionTileState(
       ref,
     );
-    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
 
     Widget buttonWrapper({required BuildContext context, required Widget child}) {
       final stepIndex = onboarding.connectButtonStepIndex;
