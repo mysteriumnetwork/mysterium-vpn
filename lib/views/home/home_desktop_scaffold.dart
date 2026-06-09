@@ -4,8 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/subscription_onboarding_hook.dart';
-import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
@@ -43,9 +41,7 @@ class HomeDesktopScaffold extends HookConsumerWidget {
 
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
 
-    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
-    final tooltipContents = onboarding.tooltipContents;
-    useSubscriptionOnboarding();
+    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,13 +53,14 @@ class HomeDesktopScaffold extends HookConsumerWidget {
                 width: 32,
                 height: 32,
                 child: ArrowedProgressCard(
-                  tooltipIndex: onboarding.displayIndexForTab(tabs[index]),
+                  tooltipIndex: onboarding.stepIndexForTab(tabs[index]),
                   totalTooltips: onboarding.visibleStepsCount,
-                  tooltipContent: tooltipContents[onboarding.indexForTab(tabs[index])],
+                  tooltipContent: onboarding.tooltipContentForTab(tabs[index]),
                   globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.right,
-                  icon: tooltipContents[onboarding.indexForTab(tabs[index])].icon,
-                  onActionPressed: () => ShowcaseView.get().next(),
+                  icon: onboarding.tooltipContentForTab(tabs[index]).icon,
+                  onActionPressed: () =>
+                      onboarding.showNextTip(onboarding.stepIndexForTab(tabs[index])),
                   child: child,
                 ),
               ),

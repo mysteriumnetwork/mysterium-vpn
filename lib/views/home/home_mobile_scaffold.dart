@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/subscription_onboarding_hook.dart';
-import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -37,9 +35,7 @@ class HomeMobileScaffold extends HookConsumerWidget {
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
     final inSettingsSubPage = selected == HomeTab.settings && settingsSubPage != null;
 
-    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
-    final tooltipContents = onboarding.tooltipContents;
-    useSubscriptionOnboarding();
+    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
 
     return PopScope(
       canPop: !inSettingsSubPage,
@@ -66,13 +62,14 @@ class HomeMobileScaffold extends HookConsumerWidget {
             selectedIndex: selectedIndex,
             itemWrapper: ({required context, required index, required item, required child}) =>
                 ArrowedProgressCard(
-                  tooltipIndex: onboarding.displayIndexForTab(tabs[index]),
+                  tooltipIndex: onboarding.stepIndexForTab(tabs[index]),
                   totalTooltips: onboarding.visibleStepsCount,
-                  tooltipContent: tooltipContents[onboarding.indexForTab(tabs[index])],
+                  tooltipContent: onboarding.tooltipContentForTab(tabs[index]),
                   globalKey: onboarding.keyForTab(tabs[index]),
                   tooltipPosition: TooltipPosition.top,
-                  icon: tooltipContents[onboarding.indexForTab(tabs[index])].icon,
-                  onActionPressed: () => ShowcaseView.get().next(),
+                  icon: onboarding.tooltipContentForTab(tabs[index]).icon,
+                  onActionPressed: () =>
+                      onboarding.showNextTip(onboarding.stepIndexForTab(tabs[index])),
                   child: child,
                 ),
             onDestinationSelected: (i) {

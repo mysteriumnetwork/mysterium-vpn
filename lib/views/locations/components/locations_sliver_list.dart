@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/location_list_state_hook.dart';
-import 'package:mysterium_vpn/common/subscription_onboarding_setup.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
@@ -56,7 +54,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
     final screenType = ScreenType.of(context);
-    final onboarding = ref.watch(subscriptionOnboardingSetupPOD);
+    final onboarding = ref.watch(subscriptionOnboardingStorePOD);
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1
@@ -154,17 +152,16 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
               final start = showcaseStartIndex!;
               final firstLocation = items[start];
               final secondLocation = items[start + 1];
-              final stepIndex = onboarding.stepIndex(SubscriptionOnboardingSetup.locationsIndex);
+              final stepIndex = onboarding.locationsListStepIndex;
 
               return ArrowedProgressCard(
                 tooltipIndex: stepIndex,
                 totalTooltips: onboarding.visibleStepsCount,
-                tooltipContent:
-                    onboarding.tooltipContents[SubscriptionOnboardingSetup.locationsIndex],
-                globalKey: onboarding.keyForTab(HomeTab.locations),
+                tooltipContent: onboarding.locationsListTooltipContent,
+                globalKey: onboarding.locationsListKey,
                 tooltipPosition: TooltipPosition.top,
-                icon: onboarding.tooltipContents[SubscriptionOnboardingSetup.locationsIndex].icon,
-                onActionPressed: () => ShowcaseView.get().next(),
+                icon: onboarding.locationsListTooltipContent.icon,
+                onActionPressed: () => onboarding.showNextTip(stepIndex),
                 child: Column(
                   children: [
                     _LocationListItem(

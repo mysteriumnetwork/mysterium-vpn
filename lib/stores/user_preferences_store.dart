@@ -9,7 +9,13 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'user_preferences_store.g.dart';
 
-enum UserPromptType { none, noneSubsOnboarding, marketingConsent, pushNotifications }
+enum UserPromptType {
+  none,
+  subscriptionOnboarding,
+  noneSubsOnboarding,
+  marketingConsent,
+  pushNotifications,
+}
 
 // ignore: library_private_types_in_public_api
 class UserPreferencesStore = _UserPreferencesStore with _$UserPreferencesStore;
@@ -23,6 +29,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     required PushNotificationsStore pushNotificationsStore,
     required AuthSessionStore authSessionStore,
     required SubscriptionStore subscriptionStore,
+    required SubscriptionOnboardingStore subscriptionOnboardingStore,
     required RemoteConfigStore remoteConfigStore,
   }) : _apiService = apiService,
        _analyticsStore = analyticsStore,
@@ -31,17 +38,25 @@ abstract class _UserPreferencesStore with Store, Disposeable {
        _pushNotificationsStore = pushNotificationsStore,
        _authSessionStore = authSessionStore,
        _subscriptionStore = subscriptionStore,
+       _subscriptionOnboardingStore = subscriptionOnboardingStore,
        _remoteConfigStore = remoteConfigStore {
-    _authReactionDisposer = reaction<bool>(
-      (_) => _authSessionStore.isAuthenticated,
-      (status) async {
-        if (status) {
-          await initStore();
+    _reactionDisposers = [
+      reaction<bool>(
+        (_) => _authSessionStore.isAuthenticated,
+        (status) async {
+          if (status) {
+            await initStore();
+          }
+        },
+        fireImmediately: true,
+        equals: (a, b) => a == b,
+      ),
+      reaction<bool?>((_) => _subscriptionStore.isSubscribed, (isSubscribed) async {
+        if (_authSessionStore.isAuthenticated && isSubscribed == true) {
+          await evaluatePromptToShow();
         }
-      },
-      fireImmediately: true,
-      equals: (a, b) => a == b,
-    );
+      }, fireImmediately: false),
+    ];
   }
 
   @action
@@ -57,8 +72,9 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   final PushNotificationsStore _pushNotificationsStore;
   final AuthSessionStore _authSessionStore;
   final SubscriptionStore _subscriptionStore;
+  final SubscriptionOnboardingStore _subscriptionOnboardingStore;
   final RemoteConfigStore _remoteConfigStore;
-  ReactionDisposer? _authReactionDisposer;
+  late final List<ReactionDisposer> _reactionDisposers;
 
   @observable
   ObservableFuture<void>? setMarketingConsentFuture;
@@ -84,6 +100,9 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   bool noneSubsOnboardingPromptShown = false;
 
+  @visibleForTesting
+  bool subscriptionOnboardingPromptShown = false;
+
   // Set true once any prompt is shown in the current app run. We allow at most
   // one prompt per launch — subsequent evaluations are short-circuited until
   // the app is restarted.
@@ -100,6 +119,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     switch (type) {
       case UserPromptType.noneSubsOnboarding:
         return noneSubsOnboardingPromptShown;
+      case UserPromptType.subscriptionOnboarding:
+        return subscriptionOnboardingPromptShown;
       case UserPromptType.marketingConsent:
         return marketingConsentPromptShown;
       case UserPromptType.pushNotifications:
@@ -114,6 +135,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     switch (type) {
       case UserPromptType.noneSubsOnboarding:
         noneSubsOnboardingPromptShown = true;
+      case UserPromptType.subscriptionOnboarding:
+        subscriptionOnboardingPromptShown = true;
       case UserPromptType.marketingConsent:
         marketingConsentPromptShown = true;
       case UserPromptType.pushNotifications:
@@ -127,6 +150,11 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   @action
   Future<void> evaluatePromptToShow() async {
+    if (await _subscriptionOnboardingStore.shouldShow()) {
+      nextPromptToShow = UserPromptType.subscriptionOnboarding;
+      return;
+    }
+
     // Cap to one prompt per app launch — chaining onboarding, marketing
     // consent, and push permission back-to-back would be a jarring first
     // impression. Restart the app to surface the next eligible prompt.
@@ -156,7 +184,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
 
   @action
   Future<void> setSubscriptionOnboardingShown() async {
-    await localDb.setSubscriptionOnboardingShown();
+    await _subscriptionOnboardingStore.markShown();
     await evaluatePromptToShow();
   }
 
@@ -287,6 +315,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
 
   @override
   FutureOr<void> dispose() async {
-    _authReactionDisposer?.call();
+    for (final dispose in _reactionDisposers) {
+      dispose();
+    }
   }
 }
