@@ -361,8 +361,24 @@ void main() {
         await subscriptionStore.refreshSubscription();
       }
 
-      test('returns true on Windows regardless of subscription', () async {
+      test('returns true on Windows with no active subscription (first-time buyer)', () async {
         subscriptionStore.testIsWindows = true;
+        expect(subscriptionStore.useWebFlow, isTrue);
+      });
+
+      test('returns false for active store sub on Windows (managed in store, not web)', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.useWebFlow, isFalse);
+      });
+
+      test('returns true for active web (stripe) sub on Windows', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
         expect(subscriptionStore.useWebFlow, isTrue);
       });
 
@@ -414,6 +430,86 @@ void main() {
       });
     });
 
+    group('isStoreSubOnForeignPlatform', () {
+      Future<void> primeSubscription(Subscription subscription) async {
+        when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+        when(
+          mockSubscriptionService.fetchSubscriptionDetails(),
+        ).thenAnswer((_) async => subscription);
+        await subscriptionStore.refreshSubscription();
+      }
+
+      test('returns false when subscription is inactive', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(Subscription.empty());
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns false for active web (stripe) sub on any platform', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns true for apple sub on Windows', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns true for apple sub on Android', () async {
+        subscriptionStore.testIsAndroid = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns false for apple sub on iOS (matching store)', () async {
+        subscriptionStore.testIsIOS = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns false for apple sub on macOS (matching store)', () async {
+        subscriptionStore.testIsMacOS = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+
+      test('returns true for google sub on Windows', () async {
+        subscriptionStore.testIsWindows = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns true for google sub on iOS', () async {
+        subscriptionStore.testIsIOS = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isTrue);
+      });
+
+      test('returns false for google sub on Android (matching store)', () async {
+        subscriptionStore.testIsAndroid = true;
+        await primeSubscription(
+          Subscription(active: true, gateway: 'google', planId: 'plan_yearly_plus'),
+        );
+        expect(subscriptionStore.isStoreSubOnForeignPlatform, isFalse);
+      });
+    });
+
     group('isOnMaxPlan', () {
       late vpn_api.SubscriptionConfigResponse configWithPlans;
 
@@ -443,27 +539,34 @@ void main() {
             plan(id: 'plan_yearly_plus', supportedGateways: ['google'], intervalUnit: 'year'),
             plan(
               id: 'plan_2_years_pro',
-              supportedGateways: ['stripe'],
+              supportedGateways: ['stripe', 'primer'],
               intervalUnit: 'year',
               intervalAmount: 2,
             ),
-            plan(id: 'plan_yearly_pro', supportedGateways: ['stripe'], intervalUnit: 'year'),
+            plan(
+              id: 'plan_yearly_pro',
+              supportedGateways: ['stripe', 'primer'],
+              intervalUnit: 'year',
+            ),
           ],
           countries: const [],
           stripePublishableKey: '',
           stripeReturnUrl: '',
         );
         when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlans));
+        // Production planFeatures only lists the in-app sellable tiers (Basic,
+        // Plus); Pro is web-only and absent. The intrinsic tier order must
+        // still rank the 2-year Pro plan as the max.
         when(mockRemoteConfigStore.planFeatures).thenReturn([
           SubscriptionPlanFeatures(
-            name: 'Plus',
-            planIds: {'plan_yearly_plus'},
+            name: 'Basic',
+            planIds: {'plan_monthly_basic', 'plan_yearly_basic'},
             previewFeatures: const {},
             detailedFeatures: const {},
           ),
           SubscriptionPlanFeatures(
-            name: 'Pro',
-            planIds: {'plan_yearly_pro', 'plan_2_years_pro'},
+            name: 'Plus',
+            planIds: {'plan_monthly_plus', 'plan_yearly_plus'},
             previewFeatures: const {},
             detailedFeatures: const {},
           ),
@@ -501,6 +604,23 @@ void main() {
       test('returns false when stripe sub is on yearly Pro (1-year < 2-year)', () async {
         await primeSubscription(
           Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_pro'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isFalse);
+      });
+
+      test('returns true for primer sub on 2-year Pro (web max, like any web gateway)', () async {
+        // Primer is a normal web gateway in supportedGateways; the 2-year Pro
+        // plan ranks as the max via the intrinsic tier order, even though
+        // planFeatures has no Pro tier.
+        await primeSubscription(
+          Subscription(active: true, gateway: 'primer', planId: 'plan_2_years_pro'),
+        );
+        expect(subscriptionStore.isOnMaxPlan, isTrue);
+      });
+
+      test('returns false for primer sub on a lower plan (upgrade still possible)', () async {
+        await primeSubscription(
+          Subscription(active: true, gateway: 'primer', planId: 'plan_yearly_pro'),
         );
         expect(subscriptionStore.isOnMaxPlan, isFalse);
       });

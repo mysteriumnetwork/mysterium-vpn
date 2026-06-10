@@ -52,6 +52,13 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.useWebFlow,
     name: '_SubscriptionStore.useWebFlow',
   )).value;
+  Computed<bool>? _$isStoreSubOnForeignPlatformComputed;
+
+  @override
+  bool get isStoreSubOnForeignPlatform => (_$isStoreSubOnForeignPlatformComputed ??= Computed<bool>(
+    () => super.isStoreSubOnForeignPlatform,
+    name: '_SubscriptionStore.isStoreSubOnForeignPlatform',
+  )).value;
   Computed<bool>? _$isOnMaxPlanComputed;
 
   @override
@@ -204,6 +211,7 @@ storeState: ${storeState},
 planMetadata: ${planMetadata},
 residentialIPsAllowed: ${residentialIPsAllowed},
 useWebFlow: ${useWebFlow},
+isStoreSubOnForeignPlatform: ${isStoreSubOnForeignPlatform},
 isOnMaxPlan: ${isOnMaxPlan},
 malwareBlockingAllowed: ${malwareBlockingAllowed},
 canRedeemCode: ${canRedeemCode}

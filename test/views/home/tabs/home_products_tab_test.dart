@@ -34,6 +34,7 @@ void main() {
     // Default to "no special state" — individual tests override.
     when(subscriptionStore.isOnMaxPlan).thenReturn(false);
     when(subscriptionStore.useWebFlow).thenReturn(false);
+    when(subscriptionStore.isStoreSubOnForeignPlatform).thenReturn(false);
   });
 
   Widget buildHarness() => ProviderScope(
@@ -137,26 +138,73 @@ void main() {
       },
     );
 
-    testWidgets('prefers ManageOnWebView over MaxPlanView when both flags are true', (
+    testWidgets('prefers MaxPlanView over ManageOnWebView when on the highest plan', (
       tester,
     ) async {
-      // Web-paid subs always route through the web, even when the user
-      // happens to be on the gateway's max plan (e.g. Annual Basic on
-      // Stripe where Basic is the only stripe-supported tier). The
-      // "manage on the web" CTA must win over the read-only max-plan view.
+      // A user on the highest plan available to them (e.g. a web-paid 2-year
+      // Pro sub) must see the read-only "highest plan" screen, even though the
+      // web flow would otherwise apply. The max-plan view wins.
       when(subscriptionStore.isOnMaxPlan).thenReturn(true);
       when(subscriptionStore.useWebFlow).thenReturn(true);
       when(subscriptionStore.subscriptionFuture).thenAnswer(
         (_) => ObservableFuture.value(
-          Subscription(active: true, gateway: 'stripe', planId: 'plan_yearly_basic'),
+          Subscription(active: true, gateway: 'stripe', planId: 'plan_2_years_pro'),
         ),
       );
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();
 
-      expect(find.textContaining(RegExp('Manage on the web|manageOnWebBtn')), findsOneWidget);
-      expect(find.textContaining('highest plan'), findsNothing);
+      expect(find.textContaining(RegExp('highest plan|productsMaxPlanAlert')), findsOneWidget);
+      expect(find.textContaining('Manage on the web'), findsNothing);
+    });
+
+    testWidgets('renders store-block view for an active store sub on a foreign platform', (
+      tester,
+    ) async {
+      // e.g. an Apple sub opened on Windows: must direct the user to the
+      // originating store, never the web, and never the in-app upgrade picker.
+      when(subscriptionStore.isStoreSubOnForeignPlatform).thenReturn(true);
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_monthly_basic'),
+        ),
+      );
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(
+        find.textContaining(RegExp('active subscription paid via|activeSubsPaidVia')),
+        findsOneWidget,
+        reason: 'Store-block alert should be on screen',
+      );
+      expect(find.textContaining('Manage on the web'), findsNothing);
+      expect(find.textContaining(RegExp('Subscribe on the web|subscribeOnWebBtn')), findsNothing);
+    });
+
+    testWidgets('max-plan view wins over store-block for a store-max sub on any platform', (
+      tester,
+    ) async {
+      // A store sub on its store's max plan (e.g. Apple Plus annual) is on the
+      // highest plan available to it, so it shows "highest plan" on every
+      // platform — even where it would otherwise be store-blocked (Windows).
+      when(subscriptionStore.isOnMaxPlan).thenReturn(true);
+      when(subscriptionStore.isStoreSubOnForeignPlatform).thenReturn(true);
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
+        ),
+      );
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(find.textContaining(RegExp('highest plan|productsMaxPlanAlert')), findsOneWidget);
+      expect(
+        find.textContaining(RegExp('active subscription paid via|activeSubsPaidVia')),
+        findsNothing,
+      );
     });
 
     // The default "upgrade view" branch (both flags false) wraps the
