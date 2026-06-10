@@ -110,6 +110,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_userConnectEpochAtom = Atom(name: '_VpnStore._userConnectEpoch', context: context);
+
+  int get userConnectEpoch {
+    _$_userConnectEpochAtom.reportRead();
+    return super._userConnectEpoch;
+  }
+
+  @override
+  int get _userConnectEpoch => userConnectEpoch;
+
+  @override
+  set _userConnectEpoch(int value) {
+    _$_userConnectEpochAtom.reportWrite(value, super._userConnectEpoch, () {
+      super._userConnectEpoch = value;
+    });
+  }
+
   late final _$_connectingLocationAtom = Atom(
     name: '_VpnStore._connectingLocation',
     context: context,
