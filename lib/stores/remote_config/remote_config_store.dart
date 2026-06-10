@@ -535,7 +535,9 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     } catch (e, stack) {
       logger.handle(e, stack);
     }
-    return {'stripe', 'adyen'};
+    // Primer is the web payment-orchestration layer; like stripe/adyen it
+    // supports upgrading via the web checkout.
+    return {'stripe', 'adyen', 'primer'};
   }
 
   @computed

@@ -44,13 +44,20 @@ FutureOr<void> _handleOnBillingPage({
   required bool manageSubscription,
   FutureOr<void> Function()? onManageSubscription,
 }) async {
-  final isMobileGateway = isMobilePaymentGateway(gateway);
+  // getPlatformGateway() returns a lowercase gateway id, so normalize the
+  // subscription's gateway before comparing — otherwise a capitalized value
+  // from the backend would read as "foreign" on the correct platform.
+  final normalizedGateway = gateway?.toLowerCase();
+  final isMobileGateway = isMobilePaymentGateway(normalizedGateway);
 
   if (subscriptionActive && isMobileGateway) {
-    if (gateway != getPlatformGateway()) {
+    if (normalizedGateway != getPlatformGateway()) {
+      // Direct the user to the store that actually holds the subscription,
+      // derived from its gateway — not the current platform (which is wrong
+      // on desktop, where the platform gateway is empty).
       showSnackbar(
         LocaleKeys.activeSubsPaidVia.tr(
-          namedArgs: {'store': Platform.isIOS ? 'Google Play Store' : 'Apple App Store'},
+          namedArgs: {'store': storeNameForGateway(normalizedGateway)},
         ),
       );
       return;
