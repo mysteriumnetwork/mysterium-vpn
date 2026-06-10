@@ -143,7 +143,7 @@ void main() {
 
       when(client.getAllValues()).thenAnswer((_) async => {});
       await store.configFuture;
-      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen'}));
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'primer'}));
     });
 
     test('returns default set if JSON is invalid', () async {
@@ -153,7 +153,7 @@ void main() {
         client.getAllValues(),
       ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '{not valid json'});
       await store.configFuture;
-      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen'}));
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'primer'}));
     });
 
     test('returns default set if JSON is not an array', () async {
@@ -163,7 +163,7 @@ void main() {
         client.getAllValues(),
       ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '"just a string"'});
       await store.configFuture;
-      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen'}));
+      expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'primer'}));
     });
 
     test('handles empty array gracefully', () async {
