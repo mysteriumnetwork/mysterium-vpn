@@ -89,16 +89,29 @@ class SubscriptionOnboardingShowcase {
   int get locationsListStepIndex => _stepIndex(_locationsIndex);
 
   Future<void> showPrompt(BuildContext context) async {
-    await _store.markShown();
     if (!context.mounted) {
       return;
     }
 
     await showSubscriptionOnboardingDialog(
       context: context,
-      onStartTour: () => unawaited(startTour(context)),
-      onCancelTour: _store.trackSkipped,
+      onStartTour: () => unawaited(_markShownAndStartTour(context)),
+      onCancelTour: () => unawaited(_markShownAndSkip()),
     );
+  }
+
+  Future<void> _markShownAndStartTour(BuildContext context) async {
+    await _store.markShown();
+    if (!context.mounted) {
+      return;
+    }
+
+    await startTour(context);
+  }
+
+  Future<void> _markShownAndSkip() async {
+    await _store.markShown();
+    _store.trackSkipped();
   }
 
   void register(BuildContext context) {
@@ -107,6 +120,7 @@ class SubscriptionOnboardingShowcase {
     }
 
     ShowcaseView.register(
+      disableBarrierInteraction: true,
       globalFloatingActionWidget: (context) => FloatingActionWidget(
         top: 50,
         right: 50,
