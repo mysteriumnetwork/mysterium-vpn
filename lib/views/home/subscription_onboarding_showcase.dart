@@ -156,14 +156,7 @@ class SubscriptionOnboardingShowcase {
   Future<void> startTour(BuildContext context) async {
     _store.trackStarted();
 
-    if (isDesktop()) {
-      _homeTabsStore.trySelect(HomeTab.map);
-    } else {
-      final beamer = Beamer.of(context);
-      if (beamer.configuration.uri.path != Routes.main.path) {
-        beamer.beamToNamed(Routes.main.path);
-      }
-    }
+    _homeTabsStore.trySelect(HomeTab.map);
 
     await Future.delayed(const Duration(milliseconds: 200));
     if (!context.mounted) {
