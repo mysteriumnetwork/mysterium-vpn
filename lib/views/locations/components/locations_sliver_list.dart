@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 /// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
 const _kItemHeight = 64.0;
@@ -138,30 +139,21 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
     return SliverLayoutBuilder(
       builder: (context, constraints) {
         precedingExtent.value = constraints.precedingScrollExtent;
-        final showcaseStartIndex = _showcaseStartIndex(
+        final showcaseTargetRect = _showcaseTargetRect(
           constraints: constraints,
           itemCount: items.length,
           enabled: isDesktop,
         );
 
-        return SliverList.separated(
-          itemCount: items.length,
-          separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
-          itemBuilder: (_, index) {
-            final item = items[index];
+        return SliverStack(
+          children: [
+            SliverList.separated(
+              itemCount: items.length,
+              separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
+              itemBuilder: (_, index) {
+                final item = items[index];
 
-            if (index == showcaseStartIndex) {
-              final stepIndex = onboarding.locationsListStepIndex;
-
-              return ArrowedProgressCard(
-                tooltipIndex: stepIndex,
-                totalTooltips: onboarding.visibleStepsCount,
-                tooltipContent: onboarding.locationsListTooltipContent,
-                globalKey: onboarding.locationsListKey,
-                tooltipPosition: TooltipPosition.top,
-                icon: onboarding.locationsListTooltipContent.icon,
-                onActionPressed: () => onboarding.showNextTip(stepIndex),
-                child: _LocationListItem(
+                return _LocationListItem(
                   location: item,
                   onItemPressed: onItemPressed,
                   effectivePriorityCountryCode: effectivePriorityCountryCode,
@@ -173,24 +165,27 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
                     };
                     overridesVersion.value++;
                   },
-                ),
-              );
-            }
-
-            return _LocationListItem(
-              location: item,
-              onItemPressed: onItemPressed,
-              effectivePriorityCountryCode: effectivePriorityCountryCode,
-              expansionOverride: expansionOverrides.value[item.countryCode],
-              onExpansionChanged: (expanded) {
-                expansionOverrides.value = {
-                  ...expansionOverrides.value,
-                  item.countryCode: expanded,
-                };
-                overridesVersion.value++;
+                );
               },
-            );
-          },
+            ),
+            if (showcaseTargetRect != null)
+              SliverPositioned.fromRect(
+                rect: showcaseTargetRect,
+                child: IgnorePointer(
+                  child: ArrowedProgressCard(
+                    tooltipIndex: onboarding.locationsListStepIndex,
+                    totalTooltips: onboarding.visibleStepsCount,
+                    tooltipContent: onboarding.locationsListTooltipContent,
+                    globalKey: onboarding.locationsListKey,
+                    tooltipPosition: TooltipPosition.top,
+                    icon: onboarding.locationsListTooltipContent.icon,
+                    onActionPressed: () =>
+                        onboarding.showNextTip(onboarding.locationsListStepIndex),
+                    child: const SizedBox.expand(),
+                  ),
+                ),
+              ),
+          ],
         );
       },
     );
@@ -223,22 +218,29 @@ class _LocationListItem extends StatelessWidget {
   );
 }
 
-int? _showcaseStartIndex({
+Rect? _showcaseTargetRect({
   required SliverConstraints constraints,
   required int itemCount,
   required bool enabled,
 }) {
-  if (!enabled || itemCount < 2) {
+  if (!enabled || itemCount == 0) {
     return null;
   }
 
+  final highlightedItemsCount = itemCount == 1 ? 1 : 2;
   final firstVisibleIndex = (constraints.scrollOffset / _kItemStride).floor();
   final visibleCount = (constraints.remainingPaintExtent / _kItemStride).floor().clamp(
-    2,
+    highlightedItemsCount,
     itemCount,
   );
+  final startIndex = (firstVisibleIndex + visibleCount - highlightedItemsCount).clamp(
+    0,
+    itemCount - highlightedItemsCount,
+  );
+  final height =
+      highlightedItemsCount * _kItemHeight + (highlightedItemsCount - 1) * _kSeparatorHeight;
 
-  return (firstVisibleIndex + visibleCount - 2).clamp(0, itemCount - 2);
+  return Rect.fromLTWH(0, startIndex * _kItemStride, constraints.crossAxisExtent, height);
 }
 
 // ---------------------------------------------------------------------------
