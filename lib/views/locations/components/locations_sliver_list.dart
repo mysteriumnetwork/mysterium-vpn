@@ -145,13 +145,12 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         );
 
         return SliverList.separated(
-          itemCount: showcaseStartIndex == null ? items.length : items.length - 1,
+          itemCount: items.length,
           separatorBuilder: (_, _) => const SizedBox(height: _kSeparatorHeight),
           itemBuilder: (_, index) {
+            final item = items[index];
+
             if (index == showcaseStartIndex) {
-              final start = showcaseStartIndex!;
-              final firstLocation = items[start];
-              final secondLocation = items[start + 1];
               final stepIndex = onboarding.locationsListStepIndex;
 
               return ArrowedProgressCard(
@@ -162,53 +161,31 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
                 tooltipPosition: TooltipPosition.top,
                 icon: onboarding.locationsListTooltipContent.icon,
                 onActionPressed: () => onboarding.showNextTip(stepIndex),
-                child: Column(
-                  children: [
-                    _LocationListItem(
-                      location: firstLocation,
-                      onItemPressed: onItemPressed,
-                      effectivePriorityCountryCode: effectivePriorityCountryCode,
-                      expansionOverride: expansionOverrides.value[firstLocation.countryCode],
-                      onExpansionChanged: (expanded) {
-                        expansionOverrides.value = {
-                          ...expansionOverrides.value,
-                          firstLocation.countryCode: expanded,
-                        };
-                        overridesVersion.value++;
-                      },
-                    ),
-                    const SizedBox(height: _kSeparatorHeight),
-                    _LocationListItem(
-                      location: secondLocation,
-                      onItemPressed: onItemPressed,
-                      effectivePriorityCountryCode: effectivePriorityCountryCode,
-                      expansionOverride: expansionOverrides.value[secondLocation.countryCode],
-                      onExpansionChanged: (expanded) {
-                        expansionOverrides.value = {
-                          ...expansionOverrides.value,
-                          secondLocation.countryCode: expanded,
-                        };
-                        overridesVersion.value++;
-                      },
-                    ),
-                  ],
+                child: _LocationListItem(
+                  location: item,
+                  onItemPressed: onItemPressed,
+                  effectivePriorityCountryCode: effectivePriorityCountryCode,
+                  expansionOverride: expansionOverrides.value[item.countryCode],
+                  onExpansionChanged: (expanded) {
+                    expansionOverrides.value = {
+                      ...expansionOverrides.value,
+                      item.countryCode: expanded,
+                    };
+                    overridesVersion.value++;
+                  },
                 ),
               );
             }
 
-            final itemIndex = showcaseStartIndex != null && index > showcaseStartIndex
-                ? index + 1
-                : index;
-
             return _LocationListItem(
-              location: items[itemIndex],
+              location: item,
               onItemPressed: onItemPressed,
               effectivePriorityCountryCode: effectivePriorityCountryCode,
-              expansionOverride: expansionOverrides.value[items[itemIndex].countryCode],
+              expansionOverride: expansionOverrides.value[item.countryCode],
               onExpansionChanged: (expanded) {
                 expansionOverrides.value = {
                   ...expansionOverrides.value,
-                  items[itemIndex].countryCode: expanded,
+                  item.countryCode: expanded,
                 };
                 overridesVersion.value++;
               },

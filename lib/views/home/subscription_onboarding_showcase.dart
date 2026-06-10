@@ -189,66 +189,66 @@ class SubscriptionOnboardingShowcase {
 
 List<TooltipContent> get _mobileTooltipContents => [
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingMapMobileTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingMapMobileDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingMapMobileTitle,
+    description: LocaleKeys.subscriptionOnboardingMapMobileDescription,
     icon: UntitledUI.map_01,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingVPNLocationsMobileDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle,
+    description: LocaleKeys.subscriptionOnboardingVPNLocationsMobileDescription,
     icon: UntitledUI.flag_01,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingManagePlanTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingManagePlanDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingManagePlanTitle,
+    description: LocaleKeys.subscriptionOnboardingManagePlanDescription,
     icon: UntitledUI.star_06,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingConnectTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingConnectDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingConnectTitle,
+    description: LocaleKeys.subscriptionOnboardingConnectDescription,
     icon: UntitledUI.rocket_02,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
+    description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
     icon: UntitledUI.lock_01,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingSearchTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingSearchDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingSearchTitle,
+    description: LocaleKeys.subscriptionOnboardingSearchDescription,
     icon: UntitledUI.search_sm,
   ),
 ];
 
 List<TooltipContent> get _desktopTooltipContents => [
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingMapDesktopTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingMapDesktopDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingMapDesktopTitle,
+    description: LocaleKeys.subscriptionOnboardingMapDesktopDescription,
     icon: UntitledUI.map_01,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingVPNLocationsDesktopDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle,
+    description: LocaleKeys.subscriptionOnboardingVPNLocationsDesktopDescription,
     icon: UntitledUI.star_06,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingManagePlanTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingManagePlanDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingManagePlanTitle,
+    description: LocaleKeys.subscriptionOnboardingManagePlanDescription,
     icon: UntitledUI.rocket_02,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingConnectTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingConnectDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingConnectTitle,
+    description: LocaleKeys.subscriptionOnboardingConnectDescription,
     icon: UntitledUI.lock_01,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
+    description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
     icon: UntitledUI.search_sm,
   ),
   TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingSearchTitle.tr(),
-    description: LocaleKeys.subscriptionOnboardingSearchDescription.tr(),
+    title: LocaleKeys.subscriptionOnboardingSearchTitle,
+    description: LocaleKeys.subscriptionOnboardingSearchDescription,
     icon: UntitledUI.flag_01,
   ),
 ];
