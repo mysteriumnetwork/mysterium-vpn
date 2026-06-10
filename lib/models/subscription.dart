@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
 
 part 'subscription.freezed.dart';
 
@@ -36,11 +37,12 @@ abstract class Subscription with _$Subscription {
     _ => gateway!.capitalize(),
   };
 
-  bool get isGatewayOnCurrentPlatform => switch (gateway?.toLowerCase()) {
-    'apple' => Platform.isIOS || Platform.isMacOS,
-    'google' => Platform.isAndroid,
-    _ => false,
-  };
+  bool get isGatewayOnCurrentPlatform => isGatewayOnPlatform(
+    gateway,
+    isIOS: Platform.isIOS,
+    isAndroid: Platform.isAndroid,
+    isMacOS: Platform.isMacOS,
+  );
 
   bool get isGoogleGateway => gateway?.toLowerCase() == 'google';
 

@@ -28,7 +28,7 @@ class AccountSettings extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
-    final authStatus = useComputedValue(() => authSessionStore.status);
+    final authStatus = useComputedValue(() => authSessionStore.status, [authSessionStore]);
 
     return switch (authStatus) {
       AuthStatus.authenticated => _Authenticated(asSliver: asSliver),
@@ -166,7 +166,10 @@ class _Authenticated extends HookConsumerWidget {
       );
     }
 
-    final email = authSessionStore.user?.username ?? '';
+    // `user` is populated asynchronously by fetchAuthUser after login, so read
+    // it reactively — otherwise the email stays blank until the widget is
+    // rebuilt for another reason (e.g. switching settings tabs).
+    final email = useComputedValue(() => authSessionStore.user?.username ?? '', [authSessionStore]);
     final showDeleteAccount = !remoteConfigStore.hideDeleteAccount;
 
     final cards = Column(
