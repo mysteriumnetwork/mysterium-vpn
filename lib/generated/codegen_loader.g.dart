@@ -442,6 +442,29 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc": "伪装成普通家庭用户，让您可以访问流媒体服务并避免 VPN 检测。",
     "subscriptionPlanCityLevelDesc": "它提供比大多数 VPN 更精确的位置控制，大多数 VPN 通常限制您只能选择整个国家或地区。",
     "subscriptionPlanMalwareBlockerDesc": "它能在威胁到达您的设备之前将其拦截，从而保护您的设备，并在后台静默运行，不会打扰您。",
+    "skipBtn": "跳过",
+    "completeBtn": "完全的",
+    "subscriptionOnboardingPromptTitle": "快速参观",
+    "subscriptionOnboardingPromptDescription": "熟悉更新后的应用程序，并发现主要功能现在位于何处。",
+    "subscriptionOnboardingStartTourLabel": "开始游览",
+    "subscriptionOnboardingCancelTourLabel": "暂时跳过",
+    "subscriptionOnboardingMapDesktopTitle": "以您的方式探索各地",
+    "subscriptionOnboardingMapDesktopDescription": "浏览地图或从侧边栏探索地点。",
+    "subscriptionOnboardingMapMobileTitle": "从地图连接",
+    "subscriptionOnboardingMapMobileDescription": "浏览地图选择国家/地区，即可立即连接。",
+    "subscriptionOnboardingManagePlanTitle": "管理您的计划",
+    "subscriptionOnboardingManagePlanDescription": "根据您的账户权限，购买、升级或查看可用的套餐。",
+    "subscriptionOnboardingBoostProtectionTitle": "加强您的防护",
+    "subscriptionOnboardingBoostProtectionDescription": "探索VPN协议和恶意软件拦截等高级功能。",
+    "subscriptionOnboardingConnectTitle": "保持私密",
+    "subscriptionOnboardingConnectDescription": "我们会为您连接到最佳服务器。",
+    "subscriptionOnboardingSearchTitle": "搜索和连接速度更快",
+    "subscriptionOnboardingSearchDescription": "通过搜索功能快速查找国家、城市和服务器。",
+    "subscriptionOnboardingVPNLocationsTitle": "浏览 VPN 位置",
+    "subscriptionOnboardingVPNLocationsDesktopDescription": "在一个地方探索各个国家和城市。",
+    "subscriptionOnboardingVPNLocationsMobileDescription": "在一个地方浏览国家、城市、最近连接和专业服务器。",
+    "subscriptionOnboardingSetupCompleteTitle": "设置完成",
+    "subscriptionOnboardingSetupCompleteDescription": "选择一个地点，开始更私密的浏览。",
     "notNowBtn": "现在不要",
     "viewAllFeaturesBtn": "查看所有功能",
     "viewLessBtn": "收起",
@@ -461,11 +484,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupTitle": "通过电子邮件获取最新信息",
     "marketingConsentPopupDesc": "您是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私提示和特别优惠？",
     "allowNotificationsBtn": "允许通知",
-    "ipTypeDataCenterDisclaimer": "提供托管在快速高效服务器上的 IP 地址，满足您的快速 VPN 需求——选择此方案可获得稳定的连接",
-    "ipTypeResidentialDisclaimer": "来自真实家庭的住宅IP地址。几乎无法检测，但稳定性较差，因此您获得的IP地址可能会发生变化。",
-    "ipTypeResidentialTooltipTitle": "为什么链接丢失了？",
-    "ipTypeResidentialTooltipBody":
-        "家庭IP地址依赖于真人用户。如果他们的连接中断，您将立即重新连接到最近的可用IP地址。为了获得稳定的连接，请选择高速IP地址。",
     "refreshIPAddress": "IP地址刷新",
     "getNewIPAddress": "刷新后获取新的 IP 地址",
     "resetAppDesc": "当出现故障时，请重置。",
@@ -508,7 +526,7 @@ class CodegenLoader extends AssetLoader {
     "typeDelete": "类型 {}",
     "allowBtn": "允许",
     "loginSignupLabel": "登录或注册",
-    "takeBackTheInternetLbl": "夺回互联网。",
+    "takeBackTheInternetLbl": "夺回互联网的控制权。",
     "homeLbl": "家",
     "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
     "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
@@ -587,6 +605,20 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert": "订阅服务在网页上管理。您的套餐将自动同步到应用程序中。",
     "subscribeOnWebBtn": "在网站上订阅",
     "subscriptionAllPlansCurrentPlan": "当前计划",
+    "ipTypeDataCenterDisclaimer": "数据中心 IP 地址，针对速度和性能进行了优化。",
+    "ipTypeResidentialDisclaimer": "由真实家庭提供。几乎无法察觉，但稳定性较差。",
+    "ipTypeResidentialTooltipTitle": "为什么我的IP地址会发生变化？",
+    "ipTypeResidentialTooltipBody":
+        "住宅 IP 地址由真实的家用设备提供，因此可用性可能会随时间变化。\n\n如果某个节点离线，应用程序会将您重新连接到最近的可用住宅 IP 地址。",
+    "residentialEducationTitle": "住宅 IP 的工作原理",
+    "residentialEducationSubtitle": "住宅IP地址与高速IP地址有所不同。以下是您需要了解的内容。",
+    "residentialEducationBlock1Title": "真正的家用电器",
+    "residentialEducationBlock1Body": "住宅 IP 地址来自真实的家庭设备，使您的流量看起来像是正常的互联网使用情况。",
+    "residentialEducationBlock2Title": "供应情况可能会发生变化",
+    "residentialEducationBlock3Title": "自动重新连接",
+    "residentialEducationBlock3Body": "如果您的当前 IP 地址不可用，该应用程序会将您重新连接到最近的可用住宅 IP 地址。",
+    "residentialEducationGotIt": "知道了",
+    "residentialEducationBlock2Body": "由于这些 IP 地址是由真实设备提供的，因此某些节点可能会意外离线。",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1058,6 +1090,38 @@ class CodegenLoader extends AssetLoader {
         "Çoğu VPN'in aksine, daha hassas konum kontrolü sağlar; VPN'ler genellikle sizi tüm ülkeleri veya eyaletleri seçmekle sınırlandırır.",
     "subscriptionPlanMalwareBlockerDesc":
         "Cihazınıza ulaşmadan önce tehditleri durdurarak onu korur, sizi rahatsız etmeden arka planda sessizce çalışır.",
+    "skipBtn": "Atlamak",
+    "completeBtn": "Tamamlamak",
+    "subscriptionOnboardingPromptTitle": "Kısa bir tur atın",
+    "subscriptionOnboardingPromptDescription":
+        "Güncellenen uygulamayı keşfedin ve önemli özelliklerin artık nerede bulunduğunu öğrenin.",
+    "subscriptionOnboardingStartTourLabel": "Tura başla",
+    "subscriptionOnboardingCancelTourLabel": "Şimdilik atla",
+    "subscriptionOnboardingMapDesktopTitle": "Mekanları kendi tarzınızda keşfedin.",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Haritayı inceleyin veya yan menüden konumları keşfedin.",
+    "subscriptionOnboardingMapMobileTitle": "Haritadan bağlan",
+    "subscriptionOnboardingMapMobileDescription":
+        "Haritada gezinerek bir ülke seçin ve anında bağlantı kurun.",
+    "subscriptionOnboardingManagePlanTitle": "Planınızı yönetin",
+    "subscriptionOnboardingManagePlanDescription":
+        "Hesabınıza erişim bilgilerinize bağlı olarak satın alma, yükseltme veya mevcut planları görüntüleme işlemlerini gerçekleştirin.",
+    "subscriptionOnboardingBoostProtectionTitle": "Korumanızı artırın",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "VPN protokolleri ve kötü amaçlı yazılım engelleme gibi gelişmiş özellikleri keşfedin.",
+    "subscriptionOnboardingConnectTitle": "Gizliliğinizi korumak için bağlanın.",
+    "subscriptionOnboardingConnectDescription": "Sizi en iyi sunucuya bağlayacağız.",
+    "subscriptionOnboardingSearchTitle": "Daha hızlı arama yapın ve bağlantı kurun",
+    "subscriptionOnboardingSearchDescription":
+        "Arama özelliğiyle ülkeleri, şehirleri ve sunucuları hızlıca bulun.",
+    "subscriptionOnboardingVPNLocationsTitle": "VPN konumlarına göz atın",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Ülkeleri ve şehirleri tek bir yerden keşfedin.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Ülkeleri, şehirleri, son bağlantıları ve özel sunucuları tek bir yerden keşfedin.",
+    "subscriptionOnboardingSetupCompleteTitle": "Kurulum Tamamlandı",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Daha özel bir şekilde gezinmeye başlamak için bir konum seçin.",
     "notNowBtn": "Şimdi değil",
     "viewAllFeaturesBtn": "Tüm özellikleri görüntüle",
     "viewLessBtn": "Daha az göster",
@@ -1079,13 +1143,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misiniz?",
     "allowNotificationsBtn": "Bildirimlere izin ver",
-    "ipTypeDataCenterDisclaimer":
-        "Hızlı ve verimli sunucularda barındırılan IP adresleri, hızlı VPN ihtiyaçları için idealdir - istikrarlı bağlantılar için bunu tercih edin.",
-    "ipTypeResidentialDisclaimer":
-        "Gerçek evlerden alınan konut IP adresleri. Neredeyse tespit edilemez ancak daha az kararlıdır, bu nedenle aldığınız IP adresi değişebilir.",
-    "ipTypeResidentialTooltipTitle": "Bağlantı neden kesildi?",
-    "ipTypeResidentialTooltipBody":
-        "Ev IP adresleri gerçek kişilere bağlıdır. Bağlantıları kesilirse, en yakın kullanılabilir IP adresine anında yeniden bağlanırsınız. İstikrarlı bir bağlantı için yüksek hızlı IP adreslerini tercih edin.",
     "refreshIPAddress": "IP adresi yenileme",
     "getNewIPAddress": "Yenileme işleminde yeni bir IP adresi alın.",
     "resetAppDesc": "Bir şey çalışmadığında sıfırlayın.",
@@ -1116,7 +1173,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
-    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
     "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
     "fastLabel": "Hızlı",
@@ -1217,6 +1274,26 @@ class CodegenLoader extends AssetLoader {
         "Abonelikler web üzerinden yönetilir. Planınız uygulamaya otomatik olarak senkronize edilecektir.",
     "subscribeOnWebBtn": "İnternet üzerinden abone olun",
     "subscriptionAllPlansCurrentPlan": "Mevcut plan",
+    "ipTypeDataCenterDisclaimer":
+        "Hız ve performans için optimize edilmiş veri merkezi IP adresleri.",
+    "ipTypeResidentialDisclaimer":
+        "Gerçek hane halkları tarafından sağlanmıştır. Neredeyse tespit edilemez ancak daha az istikrarlıdır.",
+    "ipTypeResidentialTooltipTitle": "IP adresim neden değişebilir?",
+    "ipTypeResidentialTooltipBody":
+        "Konut IP adresleri gerçek ev cihazları tarafından sağlanır, bu nedenle kullanılabilirlik zaman içinde değişebilir.\n\nBir düğüm çevrimdışı kalırsa, uygulama sizi en yakın kullanılabilir konut IP adresine yeniden bağlar.",
+    "residentialEducationTitle": "Konut IP'leri nasıl çalışır?",
+    "residentialEducationSubtitle":
+        "Konut IP adresleri, yüksek hızlı IP adreslerinden farklıdır. İşte neler beklemeniz gerektiği.",
+    "residentialEducationBlock1Title": "Gerçek ev aletleri",
+    "residentialEducationBlock1Body":
+        "Konut IP adresleri gerçek ev cihazlarından gelir, bu da trafiğinizin normal internet kullanımı gibi görünmesini sağlar.",
+    "residentialEducationBlock2Title": "Müsaitlik durumu değişebilir.",
+    "residentialEducationBlock3Title": "Otomatik yeniden bağlantı",
+    "residentialEducationBlock3Body":
+        "Mevcut IP adresiniz kullanılamaz hale gelirse, uygulama sizi en yakın kullanılabilir ev IP adresine yeniden bağlar.",
+    "residentialEducationGotIt": "Anladım",
+    "residentialEducationBlock2Body":
+        "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir.",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1456,7 +1533,7 @@ class CodegenLoader extends AssetLoader {
     "productsNotAvailable": "現在、ご利用いただける商品はございません。後でもう一度試してください。",
     "productUpdates": "製品のアップデートを入手",
     "protocol": "プロトコル",
-    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再度接続する必要があります。",
+    "protocolPickerSettingDesc": "VPNプロトコルを切り替えると、接続が切断されます。その後、再接続する必要があります。",
     "protocolPickerSettingTitle": "VPNプロトコルの切り替え",
     "pt": "ポルトガル語",
     "purchased": "購入した",
@@ -1652,6 +1729,30 @@ class CodegenLoader extends AssetLoader {
         "ほとんどのVPNよりも精度の高い位置情報制御を提供します。一般的なVPNでは、国全体または州全体しか選択できないのが一般的です。",
     "subscriptionPlanMalwareBlockerDesc":
         "脅威がデバイスに到達する前に阻止することでデバイスを保護し、バックグラウンドで静かに動作するため、ユーザーの操作を妨げることはありません。",
+    "skipBtn": "スキップ",
+    "completeBtn": "完了",
+    "subscriptionOnboardingPromptTitle": "簡単なツアーをご覧ください",
+    "subscriptionOnboardingPromptDescription": "アップデートされたアプリの使い方を覚えて、主要な機能がどこにあるのかを確認しましょう。",
+    "subscriptionOnboardingStartTourLabel": "ツアー開始",
+    "subscriptionOnboardingCancelTourLabel": "今はスキップ",
+    "subscriptionOnboardingMapDesktopTitle": "自分らしい方法で場所を探索しよう",
+    "subscriptionOnboardingMapDesktopDescription": "地図を閲覧するか、サイドバーから場所を検索してください。",
+    "subscriptionOnboardingMapMobileTitle": "地図から接続",
+    "subscriptionOnboardingMapMobileDescription": "地図を閲覧して国を選択し、すぐに接続してください。",
+    "subscriptionOnboardingManagePlanTitle": "プランを管理する",
+    "subscriptionOnboardingManagePlanDescription":
+        "アカウントのアクセス権限に基づいて、プランの購入、アップグレード、または利用可能なプランの確認ができます。",
+    "subscriptionOnboardingBoostProtectionTitle": "保護機能を強化しましょう",
+    "subscriptionOnboardingBoostProtectionDescription": "VPNプロトコルやマルウェア対策などの高度な機能を活用しましょう。",
+    "subscriptionOnboardingConnectTitle": "プライバシーを守るために接続してください",
+    "subscriptionOnboardingConnectDescription": "最適なサーバーに接続いたします。",
+    "subscriptionOnboardingSearchTitle": "より速く検索して接続する",
+    "subscriptionOnboardingSearchDescription": "検索機能を使って、国、都市、サーバーを素早く見つけましょう。",
+    "subscriptionOnboardingVPNLocationsTitle": "VPN接続先を閲覧する",
+    "subscriptionOnboardingVPNLocationsDesktopDescription": "一つの場所で、国や都市を探索しよう。",
+    "subscriptionOnboardingVPNLocationsMobileDescription": "国、都市、最近の接続履歴、専門サーバーなどを一箇所で検索できます。",
+    "subscriptionOnboardingSetupCompleteTitle": "セットアップ完了",
+    "subscriptionOnboardingSetupCompleteDescription": "よりプライベートな閲覧を開始するには、場所を選択してください。",
     "notNowBtn": "今じゃない",
     "viewAllFeaturesBtn": "すべての機能を表示",
     "viewLessBtn": "詳細を表示しない",
@@ -1671,13 +1772,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupTitle": "メールで最新情報を受け取る",
     "marketingConsentPopupDesc": "Mysterium Networkからのメールによる最新情報、プライバシーに関するヒント、および特別オファーを受け取りますか？",
     "allowNotificationsBtn": "通知を許可する",
-    "ipTypeDataCenterDisclaimer":
-        "高速かつ効率的なサーバーでホストされているIPアドレスは、迅速なVPN接続のニーズに対応します。安定した接続をお求めの場合は、こちらをお選びください。",
-    "ipTypeResidentialDisclaimer":
-        "実際の家庭から取得した居住用IPアドレス。ほぼ検出不可能ですが、安定性が低いため、取得するIPアドレスが変わる可能性があります。",
-    "ipTypeResidentialTooltipTitle": "なぜリンクが切れたのですか？",
-    "ipTypeResidentialTooltipBody":
-        "家庭用IPアドレスは、実際のユーザーによって割り当てられます。接続が切断された場合、すぐに最寄りの利用可能なIPアドレスに再接続されます。安定した接続をご希望の場合は、高速IPアドレスをお選びください。",
     "refreshIPAddress": "IPアドレスの更新",
     "getNewIPAddress": "更新時に新しいIPアドレスを取得します",
     "resetAppDesc": "何かがうまく機能しない場合はリセットしてください",
@@ -1747,9 +1841,9 @@ class CodegenLoader extends AssetLoader {
     "onboardingStep1Desc": "あなたのIPアドレスと位置情報は、ウェブサイト、トラッカー、公共Wi-Fiネットワークから閲覧可能です。",
     "onboardingStep2Title": "ワンタップであなたの本当の身元を隠しましょう",
     "onboardingStep2Desc":
-        "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、および位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
+        "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
     "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
-    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なります。",
+    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
     "checkSubsStatusTitle": "プラン情報を取得中...",
     "noSubscriptionTitle": "有効なプランがありません",
     "noSubscriptionAction": "プランを入手する",
@@ -1769,7 +1863,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionProcessCanceled": "購読内容の変更が完了していません。",
     "tokenAlreadyUsed": "トークンは既に使用されています。もう一度お試しください。\n\n",
     "subscriptionActive": "素晴らしいお知らせです！お客様の購読が有効になりました。",
-    "planAlreadyPurchasedMsg": "準備完了です！このプランは既に有効になっています。",
+    "planAlreadyPurchasedMsg": "これで準備完了です！このプランは既に有効になっています。",
     "signInAbortedMsg": "サインインが中断されました",
     "notAvailableMsg": "利用不可",
     "killSwitch": "キルスイッチ",
@@ -1800,6 +1894,21 @@ class CodegenLoader extends AssetLoader {
     "productsSubscribeWebAlert": "購読管理はウェブサイトで行います。プランはアプリに自動的に同期されます。",
     "subscribeOnWebBtn": "ウェブサイトで購読する",
     "subscriptionAllPlansCurrentPlan": "現在の計画",
+    "ipTypeDataCenterDisclaimer": "速度とパフォーマンスを最適化したデータセンターIPアドレス。",
+    "ipTypeResidentialDisclaimer": "実際の家庭から提供されたデータ。ほとんど検出不可能だが、安定性は低い。",
+    "ipTypeResidentialTooltipTitle": "なぜ私のIPアドレスは変更されるのですか？",
+    "ipTypeResidentialTooltipBody":
+        "家庭用IPアドレスは実際の家庭用機器から提供されるため、利用可能なIPアドレスは時間とともに変化する可能性があります。\n\nノードがオフラインになった場合、アプリは最も近い利用可能な家庭用IPアドレスに自動的に再接続します。",
+    "residentialEducationTitle": "住宅用IPアドレスの仕組み",
+    "residentialEducationSubtitle": "家庭用IPアドレスは高速IPアドレスとは異なります。その違いについてご説明します。",
+    "residentialEducationBlock1Title": "実際の家庭用機器",
+    "residentialEducationBlock1Body": "家庭用IPアドレスは実際の家庭用機器から割り当てられるため、トラフィックは通常のインターネット利用のように見えます。",
+    "residentialEducationBlock2Title": "在庫状況は変更される場合があります",
+    "residentialEducationBlock3Title": "自動再接続",
+    "residentialEducationBlock3Body":
+        "現在使用しているIPアドレスが利用できなくなった場合、アプリは最寄りの利用可能な家庭用IPアドレスに自動的に再接続します。",
+    "residentialEducationGotIt": "わかった",
+    "residentialEducationBlock2Body": "これらのIPアドレスは実際のデバイスから提供されるため、一部のノードが予期せずオフラインになる場合があります。",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2286,11 +2395,43 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
     "subscriptionPlanCityLevelDesc":
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+    "skipBtn": "Überspringen",
+    "completeBtn": "Vollständig",
+    "subscriptionOnboardingPromptTitle": "Machen Sie eine kurze Tour",
+    "subscriptionOnboardingPromptDescription":
+        "Machen Sie sich mit der aktualisierten App vertraut und entdecken Sie, wo sich die wichtigsten Funktionen jetzt befinden.",
+    "subscriptionOnboardingStartTourLabel": "Tour starten",
+    "subscriptionOnboardingCancelTourLabel": "Überspringen Sie vorerst",
+    "subscriptionOnboardingMapDesktopTitle": "Erkunden Sie Orte auf Ihre Weise",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Stöbern Sie auf der Karte oder erkunden Sie Orte über die Seitenleiste.",
+    "subscriptionOnboardingMapMobileTitle": "Verbindung über die Karte herstellen",
+    "subscriptionOnboardingMapMobileDescription":
+        "Durchsuchen Sie die Karte, um ein Land auszuwählen und sich sofort zu verbinden.",
+    "subscriptionOnboardingManagePlanTitle": "Verwalten Sie Ihren Plan",
+    "subscriptionOnboardingManagePlanDescription":
+        "Je nach Ihren Kontozugriffen können Sie Tarife erwerben, upgraden oder verfügbare Tarife einsehen.",
+    "subscriptionOnboardingBoostProtectionTitle": "Erhöhen Sie Ihren Schutz",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Entdecken Sie erweiterte Funktionen wie VPN-Protokolle und Malware-Blockierung.",
+    "subscriptionOnboardingConnectTitle": "Verbinden Sie sich, um Ihre Privatsphäre zu wahren.",
+    "subscriptionOnboardingConnectDescription": "Wir verbinden Sie mit dem besten Server.",
+    "subscriptionOnboardingSearchTitle": "Schneller suchen und verbinden",
+    "subscriptionOnboardingSearchDescription":
+        "Finden Sie mit der Suche schnell Länder, Städte und Server.",
+    "subscriptionOnboardingVPNLocationsTitle": "VPN-Standorte durchsuchen",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Entdecken Sie Länder und Städte an einem Ort.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Entdecken Sie Länder, Städte, aktuelle Verbindungen und Spezialserver an einem Ort.",
+    "subscriptionOnboardingSetupCompleteTitle": "Einrichtung abgeschlossen",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Wählen Sie einen Standort, um privater zu surfen.",
     "notNowBtn": "Nicht jetzt.",
     "viewAllFeaturesBtn": "Alle Funktionen anzeigen",
     "viewLessBtn": "Weniger anzeigen",
@@ -2312,13 +2453,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Möchten Sie E-Mail-Updates, Datenschutztipps und Sonderangebote von Mysterium Network erhalten?",
     "allowNotificationsBtn": "Benachrichtigungen zulassen",
-    "ipTypeDataCenterDisclaimer":
-        "IPs auf schnellen und effizienten Servern für schnelle VPN-Verbindungen – wählen Sie diese Option für stabile Verbindungen.",
-    "ipTypeResidentialDisclaimer":
-        "IP-Adressen von echten Haushalten. Nahezu unauffindbar, aber weniger stabil, daher kann sich die Ihnen zugewiesene IP-Adresse ändern.",
-    "ipTypeResidentialTooltipTitle": "Warum ist die Verbindung unterbrochen?",
-    "ipTypeResidentialTooltipBody":
-        "Die IP-Adressen von Haushalten hängen von echten Personen ab. Sollte die Verbindung unterbrochen werden, werden Sie automatisch mit der nächstgelegenen verfügbaren IP-Adresse verbunden. Für eine stabile Verbindung wählen Sie bitte eine Hochgeschwindigkeits-IP-Adresse.",
     "refreshIPAddress": "Aktualisierung der IP-Adresse",
     "getNewIPAddress": "Beim Aktualisieren eine neue IP-Adresse erhalten",
     "resetAppDesc": "Zurücksetzen, wenn etwas nicht funktioniert",
@@ -2453,6 +2587,25 @@ class CodegenLoader extends AssetLoader {
         "Abonnements werden im Web verwaltet. Ihr Tarif wird automatisch mit der App synchronisiert.",
     "subscribeOnWebBtn": "Abonnieren Sie im Web",
     "subscriptionAllPlansCurrentPlan": "Aktueller Plan",
+    "ipTypeDataCenterDisclaimer": "Rechenzentrums-IPs, optimiert für Geschwindigkeit und Leistung.",
+    "ipTypeResidentialDisclaimer":
+        "Bereitgestellt von realen Haushalten. Nahezu unmerklich, aber weniger stabil.",
+    "ipTypeResidentialTooltipTitle": "Warum kann sich meine IP-Adresse ändern?",
+    "ipTypeResidentialTooltipBody":
+        "Die IP-Adressen für Privathaushalte stammen von realen Haushaltsgeräten, daher kann die Verfügbarkeit variieren.\n\nWenn ein Knotenpunkt offline geht, verbindet Sie die App automatisch mit der nächstgelegenen verfügbaren IP-Adresse.",
+    "residentialEducationTitle": "Wie Wohn-IPs funktionieren",
+    "residentialEducationSubtitle":
+        "Heim-IP-Adressen unterscheiden sich von Hochgeschwindigkeits-IP-Adressen. Hier erfahren Sie, was Sie erwartet.",
+    "residentialEducationBlock1Title": "Reale Haushaltsgeräte",
+    "residentialEducationBlock1Body":
+        "Residential IPs stammen von echten Haushaltsgeräten, wodurch Ihr Datenverkehr wie eine normale Internetnutzung aussieht.",
+    "residentialEducationBlock2Title": "Die Verfügbarkeit kann sich ändern",
+    "residentialEducationBlock3Title": "Automatische Wiederverbindung",
+    "residentialEducationBlock3Body":
+        "Falls Ihre aktuelle IP-Adresse nicht mehr verfügbar ist, verbindet Sie die App automatisch mit der nächstgelegenen verfügbaren Wohn-IP-Adresse.",
+    "residentialEducationGotIt": "Habe es",
+    "residentialEducationBlock2Body":
+        "Da diese IPs von realen Geräten bereitgestellt werden, kann es vorkommen, dass einige Knoten unerwartet offline gehen.",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -2940,6 +3093,38 @@ class CodegenLoader extends AssetLoader {
         "Oferece um controle de localização mais preciso do que a maioria das VPNs, que normalmente limitam você à seleção de países ou estados inteiros.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege seu dispositivo, impedindo ameaças antes que elas o alcancem, funcionando silenciosamente em segundo plano sem interrompê-lo.",
+    "skipBtn": "Pular",
+    "completeBtn": "Completo",
+    "subscriptionOnboardingPromptTitle": "Faça um tour rápido",
+    "subscriptionOnboardingPromptDescription":
+        "Aprenda a usar o aplicativo atualizado e descubra onde estão agora os principais recursos.",
+    "subscriptionOnboardingStartTourLabel": "Iniciar tour",
+    "subscriptionOnboardingCancelTourLabel": "Por enquanto, pule esta etapa.",
+    "subscriptionOnboardingMapDesktopTitle": "Explore lugares do seu jeito",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Navegue pelo mapa ou explore locais na barra lateral.",
+    "subscriptionOnboardingMapMobileTitle": "Conecte-se a partir do mapa",
+    "subscriptionOnboardingMapMobileDescription":
+        "Navegue pelo mapa para escolher um país e conectar-se instantaneamente.",
+    "subscriptionOnboardingManagePlanTitle": "Gerencie seu plano",
+    "subscriptionOnboardingManagePlanDescription":
+        "Compre, atualize ou visualize os planos disponíveis de acordo com o seu nível de acesso à conta.",
+    "subscriptionOnboardingBoostProtectionTitle": "Aumente sua proteção",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Explore funcionalidades avançadas como protocolos VPN e bloqueio de malware.",
+    "subscriptionOnboardingConnectTitle": "Conecte-se para manter a privacidade",
+    "subscriptionOnboardingConnectDescription": "Vamos conectar você ao melhor servidor.",
+    "subscriptionOnboardingSearchTitle": "Pesquise e conecte-se mais rapidamente",
+    "subscriptionOnboardingSearchDescription":
+        "Encontre rapidamente países, cidades e servidores com a ferramenta de busca.",
+    "subscriptionOnboardingVPNLocationsTitle": "Navegue pelos locais da VPN",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Explore países e cidades em um só lugar.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Explore países, cidades, conexões recentes e servidores especializados em um só lugar.",
+    "subscriptionOnboardingSetupCompleteTitle": "Configuração concluída",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Escolha um local para começar a navegar com mais privacidade.",
     "notNowBtn": "Agora não",
     "viewAllFeaturesBtn": "Ver todas as funcionalidades",
     "viewLessBtn": "Ver menos",
@@ -2961,13 +3146,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Deseja receber atualizações por e-mail, dicas de privacidade e ofertas especiais da Mysterium Network?",
     "allowNotificationsBtn": "Permitir notificações",
-    "ipTypeDataCenterDisclaimer":
-        "IPs hospedados em servidores rápidos e eficientes para necessidades de VPN imediatas - escolha esta opção para conexões estáveis.",
-    "ipTypeResidentialDisclaimer":
-        "IPs residenciais de casas reais. Quase indetectáveis, mas menos estáveis, portanto o IP que você obtiver pode mudar.",
-    "ipTypeResidentialTooltipTitle": "Por que o link foi perdido?",
-    "ipTypeResidentialTooltipBody":
-        "Os IPs residenciais dependem de pessoas reais. Se a conexão com elas for perdida, você será reconectado instantaneamente ao IP disponível mais próximo. Para uma conexão estável, escolha IPs de alta velocidade.",
     "refreshIPAddress": "Atualização de endereço IP",
     "getNewIPAddress": "Obtenha um novo endereço IP ao atualizar",
     "resetAppDesc": "Reinicie quando algo não estiver funcionando.",
@@ -3076,7 +3254,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanNamePro": "Pró",
     "productsTitle": "Produtos VPN",
     "productsManageSubtitle": "Gerencie e atualize na web.",
-    "productsExploreSubtitle": "Explore planos e funcionalidades",
+    "productsExploreSubtitle": "Explore planos e recursos",
     "productsActivePlanWebSyncAlert":
         "Você já possui um plano ativo. Atualize pelo site — as alterações serão sincronizadas automaticamente.",
     "productsMaxPlanAlert": "Você já está no plano mais completo disponível.",
@@ -3099,6 +3277,25 @@ class CodegenLoader extends AssetLoader {
         "As assinaturas são gerenciadas na web. Seu plano será sincronizado automaticamente com o aplicativo.",
     "subscribeOnWebBtn": "Assine na web",
     "subscriptionAllPlansCurrentPlan": "Plano atual",
+    "ipTypeDataCenterDisclaimer": "IPs de data center otimizados para velocidade e desempenho.",
+    "ipTypeResidentialDisclaimer":
+        "Fornecido por famílias reais. Quase indetectável, mas menos estável.",
+    "ipTypeResidentialTooltipTitle": "Por que meu endereço IP pode mudar?",
+    "ipTypeResidentialTooltipBody":
+        "Os endereços IP residenciais são fornecidos por dispositivos domésticos reais, portanto, a disponibilidade pode mudar com o tempo.\n\nSe um nó ficar offline, o aplicativo reconecta você ao endereço IP residencial disponível mais próximo.",
+    "residentialEducationTitle": "Como funcionam os IPs residenciais",
+    "residentialEducationSubtitle":
+        "IPs residenciais são diferentes de IPs de alta velocidade. Veja o que esperar.",
+    "residentialEducationBlock1Title": "Eletrodomésticos reais",
+    "residentialEducationBlock1Body":
+        "Os IPs residenciais provêm de dispositivos domésticos reais, fazendo com que seu tráfego pareça um uso normal da internet.",
+    "residentialEducationBlock2Title": "A disponibilidade pode mudar.",
+    "residentialEducationBlock3Title": "Reconexão automática",
+    "residentialEducationBlock3Body":
+        "Caso seu endereço IP atual fique indisponível, o aplicativo o reconectará ao endereço IP residencial disponível mais próximo.",
+    "residentialEducationGotIt": "Entendi",
+    "residentialEducationBlock2Body":
+        "Como esses endereços IP são fornecidos por dispositivos reais, alguns nós podem ficar offline inesperadamente.",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3576,6 +3773,38 @@ class CodegenLoader extends AssetLoader {
         "Provides more precise location control than most VPNs, which typically limit you to selecting entire countries or states.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protects your device by stopping threats before they can reach it, running quietly in the background without interrupting you.",
+    "skipBtn": "Skip",
+    "completeBtn": "Complete",
+    "subscriptionOnboardingPromptTitle": "Take a quick tour",
+    "subscriptionOnboardingPromptDescription":
+        "Learn your way around the updated app and discover where key features now live.",
+    "subscriptionOnboardingStartTourLabel": "Start tour",
+    "subscriptionOnboardingCancelTourLabel": "Skip for now",
+    "subscriptionOnboardingMapDesktopTitle": "Explore locations your way",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Browse the map or explore locations from the sidebar.",
+    "subscriptionOnboardingMapMobileTitle": "Connect from the map",
+    "subscriptionOnboardingMapMobileDescription":
+        "Browse the map to choose a country and connect instantly.",
+    "subscriptionOnboardingManagePlanTitle": "Manage your plan",
+    "subscriptionOnboardingManagePlanDescription":
+        "Purchase, upgrade or view available plans based on your account access.",
+    "subscriptionOnboardingBoostProtectionTitle": "Boost your protection",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Explore advanced features like VPN protocols and malware blocking.",
+    "subscriptionOnboardingConnectTitle": "Connect to stay private",
+    "subscriptionOnboardingConnectDescription": "We will connect you to the best server.",
+    "subscriptionOnboardingSearchTitle": "Search and connect faster",
+    "subscriptionOnboardingSearchDescription":
+        "Quickly find countries, cities and servers with search.",
+    "subscriptionOnboardingVPNLocationsTitle": "Browse VPN locations",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Explore countries and cities in one place.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Explore countries, cities, recent connections and specialty servers in one place.",
+    "subscriptionOnboardingSetupCompleteTitle": "Setup Complete",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Choose a location to start browsing more privately.",
     "notNowBtn": "Not now",
     "viewAllFeaturesBtn": "View all features",
     "viewLessBtn": "View less",
@@ -3596,13 +3825,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
     "allowNotificationsBtn": "Allow notifications",
-    "ipTypeDataCenterDisclaimer":
-        "IPs hosted on fast and efficient servers for quick VPN needs - choose this for stable connections",
-    "ipTypeResidentialDisclaimer":
-        "Residential IPs from real households. Nearly undetectable but less stable, so the IP you get might change",
-    "ipTypeResidentialTooltipTitle": "Why the link is lost?",
-    "ipTypeResidentialTooltipBody":
-        "Household IPs depend on real people. If their link is lost, you'll be instantly reconnected to the nearest available IP. For a stable connection, choose high-speed IPs.",
     "refreshIPAddress": "IP address refresh",
     "getNewIPAddress": "Get a new IP address on refresh",
     "resetAppDesc": "Reset when something isn't working",
@@ -3733,6 +3955,25 @@ class CodegenLoader extends AssetLoader {
         "Subscriptions are managed on the web. Your plan will sync to the app automatically.",
     "subscribeOnWebBtn": "Subscribe on the web",
     "subscriptionAllPlansCurrentPlan": "Current plan",
+    "ipTypeDataCenterDisclaimer": "Datacenter IPs optimised for speed and performance.",
+    "ipTypeResidentialDisclaimer":
+        "Provided by real households. Nearly undetectable but less stable.",
+    "ipTypeResidentialTooltipTitle": "Why can my IP change?",
+    "ipTypeResidentialTooltipBody":
+        "Residential IPs are provided by real household devices, so availability can change over time.\n\nIf a node goes offline, the app reconnects you to the nearest available residential IP.",
+    "residentialEducationTitle": "How Residential IPs work",
+    "residentialEducationSubtitle":
+        "Residential IPs are different from high-speed IPs. Here's what to expect.",
+    "residentialEducationBlock1Title": "Real household devices",
+    "residentialEducationBlock1Body":
+        "Residential IPs come from real household devices, making your traffic look like regular internet usage.",
+    "residentialEducationBlock2Title": "Availability can change",
+    "residentialEducationBlock3Title": "Automatic reconnection",
+    "residentialEducationBlock3Body":
+        "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP.",
+    "residentialEducationGotIt": "Got it",
+    "residentialEducationBlock2Body":
+        "Because these IPs are provided by real devices, some nodes may go offline unexpectedly.",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -4220,6 +4461,38 @@ class CodegenLoader extends AssetLoader {
         "Offre un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che in genere limitano la selezione a interi paesi o stati.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protegge il tuo dispositivo bloccando le minacce prima che possano raggiungerlo, funzionando silenziosamente in background senza interromperti.",
+    "skipBtn": "Saltare",
+    "completeBtn": "Completare",
+    "subscriptionOnboardingPromptTitle": "Fai un breve tour",
+    "subscriptionOnboardingPromptDescription":
+        "Impara a usare l'app aggiornata e scopri dove si trovano ora le funzionalità principali.",
+    "subscriptionOnboardingStartTourLabel": "Inizia il tour",
+    "subscriptionOnboardingCancelTourLabel": "Per ora lasciamo perdere.",
+    "subscriptionOnboardingMapDesktopTitle": "Esplora i luoghi a modo tuo",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Consulta la mappa o esplora le località dalla barra laterale.",
+    "subscriptionOnboardingMapMobileTitle": "Collegati dalla mappa",
+    "subscriptionOnboardingMapMobileDescription":
+        "Esplora la mappa per scegliere un paese e connettiti immediatamente.",
+    "subscriptionOnboardingManagePlanTitle": "Gestisci il tuo piano",
+    "subscriptionOnboardingManagePlanDescription":
+        "Acquista, aggiorna o visualizza i piani disponibili in base al tuo livello di accesso all'account.",
+    "subscriptionOnboardingBoostProtectionTitle": "Aumenta la tua protezione",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Scopri funzionalità avanzate come i protocolli VPN e il blocco del malware.",
+    "subscriptionOnboardingConnectTitle": "Connettiti per mantenere la tua privacy",
+    "subscriptionOnboardingConnectDescription": "Ti collegheremo al server migliore.",
+    "subscriptionOnboardingSearchTitle": "Cerca e connettiti più velocemente",
+    "subscriptionOnboardingSearchDescription":
+        "Trova rapidamente paesi, città e server con la funzione di ricerca.",
+    "subscriptionOnboardingVPNLocationsTitle": "Esplora le posizioni VPN",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Esplora paesi e città in un unico luogo.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
+    "subscriptionOnboardingSetupCompleteTitle": "Configurazione completata",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Scegli una posizione per iniziare a navigare in modo più privato.",
     "notNowBtn": "Non adesso",
     "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
     "viewLessBtn": "Visualizza meno",
@@ -4241,13 +4514,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Desideri ricevere aggiornamenti via email, consigli sulla privacy e offerte speciali da Mysterium Network?",
     "allowNotificationsBtn": "Consenti le notifiche",
-    "ipTypeDataCenterDisclaimer":
-        "Indirizzi IP ospitati su server veloci ed efficienti per esigenze VPN rapide: scegli questa opzione per connessioni stabili.",
-    "ipTypeResidentialDisclaimer":
-        "Indirizzi IP residenziali di vere abitazioni. Quasi impercettibili ma meno stabili, quindi l'indirizzo IP che otterrete potrebbe cambiare.",
-    "ipTypeResidentialTooltipTitle": "Perché il collegamento è interrotto?",
-    "ipTypeResidentialTooltipBody":
-        "Gli indirizzi IP domestici dipendono da persone reali. Se la connessione viene persa, verrai immediatamente riconnesso all'indirizzo IP disponibile più vicino. Per una connessione stabile, scegli indirizzi IP ad alta velocità.",
     "refreshIPAddress": "Aggiornamento dell'indirizzo IP",
     "getNewIPAddress": "Ottieni un nuovo indirizzo IP all'aggiornamento",
     "resetAppDesc": "Ripristina quando qualcosa non funziona",
@@ -4380,6 +4646,26 @@ class CodegenLoader extends AssetLoader {
         "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
     "subscribeOnWebBtn": "Iscriviti sul web",
     "subscriptionAllPlansCurrentPlan": "Piano attuale",
+    "ipTypeDataCenterDisclaimer":
+        "Indirizzi IP per data center ottimizzati per velocità e prestazioni.",
+    "ipTypeResidentialDisclaimer":
+        "Fornito da famiglie reali. Quasi impercettibile, ma meno stabile.",
+    "ipTypeResidentialTooltipTitle": "Perché il mio indirizzo IP può cambiare?",
+    "ipTypeResidentialTooltipBody":
+        "Gli indirizzi IP residenziali vengono forniti da dispositivi domestici reali, pertanto la disponibilità può variare nel tempo.\n\nSe un nodo va offline, l'app ti riconnette all'indirizzo IP residenziale disponibile più vicino.",
+    "residentialEducationTitle": "Come funzionano gli IP residenziali",
+    "residentialEducationSubtitle":
+        "Gli indirizzi IP residenziali sono diversi dagli indirizzi IP ad alta velocità. Ecco cosa aspettarsi.",
+    "residentialEducationBlock1Title": "Veri elettrodomestici",
+    "residentialEducationBlock1Body":
+        "Gli indirizzi IP residenziali provengono da dispositivi domestici reali, facendo apparire il tuo traffico come un normale utilizzo di Internet.",
+    "residentialEducationBlock2Title": "La disponibilità può variare",
+    "residentialEducationBlock3Title": "Riconnessione automatica",
+    "residentialEducationBlock3Body":
+        "Se il tuo indirizzo IP attuale non è più disponibile, l'app ti riconnette automaticamente all'indirizzo IP residenziale disponibile più vicino.",
+    "residentialEducationGotIt": "Fatto",
+    "residentialEducationBlock2Body":
+        "Poiché questi indirizzi IP sono forniti da dispositivi reali, alcuni nodi potrebbero disconnettersi inaspettatamente.",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -4864,15 +5150,47 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
-        "Vous apparaîtrez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
+        "Apparaissez comme un utilisateur domestique normal, ce qui vous permettra d'accéder aux services de streaming et d'éviter la détection par VPN.",
     "subscriptionPlanCityLevelDesc":
         "Offre un contrôle de localisation plus précis que la plupart des VPN, qui vous limitent généralement à la sélection de pays ou d'États entiers.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protège votre appareil en bloquant les menaces avant qu'elles ne l'atteignent, fonctionnant discrètement en arrière-plan sans vous interrompre.",
+    "skipBtn": "Sauter",
+    "completeBtn": "Complet",
+    "subscriptionOnboardingPromptTitle": "Faites un tour rapide",
+    "subscriptionOnboardingPromptDescription":
+        "Familiarisez-vous avec l'application mise à jour et découvrez où se trouvent désormais les fonctionnalités clés.",
+    "subscriptionOnboardingStartTourLabel": "Début de la visite",
+    "subscriptionOnboardingCancelTourLabel": "Passons à autre chose pour le moment.",
+    "subscriptionOnboardingMapDesktopTitle": "Explorez les lieux à votre façon",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Parcourez la carte ou explorez les lieux depuis la barre latérale.",
+    "subscriptionOnboardingMapMobileTitle": "Se connecter depuis la carte",
+    "subscriptionOnboardingMapMobileDescription":
+        "Parcourez la carte pour choisir un pays et connectez-vous instantanément.",
+    "subscriptionOnboardingManagePlanTitle": "Gérez votre plan",
+    "subscriptionOnboardingManagePlanDescription":
+        "Achetez, mettez à niveau ou consultez les forfaits disponibles en fonction de votre accès au compte.",
+    "subscriptionOnboardingBoostProtectionTitle": "Renforcez votre protection",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Explorez des fonctionnalités avancées telles que les protocoles VPN et le blocage des logiciels malveillants.",
+    "subscriptionOnboardingConnectTitle": "Connectez-vous pour rester privé",
+    "subscriptionOnboardingConnectDescription": "Nous vous connecterons au meilleur serveur.",
+    "subscriptionOnboardingSearchTitle": "Recherchez et connectez-vous plus rapidement",
+    "subscriptionOnboardingSearchDescription":
+        "Trouvez rapidement des pays, des villes et des serveurs grâce à la recherche.",
+    "subscriptionOnboardingVPNLocationsTitle": "Consultez les emplacements VPN",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Explorez les pays et les villes en un seul endroit.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Explorez les pays, les villes, les connexions récentes et les serveurs spécialisés en un seul endroit.",
+    "subscriptionOnboardingSetupCompleteTitle": "Installation terminée",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Choisissez un emplacement pour commencer votre navigation en toute confidentialité.",
     "notNowBtn": "Pas maintenant",
     "viewAllFeaturesBtn": "Afficher toutes les fonctionnalités",
     "viewLessBtn": "Afficher moins",
@@ -4894,13 +5212,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Souhaitez-vous recevoir par courriel des mises à jour, des conseils en matière de confidentialité et des offres spéciales de Mysterium Network ?",
     "allowNotificationsBtn": "Autoriser les notifications",
-    "ipTypeDataCenterDisclaimer":
-        "Adresses IP hébergées sur des serveurs rapides et performants pour des besoins VPN rapides : choisissez cette option pour des connexions stables.",
-    "ipTypeResidentialDisclaimer":
-        "Adresses IP résidentielles provenant de véritables foyers. Quasi indétectables mais moins stables, l'adresse IP que vous recevrez peut donc changer.",
-    "ipTypeResidentialTooltipTitle": "Pourquoi le lien est-il perdu ?",
-    "ipTypeResidentialTooltipBody":
-        "Les adresses IP domestiques dépendent de personnes réelles. En cas de perte de connexion, vous serez instantanément reconnecté à l'adresse IP disponible la plus proche. Pour une connexion stable, choisissez une adresse IP haut débit.",
     "refreshIPAddress": "Actualisation de l'adresse IP",
     "getNewIPAddress": "Obtenez une nouvelle adresse IP lors de l'actualisation.",
     "resetAppDesc": "Réinitialisez en cas de dysfonctionnement.",
@@ -5034,6 +5345,26 @@ class CodegenLoader extends AssetLoader {
         "Les abonnements sont gérés sur le web. Votre forfait sera automatiquement synchronisé avec l'application.",
     "subscribeOnWebBtn": "Abonnez-vous sur le web",
     "subscriptionAllPlansCurrentPlan": "Plan actuel",
+    "ipTypeDataCenterDisclaimer":
+        "Adresses IP de centres de données optimisées pour la vitesse et la performance.",
+    "ipTypeResidentialDisclaimer":
+        "Fourni par de véritables ménages. Quasi indétectable, mais moins stable.",
+    "ipTypeResidentialTooltipTitle": "Pourquoi mon adresse IP peut-elle changer ?",
+    "ipTypeResidentialTooltipBody":
+        "Les adresses IP résidentielles sont fournies par des appareils domestiques réels ; leur disponibilité peut donc varier.\n\nSi un nœud est hors ligne, l’application vous reconnecte à l’adresse IP résidentielle disponible la plus proche.",
+    "residentialEducationTitle": "Comment fonctionnent les adresses IP résidentielles",
+    "residentialEducationSubtitle":
+        "Les adresses IP résidentielles sont différentes des adresses IP haut débit. Voici à quoi vous pouvez vous attendre.",
+    "residentialEducationBlock1Title": "De véritables appareils ménagers",
+    "residentialEducationBlock1Body":
+        "Les adresses IP résidentielles proviennent de véritables appareils domestiques, ce qui donne à votre trafic l'apparence d'une utilisation internet classique.",
+    "residentialEducationBlock2Title": "La disponibilité peut changer",
+    "residentialEducationBlock3Title": "Reconnexion automatique",
+    "residentialEducationBlock3Body":
+        "Si votre adresse IP actuelle devient indisponible, l'application vous reconnecte à l'adresse IP résidentielle disponible la plus proche.",
+    "residentialEducationGotIt": "J'ai compris",
+    "residentialEducationBlock2Body":
+        "Étant donné que ces adresses IP sont fournies par des appareils réels, certains nœuds peuvent se déconnecter de manière inattendue.",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5496,7 +5827,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -5509,6 +5840,38 @@ class CodegenLoader extends AssetLoader {
         "Menyediakan kontrol lokasi yang lebih tepat daripada kebanyakan VPN, yang biasanya membatasi Anda untuk memilih seluruh negara atau wilayah.",
     "subscriptionPlanMalwareBlockerDesc":
         "Melindungi perangkat Anda dengan menghentikan ancaman sebelum mencapai perangkat, berjalan dengan tenang di latar belakang tanpa mengganggu Anda.",
+    "skipBtn": "Melewati",
+    "completeBtn": "Menyelesaikan",
+    "subscriptionOnboardingPromptTitle": "Ikuti tur singkat",
+    "subscriptionOnboardingPromptDescription":
+        "Pelajari cara menggunakan aplikasi yang telah diperbarui dan temukan letak fitur-fitur utama sekarang.",
+    "subscriptionOnboardingStartTourLabel": "Mulai tur",
+    "subscriptionOnboardingCancelTourLabel": "Lewati untuk saat ini",
+    "subscriptionOnboardingMapDesktopTitle": "Jelajahi lokasi sesuai keinginan Anda.",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Telusuri peta atau jelajahi lokasi dari bilah sisi.",
+    "subscriptionOnboardingMapMobileTitle": "Terhubung dari peta",
+    "subscriptionOnboardingMapMobileDescription":
+        "Telusuri peta untuk memilih negara dan terhubung secara instan.",
+    "subscriptionOnboardingManagePlanTitle": "Kelola rencana Anda",
+    "subscriptionOnboardingManagePlanDescription":
+        "Beli, tingkatkan, atau lihat paket yang tersedia berdasarkan akses akun Anda.",
+    "subscriptionOnboardingBoostProtectionTitle": "Tingkatkan perlindungan Anda",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Jelajahi fitur-fitur canggih seperti protokol VPN dan pemblokiran malware.",
+    "subscriptionOnboardingConnectTitle": "Terhubung untuk menjaga privasi",
+    "subscriptionOnboardingConnectDescription": "Kami akan menghubungkan Anda ke server terbaik.",
+    "subscriptionOnboardingSearchTitle": "Cari dan terhubung lebih cepat",
+    "subscriptionOnboardingSearchDescription":
+        "Temukan negara, kota, dan server dengan cepat menggunakan fitur pencarian.",
+    "subscriptionOnboardingVPNLocationsTitle": "Telusuri lokasi VPN",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Jelajahi berbagai negara dan kota di satu tempat.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Jelajahi berbagai negara, kota, koneksi terbaru, dan server khusus di satu tempat.",
+    "subscriptionOnboardingSetupCompleteTitle": "Pengaturan Selesai",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Pilih lokasi untuk mulai menjelajahi internet secara lebih pribadi.",
     "notNowBtn": "Tidak sekarang",
     "viewAllFeaturesBtn": "Lihat semua fitur",
     "viewLessBtn": "Tampilkan lebih sedikit",
@@ -5533,13 +5896,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "Apakah Anda ingin menerima pembaruan email, kiat privasi, dan penawaran khusus dari Mysterium Network?",
     "allowNotificationsBtn": "Izinkan notifikasi",
-    "ipTypeDataCenterDisclaimer":
-        "IP yang dihosting di server cepat dan efisien untuk kebutuhan VPN yang cepat - pilih ini untuk koneksi yang stabil.",
-    "ipTypeResidentialDisclaimer":
-        "IP residensial dari rumah tangga sungguhan. Hampir tidak terdeteksi tetapi kurang stabil, jadi IP yang Anda dapatkan mungkin berubah.",
-    "ipTypeResidentialTooltipTitle": "Mengapa tautannya hilang?",
-    "ipTypeResidentialTooltipBody":
-        "IP rumah tangga bergantung pada orang sungguhan. Jika koneksi mereka terputus, Anda akan langsung terhubung kembali ke IP terdekat yang tersedia. Untuk koneksi yang stabil, pilih IP berkecepatan tinggi.",
     "refreshIPAddress": "Pembaruan alamat IP",
     "getNewIPAddress": "Dapatkan alamat IP baru saat menyegarkan halaman.",
     "resetAppDesc": "Lakukan reset jika ada sesuatu yang tidak berfungsi.",
@@ -5636,9 +5992,9 @@ class CodegenLoader extends AssetLoader {
     "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
     "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
     "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-    "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
+    "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
     "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
-    "signInAbortedMsg": "Login gagal.",
+    "signInAbortedMsg": "Login gagal",
     "notAvailableMsg": "Tidak tersedia",
     "killSwitch": "Saklar pemutus daya",
     "killSwitchDesc": "Memblokir internet jika koneksi VPN terputus.",
@@ -5670,6 +6026,25 @@ class CodegenLoader extends AssetLoader {
         "Langganan dikelola melalui web. Paket Anda akan disinkronkan ke aplikasi secara otomatis.",
     "subscribeOnWebBtn": "Berlangganan di web",
     "subscriptionAllPlansCurrentPlan": "Rencana saat ini",
+    "ipTypeDataCenterDisclaimer": "IP pusat data yang dioptimalkan untuk kecepatan dan kinerja.",
+    "ipTypeResidentialDisclaimer":
+        "Disediakan oleh rumah tangga sungguhan. Hampir tidak terdeteksi tetapi kurang stabil.",
+    "ipTypeResidentialTooltipTitle": "Mengapa alamat IP saya bisa berubah?",
+    "ipTypeResidentialTooltipBody":
+        "IP residensial disediakan oleh perangkat rumah tangga sungguhan, sehingga ketersediaannya dapat berubah seiring waktu.\n\nJika sebuah node offline, aplikasi akan menghubungkan Anda kembali ke IP residensial terdekat yang tersedia.",
+    "residentialEducationTitle": "Cara kerja IP Perumahan",
+    "residentialEducationSubtitle":
+        "IP residensial berbeda dengan IP berkecepatan tinggi. Berikut yang dapat Anda harapkan.",
+    "residentialEducationBlock1Title": "Perangkat rumah tangga sungguhan",
+    "residentialEducationBlock1Body":
+        "IP residensial berasal dari perangkat rumah tangga sungguhan, sehingga lalu lintas Anda terlihat seperti penggunaan internet biasa.",
+    "residentialEducationBlock2Title": "Ketersediaan dapat berubah",
+    "residentialEducationBlock3Title": "Penyambungan ulang otomatis",
+    "residentialEducationBlock3Body":
+        "Jika IP Anda saat ini tidak tersedia, aplikasi akan menghubungkan Anda kembali ke IP residensial terdekat yang tersedia.",
+    "residentialEducationGotIt": "Mengerti",
+    "residentialEducationBlock2Body":
+        "Karena IP ini disediakan oleh perangkat nyata, beberapa node mungkin offline secara tiba-tiba.",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -6159,6 +6534,38 @@ class CodegenLoader extends AssetLoader {
         "Ofrece un control de ubicación más preciso que la mayoría de las VPN, que normalmente te limitan a seleccionar países o estados completos.",
     "subscriptionPlanMalwareBlockerDesc":
         "Protege tu dispositivo deteniendo las amenazas antes de que puedan alcanzarlo, funcionando discretamente en segundo plano sin interrumpirte.",
+    "skipBtn": "Saltar",
+    "completeBtn": "Completo",
+    "subscriptionOnboardingPromptTitle": "Haz un recorrido rápido",
+    "subscriptionOnboardingPromptDescription":
+        "Familiarízate con la aplicación actualizada y descubre dónde se encuentran ahora las funciones principales.",
+    "subscriptionOnboardingStartTourLabel": "Iniciar recorrido",
+    "subscriptionOnboardingCancelTourLabel": "Saltar por ahora",
+    "subscriptionOnboardingMapDesktopTitle": "Explora los lugares a tu manera.",
+    "subscriptionOnboardingMapDesktopDescription":
+        "Consulta el mapa o explora las ubicaciones desde la barra lateral.",
+    "subscriptionOnboardingMapMobileTitle": "Conectar desde el mapa",
+    "subscriptionOnboardingMapMobileDescription":
+        "Navega por el mapa para elegir un país y conectarte al instante.",
+    "subscriptionOnboardingManagePlanTitle": "Gestiona tu plan",
+    "subscriptionOnboardingManagePlanDescription":
+        "Compra, actualiza o consulta los planes disponibles según tu acceso a la cuenta.",
+    "subscriptionOnboardingBoostProtectionTitle": "Refuerza tu protección",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "Descubre funciones avanzadas como los protocolos VPN y el bloqueo de malware.",
+    "subscriptionOnboardingConnectTitle": "Conéctate para mantener tu privacidad",
+    "subscriptionOnboardingConnectDescription": "Te conectaremos al mejor servidor.",
+    "subscriptionOnboardingSearchTitle": "Busca y conéctate más rápido",
+    "subscriptionOnboardingSearchDescription":
+        "Encuentra rápidamente países, ciudades y servidores con la función de búsqueda.",
+    "subscriptionOnboardingVPNLocationsTitle": "Explorar ubicaciones de VPN",
+    "subscriptionOnboardingVPNLocationsDesktopDescription":
+        "Explora países y ciudades en un solo lugar.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "Explora países, ciudades, conexiones recientes y servidores especializados en un solo lugar.",
+    "subscriptionOnboardingSetupCompleteTitle": "Configuración completa",
+    "subscriptionOnboardingSetupCompleteDescription":
+        "Elige una ubicación para empezar a navegar de forma más privada.",
     "notNowBtn": "Ahora no",
     "viewAllFeaturesBtn": "Ver todas las características",
     "viewLessBtn": "Ver menos",
@@ -6180,13 +6587,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "¿Te gustaría recibir actualizaciones por correo electrónico, consejos sobre privacidad y ofertas especiales de Mysterium Network?",
     "allowNotificationsBtn": "Permitir notificaciones",
-    "ipTypeDataCenterDisclaimer":
-        "Direcciones IP alojadas en servidores rápidos y eficientes para necesidades VPN rápidas: elija esta opción para conexiones estables.",
-    "ipTypeResidentialDisclaimer":
-        "Direcciones IP residenciales de hogares reales. Casi indetectables pero menos estables, por lo que la IP que obtenga podría cambiar.",
-    "ipTypeResidentialTooltipTitle": "¿Por qué se perdió el enlace?",
-    "ipTypeResidentialTooltipBody":
-        "Las direcciones IP domésticas dependen de usuarios reales. Si se pierde la conexión, se te reconectará instantáneamente a la IP disponible más cercana. Para una conexión estable, elige direcciones IP de alta velocidad.",
     "refreshIPAddress": "Actualización de la dirección IP",
     "getNewIPAddress": "Obtener una nueva dirección IP al actualizar",
     "resetAppDesc": "Reiniciar cuando algo no funciona",
@@ -6318,6 +6718,26 @@ class CodegenLoader extends AssetLoader {
         "Las suscripciones se gestionan a través de la web. Tu plan se sincronizará automáticamente con la aplicación.",
     "subscribeOnWebBtn": "Suscríbete en la web",
     "subscriptionAllPlansCurrentPlan": "Plan actual",
+    "ipTypeDataCenterDisclaimer":
+        "Direcciones IP para centros de datos optimizadas para velocidad y rendimiento.",
+    "ipTypeResidentialDisclaimer":
+        "Proporcionado por hogares reales. Casi indetectable, pero menos estable.",
+    "ipTypeResidentialTooltipTitle": "¿Por qué puede cambiar mi IP?",
+    "ipTypeResidentialTooltipBody":
+        "Las direcciones IP residenciales son proporcionadas por dispositivos domésticos reales, por lo que su disponibilidad puede variar con el tiempo.\n\nSi un nodo se desconecta, la aplicación te reconecta a la dirección IP residencial disponible más cercana.",
+    "residentialEducationTitle": "Cómo funcionan las IP residenciales",
+    "residentialEducationSubtitle":
+        "Las direcciones IP residenciales son diferentes de las direcciones IP de alta velocidad. Esto es lo que puede esperar.",
+    "residentialEducationBlock1Title": "Dispositivos domésticos reales",
+    "residentialEducationBlock1Body":
+        "Las direcciones IP residenciales provienen de dispositivos domésticos reales, lo que hace que tu tráfico parezca un uso normal de Internet.",
+    "residentialEducationBlock2Title": "La disponibilidad puede cambiar.",
+    "residentialEducationBlock3Title": "Reconexión automática",
+    "residentialEducationBlock3Body":
+        "Si tu IP actual deja de estar disponible, la aplicación te reconecta a la IP residencial disponible más cercana.",
+    "residentialEducationGotIt": "Entiendo",
+    "residentialEducationBlock2Body":
+        "Debido a que estas direcciones IP son proporcionadas por dispositivos reales, algunos nodos pueden desconectarse inesperadamente.",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -6782,6 +7202,35 @@ class CodegenLoader extends AssetLoader {
         "يوفر تحكمًا أكثر دقة في الموقع مقارنة بمعظم شبكات VPN، والتي عادةً ما تحد من اختيارك لبلدان أو ولايات بأكملها.",
     "subscriptionPlanMalwareBlockerDesc":
         "يحمي جهازك عن طريق إيقاف التهديدات قبل أن تتمكن من الوصول إليه، ويعمل بهدوء في الخلفية دون مقاطعتك.",
+    "skipBtn": "يتخطى",
+    "completeBtn": "مكتمل",
+    "subscriptionOnboardingPromptTitle": "قم بجولة سريعة",
+    "subscriptionOnboardingPromptDescription":
+        "تعرّف على كيفية استخدام التطبيق المحدث واكتشف مكان وجود الميزات الرئيسية الآن.",
+    "subscriptionOnboardingStartTourLabel": "ابدأ الجولة",
+    "subscriptionOnboardingCancelTourLabel": "تجاوز الأمر مؤقتًا",
+    "subscriptionOnboardingMapDesktopTitle": "استكشف المواقع على طريقتك الخاصة",
+    "subscriptionOnboardingMapDesktopDescription":
+        "تصفح الخريطة أو استكشف المواقع من الشريط الجانبي.",
+    "subscriptionOnboardingMapMobileTitle": "الاتصال من الخريطة",
+    "subscriptionOnboardingMapMobileDescription": "تصفح الخريطة لاختيار بلد والاتصال به على الفور.",
+    "subscriptionOnboardingManagePlanTitle": "إدارة خطتك",
+    "subscriptionOnboardingManagePlanDescription":
+        "قم بشراء أو ترقية أو عرض الخطط المتاحة بناءً على صلاحيات الوصول إلى حسابك.",
+    "subscriptionOnboardingBoostProtectionTitle": "عزز حمايتك",
+    "subscriptionOnboardingBoostProtectionDescription":
+        "استكشف الميزات المتقدمة مثل بروتوكولات VPN وحظر البرامج الضارة.",
+    "subscriptionOnboardingConnectTitle": "اتصل للحفاظ على خصوصيتك",
+    "subscriptionOnboardingConnectDescription": "سنقوم بتوصيلك بأفضل خادم.",
+    "subscriptionOnboardingSearchTitle": "ابحث واتصل بشكل أسرع",
+    "subscriptionOnboardingSearchDescription":
+        "اعثر بسرعة على البلدان والمدن والخوادم باستخدام البحث.",
+    "subscriptionOnboardingVPNLocationsTitle": "تصفح مواقع VPN",
+    "subscriptionOnboardingVPNLocationsDesktopDescription": "استكشف البلدان والمدن في مكان واحد.",
+    "subscriptionOnboardingVPNLocationsMobileDescription":
+        "استكشف البلدان والمدن والاتصالات الحديثة والخوادم المتخصصة في مكان واحد.",
+    "subscriptionOnboardingSetupCompleteTitle": "اكتمل الإعداد",
+    "subscriptionOnboardingSetupCompleteDescription": "اختر موقعًا لبدء التصفح بشكل أكثر خصوصية.",
     "notNowBtn": "ليس الآن",
     "viewAllFeaturesBtn": "عرض جميع الميزات",
     "viewLessBtn": "عرض أقل",
@@ -6802,13 +7251,6 @@ class CodegenLoader extends AssetLoader {
     "marketingConsentPopupDesc":
         "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
     "allowNotificationsBtn": "السماح بالإشعارات",
-    "ipTypeDataCenterDisclaimer":
-        "عناوين IP مستضافة على خوادم سريعة وفعالة لتلبية احتياجات VPN السريعة - اختر هذا للحصول على اتصالات مستقرة",
-    "ipTypeResidentialDisclaimer":
-        "عناوين IP سكنية من منازل حقيقية. يصعب اكتشافها تقريبًا، لكنها أقل استقرارًا، لذا قد يتغير عنوان IP الذي تحصل عليه.",
-    "ipTypeResidentialTooltipTitle": "لماذا فُقد الرابط؟",
-    "ipTypeResidentialTooltipBody":
-        "تعتمد عناوين IP المنزلية على أشخاص حقيقيين. في حال انقطاع اتصالهم، ستتم إعادة توصيلك فورًا بأقرب عنوان IP متاح. وللحصول على اتصال مستقر، اختر عناوين IP عالية السرعة.",
     "refreshIPAddress": "تحديث عنوان IP",
     "getNewIPAddress": "احصل على عنوان IP جديد عند التحديث",
     "resetAppDesc": "أعد ضبط الجهاز عندما لا يعمل شيء ما",
@@ -6936,6 +7378,25 @@ class CodegenLoader extends AssetLoader {
         "تتم إدارة الاشتراكات عبر الإنترنت. سيتم مزامنة خطتك مع التطبيق تلقائيًا.",
     "subscribeOnWebBtn": "اشترك عبر الإنترنت",
     "subscriptionAllPlansCurrentPlan": "الخطة الحالية",
+    "ipTypeDataCenterDisclaimer": "عناوين IP لمراكز البيانات مُحسّنة من حيث السرعة والأداء.",
+    "ipTypeResidentialDisclaimer":
+        "مُقدمة من أسر حقيقية. تكاد تكون غير قابلة للكشف ولكنها أقل استقراراً.",
+    "ipTypeResidentialTooltipTitle": "لماذا يمكن أن يتغير عنوان IP الخاص بي؟",
+    "ipTypeResidentialTooltipBody":
+        "يتم توفير عناوين IP المنزلية من خلال أجهزة منزلية حقيقية، لذا قد تتغير إمكانية الوصول إليها بمرور الوقت.\n\nفي حال انقطاع اتصال أحد الأجهزة، يقوم التطبيق بإعادة توصيلك بأقرب عنوان IP منزلي متاح.",
+    "residentialEducationTitle": "كيف تعمل عناوين IP السكنية",
+    "residentialEducationSubtitle":
+        "تختلف عناوين IP السكنية عن عناوين IP عالية السرعة. إليك ما يمكن توقعه.",
+    "residentialEducationBlock1Title": "أجهزة منزلية حقيقية",
+    "residentialEducationBlock1Body":
+        "تأتي عناوين IP السكنية من أجهزة منزلية حقيقية، مما يجعل حركة مرور البيانات الخاصة بك تبدو وكأنها استخدام عادي للإنترنت.",
+    "residentialEducationBlock2Title": "قد يتغير التوفر",
+    "residentialEducationBlock3Title": "إعادة الاتصال التلقائي",
+    "residentialEducationBlock3Body":
+        "إذا أصبح عنوان IP الحالي الخاص بك غير متاح، فسيعيد التطبيق توصيلك بأقرب عنوان IP سكني متاح.",
+    "residentialEducationGotIt": "فهمتها",
+    "residentialEducationBlock2Body":
+        "نظراً لأن عناوين IP هذه يتم توفيرها بواسطة أجهزة حقيقية، فقد تتعطل بعض العقد بشكل غير متوقع.",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,
