@@ -97,6 +97,14 @@ void main() {
     verify(localDBService.setSubscriptionOnboardingShown()).called(1);
   });
 
+  test('clearShown resets subscription onboarding shown flag', () async {
+    // arrange
+    await store.clearShown();
+
+    // assert
+    verify(localDBService.resetSubscriptionOnboardingShown()).called(1);
+  });
+
   test('trackSkipped logs skipped analytics event', () {
     // act
     store.trackSkipped();
