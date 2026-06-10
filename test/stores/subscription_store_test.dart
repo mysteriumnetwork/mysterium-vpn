@@ -539,27 +539,34 @@ void main() {
             plan(id: 'plan_yearly_plus', supportedGateways: ['google'], intervalUnit: 'year'),
             plan(
               id: 'plan_2_years_pro',
-              supportedGateways: ['stripe'],
+              supportedGateways: ['stripe', 'primer'],
               intervalUnit: 'year',
               intervalAmount: 2,
             ),
-            plan(id: 'plan_yearly_pro', supportedGateways: ['stripe'], intervalUnit: 'year'),
+            plan(
+              id: 'plan_yearly_pro',
+              supportedGateways: ['stripe', 'primer'],
+              intervalUnit: 'year',
+            ),
           ],
           countries: const [],
           stripePublishableKey: '',
           stripeReturnUrl: '',
         );
         when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlans));
+        // Production planFeatures only lists the in-app sellable tiers (Basic,
+        // Plus); Pro is web-only and absent. The intrinsic tier order must
+        // still rank the 2-year Pro plan as the max.
         when(mockRemoteConfigStore.planFeatures).thenReturn([
           SubscriptionPlanFeatures(
-            name: 'Plus',
-            planIds: {'plan_yearly_plus'},
+            name: 'Basic',
+            planIds: {'plan_monthly_basic', 'plan_yearly_basic'},
             previewFeatures: const {},
             detailedFeatures: const {},
           ),
           SubscriptionPlanFeatures(
-            name: 'Pro',
-            planIds: {'plan_yearly_pro', 'plan_2_years_pro'},
+            name: 'Plus',
+            planIds: {'plan_monthly_plus', 'plan_yearly_plus'},
             previewFeatures: const {},
             detailedFeatures: const {},
           ),
@@ -601,9 +608,10 @@ void main() {
         expect(subscriptionStore.isOnMaxPlan, isFalse);
       });
 
-      test('returns true for primer sub on 2-year Pro (web orchestration max)', () async {
-        // Primer is absent from the plan config's supportedGateways; its max
-        // falls back to the 2-year Pro plan.
+      test('returns true for primer sub on 2-year Pro (web max, like any web gateway)', () async {
+        // Primer is a normal web gateway in supportedGateways; the 2-year Pro
+        // plan ranks as the max via the intrinsic tier order, even though
+        // planFeatures has no Pro tier.
         await primeSubscription(
           Subscription(active: true, gateway: 'primer', planId: 'plan_2_years_pro'),
         );

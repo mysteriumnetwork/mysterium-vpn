@@ -112,12 +112,21 @@ void main() {
       expect(maxPlanIdForGateway('stripe', config, planFeatures), 'plan_monthly_basic');
     });
 
-    test('falls back to the known max plan for a web gateway absent from supportedGateways', () {
-      // Primer is a web payment-orchestration layer that the plan config does
-      // not enumerate in supportedGateways, so config ranking finds nothing —
-      // its max must fall back to the 2-year Pro plan.
+    test('ranks Pro above Plus even when planFeatures omits the Pro tier', () {
+      // Production planFeatures only lists the in-app sellable tiers (Basic,
+      // Plus) — Pro is web-only and absent. The intrinsic tier order must
+      // still rank a 2-year Pro plan above a same-duration Plus plan.
+      final featuresWithoutPro = [
+        _tier('Basic', {'plan_monthly_basic', 'plan_yearly_basic'}),
+        _tier('Plus', {'plan_monthly_plus', 'plan_yearly_plus'}),
+      ];
       final config = _config([
-        _plan(id: 'plan_yearly_pro', supportedGateways: ['stripe'], intervalUnit: 'year'),
+        _plan(
+          id: 'plan_2_years_plus',
+          supportedGateways: ['stripe'],
+          intervalUnit: 'year',
+          intervalAmount: 2,
+        ),
         _plan(
           id: 'plan_2_years_pro',
           supportedGateways: ['stripe'],
@@ -125,7 +134,7 @@ void main() {
           intervalAmount: 2,
         ),
       ]);
-      expect(maxPlanIdForGateway('primer', config, planFeatures), 'plan_2_years_pro');
+      expect(maxPlanIdForGateway('stripe', config, featuresWithoutPro), 'plan_2_years_pro');
     });
 
     test('ranks a duration variant not enumerated in planFeatures by its tier token', () {

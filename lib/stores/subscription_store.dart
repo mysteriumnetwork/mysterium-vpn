@@ -96,14 +96,6 @@ abstract class _SubscriptionStore with Store {
 
   bool get _isMacOS => _useTestPlatform ? testIsMacOS : Platform.isMacOS;
 
-  /// Whether the active subscription's store gateway can be managed on the
-  /// current platform: Apple on iOS/macOS, Google on Android.
-  bool _isGatewayOnCurrentPlatform(String? gateway) => switch (gateway?.toLowerCase()) {
-    'apple' => _isIOS || _isMacOS,
-    'google' => _isAndroid,
-    _ => false,
-  };
-
   @readonly
   late ObservableFuture<Subscription> _subscriptionFuture = ObservableFuture.value(
     Subscription.empty(),
@@ -191,7 +183,7 @@ abstract class _SubscriptionStore with Store {
     if (!isMobilePaymentGateway(gateway)) {
       return false;
     }
-    return !_isGatewayOnCurrentPlatform(gateway);
+    return !isGatewayOnPlatform(gateway, isIOS: _isIOS, isAndroid: _isAndroid, isMacOS: _isMacOS);
   }
 
   /// `true` when the active subscription is already on the highest tier +
