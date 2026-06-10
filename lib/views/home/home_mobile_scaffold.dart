@@ -77,13 +77,7 @@ class HomeMobileScaffold extends HookConsumerWidget {
                 Beamer.of(context).beamToNamed(Routes.platformLogin.path);
               }
             },
-            items: tabs
-                .asMap()
-                .entries
-                .map(
-                  (entry) => BottomNavBarItem(icon: entry.value.icon, label: entry.value.label()),
-                )
-                .toList(),
+            items: [for (final tab in tabs) BottomNavBarItem(icon: tab.icon, label: tab.label())],
           ),
         ],
       ),
