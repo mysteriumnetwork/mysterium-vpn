@@ -62,6 +62,7 @@ class ResidentialEducationModal extends StatelessWidget {
     final theme = Theme.of(context);
     final palette = theme.palette;
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    final gotItButton = ButtonPrimary(onPressed: onGotIt, child: Text(gotItLabel));
 
     final content = Padding(
       padding: EdgeInsets.fromLTRB(
@@ -70,48 +71,48 @@ class ResidentialEducationModal extends StatelessWidget {
         theme.spacing.xl2,
         theme.spacing.xl2,
       ),
+      // Figma: one column with gap-2xl (24px) between the header group, each
+      // block, and the button.
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: theme.spacing.xl2,
         children: [
-          Center(
-            child: DecoratedIcon(
-              icon: UntitledUI.home_03,
-              decoration: IconDecoration(
-                backgroundColor: palette.bgSecondarySelected,
-                iconSize: 32,
-                padding: const EdgeInsets.all(8),
-                borderRadius: const BorderRadius.all(Radius.kFull),
-              ),
-            ),
-          ),
-          SizedBox(height: theme.spacing.ms),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: theme.textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
-          ),
-          SizedBox(height: theme.spacing.xs),
-          Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary),
-          ),
-          SizedBox(height: theme.spacing.xl2),
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: theme.spacing.lg,
             children: [
-              _Block(icon: UntitledUI.home_03, title: block1Title, body: block1Body),
-              _Block(icon: UntitledUI.cloud_off, title: block2Title, body: block2Body),
-              _Block(icon: UntitledUI.refresh_cw_02, title: block3Title, body: block3Body),
+              Center(
+                child: DecoratedIcon(
+                  icon: UntitledUI.home_03,
+                  decoration: IconDecoration(
+                    backgroundColor: palette.bgSecondarySelected,
+                    iconColor: palette.iconBrandSecondary,
+                    iconSize: 32,
+                    padding: const EdgeInsets.all(8),
+                    borderRadius: const BorderRadius.all(Radius.kFull),
+                  ),
+                ),
+              ),
+              SizedBox(height: theme.spacing.ms),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: theme.textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
+              ),
+              SizedBox(height: theme.spacing.xs),
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary),
+              ),
             ],
           ),
-          SizedBox(height: theme.spacing.xl2),
-          Align(
-            child: ButtonPrimary(onPressed: onGotIt, child: Text(gotItLabel)),
-          ),
+          _Block(icon: UntitledUI.home_03, title: block1Title, body: block1Body),
+          _Block(icon: UntitledUI.cloud_off, title: block2Title, body: block2Body),
+          _Block(icon: UntitledUI.refresh_cw_02, title: block3Title, body: block3Body),
+          // Full-width on mobile; centred and content-width on desktop.
+          if (isDesktop) Align(child: gotItButton) else gotItButton,
         ],
       ),
     );
@@ -137,7 +138,7 @@ class ResidentialEducationModal extends StatelessWidget {
                   ),
                 ],
               )
-            : content,
+            : SafeArea(top: false, child: content),
       ),
     );
 
@@ -163,7 +164,8 @@ class _Block extends StatelessWidget {
           icon: icon,
           decoration: IconDecoration(
             backgroundColor: palette.bgInfoIcon,
-            iconColor: palette.iconTertiary,
+            // Figma icon-tertiary (#717680 / white 56%) = textTertiary's value.
+            iconColor: palette.textTertiary,
             iconSize: 20,
             padding: const EdgeInsets.all(6),
             borderRadius: const BorderRadius.all(Radius.kFull),
