@@ -249,10 +249,19 @@ final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>(
   ),
 );
 
+final shouldShowSubscriptionOnboardingShowcasePOD = FutureProvider<bool>((ref) async {
+  if (!ref.watch(remoteConfigStorePOD).canShowSubscriptionOnboardingFlow) {
+    return false;
+  }
+
+  return ref.watch(subscriptionOnboardingStorePOD).shouldShow();
+});
+
 final subscriptionOnboardingShowcasePOD = Provider<SubscriptionOnboardingShowcase>((ref) {
   final showcase = SubscriptionOnboardingShowcase(
     subscriptionOnboardingStore: ref.watch(subscriptionOnboardingStorePOD),
     homeTabsStore: ref.watch(homeTabsStorePOD),
+    onFlowConsumed: () => ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD),
   );
   ref.onDispose(showcase.dispose);
 
