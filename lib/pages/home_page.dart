@@ -32,13 +32,13 @@ class HomePage extends HookConsumerWidget {
   }
 }
 
-class _HomePage extends HookWidget {
+class _HomePage extends HookConsumerWidget {
   const _HomePage({required this.isLoading});
 
   final bool isLoading;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     useHomeAutorun();
 
     return ColoredScaffold(

@@ -248,6 +248,14 @@ final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>(
   ),
 );
 
+final shouldShowSubscriptionOnboardingShowcasePOD = FutureProvider<bool>((ref) async {
+  if (!ref.watch(remoteConfigStorePOD).canShowSubscriptionOnboardingFlow) {
+    return false;
+  }
+
+  return ref.watch(subscriptionOnboardingStorePOD).shouldShow();
+});
+
 final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
