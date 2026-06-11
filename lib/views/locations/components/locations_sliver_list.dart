@@ -8,9 +8,9 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn/views/locations/components/location_item.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 /// Height of a collapsed [ExpandableLocationItem] (Container minHeight: 64).
@@ -55,7 +55,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final effectivePriorityCountryCode = useEffectivePriorityCountryCode(ref);
     final screenType = ScreenType.of(context);
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcaseControllerPOD);
 
     final priorityIndex = effectivePriorityCountryCode == null
         ? -1
@@ -144,6 +144,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
           itemCount: items.length,
           enabled: isDesktop,
         );
+        final showcaseTarget = onboarding.targetForStep(SubscriptionOnboardingStep.locations);
 
         return SliverStack(
           children: [
@@ -173,14 +174,14 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
                 rect: showcaseTargetRect,
                 child: IgnorePointer(
                   child: ArrowedProgressCard(
-                    tooltipIndex: onboarding.locationsListStepIndex,
-                    totalTooltips: onboarding.visibleStepsCount,
-                    tooltipContent: onboarding.locationsListTooltipContent,
-                    globalKey: onboarding.locationsListKey,
-                    tooltipPosition: TooltipPosition.top,
-                    icon: onboarding.locationsListTooltipContent.icon,
-                    onActionPressed: () =>
-                        onboarding.showNextTip(onboarding.locationsListStepIndex),
+                    tooltipIndex: showcaseTarget.index,
+                    totalTooltips: showcaseTarget.totalSteps,
+                    tooltipContent: showcaseTarget.spec.content,
+                    globalKey: showcaseTarget.key,
+                    tooltipPosition: showcaseTarget.spec.position,
+                    scope: showcaseTarget.scope,
+                    icon: showcaseTarget.spec.content.icon,
+                    onActionPressed: onboarding.next,
                     child: const SizedBox.expand(),
                   ),
                 ),

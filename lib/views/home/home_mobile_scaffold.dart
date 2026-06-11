@@ -8,12 +8,12 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_locations_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_map_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
 import 'package:mysterium_vpn/views/settings/settings_mobile_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class HomeMobileScaffold extends HookConsumerWidget {
   const HomeMobileScaffold({super.key});
@@ -35,7 +35,7 @@ class HomeMobileScaffold extends HookConsumerWidget {
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
     final inSettingsSubPage = selected == HomeTab.settings && settingsSubPage != null;
 
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcaseControllerPOD);
 
     return PopScope(
       canPop: !inSettingsSubPage,
@@ -60,18 +60,21 @@ class HomeMobileScaffold extends HookConsumerWidget {
           ),
           BottomNavBar(
             selectedIndex: selectedIndex,
-            itemWrapper: ({required context, required index, required item, required child}) =>
-                ArrowedProgressCard(
-                  tooltipIndex: onboarding.stepIndexForTab(tabs[index]),
-                  totalTooltips: onboarding.visibleStepsCount,
-                  tooltipContent: onboarding.tooltipContentForTab(tabs[index]),
-                  globalKey: onboarding.keyForTab(tabs[index]),
-                  tooltipPosition: TooltipPosition.top,
-                  icon: onboarding.tooltipContentForTab(tabs[index]).icon,
-                  onActionPressed: () =>
-                      onboarding.showNextTip(onboarding.stepIndexForTab(tabs[index])),
-                  child: child,
-                ),
+            itemWrapper: ({required context, required index, required item, required child}) {
+              final target = onboarding.targetForTab(tabs[index]);
+
+              return ArrowedProgressCard(
+                tooltipIndex: target.index,
+                totalTooltips: target.totalSteps,
+                tooltipContent: target.spec.content,
+                globalKey: target.key,
+                tooltipPosition: target.spec.position,
+                scope: target.scope,
+                icon: target.spec.content.icon,
+                onActionPressed: onboarding.next,
+                child: child,
+              );
+            },
             onDestinationSelected: (i) {
               if (!store.trySelect(tabs[i])) {
                 Beamer.of(context).beamToNamed(Routes.platformLogin.path);

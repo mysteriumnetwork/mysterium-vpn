@@ -6,8 +6,8 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -30,19 +30,20 @@ class ConnectionTile extends HookConsumerWidget {
     ) = useConnectionTileState(
       ref,
     );
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcaseControllerPOD);
 
     Widget buttonWrapper({required BuildContext context, required Widget child}) {
-      final stepIndex = onboarding.connectButtonStepIndex;
+      final target = onboarding.targetForStep(SubscriptionOnboardingStep.connect);
 
       return ArrowedProgressCard(
-        tooltipIndex: stepIndex,
-        totalTooltips: onboarding.visibleStepsCount,
-        tooltipContent: onboarding.connectButtonTooltipContent,
-        globalKey: onboarding.connectButtonKey,
-        tooltipPosition: TooltipPosition.top,
-        icon: onboarding.connectButtonTooltipContent.icon,
-        onActionPressed: () => onboarding.showNextTip(stepIndex),
+        tooltipIndex: target.index,
+        totalTooltips: target.totalSteps,
+        tooltipContent: target.spec.content,
+        globalKey: target.key,
+        tooltipPosition: target.spec.position,
+        scope: target.scope,
+        icon: target.spec.content.icon,
+        onActionPressed: onboarding.next,
         child: child,
       );
     }

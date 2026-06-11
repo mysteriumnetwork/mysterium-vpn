@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_scaffold.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_scaffold.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -25,6 +26,17 @@ class HomePage extends HookConsumerWidget {
       return null;
     }, []);
 
+    return SubscriptionOnboardingShowcase(child: _HomePage(isLoading: isLoading));
+  }
+}
+
+class _HomePage extends HookWidget {
+  const _HomePage({required this.isLoading});
+
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
     useHomeAutorun();
 
     return ColoredScaffold(

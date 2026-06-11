@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 void useHomeAutorun() {
@@ -23,12 +24,11 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
   final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
   final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
-  final subscriptionOnboardingShowcase = useProvider(subscriptionOnboardingShowcasePOD);
+  final subscriptionOnboardingShowcase = useProvider(subscriptionOnboardingShowcaseControllerPOD);
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
   final handleSubscribe = useHandleSubscribe();
-  subscriptionOnboardingShowcase.register(context);
 
   return useEffect(
     () {
@@ -146,7 +146,6 @@ void useHomeAutorun() {
         for (final dispose in disposers) {
           dispose();
         }
-        subscriptionOnboardingShowcase.unregister();
         await subscription.cancel();
         await controller.close();
       };

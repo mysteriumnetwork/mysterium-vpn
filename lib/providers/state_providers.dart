@@ -15,7 +15,6 @@ import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
-import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -248,16 +247,6 @@ final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>(
     localDBService: LocalDBService.instance,
   ),
 );
-
-final subscriptionOnboardingShowcasePOD = Provider<SubscriptionOnboardingShowcase>((ref) {
-  final showcase = SubscriptionOnboardingShowcase(
-    subscriptionOnboardingStore: ref.watch(subscriptionOnboardingStorePOD),
-    homeTabsStore: ref.watch(homeTabsStorePOD),
-  );
-  ref.onDispose(showcase.dispose);
-
-  return showcase;
-});
 
 final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
   final apiService = ref.watch(apiServicePOD);
