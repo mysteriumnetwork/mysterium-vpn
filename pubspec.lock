@@ -1371,10 +1371,10 @@ packages:
     dependency: "direct main"
     description:
       name: onesignal_flutter
-      sha256: "74521a8bfbe9253a5fdfdd52981e8bb4f6da2fbbb92792d4ff368917ac395716"
+      sha256: "32d59d4cf83aa34a3b6ac034b202f6c23f5ca3b2ed17b44960f422719fe50fc7"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.8"
+    version: "5.6.0"
   open_store:
     dependency: "direct main"
     description:
@@ -2337,4 +2337,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=3.11.0 <4.0.0"
-  flutter: "3.41.9"
+  flutter: ">=3.41.9"
