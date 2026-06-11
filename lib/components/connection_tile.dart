@@ -31,22 +31,16 @@ class ConnectionTile extends HookConsumerWidget {
     ) = useConnectionTileState(
       ref,
     );
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
 
-    Widget buttonWrapper({required BuildContext context, required Widget child}) {
-      final stepIndex = onboarding.connectButtonStepIndex;
-
-      return ArrowedProgressCard(
-        tooltipIndex: stepIndex,
-        totalTooltips: onboarding.visibleStepsCount,
-        tooltipContent: onboarding.connectButtonTooltipContent,
-        globalKey: onboarding.connectButtonKey,
-        tooltipPosition: TooltipPosition.top,
-        icon: onboarding.connectButtonTooltipContent.icon,
-        onActionPressed: () => onboarding.showNextTip(stepIndex),
-        child: child,
-      );
-    }
+    Widget buttonWrapper({required BuildContext context, required Widget child}) =>
+        ArrowedProgressCard(
+          step: SubscriptionOnboardingStep.connectButton,
+          globalKey: ref
+              .read(homeStateProvider)
+              .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
+          tooltipPosition: TooltipPosition.top,
+          child: child,
+        );
 
     return Column(
       children: [

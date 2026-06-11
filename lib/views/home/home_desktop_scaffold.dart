@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -41,29 +42,31 @@ class HomeDesktopScaffold extends HookConsumerWidget {
 
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
 
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         NavRail(
           currentIndex: selectedIndex,
-          itemWrapper: ({required context, required index, required item, required child}) =>
-              SizedBox(
-                width: 32,
-                height: 32,
-                child: ArrowedProgressCard(
-                  tooltipIndex: onboarding.stepIndexForTab(tabs[index]),
-                  totalTooltips: onboarding.visibleStepsCount,
-                  tooltipContent: onboarding.tooltipContentForTab(tabs[index]),
-                  globalKey: onboarding.keyForTab(tabs[index]),
-                  tooltipPosition: TooltipPosition.right,
-                  icon: onboarding.tooltipContentForTab(tabs[index]).icon,
-                  onActionPressed: () =>
-                      onboarding.showNextTip(onboarding.stepIndexForTab(tabs[index])),
-                  child: child,
-                ),
+          itemWrapper: ({required context, required index, required item, required child}) {
+            final step = [
+              SubscriptionOnboardingStep.map,
+              SubscriptionOnboardingStep.products,
+              SubscriptionOnboardingStep.settings,
+            ][index];
+
+            return SizedBox(
+              width: 32,
+              height: 32,
+              child: ArrowedProgressCard(
+                step: step,
+                globalKey: ref
+                    .read(homeStateProvider)
+                    .subscriptionOnboardingKeys[step.platformIndex],
+                tooltipPosition: TooltipPosition.right,
+                child: child,
               ),
+            );
+          },
           items: [
             for (var i = 0; i < tabs.length; i++)
               NavRailItem(

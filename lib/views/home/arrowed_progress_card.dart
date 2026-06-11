@@ -3,44 +3,65 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/tooltip_content.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
 import 'package:mysterium_vpn_design/styles/colors/palette.dart';
 import 'package:mysterium_vpn_design/widgets/progress_card.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+abstract interface class OnboardingStep {
+  int get desktopIndex;
+  int get mobileIndex;
+  int get platformIndex;
+  int get totalSteps;
+}
+
+enum SubscriptionOnboardingStep implements OnboardingStep {
+  connectButton(desktopIndex: 3, mobileIndex: 4),
+  locations(desktopIndex: 5, mobileIndex: 1),
+  map(desktopIndex: 0, mobileIndex: 0),
+  products(desktopIndex: 1, mobileIndex: 2),
+  search(desktopIndex: 4, mobileIndex: 5),
+  settings(desktopIndex: 2, mobileIndex: 3);
+
+  const SubscriptionOnboardingStep({required this.desktopIndex, required this.mobileIndex});
+
+  @override
+  final int desktopIndex;
+  @override
+  final int mobileIndex;
+  @override
+  int get totalSteps => SubscriptionOnboardingStep.values.length;
+  @override
+  int get platformIndex => isDesktop() ? desktopIndex : mobileIndex;
+}
+
 class ArrowedProgressCard extends HookConsumerWidget {
   const ArrowedProgressCard({
-    required this.globalKey,
     required this.child,
+    required this.globalKey,
+    required this.step,
     required this.tooltipPosition,
-    required this.tooltipContent,
-    required this.tooltipIndex,
-    required this.totalTooltips,
-    required this.onActionPressed,
-    this.icon,
     super.key,
   });
 
   final Widget child;
-  final GlobalKey<State<StatefulWidget>> globalKey;
+  final GlobalKey globalKey;
+  final SubscriptionOnboardingStep step;
   final TooltipPosition tooltipPosition;
-  final TooltipContent tooltipContent;
-  final int tooltipIndex;
-  final int totalTooltips;
-  final VoidCallback onActionPressed;
-  final IconData? icon;
 
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
   static const double _cornerInset = 24;
 
-  int get _index => tooltipIndex + 1;
+  int get _index => isDesktop() ? step.desktopIndex : step.mobileIndex;
 
-  bool get _isLastStep => _index == totalTooltips;
+  bool get _isLastStep =>
+      (isDesktop() ? step.desktopIndex : step.mobileIndex) ==
+      SubscriptionOnboardingStep.values.length - 1;
 
-  String get _actionLabel =>
-      _isLastStep ? LocaleKeys.completeBtn.tr() : tooltipContent.actionLabel.tr();
+  String get _actionLabel => _isLastStep ? LocaleKeys.completeBtn : LocaleKeys.continueBtn;
 
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;
@@ -125,13 +146,13 @@ class ArrowedProgressCard extends HookConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ProgressCard(
-              icon: icon,
-              progressLabel: '$_index/$totalTooltips',
-              progressValue: _index / totalTooltips,
-              title: tooltipContent.title.tr(),
-              description: tooltipContent.description.tr(),
+              icon: iconData,
+              progressLabel: '${_index + 1}/${step.totalSteps}',
+              progressValue: _index / step.totalSteps,
+              title: title.tr(),
+              description: description.tr(),
               actionLabel: _actionLabel,
-              onActionPressed: onActionPressed,
+              onActionPressed: () {},
             ),
             _TooltipArrow(
               color: arrowColor,
@@ -144,6 +165,43 @@ class ArrowedProgressCard extends HookConsumerWidget {
       child: child,
     );
   }
+
+  String get title => switch (step) {
+    SubscriptionOnboardingStep.map =>
+      isDesktop()
+          ? LocaleKeys.subscriptionOnboardingMapDesktopTitle
+          : LocaleKeys.subscriptionOnboardingMapMobileTitle,
+    SubscriptionOnboardingStep.locations => LocaleKeys.subscriptionOnboardingVPNLocationsTitle,
+    SubscriptionOnboardingStep.products => LocaleKeys.subscriptionOnboardingManagePlanTitle,
+    SubscriptionOnboardingStep.connectButton => LocaleKeys.subscriptionOnboardingConnectTitle,
+    SubscriptionOnboardingStep.search => LocaleKeys.subscriptionOnboardingSearchTitle,
+    SubscriptionOnboardingStep.settings => LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
+  };
+
+  String get description => switch (step) {
+    SubscriptionOnboardingStep.map =>
+      isDesktop()
+          ? LocaleKeys.subscriptionOnboardingMapDesktopDescription
+          : LocaleKeys.subscriptionOnboardingMapMobileDescription,
+    SubscriptionOnboardingStep.locations =>
+      isDesktop()
+          ? LocaleKeys.subscriptionOnboardingVPNLocationsDesktopDescription
+          : LocaleKeys.subscriptionOnboardingVPNLocationsMobileDescription,
+    SubscriptionOnboardingStep.products => LocaleKeys.subscriptionOnboardingManagePlanDescription,
+    SubscriptionOnboardingStep.connectButton => LocaleKeys.subscriptionOnboardingConnectDescription,
+    SubscriptionOnboardingStep.search => LocaleKeys.subscriptionOnboardingSearchDescription,
+    SubscriptionOnboardingStep.settings =>
+      LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
+  };
+
+  IconData get iconData => switch (step) {
+    SubscriptionOnboardingStep.map => UntitledUI.map_01,
+    SubscriptionOnboardingStep.locations => UntitledUI.flag_01,
+    SubscriptionOnboardingStep.products => UntitledUI.star_06,
+    SubscriptionOnboardingStep.connectButton => UntitledUI.rocket_02,
+    SubscriptionOnboardingStep.search => UntitledUI.search_sm,
+    SubscriptionOnboardingStep.settings => UntitledUI.lock_01,
+  };
 }
 
 class _TooltipArrow extends StatelessWidget {

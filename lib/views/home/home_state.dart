@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:hooks_riverpod/legacy.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 
 class _HomeState extends ChangeNotifier {
   _HomeState();
@@ -13,6 +14,10 @@ class _HomeState extends ChangeNotifier {
   final connectedCardKey = GlobalKey();
 
   ScrollController? scrollController;
+
+  final subscriptionOnboardingKeys = [
+    for (final _ in SubscriptionOnboardingStep.values) GlobalKey<State<StatefulWidget>>(),
+  ];
 
   /// Tracks the country code that was already scrolled to, so the
   /// scroll-to-selected logic fires only once per selection.

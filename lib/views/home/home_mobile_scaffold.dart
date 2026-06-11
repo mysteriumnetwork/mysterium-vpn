@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_locations_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_map_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
@@ -34,8 +35,7 @@ class HomeMobileScaffold extends HookConsumerWidget {
     final tabs = HomeTab.mobileTabs();
     final selectedIndex = tabs.indexOf(selected).clamp(0, tabs.length - 1);
     final inSettingsSubPage = selected == HomeTab.settings && settingsSubPage != null;
-
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
+    final homeState = ref.watch(homeStateProvider);
 
     return PopScope(
       canPop: !inSettingsSubPage,
@@ -60,18 +60,21 @@ class HomeMobileScaffold extends HookConsumerWidget {
           ),
           BottomNavBar(
             selectedIndex: selectedIndex,
-            itemWrapper: ({required context, required index, required item, required child}) =>
-                ArrowedProgressCard(
-                  tooltipIndex: onboarding.stepIndexForTab(tabs[index]),
-                  totalTooltips: onboarding.visibleStepsCount,
-                  tooltipContent: onboarding.tooltipContentForTab(tabs[index]),
-                  globalKey: onboarding.keyForTab(tabs[index]),
-                  tooltipPosition: TooltipPosition.top,
-                  icon: onboarding.tooltipContentForTab(tabs[index]).icon,
-                  onActionPressed: () =>
-                      onboarding.showNextTip(onboarding.stepIndexForTab(tabs[index])),
-                  child: child,
-                ),
+            itemWrapper: ({required context, required index, required item, required child}) {
+              final step = [
+                SubscriptionOnboardingStep.map,
+                SubscriptionOnboardingStep.locations,
+                SubscriptionOnboardingStep.products,
+                SubscriptionOnboardingStep.settings,
+              ][index];
+              final globalKey = homeState.subscriptionOnboardingKeys[step.platformIndex];
+              return ArrowedProgressCard(
+                globalKey: globalKey,
+                step: step,
+                tooltipPosition: TooltipPosition.top,
+                child: child,
+              );
+            },
             onDestinationSelected: (i) {
               if (!store.trySelect(tabs[i])) {
                 Beamer.of(context).beamToNamed(Routes.platformLogin.path);
