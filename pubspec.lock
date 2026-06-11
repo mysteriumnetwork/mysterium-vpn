@@ -1046,10 +1046,10 @@ packages:
     dependency: "direct main"
     description:
       name: in_app_purchase_storekit
-      sha256: ceb343184fbf0f44ad68f89ef97085eec7f93f3868eef0e8a635087b9a407826
+      sha256: "5f9d59c86c15f56429a4fdf09097c99d5b412510e1fcf80cf874fc9638fab369"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.5"
+    version: "0.4.10"
   in_app_review:
     dependency: "direct main"
     description:
@@ -2337,4 +2337,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=3.11.0 <4.0.0"
-  flutter: "3.41.9"
+  flutter: ">=3.41.9"
