@@ -18,6 +18,7 @@ export 'lifecycle_listener.dart';
 export 'loading_barrier.dart';
 export 'network_logger_overlay.dart';
 export 'read_only_switch.dart';
+export 'residential_education_modal.dart';
 export 'retake_fokus.dart';
 export 'retry_widget.dart';
 export 'shortcuts.dart';

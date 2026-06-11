@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -52,6 +53,7 @@ class ConnectionTile extends HookConsumerWidget {
       children: [
         MainIpCard(
           status: status,
+          serviceQualityKey: ref.watch(homeStateProvider).connectedCardKey,
           connectLabel: connectLabel,
           disconnectLabel: disconnectLabel,
           connectingLabel: connectingLabel,

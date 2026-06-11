@@ -26,3 +26,4 @@ part 'handle_subscribe_hook.dart';
 part 'handle_toggle_connection_hook.dart';
 part 'provider_hook.dart';
 part 'reaction_hook.dart';
+part 'auto_select_ip_type_hook.dart';
