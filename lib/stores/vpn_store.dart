@@ -115,6 +115,12 @@ abstract class _VpnStore extends VpnGuard with Store {
   @readonly
   VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
 
+  /// Increments each time a user-initiated connection reaches the connected
+  /// state. Excludes IP refresh / automatic fallback reconnections. Observed
+  /// by the residential-IP education trigger to detect a fresh connect.
+  @readonly
+  int _userConnectEpoch = 0;
+
   @readonly
   VPNLocation? _connectingLocation;
 
@@ -467,6 +473,9 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   void _logConnectionSuccess(bool refreshIP) {
     _stopwatch.stop();
+    if (!refreshIP) {
+      _userConnectEpoch++;
+    }
     if (_vpnConnection?.location != null) {
       _analyticsStore.logConnectSuccess(
         location: _vpnConnection!.location,

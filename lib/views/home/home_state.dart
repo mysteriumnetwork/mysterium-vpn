@@ -8,6 +8,10 @@ class _HomeState extends ChangeNotifier {
   final typeSwitcherKey = GlobalKey();
   final locationsKey = GlobalKey();
 
+  /// Anchors the residential-IP education reminder popover to the connection
+  /// card on the map.
+  final connectedCardKey = GlobalKey();
+
   ScrollController? scrollController;
 
   /// Tracks the country code that was already scrolled to, so the

@@ -1,8 +1,4 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/providers/state_providers.dart';
+part of 'hooks.dart';
 
 void useAutoSelectIPType() {
   final context = useContext();

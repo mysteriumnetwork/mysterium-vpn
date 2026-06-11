@@ -35,14 +35,16 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       appOpenCount: fields[16] == null ? 0 : (fields[16] as num).toInt(),
       noneSubsOnboardingCompleted: fields[17] == null ? false : fields[17] as bool,
       noneSubsOnboardingStep: fields[18] == null ? 0 : (fields[18] as num).toInt(),
-      subscriptionOnboardingShown: fields[19] == null ? false : fields[19] as bool,
-    );
+      residentialEducationModalShown: fields[19] == null ? false : fields[19] as bool,
+      residentialReminderShownAt: fields[20] as DateTime?,
+      residentialConnectCount: fields[21] == null ? 0 : (fields[21] as num).toInt(),
+    )..subscriptionOnboardingShown = fields[22] == null ? false : fields[22] as bool;
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(19)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -80,6 +82,12 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(18)
       ..write(obj.noneSubsOnboardingStep)
       ..writeByte(19)
+      ..write(obj.residentialEducationModalShown)
+      ..writeByte(20)
+      ..write(obj.residentialReminderShownAt)
+      ..writeByte(21)
+      ..write(obj.residentialConnectCount)
+      ..writeByte(22)
       ..write(obj.subscriptionOnboardingShown);
   }
 

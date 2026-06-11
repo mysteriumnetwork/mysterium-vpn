@@ -480,10 +480,6 @@ abstract class LocaleKeys {
   static const marketingConsentPopupTitle = 'marketingConsentPopupTitle';
   static const marketingConsentPopupDesc = 'marketingConsentPopupDesc';
   static const allowNotificationsBtn = 'allowNotificationsBtn';
-  static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
-  static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
-  static const ipTypeResidentialTooltipTitle = 'ipTypeResidentialTooltipTitle';
-  static const ipTypeResidentialTooltipBody = 'ipTypeResidentialTooltipBody';
   static const refreshIPAddress = 'refreshIPAddress';
   static const getNewIPAddress = 'getNewIPAddress';
   static const resetAppDesc = 'resetAppDesc';
@@ -605,4 +601,20 @@ abstract class LocaleKeys {
   static const productsSubscribeWebAlert = 'productsSubscribeWebAlert';
   static const subscribeOnWebBtn = 'subscribeOnWebBtn';
   static const subscriptionAllPlansCurrentPlan = 'subscriptionAllPlansCurrentPlan';
+  static const ipTypeDataCenterDisclaimer = 'ipTypeDataCenterDisclaimer';
+  static const ipTypeResidentialDisclaimer = 'ipTypeResidentialDisclaimer';
+  static const ipTypeResidentialTooltipTitle = 'ipTypeResidentialTooltipTitle';
+  static const ipTypeResidentialTooltipBody = 'ipTypeResidentialTooltipBody';
+  static const residentialEducationTitle = 'residentialEducationTitle';
+  static const residentialEducationSubtitle = 'residentialEducationSubtitle';
+  static const residentialEducationBlock1Title = 'residentialEducationBlock1Title';
+  static const residentialEducationBlock1Body = 'residentialEducationBlock1Body';
+  static const residentialEducationBlock2Title = 'residentialEducationBlock2Title';
+  static const residentialEducationBlock3Title = 'residentialEducationBlock3Title';
+  static const residentialEducationBlock3Body = 'residentialEducationBlock3Body';
+  static const residentialEducationGotIt = 'residentialEducationGotIt';
+  static const residentialEducationBlock2Body = 'residentialEducationBlock2Body';
+  static const reviewLeaveReviewBtn = 'reviewLeaveReviewBtn';
+  static const reviewPositiveTitle = 'reviewPositiveTitle';
+  static const reviewSatisfactionTitle = 'reviewSatisfactionTitle';
 }

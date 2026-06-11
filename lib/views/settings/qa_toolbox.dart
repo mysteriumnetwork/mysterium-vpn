@@ -107,6 +107,13 @@ class QAToolbox extends HookConsumerWidget {
             showSnackbar('Onboarding flag reset — will show on next launch');
           },
         ),
+        _QAActionButton(
+          label: 'Reset Residential Edu',
+          onPressed: () async {
+            await ref.read(residentialEducationStorePOD).reset();
+            showSnackbar('Residential education reset — modal shows on 2nd connect again');
+          },
+        ),
       ],
     );
   }
@@ -310,6 +317,11 @@ class QAToolbox extends HookConsumerWidget {
             onPressed: () => showSubscriptionUpgradeModalPage(context),
           ),
           _QAActionButton(
+            label: 'Residential Edu Modal',
+            onPressed: () => showResidentialEducationModal(context),
+          ),
+          const _ResidentialTooltipQAButton(),
+          _QAActionButton(
             label: 'No Mail App',
             onPressed: () => shownConfirmationDialog(
               context,
@@ -483,7 +495,7 @@ class _QAActionItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final List<_QAActionButton> actions;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -532,8 +544,40 @@ class _QAActionButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
+  Widget build(BuildContext context) => _QAButtonChrome(label: label, onTap: onPressed);
+}
+
+/// QA trigger for the residential reminder/tooltip popover, anchored to itself
+/// so [showInfoPopover]'s positioning + tail can be exercised.
+class _ResidentialTooltipQAButton extends HookWidget {
+  const _ResidentialTooltipQAButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final anchorKey = useMemoized(GlobalKey.new);
+    return _QAButtonChrome(
+      key: anchorKey,
+      label: 'Residential Tooltip',
+      onTap: () => showInfoPopover(
+        context: context,
+        anchorKey: anchorKey,
+        title: LocaleKeys.ipTypeResidentialTooltipTitle.tr(),
+        body: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
+        actionLabel: LocaleKeys.residentialEducationGotIt.tr(),
+      ),
+    );
+  }
+}
+
+/// Shared visual chrome for QA action buttons.
+class _QAButtonChrome extends StatelessWidget {
+  const _QAButtonChrome({required this.label, required this.onTap, super.key});
+  final String label;
+  final VoidCallback onTap;
+
+  @override
   Widget build(BuildContext context) => InkWell(
-    onTap: onPressed,
+    onTap: onTap,
     borderRadius: BorderRadius.circular(6),
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
