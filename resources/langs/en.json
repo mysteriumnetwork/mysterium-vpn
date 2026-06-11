@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "Automatic reconnection",
   "residentialEducationBlock3Body": "If your current IP becomes unavailable, the app reconnects you to the nearest available residential IP.",
   "residentialEducationGotIt": "Got it",
-  "residentialEducationBlock2Body": "Because these IPs are provided by real devices, some nodes may go offline unexpectedly."
+  "residentialEducationBlock2Body": "Because these IPs are provided by real devices, some nodes may go offline unexpectedly.",
+  "reviewLeaveReviewBtn": "Leave a review",
+  "reviewPositiveTitle": "That's great! Would you mind leaving us a review?",
+  "reviewSatisfactionTitle": "Would you recommend this app to others?"
 }

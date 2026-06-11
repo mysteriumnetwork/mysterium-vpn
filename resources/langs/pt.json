@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "Reconexão automática",
   "residentialEducationBlock3Body": "Caso seu endereço IP atual fique indisponível, o aplicativo o reconectará ao endereço IP residencial disponível mais próximo.",
   "residentialEducationGotIt": "Entendi",
-  "residentialEducationBlock2Body": "Como esses endereços IP são fornecidos por dispositivos reais, alguns nós podem ficar offline inesperadamente."
+  "residentialEducationBlock2Body": "Como esses endereços IP são fornecidos por dispositivos reais, alguns nós podem ficar offline inesperadamente.",
+  "reviewLeaveReviewBtn": "Deixe uma avaliação",
+  "reviewPositiveTitle": "Que ótimo! Você se importaria de deixar uma avaliação para nós?",
+  "reviewSatisfactionTitle": "Você recomendaria este aplicativo para outras pessoas?"
 }

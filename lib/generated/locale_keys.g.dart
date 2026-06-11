@@ -614,4 +614,7 @@ abstract class LocaleKeys {
   static const residentialEducationBlock3Body = 'residentialEducationBlock3Body';
   static const residentialEducationGotIt = 'residentialEducationGotIt';
   static const residentialEducationBlock2Body = 'residentialEducationBlock2Body';
+  static const reviewLeaveReviewBtn = 'reviewLeaveReviewBtn';
+  static const reviewPositiveTitle = 'reviewPositiveTitle';
+  static const reviewSatisfactionTitle = 'reviewSatisfactionTitle';
 }
