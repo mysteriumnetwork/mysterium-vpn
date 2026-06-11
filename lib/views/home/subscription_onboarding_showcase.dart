@@ -17,11 +17,8 @@ const _subscriptionOnboardingScope = 'subscription-onboarding-scope';
 
 enum SubscriptionOnboardingStep { map, locations, products, settings, connect, search }
 
-final subscriptionOnboardingShowcaseControllerPOD = Provider<SubscriptionOnboardingShowcaseController>(
-  (ref) => throw StateError(
-    'subscriptionOnboardingShowcaseControllerPOD must be overridden by SubscriptionOnboardingShowcase.',
-  ),
-);
+final subscriptionOnboardingShowcaseControllerPOD =
+    Provider<SubscriptionOnboardingShowcaseController?>((ref) => null);
 
 class SubscriptionOnboardingShowcase extends ConsumerStatefulWidget {
   const SubscriptionOnboardingShowcase({required this.child, super.key});
@@ -35,7 +32,7 @@ class SubscriptionOnboardingShowcase extends ConsumerStatefulWidget {
 
 class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnboardingShowcase> {
   late final SubscriptionOnboardingShowcaseController _controller;
-  late final ShowcaseView _showcaseView;
+  ShowcaseView? _showcaseView;
   late final Map<SubscriptionOnboardingStep, GlobalKey<State<StatefulWidget>>> _keys;
 
   SubscriptionOnboardingStore get _store => ref.read(subscriptionOnboardingStorePOD);
@@ -49,33 +46,26 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
       for (final step in SubscriptionOnboardingStep.values)
         step: GlobalKey<State<StatefulWidget>>(),
     };
-    _showcaseView = ShowcaseView.register(
-      scope: _subscriptionOnboardingScope,
-      disableBarrierInteraction: true,
-      globalFloatingActionWidget: (_) => FloatingActionWidget(
-        top: 50,
-        right: 50,
-        child: FloatingButton(
-          onPressed: _skipTour,
-          label: LocaleKeys.skipBtn.tr(),
-          icon: Icons.close,
-        ),
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(
+      shouldShowSubscriptionOnboardingShowcasePOD,
+      (_, next) => next.whenOrNull(
+        data: (shouldShow) => shouldShow ? _registerShowcase() : _unregisterShowcase(),
       ),
-      onStart: (index, key) => _store.trackStepViewed(index),
-      onComplete: (index, key) => _store.trackStepCompleted(index),
-      onFinish: _finishTour,
+    );
+
+    return ProviderScope(
+      overrides: [subscriptionOnboardingShowcaseControllerPOD.overrideWithValue(_controller)],
+      child: widget.child,
     );
   }
 
   @override
-  Widget build(BuildContext context) => ProviderScope(
-    overrides: [subscriptionOnboardingShowcaseControllerPOD.overrideWithValue(_controller)],
-    child: widget.child,
-  );
-
-  @override
   void dispose() {
-    _showcaseView.unregister();
+    _unregisterShowcase();
     super.dispose();
   }
 
@@ -96,8 +86,13 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
     await showSubscriptionOnboardingDialog(
       context: context,
       onStartTour: () => _startTourFromPrompt().ignore(),
-      onCancelTour: () => _store.skipPrompt().ignore(),
+      onCancelTour: () => _skipPrompt().ignore(),
     );
+  }
+
+  Future<void> _skipPrompt() async {
+    await _store.skipPrompt();
+    _consumeFlow();
   }
 
   Future<void> _startTourFromPrompt() async {
@@ -117,22 +112,57 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
       return;
     }
 
-    _showcaseView.startShowCase(_orderedKeys);
+    _showcaseView?.startShowCase(_orderedKeys);
   }
 
-  void _next() => _showcaseView.next();
+  void _next() => _showcaseView?.next();
 
   void _skipTour() {
     _store.skipTour();
-    _showcaseView.dismiss();
+    _showcaseView?.dismiss();
+    _consumeFlow();
   }
 
   void _finishTour() {
     _store.completeTour();
+    _consumeFlow();
     if (!mounted) {
       return;
     }
     showSubscriptionOnboardingCompleteDialog(context: context).ignore();
+  }
+
+  void _registerShowcase() {
+    if (_showcaseView != null) {
+      return;
+    }
+
+    _showcaseView = ShowcaseView.register(
+      scope: _subscriptionOnboardingScope,
+      disableBarrierInteraction: true,
+      globalFloatingActionWidget: (_) => FloatingActionWidget(
+        top: 50,
+        right: 50,
+        child: FloatingButton(
+          onPressed: _skipTour,
+          label: LocaleKeys.skipBtn.tr(),
+          icon: Icons.close,
+        ),
+      ),
+      onStart: (index, key) => _store.trackStepViewed(index),
+      onComplete: (index, key) => _store.trackStepCompleted(index),
+      onFinish: _finishTour,
+    );
+  }
+
+  void _unregisterShowcase() {
+    _showcaseView?.unregister();
+    _showcaseView = null;
+  }
+
+  void _consumeFlow() {
+    _unregisterShowcase();
+    ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD);
   }
 
   SubscriptionOnboardingTarget _targetForStep(SubscriptionOnboardingStep step) {
@@ -160,7 +190,9 @@ class SubscriptionOnboardingShowcaseController {
 
   String get scope => _subscriptionOnboardingScope;
 
-  int get visibleStepsCount => _state._orderedSteps.length;
+  List<SubscriptionOnboardingStepSpec> get _orderedSteps => _state._orderedSteps;
+
+  int get visibleStepsCount => _orderedSteps.length;
 
   SubscriptionOnboardingTarget targetForTab(HomeTab tab) => targetForStep(switch (tab) {
     HomeTab.map => SubscriptionOnboardingStep.map,

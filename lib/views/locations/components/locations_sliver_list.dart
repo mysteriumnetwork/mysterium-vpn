@@ -144,7 +144,8 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
           itemCount: items.length,
           enabled: isDesktop,
         );
-        final showcaseTarget = onboarding.targetForStep(SubscriptionOnboardingStep.locations);
+        final onboardingController = onboarding;
+        final showcaseTarget = onboarding?.targetForStep(SubscriptionOnboardingStep.locations);
 
         return SliverStack(
           children: [
@@ -169,7 +170,9 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
                 );
               },
             ),
-            if (showcaseTargetRect != null)
+            if (showcaseTargetRect != null &&
+                showcaseTarget != null &&
+                onboardingController != null)
               SliverPositioned.fromRect(
                 rect: showcaseTargetRect,
                 child: IgnorePointer(
@@ -181,7 +184,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
                     tooltipPosition: showcaseTarget.spec.position,
                     scope: showcaseTarget.scope,
                     icon: showcaseTarget.spec.content.icon,
-                    onActionPressed: onboarding.next,
+                    onActionPressed: onboardingController.next,
                     child: const SizedBox.expand(),
                   ),
                 ),

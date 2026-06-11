@@ -34,6 +34,10 @@ class ConnectionTile extends HookConsumerWidget {
     final onboarding = ref.watch(subscriptionOnboardingShowcaseControllerPOD);
 
     Widget buttonWrapper({required BuildContext context, required Widget child}) {
+      if (onboarding == null) {
+        return child;
+      }
+
       final target = onboarding.targetForStep(SubscriptionOnboardingStep.connect);
 
       return ArrowedProgressCard(

@@ -337,7 +337,7 @@ class QAToolbox extends HookConsumerWidget {
           _QAActionButton(
             label: 'Subscription Onboarding',
             onPressed: () =>
-                ref.read(subscriptionOnboardingShowcaseControllerPOD).showPrompt(context),
+                ref.read(subscriptionOnboardingShowcaseControllerPOD)?.showPrompt(context),
           ),
           _QAActionButton(
             label: 'Clear Subscription Onboarding',

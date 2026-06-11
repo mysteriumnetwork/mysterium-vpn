@@ -71,6 +71,11 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
                       builder: (context) {
+                        final search = LocationsSearch(enabled: !locationsStore.hasNoServers);
+                        if (onboarding == null) {
+                          return search;
+                        }
+
                         final target = onboarding.targetForStep(SubscriptionOnboardingStep.search);
 
                         return ArrowedProgressCard(
@@ -82,7 +87,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                           scope: target.scope,
                           icon: target.spec.content.icon,
                           onActionPressed: onboarding.next,
-                          child: LocationsSearch(enabled: !locationsStore.hasNoServers),
+                          child: search,
                         );
                       },
                     ),
