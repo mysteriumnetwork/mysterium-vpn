@@ -1274,10 +1274,10 @@ packages:
     dependency: "direct dev"
     description:
       name: mobx_codegen
-      sha256: "406051a76157fb0a562700110bd2bedd85c959b1cd2d3df740c706bc07539c33"
+      sha256: "6529bcae074838004b58ad01fbe4966be182a176aacfb723686985986ebac19f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.6"
+    version: "2.7.7"
   mockito:
     dependency: "direct dev"
     description:
@@ -2337,4 +2337,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=3.11.0 <4.0.0"
-  flutter: "3.41.9"
+  flutter: ">=3.41.9"
