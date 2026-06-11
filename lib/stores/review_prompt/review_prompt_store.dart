@@ -1,0 +1,348 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
+
+part 'review_prompt_store.g.dart';
+
+/// Drives the in-app "would you recommend this app" review/feedback prompt.
+///
+/// Watches the VPN connection status; once a connection has stayed up stably
+/// for the configured stable-session window it records a successful
+/// session and evaluates eligibility + suppression. When the user is eligible
+/// and nothing blocks the prompt, `pendingPrompt` flips to `true` and the home
+/// autorun surfaces the modal. All persisted state (counters, cooldown, yearly
+/// cap) lives in [SharedPreferenceService] so it survives restarts.
+// ignore: library_private_types_in_public_api
+class ReviewPromptStore = _ReviewPromptStore with _$ReviewPromptStore;
+
+abstract class _ReviewPromptStore with Store {
+  _ReviewPromptStore({
+    required SharedPreferenceService prefs,
+    required RemoteConfigStore remoteConfigStore,
+    required AnalyticsStore analyticsStore,
+    required VpnStore vpnStore,
+    required AuthSessionStore authSessionStore,
+    DateTime Function()? now,
+    bool Function()? didCrashRecently,
+    Future<bool> Function()? canShowNativeReview,
+  }) : _prefs = prefs,
+       _remoteConfig = remoteConfigStore,
+       _analytics = analyticsStore,
+       _vpnStore = vpnStore,
+       _authSessionStore = authSessionStore,
+       _now = now ?? DateTime.now,
+       _didCrashRecently = didCrashRecently ?? (() => false),
+       _canShowNativeReview = canShowNativeReview ?? (() async => true);
+
+  final SharedPreferenceService _prefs;
+  final RemoteConfigStore _remoteConfig;
+  final AnalyticsStore _analytics;
+  final VpnStore _vpnStore;
+  final AuthSessionStore _authSessionStore;
+  final DateTime Function() _now;
+  final bool Function() _didCrashRecently;
+
+  /// Whether the platform can actually present the native store review prompt.
+  /// When it can't (e.g. Windows/Linux), there's no point showing the in-app
+  /// flow, so the prompt is suppressed entirely.
+  final Future<bool> Function() _canShowNativeReview;
+
+  ReactionDisposer? _statusDisposer;
+  Timer? _stableTimer;
+
+  /// Whether the current connection reached the stable threshold.
+  bool _sessionStable = false;
+
+  /// Whether we have seen a `connected` state for the current attempt.
+  bool _sessionConnected = false;
+
+  /// Set when the user is eligible and nothing suppresses the prompt. The home
+  /// autorun watches this and shows the modal.
+  @observable
+  bool pendingPrompt = false;
+
+  int get _nowMs => _now().millisecondsSinceEpoch;
+
+  ReviewPromptConfig get _config => _remoteConfig.reviewPromptConfig;
+
+  /// Seed the launch-time signals the prompt depends on and start observing the
+  /// VPN connection status. Call once after construction.
+  void init() {
+    _trackAppOpen();
+    _statusDisposer ??= reaction(
+      (_) => _vpnStore.vpnStatus,
+      handleConnectionStatus,
+      fireImmediately: false,
+    );
+  }
+
+  /// Seeds the install date on first launch and counts each app open — the
+  /// account-age and app-open eligibility inputs. Fire-and-forget: the values
+  /// aren't read until a session completes, well after launch.
+  void _trackAppOpen() {
+    if (_prefs.getAppInstallDay() == null) {
+      unawaited(_prefs.setAppInstallDay(_nowMs));
+    }
+    unawaited(_prefs.setReviewAppOpenCount(_prefs.getReviewAppOpenCount() + 1));
+  }
+
+  void dispose() {
+    _stableTimer?.cancel();
+    _statusDisposer?.call();
+    _statusDisposer = null;
+  }
+
+  /// Drives the session lifecycle off the VPN connection status. Public for
+  /// tests; in production it's wired to a reaction on [VpnStore.vpnStatus].
+  @visibleForTesting
+  void handleConnectionStatus(VpnConnectionStatus status) {
+    switch (status) {
+      case VpnConnectionStatus.connected:
+        _sessionConnected = true;
+        _sessionStable = false;
+        _stableTimer?.cancel();
+        // Wall-clock timer: if the app is backgrounded the isolate is suspended
+        // and this fires late on resume. We re-check the status in the callback,
+        // so the only effect is counting background time toward "stable" — an
+        // accepted trade-off for this prompt.
+        _stableTimer = Timer(Duration(seconds: _config.stableSessionSeconds), () {
+          if (_vpnStore.vpnStatus == VpnConnectionStatus.connected) {
+            _sessionStable = true;
+            unawaited(recordSuccessfulSession());
+          }
+        });
+      case VpnConnectionStatus.connecting:
+        // A fresh attempt (or auto-reconnect): reset and wait for `connected`.
+        _sessionConnected = false;
+        _sessionStable = false;
+        _stableTimer?.cancel();
+      case VpnConnectionStatus.unknown:
+        break;
+      case VpnConnectionStatus.disconnecting:
+        // Transitional; the session outcome is settled on `disconnected`.
+        break;
+      case VpnConnectionStatus.disconnected:
+        _stableTimer?.cancel();
+        if (_sessionStable) {
+          // A successful, stable session has completed — per the ticket the
+          // eligibility check runs now, while disconnected (never while
+          // connected/connecting).
+          unawaited(evaluate());
+        } else if (_sessionConnected) {
+          // Connected but dropped before reaching stability → failed session.
+          unawaited(recordSessionOutcome(success: false));
+        }
+        _sessionConnected = false;
+        _sessionStable = false;
+    }
+  }
+
+  /// Record a stable, successful session: bump the connection counter and push
+  /// a success outcome. Eligibility is evaluated when the session *completes*
+  /// (on disconnect), not here, so the prompt never surfaces while connected.
+  @action
+  Future<void> recordSuccessfulSession() async {
+    await _prefs.setReviewSuccessfulConnections(_prefs.getReviewSuccessfulConnections() + 1);
+    await recordSessionOutcome(success: true);
+  }
+
+  /// Append a session outcome, keeping only the most recent three.
+  @action
+  Future<void> recordSessionOutcome({required bool success}) async {
+    final outcomes = [..._prefs.getReviewRecentSessionOutcomes(), success];
+    final trimmed = outcomes.length > 3 ? outcomes.sublist(outcomes.length - 3) : outcomes;
+    await _prefs.setReviewRecentSessionOutcomes(trimmed);
+  }
+
+  /// Run eligibility, then suppression. Fires the matching analytics events and
+  /// sets [pendingPrompt] when the prompt should be shown.
+  @action
+  Future<void> evaluate() async {
+    if (pendingPrompt) {
+      return;
+    }
+    if (!isEligible) {
+      return;
+    }
+    await _analytics.logEvent(AnalyticsEvent.reviewPromptEligible);
+
+    final reason = suppressionReason;
+    if (reason != null) {
+      await _analytics.logEvent(
+        AnalyticsEvent.reviewPromptSuppressed,
+        parameters: {'reason': reason},
+      );
+      return;
+    }
+    // No point starting the flow if we can't ultimately open the native review.
+    if (!await _canShowNativeReview()) {
+      await _analytics.logEvent(
+        AnalyticsEvent.reviewPromptSuppressed,
+        parameters: {'reason': 'native_review_unavailable'},
+      );
+      return;
+    }
+    pendingPrompt = true;
+  }
+
+  // ─── Eligibility ─────────────────────────────────────────────────────────
+
+  @computed
+  bool get isEligible =>
+      _isOldEnough &&
+      _prefs.getReviewAppOpenCount() >= _config.minAppOpens &&
+      _prefs.getReviewSuccessfulConnections() >= _config.minConnections &&
+      _hasCleanRecentSessions;
+
+  bool get _isOldEnough {
+    final installDay = _prefs.getAppInstallDay();
+    if (installDay == null) {
+      return false;
+    }
+    final ageDays = (_nowMs - installDay) / Duration.millisecondsPerDay;
+    return ageDays >= _config.minAccountAgeDays;
+  }
+
+  bool get _hasCleanRecentSessions {
+    final outcomes = _prefs.getReviewRecentSessionOutcomes();
+    return outcomes.length >= 3 && outcomes.every((it) => it);
+  }
+
+  // ─── Suppression ───────────────────────────────────────────────────────────
+
+  /// A machine-readable reason the prompt is blocked, or `null` if clear.
+  /// Only meaningful when [isEligible] is `true`.
+  @computed
+  String? get suppressionReason {
+    if (!_config.enabled) {
+      return 'disabled';
+    }
+    if (!_authSessionStore.isAuthenticated) {
+      return 'unauthenticated';
+    }
+    if (_vpnStore.vpnStatus == VpnConnectionStatus.connecting) {
+      return 'vpn_connecting';
+    }
+    if (_vpnStore.vpnStatus == VpnConnectionStatus.connected) {
+      return 'vpn_connected';
+    }
+    if (_didCrashRecently()) {
+      return 'recent_crash';
+    }
+    if (_isCooldownActive) {
+      return 'cooldown_active';
+    }
+    if (_isYearlyCapReached) {
+      return 'yearly_cap';
+    }
+    if (_wasNativeReviewOpenedRecently) {
+      return 'native_review_recent';
+    }
+    return null;
+  }
+
+  bool get _isCooldownActive {
+    final until = _prefs.getReviewCooldownUntil();
+    return until != null && _nowMs < until;
+  }
+
+  bool get _isYearlyCapReached => _recentShownTimestamps().length >= _config.yearlyCap;
+
+  /// Prompt-display timestamps within the trailing 365 days.
+  List<int> _recentShownTimestamps() {
+    final yearAgo = _nowMs - 365 * Duration.millisecondsPerDay;
+    return _prefs.getReviewPromptShownTimestamps().where((it) => it >= yearAgo).toList();
+  }
+
+  bool get _wasNativeReviewOpenedRecently {
+    final openedAt = _prefs.getReviewNativeReviewOpenedAt();
+    if (openedAt == null) {
+      return false;
+    }
+    return _nowMs - openedAt < _config.cooldownPositiveDays * Duration.millisecondsPerDay;
+  }
+
+  // ─── Modal action handlers ──────────────────────────────────────────────────
+
+  /// Called when the prompt was eligible but a blocking flow (onboarding,
+  /// paywall/checkout, subscription, cancellation, …) is on top of the home
+  /// screen at show time. Clears [pendingPrompt] and records the suppression;
+  /// it will be re-evaluated after the next completed session.
+  @action
+  Future<void> onSuppressedByActiveFlow() async {
+    pendingPrompt = false;
+    await _analytics.logEvent(
+      AnalyticsEvent.reviewPromptSuppressed,
+      parameters: {'reason': 'flow_active'},
+    );
+  }
+
+  /// The satisfaction modal has been displayed. Records the display against the
+  /// yearly cap and clears [pendingPrompt]. Also writes a baseline (dismissal)
+  /// cooldown immediately: it guarantees that abandoning the flow at any stage
+  /// (or killing the app) still defers the prompt, and closes the re-entrancy
+  /// window where a session completing while the dialog is open could enqueue a
+  /// second prompt. Terminal actions overwrite it with their specific duration.
+  @action
+  Future<void> onShown() async {
+    pendingPrompt = false;
+    await _analytics.logEvent(AnalyticsEvent.reviewPromptShown);
+    await _prefs.setReviewPromptShownTimestamps([..._recentShownTimestamps(), _nowMs]);
+    await _setCooldown(_config.cooldownDismissDays);
+  }
+
+  /// User tapped "Yes" — opens the positive (leave-a-review) modal next.
+  @action
+  Future<void> onSatisfactionYes() =>
+      _analytics.logEvent(AnalyticsEvent.reviewPromptPositiveClicked);
+
+  /// User tapped "No" — the support/feedback flow opens. Starts the negative
+  /// cooldown.
+  @action
+  Future<void> onSatisfactionNo() async {
+    await _analytics.logEvent(AnalyticsEvent.reviewPromptNegativeClicked);
+    await _analytics.logEvent(AnalyticsEvent.feedbackFlowOpened);
+    await _startCooldown(_config.cooldownNegativeDays);
+  }
+
+  /// User tapped "Leave a review" — the native store prompt opens. Records the
+  /// native-review timestamp and starts the positive cooldown.
+  @action
+  Future<void> onLeaveReview() async {
+    await _analytics.logEvent(AnalyticsEvent.nativeReviewPromptOpened);
+    await _prefs.setReviewNativeReviewOpenedAt(_nowMs);
+    await _startCooldown(_config.cooldownPositiveDays);
+  }
+
+  /// User dismissed the prompt ("Not now", close, or tap-away). Starts the
+  /// short dismissal cooldown.
+  @action
+  Future<void> onDismiss() async {
+    await _analytics.logEvent(AnalyticsEvent.reviewPromptDismissed);
+    await _startCooldown(_config.cooldownDismissDays);
+  }
+
+  /// Clears all persisted review-prompt state. QA-only, exposed through the QA
+  /// toolbox so the flow can be re-tested without reinstalling.
+  @action
+  Future<void> resetState() async {
+    pendingPrompt = false;
+    await _prefs.resetReviewPromptState();
+  }
+
+  /// Persists the cooldown without emitting analytics — used for the baseline
+  /// cooldown set when the prompt is shown.
+  Future<void> _setCooldown(int days) =>
+      _prefs.setReviewCooldownUntil(_nowMs + days * Duration.millisecondsPerDay);
+
+  /// Persists the cooldown for an explicit user action and emits the event.
+  Future<void> _startCooldown(int days) async {
+    await _setCooldown(days);
+    await _analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted);
+  }
+}
