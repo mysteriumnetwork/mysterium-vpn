@@ -1054,10 +1054,10 @@ packages:
     dependency: "direct main"
     description:
       name: in_app_review
-      sha256: ab26ac54dbd802896af78c670b265eaeab7ecddd6af4d0751e9604b60574817f
+      sha256: "364db0c160b37fe7fad9cdaa18f968473924b17368869010af902760421b6bf8"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.11"
+    version: "2.0.12"
   in_app_review_platform_interface:
     dependency: transitive
     description:
@@ -1286,14 +1286,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.6.3"
-  modal_bottom_sheet:
-    dependency: "direct main"
-    description:
-      name: modal_bottom_sheet
-      sha256: eac66ef8cb0461bf069a38c5eb0fa728cee525a531a8304bd3f7b2185407c67e
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   money2:
     dependency: "direct main"
     description:
@@ -1322,8 +1314,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.18"
-      resolved-ref: a67650f61ecb6cc33bcf9d55b18291a4d403cf50
+      ref: "feat/alert-modal"
+      resolved-ref: "5ce3980b361f6367bb3e34aaeca3e0b50af7222a"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
@@ -1371,10 +1363,10 @@ packages:
     dependency: "direct main"
     description:
       name: onesignal_flutter
-      sha256: "74521a8bfbe9253a5fdfdd52981e8bb4f6da2fbbb92792d4ff368917ac395716"
+      sha256: "32d59d4cf83aa34a3b6ac034b202f6c23f5ca3b2ed17b44960f422719fe50fc7"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.8"
+    version: "5.6.0"
   open_store:
     dependency: "direct main"
     description:
