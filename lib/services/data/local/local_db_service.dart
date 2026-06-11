@@ -5,8 +5,9 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
 import 'package:mysterium_vpn/services/data/local/box_recovery.dart';
+import 'package:mysterium_vpn/services/data/local/residential_education_storage.dart';
 
-class LocalDBService {
+class LocalDBService implements ResidentialEducationStorage {
   factory LocalDBService() => instance;
 
   LocalDBService._();
@@ -294,6 +295,50 @@ class LocalDBService {
   Future<void> setNoneSubsOnboardingStep(int step) async {
     final userData = await _loadUserData();
     userData.noneSubsOnboardingStep = step;
+    await _saveUserData(userData);
+  }
+
+  // ── ResidentialEducationStorage (per-user, in UserData) ──────────────────
+
+  @override
+  Future<bool> getEducationModalShown() async =>
+      (await _loadUserData()).residentialEducationModalShown;
+
+  @override
+  Future<void> setEducationModalShown({required bool value}) async {
+    final userData = await _loadUserData();
+    userData.residentialEducationModalShown = value;
+    await _saveUserData(userData);
+  }
+
+  @override
+  Future<DateTime?> getEducationReminderAt() async =>
+      (await _loadUserData()).residentialReminderShownAt;
+
+  @override
+  Future<void> setEducationReminderAt(DateTime value) async {
+    final userData = await _loadUserData();
+    userData.residentialReminderShownAt = value;
+    await _saveUserData(userData);
+  }
+
+  @override
+  Future<int> getResidentialConnectCount() async => (await _loadUserData()).residentialConnectCount;
+
+  @override
+  Future<void> setResidentialConnectCount(int value) async {
+    final userData = await _loadUserData();
+    userData.residentialConnectCount = value;
+    await _saveUserData(userData);
+  }
+
+  @override
+  Future<void> clearEducationState() async {
+    final userData = await _loadUserData();
+    userData
+      ..residentialEducationModalShown = false
+      ..residentialReminderShownAt = null
+      ..residentialConnectCount = 0;
     await _saveUserData(userData);
   }
 }
