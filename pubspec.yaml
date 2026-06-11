@@ -53,7 +53,7 @@ dependencies:
   hive_ce: 2.19.3
   hive_ce_flutter: 2.3.4
   hooks_riverpod: 3.3.1
-  in_app_purchase: 3.2.3
+  in_app_purchase: 3.2.4
   in_app_purchase_android: ^0.4.0+8
   in_app_purchase_storekit: 0.4.5
   in_app_review: 2.0.11
