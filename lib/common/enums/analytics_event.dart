@@ -83,7 +83,6 @@ enum AnalyticsEvent {
   residentialReminderShown,
   residentialReminderDismissed,
   residentialInfoTooltipShown,
-  residentialInfoTooltipDismissed,
   setThemeMode,
   setLanguageCode,
   connectToVpn,

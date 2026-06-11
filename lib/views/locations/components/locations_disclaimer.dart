@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -8,7 +7,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class LocationsDisclaimer extends HookConsumerWidget {
+class LocationsDisclaimer extends ConsumerWidget {
   const LocationsDisclaimer({
     required this.text,
     required this.bannerType,
@@ -57,34 +56,25 @@ class LocationsDisclaimer extends HookConsumerWidget {
     }
 
     final theme = Theme.of(context);
-    final anchorKey = useMemoized(GlobalKey.new);
-
-    void openTooltip() {
-      analyticsStore.logEvent(AnalyticsEvent.residentialInfoTooltipShown);
-      showInfoPopover(
-        context: context,
-        anchorKey: anchorKey,
-        title: tooltipTitle!,
-        body: tooltipBody ?? '',
-        actionLabel: LocaleKeys.residentialEducationGotIt.tr(),
-        onDismiss: () => analyticsStore.logEvent(AnalyticsEvent.residentialInfoTooltipDismissed),
-      );
-    }
-
-    final titleAction = tooltipTitle == null
-        ? null
-        : GestureDetector(
-            key: anchorKey,
-            behavior: HitTestBehavior.opaque,
-            onTap: openTooltip,
-            child: Icon(UntitledUI.info_circle, size: 16, color: theme.palette.textTertiary),
-          );
 
     return Observer(
       builder: (context) {
         if (!bannersStore.canShow(bannerType)) {
           return const SizedBox.shrink();
         }
+        // Tap or hover shows a plain title + body tooltip (Figma 11643:489234).
+        // The icon + "Got it" reminder is a separate surface shown after 30
+        // days (see ResidentialEducationTrigger).
+        final titleAction = tooltipTitle == null
+            ? null
+            : TooltipIcon.titled(
+                title: tooltipTitle!,
+                body: tooltipBody ?? '',
+                icon: UntitledUI.info_circle,
+                color: theme.palette.textTertiary,
+                onTriggered: () =>
+                    analyticsStore.logEvent(AnalyticsEvent.residentialInfoTooltipShown),
+              );
         return Padding(
           padding: EdgeInsets.only(bottom: theme.spacing.s),
           child: MinimalAlert(
