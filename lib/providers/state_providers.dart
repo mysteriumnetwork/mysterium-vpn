@@ -315,6 +315,10 @@ final bannersStorePOD = Provider<BannersStore>(
   ),
 );
 
+final residentialEducationStorePOD = Provider<ResidentialEducationStore>(
+  (ref) => ResidentialEducationStore(LocalDBService.instance),
+);
+
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
   (ref) => RealIPInfoStore(
     ref.watch(externalApiServicePOD),

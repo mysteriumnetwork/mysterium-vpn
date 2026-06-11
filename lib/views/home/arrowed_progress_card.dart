@@ -55,8 +55,15 @@ class ArrowedProgressCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.watch(themeStorePOD);
+    final shouldShowShowcase = ref
+        .watch(shouldShowSubscriptionOnboardingShowcasePOD)
+        .maybeWhen(data: (value) => value, orElse: () => true);
     final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
     final arrowColor = isDarkMode ? Palette.grayLight.shade800 : Palette.grayLight.shade25;
+
+    if (!shouldShowShowcase) {
+      return child;
+    }
 
     // Attached to the tooltip Stack so we can measure the card in its own coordinates.
     final tooltipStackKey = useMemoized(GlobalKey.new);

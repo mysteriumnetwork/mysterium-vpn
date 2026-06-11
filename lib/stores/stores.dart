@@ -26,6 +26,7 @@ export 'remote_config/ab_testing_store.dart';
 export 'remote_config/config_cat_store.dart';
 export 'remote_config/remote_config_store.dart';
 export 'remote_config/texts_store.dart';
+export 'residential_education_store.dart';
 export 'selected_location_store.dart';
 export 'subscription_onboarding_store.dart';
 export 'subscription_store.dart';
