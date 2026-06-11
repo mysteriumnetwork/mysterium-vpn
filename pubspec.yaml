@@ -68,10 +68,10 @@ dependencies:
   money2: 6.3.0
   mqtt5_client: 4.17.0
   mysterium_vpn_design:
-    path: ../mysterium-vpn-design
-    # git:
-    #   url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-    #   ref: 0.0.18
+    # path: ../mysterium-vpn-design
+    git:
+      url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
+      ref: 0.0.18
   onesignal_flutter: 5.5.8
   open_store: 0.5.0
   openvpn_dart:
