@@ -17,8 +17,10 @@ class SubscriptionOnboardingShowcase {
   SubscriptionOnboardingShowcase({
     required SubscriptionOnboardingStore subscriptionOnboardingStore,
     required HomeTabsStore homeTabsStore,
+    required void Function() onFlowConsumed,
   }) : _store = subscriptionOnboardingStore,
        _homeTabsStore = homeTabsStore,
+       _onFlowConsumed = onFlowConsumed,
        _keys = List.generate(_totalSteps, (_) => GlobalKey<State<StatefulWidget>>());
 
   static const _totalSteps = 6;
@@ -32,6 +34,7 @@ class SubscriptionOnboardingShowcase {
 
   final SubscriptionOnboardingStore _store;
   final HomeTabsStore _homeTabsStore;
+  final void Function() _onFlowConsumed;
   final List<GlobalKey<State<StatefulWidget>>> _keys;
 
   bool _isRegistered = false;
@@ -111,6 +114,7 @@ class SubscriptionOnboardingShowcase {
   Future<void> _markShownAndSkip() async {
     await _store.markShown();
     _store.trackSkipped();
+    _onFlowConsumed();
   }
 
   void register(BuildContext context) {
@@ -127,6 +131,7 @@ class SubscriptionOnboardingShowcase {
           onPressed: () {
             _store.trackSkipped();
             ShowcaseView.get().dismiss();
+            _onFlowConsumed();
           },
           label: LocaleKeys.skipBtn.tr(),
           icon: Icons.close,
@@ -136,6 +141,7 @@ class SubscriptionOnboardingShowcase {
       onComplete: (index, key) => _store.trackStepCompleted(index),
       onFinish: () {
         _store.trackFinished();
+        _onFlowConsumed();
         showSubscriptionOnboardingCompleteDialog(context: context).ignore();
       },
     );
