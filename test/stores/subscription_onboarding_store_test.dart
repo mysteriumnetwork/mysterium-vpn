@@ -105,6 +105,40 @@ void main() {
     verify(localDBService.resetSubscriptionOnboardingShown()).called(1);
   });
 
+  test('acceptPrompt marks onboarding as shown and logs started event', () async {
+    // act
+    await store.acceptPrompt();
+
+    // assert
+    verify(localDBService.setSubscriptionOnboardingShown()).called(1);
+    verify(analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedStarted)).called(1);
+  });
+
+  test('skipPrompt marks onboarding as shown and logs skipped event', () async {
+    // act
+    await store.skipPrompt();
+
+    // assert
+    verify(localDBService.setSubscriptionOnboardingShown()).called(1);
+    verify(analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped)).called(1);
+  });
+
+  test('skipTour logs skipped event', () {
+    // act
+    store.skipTour();
+
+    // assert
+    verify(analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped)).called(1);
+  });
+
+  test('completeTour logs finished event', () {
+    // act
+    store.completeTour();
+
+    // assert
+    verify(analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedFinished)).called(1);
+  });
+
   test('trackSkipped logs skipped analytics event', () {
     // act
     store.trackSkipped();

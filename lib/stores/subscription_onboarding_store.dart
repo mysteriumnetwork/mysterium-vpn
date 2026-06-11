@@ -41,6 +41,20 @@ abstract class _SubscriptionOnboardingStore with Store {
 
   Future<void> clearShown() => _localDb.resetSubscriptionOnboardingShown();
 
+  Future<void> acceptPrompt() async {
+    await markShown();
+    trackStarted();
+  }
+
+  Future<void> skipPrompt() async {
+    await markShown();
+    trackSkipped();
+  }
+
+  void skipTour() => trackSkipped();
+
+  void completeTour() => trackFinished();
+
   void trackSkipped() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped).ignore();
 

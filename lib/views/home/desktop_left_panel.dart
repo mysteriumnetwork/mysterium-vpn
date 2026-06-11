@@ -7,10 +7,10 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class HomeDesktopLeftPanel extends HookConsumerWidget {
@@ -23,7 +23,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     final scrollController = useScrollController()
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
-    final onboarding = ref.watch(subscriptionOnboardingShowcasePOD);
+    final onboarding = ref.watch(subscriptionOnboardingShowcaseControllerPOD);
 
     useEffect(() {
       final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
@@ -71,16 +71,17 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
                       builder: (context) {
-                        final stepIndex = onboarding.searchStepIndex;
+                        final target = onboarding.targetForStep(SubscriptionOnboardingStep.search);
 
                         return ArrowedProgressCard(
-                          tooltipIndex: stepIndex,
-                          totalTooltips: onboarding.visibleStepsCount,
-                          tooltipContent: onboarding.searchTooltipContent,
-                          globalKey: onboarding.searchKey,
-                          tooltipPosition: TooltipPosition.bottom,
-                          icon: onboarding.searchTooltipContent.icon,
-                          onActionPressed: () => onboarding.showNextTip(stepIndex),
+                          tooltipIndex: target.index,
+                          totalTooltips: target.totalSteps,
+                          tooltipContent: target.spec.content,
+                          globalKey: target.key,
+                          tooltipPosition: target.spec.position,
+                          scope: target.scope,
+                          icon: target.spec.content.icon,
+                          onActionPressed: onboarding.next,
                           child: LocationsSearch(enabled: !locationsStore.hasNoServers),
                         );
                       },
