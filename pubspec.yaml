@@ -70,7 +70,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.18
+      ref: fix/minimal-alert
   onesignal_flutter: 5.5.8
   open_store: 0.5.0
   openvpn_dart:
@@ -132,6 +132,8 @@ dependency_overrides:
       url: https://github.com/KristijanMitrik/flutter_secure_storage.git
       path: flutter_secure_storage_windows
       ref: 9.2.6
+  mysterium_vpn_design:
+    path: ../mysterium-vpn-design
 
 
 msix_config:
