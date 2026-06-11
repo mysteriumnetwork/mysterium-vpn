@@ -79,7 +79,10 @@ void useHomeAutorun() {
             } else if (value case UserPromptType.pushNotifications) {
               controller.add(() => showPushNotificationsPermissionDialog(context));
             } else if (value case UserPromptType.subscriptionOnboarding) {
-              controller.add(() => subscriptionOnboardingShowcase.showPrompt(context));
+              controller.add(() async {
+                await subscriptionOnboardingShowcase?.showPrompt(context);
+                return null;
+              });
             }
           }
         }),

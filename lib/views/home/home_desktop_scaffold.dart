@@ -49,6 +49,10 @@ class HomeDesktopScaffold extends HookConsumerWidget {
         NavRail(
           currentIndex: selectedIndex,
           itemWrapper: ({required context, required index, required item, required child}) {
+            if (onboarding == null) {
+              return child;
+            }
+
             final target = onboarding.targetForTab(tabs[index]);
 
             return SizedBox(

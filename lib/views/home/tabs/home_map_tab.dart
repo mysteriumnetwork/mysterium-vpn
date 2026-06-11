@@ -26,6 +26,14 @@ class HomeMapTab extends HookConsumerWidget {
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: Observer(
               builder: (context) {
+                final search = LocationsTappableSearch(
+                  enabled: !locationsStore.hasNoServers,
+                  onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
+                );
+                if (onboarding == null) {
+                  return search;
+                }
+
                 final target = onboarding.targetForStep(SubscriptionOnboardingStep.search);
 
                 return ArrowedProgressCard(
@@ -37,10 +45,7 @@ class HomeMapTab extends HookConsumerWidget {
                   scope: target.scope,
                   icon: target.spec.content.icon,
                   onActionPressed: onboarding.next,
-                  child: LocationsTappableSearch(
-                    enabled: !locationsStore.hasNoServers,
-                    onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
-                  ),
+                  child: search,
                 );
               },
             ),

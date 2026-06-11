@@ -61,6 +61,10 @@ class HomeMobileScaffold extends HookConsumerWidget {
           BottomNavBar(
             selectedIndex: selectedIndex,
             itemWrapper: ({required context, required index, required item, required child}) {
+              if (onboarding == null) {
+                return child;
+              }
+
               final target = onboarding.targetForTab(tabs[index]);
 
               return ArrowedProgressCard(

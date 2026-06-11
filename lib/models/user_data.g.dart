@@ -38,7 +38,8 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       residentialEducationModalShown: fields[19] == null ? false : fields[19] as bool,
       residentialReminderShownAt: fields[20] as DateTime?,
       residentialConnectCount: fields[21] == null ? 0 : (fields[21] as num).toInt(),
-    )..subscriptionOnboardingShown = fields[22] == null ? false : fields[22] as bool;
+      subscriptionOnboardingShown: fields[22] == null ? false : fields[22] as bool,
+    );
   }
 
   @override
