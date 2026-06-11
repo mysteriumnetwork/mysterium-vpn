@@ -375,6 +375,14 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.residentialReminderInterval,
         name: 'RemoteConfigStoreBase.residentialReminderInterval',
       )).value;
+  Computed<ReviewPromptConfig>? _$reviewPromptConfigComputed;
+
+  @override
+  ReviewPromptConfig get reviewPromptConfig =>
+      (_$reviewPromptConfigComputed ??= Computed<ReviewPromptConfig>(
+        () => super.reviewPromptConfig,
+        name: 'RemoteConfigStoreBase.reviewPromptConfig',
+      )).value;
 
   @override
   String toString() {
@@ -428,7 +436,8 @@ countriesWithStates: ${countriesWithStates},
 hideReedemCode: ${hideReedemCode},
 canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow},
 residentialEducationConnectThreshold: ${residentialEducationConnectThreshold},
-residentialReminderInterval: ${residentialReminderInterval}
+residentialReminderInterval: ${residentialReminderInterval},
+reviewPromptConfig: ${reviewPromptConfig}
     ''';
   }
 }
