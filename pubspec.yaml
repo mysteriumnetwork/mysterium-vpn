@@ -91,7 +91,7 @@ dependencies:
   styled_widget: 0.4.1
   talker: 5.1.17
   talker_dio_logger: 5.1.17
-  tray_manager: 0.5.2
+  tray_manager: 0.5.3
   url_launcher: 6.3.2
   url_protocol:
     git:
