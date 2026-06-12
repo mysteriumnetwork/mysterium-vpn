@@ -70,6 +70,6 @@ class ReviewPromptConfig {
   /// Cooldown (days) after the native review prompt is opened.
   final int cooldownPositiveDays;
 
-  /// Maximum prompt displays allowed per rolling year.
+  /// Maximum prompt displays allowed per rolling year. `0` disables the cap.
   final int yearlyCap;
 }

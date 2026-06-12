@@ -262,7 +262,12 @@ abstract class _ReviewPromptStore with Store {
     return until != null && _nowMs < until;
   }
 
-  bool get _isYearlyCapReached => _recentShownTimestamps().length >= _config.yearlyCap;
+  bool get _isYearlyCapReached {
+    final cap = _config.yearlyCap;
+    // A cap of 0 disables the limit (consistent with the other "0 = off" knobs),
+    // rather than meaning "never show".
+    return cap > 0 && _recentShownTimestamps().length >= cap;
+  }
 
   /// Prompt-display timestamps within the trailing 365 days.
   List<int> _recentShownTimestamps() {

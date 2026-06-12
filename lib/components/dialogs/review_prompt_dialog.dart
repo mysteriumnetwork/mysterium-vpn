@@ -117,9 +117,16 @@ Future<void> _showPositiveModal(BuildContext context, ReviewPromptStore store) a
   switch (action ?? _PositiveAction.dismiss) {
     case _PositiveAction.review:
       await store.onLeaveReview();
-      final requested = await InAppReviewService().requestReview();
-      if (!requested) {
-        await openAppStorePage();
+      // Best-effort: open the native review, falling back to the store page.
+      // Never let a failed launch (unsupported platform, missing store id,
+      // no browser) crash the flow — the cooldown is already recorded.
+      try {
+        final requested = await InAppReviewService().requestReview();
+        if (!requested) {
+          await openAppStorePage();
+        }
+      } catch (_) {
+        // Swallowed intentionally; nothing actionable for the user here.
       }
     case _PositiveAction.dismiss:
       await store.onDismiss();
