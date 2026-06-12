@@ -152,7 +152,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
               title: title.tr(),
               description: description.tr(),
               actionLabel: _actionLabel,
-              onActionPressed: () {},
+              onActionPressed: () => ShowcaseView.get().next(),
             ),
             _TooltipArrow(
               color: arrowColor,

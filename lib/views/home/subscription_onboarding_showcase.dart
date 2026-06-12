@@ -6,10 +6,8 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_onboarding_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
-import 'package:mysterium_vpn/models/tooltip_content.dart';
 import 'package:mysterium_vpn/stores/home_tabs_store.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
-import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
 import 'package:mysterium_vpn_design/widgets/floating_button.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -63,30 +61,19 @@ class SubscriptionOnboardingShowcase {
 
   int get visibleStepsCount => _orderedIndexes.length;
 
-  List<TooltipContent> get _tooltipContents =>
-      isDesktop() ? _desktopTooltipContents : _mobileTooltipContents;
-
-  TooltipContent tooltipContentForTab(HomeTab tab) => _tooltipContents[_indexForTab(tab)];
-
   int stepIndexForTab(HomeTab tab) => _stepIndex(_indexForTab(tab));
 
   GlobalKey<State<StatefulWidget>> keyForTab(HomeTab tab) => _keys[_indexForTab(tab)];
 
   GlobalKey<State<StatefulWidget>> get connectButtonKey => _keys[_connectButtonIndex];
 
-  TooltipContent get connectButtonTooltipContent => _tooltipContents[_connectButtonIndex];
-
   int get connectButtonStepIndex => _stepIndex(_connectButtonIndex);
 
   GlobalKey<State<StatefulWidget>> get searchKey => _keys[_searchIndex];
 
-  TooltipContent get searchTooltipContent => _tooltipContents[_searchIndex];
-
   int get searchStepIndex => _stepIndex(_searchIndex);
 
   GlobalKey<State<StatefulWidget>> get locationsListKey => _keys[_locationsIndex];
-
-  TooltipContent get locationsListTooltipContent => _tooltipContents[_locationsIndex];
 
   int get locationsListStepIndex => _stepIndex(_locationsIndex);
 
@@ -184,69 +171,3 @@ class SubscriptionOnboardingShowcase {
     HomeTab.settings => _settingsIndex,
   };
 }
-
-List<TooltipContent> get _mobileTooltipContents => [
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingMapMobileTitle,
-    description: LocaleKeys.subscriptionOnboardingMapMobileDescription,
-    icon: UntitledUI.map_01,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle,
-    description: LocaleKeys.subscriptionOnboardingVPNLocationsMobileDescription,
-    icon: UntitledUI.flag_01,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingManagePlanTitle,
-    description: LocaleKeys.subscriptionOnboardingManagePlanDescription,
-    icon: UntitledUI.star_06,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingConnectTitle,
-    description: LocaleKeys.subscriptionOnboardingConnectDescription,
-    icon: UntitledUI.rocket_02,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
-    description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
-    icon: UntitledUI.lock_01,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingSearchTitle,
-    description: LocaleKeys.subscriptionOnboardingSearchDescription,
-    icon: UntitledUI.search_sm,
-  ),
-];
-
-List<TooltipContent> get _desktopTooltipContents => [
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingMapDesktopTitle,
-    description: LocaleKeys.subscriptionOnboardingMapDesktopDescription,
-    icon: UntitledUI.map_01,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingVPNLocationsTitle,
-    description: LocaleKeys.subscriptionOnboardingVPNLocationsDesktopDescription,
-    icon: UntitledUI.star_06,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingManagePlanTitle,
-    description: LocaleKeys.subscriptionOnboardingManagePlanDescription,
-    icon: UntitledUI.rocket_02,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingConnectTitle,
-    description: LocaleKeys.subscriptionOnboardingConnectDescription,
-    icon: UntitledUI.lock_01,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
-    description: LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
-    icon: UntitledUI.search_sm,
-  ),
-  TooltipContent(
-    title: LocaleKeys.subscriptionOnboardingSearchTitle,
-    description: LocaleKeys.subscriptionOnboardingSearchDescription,
-    icon: UntitledUI.flag_01,
-  ),
-];
