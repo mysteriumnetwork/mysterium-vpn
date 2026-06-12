@@ -24,6 +24,18 @@ abstract class _SubscriptionOnboardingStore with Store {
   final SubscriptionStore _subscriptionStore;
   final LocalDBService _localDb;
 
+  @observable
+  bool _startTour = false;
+
+  @computed
+  bool get startTour => _startTour;
+
+  @action
+  void showSubscriptionOnboarding() => _startTour = true;
+
+  @action
+  void didShowSubscriptionOnboarding() => _startTour = false;
+
   Future<bool> shouldShow() async {
     if (await _localDb.getSubscriptionOnboardingShown()) {
       return false;

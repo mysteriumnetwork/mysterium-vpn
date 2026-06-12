@@ -15,7 +15,6 @@ import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
-import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 
 final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
 
@@ -241,31 +240,15 @@ final isAppWindowFocused = NotifierProvider<IsAppWindowFocusedNotifier, bool>(
   IsAppWindowFocusedNotifier.new,
 );
 
-final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>(
-  (ref) => SubscriptionOnboardingStore(
-    analyticsStore: ref.watch(analyticsStorePOD),
-    subscriptionStore: ref.watch(subscriptionStorePOD),
+final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>((ref) {
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final subscriptionStore = ref.watch(subscriptionStorePOD);
+
+  return SubscriptionOnboardingStore(
+    analyticsStore: analyticsStore,
+    subscriptionStore: subscriptionStore,
     localDBService: LocalDBService.instance,
-  ),
-);
-
-final shouldShowSubscriptionOnboardingShowcasePOD = FutureProvider<bool>((ref) async {
-  if (!ref.watch(remoteConfigStorePOD).canShowSubscriptionOnboardingFlow) {
-    return false;
-  }
-
-  return ref.watch(subscriptionOnboardingStorePOD).shouldShow();
-});
-
-final subscriptionOnboardingShowcasePOD = Provider<SubscriptionOnboardingShowcase>((ref) {
-  final showcase = SubscriptionOnboardingShowcase(
-    subscriptionOnboardingStore: ref.watch(subscriptionOnboardingStorePOD),
-    homeTabsStore: ref.watch(homeTabsStorePOD),
-    onFlowConsumed: () => ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD),
   );
-  ref.onDispose(showcase.dispose);
-
-  return showcase;
 });
 
 final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {

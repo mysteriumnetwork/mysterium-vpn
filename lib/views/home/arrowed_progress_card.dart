@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
 import 'package:mysterium_vpn_design/styles/colors/palette.dart';
 import 'package:mysterium_vpn_design/widgets/progress_card.dart';
@@ -76,7 +77,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
     final themeStore = ref.watch(themeStorePOD);
     final shouldShowShowcase = ref
         .watch(shouldShowSubscriptionOnboardingShowcasePOD)
-        .maybeWhen(data: (value) => value, orElse: () => true);
+        .maybeWhen(data: (value) => value, orElse: () => false);
     final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
     final arrowColor = isDarkMode ? Palette.grayLight.shade800 : Palette.grayLight.shade25;
 

@@ -23,12 +23,11 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
   final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
   final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
-  final subscriptionOnboardingShowcase = useProvider(subscriptionOnboardingShowcasePOD);
+  final subscriptionOnboardingStore = useProvider(subscriptionOnboardingStorePOD);
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
   final handleSubscribe = useHandleSubscribe();
-  subscriptionOnboardingShowcase.register(context);
 
   return useEffect(
     () {
@@ -79,7 +78,7 @@ void useHomeAutorun() {
             } else if (value case UserPromptType.pushNotifications) {
               controller.add(() => showPushNotificationsPermissionDialog(context));
             } else if (value case UserPromptType.subscriptionOnboarding) {
-              controller.add(() => subscriptionOnboardingShowcase.showPrompt(context));
+              controller.add(() async => subscriptionOnboardingStore.showSubscriptionOnboarding());
             }
           }
         }),
@@ -146,7 +145,6 @@ void useHomeAutorun() {
         for (final dispose in disposers) {
           dispose();
         }
-        subscriptionOnboardingShowcase.unregister();
         await subscription.cancel();
         await controller.close();
       };
