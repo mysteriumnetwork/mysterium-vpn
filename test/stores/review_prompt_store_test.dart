@@ -171,11 +171,9 @@ void main() {
 
     test('yearly cap is disabled when yearlyCap is 0', () {
       when(remoteConfig.reviewPromptConfig).thenReturn(const ReviewPromptConfig(yearlyCap: 0));
-      when(prefs.getReviewPromptShownTimestamps()).thenReturn([
-        nowMs - 10 * dayMs,
-        nowMs - 20 * dayMs,
-        nowMs - 30 * dayMs,
-      ]);
+      when(
+        prefs.getReviewPromptShownTimestamps(),
+      ).thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
       expect(createStore().suppressionReason, isNull);
     });
 
