@@ -434,6 +434,7 @@ void main() {
       expect(config.minAccountAgeDays, 7);
       expect(config.minAppOpens, 5);
       expect(config.minConnections, 10);
+      expect(config.cleanSessionsRequired, 3);
       expect(config.stableSessionSeconds, 60);
       expect(config.cooldownDismissDays, 30);
       expect(config.cooldownNegativeDays, 75);
@@ -447,8 +448,8 @@ void main() {
         (_) async => {
           'reviewPromptConfig':
               '{"enabled":false,"minAccountAgeDays":14,"minAppOpens":8,"minConnections":20,'
-              '"stableSessionSeconds":120,"cooldownDismissDays":45,"cooldownNegativeDays":90,'
-              '"cooldownPositiveDays":120,"yearlyCap":5}',
+              '"cleanSessionsRequired":2,"stableSessionSeconds":120,"cooldownDismissDays":45,'
+              '"cooldownNegativeDays":90,"cooldownPositiveDays":120,"yearlyCap":5}',
         },
       );
       await store.configFuture;
@@ -457,6 +458,7 @@ void main() {
       expect(config.minAccountAgeDays, 14);
       expect(config.minAppOpens, 8);
       expect(config.minConnections, 20);
+      expect(config.cleanSessionsRequired, 2);
       expect(config.stableSessionSeconds, 120);
       expect(config.cooldownDismissDays, 45);
       expect(config.cooldownNegativeDays, 90);

@@ -10,6 +10,7 @@ void main() {
       expect(config.minAccountAgeDays, defaults.minAccountAgeDays);
       expect(config.minAppOpens, defaults.minAppOpens);
       expect(config.minConnections, defaults.minConnections);
+      expect(config.cleanSessionsRequired, defaults.cleanSessionsRequired);
       expect(config.stableSessionSeconds, defaults.stableSessionSeconds);
       expect(config.cooldownDismissDays, defaults.cooldownDismissDays);
       expect(config.cooldownNegativeDays, defaults.cooldownNegativeDays);
@@ -23,6 +24,7 @@ void main() {
         'minAccountAgeDays': 14,
         'minAppOpens': 8,
         'minConnections': 20,
+        'cleanSessionsRequired': 2,
         'stableSessionSeconds': 120,
         'cooldownDismissDays': 45,
         'cooldownNegativeDays': 90,
@@ -33,6 +35,7 @@ void main() {
       expect(config.minAccountAgeDays, 14);
       expect(config.minAppOpens, 8);
       expect(config.minConnections, 20);
+      expect(config.cleanSessionsRequired, 2);
       expect(config.stableSessionSeconds, 120);
       expect(config.cooldownDismissDays, 45);
       expect(config.cooldownNegativeDays, 90);

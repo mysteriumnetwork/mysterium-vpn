@@ -151,11 +151,15 @@ abstract class _ReviewPromptStore with Store {
     await recordSessionOutcome(success: true);
   }
 
-  /// Append a session outcome, keeping only the most recent three.
+  /// Append a session outcome, keeping only the window the eligibility check
+  /// needs (the most recent [ReviewPromptConfig.cleanSessionsRequired]).
   @action
   Future<void> recordSessionOutcome({required bool success}) async {
+    final window = _config.cleanSessionsRequired;
     final outcomes = [..._prefs.getReviewRecentSessionOutcomes(), success];
-    final trimmed = outcomes.length > 3 ? outcomes.sublist(outcomes.length - 3) : outcomes;
+    final trimmed = outcomes.length > window
+        ? outcomes.sublist(outcomes.length - window)
+        : outcomes;
     await _prefs.setReviewRecentSessionOutcomes(trimmed);
   }
 
@@ -209,8 +213,15 @@ abstract class _ReviewPromptStore with Store {
   }
 
   bool get _hasCleanRecentSessions {
+    final required = _config.cleanSessionsRequired;
+    if (required <= 0) {
+      return true;
+    }
     final outcomes = _prefs.getReviewRecentSessionOutcomes();
-    return outcomes.length >= 3 && outcomes.every((it) => it);
+    final recent = outcomes.length >= required
+        ? outcomes.sublist(outcomes.length - required)
+        : outcomes;
+    return recent.length >= required && recent.every((it) => it);
   }
 
   // ─── Suppression ───────────────────────────────────────────────────────────

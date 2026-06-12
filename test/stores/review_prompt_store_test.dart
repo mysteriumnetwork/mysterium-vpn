@@ -104,6 +104,23 @@ void main() {
       when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true, true]);
       expect(createStore().isEligible, isFalse);
     });
+
+    test('honours a lower cleanSessionsRequired (single clean session)', () {
+      when(
+        remoteConfig.reviewPromptConfig,
+      ).thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 1));
+      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true]);
+      expect(createStore().isEligible, isTrue);
+    });
+
+    test('skips the recent-sessions check when cleanSessionsRequired is 0', () {
+      when(
+        remoteConfig.reviewPromptConfig,
+      ).thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 0));
+      // Even with a failure on record, the check is disabled.
+      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([false]);
+      expect(createStore().isEligible, isTrue);
+    });
   });
 
   group('suppressionReason', () {

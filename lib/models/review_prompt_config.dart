@@ -8,6 +8,7 @@ class ReviewPromptConfig {
     this.minAccountAgeDays = 7,
     this.minAppOpens = 5,
     this.minConnections = 10,
+    this.cleanSessionsRequired = 3,
     this.stableSessionSeconds = 60,
     this.cooldownDismissDays = 30,
     this.cooldownNegativeDays = 75,
@@ -32,6 +33,7 @@ class ReviewPromptConfig {
       minAccountAgeDays: nonNegative('minAccountAgeDays', defaults.minAccountAgeDays),
       minAppOpens: nonNegative('minAppOpens', defaults.minAppOpens),
       minConnections: nonNegative('minConnections', defaults.minConnections),
+      cleanSessionsRequired: nonNegative('cleanSessionsRequired', defaults.cleanSessionsRequired),
       stableSessionSeconds: nonNegative('stableSessionSeconds', defaults.stableSessionSeconds),
       cooldownDismissDays: nonNegative('cooldownDismissDays', defaults.cooldownDismissDays),
       cooldownNegativeDays: nonNegative('cooldownNegativeDays', defaults.cooldownNegativeDays),
@@ -51,6 +53,10 @@ class ReviewPromptConfig {
 
   /// Minimum successful VPN connections before the prompt is eligible.
   final int minConnections;
+
+  /// How many of the most recent sessions must be clean (no disconnect/error)
+  /// for the user to be eligible. `0` disables the recent-sessions check.
+  final int cleanSessionsRequired;
 
   /// How long (seconds) a connection must stay up to count as a stable session.
   final int stableSessionSeconds;

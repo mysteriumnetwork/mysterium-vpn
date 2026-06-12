@@ -1315,7 +1315,7 @@ packages:
     description:
       path: "."
       ref: "feat/alert-modal"
-      resolved-ref: e17c368b2b8424a19bec79811d36f18af12622b2
+      resolved-ref: dd6c4b713b40684c80c57873b3bf4186db344e09
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
