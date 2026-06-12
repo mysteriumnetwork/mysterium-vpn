@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -335,7 +336,9 @@ class QAToolbox extends HookConsumerWidget {
           ),
           _QAActionButton(
             label: 'Subscription Onboarding',
-            onPressed: () => ref.read(subscriptionOnboardingShowcasePOD).showPrompt(context),
+            onPressed: () => ref
+                .read<SubscriptionOnboardingStore>(subscriptionOnboardingStorePOD)
+                .showSubscriptionOnboarding(),
           ),
           _QAActionButton(
             label: 'Clear Subscription Onboarding',

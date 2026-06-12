@@ -62,7 +62,8 @@ class ArrowedProgressCard extends HookConsumerWidget {
       (isDesktop() ? step.desktopIndex : step.mobileIndex) ==
       SubscriptionOnboardingStep.values.length - 1;
 
-  String get _actionLabel => _isLastStep ? LocaleKeys.completeBtn : LocaleKeys.continueBtn;
+  String get _actionLabel =>
+      _isLastStep ? LocaleKeys.completeBtn.tr() : LocaleKeys.continueBtn.tr();
 
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;

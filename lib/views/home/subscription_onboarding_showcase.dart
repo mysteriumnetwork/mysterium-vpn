@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_onboarding_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/home_tabs_store.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn_design/widgets/floating_button.dart';
@@ -21,18 +20,24 @@ final shouldShowSubscriptionOnboardingShowcasePOD = FutureProvider<bool>((ref) a
   return ref.watch(subscriptionOnboardingStorePOD).shouldShow();
 });
 
-class SubscriptionOnboardingShowcase extends HookConsumerWidget {
+class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
   const SubscriptionOnboardingShowcase({required this.child, super.key});
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SubscriptionOnboardingShowcase> createState() =>
+      _SubscriptionOnboardingShowcaseState();
+}
+
+class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnboardingShowcase> {
+  SubscriptionOnboardingStore get _store => ref.read(subscriptionOnboardingStorePOD);
+
+  @override
+  Widget build(BuildContext context) {
     final subscriptionOnboardingStore = ref.watch<SubscriptionOnboardingStore>(
       subscriptionOnboardingStorePOD,
     );
-    final homeTabsStore = ref.watch<HomeTabsStore>(homeTabsStorePOD);
-    final homeState = ref.watch(homeStateProvider);
 
     final shouldRegisterShowcase = ref
         .watch(shouldShowSubscriptionOnboardingShowcasePOD)
@@ -41,7 +46,7 @@ class SubscriptionOnboardingShowcase extends HookConsumerWidget {
     final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
 
     useEffect(() {
-      if (shouldRegisterShowcase) {
+      if (shouldRegisterShowcase || startTour) {
         ShowcaseView.register(
           disableBarrierInteraction: true,
           globalFloatingActionWidget: (context) => FloatingActionWidget(
@@ -49,99 +54,82 @@ class SubscriptionOnboardingShowcase extends HookConsumerWidget {
             right: 50,
             child: FloatingButton(
               onPressed: () {
-                subscriptionOnboardingStore.markShown().ignore();
-                subscriptionOnboardingStore.trackSkipped();
+                _store.trackSkipped();
                 ShowcaseView.get().dismiss();
+                _markOnboardingAsShown().ignore();
               },
               label: LocaleKeys.skipBtn.tr(),
               icon: Icons.close,
             ),
           ),
-          onStart: (index, key) => subscriptionOnboardingStore.trackStepViewed(index),
-          onComplete: (index, key) => subscriptionOnboardingStore.trackStepCompleted(index),
+          onStart: (index, key) => _store.trackStepViewed(index),
+          onComplete: (index, key) => _store.trackStepCompleted(index),
           onFinish: () {
-            subscriptionOnboardingStore.trackFinished();
-            showSubscriptionOnboardingCompleteDialog(context: context).ignore();
+            _store.trackFinished();
+            _markOnboardingAsShown().then((_) {
+              if (!context.mounted) {
+                return;
+              }
+              showSubscriptionOnboardingCompleteDialog(context: context).ignore();
+            }).ignore();
           },
         );
       }
 
-      // Unregister the showcase if it is not enabled
-      return shouldRegisterShowcase ? ShowcaseView.get().unregister : null;
+      return (shouldRegisterShowcase || startTour) ? ShowcaseView.get().unregister : null;
     }, [shouldRegisterShowcase]);
 
-    // Show the prompt to start the tour
     useEffect(() {
       if (startTour) {
         Future.microtask(() {
-          if (!context.mounted) {
+          if (!mounted) {
             return;
           }
 
           subscriptionOnboardingStore.didShowSubscriptionOnboarding();
-
-          _showPrompt(
-            context: context,
-            store: subscriptionOnboardingStore,
-            homeTabsStore: homeTabsStore,
-            keys: homeState.subscriptionOnboardingKeys,
-          ).then((_) => ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD)).ignore();
+          _showPrompt().ignore();
         });
       }
 
       return null;
     }, [startTour]);
 
-    return child;
+    return widget.child;
   }
 
-  // Show the prompt to start the tour
-  Future<void> _showPrompt({
-    required BuildContext context,
-    required SubscriptionOnboardingStore store,
-    required HomeTabsStore homeTabsStore,
-    required List<GlobalKey<State<StatefulWidget>>> keys,
-  }) async {
-    await store.markShown();
+  Future<void> _markOnboardingAsShown() async {
+    await _store.markShown();
+    ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD);
+  }
 
-    if (!context.mounted) {
+  Future<void> _showPrompt() async {
+    if (!mounted) {
       return;
     }
 
     await showSubscriptionOnboardingDialog(
       context: context,
-      onStartTour: () => _startTour(
-        context: context,
-        store: store,
-        homeTabsStore: homeTabsStore,
-        keys: keys,
-      ).ignore(),
-      onCancelTour: () => _cancelTour(store: store).ignore(),
+      onStartTour: () => _startTour().ignore(),
+      onCancelTour: () => _cancelTour().ignore(),
     );
   }
 
-  // Start the tour
-  Future<void> _startTour({
-    required BuildContext context,
-    required SubscriptionOnboardingStore store,
-    required HomeTabsStore homeTabsStore,
-    required List<GlobalKey<State<StatefulWidget>>> keys,
-  }) async {
-    store.trackStarted();
+  Future<void> _startTour() async {
+    _store.trackStarted();
 
-    homeTabsStore.trySelect(HomeTab.map);
+    ref.read(homeTabsStorePOD).trySelect(HomeTab.map);
 
     await Future.delayed(const Duration(milliseconds: 200));
-    if (!context.mounted) {
+    if (!mounted) {
       return;
     }
 
+    final keys = ref.read(homeStateProvider).subscriptionOnboardingKeys;
     ShowcaseView.get().startShowCase(keys);
   }
 
-  // Cancel the tour
-  Future<void> _cancelTour({required SubscriptionOnboardingStore store}) async {
-    await store.markShown();
-    store.trackSkipped();
+  Future<void> _cancelTour() async {
+    _store.trackSkipped();
+    await _markOnboardingAsShown();
   }
 }
