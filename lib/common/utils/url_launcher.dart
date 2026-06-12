@@ -38,12 +38,18 @@ Future<void> openUrlLink(Uri url, {LaunchMode mode = LaunchMode.platformDefault}
 }
 
 Future<void> openAppStorePage() async {
-  OpenStore.instance.open(
-    appStoreId: appStoreId,
-    appStoreIdMacOS: appStoreIdMacOS,
-    androidAppBundleId: androidAppBundleId,
-    windowsProductId: windowsProductId,
-  );
+  // Best-effort: await so failures are contained here instead of escaping as
+  // unhandled async errors, and never throw (e.g. unsupported platform).
+  try {
+    await OpenStore.instance.open(
+      appStoreId: appStoreId,
+      appStoreIdMacOS: appStoreIdMacOS,
+      androidAppBundleId: androidAppBundleId,
+      windowsProductId: windowsProductId,
+    );
+  } catch (_) {
+    // The store may be unavailable on this platform; nothing actionable.
+  }
 }
 
 void handleOnSupportPage({required BuildContext context, required AnalyticsStore analyticsStore}) {
