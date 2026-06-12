@@ -46,7 +46,7 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
     final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
 
     useEffect(() {
-      if (shouldRegisterShowcase || startTour) {
+      if (shouldRegisterShowcase) {
         ShowcaseView.register(
           disableBarrierInteraction: true,
           globalFloatingActionWidget: (context) => FloatingActionWidget(
@@ -76,7 +76,7 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
         );
       }
 
-      return (shouldRegisterShowcase || startTour) ? ShowcaseView.get().unregister : null;
+      return shouldRegisterShowcase ? ShowcaseView.get().unregister : null;
     }, [shouldRegisterShowcase]);
 
     useEffect(() {
