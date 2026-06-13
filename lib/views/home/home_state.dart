@@ -15,6 +15,8 @@ class _HomeState extends ChangeNotifier {
 
   ScrollController? scrollController;
 
+  /// Indexed by [SubscriptionOnboardingStep.platformIndex] (tour order),
+  /// not by enum declaration order.
   final subscriptionOnboardingKeys = [
     for (final _ in SubscriptionOnboardingStep.values) GlobalKey<State<StatefulWidget>>(),
   ];

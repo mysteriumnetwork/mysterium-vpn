@@ -152,7 +152,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
             ProgressCard(
               icon: iconData,
               progressLabel: '${_index + 1}/${step.totalSteps}',
-              progressValue: _index / step.totalSteps,
+              progressValue: _index + 1 / step.totalSteps,
               title: title.tr(),
               description: description.tr(),
               actionLabel: _actionLabel,
