@@ -89,6 +89,44 @@ void main() {
     expect(result, isFalse);
   });
 
+  group('startTour', () {
+    test('defaults to false', () {
+      // assert
+      expect(store.startTour, isFalse);
+    });
+
+    test('showSubscriptionOnboarding sets startTour to true', () {
+      // act
+      store.showSubscriptionOnboarding();
+
+      // assert
+      expect(store.startTour, isTrue);
+    });
+
+    test('markShown resets startTour to false', () async {
+      // arrange
+      store.showSubscriptionOnboarding();
+
+      // act
+      await store.markShown();
+
+      // assert
+      expect(store.startTour, isFalse);
+    });
+
+    test('showSubscriptionOnboarding can retrigger after markShown', () async {
+      // arrange
+      store.showSubscriptionOnboarding();
+      await store.markShown();
+
+      // act
+      store.showSubscriptionOnboarding();
+
+      // assert
+      expect(store.startTour, isTrue);
+    });
+  });
+
   test('markShown persists subscription onboarding shown flag', () async {
     // arrange
     await store.markShown();
