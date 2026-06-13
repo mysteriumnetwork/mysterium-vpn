@@ -25,16 +25,14 @@ class HomeMapTab extends HookConsumerWidget {
           decoration: BoxDecoration(color: theme.palette.bgPrimary),
           child: Padding(
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
-            child: Observer(
-              builder: (context) => ArrowedProgressCard(
-                step: SubscriptionOnboardingStep.search,
-                globalKey: homeState
-                    .subscriptionOnboardingKeys[SubscriptionOnboardingStep.search.platformIndex],
-                tooltipPosition: TooltipPosition.bottom,
-                child: LocationsTappableSearch(
-                  enabled: !locationsStore.hasNoServers,
-                  onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
-                ),
+            child: ArrowedProgressCard(
+              step: SubscriptionOnboardingStep.search,
+              globalKey: homeState
+                  .subscriptionOnboardingKeys[SubscriptionOnboardingStep.search.platformIndex],
+              tooltipPosition: TooltipPosition.bottom,
+              child: LocationsTappableSearch(
+                enabled: !locationsStore.hasNoServers,
+                onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
               ),
             ),
           ),

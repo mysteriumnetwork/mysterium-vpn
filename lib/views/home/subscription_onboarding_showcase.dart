@@ -34,65 +34,70 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
   SubscriptionOnboardingStore get _store => ref.read(subscriptionOnboardingStorePOD);
 
   @override
+  void dispose() {
+    ShowcaseView.get().unregister();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final subscriptionOnboardingStore = ref.watch<SubscriptionOnboardingStore>(
       subscriptionOnboardingStorePOD,
     );
-
-    final shouldRegisterShowcase = ref
+    final canShowSubscriptionOnboarding = ref
         .watch(shouldShowSubscriptionOnboardingShowcasePOD)
         .maybeWhen(data: (value) => value, orElse: () => false);
 
     final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
 
-    useEffect(() {
-      if (shouldRegisterShowcase) {
-        ShowcaseView.register(
-          disableBarrierInteraction: true,
-          globalFloatingActionWidget: (context) => FloatingActionWidget(
-            top: 50,
-            right: 50,
-            child: FloatingButton(
-              onPressed: () {
-                _store.trackSkipped();
-                ShowcaseView.get().dismiss();
-                _markOnboardingAsShown().ignore();
-              },
-              label: LocaleKeys.skipBtn.tr(),
-              icon: Icons.close,
-            ),
+    useMemoized(
+      () => ShowcaseView.register(
+        disableBarrierInteraction: true,
+        globalFloatingActionWidget: (context) => FloatingActionWidget(
+          top: 50,
+          right: 50,
+          child: FloatingButton(
+            onPressed: () {
+              _store.trackSkipped();
+              ShowcaseView.get().dismiss();
+              _markOnboardingAsShown().ignore();
+            },
+            label: LocaleKeys.skipBtn.tr(),
+            icon: Icons.close,
           ),
-          onStart: (index, key) => _store.trackStepViewed(index),
-          onComplete: (index, key) => _store.trackStepCompleted(index),
-          onFinish: () {
-            _store.trackFinished();
-            _markOnboardingAsShown().then((_) {
-              if (!context.mounted) {
-                return;
-              }
-              showSubscriptionOnboardingCompleteDialog(context: context).ignore();
-            }).ignore();
-          },
-        );
-      }
-
-      return shouldRegisterShowcase ? ShowcaseView.get().unregister : null;
-    }, [shouldRegisterShowcase]);
+        ),
+        onStart: (index, key) => _store.trackStepViewed(index),
+        onComplete: (index, key) => _store.trackStepCompleted(index),
+        onFinish: () {
+          _store.trackFinished();
+          _markOnboardingAsShown().then((_) {
+            if (!context.mounted) {
+              return;
+            }
+            showSubscriptionOnboardingCompleteDialog(context: context).ignore();
+          }).ignore();
+        },
+      ),
+      [],
+    );
 
     useEffect(() {
       if (startTour) {
+        if (!canShowSubscriptionOnboarding) {
+          return;
+        }
+
         Future.microtask(() {
           if (!mounted) {
             return;
           }
 
-          subscriptionOnboardingStore.didShowSubscriptionOnboarding();
           _showPrompt().ignore();
         });
       }
 
       return null;
-    }, [startTour]);
+    }, [startTour, canShowSubscriptionOnboarding]);
 
     return widget.child;
   }
@@ -107,11 +112,17 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
       return;
     }
 
-    await showSubscriptionOnboardingDialog(
-      context: context,
-      onStartTour: () => _startTour().ignore(),
-      onCancelTour: () => _cancelTour().ignore(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      showSubscriptionOnboardingDialog(
+        context: context,
+        onStartTour: () => _startTour().ignore(),
+        onCancelTour: () => _cancelTour().ignore(),
+      );
+    });
   }
 
   Future<void> _startTour() async {
@@ -119,7 +130,7 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
 
     ref.read(homeTabsStorePOD).trySelect(HomeTab.map);
 
-    await Future.delayed(const Duration(milliseconds: 200));
+    await WidgetsBinding.instance.endOfFrame;
     if (!mounted) {
       return;
     }

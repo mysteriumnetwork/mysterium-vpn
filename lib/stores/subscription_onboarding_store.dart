@@ -33,9 +33,6 @@ abstract class _SubscriptionOnboardingStore with Store {
   @action
   void showSubscriptionOnboarding() => _startTour = true;
 
-  @action
-  void didShowSubscriptionOnboarding() => _startTour = false;
-
   Future<bool> shouldShow() async {
     if (await _localDb.getSubscriptionOnboardingShown()) {
       return false;
@@ -49,7 +46,11 @@ abstract class _SubscriptionOnboardingStore with Store {
     }
   }
 
-  Future<void> markShown() => _localDb.setSubscriptionOnboardingShown();
+  @action
+  Future<void> markShown() async {
+    await _localDb.setSubscriptionOnboardingShown();
+    _startTour = false;
+  }
 
   Future<void> clearShown() => _localDb.resetSubscriptionOnboardingShown();
 

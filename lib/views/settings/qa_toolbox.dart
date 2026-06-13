@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -336,18 +337,26 @@ class QAToolbox extends HookConsumerWidget {
           ),
           _QAActionButton(
             label: 'Subscription Onboarding',
-            onPressed: () => ref
-                .read<SubscriptionOnboardingStore>(subscriptionOnboardingStorePOD)
-                .showSubscriptionOnboarding(),
+            onPressed: () async {
+              final canShow = await ref.read(shouldShowSubscriptionOnboardingShowcasePOD.future);
+              if (canShow) {
+                ref
+                    .read<SubscriptionOnboardingStore>(subscriptionOnboardingStorePOD)
+                    .showSubscriptionOnboarding();
+              } else {
+                showSnackbar(
+                  'Subscription onboarding cannot be shown, make sure you didnt disable it in the remote config and clear subscription onboarding flag',
+                );
+              }
+            },
           ),
           _QAActionButton(
             label: 'Clear Subscription Onboarding',
             onPressed: () async {
               try {
                 await ref.read(subscriptionOnboardingStorePOD).clearShown();
-                showSnackbar(
-                  'Subscription onboarding cleared, restart app to re-trigger automatically',
-                );
+                ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD);
+                showSnackbar('Subscription onboarding cleared.');
               } catch (e) {
                 showSnackbar('Error clearing subscription onboarding: $e');
               }

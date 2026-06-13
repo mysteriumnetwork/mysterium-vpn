@@ -6,7 +6,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
+import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
 import 'package:mysterium_vpn_design/styles/colors/palette.dart';
 import 'package:mysterium_vpn_design/widgets/progress_card.dart';
@@ -76,21 +76,23 @@ class ArrowedProgressCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.watch(themeStorePOD);
-    final shouldShowShowcase = ref
-        .watch(shouldShowSubscriptionOnboardingShowcasePOD)
-        .maybeWhen(data: (value) => value, orElse: () => false);
     final isDarkMode = useComputedValue(() => themeStore.isDarkMode);
     final arrowColor = isDarkMode ? Palette.grayLight.shade800 : Palette.grayLight.shade25;
-
-    if (!shouldShowShowcase) {
-      return child;
-    }
 
     // Attached to the tooltip Stack so we can measure the card in its own coordinates.
     final tooltipStackKey = useMemoized(GlobalKey.new);
     // Distance along the card edge facing the nav item to the arrow centre.
     // null until the first layout + target measurement completes.
     final arrowPosition = useState<double?>(null);
+
+    // Checks if showcase tour is enabled otherwise returns the child
+    final subscriptionOnboardingStore = ref.watch<SubscriptionOnboardingStore>(
+      subscriptionOnboardingStorePOD,
+    );
+    final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
+    if (!startTour) {
+      return child;
+    }
 
     // targetRect is the widget rect that is being targeted by the tooltip.
     void updateArrowPosition(Rect targetRect) {

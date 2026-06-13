@@ -35,6 +35,16 @@ mixin _$SubscriptionOnboardingStore on _SubscriptionOnboardingStore, Store {
     });
   }
 
+  late final _$markShownAsyncAction = AsyncAction(
+    '_SubscriptionOnboardingStore.markShown',
+    context: context,
+  );
+
+  @override
+  Future<void> markShown() {
+    return _$markShownAsyncAction.run(() => super.markShown());
+  }
+
   late final _$_SubscriptionOnboardingStoreActionController = ActionController(
     name: '_SubscriptionOnboardingStore',
     context: context,
@@ -47,18 +57,6 @@ mixin _$SubscriptionOnboardingStore on _SubscriptionOnboardingStore, Store {
     );
     try {
       return super.showSubscriptionOnboarding();
-    } finally {
-      _$_SubscriptionOnboardingStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void didShowSubscriptionOnboarding() {
-    final _$actionInfo = _$_SubscriptionOnboardingStoreActionController.startAction(
-      name: '_SubscriptionOnboardingStore.didShowSubscriptionOnboarding',
-    );
-    try {
-      return super.didShowSubscriptionOnboarding();
     } finally {
       _$_SubscriptionOnboardingStoreActionController.endAction(_$actionInfo);
     }
