@@ -5,8 +5,10 @@ import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class ConnectionTile extends HookConsumerWidget {
   const ConnectionTile({super.key});
@@ -30,6 +32,16 @@ class ConnectionTile extends HookConsumerWidget {
       ref,
     );
 
+    Widget buttonWrapper({required BuildContext context, required Widget child}) =>
+        ArrowedProgressCard(
+          step: SubscriptionOnboardingStep.connectButton,
+          globalKey: ref
+              .read(homeStateProvider)
+              .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
+          tooltipPosition: TooltipPosition.top,
+          child: child,
+        );
+
     return Column(
       children: [
         MainIpCard(
@@ -51,6 +63,7 @@ class ConnectionTile extends HookConsumerWidget {
           onSwitchCountry: onToggle,
           refreshIpTooltip: LocaleKeys.refreshIP.tr(),
           connectionRating: connectionRating,
+          buttonWrapper: buttonWrapper,
         ),
         if (Env.flavor.isDev) const _DevProtocolLabel(),
       ],

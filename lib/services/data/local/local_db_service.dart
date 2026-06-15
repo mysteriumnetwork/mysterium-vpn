@@ -260,6 +260,23 @@ class LocalDBService implements ResidentialEducationStorage {
     await _saveUserData(userData);
   }
 
+  Future<bool> getSubscriptionOnboardingShown() async {
+    final userData = await _loadUserData();
+    return userData.subscriptionOnboardingShown;
+  }
+
+  Future<void> setSubscriptionOnboardingShown() async {
+    final userData = await _loadUserData();
+    userData.subscriptionOnboardingShown = true;
+    await _saveUserData(userData);
+  }
+
+  Future<void> resetSubscriptionOnboardingShown() async {
+    final userData = await _loadUserData();
+    userData.subscriptionOnboardingShown = false;
+    await _saveUserData(userData);
+  }
+
   /// Clears both the completion flag and the saved step so onboarding starts
   /// over from step 0 on the next launch. Used by the QA toolbox.
   Future<void> resetNoneSubsOnboarding() async {

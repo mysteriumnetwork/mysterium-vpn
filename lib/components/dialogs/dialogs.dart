@@ -11,3 +11,4 @@ export 'push_notifications_dialog.dart';
 export 'rate_connection_dialog.dart';
 export 'request_tunnel_permissions_dialog.dart';
 export 'review_prompt_dialog.dart';
+export 'subscription_onboarding_dialog.dart';

@@ -501,4 +501,34 @@ void main() {
       expect(store.reviewPromptConfig.minAppOpens, 5);
     });
   });
+
+  group('RemoteConfigStore.canShowSubscriptionOnboardingFlow', () {
+    test('returns true if key is not present in config (default)', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expect(store.canShowSubscriptionOnboardingFlow, isTrue);
+    });
+
+    test('returns true if config has true value', () async {
+      store = createStore();
+
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'canShowSubscriptionOnboardingFlow': true});
+      await store.configFuture;
+      expect(store.canShowSubscriptionOnboardingFlow, isTrue);
+    });
+
+    test('returns false if config has false value (kill switch flipped)', () async {
+      store = createStore();
+
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'canShowSubscriptionOnboardingFlow': false});
+      await store.configFuture;
+      expect(store.canShowSubscriptionOnboardingFlow, isFalse);
+    });
+  });
 }
