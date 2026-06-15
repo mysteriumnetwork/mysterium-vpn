@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:hooks_riverpod/legacy.dart';
-import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
+import 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
 
 class _HomeState extends ChangeNotifier {
   _HomeState();

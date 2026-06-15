@@ -2,42 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
-import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
 import 'package:mysterium_vpn_design/styles/colors/palette.dart';
 import 'package:mysterium_vpn_design/widgets/progress_card.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-abstract interface class OnboardingStep {
-  int get desktopIndex;
-  int get mobileIndex;
-  int get platformIndex;
-  int get totalSteps;
-}
-
-enum SubscriptionOnboardingStep implements OnboardingStep {
-  connectButton(desktopIndex: 3, mobileIndex: 4),
-  locations(desktopIndex: 5, mobileIndex: 1),
-  map(desktopIndex: 0, mobileIndex: 0),
-  products(desktopIndex: 1, mobileIndex: 2),
-  search(desktopIndex: 4, mobileIndex: 5),
-  settings(desktopIndex: 2, mobileIndex: 3);
-
-  const SubscriptionOnboardingStep({required this.desktopIndex, required this.mobileIndex});
-
-  @override
-  final int desktopIndex;
-  @override
-  final int mobileIndex;
-  @override
-  int get totalSteps => SubscriptionOnboardingStep.values.length;
-  @override
-  int get platformIndex => isDesktop() ? desktopIndex : mobileIndex;
-}
+export 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
 
 class ArrowedProgressCard extends HookConsumerWidget {
   const ArrowedProgressCard({
@@ -56,11 +30,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
   static const double _cornerInset = 24;
 
-  int get _index => isDesktop() ? step.desktopIndex : step.mobileIndex;
-
-  bool get _isLastStep =>
-      (isDesktop() ? step.desktopIndex : step.mobileIndex) ==
-      SubscriptionOnboardingStep.values.length - 1;
+  bool get _isLastStep => step.platformIndex == (SubscriptionOnboardingStep.values.length - 1);
 
   String get _actionLabel =>
       _isLastStep ? LocaleKeys.completeBtn.tr() : LocaleKeys.continueBtn.tr();
@@ -121,10 +91,10 @@ class ArrowedProgressCard extends HookConsumerWidget {
             ? tooltipBox.size.height
             : tooltipBox.size.width;
 
-        const minArrowPositionOnActiveAxis = _TooltipArrow.arrowBase / 2 + _cornerInset;
+        const minArrowPositionOnActiveAxis = (_TooltipArrow.arrowBase / 2) + _cornerInset;
 
         final maxArrowPositionOnActiveAxis =
-            tooltipActiveSideLength - _TooltipArrow.arrowBase / 2 - _cornerInset;
+            tooltipActiveSideLength - (_TooltipArrow.arrowBase / 2) - _cornerInset;
 
         // clamp the arrow position to the min and max values
         final clampedArrowPosition = minArrowPositionOnActiveAxis <= maxArrowPositionOnActiveAxis
@@ -150,11 +120,11 @@ class ArrowedProgressCard extends HookConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ProgressCard(
-              icon: iconData,
-              progressLabel: '${_index + 1}/${step.totalSteps}',
-              progressValue: _index + 1 / step.totalSteps,
-              title: title.tr(),
-              description: description.tr(),
+              icon: step.icon,
+              progressLabel: '${step.platformIndex + 1}/${step.totalSteps}',
+              progressValue: (step.platformIndex + 1) / step.totalSteps,
+              title: step.title.tr(),
+              description: step.description.tr(),
               actionLabel: _actionLabel,
               onActionPressed: () => ShowcaseView.get().next(),
             ),
@@ -169,43 +139,6 @@ class ArrowedProgressCard extends HookConsumerWidget {
       child: child,
     );
   }
-
-  String get title => switch (step) {
-    SubscriptionOnboardingStep.map =>
-      isDesktop()
-          ? LocaleKeys.subscriptionOnboardingMapDesktopTitle
-          : LocaleKeys.subscriptionOnboardingMapMobileTitle,
-    SubscriptionOnboardingStep.locations => LocaleKeys.subscriptionOnboardingVPNLocationsTitle,
-    SubscriptionOnboardingStep.products => LocaleKeys.subscriptionOnboardingManagePlanTitle,
-    SubscriptionOnboardingStep.connectButton => LocaleKeys.subscriptionOnboardingConnectTitle,
-    SubscriptionOnboardingStep.search => LocaleKeys.subscriptionOnboardingSearchTitle,
-    SubscriptionOnboardingStep.settings => LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
-  };
-
-  String get description => switch (step) {
-    SubscriptionOnboardingStep.map =>
-      isDesktop()
-          ? LocaleKeys.subscriptionOnboardingMapDesktopDescription
-          : LocaleKeys.subscriptionOnboardingMapMobileDescription,
-    SubscriptionOnboardingStep.locations =>
-      isDesktop()
-          ? LocaleKeys.subscriptionOnboardingVPNLocationsDesktopDescription
-          : LocaleKeys.subscriptionOnboardingVPNLocationsMobileDescription,
-    SubscriptionOnboardingStep.products => LocaleKeys.subscriptionOnboardingManagePlanDescription,
-    SubscriptionOnboardingStep.connectButton => LocaleKeys.subscriptionOnboardingConnectDescription,
-    SubscriptionOnboardingStep.search => LocaleKeys.subscriptionOnboardingSearchDescription,
-    SubscriptionOnboardingStep.settings =>
-      LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
-  };
-
-  IconData get iconData => switch (step) {
-    SubscriptionOnboardingStep.map => UntitledUI.map_01,
-    SubscriptionOnboardingStep.locations => UntitledUI.flag_01,
-    SubscriptionOnboardingStep.products => UntitledUI.star_06,
-    SubscriptionOnboardingStep.connectButton => UntitledUI.rocket_02,
-    SubscriptionOnboardingStep.search => UntitledUI.search_sm,
-    SubscriptionOnboardingStep.settings => UntitledUI.lock_01,
-  };
 }
 
 class _TooltipArrow extends StatelessWidget {
@@ -255,7 +188,7 @@ class _TooltipArrow extends StatelessWidget {
     }
 
     // Positioned top/left is the arrow widget's top-left, not its centre.
-    final arrowOffsetFromEdgeStart = arrowPosition! - arrowBase / 2;
+    final arrowOffsetFromEdgeStart = arrowPosition! - (arrowBase / 2);
     return switch (tooltipPosition) {
       TooltipPosition.right => Positioned(
         left: -arrowHeight + overlap,
@@ -321,5 +254,5 @@ class _TooltipArrowPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _TooltipArrowPainter old) =>
-      old.color != color || old.position != position;
+      (old.color != color) || (old.position != position);
 }
