@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -294,6 +295,10 @@ class _NetworkLoggerScreenState extends State<NetworkLoggerScreen> {
           _ActionButton(
             onTap: () => _SecuredStorageValues.show(context: context),
             child: Icon(Icons.key, color: palette.textWarningPrimary),
+          ),
+          _ActionButton(
+            onTap: () => _SharedPreferencesValues.show(context: context),
+            child: Icon(Icons.storage, color: palette.textWarningPrimary),
           ),
           _ActionButton(
             onTap: widget.eventList.clear,
@@ -1160,6 +1165,78 @@ class _SecuredStorageValues extends ConsumerWidget {
               }
               return const Center(child: CircularProgressIndicator());
             },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// QA-only viewer that dumps every locally persisted SharedPreferences
+/// key/value, mirroring [_SecuredStorageValues]. Opened from the network-logs
+/// overlay; visibility is gated there.
+class _SharedPreferencesValues extends ConsumerWidget {
+  const _SharedPreferencesValues._();
+
+  static void show({required BuildContext context}) {
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => const _SharedPreferencesValues._(),
+          settings: const RouteSettings(name: 'sharedPreferencesValuesPage'),
+        ),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final palette = theme.palette;
+    final textStyles = theme.textStyles;
+    // Only our own keys — the raw dump also contains third-party plugin caches
+    // (e.g. ConfigCat's serialised config), which are noise here.
+    final ownKeys = StorageKeys.values.map((it) => it.name).toSet();
+    final data = SharedPreferenceService.instance.readAll()
+      ..removeWhere((key, _) => !ownKeys.contains(key));
+    final keys = data.keys.toList()..sort();
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: Navigator.of(context).pop,
+          color: palette.textPrimary,
+        ),
+        forceMaterialTransparency: true,
+        title: Text('Shared preferences', style: textStyles.textLg.semibold),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...keys.map(
+                (key) => RichText(
+                  maxLines: 20,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '$key: ',
+                        style: textStyles.textSm.bold.copyWith(color: palette.textBrandPrimary),
+                      ),
+                      TextSpan(
+                        text: '${data[key]}',
+                        style: textStyles.textSm.regular.copyWith(color: palette.textPrimary),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
