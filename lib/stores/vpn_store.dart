@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -124,6 +123,11 @@ abstract class _VpnStore extends VpnGuard with Store {
   @readonly
   VPNLocation? _connectingLocation;
 
+  /// Location the user explicitly requested (country or city), preserved across
+  /// IP refresh so a country keeps rotating country-wide. In-memory only.
+  @readonly
+  VPNLocation? _requestedLocation;
+
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
 
@@ -171,6 +175,11 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @computed
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
+
+  /// IP-pool count to show under the refresh icon while connected: the country
+  /// total when connected via a country, the city count when via a city.
+  @computed
+  int get connectedIpPoolCount => (_requestedLocation ?? location)?.nodeCount ?? 0;
 
   @computed
   VPNLocation? get potentialLocation => _connectionDecisionStore.potentialLocation;
@@ -379,7 +388,10 @@ abstract class _VpnStore extends VpnGuard with Store {
         break;
 
       case ConnectionAction.refreshIP:
-        await _startConnection(refreshIP: true, location: _vpnConnection?.location);
+        await _startConnection(
+          refreshIP: true,
+          location: _requestedLocation ?? _vpnConnection?.location,
+        );
         break;
     }
   }
@@ -428,6 +440,10 @@ abstract class _VpnStore extends VpnGuard with Store {
   @action
   Future<void> _prepareConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) async {
     _userIntentsStore.userIntent = intent;
+
+    if (!refreshIP) {
+      _requestedLocation = location == VPNLocation.closest ? null : location;
+    }
 
     _connectingLocation = _connectionDecisionStore.determineConnectingLocation(
       requestedLocation: location,
@@ -578,12 +594,14 @@ abstract class _VpnStore extends VpnGuard with Store {
     required UserIntent? intent,
     required bool refreshIP,
   }) async {
-    final closestRegion = (intent?.requiresCluster ?? false)
+    final request = ConnectionRequest(location: location, intent: intent);
+
+    final closestRegion = request.requiresCluster
         ? await _locationsService.closestRegion(location?.ipType ?? IPType.datacenter)
         : null;
 
     final realIpInfo = await _realIPInfo.infoFuture;
-    final ipType = _determineIpType(location, intent);
+    final ipType = request.ipType(_locationsQueryStore.ipType);
 
     // Reset error tracking when fetching new config
     _isDeviceLimitErrorShown = false;
@@ -591,8 +609,8 @@ abstract class _VpnStore extends VpnGuard with Store {
     _fetchConfigFuture = ObservableFuture(
       _vpnRepository.fetchVpnConfig(
         countryOriginate: realIpInfo?.country,
-        country: _determineCountry(location, intent, realIpInfo),
-        city: _determineCity(location, intent),
+        country: request.country(realIpInfo),
+        city: request.city,
         ipType: ipType?.key,
         resetConnection: refreshIP || _refreshIPStore.refreshIPConnection,
         userIntent: intent?.key,
@@ -619,23 +637,6 @@ abstract class _VpnStore extends VpnGuard with Store {
       }
       rethrow;
     }
-  }
-
-  IPType? _determineIpType(VPNLocation? location, UserIntent? intent) =>
-      location?.ipType ??
-      (intent == UserIntent.nearestLocation ? _locationsQueryStore.ipType : null);
-
-  String? _determineCountry(VPNLocation? location, UserIntent? intent, IPInfo? realIpInfo) =>
-      intent == UserIntent.nearestLocation ? realIpInfo?.country : location?.countryCode;
-
-  String? _determineCity(VPNLocation? location, UserIntent? intent) {
-    if (intent == UserIntent.nearestLocation) {
-      return null;
-    }
-    if (location?.isCountry ?? true) {
-      return null;
-    }
-    return location?.id;
   }
 
   Future<VPNLocation> _resolveConnectedLocation(VPNLocation? requestedLocation) async {
@@ -731,6 +732,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     if (disconnectSucceeded && !isReconnecting) {
       _userIntentsStore.userIntent = null;
       _connectingLocation = null;
+      _requestedLocation = null;
       await _vpnRepository.notifyApiVpnDisconnected();
     }
 

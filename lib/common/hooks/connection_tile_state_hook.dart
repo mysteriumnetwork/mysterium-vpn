@@ -46,6 +46,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   );
   final selectedLocation = useComputedValue(() => selectedLocationStore.value);
   final connectedLocation = useComputedValue(() => vpnStore.location);
+  final connectedIpPoolCount = useComputedValue(() => vpnStore.connectedIpPoolCount);
   final isConnected = useComputedValue(() => vpnStore.isConnected);
   final isLoading = useComputedValue(() => connectionDisplayStore.isLoading);
   final ipInfo = useComputedValue(() => connectionDisplayStore.connectionIP);
@@ -94,7 +95,6 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final connectedServiceQuality = connected.ipType == IPType.residential
         ? LocaleKeys.residential.tr()
         : LocaleKeys.highSpeed.tr();
-    final connectedIpPoolCount = connected.nodeCount ?? 0;
 
     final isSelectedUnavailable = unavailableLocationsStore.unavailableLocations.contains(
       selectedLocation,
@@ -118,8 +118,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final country = parentLocation?.getName(context) ?? displayLocation?.getName(context) ?? '';
     final city = parentLocation != null ? displayLocation?.getName(context) ?? '' : '';
     final ipType = displayLocation?.ipType;
-    final ipPoolCount =
-        (isConnected ? connectedLocation?.nodeCount : displayLocation?.nodeCount) ?? 0;
+    final ipPoolCount = isConnected ? connectedIpPoolCount : (displayLocation?.nodeCount ?? 0);
     final countryIcon = displayLocation != null
         ? CircleFlag(displayLocation.countryCode, size: 32)
         : const SizedBox(width: 32, height: 32);
