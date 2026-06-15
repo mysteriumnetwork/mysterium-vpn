@@ -447,7 +447,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionOnboardingPromptTitle": "快速参观",
     "subscriptionOnboardingPromptDescription": "熟悉更新后的应用程序，并发现主要功能现在位于何处。",
     "subscriptionOnboardingStartTourLabel": "开始游览",
-    "subscriptionOnboardingCancelTourLabel": "暂且跳过",
+    "subscriptionOnboardingCancelTourLabel": "暂时跳过",
     "subscriptionOnboardingMapDesktopTitle": "以您的方式探索各地",
     "subscriptionOnboardingMapDesktopDescription": "浏览地图或从侧边栏探索地点。",
     "subscriptionOnboardingMapMobileTitle": "从地图连接",
@@ -526,7 +526,7 @@ class CodegenLoader extends AssetLoader {
     "typeDelete": "类型 {}",
     "allowBtn": "允许",
     "loginSignupLabel": "登录或注册",
-    "takeBackTheInternetLbl": "夺回互联网的控制权。",
+    "takeBackTheInternetLbl": "夺回互联网。",
     "homeLbl": "家",
     "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
     "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
@@ -1176,7 +1176,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Neyi beğendiniz?",
     "rateConnectionDislike": "Neyi beğenmediniz?",
-    "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
+    "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
     "switchToLocationBtn": "Şuna geçin: {}",
     "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
     "fastLabel": "Hızlı",
@@ -1748,7 +1748,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionOnboardingManagePlanTitle": "プランを管理する",
     "subscriptionOnboardingManagePlanDescription":
         "アカウントのアクセス権限に基づいて、プランの購入、アップグレード、または利用可能なプランの確認ができます。",
-    "subscriptionOnboardingBoostProtectionTitle": "保護機能を強化しましょう",
+    "subscriptionOnboardingBoostProtectionTitle": "保護を強化しましょう",
     "subscriptionOnboardingBoostProtectionDescription": "VPNプロトコルやマルウェア対策などの高度な機能を活用しましょう。",
     "subscriptionOnboardingConnectTitle": "プライバシーを守るために接続してください",
     "subscriptionOnboardingConnectDescription": "最適なサーバーに接続いたします。",
@@ -1847,7 +1847,7 @@ class CodegenLoader extends AssetLoader {
     "onboardingStep1Desc": "あなたのIPアドレスと位置情報は、ウェブサイト、トラッカー、公共Wi-Fiネットワークから閲覧可能です。",
     "onboardingStep2Title": "ワンタップであなたの本当の身元を隠しましょう",
     "onboardingStep2Desc":
-        "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、および位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
+        "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
     "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
     "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
     "checkSubsStatusTitle": "プラン情報を取得中...",
@@ -2406,7 +2406,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanResidentialIPsDesc":
         "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
     "subscriptionPlanMalwareBlockerDesc":
         "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
     "skipBtn": "Überspringen",
@@ -3188,7 +3188,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Do que você gostou?",
     "rateConnectionDislike": "Do que você não gostou?",
-    "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
+    "cancelSurveyFeedbackHint": "Por favor, insira mais detalhes...",
     "switchToLocationBtn": "Alternar para {}",
     "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
     "fastLabel": "Rápido",
@@ -3266,7 +3266,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanNamePro": "Pró",
     "productsTitle": "Produtos VPN",
     "productsManageSubtitle": "Gerencie e atualize na web.",
-    "productsExploreSubtitle": "Explore planos e recursos",
+    "productsExploreSubtitle": "Explore planos e funcionalidades",
     "productsActivePlanWebSyncAlert":
         "Você já possui um plano ativo. Atualize pelo site — as alterações serão sincronizadas automaticamente.",
     "productsMaxPlanAlert": "Você já está no plano mais completo disponível.",
@@ -4510,7 +4510,7 @@ class CodegenLoader extends AssetLoader {
         "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
     "subscriptionOnboardingSetupCompleteTitle": "Configurazione completata",
     "subscriptionOnboardingSetupCompleteDescription":
-        "Scegli una posizione per iniziare a navigare in modo più privato.",
+        "Scegli una località per iniziare a navigare in modo più privato.",
     "notNowBtn": "Non adesso",
     "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
     "viewLessBtn": "Visualizza meno",
@@ -5287,7 +5287,7 @@ class CodegenLoader extends AssetLoader {
     "ipAddressLbl": "Adresse IP",
     "madridLbl": "Madrid, Espagne 🇪🇸",
     "locationLbl": "Emplacement",
-    "vodafoneLbl": "Vodafone Ibérie",
+    "vodafoneLbl": "Vodafone Iberia",
     "protectedLbl": "PROTÉGÉ",
     "unprotectedLbl": "NON PROTÉGÉ",
     "berlinLbl": "Berlin, Allemagne 🇩🇪",
@@ -5851,7 +5851,7 @@ class CodegenLoader extends AssetLoader {
         "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
     "notificationsSettingTitle": "Pemberitahuan",
     "pushNotificationsSetting": "Notifikasi Push",
-    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
+    "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
     "openSystemSettingsBtn": "Buka pengaturan sistem",
     "emailNotificationsSetting": "Notifikasi Email",
     "subscriptionPlanWireGuardDesc":
@@ -6061,7 +6061,7 @@ class CodegenLoader extends AssetLoader {
         "IP residensial berbeda dengan IP berkecepatan tinggi. Berikut yang dapat Anda harapkan.",
     "residentialEducationBlock1Title": "Perangkat rumah tangga sungguhan",
     "residentialEducationBlock1Body":
-        "IP residensial berasal dari perangkat rumah tangga sungguhan, sehingga lalu lintas Anda terlihat seperti penggunaan internet biasa.",
+        "IP residensial berasal dari perangkat rumah tangga sungguhan, sehingga lalu lintas Anda tampak seperti penggunaan internet biasa.",
     "residentialEducationBlock2Title": "Ketersediaan dapat berubah",
     "residentialEducationBlock3Title": "Penyambungan ulang otomatis",
     "residentialEducationBlock3Body":
@@ -7210,7 +7210,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو أنوال",
+    "plan_yearly_pro": "برو سنوي",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -7258,7 +7258,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionOnboardingVPNLocationsTitle": "تصفح مواقع VPN",
     "subscriptionOnboardingVPNLocationsDesktopDescription": "استكشف البلدان والمدن في مكان واحد.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
-        "استكشف البلدان والمدن والاتصالات الأخيرة والخوادم المتخصصة في مكان واحد.",
+        "استكشف البلدان والمدن والاتصالات الحديثة والخوادم المتخصصة في مكان واحد.",
     "subscriptionOnboardingSetupCompleteTitle": "اكتمل الإعداد",
     "subscriptionOnboardingSetupCompleteDescription": "اختر موقعًا لبدء التصفح بشكل أكثر خصوصية.",
     "notNowBtn": "ليس الآن",
@@ -7276,7 +7276,7 @@ class CodegenLoader extends AssetLoader {
     "connectToTooltip": "اتصل بـ {countryNum}",
     "locationItemStatesCount": {"one": "{statesNum} الولاية", "other": "{statesNum} الولايات"},
     "redeemDiscountCode": "استخدم رمز الخصم",
-    "couponCodeCopied": "تم نسخ {couponCode} إلى الحافظة!",
+    "couponCodeCopied": "{couponCode} تم نسخه إلى الحافظة!",
     "marketingConsentPopupTitle": "ابقَ على اطلاع دائم عبر البريد الإلكتروني",
     "marketingConsentPopupDesc":
         "هل ترغب في تلقي تحديثات عبر البريد الإلكتروني، ونصائح حول الخصوصية، وعروض خاصة من شبكة ميستيريوم؟",
@@ -7379,7 +7379,7 @@ class CodegenLoader extends AssetLoader {
     "signInAbortedMsg": "تم إلغاء تسجيل الدخول",
     "notAvailableMsg": "غير متوفر",
     "killSwitch": "مفتاح الإيقاف",
-    "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
+    "killSwitchDesc": "يحجب الإنترنت في حالة انقطاع اتصال VPN",
     "dns": "حماية نظام أسماء النطاقات (DNS)",
     "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)",
     "subscriptionPlanNamePro": "محترف",
@@ -7410,10 +7410,10 @@ class CodegenLoader extends AssetLoader {
     "subscriptionAllPlansCurrentPlan": "الخطة الحالية",
     "ipTypeDataCenterDisclaimer": "عناوين IP لمراكز البيانات مُحسّنة من حيث السرعة والأداء.",
     "ipTypeResidentialDisclaimer":
-        "مُقدمة من أسر حقيقية. تكاد تكون غير قابلة للكشف ولكنها أقل استقراراً.",
+        "مُقدمة من أسر حقيقية. يكاد يكون من المستحيل اكتشافها، لكنها أقل استقراراً.",
     "ipTypeResidentialTooltipTitle": "لماذا يمكن أن يتغير عنوان IP الخاص بي؟",
     "ipTypeResidentialTooltipBody":
-        "يتم توفير عناوين IP المنزلية من خلال أجهزة منزلية حقيقية، لذا قد تتغير إمكانية الوصول إليها بمرور الوقت.\n\nفي حال انقطاع اتصال أحد الأجهزة، يقوم التطبيق بإعادة توصيلك بأقرب عنوان IP منزلي متاح.",
+        "يتم توفير عناوين IP المنزلية من خلال أجهزة منزلية حقيقية، لذا قد تتغير إمكانية الوصول إليها بمرور الوقت.\n\nفي حال انقطاع اتصال أحد الأجهزة، يعيد التطبيق توصيلك بأقرب عنوان IP منزلي متاح.",
     "residentialEducationTitle": "كيف تعمل عناوين IP السكنية",
     "residentialEducationSubtitle":
         "تختلف عناوين IP السكنية عن عناوين IP عالية السرعة. إليك ما يمكن توقعه.",

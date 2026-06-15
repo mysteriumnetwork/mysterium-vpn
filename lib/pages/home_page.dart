@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/views/home/home_desktop_scaffold.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_scaffold.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/residential_education_trigger.dart';
+import 'package:mysterium_vpn/views/home/subscription_onboarding_showcase.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -30,10 +31,12 @@ class HomePage extends HookConsumerWidget {
           // education trigger survives mobile↔desktop resizes.
           ResidentialEducationTrigger(
             connectedCardKey: ref.watch(homeStateProvider).connectedCardKey,
-            child: ScreenTypeLayoutBuilder(
-              mobile: (BuildContext context) => const HomeMobileScaffold(),
-              tablet: (BuildContext context) => const HomeDesktopScaffold(),
-              desktop: (BuildContext context) => const HomeDesktopScaffold(),
+            child: SubscriptionOnboardingShowcase(
+              child: ScreenTypeLayoutBuilder(
+                mobile: (BuildContext context) => const HomeMobileScaffold(),
+                tablet: (BuildContext context) => const HomeDesktopScaffold(),
+                desktop: (BuildContext context) => const HomeDesktopScaffold(),
+              ),
             ),
           ),
           if (isLoading) LoadingBarrier(color: Theme.of(context).palette.bgPopover),

@@ -16,5 +16,6 @@ export 'rate_connection.dart';
 export 'routes.dart';
 export 'storage_keys.dart';
 export 'store_state.dart';
+export 'subscription_onboarding_step.dart';
 export 'subscription_status.dart';
 export 'vpn_connection_status.dart';

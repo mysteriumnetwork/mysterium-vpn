@@ -5,10 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeDesktopScaffold extends HookConsumerWidget {
   const HomeDesktopScaffold({super.key});
@@ -44,6 +47,26 @@ class HomeDesktopScaffold extends HookConsumerWidget {
       children: [
         NavRail(
           currentIndex: selectedIndex,
+          itemWrapper: ({required context, required index, required item, required child}) {
+            final step = [
+              SubscriptionOnboardingStep.map,
+              SubscriptionOnboardingStep.products,
+              SubscriptionOnboardingStep.settings,
+            ][index];
+
+            return SizedBox(
+              width: 32,
+              height: 32,
+              child: ArrowedProgressCard(
+                step: step,
+                globalKey: ref
+                    .read(homeStateProvider)
+                    .subscriptionOnboardingKeys[step.platformIndex],
+                tooltipPosition: TooltipPosition.right,
+                child: child,
+              ),
+            );
+          },
           items: [
             for (var i = 0; i < tabs.length; i++)
               NavRailItem(

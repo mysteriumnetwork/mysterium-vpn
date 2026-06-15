@@ -18,6 +18,7 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<RemoteConfigStore>(),
+  MockSpec<SubscriptionOnboardingStore>(),
 ])
 void main() {
   late UserPreferencesStore store;
@@ -28,6 +29,7 @@ void main() {
   late MockPushNotificationsStore mockPushNotificationsStore;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockSubscriptionStore mockSubscriptionStore;
+  late MockSubscriptionOnboardingStore mockSubscriptionOnboardingStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
   setUp(() {
     mockApiService = MockApiService();
@@ -37,6 +39,7 @@ void main() {
     mockPushNotificationsStore = MockPushNotificationsStore();
     mockAuthSessionStore = MockAuthSessionStore();
     mockSubscriptionStore = MockSubscriptionStore();
+    mockSubscriptionOnboardingStore = MockSubscriptionOnboardingStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
 
     // Default auth state: not authenticated
@@ -61,9 +64,12 @@ void main() {
     when(
       mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
     ).thenAnswer((_) async => false);
+    when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
+    when(mockSubscriptionOnboardingStore.markShown()).thenAnswer((_) async {});
     // Default: FF is on so existing tests don't have to opt in. Tests that
     // exercise the kill switch override this.
     when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
+    when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
 
     store = UserPreferencesStore(
       apiService: mockApiService,
@@ -73,6 +79,7 @@ void main() {
       pushNotificationsStore: mockPushNotificationsStore,
       authSessionStore: mockAuthSessionStore,
       subscriptionStore: mockSubscriptionStore,
+      subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
       remoteConfigStore: mockRemoteConfigStore,
     )..testIsMobile = true;
   });
@@ -94,6 +101,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
         remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
@@ -128,6 +136,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
         remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
@@ -160,6 +169,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
         remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
@@ -260,6 +270,23 @@ void main() {
       expect(store.noneSubsOnboardingPromptShown, isTrue);
     });
 
+    test('isPromptShown returns false for unshown subscriptionOnboarding', () {
+      store.subscriptionOnboardingPromptShown = false;
+      expect(store.isPromptShown(UserPromptType.subscriptionOnboarding), isFalse);
+    });
+
+    test('isPromptShown returns true for shown subscriptionOnboarding', () {
+      store.subscriptionOnboardingPromptShown = true;
+      expect(store.isPromptShown(UserPromptType.subscriptionOnboarding), isTrue);
+    });
+
+    test('markPromptAsShown marks subscriptionOnboarding as shown', () {
+      store
+        ..subscriptionOnboardingPromptShown = false
+        ..markPromptAsShown(UserPromptType.subscriptionOnboarding);
+      expect(store.subscriptionOnboardingPromptShown, isTrue);
+    });
+
     test('markPromptAsShown sets anyPromptShownThisSession for non-none type', () {
       store
         ..anyPromptShownThisSession = false
@@ -290,6 +317,12 @@ void main() {
       // Step updates happen mid-dialog and must not cascade into prompt
       // re-evaluation (which would otherwise short-circuit other prompts).
       verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+    });
+
+    test('setSubscriptionOnboardingShown delegates to subscription onboarding store', () async {
+      await store.setSubscriptionOnboardingShown();
+
+      verify(mockSubscriptionOnboardingStore.markShown()).called(1);
     });
 
     test('shouldShowNoneSubsOnboarding skips when already completed', () async {
@@ -371,6 +404,80 @@ void main() {
 
       expect(store.nextPromptToShow, UserPromptType.marketingConsent);
     });
+
+    test('evaluatePromptToShow prioritizes subscription onboarding', () async {
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(
+        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
+      ).thenAnswer((_) async => true);
+
+      await store.evaluatePromptToShow();
+
+      expect(store.nextPromptToShow, UserPromptType.subscriptionOnboarding);
+      verifyNever(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt());
+    });
+
+    test(
+      'evaluatePromptToShow skips subscription onboarding when remote config disables it',
+      () async {
+        // arange
+        when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
+        when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+        store.getMarketingConsentFuture = ObservableFuture.value(false);
+        when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
+        when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+
+        // act
+        await store.evaluatePromptToShow();
+
+        // assert
+        expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+        verifyNever(mockSubscriptionOnboardingStore.markShown());
+      },
+    );
+
+    test('shouldShowSubscriptionOnboarding returns false when remoteConfig disables it', () async {
+      // arrange
+      when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+      // act
+      final result = await store.shouldShowSubscriptionOnboarding();
+
+      // assert
+      expect(result, isFalse);
+      verifyNever(mockSubscriptionOnboardingStore.shouldShow());
+    });
+
+    test('shouldShowSubscriptionOnboarding delegates when remotConfig enables it', () async {
+      // arrange
+      when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+      // act
+      final result = await store.shouldShowSubscriptionOnboarding();
+
+      // assert
+      expect(result, isTrue);
+      verify(mockSubscriptionOnboardingStore.shouldShow()).called(1);
+    });
+
+    test(
+      'evaluatePromptToShow can show subscription onboarding after another prompt this session',
+      () async {
+        store.anyPromptShownThisSession = true;
+        when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+
+        await store.evaluatePromptToShow();
+
+        expect(store.nextPromptToShow, UserPromptType.subscriptionOnboarding);
+      },
+    );
 
     test('evaluatePromptToShow returns none when anyPromptShownThisSession is true', () async {
       // Conditions that would normally trigger marketingConsent
@@ -578,6 +685,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
         remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
@@ -748,6 +856,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
         remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
@@ -775,6 +884,7 @@ void main() {
         pushNotificationsStore: mockPushNotificationsStore,
         authSessionStore: mockAuthSessionStore,
         subscriptionStore: mockSubscriptionStore,
+        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
         remoteConfigStore: mockRemoteConfigStore,
       )..testIsMobile = true;
 
