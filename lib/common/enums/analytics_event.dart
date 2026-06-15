@@ -147,7 +147,16 @@ enum AnalyticsEvent {
   onboardingContinueClick,
   onboardingBackClick,
   onboardingCloseClick,
-  onboardingSeePlansClick;
+  onboardingSeePlansClick,
+  reviewPromptEligible,
+  reviewPromptSuppressed,
+  reviewPromptShown,
+  reviewPromptPositiveClicked,
+  nativeReviewPromptOpened,
+  reviewPromptNegativeClicked,
+  feedbackFlowOpened,
+  reviewPromptDismissed,
+  reviewPromptCooldownStarted;
 
   String get formattedName => name.toSnakeCase;
 }

@@ -1,8 +1,10 @@
 //state providers
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
@@ -500,6 +502,36 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
     localDb,
     remoteConfigStore,
   );
+
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
+final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
+  // Best-effort crash suppression: Crashlytics only runs where Firebase is
+  // initialised (mobile). Fetched once asynchronously and read synchronously by
+  // the store; it's only needed when a session later completes.
+  var crashedRecently = false;
+  if (Platform.isAndroid || Platform.isIOS) {
+    unawaited(() async {
+      try {
+        crashedRecently = await FirebaseCrashlytics.instance.didCrashOnPreviousExecution();
+      } catch (_) {
+        // Firebase not ready / unsupported — leave false.
+      }
+    }());
+  }
+
+  final store = ReviewPromptStore(
+    prefs: SharedPreferenceService.instance,
+    remoteConfigStore: ref.watch(remoteConfigStorePOD),
+    analyticsStore: ref.watch(analyticsStorePOD),
+    vpnStore: ref.watch(vpnStorePOD),
+    authSessionStore: ref.watch(authSessionStorePOD),
+    didCrashRecently: () => crashedRecently,
+    canShowNativeReview: InAppReviewService().isAvailable,
+  )..init();
 
   ref.onDispose(store.dispose);
 

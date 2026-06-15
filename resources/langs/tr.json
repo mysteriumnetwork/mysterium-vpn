@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "Otomatik yeniden bağlantı",
   "residentialEducationBlock3Body": "Mevcut IP adresiniz kullanılamaz hale gelirse, uygulama sizi en yakın kullanılabilir ev IP adresine yeniden bağlar.",
   "residentialEducationGotIt": "Anladım",
-  "residentialEducationBlock2Body": "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir."
+  "residentialEducationBlock2Body": "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir.",
+  "reviewLeaveReviewBtn": "Bir yorum bırakın",
+  "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
+  "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?"
 }

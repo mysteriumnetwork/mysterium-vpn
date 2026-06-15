@@ -56,7 +56,7 @@ dependencies:
   in_app_purchase: 3.2.3
   in_app_purchase_android: ^0.4.0+8
   in_app_purchase_storekit: 0.4.5
-  in_app_review: 2.0.11
+  in_app_review: 2.0.12
   in_app_update: 4.2.5
   intl: 0.20.2
   json_annotation: 4.11.0
@@ -64,14 +64,13 @@ dependencies:
   mail_launcher:
     path: ./packages/mail_launcher
   mobx: 2.6.0
-  modal_bottom_sheet: 3.0.0
   money2: 6.3.0
   mqtt5_client: 4.17.0
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.20
-  onesignal_flutter: 5.5.8
+      ref: 0.0.21
+  onesignal_flutter: 5.6.0
   open_store: 0.5.0
   openvpn_dart:
     git:
@@ -79,12 +78,12 @@ dependencies:
       ref: extract-driver
   package_info_plus: 10.1.0
   reactive_forms: 17.0.1
-  retry: ^3.1.2
+  retry: 3.1.2
   sentry_flutter: 9.19.0
   shared_preferences: 2.5.5
   shimmer: 3.0.0
   sign_in_with_apple: 8.0.0
-  sliver_tools: ^0.2.12
+  sliver_tools: 0.2.12
   stack_trace: 1.12.1
   store_checker_windows:
     path: ./packages/store_checker_windows
@@ -111,7 +110,7 @@ dependencies:
 dev_dependencies:
   build_runner: 2.13.0
   cider: 0.2.10
-  easy_localization_sheet: ^1.1.0
+  easy_localization_sheet: 1.1.0
   flutter_gen_runner: 5.13.0+1
   flutter_lints: 6.0.0
   flutter_test:

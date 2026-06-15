@@ -434,7 +434,7 @@
   "skipBtn": "Saltar",
   "completeBtn": "Completo",
   "subscriptionOnboardingPromptTitle": "Haz un recorrido rápido",
-  "subscriptionOnboardingPromptDescription": "Familiarízate con la aplicación actualizada y descubre dónde se encuentran ahora las funciones principales.",
+  "subscriptionOnboardingPromptDescription": "Familiarícese con la aplicación actualizada y descubra dónde se encuentran ahora las funciones principales.",
   "subscriptionOnboardingStartTourLabel": "Iniciar recorrido",
   "subscriptionOnboardingCancelTourLabel": "Saltar por ahora",
   "subscriptionOnboardingMapDesktopTitle": "Explora los lugares a tu manera.",
@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "Reconexión automática",
   "residentialEducationBlock3Body": "Si tu IP actual deja de estar disponible, la aplicación te reconecta a la IP residencial disponible más cercana.",
   "residentialEducationGotIt": "Entiendo",
-  "residentialEducationBlock2Body": "Debido a que estas direcciones IP son proporcionadas por dispositivos reales, algunos nodos pueden desconectarse inesperadamente."
+  "residentialEducationBlock2Body": "Debido a que estas direcciones IP son proporcionadas por dispositivos reales, algunos nodos pueden desconectarse inesperadamente.",
+  "reviewLeaveReviewBtn": "Deja una reseña",
+  "reviewPositiveTitle": "¡Genial! ¿Te importaría dejarnos una reseña?",
+  "reviewSatisfactionTitle": "¿Recomendarías esta aplicación a otras personas?"
 }
