@@ -62,9 +62,6 @@ class LocationsDisclaimer extends ConsumerWidget {
         if (!bannersStore.canShow(bannerType)) {
           return const SizedBox.shrink();
         }
-        // Tap or hover shows a plain title + body tooltip (Figma 11643:489234).
-        // The icon + "Got it" reminder is a separate surface shown after 30
-        // days (see ResidentialEducationTrigger).
         final titleAction = tooltipTitle == null
             ? null
             : TooltipIcon.titled(

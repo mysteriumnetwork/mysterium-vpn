@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/hooks/home_autorun_hook.dart';
@@ -7,7 +6,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/layout_builders/screen_type_builder.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_scaffold.dart';
 import 'package:mysterium_vpn/views/home/home_mobile_scaffold.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -22,11 +20,6 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authSessionStore = ref.watch(authSessionStorePOD);
     final isLoading = useComputedValue(() => authSessionStore.status == AuthStatus.unknown);
-    useEffect(() {
-      InAppReviewObserver().monitor();
-
-      return null;
-    }, []);
 
     useHomeAutorun();
 

@@ -603,7 +603,7 @@
   "ipTypeDataCenterDisclaimer": "Direcciones IP para centros de datos optimizadas para velocidad y rendimiento.",
   "ipTypeResidentialDisclaimer": "Proporcionado por hogares reales. Casi indetectable, pero menos estable.",
   "ipTypeResidentialTooltipTitle": "¿Por qué puede cambiar mi IP?",
-  "ipTypeResidentialTooltipBody": "Las direcciones IP residenciales son proporcionadas por dispositivos domésticos reales, por lo que su disponibilidad puede variar con el tiempo.\n\nSi un nodo se desconecta, la aplicación te reconecta a la IP residencial disponible más cercana.",
+  "ipTypeResidentialTooltipBody": "Las direcciones IP residenciales son proporcionadas por dispositivos domésticos reales, por lo que su disponibilidad puede variar con el tiempo.\n\nSi un nodo se desconecta, la aplicación te reconecta a la dirección IP residencial disponible más cercana.",
   "residentialEducationTitle": "Cómo funcionan las IP residenciales",
   "residentialEducationSubtitle": "Las direcciones IP residenciales son diferentes de las direcciones IP de alta velocidad. Esto es lo que puede esperar.",
   "residentialEducationBlock1Title": "Dispositivos domésticos reales",

@@ -561,7 +561,7 @@
   "authenticationFailed": "Não foi possível efetuar o login. Tente novamente.",
   "failedToLoadLocations": "Não foi possível carregar as localizações. Tente novamente.",
   "failedToSubscribe": "Ocorreu um problema com a sua assinatura. Por favor, tente novamente!",
-  "incorrectCode": "Código incorreto. Por favor, tente novamente.",
+  "incorrectCode": "Código incorreto. Tente novamente.",
   "incorrectMagicLink": "Link mágico incorreto. Tente novamente.",
   "noLocations": "Não foi possível encontrar nenhuma localização.",
   "noLocationsKeyword": "Não foi possível encontrar nenhuma localização para \"{}\"",

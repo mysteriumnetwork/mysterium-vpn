@@ -61,6 +61,7 @@ enum _FeatureToggleKey {
   canShowNoSubsOnboardingFlow,
   residentialEducationConnectThreshold,
   residentialReminderIntervalMinutes,
+  reviewPromptConfig,
   canShowSubscriptionOnboardingFlow,
 }
 
@@ -616,6 +617,22 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return const Duration(days: 30);
+  }
+
+  /// Tunables for the in-app review/feedback prompt, delivered as a single
+  /// JSON value. Falls back to the built-in defaults when unset or malformed.
+  @computed
+  ReviewPromptConfig get reviewPromptConfig {
+    if (config.containsKey(_FeatureToggleKey.reviewPromptConfig.name)) {
+      final raw = config[_FeatureToggleKey.reviewPromptConfig.name];
+      try {
+        final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
+        return ReviewPromptConfig.fromJson(decoded);
+      } catch (e, stack) {
+        logger.handle(e, stack);
+      }
+    }
+    return const ReviewPromptConfig();
   }
 
   @computed

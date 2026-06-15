@@ -116,6 +116,13 @@ class QAToolbox extends HookConsumerWidget {
             showSnackbar('Residential education reset — modal shows on 2nd connect again');
           },
         ),
+        _QAActionButton(
+          label: 'Reset Review Prompt',
+          onPressed: () async {
+            await ref.read(reviewPromptStorePOD).resetState();
+            showSnackbar('Review prompt state reset (counters, cooldown, yearly cap)');
+          },
+        ),
       ],
     );
   }
@@ -318,6 +325,7 @@ class QAToolbox extends HookConsumerWidget {
             label: 'Subscription upgrade modal',
             onPressed: () => showSubscriptionUpgradeModalPage(context),
           ),
+          _QAActionButton(label: 'Review Prompt', onPressed: () => showReviewPromptDialog(context)),
           _QAActionButton(
             label: 'Residential Edu Modal',
             onPressed: () => showResidentialEducationModal(context),

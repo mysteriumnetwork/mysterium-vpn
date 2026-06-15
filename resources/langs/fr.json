@@ -549,7 +549,7 @@
   "onboardingStep2Title": "Dissimulez votre véritable identité en un clic",
   "onboardingStep2Desc": "Mysterium VPN masque votre adresse IP, votre fournisseur d'accès Internet et votre localisation pour vous permettre de naviguer en toute confidentialité.",
   "onboardingStep3Title": "Tous les VPN ne fonctionnent pas de la même manière.",
-  "onboardingStep3Desc": "Avec des adresses IP résidentielles, votre connexion paraît naturelle, et non comme un trafic VPN classique.",
+  "onboardingStep3Desc": "Avec les adresses IP résidentielles, votre connexion paraît naturelle, et non comme un trafic VPN classique.",
   "checkSubsStatusTitle": "Obtenir des informations sur le forfait...",
   "noSubscriptionTitle": "Aucun forfait actif disponible",
   "noSubscriptionAction": "Obtenez un forfait",

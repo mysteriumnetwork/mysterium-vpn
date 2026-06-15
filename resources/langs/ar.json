@@ -573,7 +573,7 @@
   "signInAbortedMsg": "تم إلغاء تسجيل الدخول",
   "notAvailableMsg": "غير متوفر",
   "killSwitch": "مفتاح الإيقاف",
-  "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
+  "killSwitchDesc": "يحجب الإنترنت في حالة انقطاع اتصال VPN",
   "dns": "حماية نظام أسماء النطاقات (DNS)",
   "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)",
   "subscriptionPlanNamePro": "محترف",

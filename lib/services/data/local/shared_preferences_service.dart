@@ -67,9 +67,6 @@ class SharedPreferenceService {
 
   Future<bool> setAppInstallDay(int value) async => setInt(StorageKeys.appInstallDay.name, value);
   int? getAppInstallDay() => getInt(StorageKeys.appInstallDay.name);
-  int? getRemindTimeStamp() => getInt(StorageKeys.inAppReviewRemindInterval.name);
-  Future<bool> setRemindTimeStamp(int value) async =>
-      setInt(StorageKeys.inAppReviewRemindInterval.name, value);
 
   Future<void> setIPInfo(IPInfo? info) async {
     if (info == null) {
@@ -105,4 +102,63 @@ class SharedPreferenceService {
 
   bool getPushNotificationsShown() =>
       getBool(StorageKeys.pushNotificationsPermissionPromptShown.name) ?? false;
+
+  // ─── Review prompt ──────────────────────────────────────────────────────
+
+  int getReviewAppOpenCount() => getInt(StorageKeys.reviewAppOpenCount.name) ?? 0;
+  Future<bool> setReviewAppOpenCount(int value) async =>
+      setInt(StorageKeys.reviewAppOpenCount.name, value);
+
+  int getReviewSuccessfulConnections() => getInt(StorageKeys.reviewSuccessfulConnections.name) ?? 0;
+  Future<bool> setReviewSuccessfulConnections(int value) async =>
+      setInt(StorageKeys.reviewSuccessfulConnections.name, value);
+
+  /// Outcomes of the most recent sessions, newest last (`true` = success).
+  List<bool> getReviewRecentSessionOutcomes() {
+    final raw = getStringList(StorageKeys.reviewRecentSessionOutcomes.name);
+    if (raw == null) {
+      return const [];
+    }
+    return raw.map((it) => it == 'true').toList();
+  }
+
+  Future<bool> setReviewRecentSessionOutcomes(List<bool> value) async => setStringList(
+    StorageKeys.reviewRecentSessionOutcomes.name,
+    value.map((it) => '$it').toList(),
+  );
+
+  int? getReviewCooldownUntil() => getInt(StorageKeys.reviewCooldownUntil.name);
+  Future<bool> setReviewCooldownUntil(int value) async =>
+      setInt(StorageKeys.reviewCooldownUntil.name, value);
+
+  /// Epoch-millis timestamps of every prompt display (drives the yearly cap).
+  List<int> getReviewPromptShownTimestamps() {
+    final raw = getStringList(StorageKeys.reviewPromptShownTimestamps.name);
+    if (raw == null) {
+      return const [];
+    }
+    return raw.map(int.tryParse).whereType<int>().toList();
+  }
+
+  Future<bool> setReviewPromptShownTimestamps(List<int> value) async => setStringList(
+    StorageKeys.reviewPromptShownTimestamps.name,
+    value.map((it) => '$it').toList(),
+  );
+
+  int? getReviewNativeReviewOpenedAt() => getInt(StorageKeys.reviewNativeReviewOpenedAt.name);
+  Future<bool> setReviewNativeReviewOpenedAt(int value) async =>
+      setInt(StorageKeys.reviewNativeReviewOpenedAt.name, value);
+
+  /// Clears all persisted review-prompt state (counters, cooldown, yearly-cap
+  /// timestamps, native-review marker). Used by the QA toolbox to re-test.
+  Future<void> resetReviewPromptState() async {
+    await Future.wait([
+      remove(StorageKeys.reviewAppOpenCount.name),
+      remove(StorageKeys.reviewSuccessfulConnections.name),
+      remove(StorageKeys.reviewRecentSessionOutcomes.name),
+      remove(StorageKeys.reviewCooldownUntil.name),
+      remove(StorageKeys.reviewPromptShownTimestamps.name),
+      remove(StorageKeys.reviewNativeReviewOpenedAt.name),
+    ]);
+  }
 }
