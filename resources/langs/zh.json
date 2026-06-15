@@ -436,7 +436,7 @@
   "subscriptionOnboardingPromptTitle": "快速参观",
   "subscriptionOnboardingPromptDescription": "熟悉更新后的应用程序，并发现主要功能现在位于何处。",
   "subscriptionOnboardingStartTourLabel": "开始游览",
-  "subscriptionOnboardingCancelTourLabel": "暂时跳过",
+  "subscriptionOnboardingCancelTourLabel": "暂且跳过",
   "subscriptionOnboardingMapDesktopTitle": "以您的方式探索各地",
   "subscriptionOnboardingMapDesktopDescription": "浏览地图或从侧边栏探索地点。",
   "subscriptionOnboardingMapMobileTitle": "从地图连接",
@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "自动重新连接",
   "residentialEducationBlock3Body": "如果您的当前 IP 地址不可用，该应用程序会将您重新连接到最近的可用住宅 IP 地址。",
   "residentialEducationGotIt": "知道了",
-  "residentialEducationBlock2Body": "由于这些 IP 地址是由真实设备提供的，因此某些节点可能会意外离线。"
+  "residentialEducationBlock2Body": "由于这些 IP 地址是由真实设备提供的，因此某些节点可能会意外离线。",
+  "reviewLeaveReviewBtn": "留下评论",
+  "reviewPositiveTitle": "太好了！您介意给我们留个评价吗？",
+  "reviewSatisfactionTitle": "你会向其他人推荐这款应用吗？"
 }

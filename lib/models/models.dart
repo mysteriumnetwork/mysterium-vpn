@@ -13,6 +13,7 @@ export 'purchasable_product.dart';
 export 'push_notification.dart';
 export 'push_notifications_user.dart';
 export 'response.dart';
+export 'review_prompt_config.dart';
 export 'stun_binding_request.dart';
 export 'subscription.dart';
 export 'subscription_plan_features.dart';

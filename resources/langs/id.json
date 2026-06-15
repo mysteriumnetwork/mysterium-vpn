@@ -568,7 +568,7 @@
   "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
   "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
   "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-  "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
+  "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
   "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
   "signInAbortedMsg": "Login gagal",
   "notAvailableMsg": "Tidak tersedia",
@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "Penyambungan ulang otomatis",
   "residentialEducationBlock3Body": "Jika IP Anda saat ini tidak tersedia, aplikasi akan menghubungkan Anda kembali ke IP residensial terdekat yang tersedia.",
   "residentialEducationGotIt": "Mengerti",
-  "residentialEducationBlock2Body": "Karena IP ini disediakan oleh perangkat nyata, beberapa node mungkin offline secara tiba-tiba."
+  "residentialEducationBlock2Body": "Karena IP ini disediakan oleh perangkat nyata, beberapa node mungkin offline secara tiba-tiba.",
+  "reviewLeaveReviewBtn": "Berikan ulasan",
+  "reviewPositiveTitle": "Bagus sekali! Apakah Anda keberatan memberikan ulasan kepada kami?",
+  "reviewSatisfactionTitle": "Apakah Anda akan merekomendasikan aplikasi ini kepada orang lain?"
 }

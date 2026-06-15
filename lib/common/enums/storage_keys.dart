@@ -16,7 +16,6 @@ enum StorageKeys {
   codeVerifier,
   vpnConfigConsent,
   appInstallDay,
-  inAppReviewRemindInterval,
   subscriptionPaymentInfo,
   locationCode,
   locationType,
@@ -26,4 +25,10 @@ enum StorageKeys {
   ipType,
   deviceId,
   pushNotificationsPermissionPromptShown,
+  reviewAppOpenCount,
+  reviewSuccessfulConnections,
+  reviewRecentSessionOutcomes,
+  reviewCooldownUntil,
+  reviewPromptShownTimestamps,
+  reviewNativeReviewOpenedAt,
 }

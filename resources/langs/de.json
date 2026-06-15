@@ -429,7 +429,7 @@
   "subscriptionPlanWireGuardDesc": "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming\nOpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar)",
   "subscriptionPlanDoubleVPNDesc": "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
   "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
-  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
   "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
   "skipBtn": "Überspringen",
   "completeBtn": "Vollständig",
@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "Automatische Wiederverbindung",
   "residentialEducationBlock3Body": "Falls Ihre aktuelle IP-Adresse nicht mehr verfügbar ist, verbindet Sie die App automatisch mit der nächstgelegenen verfügbaren Wohn-IP-Adresse.",
   "residentialEducationGotIt": "Habe es",
-  "residentialEducationBlock2Body": "Da diese IPs von realen Geräten bereitgestellt werden, kann es vorkommen, dass einige Knoten unerwartet offline gehen."
+  "residentialEducationBlock2Body": "Da diese IPs von realen Geräten bereitgestellt werden, kann es vorkommen, dass einige Knoten unerwartet offline gehen.",
+  "reviewLeaveReviewBtn": "Hinterlassen Sie eine Bewertung",
+  "reviewPositiveTitle": "Das ist toll! Würden Sie uns bitte eine Bewertung hinterlassen?",
+  "reviewSatisfactionTitle": "Würden Sie diese App weiterempfehlen?"
 }

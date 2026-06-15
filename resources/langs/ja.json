@@ -547,7 +547,7 @@
   "onboardingStep1Title": "あなたの接続は危険にさらされています",
   "onboardingStep1Desc": "あなたのIPアドレスと位置情報は、ウェブサイト、トラッカー、公共Wi-Fiネットワークから閲覧可能です。",
   "onboardingStep2Title": "ワンタップであなたの本当の身元を隠しましょう",
-  "onboardingStep2Desc": "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
+  "onboardingStep2Desc": "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、および位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
   "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
   "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
   "checkSubsStatusTitle": "プラン情報を取得中...",
@@ -569,7 +569,7 @@
   "subscriptionProcessCanceled": "購読内容の変更が完了していません。",
   "tokenAlreadyUsed": "トークンは既に使用されています。もう一度お試しください。\n\n",
   "subscriptionActive": "素晴らしいお知らせです！お客様の購読が有効になりました。",
-  "planAlreadyPurchasedMsg": "これで準備完了です！このプランは既に有効になっています。",
+  "planAlreadyPurchasedMsg": "準備完了です！このプランは既に有効になっています。",
   "signInAbortedMsg": "サインインが中断されました",
   "notAvailableMsg": "利用不可",
   "killSwitch": "キルスイッチ",
@@ -612,5 +612,8 @@
   "residentialEducationBlock3Title": "自動再接続",
   "residentialEducationBlock3Body": "現在使用しているIPアドレスが利用できなくなった場合、アプリは最寄りの利用可能な家庭用IPアドレスに自動的に再接続します。",
   "residentialEducationGotIt": "わかった",
-  "residentialEducationBlock2Body": "これらのIPアドレスは実際のデバイスから提供されるため、一部のノードが予期せずオフラインになる場合があります。"
+  "residentialEducationBlock2Body": "これらのIPアドレスは実際のデバイスから提供されるため、一部のノードが予期せずオフラインになる場合があります。",
+  "reviewLeaveReviewBtn": "レビューを残す",
+  "reviewPositiveTitle": "素晴らしいですね！よろしければレビューを書いていただけませんか？",
+  "reviewSatisfactionTitle": "このアプリを他の人にも勧めますか？"
 }

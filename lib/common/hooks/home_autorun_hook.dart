@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -23,6 +24,7 @@ void useHomeAutorun() {
   final userPreferencesStore = useProvider<UserPreferencesStore>(userPreferencesStorePOD);
   final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
   final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
+  final reviewPromptStore = useProvider<ReviewPromptStore>(reviewPromptStorePOD);
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
@@ -135,6 +137,25 @@ void useHomeAutorun() {
               });
             }
           }
+        }),
+        autorun((_) {
+          if (!reviewPromptStore.pendingPrompt) {
+            return;
+          }
+          controller.add(() async {
+            if (!context.mounted) {
+              return null;
+            }
+            // Suppress while a flow is on top of home (onboarding, paywall /
+            // checkout, subscription, cancellation, …): only show when home is
+            // the active route.
+            if (!(ModalRoute.of(context)?.isCurrent ?? true)) {
+              await reviewPromptStore.onSuppressedByActiveFlow();
+              return null;
+            }
+            await showReviewPromptDialog(context);
+            return null;
+          });
         }),
       ];
 
