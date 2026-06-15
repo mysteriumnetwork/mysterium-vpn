@@ -25,6 +25,7 @@ void useHomeAutorun() {
   final authSessionStore = useProvider<AuthSessionStore>(authSessionStorePOD);
   final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
   final reviewPromptStore = useProvider<ReviewPromptStore>(reviewPromptStorePOD);
+  final subscriptionOnboardingStore = useProvider(subscriptionOnboardingStorePOD);
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
@@ -78,6 +79,8 @@ void useHomeAutorun() {
               controller.add(() => showMarketingConsentDialog(context));
             } else if (value case UserPromptType.pushNotifications) {
               controller.add(() => showPushNotificationsPermissionDialog(context));
+            } else if (value case UserPromptType.subscriptionOnboarding) {
+              controller.add(() async => subscriptionOnboardingStore.showSubscriptionOnboarding());
             }
           }
         }),

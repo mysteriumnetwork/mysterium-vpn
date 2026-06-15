@@ -383,6 +383,14 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.reviewPromptConfig,
         name: 'RemoteConfigStoreBase.reviewPromptConfig',
       )).value;
+  Computed<bool>? _$canShowSubscriptionOnboardingFlowComputed;
+
+  @override
+  bool get canShowSubscriptionOnboardingFlow =>
+      (_$canShowSubscriptionOnboardingFlowComputed ??= Computed<bool>(
+        () => super.canShowSubscriptionOnboardingFlow,
+        name: 'RemoteConfigStoreBase.canShowSubscriptionOnboardingFlow',
+      )).value;
 
   @override
   String toString() {
@@ -437,7 +445,8 @@ hideReedemCode: ${hideReedemCode},
 canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow},
 residentialEducationConnectThreshold: ${residentialEducationConnectThreshold},
 residentialReminderInterval: ${residentialReminderInterval},
-reviewPromptConfig: ${reviewPromptConfig}
+reviewPromptConfig: ${reviewPromptConfig},
+canShowSubscriptionOnboardingFlow: ${canShowSubscriptionOnboardingFlow}
     ''';
   }
 }

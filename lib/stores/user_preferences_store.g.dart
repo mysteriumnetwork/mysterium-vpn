@@ -110,6 +110,43 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
     return _$evaluatePromptToShowAsyncAction.run(() => super.evaluatePromptToShow());
   }
 
+  late final _$setSubscriptionOnboardingShownAsyncAction = AsyncAction(
+    '_UserPreferencesStore.setSubscriptionOnboardingShown',
+    context: context,
+  );
+
+  @override
+  Future<void> setSubscriptionOnboardingShown() {
+    return _$setSubscriptionOnboardingShownAsyncAction.run(
+      () => super.setSubscriptionOnboardingShown(),
+    );
+  }
+
+  late final _$getSubscriptionOnboardingShownAsyncAction = AsyncAction(
+    '_UserPreferencesStore.getSubscriptionOnboardingShown',
+    context: context,
+  );
+
+  @override
+  Future<bool> getSubscriptionOnboardingShown() {
+    return _$getSubscriptionOnboardingShownAsyncAction.run(
+      () => super.getSubscriptionOnboardingShown(),
+    );
+  }
+
+  late final _$shouldShowSubscriptionOnboardingAsyncAction = AsyncAction(
+    '_UserPreferencesStore.shouldShowSubscriptionOnboarding',
+    context: context,
+  );
+
+  @override
+  @visibleForTesting
+  Future<bool> shouldShowSubscriptionOnboarding() {
+    return _$shouldShowSubscriptionOnboardingAsyncAction.run(
+      () => super.shouldShowSubscriptionOnboarding(),
+    );
+  }
+
   late final _$shouldShowNoneSubsOnboardingAsyncAction = AsyncAction(
     '_UserPreferencesStore.shouldShowNoneSubsOnboarding',
     context: context,

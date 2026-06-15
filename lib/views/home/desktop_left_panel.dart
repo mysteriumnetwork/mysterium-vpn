@@ -5,10 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/scaffold_brightness_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class HomeDesktopLeftPanel extends HookConsumerWidget {
@@ -21,6 +23,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     final scrollController = useScrollController()
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
+    final homeState = ref.read(homeStateProvider);
 
     useEffect(() {
       final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
@@ -67,7 +70,15 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                   Padding(
                     padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
                     child: Observer(
-                      builder: (context) => LocationsSearch(enabled: !locationsStore.hasNoServers),
+                      builder: (context) => ArrowedProgressCard(
+                        globalKey:
+                            homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep
+                                .search
+                                .platformIndex],
+                        step: SubscriptionOnboardingStep.search,
+                        tooltipPosition: TooltipPosition.bottom,
+                        child: LocationsSearch(enabled: !locationsStore.hasNoServers),
+                      ),
                     ),
                   ),
                 ],

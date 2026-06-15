@@ -62,6 +62,7 @@ enum _FeatureToggleKey {
   residentialEducationConnectThreshold,
   residentialReminderIntervalMinutes,
   reviewPromptConfig,
+  canShowSubscriptionOnboardingFlow,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -632,6 +633,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return const ReviewPromptConfig();
+  }
+
+  @computed
+  bool get canShowSubscriptionOnboardingFlow {
+    if (config.containsKey(_FeatureToggleKey.canShowSubscriptionOnboardingFlow.name)) {
+      return config[_FeatureToggleKey.canShowSubscriptionOnboardingFlow.name] as bool;
+    }
+    return true;
   }
 
   Map<String, String> get asUserProperties =>

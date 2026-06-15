@@ -69,7 +69,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.21
+      ref: 0.0.22
   onesignal_flutter: 5.6.0
   open_store: 0.5.0
   openvpn_dart:
@@ -82,6 +82,7 @@ dependencies:
   sentry_flutter: 9.19.0
   shared_preferences: 2.5.5
   shimmer: 3.0.0
+  showcaseview: 5.0.2
   sign_in_with_apple: 8.0.0
   sliver_tools: 0.2.12
   stack_trace: 1.12.1

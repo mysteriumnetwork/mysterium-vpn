@@ -33,6 +33,7 @@ class UserData {
     this.residentialEducationModalShown = false,
     this.residentialReminderShownAt,
     this.residentialConnectCount = 0,
+    this.subscriptionOnboardingShown = false,
   });
 
   @HiveField(0)
@@ -111,6 +112,9 @@ class UserData {
   /// Number of qualifying residential connections (gates the education modal).
   @HiveField(21, defaultValue: 0)
   int residentialConnectCount;
+
+  @HiveField(22, defaultValue: false)
+  bool subscriptionOnboardingShown;
 
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [

@@ -29,6 +29,7 @@ export 'remote_config/texts_store.dart';
 export 'residential_education_store.dart';
 export 'review_prompt/review_prompt_store.dart';
 export 'selected_location_store.dart';
+export 'subscription_onboarding_store.dart';
 export 'subscription_store.dart';
 export 'subscription_upgrade_store.dart';
 export 'theme_store.dart';
