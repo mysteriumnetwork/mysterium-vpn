@@ -126,7 +126,7 @@ jobs:
           cache-dependencies: true
 
       - name: Upload to Github
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: Windows app (Standalone)
           path: build/windows/x64/runner/Release/MysteriumVPN.msix
@@ -140,7 +140,7 @@ jobs:
             --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos" --protocol-activation "${{ inputs.protocol_activation }}"
 
       - name: Upload to Github
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: Windows app (Store)
           path: build/windows/x64/runner/Release/MysteriumVPN.msix
