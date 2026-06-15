@@ -123,6 +123,25 @@ void main() {
     });
   });
 
+  group('eligibility is re-evaluated each session (no stale memoization)', () {
+    // Regression: isEligible/suppressionReason must read live SharedPreferences
+    // on every evaluate. When they were @computed they memoized the first
+    // verdict and never recomputed as the counters grew, so the prompt only
+    // surfaced after an app restart recreated the store.
+    test('becomes eligible on a later session as connections cross the minimum', () async {
+      when(prefs.getReviewSuccessfulConnections()).thenReturn(9);
+      final store = createStore();
+
+      await store.evaluate();
+      expect(store.pendingPrompt, isFalse);
+
+      // A later stable session pushes connections to the minimum.
+      when(prefs.getReviewSuccessfulConnections()).thenReturn(10);
+      await store.evaluate();
+      expect(store.pendingPrompt, isTrue);
+    });
+  });
+
   group('suppressionReason', () {
     test('null when nothing blocks', () {
       expect(createStore().suppressionReason, isNull);
@@ -362,10 +381,21 @@ void main() {
       store.dispose();
     });
 
-    test('a never-connected attempt records nothing', () async {
+    test('a connection error (never connected) records a failure', () async {
+      // connecting → disconnected without ever reaching `connected` is a failed
+      // attempt: it breaks the clean-sessions streak but must NOT touch the
+      // cumulative successful-connections counter.
       final store = createStore()
         ..handleConnectionStatus(VpnConnectionStatus.connecting)
         ..handleConnectionStatus(VpnConnectionStatus.disconnected);
+      await Future<void>.delayed(Duration.zero);
+      verify(prefs.setReviewRecentSessionOutcomes([true, true, false])).called(1);
+      verifyNever(prefs.setReviewSuccessfulConnections(any));
+      store.dispose();
+    });
+
+    test('an idle disconnect with no attempt records nothing', () async {
+      final store = createStore()..handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
       verifyNever(prefs.setReviewRecentSessionOutcomes(any));
       verifyNever(prefs.setReviewSuccessfulConnections(any));

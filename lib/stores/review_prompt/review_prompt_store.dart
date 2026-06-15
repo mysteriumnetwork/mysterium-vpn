@@ -58,8 +58,10 @@ abstract class _ReviewPromptStore with Store {
   /// Whether the current connection reached the stable threshold.
   bool _sessionStable = false;
 
-  /// Whether we have seen a `connected` state for the current attempt.
-  bool _sessionConnected = false;
+  /// Whether a connection attempt is in progress (we have seen `connecting` or
+  /// `connected`). An attempt that ends without reaching stability — whether it
+  /// connected then dropped or never connected at all — is a failed session.
+  bool _sessionAttempted = false;
 
   /// Set when the user is eligible and nothing suppresses the prompt. The home
   /// autorun watches this and shows the modal.
@@ -103,7 +105,7 @@ abstract class _ReviewPromptStore with Store {
   void handleConnectionStatus(VpnConnectionStatus status) {
     switch (status) {
       case VpnConnectionStatus.connected:
-        _sessionConnected = true;
+        _sessionAttempted = true;
         _sessionStable = false;
         _stableTimer?.cancel();
         // Wall-clock timer: if the app is backgrounded the isolate is suspended
@@ -117,8 +119,10 @@ abstract class _ReviewPromptStore with Store {
           }
         });
       case VpnConnectionStatus.connecting:
-        // A fresh attempt (or auto-reconnect): reset and wait for `connected`.
-        _sessionConnected = false;
+        // A fresh attempt (or auto-reconnect): mark the attempt and wait for
+        // `connected`. Stability resets; the attempt flag persists until the
+        // session settles on `disconnected`.
+        _sessionAttempted = true;
         _sessionStable = false;
         _stableTimer?.cancel();
       case VpnConnectionStatus.unknown:
@@ -133,11 +137,15 @@ abstract class _ReviewPromptStore with Store {
           // eligibility check runs now, while disconnected (never while
           // connected/connecting).
           unawaited(evaluate());
-        } else if (_sessionConnected) {
-          // Connected but dropped before reaching stability → failed session.
+        } else if (_sessionAttempted) {
+          // An attempt ended without reaching stability: either connected then
+          // dropped early, or a connection error that never established. Both
+          // count as an unclean recent session (ticket: "no disconnects or
+          // connection errors in the last 3 sessions"). The cumulative
+          // successful-connections counter is deliberately left untouched.
           unawaited(recordSessionOutcome(success: false));
         }
-        _sessionConnected = false;
+        _sessionAttempted = false;
         _sessionStable = false;
     }
   }
@@ -196,7 +204,9 @@ abstract class _ReviewPromptStore with Store {
 
   // ─── Eligibility ─────────────────────────────────────────────────────────
 
-  @computed
+  // Not @computed: this derives from SharedPreferences (non-observable), so a
+  // memoized computed would go stale as the counters grow and only refresh on
+  // restart. A plain getter re-reads the live values on every evaluate.
   bool get isEligible =>
       _isOldEnough &&
       _prefs.getReviewAppOpenCount() >= _config.minAppOpens &&
@@ -228,7 +238,9 @@ abstract class _ReviewPromptStore with Store {
 
   /// A machine-readable reason the prompt is blocked, or `null` if clear.
   /// Only meaningful when [isEligible] is `true`.
-  @computed
+  ///
+  /// Not @computed: it reads SharedPreferences and VPN status that aren't all
+  /// MobX observables, so a memoized value could go stale. See [isEligible].
   String? get suppressionReason {
     if (!_config.enabled) {
       return 'disabled';
