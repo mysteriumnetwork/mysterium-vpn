@@ -313,6 +313,15 @@ void main() {
       verify(prefs.setReviewCooldownUntil(nowMs + 30 * dayMs)).called(1);
     });
 
+    test('cooldown durations are interpreted as minutes', () async {
+      const minuteMs = 60 * 1000;
+      when(
+        remoteConfig.reviewPromptConfig,
+      ).thenReturn(const ReviewPromptConfig(cooldownDismissMinutes: 5));
+      await createStore().onDismiss();
+      verify(prefs.setReviewCooldownUntil(nowMs + 5 * minuteMs)).called(1);
+    });
+
     test('onSatisfactionYes fires the positive-clicked event only', () async {
       await createStore().onSatisfactionYes();
       verify(analytics.logEvent(AnalyticsEvent.reviewPromptPositiveClicked)).called(1);

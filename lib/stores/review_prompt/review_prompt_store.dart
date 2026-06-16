@@ -218,8 +218,8 @@ abstract class _ReviewPromptStore with Store {
     if (installDay == null) {
       return false;
     }
-    final ageDays = (_nowMs - installDay) / Duration.millisecondsPerDay;
-    return ageDays >= _config.minAccountAgeDays;
+    final ageMinutes = (_nowMs - installDay) / Duration.millisecondsPerMinute;
+    return ageMinutes >= _config.minAccountAgeMinutes;
   }
 
   bool get _hasCleanRecentSessions {
@@ -292,7 +292,7 @@ abstract class _ReviewPromptStore with Store {
     if (openedAt == null) {
       return false;
     }
-    return _nowMs - openedAt < _config.cooldownPositiveDays * Duration.millisecondsPerDay;
+    return _nowMs - openedAt < _config.cooldownPositiveMinutes * Duration.millisecondsPerMinute;
   }
 
   // ─── Modal action handlers ──────────────────────────────────────────────────
@@ -321,7 +321,7 @@ abstract class _ReviewPromptStore with Store {
     pendingPrompt = false;
     await _analytics.logEvent(AnalyticsEvent.reviewPromptShown);
     await _prefs.setReviewPromptShownTimestamps([..._recentShownTimestamps(), _nowMs]);
-    await _setCooldown(_config.cooldownDismissDays);
+    await _setCooldown(_config.cooldownDismissMinutes);
   }
 
   /// User tapped "Yes" — opens the positive (leave-a-review) modal next.
@@ -335,7 +335,7 @@ abstract class _ReviewPromptStore with Store {
   Future<void> onSatisfactionNo() async {
     await _analytics.logEvent(AnalyticsEvent.reviewPromptNegativeClicked);
     await _analytics.logEvent(AnalyticsEvent.feedbackFlowOpened);
-    await _startCooldown(_config.cooldownNegativeDays);
+    await _startCooldown(_config.cooldownNegativeMinutes);
   }
 
   /// User tapped "Leave a review" — the native store prompt opens. Records the
@@ -344,7 +344,7 @@ abstract class _ReviewPromptStore with Store {
   Future<void> onLeaveReview() async {
     await _analytics.logEvent(AnalyticsEvent.nativeReviewPromptOpened);
     await _prefs.setReviewNativeReviewOpenedAt(_nowMs);
-    await _startCooldown(_config.cooldownPositiveDays);
+    await _startCooldown(_config.cooldownPositiveMinutes);
   }
 
   /// User dismissed the prompt ("Not now", close, or tap-away). Starts the
@@ -352,7 +352,7 @@ abstract class _ReviewPromptStore with Store {
   @action
   Future<void> onDismiss() async {
     await _analytics.logEvent(AnalyticsEvent.reviewPromptDismissed);
-    await _startCooldown(_config.cooldownDismissDays);
+    await _startCooldown(_config.cooldownDismissMinutes);
   }
 
   /// Clears all persisted review-prompt state. QA-only, exposed through the QA
@@ -365,12 +365,12 @@ abstract class _ReviewPromptStore with Store {
 
   /// Persists the cooldown without emitting analytics — used for the baseline
   /// cooldown set when the prompt is shown.
-  Future<void> _setCooldown(int days) =>
-      _prefs.setReviewCooldownUntil(_nowMs + days * Duration.millisecondsPerDay);
+  Future<void> _setCooldown(int minutes) =>
+      _prefs.setReviewCooldownUntil(_nowMs + minutes * Duration.millisecondsPerMinute);
 
   /// Persists the cooldown for an explicit user action and emits the event.
-  Future<void> _startCooldown(int days) async {
-    await _setCooldown(days);
+  Future<void> _startCooldown(int minutes) async {
+    await _setCooldown(minutes);
     await _analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted);
   }
 }
