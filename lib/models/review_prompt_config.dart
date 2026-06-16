@@ -2,17 +2,21 @@
 /// ConfigCat JSON value (`reviewPromptConfig`). Each field falls back to its
 /// default independently when missing, the wrong type, or negative, so a
 /// partial or slightly malformed payload still yields a usable config.
+///
+/// Durations (account age, cooldowns) are expressed in **minutes** so QA can
+/// configure short, testable windows; production sets the day-equivalents
+/// (e.g. 7 days = 10080, 30 days = 43200).
 class ReviewPromptConfig {
   const ReviewPromptConfig({
     this.enabled = true,
-    this.minAccountAgeDays = 7,
+    this.minAccountAgeMinutes = 10080, // 7 days
     this.minAppOpens = 5,
     this.minConnections = 10,
     this.cleanSessionsRequired = 3,
     this.stableSessionSeconds = 60,
-    this.cooldownDismissDays = 30,
-    this.cooldownNegativeDays = 75,
-    this.cooldownPositiveDays = 105,
+    this.cooldownDismissMinutes = 43200, // 30 days
+    this.cooldownNegativeMinutes = 108000, // 75 days
+    this.cooldownPositiveMinutes = 151200, // 105 days
     this.yearlyCap = 3,
   });
 
@@ -30,14 +34,23 @@ class ReviewPromptConfig {
 
     return ReviewPromptConfig(
       enabled: enabled is bool ? enabled : defaults.enabled,
-      minAccountAgeDays: nonNegative('minAccountAgeDays', defaults.minAccountAgeDays),
+      minAccountAgeMinutes: nonNegative('minAccountAgeMinutes', defaults.minAccountAgeMinutes),
       minAppOpens: nonNegative('minAppOpens', defaults.minAppOpens),
       minConnections: nonNegative('minConnections', defaults.minConnections),
       cleanSessionsRequired: nonNegative('cleanSessionsRequired', defaults.cleanSessionsRequired),
       stableSessionSeconds: nonNegative('stableSessionSeconds', defaults.stableSessionSeconds),
-      cooldownDismissDays: nonNegative('cooldownDismissDays', defaults.cooldownDismissDays),
-      cooldownNegativeDays: nonNegative('cooldownNegativeDays', defaults.cooldownNegativeDays),
-      cooldownPositiveDays: nonNegative('cooldownPositiveDays', defaults.cooldownPositiveDays),
+      cooldownDismissMinutes: nonNegative(
+        'cooldownDismissMinutes',
+        defaults.cooldownDismissMinutes,
+      ),
+      cooldownNegativeMinutes: nonNegative(
+        'cooldownNegativeMinutes',
+        defaults.cooldownNegativeMinutes,
+      ),
+      cooldownPositiveMinutes: nonNegative(
+        'cooldownPositiveMinutes',
+        defaults.cooldownPositiveMinutes,
+      ),
       yearlyCap: nonNegative('yearlyCap', defaults.yearlyCap),
     );
   }
@@ -45,8 +58,8 @@ class ReviewPromptConfig {
   /// Master switch for the prompt.
   final bool enabled;
 
-  /// Minimum account age (days) before the prompt is eligible.
-  final int minAccountAgeDays;
+  /// Minimum account age (minutes) before the prompt is eligible.
+  final int minAccountAgeMinutes;
 
   /// Minimum number of app opens before the prompt is eligible.
   final int minAppOpens;
@@ -61,14 +74,14 @@ class ReviewPromptConfig {
   /// How long (seconds) a connection must stay up to count as a stable session.
   final int stableSessionSeconds;
 
-  /// Cooldown (days) after the user dismisses the prompt.
-  final int cooldownDismissDays;
+  /// Cooldown (minutes) after the user dismisses the prompt.
+  final int cooldownDismissMinutes;
 
-  /// Cooldown (days) after the user gives negative feedback.
-  final int cooldownNegativeDays;
+  /// Cooldown (minutes) after the user gives negative feedback.
+  final int cooldownNegativeMinutes;
 
-  /// Cooldown (days) after the native review prompt is opened.
-  final int cooldownPositiveDays;
+  /// Cooldown (minutes) after the native review prompt is opened.
+  final int cooldownPositiveMinutes;
 
   /// Maximum prompt displays allowed per rolling year. `0` disables the cap.
   final int yearlyCap;
