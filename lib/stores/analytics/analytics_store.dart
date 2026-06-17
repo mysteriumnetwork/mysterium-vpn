@@ -198,6 +198,24 @@ mixin AnalyticsStore {
     logEvent(AnalyticsEvent.appLaunch, parameters: params);
   }
 
+  Future<void> logIpRefreshExhausted({
+    required VPNLocation location,
+    required int nodeCount,
+    required int refreshCount,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.ipRefreshExhaustedMessageShown,
+      parameters: {
+        'scope': location.isCountry ? 'country' : 'city',
+        'location_id': location.id,
+        'location_name': location.translations['en'] ?? location.id,
+        'ip_type': location.ipType.name.toSnakeCase,
+        'refresh_attempt_count': refreshCount,
+        'node_count': nodeCount,
+      },
+    );
+  }
+
   Future<void> logRefreshIP([String? currentIP]) async {
     await logEvent(
       AnalyticsEvent.refreshIp,
