@@ -109,6 +109,7 @@ void main() {
       openVpnRepository: mockOpenVpnRepo,
       connectionDecisionStore: mockConnectionDecision,
       protocolStore: mockVpnProtocolStore,
+      ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
     );
   });
 
@@ -164,6 +165,7 @@ void main() {
         openVpnRepository: mockOpenVpnRepo,
         connectionDecisionStore: mockConnectionDecision,
         protocolStore: mockVpnProtocolStore,
+        ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
       );
 
       expect(store, isNotNull);
@@ -194,6 +196,7 @@ void main() {
         openVpnRepository: mockOpenVpnRepo,
         connectionDecisionStore: mockConnectionDecision,
         protocolStore: mockVpnProtocolStore,
+        ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
       );
 
       expect(store, isNotNull);
@@ -396,6 +399,7 @@ void main() {
           openVpnRepository: mockOpenVpnRepo,
           connectionDecisionStore: mockConnectionDecision,
           protocolStore: mockVpnProtocolStore,
+          ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
         );
 
         when(mockRealIPInfo.infoFuture).thenAnswer(
@@ -613,6 +617,7 @@ void main() {
           openVpnRepository: mockOpenVpnRepo,
           connectionDecisionStore: mockConnectionDecision,
           protocolStore: mockVpnProtocolStore,
+          ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
         );
 
         when(
@@ -854,6 +859,64 @@ void main() {
           expect(vpnStore.connectedIpPoolCount, 88);
         },
       );
+
+      test('seeds the exhaustion store when the tunnel is already connected on launch', () async {
+        final exhaustionStore = IpRefreshExhaustionStore(mockAnalytics);
+        const connectedLocation = VPNLocation(
+          id: 'fr',
+          ipType: IPType.datacenter,
+          translations: {'en': 'France'},
+          countryCode: 'fr',
+          nodeCount: 2,
+        );
+
+        when(mockConnectionDecision.potentialLocation).thenReturn(connectedLocation);
+        when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async {});
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(
+          mockWireguardRepo.statusStream(),
+        ).thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
+        when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '2.2.2.2');
+
+        final store = VpnStore(
+          externalApiService: mockExternalApi,
+          mqtt: mockMqtt,
+          locationsStore: mockLocationsStore,
+          locationsService: mockLocationsService,
+          subscriptionStore: mockSubscriptionStore,
+          logger: mockLogger,
+          analyticsStore: mockAnalytics,
+          remoteConfigStore: mockRemoteConfig,
+          authSessionStore: mockAuthSession,
+          realIPInfo: mockRealIPInfo,
+          dnsStore: mockDns,
+          refreshIPStore: mockRefreshIP,
+          recentLocationsStore: mockRecentLocations,
+          locationsQueryStore: mockLocationsQuery,
+          unavailableLocationsStore: mockUnavailableLocations,
+          userIntentsStore: mockUserIntents,
+          connectionsLimitStore: mockConnectionsLimit,
+          wireguardRepository: mockWireguardRepo,
+          openVpnRepository: mockOpenVpnRepo,
+          connectionDecisionStore: mockConnectionDecision,
+          protocolStore: mockVpnProtocolStore,
+          ipRefreshExhaustionStore: exhaustionStore,
+        );
+
+        // Tunnel was already up at launch: this resolves the existing connection
+        // without going through the fresh-connect path.
+        await store.setupTunnel();
+        expect(store.location, connectedLocation);
+
+        // A single refresh exhausts the 2-node pool; the notice only fires if
+        // onConnected seeded the store during resolution.
+        exhaustionStore.registerRefresh(2);
+        expect(exhaustionStore.exhaustionNotice, connectedLocation);
+
+        await store.disposeStore();
+      });
     });
 
     group('Device & App Management', () {
