@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "Bir yorum bırakın",
   "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
   "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?",
-  "ipRefreshExhaustedCity": "\"Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir şehir veya ülke deneyin.\"",
+  "ipRefreshExhaustedCity": "Şu anda {} bölgesinde başka IP adresi bulunmamaktadır. Başka bir şehir veya ülke deneyin.",
   "ipRefreshExhaustedCountry": "Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir ülke deneyin."
 }

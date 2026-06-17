@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "Lascia una recensione",
   "reviewPositiveTitle": "Fantastico! Ti dispiacerebbe lasciarci una recensione?",
   "reviewSatisfactionTitle": "Consiglieresti quest'app ad altri?",
-  "ipRefreshExhaustedCity": "\"Al momento non sono disponibili altri indirizzi IP in {}. Prova un'altra città o un altro paese.\"",
+  "ipRefreshExhaustedCity": "Al momento non sono disponibili altri indirizzi IP in {}. Prova un'altra città o un altro paese.",
   "ipRefreshExhaustedCountry": "Al momento non sono disponibili altri indirizzi IP in {}. Prova con un altro paese."
 }

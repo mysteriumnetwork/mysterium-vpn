@@ -622,7 +622,7 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "留下评论",
     "reviewPositiveTitle": "太好了！您介意给我们留个评价吗？",
     "reviewSatisfactionTitle": "你会向其他人推荐这款应用吗？",
-    "ipRefreshExhaustedCity": "“目前在{}中没有其他可用的IP地址。请尝试其他城市或国家。”",
+    "ipRefreshExhaustedCity": "目前在{}区域没有其他可用的IP地址。请尝试其他城市或国家/地区。",
     "ipRefreshExhaustedCountry": "目前在{}地区没有其他可用的IP地址。请尝试其他国家/地区。",
   };
   static const Map<String, dynamic> _tr = {
@@ -1303,7 +1303,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
     "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?",
     "ipRefreshExhaustedCity":
-        "\"Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir şehir veya ülke deneyin.\"",
+        "Şu anda {} bölgesinde başka IP adresi bulunmamaktadır. Başka bir şehir veya ülke deneyin.",
     "ipRefreshExhaustedCountry":
         "Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir ülke deneyin.",
   };
@@ -1924,7 +1924,7 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "レビューを残す",
     "reviewPositiveTitle": "素晴らしいですね！よろしければレビューを書いていただけませんか？",
     "reviewSatisfactionTitle": "このアプリを他の人にも勧めますか？",
-    "ipRefreshExhaustedCity": "「{}では現在、他のIPアドレスは利用できません。別の都市または国をお試しください。」",
+    "ipRefreshExhaustedCity": "現在、{}では他のIPアドレスは利用できません。別の都市または国をお試しください。",
     "ipRefreshExhaustedCountry": "現在、{}では他のIPアドレスは利用できません。別の国をお試しください。",
   };
   static const Map<String, dynamic> _de = {
@@ -2627,7 +2627,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "Das ist toll! Würden Sie uns bitte eine Bewertung hinterlassen?",
     "reviewSatisfactionTitle": "Würden Sie diese App weiterempfehlen?",
     "ipRefreshExhaustedCity":
-        "„In {} sind derzeit keine anderen IP-Adressen verfügbar. Versuchen Sie es mit einer anderen Stadt oder einem anderen Land.“",
+        "Derzeit sind keine anderen IPs in {} verfügbar. Versuchen Sie es mit einer anderen Stadt oder einem anderen Land.",
     "ipRefreshExhaustedCountry":
         "In {} sind derzeit keine anderen IPs verfügbar. Versuchen Sie es in einem anderen Land.",
   };
@@ -3323,8 +3323,7 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Deixe uma avaliação",
     "reviewPositiveTitle": "Que ótimo! Você se importaria de deixar uma avaliação para nós?",
     "reviewSatisfactionTitle": "Você recomendaria este aplicativo para outras pessoas?",
-    "ipRefreshExhaustedCity":
-        "\"Nenhum outro endereço IP está disponível em {}. Tente outra cidade ou país.\"",
+    "ipRefreshExhaustedCity": "Não há outros IPs disponíveis em {}. Tente outra cidade ou país.",
     "ipRefreshExhaustedCountry": "Não há outros IPs disponíveis em {}. Tente outro país.",
   };
   static const Map<String, dynamic> _en = {
@@ -4008,7 +4007,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "That's great! Would you mind leaving us a review?",
     "reviewSatisfactionTitle": "Would you recommend this app to others?",
     "ipRefreshExhaustedCity":
-        "\"No other IPs are currently available in {}. Try another city or country.",
+        "No other IPs are currently available in {}. Try another city or country.",
     "ipRefreshExhaustedCountry": "No other IPs are currently available in {}. Try another country.",
   };
   static const Map<String, dynamic> _it = {
@@ -4706,7 +4705,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "Fantastico! Ti dispiacerebbe lasciarci una recensione?",
     "reviewSatisfactionTitle": "Consiglieresti quest'app ad altri?",
     "ipRefreshExhaustedCity":
-        "\"Al momento non sono disponibili altri indirizzi IP in {}. Prova un'altra città o un altro paese.\"",
+        "Al momento non sono disponibili altri indirizzi IP in {}. Prova un'altra città o un altro paese.",
     "ipRefreshExhaustedCountry":
         "Al momento non sono disponibili altri indirizzi IP in {}. Prova con un altro paese.",
   };
@@ -5412,7 +5411,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "C'est super ! Pourriez-vous nous laisser un avis ?",
     "reviewSatisfactionTitle": "Recommanderiez-vous cette application à d'autres personnes ?",
     "ipRefreshExhaustedCity":
-        "\"Aucune autre adresse IP n'est actuellement disponible à {}. Essayez une autre ville ou un autre pays.\"",
+        "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer une autre ville ou un autre pays.",
     "ipRefreshExhaustedCountry":
         "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer un autre pays.",
   };
@@ -6099,7 +6098,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "Bagus sekali! Apakah Anda keberatan memberikan ulasan kepada kami?",
     "reviewSatisfactionTitle": "Apakah Anda akan merekomendasikan aplikasi ini kepada orang lain?",
     "ipRefreshExhaustedCity":
-        "\"Saat ini tidak ada IP lain yang tersedia di {}. Coba kota atau negara lain.\"",
+        "Saat ini tidak ada IP lain yang tersedia di {}. Coba kota atau negara lain.",
     "ipRefreshExhaustedCountry":
         "Tidak ada IP lain yang tersedia saat ini di {}. Coba negara lain.",
   };
@@ -6799,7 +6798,7 @@ class CodegenLoader extends AssetLoader {
     "reviewPositiveTitle": "¡Genial! ¿Te importaría dejarnos una reseña?",
     "reviewSatisfactionTitle": "¿Recomendarías esta aplicación a otras personas?",
     "ipRefreshExhaustedCity":
-        "\"Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otra ciudad o país.",
+        "Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otra ciudad o país.",
     "ipRefreshExhaustedCountry":
         "Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otro país.",
   };
