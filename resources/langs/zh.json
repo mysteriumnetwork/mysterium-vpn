@@ -436,7 +436,7 @@
   "subscriptionOnboardingPromptTitle": "快速参观",
   "subscriptionOnboardingPromptDescription": "熟悉更新后的应用程序，并发现主要功能现在位于何处。",
   "subscriptionOnboardingStartTourLabel": "开始游览",
-  "subscriptionOnboardingCancelTourLabel": "暂时跳过",
+  "subscriptionOnboardingCancelTourLabel": "暂且跳过",
   "subscriptionOnboardingMapDesktopTitle": "以您的方式探索各地",
   "subscriptionOnboardingMapDesktopDescription": "浏览地图或从侧边栏探索地点。",
   "subscriptionOnboardingMapMobileTitle": "从地图连接",
@@ -521,7 +521,7 @@
   "typeDelete": "类型 {}",
   "allowBtn": "允许",
   "loginSignupLabel": "登录或注册",
-  "takeBackTheInternetLbl": "夺回互联网。",
+  "takeBackTheInternetLbl": "夺回互联网的控制权。",
   "homeLbl": "家",
   "linkExpires": "链接将在30分钟后失效，且只能使用一次。",
   "consumeLink": "它只能在发出请求的设备上运行 - 请点击电子邮件中的链接继续。",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "由于这些 IP 地址是由真实设备提供的，因此某些节点可能会意外离线。",
   "reviewLeaveReviewBtn": "留下评论",
   "reviewPositiveTitle": "太好了！您介意给我们留个评价吗？",
-  "reviewSatisfactionTitle": "你会向其他人推荐这款应用吗？"
+  "reviewSatisfactionTitle": "你会向其他人推荐这款应用吗？",
+  "ipRefreshExhaustedCity": "“目前在{}中没有其他可用的IP地址。请尝试其他城市或国家。”",
+  "ipRefreshExhaustedCountry": "目前在{}地区没有其他可用的IP地址。请尝试其他国家/地区。"
 }

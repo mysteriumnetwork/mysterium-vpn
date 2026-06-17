@@ -508,7 +508,7 @@
   },
   "rateConnectionLike": "Neyi beğendiniz?",
   "rateConnectionDislike": "Neyi beğenmediniz?",
-  "cancelSurveyFeedbackHint": "Lütfen daha fazla ayrıntı girin...",
+  "cancelSurveyFeedbackHint": "Lütfen daha fazla bilgi girin...",
   "switchToLocationBtn": "Şuna geçin: {}",
   "noActiveSubsDesc": "Aktif bir aboneliğiniz yok.",
   "fastLabel": "Hızlı",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir.",
   "reviewLeaveReviewBtn": "Bir yorum bırakın",
   "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
-  "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?"
+  "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?",
+  "ipRefreshExhaustedCity": "\"Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir şehir veya ülke deneyin.\"",
+  "ipRefreshExhaustedCountry": "Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir ülke deneyin."
 }

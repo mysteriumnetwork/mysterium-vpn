@@ -508,7 +508,7 @@
   },
   "rateConnectionLike": "Do que você gostou?",
   "rateConnectionDislike": "Do que você não gostou?",
-  "cancelSurveyFeedbackHint": "Por favor, insira mais detalhes...",
+  "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
   "switchToLocationBtn": "Alternar para {}",
   "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
   "fastLabel": "Rápido",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Como esses endereços IP são fornecidos por dispositivos reais, alguns nós podem ficar offline inesperadamente.",
   "reviewLeaveReviewBtn": "Deixe uma avaliação",
   "reviewPositiveTitle": "Que ótimo! Você se importaria de deixar uma avaliação para nós?",
-  "reviewSatisfactionTitle": "Você recomendaria este aplicativo para outras pessoas?"
+  "reviewSatisfactionTitle": "Você recomendaria este aplicativo para outras pessoas?",
+  "ipRefreshExhaustedCity": "\"Nenhum outro endereço IP está disponível em {}. Tente outra cidade ou país.\"",
+  "ipRefreshExhaustedCountry": "Não há outros IPs disponíveis em {}. Tente outro país."
 }

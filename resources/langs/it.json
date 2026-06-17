@@ -436,7 +436,7 @@
   "subscriptionOnboardingPromptTitle": "Fai un breve tour",
   "subscriptionOnboardingPromptDescription": "Impara a usare l'app aggiornata e scopri dove si trovano ora le funzionalità principali.",
   "subscriptionOnboardingStartTourLabel": "Inizia il tour",
-  "subscriptionOnboardingCancelTourLabel": "Per ora lasciamo perdere.",
+  "subscriptionOnboardingCancelTourLabel": "Per ora saltate.",
   "subscriptionOnboardingMapDesktopTitle": "Esplora i luoghi a modo tuo",
   "subscriptionOnboardingMapDesktopDescription": "Consulta la mappa o esplora le località dalla barra laterale.",
   "subscriptionOnboardingMapMobileTitle": "Collegati dalla mappa",
@@ -453,7 +453,7 @@
   "subscriptionOnboardingVPNLocationsDesktopDescription": "Esplora paesi e città in un unico luogo.",
   "subscriptionOnboardingVPNLocationsMobileDescription": "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
   "subscriptionOnboardingSetupCompleteTitle": "Configurazione completata",
-  "subscriptionOnboardingSetupCompleteDescription": "Scegli una località per iniziare a navigare in modo più privato.",
+  "subscriptionOnboardingSetupCompleteDescription": "Scegli una posizione per iniziare a navigare in modo più privato.",
   "notNowBtn": "Non adesso",
   "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
   "viewLessBtn": "Visualizza meno",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Poiché questi indirizzi IP sono forniti da dispositivi reali, alcuni nodi potrebbero disconnettersi inaspettatamente.",
   "reviewLeaveReviewBtn": "Lascia una recensione",
   "reviewPositiveTitle": "Fantastico! Ti dispiacerebbe lasciarci una recensione?",
-  "reviewSatisfactionTitle": "Consiglieresti quest'app ad altri?"
+  "reviewSatisfactionTitle": "Consiglieresti quest'app ad altri?",
+  "ipRefreshExhaustedCity": "\"Al momento non sono disponibili altri indirizzi IP in {}. Prova un'altra città o un altro paese.\"",
+  "ipRefreshExhaustedCountry": "Al momento non sono disponibili altri indirizzi IP in {}. Prova con un altro paese."
 }
