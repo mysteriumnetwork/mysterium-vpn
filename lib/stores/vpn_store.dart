@@ -46,6 +46,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     required OpenVpnRepository openVpnRepository,
     required ConnectionDecisionStore connectionDecisionStore,
     required VpnProtocolStore protocolStore,
+    required IpRefreshExhaustionStore ipRefreshExhaustionStore,
   }) : _externalApiService = externalApiService,
        _mqtt = mqtt,
        _locationsStore = locationsStore,
@@ -68,7 +69,8 @@ abstract class _VpnStore extends VpnGuard with Store {
        _vpnRepository = protocolStore.protocol == ProtocolType.wireguard
            ? wireguardRepository
            : openVpnRepository,
-       _connectionDecisionStore = connectionDecisionStore {
+       _connectionDecisionStore = connectionDecisionStore,
+       _ipRefreshExhaustionStore = ipRefreshExhaustionStore {
     _init();
   }
 
@@ -96,6 +98,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   final ConnectionsLimitStore _connectionsLimitStore;
   final ConnectionDecisionStore _connectionDecisionStore;
   final VpnProtocolStore _protocolStore;
+  final IpRefreshExhaustionStore _ipRefreshExhaustionStore;
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
@@ -318,6 +321,9 @@ abstract class _VpnStore extends VpnGuard with Store {
         ),
       );
       await _resolveConnectionLocationFuture;
+      // Tunnel was already up when the app launched: seed the exhaustion store
+      // so refresh-IP presses are tracked this session (no fresh connect fired).
+      _ipRefreshExhaustionStore.onConnected(location);
     } catch (e) {
       await disconnectTunnel();
     }
@@ -501,6 +507,11 @@ abstract class _VpnStore extends VpnGuard with Store {
         isRefresh: refreshIP,
         protocol: _protocolStore.protocol,
       );
+      if (refreshIP) {
+        _ipRefreshExhaustionStore.registerRefresh(connectedIpPoolCount);
+      } else {
+        _ipRefreshExhaustionStore.onConnected(_requestedLocation ?? _vpnConnection!.location);
+      }
     }
   }
 
@@ -735,6 +746,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       _userIntentsStore.userIntent = null;
       _connectingLocation = null;
       _requestedLocation = null;
+      _ipRefreshExhaustionStore.onDisconnected();
       await _vpnRepository.notifyApiVpnDisconnected();
     }
 

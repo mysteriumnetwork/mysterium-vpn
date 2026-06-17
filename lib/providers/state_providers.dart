@@ -91,6 +91,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final openVpnRepository = ref.watch(openVpnRepositoryPOD);
   final protocolStore = ref.watch(vpnProtocolStorePOD);
   final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
+  final ipRefreshExhaustionStore = ref.watch(ipRefreshExhaustionStorePOD);
 
   final vpnStore = VpnStore(
     externalApiService: externalApiService,
@@ -114,6 +115,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     openVpnRepository: openVpnRepository,
     protocolStore: protocolStore,
     connectionDecisionStore: connectionDecisionStore,
+    ipRefreshExhaustionStore: ipRefreshExhaustionStore,
   );
 
   return vpnStore;
@@ -375,6 +377,10 @@ final dnsStorePOD = Provider<DNSStore>(
 final refreshIPStorePOD = Provider<RefreshIPStore>(
   (ref) =>
       RefreshIPStore(LocalDBService.instance, ref.watch(loggerPOD), ref.watch(authSessionStorePOD)),
+);
+
+final ipRefreshExhaustionStorePOD = Provider<IpRefreshExhaustionStore>(
+  (ref) => IpRefreshExhaustionStore(ref.watch(analyticsStorePOD)),
 );
 
 final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
