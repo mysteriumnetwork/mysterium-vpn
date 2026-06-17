@@ -831,6 +831,29 @@ void main() {
         await connect(cityWithNodes);
         expect(vpnStore.connectedIpPoolCount, 30);
       });
+
+      test(
+        'connectedIpPoolCount falls back to the resolved count when requested count is unknown',
+        () async {
+          // The requested `country` const has no nodeCount; the resolved location does.
+          const resolved = VPNLocation(
+            id: 'fr',
+            ipType: IPType.datacenter,
+            translations: {},
+            countryCode: 'fr',
+            nodeCount: 88,
+          );
+          when(
+            mockLocationsStore.findById(
+              any,
+              countryCode: anyNamed('countryCode'),
+              ipType: anyNamed('ipType'),
+            ),
+          ).thenAnswer((_) async => resolved);
+          await connect(country);
+          expect(vpnStore.connectedIpPoolCount, 88);
+        },
+      );
     });
 
     group('Device & App Management', () {

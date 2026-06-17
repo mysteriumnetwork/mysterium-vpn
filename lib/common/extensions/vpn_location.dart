@@ -25,8 +25,6 @@ extension VPNLocationExtensions on VPNLocation {
 
   String getName(BuildContext context) => _getName(context).capitalizeWords();
 
-  bool get isCountry => id == countryCode;
-
   VPNLocation? queried(String query, String locale) {
     if (query.isEmpty) {
       return this;

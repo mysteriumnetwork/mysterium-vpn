@@ -177,9 +177,11 @@ abstract class _VpnStore extends VpnGuard with Store {
   VPNLocation? get location => _vpnConnection?.location ?? _connectingLocation;
 
   /// IP-pool count to show under the refresh icon while connected: the country
-  /// total when connected via a country, the city count when via a city.
+  /// total when connected via a country, the city count when via a city. Falls
+  /// back to the resolved location's count when the requested one is unknown
+  /// (e.g. a recent location without a node count).
   @computed
-  int get connectedIpPoolCount => (_requestedLocation ?? location)?.nodeCount ?? 0;
+  int get connectedIpPoolCount => _requestedLocation?.nodeCount ?? location?.nodeCount ?? 0;
 
   @computed
   VPNLocation? get potentialLocation => _connectionDecisionStore.potentialLocation;
