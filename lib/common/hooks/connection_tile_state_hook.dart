@@ -7,8 +7,10 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -37,6 +39,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final ipRefreshExhaustionStore = ref.watch(ipRefreshExhaustionStorePOD);
   final handleToggleConnection = useHandleToggleConnection();
   final handleUpgradePlan = useHandleUpgradePlan();
   final isAuthenticated = useIsAuthenticated();
@@ -46,6 +49,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   );
   final selectedLocation = useComputedValue(() => selectedLocationStore.value);
   final connectedLocation = useComputedValue(() => vpnStore.location);
+  final connectedIpPoolCount = useComputedValue(() => vpnStore.connectedIpPoolCount);
   final isConnected = useComputedValue(() => vpnStore.isConnected);
   final isLoading = useComputedValue(() => connectionDisplayStore.isLoading);
   final ipInfo = useComputedValue(() => connectionDisplayStore.connectionIP);
@@ -94,7 +98,6 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final connectedServiceQuality = connected.ipType == IPType.residential
         ? LocaleKeys.residential.tr()
         : LocaleKeys.highSpeed.tr();
-    final connectedIpPoolCount = connected.nodeCount ?? 0;
 
     final isSelectedUnavailable = unavailableLocationsStore.unavailableLocations.contains(
       selectedLocation,
@@ -118,8 +121,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final country = parentLocation?.getName(context) ?? displayLocation?.getName(context) ?? '';
     final city = parentLocation != null ? displayLocation?.getName(context) ?? '' : '';
     final ipType = displayLocation?.ipType;
-    final ipPoolCount =
-        (isConnected ? connectedLocation?.nodeCount : displayLocation?.nodeCount) ?? 0;
+    final ipPoolCount = isConnected ? connectedIpPoolCount : (displayLocation?.nodeCount ?? 0);
     final countryIcon = displayLocation != null
         ? CircleFlag(displayLocation.countryCode, size: 32)
         : const SizedBox(width: 32, height: 32);
@@ -188,6 +190,20 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     () => showRateConnectionDialog(context, RateConnectionRequestModeEnum.dislike),
     [],
   );
+
+  useReaction(() => ipRefreshExhaustionStore.exhaustionNotice, (VPNLocation? location) {
+    if (location == null) {
+      return;
+    }
+    showSnackbar(
+      ipRefreshExhaustedMessage(
+        isCountry: location.isCountry,
+        locationName: location.getName(context),
+      ),
+      type: SnackbarType.info,
+    );
+    ipRefreshExhaustionStore.clearNotice();
+  });
 
   final connectionRating = switch (connectionRated) {
     RateConnectionRequestModeEnum.like => ConnectionRating.thumbsUp,

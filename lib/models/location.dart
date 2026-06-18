@@ -99,6 +99,10 @@ abstract class VPNLocation with _$VPNLocation {
     countryCode: '',
   );
 
+  /// A location is a country (rather than a city) when its id equals its
+  /// country code.
+  bool get isCountry => id == countryCode;
+
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) {

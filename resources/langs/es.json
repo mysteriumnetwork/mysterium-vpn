@@ -442,7 +442,7 @@
   "subscriptionOnboardingMapMobileTitle": "Conectar desde el mapa",
   "subscriptionOnboardingMapMobileDescription": "Navega por el mapa para elegir un país y conectarte al instante.",
   "subscriptionOnboardingManagePlanTitle": "Gestiona tu plan",
-  "subscriptionOnboardingManagePlanDescription": "Compra, actualiza o consulta los planes disponibles según tu acceso a la cuenta.",
+  "subscriptionOnboardingManagePlanDescription": "Compra, actualiza o consulta los planes disponibles según el acceso a tu cuenta.",
   "subscriptionOnboardingBoostProtectionTitle": "Refuerza tu protección",
   "subscriptionOnboardingBoostProtectionDescription": "Descubre funciones avanzadas como los protocolos VPN y el bloqueo de malware.",
   "subscriptionOnboardingConnectTitle": "Conéctate para mantener tu privacidad",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Debido a que estas direcciones IP son proporcionadas por dispositivos reales, algunos nodos pueden desconectarse inesperadamente.",
   "reviewLeaveReviewBtn": "Deja una reseña",
   "reviewPositiveTitle": "¡Genial! ¿Te importaría dejarnos una reseña?",
-  "reviewSatisfactionTitle": "¿Recomendarías esta aplicación a otras personas?"
+  "reviewSatisfactionTitle": "¿Recomendarías esta aplicación a otras personas?",
+  "ipRefreshExhaustedCity": "Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otra ciudad o país.",
+  "ipRefreshExhaustedCountry": "Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otro país."
 }

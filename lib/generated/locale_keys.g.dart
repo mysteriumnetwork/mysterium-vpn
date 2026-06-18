@@ -617,4 +617,6 @@ abstract class LocaleKeys {
   static const reviewLeaveReviewBtn = 'reviewLeaveReviewBtn';
   static const reviewPositiveTitle = 'reviewPositiveTitle';
   static const reviewSatisfactionTitle = 'reviewSatisfactionTitle';
+  static const ipRefreshExhaustedCity = 'ipRefreshExhaustedCity';
+  static const ipRefreshExhaustedCountry = 'ipRefreshExhaustedCountry';
 }
