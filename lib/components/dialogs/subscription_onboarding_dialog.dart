@@ -22,6 +22,12 @@ Future<void> showSubscriptionOnboardingDialog({
 }
 
 Future<void> showSubscriptionOnboardingCompleteDialog({required BuildContext context}) async {
+  Future.delayed(const Duration(seconds: 3), () {
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
+  });
+
   await showDialog<void>(
     context: context,
     builder: (context) => Dialog(
