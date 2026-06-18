@@ -44,6 +44,11 @@ class SharedPreferenceService {
 
   Future<bool> clear() async => _prefsInstance.clear();
 
+  /// Every stored key/value, for the QA debug viewer. Order is unspecified.
+  Map<String, Object?> readAll() => {
+    for (final key in _prefsInstance.getKeys()) key: _prefsInstance.get(key),
+  };
+
   bool checkExistance(StorageKeys key) => _prefsInstance.containsKey(key.name);
 
   Locale getLocale() {

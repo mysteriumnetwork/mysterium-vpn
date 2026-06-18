@@ -9,21 +9,6 @@ part of 'review_prompt_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ReviewPromptStore on _ReviewPromptStore, Store {
-  Computed<bool>? _$isEligibleComputed;
-
-  @override
-  bool get isEligible => (_$isEligibleComputed ??= Computed<bool>(
-    () => super.isEligible,
-    name: '_ReviewPromptStore.isEligible',
-  )).value;
-  Computed<String?>? _$suppressionReasonComputed;
-
-  @override
-  String? get suppressionReason => (_$suppressionReasonComputed ??= Computed<String?>(
-    () => super.suppressionReason,
-    name: '_ReviewPromptStore.suppressionReason',
-  )).value;
-
   late final _$pendingPromptAtom = Atom(name: '_ReviewPromptStore.pendingPrompt', context: context);
 
   @override
@@ -142,9 +127,7 @@ mixin _$ReviewPromptStore on _ReviewPromptStore, Store {
   @override
   String toString() {
     return '''
-pendingPrompt: ${pendingPrompt},
-isEligible: ${isEligible},
-suppressionReason: ${suppressionReason}
+pendingPrompt: ${pendingPrompt}
     ''';
   }
 }

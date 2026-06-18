@@ -508,7 +508,7 @@
   },
   "rateConnectionLike": "Do que você gostou?",
   "rateConnectionDislike": "Do que você não gostou?",
-  "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
+  "cancelSurveyFeedbackHint": "Por favor, insira mais detalhes...",
   "switchToLocationBtn": "Alternar para {}",
   "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
   "fastLabel": "Rápido",

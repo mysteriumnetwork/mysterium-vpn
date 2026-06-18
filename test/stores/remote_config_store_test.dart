@@ -431,14 +431,14 @@ void main() {
       await store.configFuture;
       final config = store.reviewPromptConfig;
       expect(config.enabled, isTrue);
-      expect(config.minAccountAgeDays, 7);
+      expect(config.minAccountAgeMinutes, 10080);
       expect(config.minAppOpens, 5);
       expect(config.minConnections, 10);
       expect(config.cleanSessionsRequired, 3);
       expect(config.stableSessionSeconds, 60);
-      expect(config.cooldownDismissDays, 30);
-      expect(config.cooldownNegativeDays, 75);
-      expect(config.cooldownPositiveDays, 105);
+      expect(config.cooldownDismissMinutes, 43200);
+      expect(config.cooldownNegativeMinutes, 108000);
+      expect(config.cooldownPositiveMinutes, 151200);
       expect(config.yearlyCap, 3);
     });
 
@@ -447,37 +447,37 @@ void main() {
       when(client.getAllValues()).thenAnswer(
         (_) async => {
           'reviewPromptConfig':
-              '{"enabled":false,"minAccountAgeDays":14,"minAppOpens":8,"minConnections":20,'
-              '"cleanSessionsRequired":2,"stableSessionSeconds":120,"cooldownDismissDays":45,'
-              '"cooldownNegativeDays":90,"cooldownPositiveDays":120,"yearlyCap":5}',
+              '{"enabled":false,"minAccountAgeMinutes":14,"minAppOpens":8,"minConnections":20,'
+              '"cleanSessionsRequired":2,"stableSessionSeconds":120,"cooldownDismissMinutes":45,'
+              '"cooldownNegativeMinutes":90,"cooldownPositiveMinutes":120,"yearlyCap":5}',
         },
       );
       await store.configFuture;
       final config = store.reviewPromptConfig;
       expect(config.enabled, isFalse);
-      expect(config.minAccountAgeDays, 14);
+      expect(config.minAccountAgeMinutes, 14);
       expect(config.minAppOpens, 8);
       expect(config.minConnections, 20);
       expect(config.cleanSessionsRequired, 2);
       expect(config.stableSessionSeconds, 120);
-      expect(config.cooldownDismissDays, 45);
-      expect(config.cooldownNegativeDays, 90);
-      expect(config.cooldownPositiveDays, 120);
+      expect(config.cooldownDismissMinutes, 45);
+      expect(config.cooldownNegativeMinutes, 90);
+      expect(config.cooldownPositiveMinutes, 120);
       expect(config.yearlyCap, 5);
     });
 
     test('falls back per-field for missing/invalid entries', () async {
       store = createStore();
       when(client.getAllValues()).thenAnswer(
-        // minAppOpens present, cooldownDismissDays negative, yearlyCap wrong type.
+        // minAppOpens present, cooldownDismissMinutes negative, yearlyCap wrong type.
         (_) async => {
-          'reviewPromptConfig': '{"minAppOpens":8,"cooldownDismissDays":-1,"yearlyCap":"oops"}',
+          'reviewPromptConfig': '{"minAppOpens":8,"cooldownDismissMinutes":-1,"yearlyCap":"oops"}',
         },
       );
       await store.configFuture;
       final config = store.reviewPromptConfig;
       expect(config.minAppOpens, 8); // honoured
-      expect(config.cooldownDismissDays, 30); // negative → default
+      expect(config.cooldownDismissMinutes, 43200); // negative → default
       expect(config.yearlyCap, 3); // wrong type → default
       expect(config.minConnections, 10); // absent → default
     });
@@ -486,9 +486,9 @@ void main() {
       store = createStore();
       when(
         client.getAllValues(),
-      ).thenAnswer((_) async => {'reviewPromptConfig': '{"minAccountAgeDays":0,"yearlyCap":0}'});
+      ).thenAnswer((_) async => {'reviewPromptConfig': '{"minAccountAgeMinutes":0,"yearlyCap":0}'});
       await store.configFuture;
-      expect(store.reviewPromptConfig.minAccountAgeDays, 0);
+      expect(store.reviewPromptConfig.minAccountAgeMinutes, 0);
       expect(store.reviewPromptConfig.yearlyCap, 0);
     });
 
