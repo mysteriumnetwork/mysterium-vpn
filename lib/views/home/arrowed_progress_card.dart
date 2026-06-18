@@ -112,6 +112,8 @@ class ArrowedProgressCard extends HookConsumerWidget {
       key: globalKey,
       tooltipPosition: tooltipPosition,
       onTargetRectUpdate: updateArrowPosition,
+      disposeOnTap: false,
+      onTargetClick: () {},
       container: Container(
         margin: _tooltipMargin,
         width: 343,

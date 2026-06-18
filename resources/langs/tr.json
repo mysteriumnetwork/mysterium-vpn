@@ -452,7 +452,7 @@
   "subscriptionOnboardingVPNLocationsTitle": "VPN konumlarına göz atın",
   "subscriptionOnboardingVPNLocationsDesktopDescription": "Ülkeleri ve şehirleri tek bir yerden keşfedin.",
   "subscriptionOnboardingVPNLocationsMobileDescription": "Ülkeleri, şehirleri, son bağlantıları ve özel sunucuları tek bir yerden keşfedin.",
-  "subscriptionOnboardingSetupCompleteTitle": "Kurulum Tamamlandı",
+  "subscriptionOnboardingSetupCompleteTitle": "Kurulum tamamlandı.",
   "subscriptionOnboardingSetupCompleteDescription": "Daha özel bir şekilde gezinmeye başlamak için bir konum seçin.",
   "notNowBtn": "Şimdi değil",
   "viewAllFeaturesBtn": "Tüm özellikleri görüntüle",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Bu IP adresleri gerçek cihazlar tarafından sağlandığı için, bazı düğümler beklenmedik şekilde çevrimdışı kalabilir.",
   "reviewLeaveReviewBtn": "Bir yorum bırakın",
   "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
-  "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?"
+  "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?",
+  "ipRefreshExhaustedCity": "Şu anda {} bölgesinde başka IP adresi bulunmamaktadır. Başka bir şehir veya ülke deneyin.",
+  "ipRefreshExhaustedCountry": "Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir ülke deneyin."
 }

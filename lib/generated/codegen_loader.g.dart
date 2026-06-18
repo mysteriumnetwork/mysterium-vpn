@@ -447,7 +447,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionOnboardingPromptTitle": "快速参观",
     "subscriptionOnboardingPromptDescription": "熟悉更新后的应用程序，并发现主要功能现在位于何处。",
     "subscriptionOnboardingStartTourLabel": "开始游览",
-    "subscriptionOnboardingCancelTourLabel": "暂时跳过",
+    "subscriptionOnboardingCancelTourLabel": "暂且跳过",
     "subscriptionOnboardingMapDesktopTitle": "以您的方式探索各地",
     "subscriptionOnboardingMapDesktopDescription": "浏览地图或从侧边栏探索地点。",
     "subscriptionOnboardingMapMobileTitle": "从地图连接",
@@ -622,6 +622,8 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "留下评论",
     "reviewPositiveTitle": "太好了！您介意给我们留个评价吗？",
     "reviewSatisfactionTitle": "你会向其他人推荐这款应用吗？",
+    "ipRefreshExhaustedCity": "目前在{}区域没有其他可用的IP地址。请尝试其他城市或国家/地区。",
+    "ipRefreshExhaustedCountry": "目前在{}地区没有其他可用的IP地址。请尝试其他国家/地区。",
   };
   static const Map<String, dynamic> _tr = {
     "acceptAndContinue": "Kabul et ve devam et",
@@ -1122,7 +1124,7 @@ class CodegenLoader extends AssetLoader {
         "Ülkeleri ve şehirleri tek bir yerden keşfedin.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
         "Ülkeleri, şehirleri, son bağlantıları ve özel sunucuları tek bir yerden keşfedin.",
-    "subscriptionOnboardingSetupCompleteTitle": "Kurulum Tamamlandı",
+    "subscriptionOnboardingSetupCompleteTitle": "Kurulum tamamlandı.",
     "subscriptionOnboardingSetupCompleteDescription":
         "Daha özel bir şekilde gezinmeye başlamak için bir konum seçin.",
     "notNowBtn": "Şimdi değil",
@@ -1300,6 +1302,10 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Bir yorum bırakın",
     "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
     "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?",
+    "ipRefreshExhaustedCity":
+        "Şu anda {} bölgesinde başka IP adresi bulunmamaktadır. Başka bir şehir veya ülke deneyin.",
+    "ipRefreshExhaustedCountry":
+        "Şu anda {} bölgesinde başka IP adresi mevcut değil. Başka bir ülke deneyin.",
   };
   static const Map<String, dynamic> _ja = {
     "acceptAndContinue": "受け入れて続行します",
@@ -1748,7 +1754,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionOnboardingManagePlanTitle": "プランを管理する",
     "subscriptionOnboardingManagePlanDescription":
         "アカウントのアクセス権限に基づいて、プランの購入、アップグレード、または利用可能なプランの確認ができます。",
-    "subscriptionOnboardingBoostProtectionTitle": "保護を強化しましょう",
+    "subscriptionOnboardingBoostProtectionTitle": "保護機能を強化しましょう",
     "subscriptionOnboardingBoostProtectionDescription": "VPNプロトコルやマルウェア対策などの高度な機能を活用しましょう。",
     "subscriptionOnboardingConnectTitle": "プライバシーを守るために接続してください",
     "subscriptionOnboardingConnectDescription": "最適なサーバーに接続いたします。",
@@ -1849,7 +1855,7 @@ class CodegenLoader extends AssetLoader {
     "onboardingStep2Desc":
         "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
     "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
-    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
+    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なります。",
     "checkSubsStatusTitle": "プラン情報を取得中...",
     "noSubscriptionTitle": "有効なプランがありません",
     "noSubscriptionAction": "プランを入手する",
@@ -1869,7 +1875,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionProcessCanceled": "購読内容の変更が完了していません。",
     "tokenAlreadyUsed": "トークンは既に使用されています。もう一度お試しください。\n\n",
     "subscriptionActive": "素晴らしいお知らせです！お客様の購読が有効になりました。",
-    "planAlreadyPurchasedMsg": "準備完了です！このプランは既に有効になっています。",
+    "planAlreadyPurchasedMsg": "これで準備完了です！このプランは既に有効になっています。",
     "signInAbortedMsg": "サインインが中断されました",
     "notAvailableMsg": "利用不可",
     "killSwitch": "キルスイッチ",
@@ -1918,6 +1924,8 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "レビューを残す",
     "reviewPositiveTitle": "素晴らしいですね！よろしければレビューを書いていただけませんか？",
     "reviewSatisfactionTitle": "このアプリを他の人にも勧めますか？",
+    "ipRefreshExhaustedCity": "現在、{}では他のIPアドレスは利用できません。別の都市または国をお試しください。",
+    "ipRefreshExhaustedCountry": "現在、{}では他のIPアドレスは利用できません。別の国をお試しください。",
   };
   static const Map<String, dynamic> _de = {
     "acceptAndContinue": "Akzeptieren und weiter",
@@ -2404,11 +2412,11 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
     "subscriptionPlanCityLevelDesc":
-        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+        "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
-        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+        "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
     "skipBtn": "Überspringen",
     "completeBtn": "Vollständig",
     "subscriptionOnboardingPromptTitle": "Machen Sie eine kurze Tour",
@@ -2618,6 +2626,10 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Hinterlassen Sie eine Bewertung",
     "reviewPositiveTitle": "Das ist toll! Würden Sie uns bitte eine Bewertung hinterlassen?",
     "reviewSatisfactionTitle": "Würden Sie diese App weiterempfehlen?",
+    "ipRefreshExhaustedCity":
+        "In {} sind derzeit keine anderen IPs verfügbar. Versuchen Sie es mit einer anderen Stadt oder einem anderen Land.",
+    "ipRefreshExhaustedCountry":
+        "In {} sind derzeit keine anderen IPs verfügbar. Versuchen Sie es in einem anderen Land.",
   };
   static const Map<String, dynamic> _pt = {
     "acceptAndContinue": "Aceitar e continuar",
@@ -3188,7 +3200,7 @@ class CodegenLoader extends AssetLoader {
     "locationItemNodeCount": {"one": "{} IP", "other": "{} IPs"},
     "rateConnectionLike": "Do que você gostou?",
     "rateConnectionDislike": "Do que você não gostou?",
-    "cancelSurveyFeedbackHint": "Por favor, insira mais detalhes...",
+    "cancelSurveyFeedbackHint": "Por favor, forneça mais detalhes...",
     "switchToLocationBtn": "Alternar para {}",
     "noActiveSubsDesc": "Você não possui nenhuma assinatura ativa.",
     "fastLabel": "Rápido",
@@ -3311,6 +3323,8 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Deixe uma avaliação",
     "reviewPositiveTitle": "Que ótimo! Você se importaria de deixar uma avaliação para nós?",
     "reviewSatisfactionTitle": "Você recomendaria este aplicativo para outras pessoas?",
+    "ipRefreshExhaustedCity": "Não há outros IPs disponíveis em {}. Tente outra cidade ou país.",
+    "ipRefreshExhaustedCountry": "Não há outros IPs disponíveis em {}. Tente outro país.",
   };
   static const Map<String, dynamic> _en = {
     "acceptAndContinue": "Accept and continue",
@@ -3817,7 +3831,7 @@ class CodegenLoader extends AssetLoader {
         "Explore countries and cities in one place.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
         "Explore countries, cities, recent connections and specialty servers in one place.",
-    "subscriptionOnboardingSetupCompleteTitle": "Setup Complete",
+    "subscriptionOnboardingSetupCompleteTitle": "Setup complete",
     "subscriptionOnboardingSetupCompleteDescription":
         "Choose a location to start browsing more privately.",
     "notNowBtn": "Not now",
@@ -3992,6 +4006,9 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Leave a review",
     "reviewPositiveTitle": "That's great! Would you mind leaving us a review?",
     "reviewSatisfactionTitle": "Would you recommend this app to others?",
+    "ipRefreshExhaustedCity":
+        "No other IPs are currently available in {}. Try another city or country.",
+    "ipRefreshExhaustedCountry": "No other IPs are currently available in {}. Try another country.",
   };
   static const Map<String, dynamic> _it = {
     "acceptAndContinue": "Accetta e continua",
@@ -4435,18 +4452,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi fino a 6 dispositivi contemporaneamente.",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "Protocollo VPN",
+    "subscriptionPlanPF4Basic": "protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi contemporaneamente",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
     "subscriptionPlanPF4Plus": "Oltre 7.500 indirizzi IP residenziali",
-    "subscriptionPlanPF5Plus": "Protocollo VPN",
+    "subscriptionPlanPF5Plus": "protocollo VPN",
     "subscriptionPlanPF6Plus": "Scelte a livello cittadino",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso entro 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti immediatamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "Protocollo VPN",
+    "subscriptionPlanWireGuard": "protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello cittadino",
@@ -4510,7 +4527,7 @@ class CodegenLoader extends AssetLoader {
         "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
     "subscriptionOnboardingSetupCompleteTitle": "Configurazione completata",
     "subscriptionOnboardingSetupCompleteDescription":
-        "Scegli una località per iniziare a navigare in modo più privato.",
+        "Scegli una posizione per iniziare a navigare in modo più privato.",
     "notNowBtn": "Non adesso",
     "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
     "viewLessBtn": "Visualizza meno",
@@ -4544,7 +4561,7 @@ class CodegenLoader extends AssetLoader {
     "unauthenticatedSettingSubtitle":
         "Accedi per accedere al tuo account e sbloccare tutte le funzionalità.",
     "signInBtn": "Registrazione",
-    "vpnProtocolSettingLbl": "Protocollo VPN",
+    "vpnProtocolSettingLbl": "protocollo VPN",
     "blockerSettingLbl": "Bloccante",
     "light": "Leggero",
     "dark": "Buio",
@@ -4658,7 +4675,7 @@ class CodegenLoader extends AssetLoader {
     "navProducts": "Prodotti",
     "noLocationsFound": "Nessuna posizione trovata",
     "tryAnotherLocation": "Prova a cercare un'altra località",
-    "clearSearchBtn": "Ricerca chiara",
+    "clearSearchBtn": "Cancella ricerca",
     "productsSubscribeWebSubtitle": "Iscriviti sul web",
     "productsSubscribeWebAlert":
         "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
@@ -4687,6 +4704,10 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Lascia una recensione",
     "reviewPositiveTitle": "Fantastico! Ti dispiacerebbe lasciarci una recensione?",
     "reviewSatisfactionTitle": "Consiglieresti quest'app ad altri?",
+    "ipRefreshExhaustedCity":
+        "Al momento non sono disponibili altri indirizzi IP in {}. Prova un'altra città o un altro paese.",
+    "ipRefreshExhaustedCountry":
+        "Al momento non sono disponibili altri indirizzi IP in {}. Prova con un altro paese.",
   };
   static const Map<String, dynamic> _fr = {
     "acceptAndContinue": "Accepter et continuer",
@@ -5171,7 +5192,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -5389,6 +5410,10 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Laissez un avis",
     "reviewPositiveTitle": "C'est super ! Pourriez-vous nous laisser un avis ?",
     "reviewSatisfactionTitle": "Recommanderiez-vous cette application à d'autres personnes ?",
+    "ipRefreshExhaustedCity":
+        "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer une autre ville ou un autre pays.",
+    "ipRefreshExhaustedCountry":
+        "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer un autre pays.",
   };
   static const Map<String, dynamic> _id = {
     "acceptAndContinue": "Terima dan lanjutkan",
@@ -5893,7 +5918,7 @@ class CodegenLoader extends AssetLoader {
         "Jelajahi berbagai negara dan kota di satu tempat.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
         "Jelajahi berbagai negara, kota, koneksi terbaru, dan server khusus di satu tempat.",
-    "subscriptionOnboardingSetupCompleteTitle": "Pengaturan Selesai",
+    "subscriptionOnboardingSetupCompleteTitle": "Pengaturan selesai",
     "subscriptionOnboardingSetupCompleteDescription":
         "Pilih lokasi untuk mulai menjelajahi internet secara lebih pribadi.",
     "notNowBtn": "Tidak sekarang",
@@ -6072,6 +6097,10 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Berikan ulasan",
     "reviewPositiveTitle": "Bagus sekali! Apakah Anda keberatan memberikan ulasan kepada kami?",
     "reviewSatisfactionTitle": "Apakah Anda akan merekomendasikan aplikasi ini kepada orang lain?",
+    "ipRefreshExhaustedCity":
+        "Tidak ada IP lain yang tersedia saat ini di {}. Coba kota atau negara lain.",
+    "ipRefreshExhaustedCountry":
+        "Tidak ada IP lain yang tersedia saat ini di {}. Coba negara lain.",
   };
   static const Map<String, dynamic> _es = {
     "acceptAndContinue": "Aceptar y continuar",
@@ -6545,7 +6574,7 @@ class CodegenLoader extends AssetLoader {
     "plan_2_years_pro": "Profesional 2 años",
     "pushNotificationsConsentPopupTitle": "Mantente al día con las notificaciones push.",
     "pushNotificationsConsentPopupDesc":
-        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones prácticas.",
+        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones que te resultarán útiles.",
     "notificationsSettingTitle": "Notificaciones",
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",
@@ -6576,7 +6605,7 @@ class CodegenLoader extends AssetLoader {
         "Navega por el mapa para elegir un país y conectarte al instante.",
     "subscriptionOnboardingManagePlanTitle": "Gestiona tu plan",
     "subscriptionOnboardingManagePlanDescription":
-        "Compra, actualiza o consulta los planes disponibles según tu acceso a la cuenta.",
+        "Compra, actualiza o consulta los planes disponibles según el acceso a tu cuenta.",
     "subscriptionOnboardingBoostProtectionTitle": "Refuerza tu protección",
     "subscriptionOnboardingBoostProtectionDescription":
         "Descubre funciones avanzadas como los protocolos VPN y el bloqueo de malware.",
@@ -6768,6 +6797,10 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "Deja una reseña",
     "reviewPositiveTitle": "¡Genial! ¿Te importaría dejarnos una reseña?",
     "reviewSatisfactionTitle": "¿Recomendarías esta aplicación a otras personas?",
+    "ipRefreshExhaustedCity":
+        "Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otra ciudad o país.",
+    "ipRefreshExhaustedCountry":
+        "Actualmente no hay otras direcciones IP disponibles en {}. Pruebe con otro país.",
   };
   static const Map<String, dynamic> _ar = {
     "acceptAndContinue": "اقبل واستمر",
@@ -7210,7 +7243,7 @@ class CodegenLoader extends AssetLoader {
     "plan_yearly_basic": "السنة السنوية الأساسية",
     "plan_monthly_basic": "اشتراك شهري أساسي",
     "plan_monthly_pro": "برو مونثلي",
-    "plan_yearly_pro": "برو سنوي",
+    "plan_yearly_pro": "برو أنوال",
     "subscriptionUpgrade": "يرقي",
     "plan_2_years_basic": "سنتان أساسيتان",
     "plan_2_years_pro": "محترف لمدة عامين",
@@ -7379,7 +7412,7 @@ class CodegenLoader extends AssetLoader {
     "signInAbortedMsg": "تم إلغاء تسجيل الدخول",
     "notAvailableMsg": "غير متوفر",
     "killSwitch": "مفتاح الإيقاف",
-    "killSwitchDesc": "يحجب الإنترنت في حالة انقطاع اتصال VPN",
+    "killSwitchDesc": "يحظر الإنترنت في حالة انقطاع اتصال VPN",
     "dns": "حماية نظام أسماء النطاقات (DNS)",
     "dnsDesc": "يمنع تسرب نظام أسماء النطاقات (DNS)",
     "subscriptionPlanNamePro": "محترف",
@@ -7430,6 +7463,8 @@ class CodegenLoader extends AssetLoader {
     "reviewLeaveReviewBtn": "اترك تعليقًا",
     "reviewPositiveTitle": "هذا رائع! هل تمانع في ترك تعليق لنا؟",
     "reviewSatisfactionTitle": "هل توصي بهذا التطبيق للآخرين؟",
+    "ipRefreshExhaustedCity": "لا توجد عناوين IP أخرى متاحة حاليًا في {}. جرب مدينة أو دولة أخرى.",
+    "ipRefreshExhaustedCountry": "لا تتوفر عناوين IP أخرى حاليًا في {}. جرب بلدًا آخر.",
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "zh": _zh,

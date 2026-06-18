@@ -428,9 +428,9 @@
   "emailNotificationsSetting": "E-Mail-Benachrichtigungen",
   "subscriptionPlanWireGuardDesc": "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming\nOpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar)",
   "subscriptionPlanDoubleVPNDesc": "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
-  "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
-  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
-  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
+  "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
+  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
+  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
   "skipBtn": "Überspringen",
   "completeBtn": "Vollständig",
   "subscriptionOnboardingPromptTitle": "Machen Sie eine kurze Tour",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Da diese IPs von realen Geräten bereitgestellt werden, kann es vorkommen, dass einige Knoten unerwartet offline gehen.",
   "reviewLeaveReviewBtn": "Hinterlassen Sie eine Bewertung",
   "reviewPositiveTitle": "Das ist toll! Würden Sie uns bitte eine Bewertung hinterlassen?",
-  "reviewSatisfactionTitle": "Würden Sie diese App weiterempfehlen?"
+  "reviewSatisfactionTitle": "Würden Sie diese App weiterempfehlen?",
+  "ipRefreshExhaustedCity": "In {} sind derzeit keine anderen IPs verfügbar. Versuchen Sie es mit einer anderen Stadt oder einem anderen Land.",
+  "ipRefreshExhaustedCountry": "In {} sind derzeit keine anderen IPs verfügbar. Versuchen Sie es in einem anderen Land."
 }
