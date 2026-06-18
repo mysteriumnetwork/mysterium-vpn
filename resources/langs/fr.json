@@ -529,7 +529,7 @@
   "ipAddressLbl": "Adresse IP",
   "madridLbl": "Madrid, Espagne 🇪🇸",
   "locationLbl": "Emplacement",
-  "vodafoneLbl": "Vodafone Iberia",
+  "vodafoneLbl": "Vodafone Ibérie",
   "protectedLbl": "PROTÉGÉ",
   "unprotectedLbl": "NON PROTÉGÉ",
   "berlinLbl": "Berlin, Allemagne 🇩🇪",
@@ -615,5 +615,7 @@
   "residentialEducationBlock2Body": "Étant donné que ces adresses IP sont fournies par des appareils réels, certains nœuds peuvent se déconnecter de manière inattendue.",
   "reviewLeaveReviewBtn": "Laissez un avis",
   "reviewPositiveTitle": "C'est super ! Pourriez-vous nous laisser un avis ?",
-  "reviewSatisfactionTitle": "Recommanderiez-vous cette application à d'autres personnes ?"
+  "reviewSatisfactionTitle": "Recommanderiez-vous cette application à d'autres personnes ?",
+  "ipRefreshExhaustedCity": "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer une autre ville ou un autre pays.",
+  "ipRefreshExhaustedCountry": "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer un autre pays."
 }
