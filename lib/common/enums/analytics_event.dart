@@ -161,7 +161,8 @@ enum AnalyticsEvent {
   reviewPromptNegativeClicked,
   feedbackFlowOpened,
   reviewPromptDismissed,
-  reviewPromptCooldownStarted;
+  reviewPromptCooldownStarted,
+  ipRefreshExhaustedMessageShown;
 
   String get formattedName => name.toSnakeCase;
 }

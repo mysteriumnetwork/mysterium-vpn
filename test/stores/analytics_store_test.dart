@@ -345,6 +345,52 @@ void main() {
     });
   });
 
+  group('logIpRefreshExhausted', () {
+    test('emits exhausted event with location/type/counts for a country', () async {
+      final entry = nextLog();
+      await store.logIpRefreshExhausted(
+        location: const VPNLocation(
+          id: 'us',
+          countryCode: 'us',
+          ipType: IPType.datacenter,
+          translations: {'en': 'United States'},
+        ),
+        nodeCount: 11,
+        refreshCount: 10,
+      );
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.ipRefreshExhaustedMessageShown.formattedName);
+      expect(log.params, {
+        'scope': 'country',
+        'location_id': 'us',
+        'location_name': 'United States',
+        'ip_type': 'datacenter',
+        'refresh_attempt_count': 10,
+        'node_count': 11,
+      });
+    });
+
+    test('uses city scope and residential ip_type for a city', () async {
+      final entry = nextLog();
+      await store.logIpRefreshExhausted(
+        location: const VPNLocation(
+          id: 'new-york',
+          countryCode: 'us',
+          ipType: IPType.residential,
+          translations: {},
+        ),
+        nodeCount: 5,
+        refreshCount: 4,
+      );
+
+      final log = await entry;
+      expect(log.params?['scope'], 'city');
+      expect(log.params?['location_name'], 'new-york');
+      expect(log.params?['ip_type'], 'residential');
+    });
+  });
+
   group('streams', () {
     test('replays previous events to late subscribers', () async {
       await store.logEvent(AnalyticsEvent.appLaunch);

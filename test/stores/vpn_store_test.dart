@@ -109,12 +109,28 @@ void main() {
       openVpnRepository: mockOpenVpnRepo,
       connectionDecisionStore: mockConnectionDecision,
       protocolStore: mockVpnProtocolStore,
+      ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
     );
   });
 
   tearDown(() async {
     await vpnStore.disposeStore();
   });
+
+  void verifyFetchVpnConfig({required String? country, required String? city}) {
+    verify(
+      mockWireguardRepo.fetchVpnConfig(
+        countryOriginate: anyNamed('countryOriginate'),
+        country: country,
+        city: city,
+        ipType: anyNamed('ipType'),
+        userIntent: anyNamed('userIntent'),
+        cluster: anyNamed('cluster'),
+        resetConnection: anyNamed('resetConnection'),
+        dnsAddress: anyNamed('dnsAddress'),
+      ),
+    ).called(1);
+  }
 
   group('VpnStore Tests', () {
     test('Initial state', () {
@@ -149,6 +165,7 @@ void main() {
         openVpnRepository: mockOpenVpnRepo,
         connectionDecisionStore: mockConnectionDecision,
         protocolStore: mockVpnProtocolStore,
+        ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
       );
 
       expect(store, isNotNull);
@@ -179,6 +196,7 @@ void main() {
         openVpnRepository: mockOpenVpnRepo,
         connectionDecisionStore: mockConnectionDecision,
         protocolStore: mockVpnProtocolStore,
+        ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
       );
 
       expect(store, isNotNull);
@@ -322,6 +340,40 @@ void main() {
         ).called(1);
       });
 
+      test('country location sends city = null', () async {
+        when(mockRealIPInfo.infoFuture).thenAnswer(
+          (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
+        );
+
+        when(mockLocationsService.closestRegion(any)).thenAnswer((_) async => null);
+
+        const vpnConfig = VpnConfig(id: 'config1', config: 'cfg', exitIp: '2.2.2.2', hash: 'hash');
+
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenAnswer((_) async => vpnConfig);
+
+        const country = VPNLocation(
+          id: 'fr',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'fr',
+        );
+
+        await vpnStore.fetchVpnConfiguration(location: country, intent: null, refreshIP: false);
+
+        verifyFetchVpnConfig(country: 'fr', city: null);
+      });
+
       test('uses OpenVPN repository when protocol is OpenVPN', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
 
@@ -347,6 +399,7 @@ void main() {
           openVpnRepository: mockOpenVpnRepo,
           connectionDecisionStore: mockConnectionDecision,
           protocolStore: mockVpnProtocolStore,
+          ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
         );
 
         when(mockRealIPInfo.infoFuture).thenAnswer(
@@ -564,6 +617,7 @@ void main() {
           openVpnRepository: mockOpenVpnRepo,
           connectionDecisionStore: mockConnectionDecision,
           protocolStore: mockVpnProtocolStore,
+          ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
         );
 
         when(
@@ -576,6 +630,292 @@ void main() {
         verifyNever(mockWireguardRepo.currentStatus());
 
         await storeWithOpenVpn.disposeStore();
+      });
+    });
+
+    group('IP refresh location', () {
+      const country = VPNLocation(
+        id: 'fr',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'fr',
+      );
+      const city = VPNLocation(
+        id: 'paris',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'fr',
+      );
+
+      void stubToggleAction(ConnectionAction action) {
+        when(
+          mockConnectionDecision.determineToggleAction(
+            currentStatus: anyNamed('currentStatus'),
+            currentLocation: anyNamed('currentLocation'),
+            requestedLocation: anyNamed('requestedLocation'),
+            requestedIntent: anyNamed('requestedIntent'),
+            isRefreshIP: anyNamed('isRefreshIP'),
+          ),
+        ).thenReturn(action);
+      }
+
+      setUp(() {
+        when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
+
+        // VPN guards
+        when(mockAuthSession.accessTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+        when(mockAuthSession.isAuthenticated).thenReturn(true);
+        when(
+          mockSubscriptionStore.subscriptionFuture,
+        ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
+
+        // determineConnectingLocation echoes the requested location, mirroring
+        // real logic so refresh receives whatever _startConnection passes.
+        when(
+          mockConnectionDecision.determineConnectingLocation(
+            requestedLocation: anyNamed('requestedLocation'),
+            currentLocation: anyNamed('currentLocation'),
+            isRefreshIP: anyNamed('isRefreshIP'),
+            intent: anyNamed('intent'),
+          ),
+        ).thenAnswer((invocation) => invocation.namedArguments[#requestedLocation] as VPNLocation?);
+        when(mockConnectionDecision.shouldResolveClosestLocation(any)).thenReturn(false);
+
+        when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.connect(config: anyNamed('config'))).thenAnswer((_) async {});
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
+
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenAnswer((invocation) async {
+          final country = invocation.namedArguments[#country] as String?;
+          final city = invocation.namedArguments[#city] as String?;
+          final ipType = invocation.namedArguments[#ipType] as String?;
+          return VpnConfig(
+            id: 'config1',
+            config: 'cfg',
+            exitIp: '2.2.2.2',
+            hash: 'hash',
+            country: country,
+            city: city,
+            ipType: ipType ?? IPType.datacenter.key,
+          );
+        });
+
+        when(mockRealIPInfo.infoFuture).thenAnswer(
+          (_) => ObservableFuture.value(const IPInfo(country: 'us', city: 'ny', ip: '1.1.1.1')),
+        );
+        when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+        when(mockRecentLocations.add(any)).thenAnswer((_) async {});
+        when(
+          mockLocationsStore.findById(
+            any,
+            countryCode: anyNamed('countryCode'),
+            ipType: anyNamed('ipType'),
+          ),
+        ).thenAnswer((_) async => null);
+        when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '3.3.3.3');
+        when(mockLocationsQuery.ipType).thenReturn(IPType.datacenter);
+        when(mockRefreshIP.refreshIPConnection).thenReturn(false);
+        when(mockDns.dnsAddress).thenReturn('1.1.1.1');
+      });
+
+      Future<void> connect(VPNLocation loc) async {
+        stubToggleAction(ConnectionAction.connect);
+        await vpnStore.manageConnection(location: loc);
+      }
+
+      test('refresh after connecting to a country reconnects with city = null', () async {
+        await connect(country);
+        clearInteractions(mockWireguardRepo);
+        stubToggleAction(ConnectionAction.refreshIP);
+        await vpnStore.manageConnection(refreshIP: true);
+        verifyFetchVpnConfig(country: 'fr', city: null);
+      });
+
+      test('refresh after connecting to a city reconnects with that city', () async {
+        await connect(city);
+        clearInteractions(mockWireguardRepo);
+        stubToggleAction(ConnectionAction.refreshIP);
+        await vpnStore.manageConnection(refreshIP: true);
+        verifyFetchVpnConfig(country: 'fr', city: 'paris');
+      });
+
+      test('requestedLocation preserved across a refresh', () async {
+        await connect(country);
+        stubToggleAction(ConnectionAction.refreshIP);
+        await vpnStore.manageConnection(refreshIP: true);
+        expect(vpnStore.requestedLocation, country);
+      });
+
+      test('disconnect clears requestedLocation', () async {
+        await connect(country);
+        await vpnStore.disconnectTunnel();
+        expect(vpnStore.requestedLocation, isNull);
+      });
+
+      test('closest sentinel connect leaves requestedLocation null', () async {
+        await connect(VPNLocation.closest);
+        expect(vpnStore.requestedLocation, isNull);
+      });
+
+      test('refresh keeps the residential IP type', () async {
+        const residentialCountry = VPNLocation(
+          id: 'fr',
+          ipType: IPType.residential,
+          translations: {},
+          countryCode: 'fr',
+        );
+        await connect(residentialCountry);
+        clearInteractions(mockWireguardRepo);
+        stubToggleAction(ConnectionAction.refreshIP);
+        await vpnStore.manageConnection(refreshIP: true);
+        verify(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: 'fr',
+            city: null,
+            ipType: IPType.residential.key,
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).called(1);
+      });
+
+      test('refresh after switching country rotates within the new country', () async {
+        await connect(country); // fr
+        const germany = VPNLocation(
+          id: 'de',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'de',
+        );
+        stubToggleAction(ConnectionAction.reconnect);
+        await vpnStore.manageConnection(location: germany);
+        clearInteractions(mockWireguardRepo);
+        stubToggleAction(ConnectionAction.refreshIP);
+        await vpnStore.manageConnection(refreshIP: true);
+        verifyFetchVpnConfig(country: 'de', city: null);
+      });
+
+      test('connectedIpPoolCount is the country total when connected to a country', () async {
+        const countryWithNodes = VPNLocation(
+          id: 'fr',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'fr',
+          nodeCount: 120,
+        );
+        await connect(countryWithNodes);
+        expect(vpnStore.connectedIpPoolCount, 120);
+      });
+
+      test('connectedIpPoolCount is the city count when connected to a city', () async {
+        const cityWithNodes = VPNLocation(
+          id: 'paris',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'fr',
+          nodeCount: 30,
+        );
+        await connect(cityWithNodes);
+        expect(vpnStore.connectedIpPoolCount, 30);
+      });
+
+      test(
+        'connectedIpPoolCount falls back to the resolved count when requested count is unknown',
+        () async {
+          // The requested `country` const has no nodeCount; the resolved location does.
+          const resolved = VPNLocation(
+            id: 'fr',
+            ipType: IPType.datacenter,
+            translations: {},
+            countryCode: 'fr',
+            nodeCount: 88,
+          );
+          when(
+            mockLocationsStore.findById(
+              any,
+              countryCode: anyNamed('countryCode'),
+              ipType: anyNamed('ipType'),
+            ),
+          ).thenAnswer((_) async => resolved);
+          await connect(country);
+          expect(vpnStore.connectedIpPoolCount, 88);
+        },
+      );
+
+      test('seeds the exhaustion store when the tunnel is already connected on launch', () async {
+        final exhaustionStore = IpRefreshExhaustionStore(mockAnalytics);
+        const connectedLocation = VPNLocation(
+          id: 'fr',
+          ipType: IPType.datacenter,
+          translations: {'en': 'France'},
+          countryCode: 'fr',
+          nodeCount: 2,
+        );
+
+        when(mockConnectionDecision.potentialLocation).thenReturn(connectedLocation);
+        when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async {});
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(
+          mockWireguardRepo.statusStream(),
+        ).thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
+        when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '2.2.2.2');
+
+        final store = VpnStore(
+          externalApiService: mockExternalApi,
+          mqtt: mockMqtt,
+          locationsStore: mockLocationsStore,
+          locationsService: mockLocationsService,
+          subscriptionStore: mockSubscriptionStore,
+          logger: mockLogger,
+          analyticsStore: mockAnalytics,
+          remoteConfigStore: mockRemoteConfig,
+          authSessionStore: mockAuthSession,
+          realIPInfo: mockRealIPInfo,
+          dnsStore: mockDns,
+          refreshIPStore: mockRefreshIP,
+          recentLocationsStore: mockRecentLocations,
+          locationsQueryStore: mockLocationsQuery,
+          unavailableLocationsStore: mockUnavailableLocations,
+          userIntentsStore: mockUserIntents,
+          connectionsLimitStore: mockConnectionsLimit,
+          wireguardRepository: mockWireguardRepo,
+          openVpnRepository: mockOpenVpnRepo,
+          connectionDecisionStore: mockConnectionDecision,
+          protocolStore: mockVpnProtocolStore,
+          ipRefreshExhaustionStore: exhaustionStore,
+        );
+
+        // Tunnel was already up at launch: this resolves the existing connection
+        // without going through the fresh-connect path.
+        await store.setupTunnel();
+        expect(store.location, connectedLocation);
+
+        // A single refresh exhausts the 2-node pool; the notice only fires if
+        // onConnected seeded the store during resolution.
+        exhaustionStore.registerRefresh(2);
+        expect(exhaustionStore.exhaustionNotice, connectedLocation);
+
+        await store.disposeStore();
       });
     });
 

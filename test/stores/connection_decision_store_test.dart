@@ -170,6 +170,85 @@ void main() {
         expect(result, ConnectionAction.reconnect);
       });
 
+      // Connected to a city: tapping that city's country disconnects, and so
+      // does tapping the city itself — regardless of the original intent.
+      const connectedCity = VPNLocation(
+        id: 'toronto',
+        ipType: IPType.datacenter,
+        translations: {'en': 'Toronto'},
+        countryCode: 'ca',
+      );
+      const connectedCountry = VPNLocation(
+        id: 'ca',
+        ipType: IPType.datacenter,
+        translations: {'en': 'Canada'},
+        countryCode: 'ca',
+      );
+      const otherCityInCountry = VPNLocation(
+        id: 'kingston',
+        ipType: IPType.datacenter,
+        translations: {'en': 'Kingston'},
+        countryCode: 'ca',
+      );
+
+      test('returns disconnect when the connected country is tapped', () {
+        final result = store.determineToggleAction(
+          currentStatus: VpnConnectionStatus.connected,
+          currentLocation: connectedCity,
+          isRefreshIP: false,
+          requestedLocation: connectedCountry,
+        );
+        expect(result, ConnectionAction.disconnect);
+      });
+
+      test('returns reconnect when a different city in the connected country is tapped', () {
+        final result = store.determineToggleAction(
+          currentStatus: VpnConnectionStatus.connected,
+          currentLocation: connectedCity,
+          isRefreshIP: false,
+          requestedLocation: otherCityInCountry,
+        );
+        expect(result, ConnectionAction.reconnect);
+      });
+
+      test('returns reconnect when a different country is tapped', () {
+        const otherCountry = VPNLocation(
+          id: 'us',
+          ipType: IPType.datacenter,
+          translations: {'en': 'US'},
+          countryCode: 'us',
+        );
+        final result = store.determineToggleAction(
+          currentStatus: VpnConnectionStatus.connected,
+          currentLocation: connectedCity,
+          isRefreshIP: false,
+          requestedLocation: otherCountry,
+        );
+        expect(result, ConnectionAction.reconnect);
+      });
+
+      test('returns reconnect when the connected country is tapped with a different IP type', () {
+        const residentialCity = VPNLocation(
+          id: 'toronto',
+          ipType: IPType.residential,
+          translations: {'en': 'Toronto'},
+          countryCode: 'ca',
+        );
+        const datacenterCountry = VPNLocation(
+          id: 'ca',
+          ipType: IPType.datacenter,
+          translations: {'en': 'Canada'},
+          countryCode: 'ca',
+        );
+        final result = store.determineToggleAction(
+          currentStatus: VpnConnectionStatus.connected,
+          currentLocation: residentialCity,
+          isRefreshIP: false,
+          requestedLocation: datacenterCountry,
+        );
+        expect(result, ConnectionAction.reconnect);
+      });
+
       test('returns reconnect when different intent requested', () {
         when(mockUserIntentsStore.userIntent).thenReturn(UserIntent.p2p);
         final result = store.determineToggleAction(

@@ -51,6 +51,13 @@ mixin _$VpnStore on _VpnStore, Store {
     () => super.location,
     name: '_VpnStore.location',
   )).value;
+  Computed<int>? _$connectedIpPoolCountComputed;
+
+  @override
+  int get connectedIpPoolCount => (_$connectedIpPoolCountComputed ??= Computed<int>(
+    () => super.connectedIpPoolCount,
+    name: '_VpnStore.connectedIpPoolCount',
+  )).value;
   Computed<VPNLocation?>? _$potentialLocationComputed;
 
   @override
@@ -144,6 +151,26 @@ mixin _$VpnStore on _VpnStore, Store {
   set _connectingLocation(VPNLocation? value) {
     _$_connectingLocationAtom.reportWrite(value, super._connectingLocation, () {
       super._connectingLocation = value;
+    });
+  }
+
+  late final _$_requestedLocationAtom = Atom(
+    name: '_VpnStore._requestedLocation',
+    context: context,
+  );
+
+  VPNLocation? get requestedLocation {
+    _$_requestedLocationAtom.reportRead();
+    return super._requestedLocation;
+  }
+
+  @override
+  VPNLocation? get _requestedLocation => requestedLocation;
+
+  @override
+  set _requestedLocation(VPNLocation? value) {
+    _$_requestedLocationAtom.reportWrite(value, super._requestedLocation, () {
+      super._requestedLocation = value;
     });
   }
 
@@ -481,6 +508,7 @@ isLoading: ${isLoading},
 isFetchingLocation: ${isFetchingLocation},
 isFetchingConfig: ${isFetchingConfig},
 location: ${location},
+connectedIpPoolCount: ${connectedIpPoolCount},
 potentialLocation: ${potentialLocation}
     ''';
   }

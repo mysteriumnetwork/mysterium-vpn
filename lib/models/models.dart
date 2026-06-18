@@ -2,6 +2,7 @@ export './converters//brightness_converter.dart';
 export './converters//lat_lng_converter.dart';
 export 'auth_user.dart';
 export 'config_cat_user_custom.dart';
+export 'connection_request.dart';
 export 'gateway.dart';
 export 'ip_info.dart';
 export 'location.dart';

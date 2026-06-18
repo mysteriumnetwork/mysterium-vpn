@@ -568,7 +568,7 @@
   "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
   "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
   "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-  "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
+  "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
   "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
   "signInAbortedMsg": "Login gagal",
   "notAvailableMsg": "Tidak tersedia",
@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "Berikan ulasan",
   "reviewPositiveTitle": "Bagus sekali! Apakah Anda keberatan memberikan ulasan kepada kami?",
   "reviewSatisfactionTitle": "Apakah Anda akan merekomendasikan aplikasi ini kepada orang lain?",
-  "ipRefreshExhaustedCity": "Tidak ada IP lain yang tersedia saat ini di {}. Coba kota atau negara lain.",
+  "ipRefreshExhaustedCity": "Saat ini tidak ada IP lain yang tersedia di {}. Coba kota atau negara lain.",
   "ipRefreshExhaustedCountry": "Tidak ada IP lain yang tersedia saat ini di {}. Coba negara lain."
 }

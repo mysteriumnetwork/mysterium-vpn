@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart';
