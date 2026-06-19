@@ -117,6 +117,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_isReconnectingAtom = Atom(name: '_VpnStore._isReconnecting', context: context);
+
+  bool get isReconnecting {
+    _$_isReconnectingAtom.reportRead();
+    return super._isReconnecting;
+  }
+
+  @override
+  bool get _isReconnecting => isReconnecting;
+
+  @override
+  set _isReconnecting(bool value) {
+    _$_isReconnectingAtom.reportWrite(value, super._isReconnecting, () {
+      super._isReconnecting = value;
+    });
+  }
+
   late final _$_userConnectEpochAtom = Atom(name: '_VpnStore._userConnectEpoch', context: context);
 
   int get userConnectEpoch {
