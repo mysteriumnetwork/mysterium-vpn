@@ -229,7 +229,7 @@ class QAToolbox extends HookConsumerWidget {
             context: context,
             builder: (_) => const _FetchConfigDialog(),
           );
-          if (choice != null) {
+          if (choice != null && context.mounted) {
             await _fetchAndCopyConfig(choice, ref);
           }
         },
@@ -586,16 +586,13 @@ class _FetchConfigDialogState extends State<_FetchConfigDialog> {
       ),
     ),
     actions: [
-      TextButton(
-        onPressed: () => Navigator.of(context).pop(),
-        child: const Text('Cancel'),
-      ),
+      TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
       TextButton(
         onPressed: () => Navigator.of(context).pop(
           _FetchConfigChoice(
             isWireguard: _isWireguard,
             ipType: _ipType,
-            country: _trimmedOrNull(_countryController),
+            country: _trimmedOrNull(_countryController)?.toUpperCase(),
             city: _trimmedOrNull(_cityController),
           ),
         ),
