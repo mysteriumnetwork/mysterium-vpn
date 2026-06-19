@@ -549,7 +549,7 @@
   "onboardingStep2Title": "ワンタップであなたの本当の身元を隠しましょう",
   "onboardingStep2Desc": "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、および位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
   "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
-  "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
+  "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なります。",
   "checkSubsStatusTitle": "プラン情報を取得中...",
   "noSubscriptionTitle": "有効なプランがありません",
   "noSubscriptionAction": "プランを入手する",
@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "レビューを残す",
   "reviewPositiveTitle": "素晴らしいですね！よろしければレビューを書いていただけませんか？",
   "reviewSatisfactionTitle": "このアプリを他の人にも勧めますか？",
-  "ipRefreshExhaustedCity": "現在、{}では他のIPアドレスは利用できません。別の都市または国をお試しください。",
-  "ipRefreshExhaustedCountry": "現在、{}では他のIPアドレスは利用できません。別の国をお試しください。"
+  "ipRefreshExhaustedCity": "{}では代替IPアドレスが利用できません。次回は別の国または都市を選択して、別のIPアドレスを取得してください。",
+  "ipRefreshExhaustedCountry": "{}では代替IPアドレスが利用できません。次回は別の国を選択して、別のIPアドレスを取得してください。"
 }

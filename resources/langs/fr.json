@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "Laissez un avis",
   "reviewPositiveTitle": "C'est super ! Pourriez-vous nous laisser un avis ?",
   "reviewSatisfactionTitle": "Recommanderiez-vous cette application à d'autres personnes ?",
-  "ipRefreshExhaustedCity": "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer une autre ville ou un autre pays.",
-  "ipRefreshExhaustedCountry": "Aucune autre adresse IP n'est actuellement disponible dans {}. Veuillez essayer un autre pays."
+  "ipRefreshExhaustedCity": "Aucune autre adresse IP n'est disponible dans {}. Choisissez un autre pays ou une autre ville pour obtenir une adresse IP différente la prochaine fois.",
+  "ipRefreshExhaustedCountry": "Aucune autre adresse IP n'est disponible dans {}. Choisissez un autre pays pour obtenir une adresse IP différente la prochaine fois."
 }
