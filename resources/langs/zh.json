@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "留下评论",
   "reviewPositiveTitle": "太好了！您介意给我们留个评价吗？",
   "reviewSatisfactionTitle": "你会向其他人推荐这款应用吗？",
-  "ipRefreshExhaustedCity": "目前在{}区域没有其他可用的IP地址。请尝试其他城市或国家/地区。",
-  "ipRefreshExhaustedCountry": "目前在{}地区没有其他可用的IP地址。请尝试其他国家/地区。"
+  "ipRefreshExhaustedCity": "您所在地区没有其他可用 IP 地址。下次请选择其他国家或城市以获取不同的 IP 地址。",
+  "ipRefreshExhaustedCountry": "在 {} 中没有可用的备用 IP 地址。请选择其他国家/地区，以便下次获取不同的 IP 地址。"
 }

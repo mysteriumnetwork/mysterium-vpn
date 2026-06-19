@@ -117,6 +117,12 @@ abstract class _VpnStore extends VpnGuard with Store {
   @readonly
   VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
 
+  /// True while an existing connection is being torn down and re-established
+  /// (IP refresh or server switch). The transitional `disconnected` it emits is
+  /// not a real session end, so the review prompt skips it.
+  @readonly
+  bool _isReconnecting = false;
+
   /// Increments each time a user-initiated connection reaches the connected
   /// state. Excludes IP refresh / automatic fallback reconnections. Observed
   /// by the residential-IP education trigger to detect a fresh connect.
@@ -430,6 +436,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       _handleConnectionError(e, stackTrace);
     } finally {
       _stopwatch.stop();
+      _isReconnecting = false;
     }
   }
 
@@ -475,6 +482,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   Future<void> _ensureDisconnected() async {
     if (await checkTunnelStatus() == VpnConnectionStatus.connected) {
+      _isReconnecting = true;
       await disconnectTunnel(isReconnecting: true);
       await _waitForDisconnection();
     }

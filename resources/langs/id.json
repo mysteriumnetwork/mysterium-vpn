@@ -570,7 +570,7 @@
   "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
   "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
   "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
-  "signInAbortedMsg": "Login gagal",
+  "signInAbortedMsg": "Login gagal.",
   "notAvailableMsg": "Tidak tersedia",
   "killSwitch": "Saklar pemutus daya",
   "killSwitchDesc": "Memblokir internet jika koneksi VPN terputus.",
@@ -616,6 +616,6 @@
   "reviewLeaveReviewBtn": "Berikan ulasan",
   "reviewPositiveTitle": "Bagus sekali! Apakah Anda keberatan memberikan ulasan kepada kami?",
   "reviewSatisfactionTitle": "Apakah Anda akan merekomendasikan aplikasi ini kepada orang lain?",
-  "ipRefreshExhaustedCity": "Saat ini tidak ada IP lain yang tersedia di {}. Coba kota atau negara lain.",
-  "ipRefreshExhaustedCountry": "Tidak ada IP lain yang tersedia saat ini di {}. Coba negara lain."
+  "ipRefreshExhaustedCity": "Tidak ada IP alternatif yang tersedia di {}. Pilih negara atau kota lain untuk mendapatkan IP yang berbeda di lain waktu.",
+  "ipRefreshExhaustedCountry": "Tidak ada IP alternatif yang tersedia di {}. Pilih negara lain untuk mendapatkan IP yang berbeda di lain waktu."
 }
