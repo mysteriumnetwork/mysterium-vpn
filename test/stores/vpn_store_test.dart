@@ -813,6 +813,28 @@ void main() {
         verifyFetchVpnConfig(country: 'de', city: null);
       });
 
+      test('isReconnecting is true while tearing down to reconnect and false afterwards', () async {
+        await connect(country);
+        // Report a live tunnel once so the reconnect path tears it down, then
+        // disconnected so _waitForDisconnection settles.
+        var statusCalls = 0;
+        when(mockWireguardRepo.currentStatus()).thenAnswer((_) async {
+          statusCalls++;
+          return statusCalls == 1
+              ? VpnConnectionStatus.connected
+              : VpnConnectionStatus.disconnected;
+        });
+        bool? duringDisconnect;
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async {
+          duringDisconnect = vpnStore.isReconnecting;
+          return true;
+        });
+        stubToggleAction(ConnectionAction.refreshIP);
+        await vpnStore.manageConnection(refreshIP: true);
+        expect(duringDisconnect, isTrue);
+        expect(vpnStore.isReconnecting, isFalse);
+      });
+
       test('connectedIpPoolCount is the country total when connected to a country', () async {
         const countryWithNodes = VPNLocation(
           id: 'fr',
