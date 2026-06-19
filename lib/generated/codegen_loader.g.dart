@@ -4678,7 +4678,7 @@ class CodegenLoader extends AssetLoader {
     "navProducts": "Prodotti",
     "noLocationsFound": "Nessuna posizione trovata",
     "tryAnotherLocation": "Prova a cercare un'altra località",
-    "clearSearchBtn": "Ricerca chiara",
+    "clearSearchBtn": "Cancella ricerca",
     "productsSubscribeWebSubtitle": "Iscriviti sul web",
     "productsSubscribeWebAlert":
         "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
@@ -5195,7 +5195,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -6577,7 +6577,7 @@ class CodegenLoader extends AssetLoader {
     "plan_2_years_pro": "Profesional 2 años",
     "pushNotificationsConsentPopupTitle": "Mantente al día con las notificaciones push.",
     "pushNotificationsConsentPopupDesc":
-        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones prácticas.",
+        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones que te resultarán útiles.",
     "notificationsSettingTitle": "Notificaciones",
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",

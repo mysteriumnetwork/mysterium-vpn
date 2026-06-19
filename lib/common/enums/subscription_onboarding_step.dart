@@ -7,8 +7,8 @@ enum SubscriptionOnboardingStep {
   connectButton(
     desktopIndex: 3,
     mobileIndex: 4,
-    desktopIcon: UntitledUI.rocket_02,
-    mobileIcon: UntitledUI.rocket_02,
+    desktopIcon: UntitledUI.lock_01,
+    mobileIcon: UntitledUI.lock_01,
     desktopTitle: LocaleKeys.subscriptionOnboardingConnectTitle,
     mobileTitle: LocaleKeys.subscriptionOnboardingConnectTitle,
     desktopDescription: LocaleKeys.subscriptionOnboardingConnectDescription,
@@ -57,8 +57,8 @@ enum SubscriptionOnboardingStep {
   settings(
     desktopIndex: 2,
     mobileIndex: 3,
-    desktopIcon: UntitledUI.lock_01,
-    mobileIcon: UntitledUI.lock_01,
+    desktopIcon: UntitledUI.rocket_02,
+    mobileIcon: UntitledUI.rocket_02,
     desktopTitle: LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
     mobileTitle: LocaleKeys.subscriptionOnboardingBoostProtectionTitle,
     desktopDescription: LocaleKeys.subscriptionOnboardingBoostProtectionDescription,
