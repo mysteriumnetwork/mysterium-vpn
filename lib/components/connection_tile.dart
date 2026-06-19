@@ -39,7 +39,8 @@ class ConnectionTile extends HookConsumerWidget {
               .read(homeStateProvider)
               .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
           tooltipPosition: TooltipPosition.top,
-          child: Padding(padding: const EdgeInsets.all(8), child: child),
+          showcasePadding: const EdgeInsets.all(8),
+          child: child,
         );
 
     return Column(

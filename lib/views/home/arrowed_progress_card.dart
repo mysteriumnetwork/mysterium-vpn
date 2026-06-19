@@ -19,6 +19,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
     required this.globalKey,
     required this.step,
     required this.tooltipPosition,
+    this.showcasePadding,
     super.key,
   });
 
@@ -26,6 +27,9 @@ class ArrowedProgressCard extends HookConsumerWidget {
   final GlobalKey globalKey;
   final SubscriptionOnboardingStep step;
   final TooltipPosition tooltipPosition;
+
+  /// Padding applied to [child] only while the showcase tour is active.
+  final EdgeInsetsGeometry? showcasePadding;
 
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
   static const double _cornerInset = 24;
@@ -138,7 +142,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
           ],
         ),
       ),
-      child: child,
+      child: showcasePadding != null ? Padding(padding: showcasePadding!, child: child) : child,
     );
   }
 }
