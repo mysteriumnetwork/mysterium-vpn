@@ -13,18 +13,22 @@ import 'subscription_onboarding_store_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<LocalDBService>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockAnalyticsStore analyticsStore;
   late MockSubscriptionStore subscriptionStore;
   late MockLocalDBService localDBService;
+  late MockRemoteConfigStore remoteConfigStore;
   late SubscriptionOnboardingStore store;
 
   setUp(() {
     analyticsStore = MockAnalyticsStore();
     subscriptionStore = MockSubscriptionStore();
     localDBService = MockLocalDBService();
+    remoteConfigStore = MockRemoteConfigStore();
 
+    when(remoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
     when(localDBService.getSubscriptionOnboardingShown()).thenAnswer((_) async => false);
     when(localDBService.setSubscriptionOnboardingShown()).thenAnswer((_) async {});
     when(
@@ -35,7 +39,21 @@ void main() {
       analyticsStore: analyticsStore,
       subscriptionStore: subscriptionStore,
       localDBService: localDBService,
+      remoteConfigStore: remoteConfigStore,
     );
+  });
+
+  test('shouldShow returns false when remote config disables the flow', () async {
+    // arrange
+    when(remoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
+
+    // act
+    final result = await store.shouldShow();
+
+    // assert
+    expect(result, isFalse);
+    verifyNever(localDBService.getSubscriptionOnboardingShown());
+    verifyNever(subscriptionStore.subscriptionFuture);
   });
 
   test('shouldShow returns false when onboarding was already shown', () async {

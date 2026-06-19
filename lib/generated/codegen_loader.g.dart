@@ -1124,7 +1124,7 @@ class CodegenLoader extends AssetLoader {
         "Ülkeleri ve şehirleri tek bir yerden keşfedin.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
         "Ülkeleri, şehirleri, son bağlantıları ve özel sunucuları tek bir yerden keşfedin.",
-    "subscriptionOnboardingSetupCompleteTitle": "Kurulum Tamamlandı",
+    "subscriptionOnboardingSetupCompleteTitle": "Kurulum tamamlandı.",
     "subscriptionOnboardingSetupCompleteDescription":
         "Daha özel bir şekilde gezinmeye başlamak için bir konum seçin.",
     "notNowBtn": "Şimdi değil",
@@ -1855,7 +1855,7 @@ class CodegenLoader extends AssetLoader {
     "onboardingStep2Desc":
         "Mysterium VPNは、IPアドレス、インターネットサービスプロバイダ（ISP）、および位置情報を隠すことで、真のプライバシーを確​​保しながらインターネットを閲覧できるようにします。",
     "onboardingStep3Title": "すべてのVPNが同じように機能するわけではありません",
-    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なって見えます。",
+    "onboardingStep3Desc": "住宅用IPアドレスを使用すると、接続は自然なものに見え、一般的なVPNトラフィックとは異なります。",
     "checkSubsStatusTitle": "プラン情報を取得中...",
     "noSubscriptionTitle": "有効なプランがありません",
     "noSubscriptionAction": "プランを入手する",
@@ -2412,7 +2412,7 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanDoubleVPNDesc":
         "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
     "subscriptionPlanResidentialIPsDesc":
-        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen zu können und eine VPN-Erkennung zu vermeiden.",
+        "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
     "subscriptionPlanCityLevelDesc":
         "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
     "subscriptionPlanMalwareBlockerDesc":
@@ -3831,7 +3831,7 @@ class CodegenLoader extends AssetLoader {
         "Explore countries and cities in one place.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
         "Explore countries, cities, recent connections and specialty servers in one place.",
-    "subscriptionOnboardingSetupCompleteTitle": "Setup Complete",
+    "subscriptionOnboardingSetupCompleteTitle": "Setup complete",
     "subscriptionOnboardingSetupCompleteDescription":
         "Choose a location to start browsing more privately.",
     "notNowBtn": "Not now",
@@ -4452,18 +4452,18 @@ class CodegenLoader extends AssetLoader {
     "subscriptionPlanPF1Basic": "Proteggi fino a 6 dispositivi contemporaneamente.",
     "subscriptionPlanPF2Basic": "57 paesi supportati",
     "subscriptionPlanPF3Basic": "10 server",
-    "subscriptionPlanPF4Basic": "Protocollo VPN",
+    "subscriptionPlanPF4Basic": "protocollo VPN",
     "subscriptionPlanPF1Plus": "Proteggi 10 dispositivi contemporaneamente",
     "subscriptionPlanPF2Plus": "Oltre 100 paesi supportati",
     "subscriptionPlanPF3Plus": "100 server",
     "subscriptionPlanPF4Plus": "Oltre 7.500 indirizzi IP residenziali",
-    "subscriptionPlanPF5Plus": "Protocollo VPN",
+    "subscriptionPlanPF5Plus": "protocollo VPN",
     "subscriptionPlanPF6Plus": "Scelte a livello cittadino",
     "subscriptionPlanMoneyBack": "Garanzia di rimborso entro 7 giorni",
     "subscriptionPlanDevicesSecured": "Dispositivi protetti immediatamente",
     "subscriptionPlanSupportedCountries": "Paesi supportati",
     "subscriptionPlanServers": "Server",
-    "subscriptionPlanWireGuard": "Protocollo VPN",
+    "subscriptionPlanWireGuard": "protocollo VPN",
     "subscriptionPlanDoubleVPN": "Doppia VPN",
     "subscriptionPlanResidentialIPs": "IP residenziali",
     "subscriptionPlanCityLevel": "Scelte a livello cittadino",
@@ -4561,7 +4561,7 @@ class CodegenLoader extends AssetLoader {
     "unauthenticatedSettingSubtitle":
         "Accedi per accedere al tuo account e sbloccare tutte le funzionalità.",
     "signInBtn": "Registrazione",
-    "vpnProtocolSettingLbl": "Protocollo VPN",
+    "vpnProtocolSettingLbl": "protocollo VPN",
     "blockerSettingLbl": "Bloccante",
     "light": "Leggero",
     "dark": "Buio",
@@ -4675,7 +4675,7 @@ class CodegenLoader extends AssetLoader {
     "navProducts": "Prodotti",
     "noLocationsFound": "Nessuna posizione trovata",
     "tryAnotherLocation": "Prova a cercare un'altra località",
-    "clearSearchBtn": "Ricerca chiara",
+    "clearSearchBtn": "Cancella ricerca",
     "productsSubscribeWebSubtitle": "Iscriviti sul web",
     "productsSubscribeWebAlert":
         "Gli abbonamenti vengono gestiti tramite il sito web. Il tuo piano si sincronizzerà automaticamente con l'app.",
@@ -5192,7 +5192,7 @@ class CodegenLoader extends AssetLoader {
     "openSystemSettingsBtn": "Ouvrir les paramètres système",
     "emailNotificationsSetting": "Notifications par e-mail",
     "subscriptionPlanWireGuardDesc":
-        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable fonctionnant là où d’autres protocoles échouent (non disponible sur Android).",
+        "WireGuard : protocole rapide idéal pour les jeux et le streaming.\nOpenVPN : protocole hautement configurable qui fonctionne là où d’autres protocoles échouent (non disponible sur Android).",
     "subscriptionPlanDoubleVPNDesc":
         "Couche de sécurité supplémentaire. Votre trafic internet est acheminé via deux serveurs VPN différents, ce qui chiffre vos données deux fois et masque votre adresse IP derrière un second serveur.",
     "subscriptionPlanResidentialIPsDesc":
@@ -5918,7 +5918,7 @@ class CodegenLoader extends AssetLoader {
         "Jelajahi berbagai negara dan kota di satu tempat.",
     "subscriptionOnboardingVPNLocationsMobileDescription":
         "Jelajahi berbagai negara, kota, koneksi terbaru, dan server khusus di satu tempat.",
-    "subscriptionOnboardingSetupCompleteTitle": "Pengaturan Selesai",
+    "subscriptionOnboardingSetupCompleteTitle": "Pengaturan selesai",
     "subscriptionOnboardingSetupCompleteDescription":
         "Pilih lokasi untuk mulai menjelajahi internet secara lebih pribadi.",
     "notNowBtn": "Tidak sekarang",
@@ -6574,7 +6574,7 @@ class CodegenLoader extends AssetLoader {
     "plan_2_years_pro": "Profesional 2 años",
     "pushNotificationsConsentPopupTitle": "Mantente al día con las notificaciones push.",
     "pushNotificationsConsentPopupDesc":
-        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones prácticas.",
+        "Recibe notificaciones sobre nuevas funciones, consejos útiles y ofertas exclusivas: actualizaciones que te resultarán útiles.",
     "notificationsSettingTitle": "Notificaciones",
     "pushNotificationsSetting": "Notificaciones push",
     "pushNotificationsSettingDesc": "Actualizaciones de productos, consejos y ofertas especiales",

@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
 
 part 'subscription_onboarding_store.g.dart';
@@ -16,13 +17,16 @@ abstract class _SubscriptionOnboardingStore with Store {
     required AnalyticsStore analyticsStore,
     required SubscriptionStore subscriptionStore,
     required LocalDBService localDBService,
+    required RemoteConfigStore remoteConfigStore,
   }) : _analyticsStore = analyticsStore,
        _subscriptionStore = subscriptionStore,
+       _remoteConfigStore = remoteConfigStore,
        _localDb = localDBService;
 
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
   final LocalDBService _localDb;
+  final RemoteConfigStore _remoteConfigStore;
 
   @observable
   bool _startTour = false;
@@ -34,6 +38,10 @@ abstract class _SubscriptionOnboardingStore with Store {
   void showSubscriptionOnboarding() => _startTour = true;
 
   Future<bool> shouldShow() async {
+    if (!_remoteConfigStore.canShowSubscriptionOnboardingFlow) {
+      return false;
+    }
+
     if (await _localDb.getSubscriptionOnboardingShown()) {
       return false;
     }

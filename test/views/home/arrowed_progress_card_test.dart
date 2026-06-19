@@ -21,12 +21,14 @@ import 'arrowed_progress_card_test.mocks.dart';
   MockSpec<SubscriptionStore>(),
   MockSpec<LocalDBService>(),
   MockSpec<ThemeStore>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockAnalyticsStore analyticsStore;
   late MockSubscriptionStore subscriptionStore;
   late MockLocalDBService localDBService;
   late MockThemeStore themeStore;
+  late MockRemoteConfigStore remoteConfigStore;
   late SubscriptionOnboardingStore subscriptionOnboardingStore;
   late GlobalKey<State<StatefulWidget>> showcaseKey;
 
@@ -35,6 +37,7 @@ void main() {
     subscriptionStore = MockSubscriptionStore();
     localDBService = MockLocalDBService();
     themeStore = MockThemeStore();
+    remoteConfigStore = MockRemoteConfigStore();
     showcaseKey = GlobalKey<State<StatefulWidget>>();
 
     when(themeStore.isDarkMode).thenReturn(false);
@@ -48,6 +51,7 @@ void main() {
       analyticsStore: analyticsStore,
       subscriptionStore: subscriptionStore,
       localDBService: localDBService,
+      remoteConfigStore: remoteConfigStore,
     );
   });
 
