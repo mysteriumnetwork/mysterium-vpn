@@ -193,12 +193,8 @@ abstract class _UserPreferencesStore with Store, Disposeable {
 
   @visibleForTesting
   @action
-  Future<bool> shouldShowSubscriptionOnboarding() async {
-    if (!_remoteConfigStore.canShowSubscriptionOnboardingFlow) {
-      return false;
-    }
-    return _subscriptionOnboardingStore.shouldShow();
-  }
+  Future<bool> shouldShowSubscriptionOnboarding() async =>
+      _subscriptionOnboardingStore.shouldShow();
 
   @visibleForTesting
   @action

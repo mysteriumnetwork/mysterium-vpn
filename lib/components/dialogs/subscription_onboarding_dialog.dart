@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
@@ -81,8 +83,33 @@ class _StartSubscriptionOnboardingDialog extends StatelessWidget {
   }
 }
 
-class _CompleteSubscriptionOnboardingDialog extends StatelessWidget {
+class _CompleteSubscriptionOnboardingDialog extends StatefulWidget {
   const _CompleteSubscriptionOnboardingDialog();
+
+  @override
+  State<_CompleteSubscriptionOnboardingDialog> createState() =>
+      _CompleteSubscriptionOnboardingDialogState();
+}
+
+class _CompleteSubscriptionOnboardingDialogState
+    extends State<_CompleteSubscriptionOnboardingDialog> {
+  Timer? _autoCloseTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _autoCloseTimer = Timer(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _autoCloseTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

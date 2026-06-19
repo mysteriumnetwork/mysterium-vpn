@@ -422,11 +422,10 @@ void main() {
     });
 
     test(
-      'evaluatePromptToShow skips subscription onboarding when remote config disables it',
+      'evaluatePromptToShow falls through to marketing consent when subscription onboarding is not eligible',
       () async {
-        // arange
-        when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
-        when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+        // arrange
+        when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
 
         store.getMarketingConsentFuture = ObservableFuture.value(false);
         when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
@@ -441,22 +440,20 @@ void main() {
       },
     );
 
-    test('shouldShowSubscriptionOnboarding returns false when remoteConfig disables it', () async {
+    test('shouldShowSubscriptionOnboarding returns false when shouldShow returns false', () async {
       // arrange
-      when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(false);
-      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
 
       // act
       final result = await store.shouldShowSubscriptionOnboarding();
 
       // assert
       expect(result, isFalse);
-      verifyNever(mockSubscriptionOnboardingStore.shouldShow());
+      verify(mockSubscriptionOnboardingStore.shouldShow()).called(1);
     });
 
-    test('shouldShowSubscriptionOnboarding delegates when remotConfig enables it', () async {
+    test('shouldShowSubscriptionOnboarding returns true when shouldShow returns true', () async {
       // arrange
-      when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
       when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
 
       // act
