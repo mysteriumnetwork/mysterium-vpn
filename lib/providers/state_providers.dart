@@ -247,11 +247,13 @@ final isAppWindowFocused = NotifierProvider<IsAppWindowFocusedNotifier, bool>(
 final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>((ref) {
   final analyticsStore = ref.watch(analyticsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   return SubscriptionOnboardingStore(
     analyticsStore: analyticsStore,
     subscriptionStore: subscriptionStore,
     localDBService: LocalDBService.instance,
+    remoteConfigStore: remoteConfigStore,
   );
 });
 

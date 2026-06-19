@@ -12,14 +12,6 @@ import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn_design/widgets/floating_button.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-final shouldShowSubscriptionOnboardingShowcasePOD = FutureProvider<bool>((ref) async {
-  if (!ref.watch(remoteConfigStorePOD).canShowSubscriptionOnboardingFlow) {
-    return false;
-  }
-
-  return ref.watch(subscriptionOnboardingStorePOD).shouldShow();
-});
-
 class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
   const SubscriptionOnboardingShowcase({required this.child, super.key});
 
@@ -44,9 +36,6 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
     final subscriptionOnboardingStore = ref.watch<SubscriptionOnboardingStore>(
       subscriptionOnboardingStorePOD,
     );
-    final canShowSubscriptionOnboarding = ref
-        .watch(shouldShowSubscriptionOnboardingShowcasePOD)
-        .maybeWhen(data: (value) => value, orElse: () => false);
 
     final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
 
@@ -83,10 +72,6 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
 
     useEffect(() {
       if (startTour) {
-        if (!canShowSubscriptionOnboarding) {
-          return;
-        }
-
         Future.microtask(() {
           if (!mounted) {
             return;
@@ -97,14 +82,13 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
       }
 
       return null;
-    }, [startTour, canShowSubscriptionOnboarding]);
+    }, [startTour]);
 
     return widget.child;
   }
 
   Future<void> _markOnboardingAsShown() async {
     await _store.markShown();
-    ref.invalidate(shouldShowSubscriptionOnboardingShowcasePOD);
   }
 
   Future<void> _showPrompt() async {
