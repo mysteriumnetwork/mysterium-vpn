@@ -132,6 +132,12 @@ abstract class _ReviewPromptStore with Store {
         break;
       case VpnConnectionStatus.disconnected:
         _stableTimer?.cancel();
+        // An IP refresh / server switch tears the tunnel down and reconnects;
+        // that disconnect is transitional, not a session end, so don't evaluate
+        // or record an outcome. The following `connecting` resets the session.
+        if (_vpnStore.isReconnecting) {
+          break;
+        }
         if (_sessionStable) {
           // A successful, stable session has completed — per the ticket the
           // eligibility check runs now, while disconnected (never while

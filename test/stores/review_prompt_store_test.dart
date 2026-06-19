@@ -379,6 +379,21 @@ void main() {
       store.dispose();
     });
 
+    test('a transitional disconnect during an IP refresh does not surface the prompt', () async {
+      useInstantStableSession();
+      final store = createStore()..handleConnectionStatus(VpnConnectionStatus.connected);
+      await Future<void>.delayed(Duration.zero);
+      // The refresh button (or a server switch) tears the tunnel down mid-session
+      // and reconnects. That `disconnected` is transitional, not a session end.
+      when(vpnStore.isReconnecting).thenReturn(true);
+      when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
+      store.handleConnectionStatus(VpnConnectionStatus.disconnected);
+      await Future<void>.delayed(Duration.zero);
+      expect(store.pendingPrompt, isFalse);
+      verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptEligible));
+      store.dispose();
+    });
+
     test('a connection dropped before stability records a failure', () async {
       // Default 60s window — the timer never fires within the test.
       final store = createStore()
