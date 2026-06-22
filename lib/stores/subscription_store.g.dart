@@ -66,6 +66,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.isOnMaxPlan,
     name: '_SubscriptionStore.isOnMaxPlan',
   )).value;
+  Computed<ProductsScreenVariant>? _$productsScreenVariantComputed;
+
+  @override
+  ProductsScreenVariant get productsScreenVariant =>
+      (_$productsScreenVariantComputed ??= Computed<ProductsScreenVariant>(
+        () => super.productsScreenVariant,
+        name: '_SubscriptionStore.productsScreenVariant',
+      )).value;
   Computed<bool>? _$malwareBlockingAllowedComputed;
 
   @override
@@ -213,6 +221,7 @@ residentialIPsAllowed: ${residentialIPsAllowed},
 useWebFlow: ${useWebFlow},
 isStoreSubOnForeignPlatform: ${isStoreSubOnForeignPlatform},
 isOnMaxPlan: ${isOnMaxPlan},
+productsScreenVariant: ${productsScreenVariant},
 malwareBlockingAllowed: ${malwareBlockingAllowed},
 canRedeemCode: ${canRedeemCode}
     ''';

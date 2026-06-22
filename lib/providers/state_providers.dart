@@ -64,7 +64,12 @@ final apiStorePOD = Provider<MqttStore>((ref) {
 final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
 
 final homeTabsStorePOD = Provider<HomeTabsStore>((ref) {
-  final store = HomeTabsStore(ref.watch(authSessionStorePOD));
+  final store = HomeTabsStore(
+    ref.watch(authSessionStorePOD),
+    analyticsStore: ref.watch(analyticsStorePOD),
+    subscriptionStore: ref.watch(subscriptionStorePOD),
+    locationsQueryStore: ref.watch(locationsQueryStorePOD),
+  );
   ref.onDispose(store.dispose);
   return store;
 });
