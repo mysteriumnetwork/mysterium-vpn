@@ -45,6 +45,7 @@ class CrashlyticsLoggerObserver extends TalkerObserver {
         parameters: {
           'message': apiError.message,
           'status_code': apiError.code,
+          'error_code': ?apiError.errorCode,
           'endpoint': apiError.endpoint,
           'method': apiError.requestOptions.method,
           'error_type': 'api_exception',

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -37,6 +39,8 @@ import 'package:talker/talker.dart';
 import 'vpn_store_test.mocks.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late VpnStore vpnStore;
   late MockWireguardRepository mockWireguardRepo;
   late MockOpenVpnRepository mockOpenVpnRepo;
@@ -833,6 +837,94 @@ void main() {
         await vpnStore.manageConnection(refreshIP: true);
         expect(duringDisconnect, isTrue);
         expect(vpnStore.isReconnecting, isFalse);
+      });
+
+      test('connect timeout logs failure with a non-null error code and message', () async {
+        when(
+          mockWireguardRepo.connect(config: anyNamed('config')),
+        ).thenThrow(TimeoutException('connect timed out'));
+
+        await connect(country);
+
+        final captured = verify(
+          mockAnalytics.logConnectFailure(
+            time: anyNamed('time'),
+            error: anyNamed('error'),
+            errorType: anyNamed('errorType'),
+            protocol: anyNamed('protocol'),
+            errorCode: captureAnyNamed('errorCode'),
+            errorMessage: captureAnyNamed('errorMessage'),
+          ),
+        ).captured;
+        expect(captured[0], 1112);
+        expect(captured[1], isNotNull);
+      });
+
+      test('unavailable location failure logs a non-null error message', () async {
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenThrow(
+          ApiException(
+            RequestOptions(path: '/connect'),
+            'location unavailable',
+            code: 2332,
+            identifier: 'id',
+            endpoint: '/connect',
+            severity: ExceptionSeverity.medium,
+          ),
+        );
+
+        await connect(country);
+
+        final message = verify(
+          mockAnalytics.logConnectFailure(
+            time: anyNamed('time'),
+            error: anyNamed('error'),
+            errorType: anyNamed('errorType'),
+            protocol: anyNamed('protocol'),
+            errorCode: anyNamed('errorCode'),
+            errorMessage: captureAnyNamed('errorMessage'),
+          ),
+        ).captured.single;
+        expect(message, isNotNull);
+      });
+
+      test('device limit failure logs a non-null error message', () async {
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenThrow(const DeviceLimitReachedException());
+
+        await connect(country);
+
+        final message = verify(
+          mockAnalytics.logConnectFailure(
+            time: anyNamed('time'),
+            error: anyNamed('error'),
+            errorType: anyNamed('errorType'),
+            protocol: anyNamed('protocol'),
+            errorCode: anyNamed('errorCode'),
+            errorMessage: captureAnyNamed('errorMessage'),
+          ),
+        ).captured.single;
+        expect(message, isNotNull);
       });
 
       test('connectedIpPoolCount is the country total when connected to a country', () async {
