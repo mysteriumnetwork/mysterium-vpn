@@ -119,6 +119,12 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
           value: defaultTargetPlatform.name,
         ),
       );
+      await setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.appVersion,
+          value: Env.buildInfo.buildVersion,
+        ),
+      );
     } catch (e) {
       logError(err: e);
     }

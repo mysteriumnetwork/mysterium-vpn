@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -23,18 +22,14 @@ void main() {
 
   setUp(() {
     subscriptionStore = MockSubscriptionStore();
-    // The HomeProductsTab Observer reads these too — keep them on stable
-    // defaults so the build doesn't trip on a missing future.
+    // Branch selection now lives in `productsScreenVariant` (unit-tested in
+    // products_screen_variant_test.dart). This widget test only verifies that
+    // each variant renders the right view, so we stub the variant directly and
+    // keep `subscriptionFuture` on a stable default for the views that read it.
     when(
       subscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
-    when(
-      subscriptionStore.subscriptionConfigFuture,
-    ).thenAnswer((_) => ObservableFuture.value(null));
-    // Default to "no special state" — individual tests override.
-    when(subscriptionStore.isOnMaxPlan).thenReturn(false);
-    when(subscriptionStore.useWebFlow).thenReturn(false);
-    when(subscriptionStore.isStoreSubOnForeignPlatform).thenReturn(false);
+    when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.defaultUpgrade);
   });
 
   Widget buildHarness() => ProviderScope(
@@ -68,9 +63,13 @@ void main() {
     ),
   );
 
-  group('HomeProductsTab branching', () {
-    testWidgets('renders MaxPlanView when isOnMaxPlan is true', (tester) async {
-      when(subscriptionStore.isOnMaxPlan).thenReturn(true);
+  group('HomeProductsTab variant rendering', () {
+    // Branch *selection* (granular getters -> variant, and precedence) is
+    // covered by products_screen_variant_test.dart. These tests verify the
+    // widget renders the correct view for each settled variant.
+
+    testWidgets('renders MaxPlanView for ProductsScreenVariant.maxPlan', (tester) async {
+      when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.maxPlan);
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();
@@ -82,14 +81,13 @@ void main() {
         findsOneWidget,
         reason: 'MaxPlanView alert text should be on screen',
       );
-      // Should not be the manage-on-web variant.
       expect(find.textContaining('Manage on the web'), findsNothing);
     });
 
-    testWidgets('renders ManageOnWebView with active-sub copy when useWebFlow is true', (
+    testWidgets('renders ManageOnWebView with active-sub copy for manageOnWeb + active sub', (
       tester,
     ) async {
-      when(subscriptionStore.useWebFlow).thenReturn(true);
+      when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.manageOnWeb);
       // Active subscription (e.g. credit card / PayPal paid on web).
       when(subscriptionStore.subscriptionFuture).thenAnswer(
         (_) => ObservableFuture.value(
@@ -106,19 +104,17 @@ void main() {
         findsOneWidget,
         reason: 'Manage on the web button should be on screen',
       );
-      // Should not be the max-plan variant.
       expect(find.textContaining('highest plan'), findsNothing);
       // Should not show the first-time-buyer copy.
       expect(find.textContaining('Subscribe on the web'), findsNothing);
     });
 
     testWidgets(
-      'renders ManageOnWebView with first-time-buyer copy on Windows with no active sub',
+      'renders ManageOnWebView with first-time-buyer copy for manageOnWeb + no active sub',
       (tester) async {
-        // Windows first-time buyer: useWebFlow is true even though there is
-        // no active subscription. Must NOT show the "you already have an
-        // active plan" alert.
-        when(subscriptionStore.useWebFlow).thenReturn(true);
+        // Windows first-time buyer: manageOnWeb even though there is no active
+        // subscription. Must NOT show the "you already have an active plan" alert.
+        when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.manageOnWeb);
         when(
           subscriptionStore.subscriptionFuture,
         ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
@@ -138,33 +134,10 @@ void main() {
       },
     );
 
-    testWidgets('prefers MaxPlanView over ManageOnWebView when on the highest plan', (
-      tester,
-    ) async {
-      // A user on the highest plan available to them (e.g. a web-paid 2-year
-      // Pro sub) must see the read-only "highest plan" screen, even though the
-      // web flow would otherwise apply. The max-plan view wins.
-      when(subscriptionStore.isOnMaxPlan).thenReturn(true);
-      when(subscriptionStore.useWebFlow).thenReturn(true);
-      when(subscriptionStore.subscriptionFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          Subscription(active: true, gateway: 'stripe', planId: 'plan_2_years_pro'),
-        ),
-      );
-
-      await tester.pumpWidget(buildHarness());
-      await tester.pump();
-
-      expect(find.textContaining(RegExp('highest plan|productsMaxPlanAlert')), findsOneWidget);
-      expect(find.textContaining('Manage on the web'), findsNothing);
-    });
-
-    testWidgets('renders store-block view for an active store sub on a foreign platform', (
-      tester,
-    ) async {
+    testWidgets('renders store-block view for ProductsScreenVariant.manageOnStore', (tester) async {
       // e.g. an Apple sub opened on Windows: must direct the user to the
       // originating store, never the web, and never the in-app upgrade picker.
-      when(subscriptionStore.isStoreSubOnForeignPlatform).thenReturn(true);
+      when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.manageOnStore);
       when(subscriptionStore.subscriptionFuture).thenAnswer(
         (_) => ObservableFuture.value(
           Subscription(active: true, gateway: 'apple', planId: 'plan_monthly_basic'),
@@ -183,42 +156,13 @@ void main() {
       expect(find.textContaining(RegExp('Subscribe on the web|subscribeOnWebBtn')), findsNothing);
     });
 
-    testWidgets('max-plan view wins over store-block for a store-max sub on any platform', (
-      tester,
-    ) async {
-      // A store sub on its store's max plan (e.g. Apple Plus annual) is on the
-      // highest plan available to it, so it shows "highest plan" on every
-      // platform — even where it would otherwise be store-blocked (Windows).
-      when(subscriptionStore.isOnMaxPlan).thenReturn(true);
-      when(subscriptionStore.isStoreSubOnForeignPlatform).thenReturn(true);
-      when(subscriptionStore.subscriptionFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          Subscription(active: true, gateway: 'apple', planId: 'plan_yearly_plus'),
-        ),
-      );
+    // The default "upgrade view" branch wraps the [SubscriptionUpgradeView] in a
+    // [SubscriptionStatusContainer] that reads several other stores (plans,
+    // purchase, analytics, auth). It would need ~5 extra mocks to render without
+    // crashing, so it is not exercised here.
 
-      await tester.pumpWidget(buildHarness());
-      await tester.pump();
-
-      expect(find.textContaining(RegExp('highest plan|productsMaxPlanAlert')), findsOneWidget);
-      expect(
-        find.textContaining(RegExp('active subscription paid via|activeSubsPaidVia')),
-        findsNothing,
-      );
-    });
-
-    // The default "upgrade view" branch (both flags false) wraps the
-    // [SubscriptionUpgradeView] in a [SubscriptionStatusContainer] that
-    // reads several other stores (plans, purchase, analytics, auth). It
-    // would need ~5 extra mocks to render without crashing; the branching
-    // itself is already covered by the three tests above.
-
-    testWidgets('shows a loader while subscriptionFuture is pending', (tester) async {
-      // Pending future — must not commit to a branch yet, even if the
-      // web-flow computed has already flipped (e.g. Windows).
-      final pending = ObservableFuture<Subscription>(Completer<Subscription>().future);
-      when(subscriptionStore.subscriptionFuture).thenAnswer((_) => pending);
-      when(subscriptionStore.useWebFlow).thenReturn(true);
+    testWidgets('shows a loader for ProductsScreenVariant.loading', (tester) async {
+      when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.loading);
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();

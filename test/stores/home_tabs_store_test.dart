@@ -8,19 +8,39 @@ import 'package:mysterium_vpn/views/settings/setting_category.dart';
 
 import 'home_tabs_store_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<AuthSessionStore>()])
+@GenerateNiceMocks([
+  MockSpec<AuthSessionStore>(),
+  MockSpec<AnalyticsStore>(),
+  MockSpec<SubscriptionStore>(),
+  MockSpec<LocationsQueryStore>(),
+])
 void main() {
   late HomeTabsStore store;
   late MockAuthSessionStore authSessionStore;
+  late MockAnalyticsStore analyticsStore;
+  late MockSubscriptionStore subscriptionStore;
+  late MockLocationsQueryStore locationsQueryStore;
   late Observable<bool> isAuthenticatedSignal;
+
+  HomeTabsStore build() => HomeTabsStore(
+    authSessionStore,
+    analyticsStore: analyticsStore,
+    subscriptionStore: subscriptionStore,
+    locationsQueryStore: locationsQueryStore,
+  );
 
   setUp(() {
     authSessionStore = MockAuthSessionStore();
+    analyticsStore = MockAnalyticsStore();
+    subscriptionStore = MockSubscriptionStore();
+    locationsQueryStore = MockLocationsQueryStore();
     // Back the mock with a real Observable so MobX reactions inside the
     // store fire when the auth flag flips.
     isAuthenticatedSignal = Observable(false);
     when(authSessionStore.isAuthenticated).thenAnswer((_) => isAuthenticatedSignal.value);
-    store = HomeTabsStore(authSessionStore);
+    when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.defaultUpgrade);
+    when(locationsQueryStore.searchTrimmed).thenReturn('');
+    store = build();
   });
 
   group('HomeTabsStore.trySelect', () {
@@ -140,6 +160,75 @@ void main() {
       expect(store.selected, HomeTab.map);
       expect(store.settingsSubPage, isNull);
       expect(store.pendingLocationsSearchFocus, isFalse);
+    });
+  });
+
+  group('HomeTabsStore tab-view analytics', () {
+    test('fires map_tab_viewed on construction (default tab)', () {
+      verify(analyticsStore.logMapTabViewed()).called(1);
+    });
+
+    test('fires settings_tab_viewed when settings is selected', () {
+      clearInteractions(analyticsStore);
+      store.trySelect(HomeTab.settings);
+      verify(analyticsStore.logSettingsTabViewed()).called(1);
+    });
+
+    test('fires locations_tab_viewed when locations is selected', () {
+      clearInteractions(analyticsStore);
+      store.trySelect(HomeTab.locations);
+      verify(analyticsStore.logLocationsTabViewed()).called(1);
+    });
+
+    test('does not re-fire when re-selecting the same tab', () {
+      store.trySelect(HomeTab.settings);
+      clearInteractions(analyticsStore);
+      store.trySelect(HomeTab.settings);
+      verifyNever(analyticsStore.logSettingsTabViewed());
+    });
+
+    test(
+      'fires products_tab_viewed (redirected_to_login: false, with variant) when products opens',
+      () {
+        when(authSessionStore.isAuthenticated).thenReturn(true);
+        clearInteractions(analyticsStore);
+        store.trySelect(HomeTab.products);
+        verify(
+          analyticsStore.logProductsTabViewed(
+            redirectedToLogin: false,
+            variant: ProductsScreenVariant.defaultUpgrade,
+          ),
+        ).called(1);
+      },
+    );
+
+    test('does NOT fire products view while variant is loading', () {
+      when(authSessionStore.isAuthenticated).thenReturn(true);
+      when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.loading);
+      store = build();
+      clearInteractions(analyticsStore);
+      store.trySelect(HomeTab.products);
+      verifyNever(
+        analyticsStore.logProductsTabViewed(
+          redirectedToLogin: anyNamed('redirectedToLogin'),
+          variant: anyNamed('variant'),
+        ),
+      );
+    });
+
+    test('fires products_tab_viewed (redirected_to_login: true) when blocked by auth', () {
+      clearInteractions(analyticsStore);
+      expect(store.trySelect(HomeTab.products), isFalse);
+      verify(analyticsStore.logProductsTabViewed(redirectedToLogin: true)).called(1);
+    });
+
+    test('openLocationsSearch fires map_search_redirected_to_locations with query flags', () {
+      when(locationsQueryStore.searchTrimmed).thenReturn('berlin');
+      clearInteractions(analyticsStore);
+      store.openLocationsSearch();
+      verify(
+        analyticsStore.logMapSearchRedirectedToLocations(queryEntered: true, queryPreserved: true),
+      ).called(1);
     });
   });
 }
