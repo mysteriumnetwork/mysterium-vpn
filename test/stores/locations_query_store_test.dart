@@ -55,14 +55,14 @@ void main() {
     expect(store.searchTrimmed, 'hello');
   });
 
-  test('setIPType writes prefs and logs the tab change', () async {
+  test('setIPType writes prefs but does NOT log a tab click', () async {
     final store = newStore();
 
     await store.setIPType(IPType.datacenter);
 
     expect(store.ipType, IPType.datacenter);
     verify(prefs.setIPType(IPType.datacenter)).called(1);
-    verify(analytics.logTabChange(IPType.datacenter)).called(1);
+    verifyNever(analytics.logTabChange(any));
   });
 
   test('dispose tears down debouncer + reaction', () async {

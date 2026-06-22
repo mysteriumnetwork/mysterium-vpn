@@ -45,7 +45,6 @@ abstract class _LocationsQueryStore with Store, Disposeable {
   Future<void> setIPType(IPType value) async {
     _ipType = value;
     await _prefs.setIPType(value);
-    await _analyticsStore.logTabChange(value);
   }
 
   @override
