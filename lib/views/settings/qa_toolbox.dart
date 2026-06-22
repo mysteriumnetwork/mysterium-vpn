@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
+import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
@@ -40,6 +42,7 @@ class QAToolbox extends HookConsumerWidget {
           children: [
             _buildConnectionLimitAction(context, ref),
             _buildTunnelStatusAction(context, ref),
+            _buildFetchConfigAction(context, ref),
             _buildInvalidLocationsAction(context, ref),
             if (Platform.isWindows) _buildOpenVPNLogsAction(context),
           ],
@@ -213,6 +216,51 @@ class QAToolbox extends HookConsumerWidget {
       ),
     ],
   );
+
+  Widget _buildFetchConfigAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.vpn_key_outlined,
+    title: 'Fetch VPN config',
+    subtitle: 'Pick protocol, IP type and an optional location, then copy the config',
+    actions: [
+      _QAActionButton(
+        label: 'Build & fetch…',
+        onPressed: () async {
+          final choice = await showDialog<_FetchConfigChoice>(
+            context: context,
+            builder: (_) => const _FetchConfigDialog(),
+          );
+          if (choice != null && context.mounted) {
+            await _fetchAndCopyConfig(choice, ref);
+          }
+        },
+      ),
+    ],
+  );
+
+  Future<void> _fetchAndCopyConfig(_FetchConfigChoice choice, WidgetRef ref) async {
+    final repository = choice.isWireguard
+        ? ref.read(wireguardRepositoryPOD)
+        : ref.read(openVpnRepositoryPOD);
+    final label = choice.isWireguard ? 'WireGuard' : 'OpenVPN';
+    try {
+      final config = await repository.fetchVpnConfig(
+        countryOriginate: null,
+        country: choice.country,
+        city: choice.city,
+        ipType: choice.ipType.key.isEmpty ? null : choice.ipType.key,
+        userIntent: null,
+        cluster: null,
+        resetConnection: false,
+        dnsAddress: ref.read(dnsStorePOD).dnsAddress,
+      );
+      await FlutterClipboard.copy(config.config);
+      final sizeKb = (config.config.length / 1024).toStringAsFixed(1);
+      final exitIp = config.exitIp == null ? '' : ' — exit IP ${config.exitIp}';
+      showSnackbar('$label config copied ($sizeKb KB)$exitIp', type: SnackbarType.success);
+    } catch (e) {
+      showSnackbar('Failed to fetch $label config: $e');
+    }
+  }
 
   Widget _buildInvalidLocationsAction(BuildContext context, WidgetRef ref) => _QAActionItem(
     icon: Icons.add_location_alt_outlined,
@@ -447,6 +495,111 @@ class QAToolbox extends HookConsumerWidget {
       showSnackbar('Error reading log file: $e');
     }
   }
+}
+
+class _FetchConfigChoice {
+  const _FetchConfigChoice({
+    required this.isWireguard,
+    required this.ipType,
+    required this.country,
+    required this.city,
+  });
+
+  final bool isWireguard;
+  final IPType ipType;
+  final String? country;
+  final String? city;
+}
+
+class _FetchConfigDialog extends StatefulWidget {
+  const _FetchConfigDialog();
+
+  @override
+  State<_FetchConfigDialog> createState() => _FetchConfigDialogState();
+}
+
+class _FetchConfigDialogState extends State<_FetchConfigDialog> {
+  bool _isWireguard = true;
+  IPType _ipType = IPType.datacenter;
+  final _countryController = TextEditingController();
+  final _cityController = TextEditingController();
+
+  @override
+  void dispose() {
+    _countryController.dispose();
+    _cityController.dispose();
+    super.dispose();
+  }
+
+  String? _trimmedOrNull(TextEditingController controller) {
+    final value = controller.text.trim();
+    return value.isEmpty ? null : value;
+  }
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+    title: const Text('Fetch VPN config'),
+    content: SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Protocol'),
+          const SizedBox(height: 8),
+          SegmentedButton<bool>(
+            segments: const [
+              ButtonSegment(value: true, label: Text('WireGuard')),
+              ButtonSegment(value: false, label: Text('OpenVPN')),
+            ],
+            selected: {_isWireguard},
+            onSelectionChanged: (selection) => setState(() => _isWireguard = selection.first),
+          ),
+          const SizedBox(height: 16),
+          const Text('IP type'),
+          const SizedBox(height: 8),
+          SegmentedButton<IPType>(
+            segments: const [
+              ButtonSegment(value: IPType.datacenter, label: Text('Data center')),
+              ButtonSegment(value: IPType.residential, label: Text('Residential')),
+            ],
+            selected: {_ipType},
+            onSelectionChanged: (selection) => setState(() => _ipType = selection.first),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _countryController,
+            decoration: const InputDecoration(
+              labelText: 'Country code (optional)',
+              hintText: 'e.g. US',
+            ),
+            textCapitalization: TextCapitalization.characters,
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: _cityController,
+            decoration: const InputDecoration(
+              labelText: 'City (optional)',
+              hintText: 'e.g. New York',
+            ),
+          ),
+        ],
+      ),
+    ),
+    actions: [
+      TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+      TextButton(
+        onPressed: () => Navigator.of(context).pop(
+          _FetchConfigChoice(
+            isWireguard: _isWireguard,
+            ipType: _ipType,
+            country: _trimmedOrNull(_countryController)?.toUpperCase(),
+            city: _trimmedOrNull(_cityController),
+          ),
+        ),
+        child: const Text('Fetch & copy'),
+      ),
+    ],
+  );
 }
 
 class _ExpandableSection extends HookWidget {
