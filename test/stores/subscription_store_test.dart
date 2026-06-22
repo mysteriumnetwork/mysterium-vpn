@@ -206,7 +206,7 @@ void main() {
     });
 
     test(
-      'refreshSubscription sets analytics user properties for planId, validTo, userStatus',
+      'refreshSubscription sets analytics user properties for planId, validTo, userStatus, gateway',
       () async {
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
 
@@ -216,13 +216,22 @@ void main() {
           expired: false,
           recurring: true,
           planId: 'plan_123',
+          gateway: 'Stripe',
         );
         when(mockSubscriptionService.fetchSubscriptionDetails()).thenAnswer((_) async => paid);
 
         await subscriptionStore.refreshSubscription();
 
-        // The exact object shape for AnalyticsUserProperty is internal; verify calls count.
-        verify(mockAnalyticsStore.setUserProperty(any)).called(3);
+        final captured = verify(
+          mockAnalyticsStore.setUserProperty(captureAny),
+        ).captured.cast<AnalyticsUserProperty>();
+        // planId, validTo, userStatus, gateway.
+        expect(captured.length, 4);
+        final gatewayProp = captured.firstWhere(
+          (p) => p.rawName == AnalyticsUserPropName.gateway.formattedName,
+        );
+        // Gateway is normalised to lower-case.
+        expect(gatewayProp.value, 'stripe');
       },
     );
 

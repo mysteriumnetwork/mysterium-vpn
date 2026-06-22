@@ -398,4 +398,60 @@ void main() {
       expect(await store.watchLogs().first, isA<AnalyticsLogEntry>());
     });
   });
+
+  group('tab navigation events', () {
+    test('logMapTabViewed emits the event with no parameters', () async {
+      final entry = nextLog();
+      await store.logMapTabViewed();
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.mapTabViewed.formattedName);
+      expect(log.params, isNull);
+    });
+
+    test('logLocationsTabViewed emits the event with no parameters', () async {
+      final entry = nextLog();
+      await store.logLocationsTabViewed();
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.locationsTabViewed.formattedName);
+      expect(log.params, isNull);
+    });
+
+    test('logSettingsTabViewed emits the event with no parameters', () async {
+      final entry = nextLog();
+      await store.logSettingsTabViewed();
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.settingsTabViewed.formattedName);
+      expect(log.params, isNull);
+    });
+
+    test('logMapSearchRedirectedToLocations emits query flags', () async {
+      final entry = nextLog();
+      await store.logMapSearchRedirectedToLocations(queryEntered: true, queryPreserved: true);
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.mapSearchRedirectedToLocations.formattedName);
+      expect(log.params, {'query_entered': true, 'query_preserved': true});
+    });
+
+    test(
+      'logProductsTabViewed on successful open emits variant + redirected_to_login=false',
+      () async {
+        final entry = nextLog();
+        await store.logProductsTabViewed(
+          redirectedToLogin: false,
+          variant: ProductsScreenVariant.defaultUpgrade,
+        );
+        final log = await entry;
+        expect(log.message, AnalyticsEvent.productsTabViewed.formattedName);
+        expect(log.params, {'redirected_to_login': false, 'screen_variant': 'default_upgrade'});
+      },
+    );
+
+    test('logProductsTabViewed on redirect omits screen_variant', () async {
+      final entry = nextLog();
+      await store.logProductsTabViewed(redirectedToLogin: true);
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.productsTabViewed.formattedName);
+      expect(log.params, {'redirected_to_login': true});
+    });
+  });
 }
