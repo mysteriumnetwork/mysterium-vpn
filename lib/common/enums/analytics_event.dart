@@ -162,7 +162,12 @@ enum AnalyticsEvent {
   feedbackFlowOpened,
   reviewPromptDismissed,
   reviewPromptCooldownStarted,
-  ipRefreshExhaustedMessageShown;
+  ipRefreshExhaustedMessageShown,
+  mapTabViewed,
+  mapSearchRedirectedToLocations,
+  locationsTabViewed,
+  productsTabViewed,
+  settingsTabViewed;
 
   String get formattedName => name.toSnakeCase;
 }

@@ -11,6 +11,7 @@ export 'ip_type.dart';
 export 'location_mode.dart';
 export 'marketing_analytics_event.dart';
 export 'orientation_type.dart';
+export 'products_screen_variant.dart';
 export 'protocol_type.dart';
 export 'rate_connection.dart';
 export 'routes.dart';

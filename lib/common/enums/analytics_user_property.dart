@@ -14,7 +14,9 @@ enum AnalyticsUserPropName {
   userStatus,
   marketingConsent,
   email,
-  protocol;
+  protocol,
+  appVersion,
+  gateway;
 
   String get formattedName => name.toSnakeCase;
 }
