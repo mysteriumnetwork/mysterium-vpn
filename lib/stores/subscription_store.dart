@@ -207,6 +207,19 @@ abstract class _SubscriptionStore with Store {
     return maxPlanId != null && subscription.planId == maxPlanId;
   }
 
+  /// The screen the Products tab will render. `@computed` so store-driven
+  /// analytics reactions recompute when the underlying subscription/config
+  /// state settles. Read by both `HomeProductsTab` and `HomeTabsStore`.
+  @computed
+  ProductsScreenVariant get productsScreenVariant => resolveProductsScreenVariant(
+    subscriptionStatus: _subscriptionFuture.status,
+    hasActiveSub: _subscriptionFuture.value?.active ?? false,
+    configStatus: subscriptionConfigFuture.status,
+    isOnMaxPlan: isOnMaxPlan,
+    isStoreSubOnForeignPlatform: isStoreSubOnForeignPlatform,
+    useWebFlow: useWebFlow,
+  );
+
   @computed
   bool get malwareBlockingAllowed => planMetadata?.malwareBlockingAllowed ?? false;
 
@@ -264,6 +277,12 @@ abstract class _SubscriptionStore with Store {
       )
       ..setUserProperty(
         AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.userStatus, value: userStatus),
+      )
+      ..setUserProperty(
+        AnalyticsUserProperty.fromEnum(
+          name: AnalyticsUserPropName.gateway,
+          value: subscription.gateway?.toLowerCase() ?? '',
+        ),
       );
   }
 

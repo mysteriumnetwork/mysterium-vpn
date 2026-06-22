@@ -223,6 +223,31 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logMapTabViewed() => logEvent(AnalyticsEvent.mapTabViewed);
+
+  Future<void> logLocationsTabViewed() => logEvent(AnalyticsEvent.locationsTabViewed);
+
+  Future<void> logSettingsTabViewed() => logEvent(AnalyticsEvent.settingsTabViewed);
+
+  Future<void> logMapSearchRedirectedToLocations({
+    required bool queryEntered,
+    required bool queryPreserved,
+  }) => logEvent(
+    AnalyticsEvent.mapSearchRedirectedToLocations,
+    parameters: {'query_entered': queryEntered, 'query_preserved': queryPreserved},
+  );
+
+  Future<void> logProductsTabViewed({
+    required bool redirectedToLogin,
+    ProductsScreenVariant? variant,
+  }) => logEvent(
+    AnalyticsEvent.productsTabViewed,
+    parameters: {
+      'redirected_to_login': redirectedToLogin,
+      if (variant != null) 'screen_variant': variant.name.toSnakeCase,
+    },
+  );
+
   void dispose() {
     _debouncer.dispose();
     _logStreamController.close();

@@ -216,6 +216,12 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
             value: defaultTargetPlatform.name,
           ),
         ),
+        setUserProperty(
+          AnalyticsUserProperty.fromEnum(
+            name: AnalyticsUserPropName.appVersion,
+            value: Env.buildInfo.buildVersion,
+          ),
+        ),
       ]);
     } catch (e) {
       logError(err: e);
