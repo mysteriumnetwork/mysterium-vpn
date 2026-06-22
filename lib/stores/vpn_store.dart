@@ -529,12 +529,15 @@ abstract class _VpnStore extends VpnGuard with Store {
     _userIntentsStore.userIntent = null;
     _logger.handle(e);
     Sentry.captureException(e, stackTrace: stackTrace);
-    showSnackbar(LocaleKeys.connectionTimeout.tr());
+    final message = LocaleKeys.connectionTimeout.tr();
+    showSnackbar(message);
 
     _analyticsStore.logConnectFailure(
       time: _stopwatch.elapsed,
       error: e.message ?? e.toString(),
       errorType: e.runtimeType.toString(),
+      errorCode: _extractErrorCode(e),
+      errorMessage: message,
       protocol: _protocolStore.protocol,
     );
   }
@@ -552,7 +555,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     final errorCode = _extractErrorCode(e);
     final errorMessage = _buildErrorMessage(e, errorCode);
 
-    if (errorMessage != null) {
+    if (_shouldShowErrorSnackbar(e)) {
       showSnackbar(errorMessage);
     }
 
@@ -569,12 +572,18 @@ abstract class _VpnStore extends VpnGuard with Store {
   int _extractErrorCode(Object e) => switch (e) {
     VpnConnectException(:final code) => code,
     ApiException(:final code) => code,
+    TimeoutException() => 1112,
     _ => 1113,
   };
 
-  String? _buildErrorMessage(Object e, int errorCode) => switch (e) {
-    UnavailableLocationException() => null,
-    DeviceLimitReachedException() => null,
+  // These exceptions surface their own UI (device-limit dialog,
+  // location-availability toggle), so the generic snackbar is suppressed.
+  bool _shouldShowErrorSnackbar(Object e) =>
+      e is! UnavailableLocationException && e is! DeviceLimitReachedException;
+
+  String _buildErrorMessage(Object e, int errorCode) => switch (e) {
+    UnavailableLocationException() => LocaleKeys.locationUnavailableTitle.tr(),
+    DeviceLimitReachedException() => LocaleKeys.deviceLimitReachedTitle.tr(),
     _ =>
       errorCode == 4029
           ? LocaleKeys.toManyRequestsErrorMsg.tr()
