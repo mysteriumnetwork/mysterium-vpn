@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
-import 'package:mysterium_vpn/views/locations/components/locations_search.dart';
+import 'package:mysterium_vpn/views/locations/components/components.dart';
 import 'package:mysterium_vpn/views/locations/locations_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -36,59 +36,67 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
 
     final pallete = Theme.of(context).palette;
     final spacing = Theme.of(context).spacing;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: pallete.bgSidePanel,
-        boxShadow: [
-          switch (brightness) {
-            Brightness.dark => BoxShadow(
-              color: pallete.bgPrimary.withValues(alpha: .2),
-              blurRadius: 100,
-            ),
-            Brightness.light => BoxShadow(
-              color: pallete.bgPrimary.withValues(alpha: .04),
-              blurRadius: 16,
-              offset: const Offset(4, -4),
-            ),
-          },
-        ],
-      ),
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverPinnedHeader(
-            child: DecoratedBox(
-              decoration: BoxDecoration(color: pallete.bgSidePanel),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Header.logo(
-                    showBackButton: false,
-                    backgroundColor: pallete.bgSidePanel,
-                    actions: const [HelpSupportIconButton()],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(spacing.xl3, spacing.s, spacing.xl3, spacing.xl3),
-                    child: Observer(
-                      builder: (context) => ArrowedProgressCard(
-                        globalKey:
-                            homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep
-                                .search
-                                .platformIndex],
-                        step: SubscriptionOnboardingStep.search,
-                        tooltipPosition: TooltipPosition.bottom,
-                        child: LocationsSearch(enabled: !locationsStore.hasNoServers),
+    return LocationsRefreshControl(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: pallete.bgSidePanel,
+          boxShadow: [
+            switch (brightness) {
+              Brightness.dark => BoxShadow(
+                color: pallete.bgPrimary.withValues(alpha: .2),
+                blurRadius: 100,
+              ),
+              Brightness.light => BoxShadow(
+                color: pallete.bgPrimary.withValues(alpha: .04),
+                blurRadius: 16,
+                offset: const Offset(4, -4),
+              ),
+            },
+          ],
+        ),
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: scrollController,
+          slivers: [
+            SliverPinnedHeader(
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: pallete.bgSidePanel),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Header.logo(
+                      showBackButton: false,
+                      backgroundColor: pallete.bgSidePanel,
+                      actions: const [HelpSupportIconButton()],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        spacing.xl3,
+                        spacing.s,
+                        spacing.xl3,
+                        spacing.xl3,
+                      ),
+                      child: Observer(
+                        builder: (context) => ArrowedProgressCard(
+                          globalKey:
+                              homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep
+                                  .search
+                                  .platformIndex],
+                          step: SubscriptionOnboardingStep.search,
+                          tooltipPosition: TooltipPosition.bottom,
+                          child: LocationsSearch(enabled: !locationsStore.hasNoServers),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const SliverClip(
-            child: SliverPadding(padding: EdgeInsets.zero, sliver: LocationsSliverView()),
-          ),
-        ],
+            const SliverClip(
+              child: SliverPadding(padding: EdgeInsets.zero, sliver: LocationsSliverView()),
+            ),
+          ],
+        ),
       ),
     );
   }
