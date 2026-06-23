@@ -20,8 +20,6 @@ class LocationsRefreshControl extends ConsumerWidget {
     }
     return RefreshIndicator.adaptive(
       displacement: 50,
-      // RefreshIndicator only needs completion; the outcome drives the snackbar
-      // inside refreshLocationsWithFeedback, so the returned bool is ignored.
       onRefresh: () async {
         await refreshLocationsWithFeedback(
           ref.read(locationsStorePOD),
