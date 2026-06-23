@@ -258,6 +258,13 @@ mixin AnalyticsStore {
     await logEvent(AnalyticsEvent.locationsTabClick, parameters: {'tab': type.name});
   }
 
+  Future<void> logLocationsRefresh({required IPType type, required String source}) async {
+    await logEvent(
+      AnalyticsEvent.locationsRefreshed,
+      parameters: {'ip_type': type.name, 'source': source},
+    );
+  }
+
   Future<void> setDeviceInfo() async {}
 
   Future<void> logRateConnnectionClicked(RateConnectionRequestModeEnum mode) async {
