@@ -20,12 +20,16 @@ class LocationsRefreshControl extends ConsumerWidget {
     }
     return RefreshIndicator.adaptive(
       displacement: 50,
-      onRefresh: () => refreshLocationsWithFeedback(
-        ref.read(locationsStorePOD),
-        ref.read(locationsQueryStorePOD).ipType,
-        analytics: ref.read(analyticsStorePOD),
-        source: LocationsRefreshSource.pull,
-      ),
+      // RefreshIndicator only needs completion; the outcome drives the snackbar
+      // inside refreshLocationsWithFeedback, so the returned bool is ignored.
+      onRefresh: () async {
+        await refreshLocationsWithFeedback(
+          ref.read(locationsStorePOD),
+          ref.read(locationsQueryStorePOD).ipType,
+          analytics: ref.read(analyticsStorePOD),
+          source: LocationsRefreshSource.pull,
+        );
+      },
       child: child,
     );
   }

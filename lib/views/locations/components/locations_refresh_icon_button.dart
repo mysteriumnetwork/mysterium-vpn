@@ -50,16 +50,13 @@ class LocationsRefreshIconButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsStore = ref.watch(locationsStorePOD);
-    final refreshFuture = useState<Future<void>?>(null);
+    final refreshFuture = useState<Future<bool>?>(null);
     final isRefreshing = useFuture(refreshFuture.value).connectionState == ConnectionState.waiting;
-    final tooltip = useMemoized(
-      () => LocaleKeys.refreshLocationsTooltip.tr(args: [locationTypeLabel(type)]),
-      [type],
-    );
 
     return RefreshIconButton(
       spinning: isRefreshing,
-      tooltip: tooltip,
+      // Computed each build so it follows a runtime locale change.
+      tooltip: LocaleKeys.refreshLocationsTooltip.tr(args: [locationTypeLabel(type)]),
       color: Theme.of(context).palette.iconSecondary,
       onPressed: isRefreshing
           ? null
