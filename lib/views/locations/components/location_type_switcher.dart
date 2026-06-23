@@ -2,18 +2,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationTypeSwitcher extends StatefulWidget {
   const LocationTypeSwitcher({
     required this.value,
     required this.onChanged,
     required this.options,
+    this.activeTabTrailing,
     super.key,
   });
 
   final IPType value;
   final List<IPType> options;
   final ValueChanged<IPType> onChanged;
+
+  /// Optional widget rendered next to the label of the active tab — e.g. a
+  /// refresh action that applies to the currently selected type.
+  final Widget? activeTabTrailing;
 
   @override
   State<LocationTypeSwitcher> createState() => _LocationTypeSwitcherState();
@@ -74,14 +80,22 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
     tabs: [
       for (final option in widget.options)
         Tab(
-          text: switch (option) {
-            IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-            _ =>
-              widget.options.length > 1
-                  ? LocaleKeys.ipTypeResidential.tr()
-                  : LocaleKeys.allLocations.tr(),
-          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: Theme.of(context).spacing.s,
+            children: [
+              Flexible(child: Text(_label(option), overflow: TextOverflow.ellipsis)),
+              if (widget.activeTabTrailing != null && option == widget.value)
+                widget.activeTabTrailing!,
+            ],
+          ),
         ),
     ],
   );
+
+  String _label(IPType option) => switch (option) {
+    IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
+    _ =>
+      widget.options.length > 1 ? LocaleKeys.ipTypeResidential.tr() : LocaleKeys.allLocations.tr(),
+  };
 }
