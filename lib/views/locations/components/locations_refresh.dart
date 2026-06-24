@@ -6,29 +6,22 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Where a locations refresh was triggered from (for analytics).
-enum LocationsRefreshSource { button, pull }
+enum _RefreshSource { button, pull }
 
-/// Localized name of an IP type, matching the tab labels.
-String locationTypeLabel(IPType type) => switch (type) {
+String _typeLabel(IPType type) => switch (type) {
   IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
   _ => LocaleKeys.ipTypeResidential.tr(),
 };
 
 /// Refreshes [type] locations, logs the trigger, and shows a snackbar naming
-/// what was refreshed. Returns the refresh outcome so callers can react.
-Future<bool> refreshLocationsWithFeedback(
-  LocationsStore store,
-  IPType type, {
-  required AnalyticsStore analytics,
-  required LocationsRefreshSource source,
-}) async {
-  analytics.logLocationsRefresh(type: type, source: source.name);
-  final ok = await store.refresh(type);
-  final label = locationTypeLabel(type);
+/// what was refreshed. Returns the refresh outcome.
+Future<bool> _refresh(WidgetRef ref, IPType type, {required _RefreshSource source}) async {
+  ref.read(analyticsStorePOD).logLocationsRefresh(type: type, source: source.name);
+  final ok = await ref.read(locationsStorePOD).refresh(type);
+  final label = _typeLabel(type);
   showSnackbar(
     ok
         ? LocaleKeys.locationsUpdated.tr(args: [label])
@@ -49,23 +42,43 @@ class LocationsRefreshIconButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locationsStore = ref.watch(locationsStorePOD);
     final refreshFuture = useState<Future<bool>?>(null);
     final isRefreshing = useFuture(refreshFuture.value).connectionState == ConnectionState.waiting;
 
     return RefreshIconButton(
       spinning: isRefreshing,
       // Computed each build so it follows a runtime locale change.
-      tooltip: LocaleKeys.refreshLocationsTooltip.tr(args: [locationTypeLabel(type)]),
+      tooltip: LocaleKeys.refreshLocationsTooltip.tr(args: [_typeLabel(type)]),
       color: Theme.of(context).palette.iconSecondary,
       onPressed: isRefreshing
           ? null
-          : () => refreshFuture.value = refreshLocationsWithFeedback(
-              locationsStore,
-              type,
-              analytics: ref.read(analyticsStorePOD),
-              source: LocationsRefreshSource.button,
-            ),
+          : () => refreshFuture.value = _refresh(ref, type, source: _RefreshSource.button),
+    );
+  }
+}
+
+/// Wraps a locations scroll view with pull-to-refresh for the active tab's type.
+///
+/// Works on mobile (pull) and desktop (mouse/trackpad drag, enabled app-wide via
+/// `dragDevices`). Uses [RefreshIndicator.adaptive] so the spinner matches the
+/// platform — Cupertino on iOS/macOS, Material elsewhere.
+class LocationsRefreshControl extends ConsumerWidget {
+  const LocationsRefreshControl({required this.child, super.key});
+
+  /// The scroll view to attach pull-to-refresh to.
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (!ref.watch(remoteConfigStorePOD).locationsPullToRefreshEnabled) {
+      return child;
+    }
+    return RefreshIndicator.adaptive(
+      displacement: 50,
+      onRefresh: () async {
+        await _refresh(ref, ref.read(locationsQueryStorePOD).ipType, source: _RefreshSource.pull);
+      },
+      child: child,
     );
   }
 }
