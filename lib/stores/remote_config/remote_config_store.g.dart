@@ -181,6 +181,22 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.showCitiesAndStates,
     name: 'RemoteConfigStoreBase.showCitiesAndStates',
   )).value;
+  Computed<bool>? _$locationsPullToRefreshEnabledComputed;
+
+  @override
+  bool get locationsPullToRefreshEnabled =>
+      (_$locationsPullToRefreshEnabledComputed ??= Computed<bool>(
+        () => super.locationsPullToRefreshEnabled,
+        name: 'RemoteConfigStoreBase.locationsPullToRefreshEnabled',
+      )).value;
+  Computed<bool>? _$locationsRefreshButtonEnabledComputed;
+
+  @override
+  bool get locationsRefreshButtonEnabled =>
+      (_$locationsRefreshButtonEnabledComputed ??= Computed<bool>(
+        () => super.locationsRefreshButtonEnabled,
+        name: 'RemoteConfigStoreBase.locationsRefreshButtonEnabled',
+      )).value;
   Computed<Set<String>>? _$countriesWithCitiesOnMapComputed;
 
   @override
@@ -419,6 +435,8 @@ cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
 useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
+locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
+locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
 userIntentBlacklist: ${userIntentBlacklist},

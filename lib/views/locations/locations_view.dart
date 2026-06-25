@@ -282,6 +282,7 @@ class _Locations extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
+    final showRefreshButton = ref.watch(remoteConfigStorePOD).locationsRefreshButtonEnabled;
     final theme = Theme.of(context);
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
@@ -309,6 +310,9 @@ class _Locations extends HookConsumerWidget {
                 value: locationType,
                 options: locationsStore.locationTypes,
                 onChanged: onLocationTypeChanged,
+                activeTabTrailing: showRefreshButton
+                    ? LocationsRefreshIconButton(type: locationType)
+                    : null,
               ),
             ),
           ),

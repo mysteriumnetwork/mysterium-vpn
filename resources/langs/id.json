@@ -423,7 +423,7 @@
   "pushNotificationsConsentPopupDesc": "Dapatkan notifikasi tentang fitur baru, kiat bermanfaat, dan penawaran eksklusif - hanya pembaruan yang berguna.",
   "notificationsSettingTitle": "Pemberitahuan",
   "pushNotificationsSetting": "Notifikasi Push",
-  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus.",
+  "pushNotificationsSettingDesc": "Pembaruan produk, kiat, dan penawaran khusus",
   "openSystemSettingsBtn": "Buka pengaturan sistem",
   "emailNotificationsSetting": "Notifikasi Email",
   "subscriptionPlanWireGuardDesc": "WireGuard - protokol cepat terbaik untuk bermain game dan streaming\nOpenVPN - protokol yang sangat mudah dikonfigurasi yang berfungsi di tempat protokol lain gagal (tidak tersedia di Android)",
@@ -568,9 +568,9 @@
   "somethingWentWrong": "Terjadi kesalahan. Silakan coba lagi!",
   "subscriptionProcessCanceled": "Anda belum menyelesaikan perubahan pada langganan Anda.",
   "tokenAlreadyUsed": "Token sudah terpakai. Silakan coba lagi.\n\n",
-  "subscriptionActive": "Kabar gembira! Langganan Anda kini telah aktif.",
+  "subscriptionActive": "Kabar gembira! Langganan Anda sekarang sudah aktif.",
   "planAlreadyPurchasedMsg": "Anda sudah siap! Paket ini sudah aktif.",
-  "signInAbortedMsg": "Login gagal.",
+  "signInAbortedMsg": "Login gagal",
   "notAvailableMsg": "Tidak tersedia",
   "killSwitch": "Saklar pemutus daya",
   "killSwitchDesc": "Memblokir internet jika koneksi VPN terputus.",
@@ -617,5 +617,8 @@
   "reviewPositiveTitle": "Bagus sekali! Apakah Anda keberatan memberikan ulasan kepada kami?",
   "reviewSatisfactionTitle": "Apakah Anda akan merekomendasikan aplikasi ini kepada orang lain?",
   "ipRefreshExhaustedCity": "Tidak ada IP alternatif yang tersedia di {}. Pilih negara atau kota lain untuk mendapatkan IP yang berbeda di lain waktu.",
-  "ipRefreshExhaustedCountry": "Tidak ada IP alternatif yang tersedia di {}. Pilih negara lain untuk mendapatkan IP yang berbeda di lain waktu."
+  "ipRefreshExhaustedCountry": "Tidak ada IP alternatif yang tersedia di {}. Pilih negara lain untuk mendapatkan IP yang berbeda di lain waktu.",
+  "locationsUpdated": "{} diperbarui",
+  "locationsUpdateFailed": "Tidak dapat memperbarui {}",
+  "refreshLocationsTooltip": "Menyegarkan {}"
 }

@@ -617,5 +617,8 @@
   "reviewPositiveTitle": "That's great! Would you mind leaving us a review?",
   "reviewSatisfactionTitle": "Would you recommend this app to others?",
   "ipRefreshExhaustedCity": "No alternative IPs are available in {}. Choose another country or city to get a different IP next time.",
-  "ipRefreshExhaustedCountry": "No alternative IPs are available in {}. Choose another country to get a different IP next time."
+  "ipRefreshExhaustedCountry": "No alternative IPs are available in {}. Choose another country to get a different IP next time.",
+  "locationsUpdated": "{} updated",
+  "locationsUpdateFailed": "Couldn't update {}",
+  "refreshLocationsTooltip": "Refresh {}"
 }

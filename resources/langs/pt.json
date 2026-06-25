@@ -579,7 +579,7 @@
   "subscriptionPlanNamePro": "Pró",
   "productsTitle": "Produtos VPN",
   "productsManageSubtitle": "Gerencie e atualize na web.",
-  "productsExploreSubtitle": "Explore planos e recursos",
+  "productsExploreSubtitle": "Explore planos e funcionalidades",
   "productsActivePlanWebSyncAlert": "Você já possui um plano ativo. Atualize pelo site — as alterações serão sincronizadas automaticamente.",
   "productsMaxPlanAlert": "Você já está no plano mais completo disponível.",
   "productsAllPlansLbl": "Todos os planos:",
@@ -617,5 +617,8 @@
   "reviewPositiveTitle": "Que ótimo! Você se importaria de deixar uma avaliação para nós?",
   "reviewSatisfactionTitle": "Você recomendaria este aplicativo para outras pessoas?",
   "ipRefreshExhaustedCity": "Não há IPs alternativos disponíveis em {}. Escolha outro país ou cidade para obter um IP diferente na próxima vez.",
-  "ipRefreshExhaustedCountry": "Não há IPs alternativos disponíveis em {}. Escolha outro país para obter um IP diferente na próxima vez."
+  "ipRefreshExhaustedCountry": "Não há IPs alternativos disponíveis em {}. Escolha outro país para obter um IP diferente na próxima vez.",
+  "locationsUpdated": "{} atualizado",
+  "locationsUpdateFailed": "Não foi possível atualizar {}",
+  "refreshLocationsTooltip": "Atualizar {}"
 }

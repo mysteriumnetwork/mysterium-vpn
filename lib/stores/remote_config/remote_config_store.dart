@@ -63,6 +63,8 @@ enum _FeatureToggleKey {
   residentialReminderIntervalMinutes,
   reviewPromptConfig,
   canShowSubscriptionOnboardingFlow,
+  locationsPullToRefreshEnabled,
+  locationsRefreshButtonEnabled,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -269,6 +271,26 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
     }
     return false;
+  }
+
+  /// Whether pull-to-refresh on the locations list is enabled.
+  @computed
+  bool get locationsPullToRefreshEnabled {
+    final value = config[_FeatureToggleKey.locationsPullToRefreshEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return true;
+  }
+
+  /// Whether the per-tab refresh icon button on the locations list is enabled.
+  @computed
+  bool get locationsRefreshButtonEnabled {
+    final value = config[_FeatureToggleKey.locationsRefreshButtonEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return true;
   }
 
   @computed

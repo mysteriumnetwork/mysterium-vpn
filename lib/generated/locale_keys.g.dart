@@ -619,4 +619,7 @@ abstract class LocaleKeys {
   static const reviewSatisfactionTitle = 'reviewSatisfactionTitle';
   static const ipRefreshExhaustedCity = 'ipRefreshExhaustedCity';
   static const ipRefreshExhaustedCountry = 'ipRefreshExhaustedCountry';
+  static const locationsUpdated = 'locationsUpdated';
+  static const locationsUpdateFailed = 'locationsUpdateFailed';
+  static const refreshLocationsTooltip = 'refreshLocationsTooltip';
 }

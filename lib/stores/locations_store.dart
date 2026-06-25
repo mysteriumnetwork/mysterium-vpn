@@ -214,12 +214,15 @@ abstract class _LocationsStore with Store {
   /// If no IP type is provided, it refreshes the currently selected type.
   /// If a refresh is already in progress, it returns the existing future to avoid duplicate requests.
   /// This method is useful for ensuring the app has the latest location data, either on-demand or via auto-refresh.
+  ///
+  /// Returns `true` when fresh data was fetched and committed, `false` when the
+  /// fetch failed (cached locations are kept) — used to drive user feedback.
   @action
-  Future<void> refresh([IPType? ipType]) async {
+  Future<bool> refresh([IPType? ipType]) async {
     try {
       ipType ??= _query.ipType;
       if (ipType == IPType.closest) {
-        return;
+        return false;
       }
 
       await switch (ipType) {
@@ -239,10 +242,13 @@ abstract class _LocationsStore with Store {
         default:
           break;
       }
+      return true;
     } on ApiException catch (_) {
       // do nothing. previously cached locations remain available for use
+      return false;
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
+      return false;
     }
   }
 
