@@ -1314,8 +1314,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/refresh-icon"
-      resolved-ref: "18c165efc356a0d1c6d1bbf02e43e50df028a957"
+      ref: "0.0.23"
+      resolved-ref: "1aa988ed1b13f7635a1699e896f657c6c08ab8fb"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
