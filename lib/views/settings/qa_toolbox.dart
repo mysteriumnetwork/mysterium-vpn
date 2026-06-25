@@ -33,6 +33,7 @@ class QAToolbox extends HookConsumerWidget {
           children: [
             _buildResetActions(context, ref),
             _buildClearLocationsAction(context, ref),
+            _buildRefreshLocationsAction(context, ref),
             _buildGetMarketingConsent(context, ref),
           ],
         ),
@@ -153,6 +154,21 @@ class QAToolbox extends HookConsumerWidget {
         onPressed: () async {
           await ref.read(locationsStorePOD).clear();
           showSnackbar('Locations cleared');
+        },
+      ),
+    ],
+  );
+
+  Widget _buildRefreshLocationsAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.refresh,
+    title: 'Force refresh locations',
+    subtitle: 'Re-fetch datacenter + residential from the API now',
+    actions: [
+      _QAActionButton(
+        label: 'Refresh',
+        onPressed: () async {
+          await ref.read(locationsStorePOD).refreshAll();
+          showSnackbar('Locations refresh triggered');
         },
       ),
     ],

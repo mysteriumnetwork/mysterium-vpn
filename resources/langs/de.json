@@ -397,7 +397,7 @@
   "subscriptionPlanPF1Plus": "Sichern Sie 10 Geräte gleichzeitig",
   "subscriptionPlanPF2Plus": "Mehr als 100 unterstützte Länder",
   "subscriptionPlanPF3Plus": "100 Server",
-  "subscriptionPlanPF4Plus": "Mehr als 7.500 IP-Adressen für Privatkunden",
+  "subscriptionPlanPF4Plus": "Mehr als 7.500 Wohn-IPs",
   "subscriptionPlanPF5Plus": "VPN-Protokoll",
   "subscriptionPlanPF6Plus": "Entscheidungen auf Stadtebene",
   "subscriptionPlanMoneyBack": "7-Tage-Geld-zurück-Garantie",
@@ -429,8 +429,8 @@
   "subscriptionPlanWireGuardDesc": "WireGuard – schnelles Protokoll, ideal für Gaming und Streaming\nOpenVPN – hochgradig konfigurierbares Protokoll, das auch dort funktioniert, wo andere Protokolle versagen (nicht für Android verfügbar)",
   "subscriptionPlanDoubleVPNDesc": "Zusätzliche Sicherheitsebene. Leitet Ihren Internetverkehr über zwei verschiedene VPN-Server, verschlüsselt Ihre Daten doppelt und maskiert Ihre IP-Adresse hinter einem zweiten Server.",
   "subscriptionPlanResidentialIPsDesc": "Geben Sie sich als normaler Heimanwender aus, um auf Streaming-Dienste zugreifen und eine VPN-Erkennung vermeiden zu können.",
-  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, bei denen man in der Regel nur ganze Länder oder Bundesstaaten auswählen kann.",
-  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu unterbrechen.",
+  "subscriptionPlanCityLevelDesc": "Bietet eine präzisere Standortkontrolle als die meisten VPNs, die Sie in der Regel auf die Auswahl ganzer Länder oder Bundesstaaten beschränken.",
+  "subscriptionPlanMalwareBlockerDesc": "Schützt Ihr Gerät, indem es Bedrohungen abwehrt, bevor diese es erreichen können, und läuft dabei unauffällig im Hintergrund, ohne Sie zu stören.",
   "skipBtn": "Überspringen",
   "completeBtn": "Vollständig",
   "subscriptionOnboardingPromptTitle": "Machen Sie eine kurze Tour",
@@ -617,5 +617,8 @@
   "reviewPositiveTitle": "Das ist toll! Würden Sie uns bitte eine Bewertung hinterlassen?",
   "reviewSatisfactionTitle": "Würden Sie diese App weiterempfehlen?",
   "ipRefreshExhaustedCity": "In {} sind keine alternativen IP-Adressen verfügbar. Wählen Sie beim nächsten Mal ein anderes Land oder eine andere Stadt, um eine andere IP-Adresse zu erhalten.",
-  "ipRefreshExhaustedCountry": "In {} sind keine alternativen IP-Adressen verfügbar. Wählen Sie beim nächsten Mal ein anderes Land, um eine andere IP-Adresse zu erhalten."
+  "ipRefreshExhaustedCountry": "In {} sind keine alternativen IP-Adressen verfügbar. Wählen Sie beim nächsten Mal ein anderes Land, um eine andere IP-Adresse zu erhalten.",
+  "locationsUpdated": "{} aktualisiert",
+  "locationsUpdateFailed": "Aktualisierung von {} fehlgeschlagen",
+  "refreshLocationsTooltip": "Aktualisieren {}"
 }

@@ -30,6 +30,15 @@ void useAutoSelectIPType() {
         ref.read(locationsQueryStorePOD).setIPType(selected);
       },
       fireImmediately: true,
+      // Compare by contents: locationTypes is a fresh list on every refresh.
+      equals: (a, b) {
+        if (a == null || b == null) {
+          return identical(a, b);
+        }
+        final (aId, aType, aTypes) = a;
+        final (bId, bType, bTypes) = b;
+        return aId == bId && aType == bType && listEquals(aTypes, bTypes);
+      },
     );
 
     return disposer.call;

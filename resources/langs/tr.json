@@ -617,5 +617,8 @@
   "reviewPositiveTitle": "Harika! Bize bir yorum bırakır mısınız lütfen?",
   "reviewSatisfactionTitle": "Bu uygulamayı başkalarına tavsiye eder misiniz?",
   "ipRefreshExhaustedCity": "{} bölgesinde alternatif IP adresi bulunmamaktadır. Bir dahaki sefere farklı bir IP adresi almak için başka bir ülke veya şehir seçin.",
-  "ipRefreshExhaustedCountry": "{} ülkesinde alternatif IP adresi bulunmamaktadır. Bir dahaki sefere farklı bir IP adresi almak için başka bir ülke seçin."
+  "ipRefreshExhaustedCountry": "{} ülkesinde alternatif IP adresi bulunmamaktadır. Bir dahaki sefere farklı bir IP adresi almak için başka bir ülke seçin.",
+  "locationsUpdated": "{} güncellendi",
+  "locationsUpdateFailed": "Güncellenemedi {}",
+  "refreshLocationsTooltip": "Yenile {}"
 }

@@ -117,6 +117,54 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.locationsPullToRefreshEnabled', () {
+    test('returns value from config if present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'locationsPullToRefreshEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.locationsPullToRefreshEnabled, isFalse);
+    });
+
+    test('defaults to true when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.locationsPullToRefreshEnabled, isTrue);
+    });
+
+    test('defaults to true when value has the wrong type', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'locationsPullToRefreshEnabled': 'nope'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.locationsPullToRefreshEnabled, isTrue);
+    });
+  });
+
+  group('RemoteConfigStore.locationsRefreshButtonEnabled', () {
+    test('returns value from config if present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'locationsRefreshButtonEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.locationsRefreshButtonEnabled, isFalse);
+    });
+
+    test('defaults to true when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.locationsRefreshButtonEnabled, isTrue);
+    });
+
+    test('defaults to true when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'locationsRefreshButtonEnabled': 1});
+      store = createStore();
+      await store.configFuture;
+      expect(store.locationsRefreshButtonEnabled, isTrue);
+    });
+  });
+
   group('RemoteConfigStore.gatewaysSupportingUpgrade', () {
     test('returns parsed set if valid JSON array is provided', () async {
       store = createStore();

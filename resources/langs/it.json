@@ -453,7 +453,7 @@
   "subscriptionOnboardingVPNLocationsDesktopDescription": "Esplora paesi e città in un unico luogo.",
   "subscriptionOnboardingVPNLocationsMobileDescription": "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
   "subscriptionOnboardingSetupCompleteTitle": "Configurazione completata",
-  "subscriptionOnboardingSetupCompleteDescription": "Scegli una località per iniziare a navigare in modo più privato.",
+  "subscriptionOnboardingSetupCompleteDescription": "Scegli una posizione per iniziare a navigare in modo più privato.",
   "notNowBtn": "Non adesso",
   "viewAllFeaturesBtn": "Visualizza tutte le funzionalità",
   "viewLessBtn": "Visualizza meno",
@@ -617,5 +617,8 @@
   "reviewPositiveTitle": "Fantastico! Ti dispiacerebbe lasciarci una recensione?",
   "reviewSatisfactionTitle": "Consiglieresti quest'app ad altri?",
   "ipRefreshExhaustedCity": "Non sono disponibili indirizzi IP alternativi in ​​{}. Scegli un altro paese o città per ottenere un indirizzo IP diverso la prossima volta.",
-  "ipRefreshExhaustedCountry": "Non sono disponibili indirizzi IP alternativi in ​​{}. Scegli un altro paese per ottenere un indirizzo IP diverso la prossima volta."
+  "ipRefreshExhaustedCountry": "Non sono disponibili indirizzi IP alternativi in ​​{}. Scegli un altro paese per ottenere un indirizzo IP diverso la prossima volta.",
+  "locationsUpdated": "{} aggiornato",
+  "locationsUpdateFailed": "Impossibile aggiornare {}",
+  "refreshLocationsTooltip": "Aggiorna {}"
 }
