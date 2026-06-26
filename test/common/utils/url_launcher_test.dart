@@ -67,21 +67,28 @@ void main() {
       final url = Uri.parse('https://help.mysteriumvpn.com/');
       expect(sanitizeRedirectUrl(url), 'https://help.mysteriumvpn.com/');
     });
+
+    test('preserves a non-default port', () {
+      final url = Uri.parse('https://example.com:8443/path?access_token=secret');
+      expect(sanitizeRedirectUrl(url), 'https://example.com:8443/path');
+    });
   });
 
   group('openUrlLink logging', () {
     late _FakeAnalyticsStore analytics;
+    late UrlLauncherPlatform originalLauncher;
 
     setUpAll(TestWidgetsFlutterBinding.ensureInitialized);
 
     setUp(() {
+      originalLauncher = UrlLauncherPlatform.instance;
       analytics = _FakeAnalyticsStore();
       analyticsStoreRef = analytics;
     });
     tearDown(() {
       analytics.dispose();
       analyticsStoreRef = null;
-      UrlLauncherPlatform.instance = _FakeUrlLauncher();
+      UrlLauncherPlatform.instance = originalLauncher;
     });
 
     test('logs web_redirect with redirect_success true on success', () async {

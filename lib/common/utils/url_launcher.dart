@@ -15,7 +15,7 @@ AnalyticsStore? analyticsStoreRef;
 
 /// Drops query params (may hold secrets like `access_token`) for analytics.
 String sanitizeRedirectUrl(Uri url) =>
-    Uri(scheme: url.scheme, host: url.host, path: url.path).toString();
+    Uri(scheme: url.scheme, host: url.host, port: url.port, path: url.path).toString();
 
 /// Opens a URL link in the default browser.
 /// If the URL cannot be launched, it copies the URL to the clipboard and shows a snackbar.
