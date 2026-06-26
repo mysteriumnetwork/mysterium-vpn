@@ -22,7 +22,7 @@ dependencies:
   configcat_client: 4.1.1
   connectivity_plus: 6.1.5
   crypto: 3.0.7
-  device_info_plus: 13.1.0
+  device_info_plus: 13.2.0
   dio: 5.9.2
   easy_localization: 3.0.8
   easy_localization_loader: 2.0.2
