@@ -11,6 +11,7 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
@@ -132,7 +133,7 @@ class RestSubscriptionService extends SubscriptionService {
     final url =
         'https://play.google.com/store/account/subscriptions?sku=$productId&package=$packageName';
 
-    await openUrlLink(Uri.parse(url));
+    await openUrlLink(Uri.parse(url), source: RedirectSource.googlePlaySubscriptions);
   }
 
   @override

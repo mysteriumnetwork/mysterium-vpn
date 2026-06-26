@@ -168,7 +168,8 @@ enum AnalyticsEvent {
   locationsTabViewed,
   productsTabViewed,
   settingsTabViewed,
-  locationsRefreshed;
+  locationsRefreshed,
+  webRedirect;
 
   String get formattedName => name.toSnakeCase;
 }

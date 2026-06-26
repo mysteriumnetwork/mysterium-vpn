@@ -77,6 +77,9 @@ class AppInitializer {
 
     logger = providerContainer.read(loggerPOD);
 
+    // Expose the analytics store to ref-less utils (e.g. openUrlLink).
+    analyticsStoreRef = providerContainer.read(analyticsStorePOD);
+
     // Firebase + OneSignal run past the first frame; the splash awaits via
     // deferredInitFuturePOD.
     unawaited(_runDeferredInit());

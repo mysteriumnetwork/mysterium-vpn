@@ -52,7 +52,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAf
       final uri = remoteConfigStore.checkoutWebRedirectUrl.replace(
         queryParameters: {'plan': selectedProduct.id, 'access_token': accessToken ?? ''},
       );
-      await openUrlLink(uri);
+      await openUrlLink(uri, source: RedirectSource.webCheckout);
       if (context.mounted) {
         onAfterRedirectRef.value?.call();
       }

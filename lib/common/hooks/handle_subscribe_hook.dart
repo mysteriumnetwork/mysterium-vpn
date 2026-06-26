@@ -79,7 +79,12 @@ FutureOr<void> _handleOnBillingPage({
     queryParameters: {'access_token': accessToken ?? ''},
   );
 
-  await openUrlLink(httpsUri);
+  await openUrlLink(
+    httpsUri,
+    source: manageSubscription
+        ? RedirectSource.manageSubscription
+        : RedirectSource.upgradeSubscription,
+  );
 }
 
 FutureOr<void> Function() useHandleUpgradePlan() {
@@ -117,7 +122,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
         queryParameters: {'access_token': token ?? ''},
       );
 
-      openUrlLink(httpsUri).ignore();
+      openUrlLink(httpsUri, source: RedirectSource.upgradeSubscription).ignore();
       return;
     }
     if (!context.mounted) {

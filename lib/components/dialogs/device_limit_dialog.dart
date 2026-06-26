@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
@@ -32,7 +33,11 @@ class _DialogContent extends HookConsumerWidget {
         path: uri.path,
         queryParameters: queryParameters,
       );
-      openUrlLink(targetUri, mode: LaunchMode.externalApplication);
+      openUrlLink(
+        targetUri,
+        source: RedirectSource.manageDevices,
+        mode: LaunchMode.externalApplication,
+      );
     }
 
     return PromptDialog(
