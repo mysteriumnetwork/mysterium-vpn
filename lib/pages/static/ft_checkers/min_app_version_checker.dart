@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -68,7 +69,10 @@ class MinAppVersionChecker extends HookConsumerWidget {
                                   windowsStandAloneProductId.toLowerCase(),
                                 ) ??
                                 false) {
-                              await openUrlLink(Uri.parse(windowsGithubDownloadLink));
+                              await openUrlLink(
+                                Uri.parse(windowsGithubDownloadLink),
+                                source: RedirectSource.appUpdate,
+                              );
                             } else {
                               await openAppStorePage();
                             }

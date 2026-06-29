@@ -315,7 +315,7 @@ abstract class _AuthStore with Store {
         'code_challenge_method': 's256',
       },
     );
-    await openUrlLink(authUri);
+    await openUrlLink(authUri, source: RedirectSource.login);
     return;
   }
 
