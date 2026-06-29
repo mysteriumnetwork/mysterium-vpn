@@ -332,12 +332,12 @@ class _DisclaimerState extends State<_Disclaimer> {
     super.initState();
     _termsRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        openUrlLink(Uri.parse(termsOfServiceUrl));
+        openUrlLink(Uri.parse(termsOfServiceUrl), source: RedirectSource.termsOfService);
         widget.analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
       };
     _privacyRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        openUrlLink(Uri.parse(privacyPolicyUrl));
+        openUrlLink(Uri.parse(privacyPolicyUrl), source: RedirectSource.privacyPolicy);
         widget.analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
       };
   }

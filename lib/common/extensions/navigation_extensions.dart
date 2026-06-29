@@ -46,7 +46,7 @@ extension NavigationExtensions on BeamerDelegate {
         queryParameters: queryParameters,
       );
 
-      await openUrlLink(httpsUri);
+      await openUrlLink(httpsUri, source: RedirectSource.external);
       return;
     }
 
