@@ -122,7 +122,7 @@ packages:
     source: hosted
     version: "2.1.2"
   build:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: build
       sha256: a156715e7cd728130c592f30552575908aae5b100005fbc1f0fb16b3c03a3d10
@@ -354,14 +354,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  csv:
-    dependency: transitive
-    description:
-      name: csv
-      sha256: c6aa2679b2a18cb57652920f674488d89712efaf4d3fdf2e537215b35fc19d6c
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.0"
   dart_earcut:
     dependency: transitive
     description:
@@ -450,38 +442,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  easy_localization:
-    dependency: "direct main"
-    description:
-      name: easy_localization
-      sha256: "2ccdf9db8fe4d9c5a75c122e6275674508fd0f0d49c827354967b8afcc56bbed"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.8"
-  easy_localization_loader:
-    dependency: "direct main"
-    description:
-      name: easy_localization_loader
-      sha256: cc0ca78f5f9013f3cdb80480a2efab10c9abadc82560dc412e977c372b09268f
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
-  easy_localization_sheet:
-    dependency: "direct dev"
-    description:
-      name: easy_localization_sheet
-      sha256: "5548bcabee6e43a35925e2854db15387ca1e1d8a371d19715929afafb8bc0596"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
-  easy_logger:
-    dependency: transitive
-    description:
-      name: easy_logger
-      sha256: c764a6e024846f33405a2342caf91c62e357c24b02c04dbc712ef232bf30ffb7
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
   equatable:
     dependency: transitive
     description:
@@ -1087,6 +1047,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.2"
+  intl_utils:
+    dependency: "direct dev"
+    description:
+      name: intl_utils
+      sha256: "07469a81dcb011ab3708ed4a324403f0f556f2e3663b769006f92c9e62a0066a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.8.14"
   io:
     dependency: transitive
     description:
@@ -1175,6 +1143,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  localizely_sdk:
+    dependency: "direct main"
+    description:
+      name: localizely_sdk
+      sha256: "7e7818f0aef4c95d955a269fa3f78893709c8839bd0ef7fd60e64bef2d499fd8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.6"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "25aee487596a6257655a1e091ec2ae66bc30e7af663592cc3a27e6591e05035c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   logging:
     dependency: transitive
     description:
