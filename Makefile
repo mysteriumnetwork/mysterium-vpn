@@ -14,23 +14,52 @@ run-dev: init generate
 clean:
 	fvm flutter clean
 
-generate: generate-code generate-localization
+generate: generate-code
 
 generate-code:
 	fvm dart run build_runner build --verbose --delete-conflicting-outputs ;\
 	fvm dart format --line-length 100 .
 
-generate-localization:
-	fvm dart run easy_localization:generate ;\
-    fvm dart run easy_localization:generate -f keys -o locale_keys.g.dart ;\
-    fvm dart format --line-length 100 .
+# ─── Localizely (translations) ───────────────────────────────────────────────
+# Needs a Localizely *management* API token (Localizely > Account settings > API
+# tokens) — this is NOT the runtime SDK token kept in .env.dev/.env.prod.
+# The token is resolved in this order: LOCALIZELY_API_TOKEN env var, then the
+# gitignored .env.localizely file (LOCALIZELY_API_TOKEN=...). Both are kept out
+# of git. The project id is read from pubspec.yaml (flutter_intl > localizely).
 
-fetch-localization:
-	fvm dart run easy_localization_sheet
-	rm resources/langs/JSON.json # Remove file generated from JSON column (used for configcat only)
+# Resolves the API token into the shell var $$token (env var, then
+# .env.localizely), or exits with an error. Shared by fetch/upload recipes.
+define resolve_localizely_token
+token="$${LOCALIZELY_API_TOKEN}"; \
+if [ -z "$$token" ] && [ -f .env.localizely ]; then \
+  token="$$(grep -E '^LOCALIZELY_API_TOKEN=' .env.localizely | head -n1 | cut -d= -f2-)"; \
+fi; \
+if [ -z "$$token" ]; then \
+  echo "ERROR: LOCALIZELY_API_TOKEN not set (export it, pass it inline, or add it to .env.localizely)"; exit 1; \
+fi
+endef
 
-fetch-and-generate-localization: fetch-localization generate-localization
+# Pull the latest translations from Localizely into lib/l10n/*.arb.
+localizely-fetch:
+	@$(resolve_localizely_token); \
+	fvm dart run intl_utils:localizely_download --api-token "$$token"
 
+# Upload the source (en) ARB to Localizely — adds new keys without overwriting
+# existing translations.
+localizely-upload:
+	@$(resolve_localizely_token); \
+	fvm dart run intl_utils:localizely_upload_main --api-token "$$token"
+
+# Regenerate the S localization class (intl_utils) then the Tr.byKey bridge.
+# The bridge is a build_runner builder, so we run the full build_runner — a
+# filtered run with --delete-conflicting-outputs would delete other source
+# outputs (e.g. lib/gen/assets.gen.dart).
+localizely-generate:
+	fvm dart run intl_utils:generate
+	$(MAKE) generate-code
+
+# Pull the latest translations and regenerate in one step.
+localizely-sync: localizely-fetch localizely-generate
 
 update-tile-assets-declaration:
 	fvm dart run assets/map_tiles/list_assets.dart
