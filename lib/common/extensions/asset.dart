@@ -24,10 +24,6 @@ extension $AssetsLogoGenExtensions on $AssetsLogoGen {
       _withBrightness(context, light: logoStackedLight, dark: logoStackedDark);
 }
 
-extension $ResourcesLangsGenExtensions on $ResourcesLangsGen {
-  String get path => 'resources/langs';
-}
-
 T _withBrightness<T>(BuildContext context, {required T light, required T dark}) =>
     switch (Theme.of(context).brightness) {
       Brightness.dark => dark,

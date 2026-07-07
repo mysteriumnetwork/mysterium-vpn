@@ -14,13 +14,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
-class $ResourcesGen {
-  const $ResourcesGen();
-
-  /// Directory path: resources/langs
-  $ResourcesLangsGen get langs => const $ResourcesLangsGen();
-}
-
 class $AssetsDataGen {
   const $AssetsDataGen();
 
@@ -242,46 +235,6 @@ class $AssetsMapTilesGen {
 
   /// Directory path: assets/map_tiles/light
   $AssetsMapTilesLightGen get light => const $AssetsMapTilesLightGen();
-}
-
-class $ResourcesLangsGen {
-  const $ResourcesLangsGen();
-
-  /// File path: resources/langs/ar.json
-  String get ar => 'resources/langs/ar.json';
-
-  /// File path: resources/langs/de.json
-  String get de => 'resources/langs/de.json';
-
-  /// File path: resources/langs/en.json
-  String get en => 'resources/langs/en.json';
-
-  /// File path: resources/langs/es.json
-  String get es => 'resources/langs/es.json';
-
-  /// File path: resources/langs/fr.json
-  String get fr => 'resources/langs/fr.json';
-
-  /// File path: resources/langs/id.json
-  String get id => 'resources/langs/id.json';
-
-  /// File path: resources/langs/it.json
-  String get it => 'resources/langs/it.json';
-
-  /// File path: resources/langs/ja.json
-  String get ja => 'resources/langs/ja.json';
-
-  /// File path: resources/langs/pt.json
-  String get pt => 'resources/langs/pt.json';
-
-  /// File path: resources/langs/tr.json
-  String get tr => 'resources/langs/tr.json';
-
-  /// File path: resources/langs/zh.json
-  String get zh => 'resources/langs/zh.json';
-
-  /// List of all assets
-  List<String> get values => [ar, de, en, es, fr, id, it, ja, pt, tr, zh];
 }
 
 class $AssetsLogoDevGen {
@@ -3957,7 +3910,6 @@ class Asset {
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLogoGen logo = $AssetsLogoGen();
   static const $AssetsMapTilesGen mapTiles = $AssetsMapTilesGen();
-  static const $ResourcesGen resources = $ResourcesGen();
 }
 
 class AssetGenImage {

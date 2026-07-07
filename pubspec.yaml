@@ -164,7 +164,6 @@ flutter:
     - assets/logo/prod/
     - assets/icons/
     - assets/images/
-    - resources/langs/
     - assets/google_fonts/
     - assets/data/
       # BEGIN auto-generated assets

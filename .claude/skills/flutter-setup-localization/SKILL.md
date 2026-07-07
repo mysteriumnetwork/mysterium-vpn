@@ -34,7 +34,7 @@ metadata:
 ## Editing / adding strings
 
 1. Add the key to **`lib/l10n/intl_en.arb`** (source), with an empty `"@key": {}` metadata companion. For placeholders, declare them in the metadata (see below).
-2. `make localizely-generate` — regenerates the `S` class (`intl_utils:generate`) + the `Tr.byKey` bridge and formats. The bridge (`lib/l10n/tr_bridge_keys.g.dart`) is produced by a **build_runner builder** (`tool/tr_bridge_builder.dart`, registered in `build.yaml`) from `intl_en.arb`, so a plain `make generate` / `dart run build_runner build` regenerates it too. A drift-guard test (`test/l10n/tr_bridge_keys_drift_test.dart`) fails if it goes stale.
+2. `make localizely-generate` — regenerates the `S` class (`intl_utils:generate`) + the `Tr.byKey` bridge, then formats. The bridge (`lib/l10n/tr_bridge_keys.g.dart`) is generated from `intl_en.arb` by the standalone `tool/tr_bridge_generator.dart` (fast; no build_runner). A build_runner builder (`tool/tr_bridge_builder.dart`, registered in `build.yaml`) regenerates it too via `make generate` / `dart run build_runner build` — both share `renderTrBridge`, and a drift-guard test (`test/l10n/tr_bridge_keys_drift_test.dart`) fails if the checked-in file goes stale.
 3. Use it: `S.current.yourKey` (or `S.current.yourKey(arg)` for placeholders).
 4. Translate + publish via Localizely (see Tooling). Other-locale ARBs come back via `make localizely-fetch`.
 

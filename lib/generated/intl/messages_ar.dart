@@ -36,7 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(plan) => "احصل على ${plan}";
 
-  static String m8(plan) => "احصل على خطة ${plan}";
+  static String m8(plan) => "احصل على خطة اشتراك ${plan}";
 
   static String m9(location) =>
       "لا تتوفر عناوين IP بديلة في ${location}. اختر دولة أو مدينة أخرى للحصول على عنوان IP مختلف في المرة القادمة.";
@@ -90,7 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage("تم حذف الحساب"),
     "activeSubsPaidVia": m0,
     "allLocations": MessageLookupByLibrary.simpleMessage("جميع المواقع"),
-    "allowBtn": MessageLookupByLibrary.simpleMessage("السماح"),
+    "allowBtn": MessageLookupByLibrary.simpleMessage("اسمح"),
     "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage("السماح بالإشعارات"),
     "allowPushNotificationsBtn": MessageLookupByLibrary.simpleMessage("السماح بالإشعارات"),
     "and": MessageLookupByLibrary.simpleMessage(" و "),

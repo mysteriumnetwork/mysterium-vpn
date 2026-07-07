@@ -50,13 +50,14 @@ localizely-upload:
 	@$(resolve_localizely_token); \
 	fvm dart run intl_utils:localizely_upload_main --api-token "$$token"
 
-# Regenerate the S localization class (intl_utils) then the Tr.byKey bridge.
-# The bridge is a build_runner builder, so we run the full build_runner — a
-# filtered run with --delete-conflicting-outputs would delete other source
-# outputs (e.g. lib/gen/assets.gen.dart).
+# Regenerate the S localization class (intl_utils) + the Tr.byKey bridge, then
+# format. Uses the standalone bridge generator (fast) rather than build_runner;
+# `make generate` regenerates the bridge too via the tr_bridge builder, and the
+# drift-guard test keeps the two in sync.
 localizely-generate:
-	fvm dart run intl_utils:generate
-	$(MAKE) generate-code
+	fvm dart run intl_utils:generate ;\
+	fvm dart run tool/tr_bridge_generator.dart ;\
+	fvm dart format --line-length 100 lib/generated lib/l10n
 
 # Pull the latest translations and regenerate in one step.
 localizely-sync: localizely-fetch localizely-generate
