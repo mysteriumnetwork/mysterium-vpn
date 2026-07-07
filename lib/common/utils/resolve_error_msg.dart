@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 
 String resolveErrorMessage(Object error) {
   if (error is DioException) {
-    return error.message ?? LocaleKeys.somethingWentWrong.tr();
+    return error.message ?? S.current.somethingWentWrong;
   } else if (error is ApiException) {
     return error.message;
   } else if (error is Exception) {
@@ -13,5 +12,5 @@ String resolveErrorMessage(Object error) {
   } else if (error is String) {
     return error;
   }
-  return LocaleKeys.somethingWentWrong.tr();
+  return S.current.somethingWentWrong;
 }

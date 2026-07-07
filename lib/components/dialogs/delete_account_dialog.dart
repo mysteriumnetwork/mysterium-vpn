@@ -1,13 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -31,11 +30,11 @@ Future<void> shownDeleteAccountDialog(
     shownConfirmationDialog(
       context,
       type: AlertModalType.success,
-      title: LocaleKeys.accountSuccessfullyDeleted.tr(),
-      supportingText: LocaleKeys.redirectToLoginPage.tr(),
+      title: S.current.accountSuccessfullyDeleted,
+      supportingText: S.current.redirectToLoginPage,
       dismissible: false,
       showCancel: false,
-      confirmText: LocaleKeys.goToLoginBtn.tr(),
+      confirmText: S.current.goToLoginBtn,
       confirmVariant: ButtonVariant.secondary,
       onConfirm: () async {
         await vpnStore.disconnectTunnel();
@@ -60,9 +59,8 @@ class _DeleteAccountDialog extends HookWidget {
     return Observer(
       builder: (context) => AlertModal(
         type: AlertModalType.error,
-        title: LocaleKeys.deleteAccountQuestion.tr(),
-        supportingText:
-            '${LocaleKeys.cancelYourSubsMess.tr()} ${LocaleKeys.typeDelete.tr(args: ['DELETE'])}',
+        title: S.current.deleteAccountQuestion,
+        supportingText: '${S.current.cancelYourSubsMess} ${S.current.typeDelete('DELETE')}',
         input: SizedBox(
           child: TextField(
             onChanged: (val) => confirmationMessage.value = val,
@@ -73,7 +71,7 @@ class _DeleteAccountDialog extends HookWidget {
             },
             onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
             decoration: InputDecoration(
-              hintText: LocaleKeys.typeDelete.tr(args: ['DELETE']),
+              hintText: S.current.typeDelete('DELETE'),
               hintStyle: textStyles.textMd.regular.copyWith(color: palette.gray.shade500),
               filled: true,
               fillColor: Palette.white,
@@ -104,7 +102,7 @@ class _DeleteAccountDialog extends HookWidget {
           loading: authStore.deleteAccountFeature.status == FutureStatus.pending
               ? const ButtonLoading()
               : null,
-          child: Text(LocaleKeys.allowBtn.tr()),
+          child: Text(S.current.allowBtn),
         ),
       ),
     );

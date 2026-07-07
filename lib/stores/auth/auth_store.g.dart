@@ -61,6 +61,23 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$_authErrorAtom = Atom(name: '_AuthStore._authError', context: context);
+
+  AuthError? get authError {
+    _$_authErrorAtom.reportRead();
+    return super._authError;
+  }
+
+  @override
+  AuthError? get _authError => authError;
+
+  @override
+  set _authError(AuthError? value) {
+    _$_authErrorAtom.reportWrite(value, super._authError, () {
+      super._authError = value;
+    });
+  }
+
   late final _$marketingConsentAtom = Atom(name: '_AuthStore.marketingConsent', context: context);
 
   @override
@@ -227,6 +244,30 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   Future<void> loginDesktop() {
     return _$loginDesktopAsyncAction.run(() => super.loginDesktop());
+  }
+
+  late final _$_AuthStoreActionController = ActionController(name: '_AuthStore', context: context);
+
+  @override
+  void _emitError(AuthError error) {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(name: '_AuthStore._emitError');
+    try {
+      return super._emitError(error);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void consumeAuthError() {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+      name: '_AuthStore.consumeAuthError',
+    );
+    try {
+      return super.consumeAuthError();
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

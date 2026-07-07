@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -11,7 +10,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -53,14 +52,14 @@ class VerifyEmailView extends HookConsumerWidget {
             const _MailIcon(),
             SizedBox(height: spacing.xl3),
             Text(
-              LocaleKeys.checkYourEmail.tr(),
+              S.current.checkYourEmail,
               textAlign: TextAlign.center,
               style: theme.textStyles.displayXlg.semibold.copyWith(color: palette.textPrimary),
             ),
             SizedBox(height: spacing.xl4),
             if (authStore.email != null) _EmailMessage(email: authStore.email!),
             SizedBox(height: spacing.md),
-            _Bullets(items: [LocaleKeys.linkExpires.tr(), LocaleKeys.consumeLink.tr()]),
+            _Bullets(items: [S.current.linkExpires, S.current.consumeLink]),
           ],
         );
 
@@ -71,7 +70,7 @@ class VerifyEmailView extends HookConsumerWidget {
             ButtonPrimary(
               onPressed: signInStatus == FutureStatus.pending ? null : handleOpenEmailApp,
               decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
-              child: Text(LocaleKeys.openEmailApp.tr()),
+              child: Text(S.current.openEmailApp),
             ),
             SizedBox(height: spacing.s),
             _ResendButton(onPressed: handleResend, isLoading: signInStatus == FutureStatus.pending),
@@ -163,11 +162,11 @@ class VerifyEmailView extends HookConsumerWidget {
     required List<BottomSheetAction> actions,
   }) {
     showAdaptiveActionSheet(
-      title: Text(LocaleKeys.selectEmailApp.tr()),
+      title: Text(S.current.selectEmailApp),
       context: context,
       actions: actions,
       cancelAction: CancelAction(
-        title: LocaleKeys.cancelBtn.tr(),
+        title: S.current.cancelBtn,
         onPressed: (ctx) {
           analyticsStore.logEvent(AnalyticsEvent.emailProviderCancel);
           Navigator.of(ctx).pop();
@@ -180,10 +179,10 @@ class VerifyEmailView extends HookConsumerWidget {
     shownConfirmationDialog(
       context,
       type: AlertModalType.info,
-      title: LocaleKeys.openEmailApp.tr(),
-      supportingText: LocaleKeys.noEmailApp.tr(),
+      title: S.current.openEmailApp,
+      supportingText: S.current.noEmailApp,
       showCancel: false,
-      confirmText: LocaleKeys.goBackButton.tr(),
+      confirmText: S.current.goBackButton,
       onConfirm: () {},
     );
   }
@@ -286,7 +285,7 @@ class _EmailMessage extends StatelessWidget {
     final palette = theme.palette;
     final base = theme.textStyles.textMd.regular.copyWith(color: palette.textTertiary);
     final emphasised = theme.textStyles.textSm.bold.copyWith(color: palette.textPrimary);
-    final text = LocaleKeys.emailSentTo.tr(namedArgs: {'email': email});
+    final text = S.current.emailSentTo(email);
     final label = text.replaceAll(email, '').trim();
 
     return RichText(
@@ -348,7 +347,7 @@ class _ResendButton extends HookWidget {
       onPressed: tap,
       loading: isLoading ? const ButtonLoading() : null,
       decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
-      child: Text(LocaleKeys.sendAgain.plural(timer.countdown)),
+      child: Text(S.current.sendAgain(timer.countdown)),
     );
   }
 }

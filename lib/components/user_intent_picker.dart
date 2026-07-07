@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shimmer/shimmer.dart';
@@ -73,7 +72,7 @@ class _List extends StatelessWidget {
             highlightColor: theme.palette.bgPrimary.darken(20),
             child: IntentTab(
               icon: UntitledUI.marker_pin_04,
-              label: LocaleKeys.userIntentNearestLocation.tr(),
+              label: S.current.userIntentNearestLocation,
             ),
           );
         }
@@ -112,11 +111,11 @@ class _List extends StatelessWidget {
   };
 
   static String _labelFor(UserIntent intent) => switch (intent) {
-    UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
-    UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
-    UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
-    UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
-    UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
-    UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
+    UserIntent.bestSpeed => S.current.userIntentBestSpeed,
+    UserIntent.lowLatency => S.current.userIntentLowLatency,
+    UserIntent.nearestLocation => S.current.userIntentNearestLocation,
+    UserIntent.maxPrivacy => S.current.userIntentMaxPrivacy,
+    UserIntent.streaming => S.current.userIntentStreaming,
+    UserIntent.p2p => S.current.userIntentP2P,
   };
 }

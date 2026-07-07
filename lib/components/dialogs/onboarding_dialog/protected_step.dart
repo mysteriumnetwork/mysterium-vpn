@@ -17,10 +17,10 @@ class _ProtectedStep extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           OnboardingItem(
-            label: LocaleKeys.connection.tr(),
+            label: S.current.connection,
             borderColor: Palette.success.shade200,
             trailing: _StatusPill(
-              label: LocaleKeys.protectedLbl.tr(),
+              label: S.current.protectedLbl,
               background: Palette.success.shade600,
               borderColor: Palette.success.shade200,
               icon: UntitledUI.shield_01,
@@ -29,22 +29,22 @@ class _ProtectedStep extends StatelessWidget {
           gap,
           OnboardingItem(
             leading: const _LeadingIcon(icon: UntitledUI.globe_05),
-            label: LocaleKeys.ipAddressLbl.tr(),
+            label: S.current.ipAddressLbl,
             value: '••.•••.••.•••',
             trailing: const _StatusDot(exposed: false),
           ),
           gap,
           OnboardingItem(
             leading: const _LeadingIcon(icon: UntitledUI.marker_pin_01),
-            label: LocaleKeys.locationLbl.tr(),
-            value: LocaleKeys.berlinLbl.tr(),
+            label: S.current.locationLbl,
+            value: S.current.berlinLbl,
             trailing: const _StatusDot(exposed: false),
           ),
           gap,
           OnboardingItem(
             leading: const _LeadingIcon(icon: UntitledUI.wifi),
             label: _kIspLabel,
-            value: LocaleKeys.hiddenLbl.tr(),
+            value: S.current.hiddenLbl,
             trailing: const _StatusDot(exposed: false),
           ),
         ],

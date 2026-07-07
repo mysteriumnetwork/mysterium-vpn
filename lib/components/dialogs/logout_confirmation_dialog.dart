@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showLogoutConfirmationDialog(
@@ -20,15 +19,15 @@ Future<void> showLogoutConfirmationDialog(
         return AlertModal(
           screenType: ScreenType.mobile,
           showIcon: false,
-          title: LocaleKeys.logoutConfirmationTitle.tr(),
-          supportingText: supportingText ?? LocaleKeys.logoutConfirmationDesc.tr(),
+          title: S.current.logoutConfirmationTitle,
+          supportingText: supportingText ?? S.current.logoutConfirmationDesc,
           primaryButton: ButtonSecondary(
             onPressed: () {
               Navigator.pop(context);
               onConfirm();
             },
             child: Text(
-              LocaleKeys.logout.tr(),
+              S.current.logout,
               style: theme.textStyles.textSm.semibold.copyWith(
                 color: theme.palette.textErrorPrimary,
               ),
@@ -39,7 +38,7 @@ Future<void> showLogoutConfirmationDialog(
               Navigator.pop(context);
               onCancel?.call();
             },
-            child: Text(LocaleKeys.cancelBtn.tr()),
+            child: Text(S.current.cancelBtn),
           ),
         );
       },

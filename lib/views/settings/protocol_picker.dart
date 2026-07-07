@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_picker_card.dart';
@@ -24,13 +23,13 @@ class ProtocolPicker extends ConsumerWidget {
 
     return Observer(
       builder: (_) => SettingsPickerCard<ProtocolType>(
-        title: LocaleKeys.vpnProtocolSettingLbl.tr(),
+        title: S.current.vpnProtocolSettingLbl,
         position: position,
         value: vpnProtocolStore.protocol,
         items: ProtocolType.values,
-        labelOf: (p) => LocaleKeys.protocolLabel.tr(args: [p.labelKey.tr(), p.subtitle]),
+        labelOf: (p) => S.current.protocolLabel(_label(p), p.subtitle),
         subtitleOf: (p) => p.subtitle,
-        customLabel: (p) => p.labelKey.tr(),
+        customLabel: _label,
         onChanged: (newProtocol) => _changeProtocol(
           context,
           newProtocol: newProtocol,
@@ -53,10 +52,10 @@ class ProtocolPicker extends ConsumerWidget {
     if (vpnStore.isConnected) {
       shownConfirmationDialog(
         context,
-        confirmText: LocaleKeys.confirm.tr(),
-        cancelText: LocaleKeys.cancelBtn.tr(),
-        title: LocaleKeys.protocolPickerSettingTitle.tr(),
-        supportingText: LocaleKeys.protocolPickerSettingDesc.tr(),
+        confirmText: S.current.confirm,
+        cancelText: S.current.cancelBtn,
+        title: S.current.protocolPickerSettingTitle,
+        supportingText: S.current.protocolPickerSettingDesc,
         onConfirm: () async {
           analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
           await vpnStore.disconnectTunnel();
@@ -71,3 +70,8 @@ class ProtocolPicker extends ConsumerWidget {
     }
   }
 }
+
+String _label(ProtocolType p) => switch (p) {
+  ProtocolType.wireguard => S.current.fastLabel,
+  ProtocolType.openvpn => S.current.batterySaverLabel,
+};

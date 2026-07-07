@@ -38,7 +38,7 @@ class _ProductsBrowsingView extends StatelessWidget {
                         ),
                         SizedBox(height: theme.spacing.ms),
                         Text(
-                          LocaleKeys.productsTitle.tr(),
+                          S.current.productsTitle,
                           textAlign: TextAlign.center,
                           style: theme.textStyles.displayXlg.bold.copyWith(
                             color: theme.palette.textPrimary,

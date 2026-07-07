@@ -2,22 +2,21 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/gen/assets.gen.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -45,18 +44,7 @@ class AppInitializer {
 
   final Completer<void> _deferredInit = Completer<void>();
 
-  Widget getApp() => UncontrolledProviderScope(
-    container: providerContainer,
-    child: EasyLocalization(
-      useOnlyLangCode: true,
-      supportedLocales: kSupportedLocales,
-      path: Asset.resources.langs.path,
-      fallbackLocale: kFallbackLocale,
-      startLocale: kFallbackLocale,
-      assetLoader: providerContainer.read(assetsLoaderPOD),
-      child: const MyApp(),
-    ),
-  );
+  Widget getApp() => UncontrolledProviderScope(container: providerContainer, child: const MyApp());
 
   Future<void> init() async {
     _configureSystemUI();
@@ -68,11 +56,18 @@ class AppInitializer {
 
     GoogleFonts.config.allowRuntimeFetching = false;
 
+    if (Env.localizelySdkToken.isNotEmpty) {
+      Localizely.init(Env.localizelySdkToken, Env.localizelyDistributionId);
+    }
+
     await Future.wait([
       SharedPreferenceService.instance.init(),
       SecureStorageService.instance.init(),
-      EasyLocalization.ensureInitialized(),
       LocalDBService.initialize(),
+      // Preload S so `S.current` is available before the first frame; app.dart's
+      // locale reaction re-loads the persisted locale once the store is ready
+      // (a no-op when it resolves to the same ARB locale).
+      loadLocalizations(kFallbackLocale),
     ]);
 
     logger = providerContainer.read(loggerPOD);
@@ -93,6 +88,8 @@ class AppInitializer {
       await Future.wait([
         _initFirebaseSDK().then((ms) => firebaseInitMs = ms).then((_) => _onFirebaseReady()),
         _initOneSignal(logger).then((ms) => oneSignalInitMs = ms),
+        // Independent of Firebase/OneSignal — fetch OTA translations concurrently.
+        _updateLocalizelyTranslations(),
       ]);
       if (isMobile() && Firebase.apps.isNotEmpty) {
         await PerformanceMonitor.instance.activate();
@@ -109,6 +106,23 @@ class AppInitializer {
       if (!_deferredInit.isCompleted) {
         _deferredInit.complete();
       }
+    }
+  }
+
+  /// Fetches the latest Localizely over-the-air translations and reloads `S`
+  /// for the active locale so updated strings apply without an app rebuild.
+  Future<void> _updateLocalizelyTranslations() async {
+    if (Env.localizelySdkToken.isEmpty) {
+      return;
+    }
+    try {
+      await Localizely.updateTranslations();
+      final locale = providerContainer.read(localeStorePOD).currentLocale;
+      await loadLocalizations(locale, force: true);
+      // S.current is not observable; bump the revision so the tree repaints.
+      localizationRevision.value++;
+    } catch (e, stack) {
+      logger.handle(e, stack);
     }
   }
 

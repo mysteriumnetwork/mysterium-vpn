@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
+import 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -85,6 +87,15 @@ abstract class _SubscriptionOnboardingStore with Store {
   void trackFinished() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedFinished).ignore();
 
-  Map<String, dynamic>? _stepAnalyticsParams(int? index) =>
-      index == null ? null : {'step': index + 1};
+  Map<String, dynamic>? _stepAnalyticsParams(int? index) {
+    if (index == null) {
+      return null;
+    }
+
+    final step = SubscriptionOnboardingStep.fromPlatformIndex(index);
+    return {
+      'step': index + 1,
+      if (step != null) 'step_name': step.name.toSnakeCase,
+    };
+  }
 }

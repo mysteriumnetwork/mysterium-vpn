@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -53,7 +52,7 @@ class ConnectionTile extends HookConsumerWidget {
           connectingLabel: connectingLabel,
           noConnectionTitle: noConnectionTitle,
           noConnectionDescription: noConnectionDescription,
-          connectionRatingLabel: LocaleKeys.rateConnection.tr(),
+          connectionRatingLabel: S.current.rateConnection,
           showConnectionRating: false,
           onConnect: onToggle,
           onDisconnect: onToggle,
@@ -62,7 +61,7 @@ class ConnectionTile extends HookConsumerWidget {
           onThumbsDown: onThumbsDown,
           onDismissPreview: onDismissPreview,
           onSwitchCountry: onToggle,
-          refreshIpTooltip: LocaleKeys.refreshIP.tr(),
+          refreshIpTooltip: S.current.refreshIP,
           connectionRating: connectionRating,
           buttonWrapper: buttonWrapper,
         ),

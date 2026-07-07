@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:clipboard/clipboard.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -413,10 +412,10 @@ class QAToolbox extends HookConsumerWidget {
             onPressed: () => shownConfirmationDialog(
               context,
               type: AlertModalType.info,
-              title: LocaleKeys.openEmailApp.tr(),
-              supportingText: LocaleKeys.noEmailApp.tr(),
+              title: S.current.openEmailApp,
+              supportingText: S.current.noEmailApp,
               showCancel: false,
-              confirmText: LocaleKeys.goBackButton.tr(),
+              confirmText: S.current.goBackButton,
               onConfirm: () {},
             ),
           ),
@@ -497,7 +496,7 @@ class QAToolbox extends HookConsumerWidget {
             icon: const Icon(Icons.copy, size: 16),
             onPressed: () => FlutterClipboard.copy(
               logs,
-            ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: SnackbarType.success)),
+            ).then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
           ),
         );
       } else {
@@ -742,9 +741,9 @@ class _ResidentialTooltipQAButton extends HookWidget {
       onTap: () => showInfoPopover(
         context: context,
         anchorKey: anchorKey,
-        title: LocaleKeys.ipTypeResidentialTooltipTitle.tr(),
-        body: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
-        actionLabel: LocaleKeys.residentialEducationGotIt.tr(),
+        title: S.current.ipTypeResidentialTooltipTitle,
+        body: S.current.ipTypeResidentialTooltipBody,
+        actionLabel: S.current.residentialEducationGotIt,
       ),
     );
   }

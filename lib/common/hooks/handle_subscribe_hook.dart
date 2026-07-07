@@ -55,11 +55,7 @@ FutureOr<void> _handleOnBillingPage({
       // Direct the user to the store that actually holds the subscription,
       // derived from its gateway — not the current platform (which is wrong
       // on desktop, where the platform gateway is empty).
-      showSnackbar(
-        LocaleKeys.activeSubsPaidVia.tr(
-          namedArgs: {'store': storeNameForGateway(normalizedGateway)},
-        ),
-      );
+      showSnackbar(S.current.activeSubsPaidVia(storeNameForGateway(normalizedGateway)));
       return;
     }
     await onManageSubscription?.call();
@@ -103,7 +99,7 @@ FutureOr<void> Function() useHandleUpgradePlan() {
     };
 
     if (!isCorrectGateway) {
-      showError(LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': subscription.gatewayName}));
+      showError(S.current.activeSubsPaidVia(subscription.gatewayName));
       return;
     }
     final gateway = subscription.gateway?.toLowerCase();

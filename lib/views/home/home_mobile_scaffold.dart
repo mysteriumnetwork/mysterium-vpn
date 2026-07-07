@@ -1,14 +1,14 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
+import 'package:mysterium_vpn/views/home/home_tab_labels.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_locations_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_map_tab.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
@@ -102,7 +102,7 @@ class _MobileTabHeader extends StatelessWidget {
     if (onBack != null) {
       return Header(
         backgroundColor: theme.palette.bgSidePanel,
-        backLabel: LocaleKeys.backToSettingsLbl.tr(),
+        backLabel: S.current.backToSettingsLbl,
         showBackButton: true,
         onBackPressed: onBack,
       );

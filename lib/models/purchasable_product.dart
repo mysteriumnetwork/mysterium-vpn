@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mobx/mobx.dart';
 import 'package:money2/money2.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
 
@@ -116,30 +114,6 @@ abstract class _PurchasableProduct with Store {
       : 12;
 
   @computed
-  String get billedPerMonth => LocaleKeys.billedPerMonth.tr(
-    namedArgs: {
-      'amount': monthlyPrice,
-      'period': planDetails.id == kMonthlyPlan
-          ? LocaleKeys.monthly.tr()
-          : planDetails.id == ksemiAnnualPlan
-          ? LocaleKeys.semiAnnual.tr()
-          : LocaleKeys.yearly.tr(),
-    },
-  );
-
-  @computed
-  String get billedPerMonthShort => LocaleKeys.billedInTotal.tr(
-    namedArgs: {
-      'amount': monthlyPrice,
-      'period': planDetails.id == kMonthlyPlan
-          ? LocaleKeys.monthly.tr()
-          : planDetails.id == ksemiAnnualPlan
-          ? LocaleKeys.semiAnnual.tr()
-          : LocaleKeys.yearly.tr(),
-    },
-  );
-
-  @computed
   double get monthlyValue => productPrice / duration;
 
   @computed
@@ -158,18 +132,6 @@ abstract class _PurchasableProduct with Store {
 
   @computed
   bool get isPupular => planDetails.id == kPopularPlan;
-
-  @computed
-  String get billedInTotal => LocaleKeys.billedInTotal.tr(
-    namedArgs: {
-      'amount': productPrice.price(currencySymbol: currencySymbol, currencyCode: currencyCode),
-      'period': planDetails.id == kMonthlyPlan
-          ? LocaleKeys.month.tr()
-          : planDetails.id == ksemiAnnualPlan
-          ? LocaleKeys.SixMonths.tr()
-          : LocaleKeys.year.tr(),
-    },
-  );
 }
 
 enum ProductStatus { purchasable, purchased, pending }

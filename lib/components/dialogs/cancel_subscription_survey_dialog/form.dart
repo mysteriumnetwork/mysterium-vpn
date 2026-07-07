@@ -34,7 +34,7 @@ class _Form extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: theme.palette.borderBrand),
                 ),
-                hintText: LocaleKeys.cancelSurveyFeedbackHint.tr(),
+                hintText: S.current.cancelSurveyFeedbackHint,
                 hintMaxLines: 3,
                 hintStyle: theme.textStyles.textMd.regular.copyWith(
                   color: theme.palette.textTertiary,

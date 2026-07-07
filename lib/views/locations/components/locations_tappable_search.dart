@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// A search field that visually mimics [SearchField] but acts as a button:
@@ -21,7 +20,7 @@ class LocationsTappableSearch extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: enabled ? onTap : null,
       child: IgnorePointer(
-        child: SearchField(placeholder: LocaleKeys.searchForLocations.tr(), enabled: enabled),
+        child: SearchField(placeholder: S.current.searchForLocations, enabled: enabled),
       ),
     ),
   );

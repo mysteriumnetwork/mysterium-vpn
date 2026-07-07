@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -36,7 +35,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
             userPreferencesStore.getMarketingConsentFuture?.status == FutureStatus.pending;
 
         return SettingsCard(
-          title: LocaleKeys.emailNotificationsSetting.tr(),
+          title: S.current.emailNotificationsSetting,
           position: position,
           trailing: isLoading
               ? const LoadingIndicator().padding(all: 8)
@@ -50,7 +49,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
                         parameters: {'value': val.toString()},
                       );
                     } catch (e) {
-                      showSnackbar(LocaleKeys.somethingWentWrong.tr());
+                      showSnackbar(S.current.somethingWentWrong);
                     }
                   },
                 ),

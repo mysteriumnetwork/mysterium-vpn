@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,7 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/utils/keys.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -28,8 +27,8 @@ class _DialogContent extends HookConsumerWidget {
             userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending;
         return PromptDialog(
           image: Asset.images.emailConsent(context).image(),
-          title: LocaleKeys.marketingConsentPopupTitle.tr(),
-          subtitle: LocaleKeys.marketingConsentPopupDesc.tr(),
+          title: S.current.marketingConsentPopupTitle,
+          subtitle: S.current.marketingConsentPopupDesc,
           primaryButton: ButtonPrimary(
             key: Keys.marketingConsentAcceptButton,
             onPressed: () {
@@ -39,7 +38,7 @@ class _DialogContent extends HookConsumerWidget {
             loading: isLoading && (lastClickedConsent.value ?? false)
                 ? const ButtonLoading()
                 : null,
-            child: Text(LocaleKeys.allowNotificationsBtn.tr()),
+            child: Text(S.current.allowNotificationsBtn),
           ),
           secondaryButton: ButtonSecondary(
             key: Keys.marketingConsentDeclineButton,
@@ -48,7 +47,7 @@ class _DialogContent extends HookConsumerWidget {
               _updateMarketingConsent(context, consent: false);
             },
             loading: isLoading && lastClickedConsent.value == false ? const ButtonLoading() : null,
-            child: Text(LocaleKeys.notNowBtn.tr()),
+            child: Text(S.current.notNowBtn),
           ),
         );
       },

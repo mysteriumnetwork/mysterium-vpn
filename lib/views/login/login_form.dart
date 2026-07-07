@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,7 @@ import 'package:mysterium_vpn/common/forms/forms.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -57,7 +56,7 @@ class SignInForm extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              LocaleKeys.loginSignupLabel.tr(),
+              S.current.loginSignupLabel,
               textAlign: TextAlign.center,
               style: textStyles.displayXlg.semibold.copyWith(color: palette.textPrimary),
             ),
@@ -74,7 +73,7 @@ class SignInForm extends HookConsumerWidget {
                   store.authenticatingType == GrantType.apple,
               asset: Asset.icons.apple,
               iconColor: palette.iconPrimary,
-              label: LocaleKeys.continueWithApple.tr(),
+              label: S.current.continueWithApple,
             ),
             SizedBox(height: spacing.s),
             SocialLoginButton(
@@ -88,7 +87,7 @@ class SignInForm extends HookConsumerWidget {
                   signInStatus == FutureStatus.pending &&
                   store.authenticatingType == GrantType.google,
               asset: Asset.icons.google,
-              label: LocaleKeys.continueWithGoogle.tr(),
+              label: S.current.continueWithGoogle,
             ),
             SizedBox(height: spacing.xl2),
             _OrDivider(),
@@ -111,7 +110,7 @@ class SignInForm extends HookConsumerWidget {
                     ? const ButtonLoading()
                     : null,
                 decoration: const ButtonDecoration(minimumSize: Size(double.infinity, 44)),
-                child: Text(LocaleKeys.continueWithEmail.tr()),
+                child: Text(S.current.continueWithEmail),
               ),
             ),
             SizedBox(height: spacing.md),
@@ -250,7 +249,7 @@ class _OrDivider extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: theme.spacing.s),
           child: Text(
-            LocaleKeys.or.tr(),
+            S.current.or,
             style: textStyles.textXs.regular.copyWith(color: palette.textTertiary),
           ),
         ),
@@ -278,7 +277,7 @@ class _EmailField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(LocaleKeys.email.tr(), style: textStyles.textSm.medium.copyWith(color: labelColor)),
+          Text(S.current.email, style: textStyles.textSm.medium.copyWith(color: labelColor)),
           SizedBox(height: spacing.s),
           ReactiveTextField(
             key: K.loginEmailField,
@@ -304,8 +303,8 @@ class _EmailField extends StatelessWidget {
             onSubmitted: (_) => FocusScope.of(context, createDependency: false).unfocus(),
             onEditingComplete: (_) => TextInput.finishAutofillContext(),
             validationMessages: {
-              ValidationMessage.required: (_) => LocaleKeys.emailIsRequired.tr(),
-              ValidationMessage.email: (_) => LocaleKeys.emailIsNotValid.tr(),
+              ValidationMessage.required: (_) => S.current.emailIsRequired,
+              ValidationMessage.email: (_) => S.current.emailIsNotValid,
             },
           ),
         ],
@@ -361,16 +360,16 @@ class _DisclaimerState extends State<_Disclaimer> {
       text: TextSpan(
         style: baseStyle,
         children: [
-          TextSpan(text: '${LocaleKeys.signInDisclaimer.tr()} '),
+          TextSpan(text: '${S.current.signInDisclaimer} '),
           TextSpan(
-            text: LocaleKeys.termsAndConditions.tr(),
+            text: S.current.termsAndConditions,
             style: linkStyle,
             mouseCursor: WidgetStateMouseCursor.clickable,
             recognizer: _termsRecognizer,
           ),
-          TextSpan(text: ' ${LocaleKeys.and.tr()} '),
+          TextSpan(text: ' ${S.current.and} '),
           TextSpan(
-            text: LocaleKeys.privacyPolicy.tr(),
+            text: S.current.privacyPolicy,
             style: linkStyle,
             mouseCursor: WidgetStateMouseCursor.clickable,
             recognizer: _privacyRecognizer,

@@ -17,8 +17,8 @@ class _ManageOnStoreView extends HookConsumerWidget {
         final store = storeNameForGateway(gateway);
 
         return _ProductsBrowsingView(
-          subtitle: LocaleKeys.productsExploreSubtitle.tr(),
-          alertMessage: LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': store}),
+          subtitle: S.current.productsExploreSubtitle,
+          alertMessage: S.current.activeSubsPaidVia(store),
         );
       },
     );

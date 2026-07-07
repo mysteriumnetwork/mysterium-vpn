@@ -1,8 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -31,11 +30,11 @@ class WelcomeView extends StatelessWidget {
 
         return Column(
           children: [
-            UnauthenticatedHeader(backLabel: LocaleKeys.homeLbl.tr()),
+            UnauthenticatedHeader(backLabel: S.current.homeLbl),
             const Brand(),
             SizedBox(height: topGap),
             Text(
-              LocaleKeys.takeBackTheInternetLbl.tr(),
+              S.current.takeBackTheInternetLbl,
               style: theme.textStyles.displayXlg.semibold.copyWith(color: palette.textPrimary),
               textAlign: TextAlign.center,
             ),
@@ -43,7 +42,7 @@ class WelcomeView extends StatelessWidget {
             Asset.images.welcome.image(width: _imageSize),
             SizedBox(height: theme.spacing.xl3),
             const Spacer(),
-            ButtonPrimary(onPressed: onSignIn, child: Text(LocaleKeys.signIn.tr())),
+            ButtonPrimary(onPressed: onSignIn, child: Text(S.current.signIn)),
             SizedBox(height: bottomGap),
           ],
         );

@@ -62,10 +62,7 @@ Future<void> _initOtherConfigCatStores(Ref ref, Talker logger) async {
   try {
     final configCatUserStore = ref.read(configCatUserStorePOD);
     final configCatUser = await configCatUserStore.future;
-    await Future.wait([
-      ref.read(abTestingStorePOD).setUser(configCatUser),
-      ref.read(textsStorePOD).setUser(configCatUser),
-    ]);
+    await ref.read(abTestingStorePOD).setUser(configCatUser);
   } catch (e) {
     logger.log('ConfigCat stores init error (non-fatal): $e');
   }

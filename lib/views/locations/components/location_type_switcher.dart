@@ -1,7 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationTypeSwitcher extends StatefulWidget {
@@ -94,8 +93,7 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
   );
 
   String _label(IPType option) => switch (option) {
-    IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-    _ =>
-      widget.options.length > 1 ? LocaleKeys.ipTypeResidential.tr() : LocaleKeys.allLocations.tr(),
+    IPType.datacenter => S.current.ipTypeDataCenter,
+    _ => widget.options.length > 1 ? S.current.ipTypeResidential : S.current.allLocations,
   };
 }

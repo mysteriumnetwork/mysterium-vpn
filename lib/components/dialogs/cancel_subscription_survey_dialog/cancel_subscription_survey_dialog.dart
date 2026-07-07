@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,7 +7,8 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -69,7 +69,7 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
           if (submitState.hasError) {
             final error = submitState.error;
             if (error is FormValidationException) {
-              showSnackbar(error.message);
+              showSnackbar(S.current.formValidationError);
             }
           }
           Navigator.of(context).pop(!submitState.hasError);
@@ -78,18 +78,15 @@ class CancelSubscriptionSurveyDialog extends HookConsumerWidget {
     });
 
     return BottomSheetDialog(
-      title: LocaleKeys.cancelSurveyTitle.tr(),
+      title: S.current.cancelSurveyTitle,
       body: _Form(form: form, items: reasons),
       primaryButton: ButtonPrimary(
         onPressed: form.invalid || submitState.connectionState == ConnectionState.waiting
             ? null
             : handleSubmit,
-        child: Text(LocaleKeys.submitBtn.tr()),
+        child: Text(S.current.submitBtn),
       ),
-      secondaryButton: ButtonSecondary(
-        onPressed: handleCancel,
-        child: Text(LocaleKeys.cancelBtn.tr()),
-      ),
+      secondaryButton: ButtonSecondary(onPressed: handleCancel, child: Text(S.current.cancelBtn)),
     );
   }
 }

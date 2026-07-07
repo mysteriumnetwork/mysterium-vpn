@@ -1,14 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 extension VPNLocationExtensions on VPNLocation {
   String _getName(BuildContext context) {
     Locale locale;
     try {
-      locale = EasyLocalization.of(context)!.locale;
+      locale = Localizations.localeOf(context);
     } catch (e) {
       locale = kFallbackLocale;
     }
@@ -20,7 +20,10 @@ extension VPNLocationExtensions on VPNLocation {
       }
       return value ?? translations['en'] ?? translations.values.firstOrNull ?? id;
     }
-    return id;
+    // No server-provided translations (e.g. recent locations built from a
+    // country code) — translate the code at display time, falling back to the
+    // raw code when there's no matching key.
+    return Tr.byKeyOrNull(id) ?? id;
   }
 
   String getName(BuildContext context) => _getName(context).capitalizeWords();

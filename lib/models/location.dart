@@ -1,11 +1,8 @@
-import 'dart:ui';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
 
@@ -54,14 +51,11 @@ abstract class VPNLocation with _$VPNLocation {
   factory VPNLocation.fromJson(Map<String, dynamic> json) =>
       _$VPNLocationFromJson(_processRawJson(json));
 
-  factory VPNLocation.fromCode(String code, [IPType ipType = IPType.residential]) {
-    List<Locale> locales;
-    locales = kSupportedLocales;
-    final translations = {
-      for (final locale in locales) locale.languageCode.toLowerCase(): code.tr(),
-    };
-    return VPNLocation(id: code, ipType: ipType, translations: translations, countryCode: code);
-  }
+  /// Builds a location from a persisted country code (recent locations). The
+  /// country name isn't stored — it's translated at display time from [id] via
+  /// the view layer (see `VPNLocationExtensions.getName`).
+  factory VPNLocation.fromCode(String code, [IPType ipType = IPType.residential]) =>
+      VPNLocation(id: code, ipType: ipType, translations: const {}, countryCode: code);
 
   factory VPNLocation.fromAPICountry(ConnectionLocation response, {required IPType ipType}) =>
       VPNLocation(
@@ -131,7 +125,7 @@ Map<String, dynamic> _processRawJson(Map<String, dynamic> raw) {
   var translations = raw['translations'];
   if (translations is! Map) {
     translations = <String, String>{
-      for (final locale in kSupportedLocales) locale.languageCode.toLowerCase(): code,
+      for (final locale in supportedLocales) locale.languageCode.toLowerCase(): code,
     };
   }
   return {...raw, 'id': id, 'code': code, 'countryCode': countryCode, 'translations': translations};

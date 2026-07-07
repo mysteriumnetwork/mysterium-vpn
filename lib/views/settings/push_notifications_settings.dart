@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -42,7 +41,7 @@ class PushNotificationsSetting extends ConsumerWidget {
                   analyticsStore: analyticsStore,
                 ),
                 child: Text(
-                  LocaleKeys.openSystemSettingsBtn.tr(),
+                  S.current.openSystemSettingsBtn,
                   style: theme.textStyles.textXs.semibold.copyWith(
                     color: theme.palette.textBrandPrimary,
                   ),
@@ -50,8 +49,8 @@ class PushNotificationsSetting extends ConsumerWidget {
               );
 
         return SettingsCard(
-          title: LocaleKeys.pushNotificationsSetting.tr(),
-          subtitle: isDesktop ? LocaleKeys.pushNotificationsSettingDesc.tr() : null,
+          title: S.current.pushNotificationsSetting,
+          subtitle: isDesktop ? S.current.pushNotificationsSettingDesc : null,
           subtitleWidget: subtitleWidget,
           position: position,
           trailing: ReadOnlySwitch(
@@ -77,7 +76,7 @@ class PushNotificationsSetting extends ConsumerWidget {
         },
       );
     } catch (e) {
-      showSnackbar(LocaleKeys.somethingWentWrong.tr());
+      showSnackbar(S.current.somethingWentWrong);
     }
   }
 }

@@ -10,7 +10,7 @@ class _AllPlansSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          LocaleKeys.productsAllPlansLbl.tr(),
+          S.current.productsAllPlansLbl,
           style: theme.textStyles.textMd.medium.copyWith(color: theme.palette.textTertiary),
         ),
         SizedBox(height: theme.spacing.ms),
@@ -18,28 +18,28 @@ class _AllPlansSection extends StatelessWidget {
           spacing: theme.spacing.xs,
           runSpacing: theme.spacing.xs,
           children: [
-            AppBadge(text: LocaleKeys.productsDuration1Month.tr(), size: BadgeSize.small),
-            AppBadge(text: LocaleKeys.productsDuration1Year.tr(), size: BadgeSize.small),
-            AppBadge(text: LocaleKeys.productsDuration2Year.tr(), size: BadgeSize.small),
+            AppBadge(text: S.current.productsDuration1Month, size: BadgeSize.small),
+            AppBadge(text: S.current.productsDuration1Year, size: BadgeSize.small),
+            AppBadge(text: S.current.productsDuration2Year, size: BadgeSize.small),
           ],
         ),
         SizedBox(height: theme.spacing.ms),
         _PlanTierCard(
           icon: UntitledUI.star_04,
-          name: LocaleKeys.subscriptionPlanNameBasic.tr(),
-          description: LocaleKeys.productsBasicDescription.tr(),
+          name: S.current.subscriptionPlanNameBasic,
+          description: S.current.productsBasicDescription,
         ),
         SizedBox(height: theme.spacing.s),
         _PlanTierCard(
           icon: UntitledUI.stars_02,
-          name: LocaleKeys.subscriptionPlanNamePlus.tr(),
-          description: LocaleKeys.productsPlusDescription.tr(),
+          name: S.current.subscriptionPlanNamePlus,
+          description: S.current.productsPlusDescription,
         ),
         SizedBox(height: theme.spacing.s),
         _PlanTierCard(
           icon: UntitledUI.stars_03,
-          name: LocaleKeys.subscriptionPlanNamePro.tr(),
-          description: LocaleKeys.productsProDescription.tr(),
+          name: S.current.subscriptionPlanNamePro,
+          description: S.current.productsProDescription,
         ),
       ],
     );

@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -12,8 +11,8 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 enum _RefreshSource { button, pull }
 
 String _typeLabel(IPType type) => switch (type) {
-  IPType.datacenter => LocaleKeys.ipTypeDataCenter.tr(),
-  _ => LocaleKeys.ipTypeResidential.tr(),
+  IPType.datacenter => S.current.ipTypeDataCenter,
+  _ => S.current.ipTypeResidential,
 };
 
 /// Refreshes [type] locations, logs the trigger, and shows a snackbar naming
@@ -23,9 +22,7 @@ Future<bool> _refresh(WidgetRef ref, IPType type, {required _RefreshSource sourc
   final ok = await ref.read(locationsStorePOD).refresh(type);
   final label = _typeLabel(type);
   showSnackbar(
-    ok
-        ? LocaleKeys.locationsUpdated.tr(args: [label])
-        : LocaleKeys.locationsUpdateFailed.tr(args: [label]),
+    ok ? S.current.locationsUpdated(label) : S.current.locationsUpdateFailed(label),
     type: ok ? SnackbarType.success : SnackbarType.error,
   );
   return ok;
@@ -48,7 +45,7 @@ class LocationsRefreshIconButton extends HookConsumerWidget {
     return RefreshIconButton(
       spinning: isRefreshing,
       // Computed each build so it follows a runtime locale change.
-      tooltip: LocaleKeys.refreshLocationsTooltip.tr(args: [_typeLabel(type)]),
+      tooltip: S.current.refreshLocationsTooltip(_typeLabel(type)),
       color: Theme.of(context).palette.iconSecondary,
       onPressed: isRefreshing
           ? null
