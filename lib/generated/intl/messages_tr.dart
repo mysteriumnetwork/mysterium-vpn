@@ -31,11 +31,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(email) => "${email} adresine bir e-posta gönderdik";
 
-  static String m5(email) =>
-      "“${email}” ile ödeme yaptığın bir aboneliğin zaten olabilir";
+  static String m5(email) => "“${email}” ile ödeme yaptığın bir aboneliğin zaten olabilir";
 
-  static String m6(errorCode) =>
-      "Bağlanılamadı. Lütfen tekrar dene [hata: ${errorCode}]";
+  static String m6(errorCode) => "Bağlanılamadı. Lütfen tekrar dene [hata: ${errorCode}]";
 
   static String m7(plan) => "${plan} al";
 
@@ -50,8 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(count) =>
       "${Intl.plural(count, one: '${count} Şehir', other: '${count} Şehir')}";
 
-  static String m12(count) =>
-      "${Intl.plural(count, one: '${count} IP', other: '${count} IP')}";
+  static String m12(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IP')}";
 
   static String m13(count) =>
       "${Intl.plural(count, one: '${count} Eyalet', other: '${count} Eyalet')}";
@@ -73,8 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m21(percent) => "%${percent} tasarruf";
 
-  static String m22(percent, planId) =>
-      "${planId} planıyla %${percent} tasarruf";
+  static String m22(percent, planId) => "${planId} planıyla %${percent} tasarruf";
 
   static String m23(plan) => "${plan} planına yükselt";
 
@@ -91,18 +87,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Engellenen sitelere erişilemiyor",
     ),
     "account": MessageLookupByLibrary.simpleMessage("Hesap"),
-    "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage(
-      "Hesap silindi",
-    ),
+    "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage("Hesap silindi"),
     "activeSubsPaidVia": m0,
     "allLocations": MessageLookupByLibrary.simpleMessage("Tüm konumlar"),
     "allowBtn": MessageLookupByLibrary.simpleMessage("İzin ver"),
-    "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage(
-      "Bildirimlere izin ver",
-    ),
-    "allowPushNotificationsBtn": MessageLookupByLibrary.simpleMessage(
-      "Bildirimlere izin ver",
-    ),
+    "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage("Bildirimlere izin ver"),
+    "allowPushNotificationsBtn": MessageLookupByLibrary.simpleMessage("Bildirimlere izin ver"),
     "and": MessageLookupByLibrary.simpleMessage(" ve "),
     "appUpdateAvailableDesc": MessageLookupByLibrary.simpleMessage(
       "Yeni uygulama sürümü hazır! En son özellikler ve iyileştirmeler için şimdi güncelle.",
@@ -110,9 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appUpdateAvailableSetting": MessageLookupByLibrary.simpleMessage(
       "Uygulama Güncellemesi Mevcut!",
     ),
-    "appUpdateAvailableTitle": MessageLookupByLibrary.simpleMessage(
-      "Uygulama Güncellemesi Mevcut",
-    ),
+    "appUpdateAvailableTitle": MessageLookupByLibrary.simpleMessage("Uygulama Güncellemesi Mevcut"),
     "appearanceSettingLbl": MessageLookupByLibrary.simpleMessage("Görünüm"),
     "ar": MessageLookupByLibrary.simpleMessage("Arapça"),
     "austria": MessageLookupByLibrary.simpleMessage("Avusturya"),
@@ -120,25 +108,19 @@ class MessageLookup extends MessageLookupByLibrary {
       "Giriş yapılamadı. Lütfen tekrar dene.",
     ),
     "back": MessageLookupByLibrary.simpleMessage("Geri"),
-    "backToSettingsLbl": MessageLookupByLibrary.simpleMessage(
-      "Ayarlara geri dön",
-    ),
+    "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Ayarlara geri dön"),
     "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Pil tasarrufu"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlin, Almanya 🇩🇪"),
     "billedInTotal": m1,
     "billedPerMonth": m2,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("Engelleyici"),
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Şimdi güncelle"),
-    "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage(
-      "Kısıtlamaları aş",
-    ),
+    "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Kısıtlamaları aş"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("İptal"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Lütfen daha fazla ayrıntı gir...",
     ),
-    "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage(
-      "İptal nedenleri",
-    ),
+    "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("İptal nedenleri"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Hesabını silmeden önce App Store aboneliklerinden aboneliğini iptal et.",
     ),
@@ -148,12 +130,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkSubsStatusFailedTitle": MessageLookupByLibrary.simpleMessage(
       "Plan bilgileri mevcut değil",
     ),
-    "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage(
-      "Plan bilgileri alınıyor...",
-    ),
-    "checkYourEmail": MessageLookupByLibrary.simpleMessage(
-      "E-postanı kontrol et",
-    ),
+    "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("Plan bilgileri alınıyor..."),
+    "checkYourEmail": MessageLookupByLibrary.simpleMessage("E-postanı kontrol et"),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Aramayı temizle"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Kapat"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("İletişim"),
@@ -168,63 +146,35 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ödeme işlemcisine bağlanılıyor...",
     ),
     "connection": MessageLookupByLibrary.simpleMessage("Bağlantı"),
-    "connectionSettingLbl": MessageLookupByLibrary.simpleMessage(
-      "Bağlantı ve Koruma",
-    ),
+    "connectionSettingLbl": MessageLookupByLibrary.simpleMessage("Bağlantı ve Koruma"),
     "connectionTimeout": MessageLookupByLibrary.simpleMessage(
       "Bağlantı zaman aşımına uğradı. Lütfen daha sonra tekrar dene. Sorun devam ederse destek ekibiyle iletişime geç",
     ),
-    "consistentSpeedReason": MessageLookupByLibrary.simpleMessage(
-      "Tutarlı hız",
-    ),
+    "consistentSpeedReason": MessageLookupByLibrary.simpleMessage("Tutarlı hız"),
     "consumeLink": MessageLookupByLibrary.simpleMessage(
       "Yalnızca talep eden cihazda çalışır - devam etmek için e-postandaki bağlantıya dokun.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Devam et"),
-    "continueWithApple": MessageLookupByLibrary.simpleMessage(
-      "Apple ile devam et",
-    ),
-    "continueWithEmail": MessageLookupByLibrary.simpleMessage(
-      "E-posta ile devam et",
-    ),
-    "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "Google ile devam et",
-    ),
-    "copyLink": MessageLookupByLibrary.simpleMessage(
-      "Bağlantıyı kopyala ve tarayıcına yapıştır",
-    ),
+    "continueWithApple": MessageLookupByLibrary.simpleMessage("Apple ile devam et"),
+    "continueWithEmail": MessageLookupByLibrary.simpleMessage("E-posta ile devam et"),
+    "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Google ile devam et"),
+    "copyLink": MessageLookupByLibrary.simpleMessage("Bağlantıyı kopyala ve tarayıcına yapıştır"),
     "couponCodeCopied": m3,
     "dark": MessageLookupByLibrary.simpleMessage("Koyu"),
-    "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
-      "Kolayca tespit edilir",
-    ),
-    "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage(
-      "Sık sık engellenir",
-    ),
-    "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage(
-      "Daha az gizli",
-    ),
-    "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage(
-      "VERİ MERKEZİ IP\'LERİ",
-    ),
-    "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage(
-      "Çoğu VPN",
-    ),
+    "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("Kolayca tespit edilir"),
+    "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("Sık sık engellenir"),
+    "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Daha az gizli"),
+    "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("VERİ MERKEZİ IP\'LERİ"),
+    "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("Çoğu VPN"),
     "de": MessageLookupByLibrary.simpleMessage("Almanca"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Hesabı sil"),
-    "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage(
-      "Hesap silinsin mi?",
-    ),
+    "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Hesap silinsin mi?"),
     "deleteBtn": MessageLookupByLibrary.simpleMessage("Sil"),
     "deviceLimitReachedDesc": MessageLookupByLibrary.simpleMessage(
       "Bağlı cihaz sayısının üst sınırına ulaştın. Yeni bir cihaz eklemek için hesabından mevcut bir cihazı kaldır.",
     ),
-    "deviceLimitReachedOpenDashboard": MessageLookupByLibrary.simpleMessage(
-      "Panosu aç",
-    ),
-    "deviceLimitReachedTitle": MessageLookupByLibrary.simpleMessage(
-      "Cihaz Sınırına Ulaşıldı",
-    ),
+    "deviceLimitReachedOpenDashboard": MessageLookupByLibrary.simpleMessage("Panosu aç"),
+    "deviceLimitReachedTitle": MessageLookupByLibrary.simpleMessage("Cihaz Sınırına Ulaşıldı"),
     "disconnect": MessageLookupByLibrary.simpleMessage("Bağlantıyı kes"),
     "disconnected": MessageLookupByLibrary.simpleMessage("Bağlantı kesildi"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Bağlantı kesiliyor"),
@@ -233,15 +183,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "dnsDesc": MessageLookupByLibrary.simpleMessage("DNS sızıntılarını önler"),
     "duration": MessageLookupByLibrary.simpleMessage("Süre"),
     "email": MessageLookupByLibrary.simpleMessage("E-posta adresi"),
-    "emailIsNotValid": MessageLookupByLibrary.simpleMessage(
-      "E-posta adresi geçerli değil",
-    ),
-    "emailIsRequired": MessageLookupByLibrary.simpleMessage(
-      "E-posta adresi gerekli",
-    ),
-    "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage(
-      "E-posta Bildirimleri",
-    ),
+    "emailIsNotValid": MessageLookupByLibrary.simpleMessage("E-posta adresi geçerli değil"),
+    "emailIsRequired": MessageLookupByLibrary.simpleMessage("E-posta adresi gerekli"),
+    "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("E-posta Bildirimleri"),
     "emailSentTo": m4,
     "en": MessageLookupByLibrary.simpleMessage("İngilizce"),
     "es": MessageLookupByLibrary.simpleMessage("İspanyolca"),
@@ -268,22 +212,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("Fransızca"),
     "france": MessageLookupByLibrary.simpleMessage("Fransa"),
-    "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage(
-      "Sık bağlantı kesilmesi",
-    ),
+    "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Sık bağlantı kesilmesi"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Tam fiyat:"),
     "germany": MessageLookupByLibrary.simpleMessage("Almanya"),
-    "getNewIPAddress": MessageLookupByLibrary.simpleMessage(
-      "Yenilemede yeni bir IP adresi al",
-    ),
+    "getNewIPAddress": MessageLookupByLibrary.simpleMessage("Yenilemede yeni bir IP adresi al"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Bağlantını güvence altına al ve anında gizli gezinmenin keyfini çıkar",
     ),
     "getSubscriptionModalTitle": m7,
     "getSubscriptionPlanBtn": m8,
-    "gettingIPAddress": MessageLookupByLibrary.simpleMessage(
-      "IP adresi alınıyor...",
-    ),
+    "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP adresi alınıyor..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Geri dön"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Girişe git"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Yardım ve Destek"),
@@ -293,24 +231,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "highSpeed": MessageLookupByLibrary.simpleMessage("Yüksek hız"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Ana sayfa"),
     "id": MessageLookupByLibrary.simpleMessage("Endonezce"),
-    "incorrectLocationReason": MessageLookupByLibrary.simpleMessage(
-      "Hatalı konum",
-    ),
+    "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Hatalı konum"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage(
       "Hatalı sihirli bağlantı. Lütfen tekrar dene.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP adresi"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage(
-      "Yüksek hızlı IP\'ler",
-    ),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("Yüksek hızlı IP\'ler"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Hız ve performans için optimize edilmiş veri merkezi IP\'leri.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler",
-    ),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IP\'ler"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Gerçek hanelerce sağlanır. Neredeyse tespit edilemez ama daha az kararlıdır.",
     ),
@@ -329,9 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "languageSettingLbl": MessageLookupByLibrary.simpleMessage("Dil"),
     "light": MessageLookupByLibrary.simpleMessage("Açık"),
-    "linkCopied": MessageLookupByLibrary.simpleMessage(
-      "Bağlantı panoya kopyalandı!",
-    ),
+    "linkCopied": MessageLookupByLibrary.simpleMessage("Bağlantı panoya kopyalandı!"),
     "linkExpires": MessageLookupByLibrary.simpleMessage(
       "Bağlantı 30 dakika içinde sona erer ve yalnızca bir kez kullanılabilir.",
     ),
@@ -340,9 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "locationItemNodeCount": m12,
     "locationItemStatesCount": m13,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Konum"),
-    "locationUnavailableAction": MessageLookupByLibrary.simpleMessage(
-      "En yakın IP\'ye bağlan",
-    ),
+    "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("En yakın IP\'ye bağlan"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "En yakın IP\'ye bağlan - ya da manuel olarak seç",
     ),
@@ -352,16 +280,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Oturumunun süresi doldu. Lütfen tekrar giriş yap.",
     ),
-    "loginSignupLabel": MessageLookupByLibrary.simpleMessage(
-      "Giriş yap veya kayıt ol",
-    ),
+    "loginSignupLabel": MessageLookupByLibrary.simpleMessage("Giriş yap veya kayıt ol"),
     "logout": MessageLookupByLibrary.simpleMessage("Çıkış yap"),
     "logoutConfirmationDesc": MessageLookupByLibrary.simpleMessage(
       "Çıkış yapmak üzeresin. Emin misin?",
     ),
-    "logoutConfirmationTitle": MessageLookupByLibrary.simpleMessage(
-      "Çıkış yap",
-    ),
+    "logoutConfirmationTitle": MessageLookupByLibrary.simpleMessage("Çıkış yap"),
     "logoutVPNConnectedDesc": MessageLookupByLibrary.simpleMessage(
       "VPN açık. Çıkış yapmaya devam edersen VPN sunucusuyla bağlantın kesilir.",
     ),
@@ -372,9 +296,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "Mysterium Network\'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misin?",
     ),
-    "marketingConsentPopupTitle": MessageLookupByLibrary.simpleMessage(
-      "E-postayla güncel kal",
-    ),
+    "marketingConsentPopupTitle": MessageLookupByLibrary.simpleMessage("E-postayla güncel kal"),
     "month": MessageLookupByLibrary.simpleMessage("ay"),
     "monthly": MessageLookupByLibrary.simpleMessage("aylık"),
     "navLocations": MessageLookupByLibrary.simpleMessage("Konumlar"),
@@ -382,37 +304,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "navProducts": MessageLookupByLibrary.simpleMessage("Ürünler"),
     "nextBilling": m17,
     "no": MessageLookupByLibrary.simpleMessage("Hayır"),
-    "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage(
-      "Etkin aboneliğin yok",
-    ),
-    "noEmailApp": MessageLookupByLibrary.simpleMessage(
-      "Cihazında e-posta uygulaması yok.",
-    ),
-    "noLocationsFound": MessageLookupByLibrary.simpleMessage(
-      "Konum bulunamadı",
-    ),
-    "noServersAvailable": MessageLookupByLibrary.simpleMessage(
-      "Kullanılabilir sunucu yok",
-    ),
+    "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Etkin aboneliğin yok"),
+    "noEmailApp": MessageLookupByLibrary.simpleMessage("Cihazında e-posta uygulaması yok."),
+    "noLocationsFound": MessageLookupByLibrary.simpleMessage("Konum bulunamadı"),
+    "noServersAvailable": MessageLookupByLibrary.simpleMessage("Kullanılabilir sunucu yok"),
     "noServersAvailableSub": MessageLookupByLibrary.simpleMessage(
       "Bağlantı sorunu var ve kullanılabilir sunucu yok. Lütfen daha sonra dene.",
     ),
     "noSubscriptionAction": MessageLookupByLibrary.simpleMessage("Planı al"),
-    "noSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
-      "Etkin plan yok",
-    ),
+    "noSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Etkin plan yok"),
     "noneLbl": MessageLookupByLibrary.simpleMessage("Hiçbiri"),
     "notAvailableMsg": MessageLookupByLibrary.simpleMessage("Kullanılamıyor"),
     "notNowBtn": MessageLookupByLibrary.simpleMessage("Şimdi değil"),
-    "nsfwLbl": MessageLookupByLibrary.simpleMessage(
-      "NSFW ve Kötü Amaçlı Yazılım",
-    ),
+    "nsfwLbl": MessageLookupByLibrary.simpleMessage("NSFW ve Kötü Amaçlı Yazılım"),
     "onboardingStep1Desc": MessageLookupByLibrary.simpleMessage(
       "IP adresin ve konumun web sitelerine, izleme araçlarına ve halka açık Wi-Fi ağlarına görünür durumda.",
     ),
-    "onboardingStep1Title": MessageLookupByLibrary.simpleMessage(
-      "Bağlantın açıkta",
-    ),
+    "onboardingStep1Title": MessageLookupByLibrary.simpleMessage("Bağlantın açıkta"),
     "onboardingStep2Desc": MessageLookupByLibrary.simpleMessage(
       "Mysterium VPN, IP adresini, ISP\'ni ve konumunu gizler; böylece gerçek gizlilikle gezinebilirsin.",
     ),
@@ -422,15 +330,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
       "Residential IP\'lerle bağlantın doğal görünür - tipik VPN trafiği gibi değil.",
     ),
-    "onboardingStep3Title": MessageLookupByLibrary.simpleMessage(
-      "Tüm VPN\'ler aynı çalışmaz",
-    ),
-    "openEmailApp": MessageLookupByLibrary.simpleMessage(
-      "E-posta uygulamasını aç",
-    ),
-    "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage(
-      "Sistem ayarlarını aç",
-    ),
+    "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tüm VPN\'ler aynı çalışmaz"),
+    "openEmailApp": MessageLookupByLibrary.simpleMessage("E-posta uygulamasını aç"),
+    "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Sistem ayarlarını aç"),
     "or": MessageLookupByLibrary.simpleMessage("VEYA"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Seni en iyi sunucuya bağlayacağız - ya da manuel olarak bir ülke seçebilirsin.",
@@ -458,12 +360,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro yıllık"),
     "poland": MessageLookupByLibrary.simpleMessage("Polonya"),
     "preferences": MessageLookupByLibrary.simpleMessage("Tercihler"),
-    "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage(
-      "Tüm planları gör",
-    ),
-    "privacyPolicy": MessageLookupByLibrary.simpleMessage(
-      "Gizlilik Politikası",
-    ),
+    "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
+    "privacyPolicy": MessageLookupByLibrary.simpleMessage("Gizlilik Politikası"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
       "Ödemeni işliyoruz. Kısa süre içinde her şey hazır olacak…",
     ),
@@ -480,9 +378,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsExploreSubtitle": MessageLookupByLibrary.simpleMessage(
       "Planları ve özellikleri keşfet",
     ),
-    "productsManageSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Web\'de yönet ve yükselt",
-    ),
+    "productsManageSubtitle": MessageLookupByLibrary.simpleMessage("Web\'de yönet ve yükselt"),
     "productsMaxPlanAlert": MessageLookupByLibrary.simpleMessage(
       "Zaten mevcut en yüksek plandasın.",
     ),
@@ -498,9 +394,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsSubscribeWebAlert": MessageLookupByLibrary.simpleMessage(
       "Abonelikler web\'de yönetilir. Planın uygulamaya otomatik senkronize olur.",
     ),
-    "productsSubscribeWebSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Web\'de abone ol",
-    ),
+    "productsSubscribeWebSubtitle": MessageLookupByLibrary.simpleMessage("Web\'de abone ol"),
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN ürünleri"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("KORUMALI"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protokol"),
@@ -519,66 +413,49 @@ class MessageLookup extends MessageLookupByLibrary {
     "pushNotificationsConsentPopupTitle": MessageLookupByLibrary.simpleMessage(
       "Anlık bildirimlerle güncel kal",
     ),
-    "pushNotificationsSetting": MessageLookupByLibrary.simpleMessage(
-      "Anlık Bildirimler",
-    ),
+    "pushNotificationsSetting": MessageLookupByLibrary.simpleMessage("Anlık Bildirimler"),
     "pushNotificationsSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Ürün güncellemeleri, ipuçları ve özel teklifler",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bağlantın nasıl?"),
-    "rateConnectionDislike": MessageLookupByLibrary.simpleMessage(
-      "Neyi beğenmedin?",
-    ),
-    "rateConnectionLike": MessageLookupByLibrary.simpleMessage(
-      "Neyi beğendin?",
-    ),
+    "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Neyi beğenmedin?"),
+    "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Neyi beğendin?"),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Son konumlar"),
-    "redeemDiscountCode": MessageLookupByLibrary.simpleMessage(
-      "İndirim kodunu kullan",
-    ),
+    "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("İndirim kodunu kullan"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
       "Hesabın başarıyla silindi. Giriş ekranına yönlendirileceksin.",
     ),
     "refresh": MessageLookupByLibrary.simpleMessage("Yenile"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP\'yi yenile"),
-    "refreshIPAddress": MessageLookupByLibrary.simpleMessage(
-      "IP adresini yenile",
-    ),
+    "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP adresini yenile"),
     "refreshLocationsTooltip": m19,
-    "resetAppDesc": MessageLookupByLibrary.simpleMessage(
-      "Bir şey çalışmadığında sıfırla",
-    ),
+    "resetAppDesc": MessageLookupByLibrary.simpleMessage("Bir şey çalışmadığında sıfırla"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Uygulamayı sıfırlamaya devam edersen Mysterium VPN bağlantın kesilir.",
     ),
-    "resetAppDialogTitle": MessageLookupByLibrary.simpleMessage(
-      "VPN bağlantısı şu anda etkin",
-    ),
+    "resetAppDialogTitle": MessageLookupByLibrary.simpleMessage("VPN bağlantısı şu anda etkin"),
     "resetAppFailed": MessageLookupByLibrary.simpleMessage(
       "Uygulama sıfırlanamadı. Lütfen tekrar dene.",
     ),
-    "resetAppSuccess": MessageLookupByLibrary.simpleMessage(
-      "Uygulama başarıyla sıfırlandı.",
-    ),
+    "resetAppSuccess": MessageLookupByLibrary.simpleMessage("Uygulama başarıyla sıfırlandı."),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Uygulamayı sıfırla"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Sıfırla"),
     "residential": MessageLookupByLibrary.simpleMessage("Residential"),
-    "residentialCentreComparisonCardItem1":
-        MessageLookupByLibrary.simpleMessage("Gerçek kullanıcı gibi görünür"),
-    "residentialCentreComparisonCardItem2":
-        MessageLookupByLibrary.simpleMessage("Tespiti daha zor"),
-    "residentialCentreComparisonCardItem3":
-        MessageLookupByLibrary.simpleMessage("Daha az engel"),
+    "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
+      "Gerçek kullanıcı gibi görünür",
+    ),
+    "residentialCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage(
+      "Tespiti daha zor",
+    ),
+    "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Daha az engel"),
     "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage(
       "RESIDENTIAL IP\'LER",
     ),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
       "Residential IP\'ler gerçek ev cihazlarından gelir; böylece trafiğin normal internet kullanımı gibi görünür.",
     ),
-    "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage(
-      "Gerçek ev cihazları",
-    ),
+    "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage("Gerçek ev cihazları"),
     "residentialEducationBlock2Body": MessageLookupByLibrary.simpleMessage(
       "Bu IP\'ler gerçek cihazlardan geldiği için bazı düğümler zaman zaman çevrimdışı olabilir.",
     ),
@@ -591,9 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage(
       "Otomatik yeniden bağlanma",
     ),
-    "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage(
-      "Anladım",
-    ),
+    "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Anladım"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
       "Residential IP\'ler yüksek hızlı IP\'lerden farklıdır. İşte beklemen gerekenler.",
     ),
@@ -629,12 +504,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "setupTunnerPermissionsDialogTitle": MessageLookupByLibrary.simpleMessage(
       "İznine ihtiyacımız var",
     ),
-    "signIn": MessageLookupByLibrary.simpleMessage(
-      "Mysterium VPN\'e giriş yap",
-    ),
-    "signInAbortedMsg": MessageLookupByLibrary.simpleMessage(
-      "Giriş iptal edildi",
-    ),
+    "signIn": MessageLookupByLibrary.simpleMessage("Mysterium VPN\'e giriş yap"),
+    "signInAbortedMsg": MessageLookupByLibrary.simpleMessage("Giriş iptal edildi"),
     "signInBtn": MessageLookupByLibrary.simpleMessage("Giriş yap"),
     "signInDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Mysterium VPN çevrimiçi etkinliklerini kaydetmez ve sana, cihazına, IP adresine veya e-postana hiçbir kayıt bağlanmaz. Giriş yaparak şunları kabul edersin:",
@@ -644,121 +515,88 @@ class MessageLookup extends MessageLookupByLibrary {
     "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
       "Bir sorun oluştu. Lütfen tekrar dene!",
     ),
-    "stableConnectionReason": MessageLookupByLibrary.simpleMessage(
-      "Kararlı bağlantı",
-    ),
+    "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Kararlı bağlantı"),
     "status": MessageLookupByLibrary.simpleMessage("Durum"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Kal"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Gönder"),
-    "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage(
-      "Web\'de abone ol",
-    ),
+    "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Web\'de abone ol"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(
       "Harika haber! Aboneliğin artık etkin.",
     ),
-    "subscriptionAllPlansBackToPlans": MessageLookupByLibrary.simpleMessage(
-      "Planlara geri dön",
-    ),
+    "subscriptionAllPlansBackToPlans": MessageLookupByLibrary.simpleMessage("Planlara geri dön"),
     "subscriptionAllPlansCompareAll": MessageLookupByLibrary.simpleMessage(
       "Tüm özellikleri karşılaştır",
     ),
-    "subscriptionAllPlansCurrentPlan": MessageLookupByLibrary.simpleMessage(
-      "Mevcut plan",
+    "subscriptionAllPlansCurrentPlan": MessageLookupByLibrary.simpleMessage("Mevcut plan"),
+    "subscriptionAllPlansPurchase": MessageLookupByLibrary.simpleMessage("Planı al"),
+    "subscriptionAllPlansTabMonth": MessageLookupByLibrary.simpleMessage("Aylık"),
+    "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 Yıl"),
+    "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Tüm planlar"),
+    "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Planını yükselt"),
+    "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
+      "VPN protokolleri ve kötü amaçlı yazılım engelleme gibi gelişmiş özellikleri keşfet.",
     ),
-    "subscriptionAllPlansPurchase": MessageLookupByLibrary.simpleMessage(
-      "Planı al",
+    "subscriptionOnboardingBoostProtectionTitle": MessageLookupByLibrary.simpleMessage(
+      "Korumanı güçlendir",
     ),
-    "subscriptionAllPlansTabMonth": MessageLookupByLibrary.simpleMessage(
-      "Aylık",
+    "subscriptionOnboardingCancelTourLabel": MessageLookupByLibrary.simpleMessage("Şimdilik atla"),
+    "subscriptionOnboardingConnectDescription": MessageLookupByLibrary.simpleMessage(
+      "Seni en iyi sunucuya bağlayacağız.",
     ),
-    "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage(
-      "1 Yıl",
-    ),
-    "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage(
-      "Tüm planlar",
-    ),
-    "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage(
-      "Planını yükselt",
-    ),
-    "subscriptionOnboardingBoostProtectionDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "VPN protokolleri ve kötü amaçlı yazılım engelleme gibi gelişmiş özellikleri keşfet.",
-        ),
-    "subscriptionOnboardingBoostProtectionTitle":
-        MessageLookupByLibrary.simpleMessage("Korumanı güçlendir"),
-    "subscriptionOnboardingCancelTourLabel":
-        MessageLookupByLibrary.simpleMessage("Şimdilik atla"),
-    "subscriptionOnboardingConnectDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Seni en iyi sunucuya bağlayacağız.",
-        ),
     "subscriptionOnboardingConnectTitle": MessageLookupByLibrary.simpleMessage(
       "Gizli kalmak için bağlan",
     ),
-    "subscriptionOnboardingManagePlanDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Hesap erişimine göre plan satın al, yükselt veya mevcut planları görüntüle.",
-        ),
-    "subscriptionOnboardingManagePlanTitle":
-        MessageLookupByLibrary.simpleMessage("Planını yönet"),
-    "subscriptionOnboardingMapDesktopDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Haritaya göz at veya kenar çubuğundan konumları keşfet.",
-        ),
-    "subscriptionOnboardingMapDesktopTitle":
-        MessageLookupByLibrary.simpleMessage("Konumları kendi tarzında keşfet"),
-    "subscriptionOnboardingMapMobileDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Haritaya göz atarak bir ülke seç ve anında bağlan.",
-        ),
-    "subscriptionOnboardingMapMobileTitle":
-        MessageLookupByLibrary.simpleMessage("Haritadan bağlan"),
+    "subscriptionOnboardingManagePlanDescription": MessageLookupByLibrary.simpleMessage(
+      "Hesap erişimine göre plan satın al, yükselt veya mevcut planları görüntüle.",
+    ),
+    "subscriptionOnboardingManagePlanTitle": MessageLookupByLibrary.simpleMessage("Planını yönet"),
+    "subscriptionOnboardingMapDesktopDescription": MessageLookupByLibrary.simpleMessage(
+      "Haritaya göz at veya kenar çubuğundan konumları keşfet.",
+    ),
+    "subscriptionOnboardingMapDesktopTitle": MessageLookupByLibrary.simpleMessage(
+      "Konumları kendi tarzında keşfet",
+    ),
+    "subscriptionOnboardingMapMobileDescription": MessageLookupByLibrary.simpleMessage(
+      "Haritaya göz atarak bir ülke seç ve anında bağlan.",
+    ),
+    "subscriptionOnboardingMapMobileTitle": MessageLookupByLibrary.simpleMessage(
+      "Haritadan bağlan",
+    ),
     "subscriptionOnboardingPromptDescription": MessageLookupByLibrary.simpleMessage(
       "Güncellenen uygulamada yolunu öğren ve önemli özelliklerin artık nerede olduğunu keşfet.",
     ),
-    "subscriptionOnboardingPromptTitle": MessageLookupByLibrary.simpleMessage(
-      "Kısa bir tura çık",
+    "subscriptionOnboardingPromptTitle": MessageLookupByLibrary.simpleMessage("Kısa bir tura çık"),
+    "subscriptionOnboardingSearchDescription": MessageLookupByLibrary.simpleMessage(
+      "Aramayla ülkeleri, şehirleri ve sunucuları hızlıca bul.",
     ),
-    "subscriptionOnboardingSearchDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Aramayla ülkeleri, şehirleri ve sunucuları hızlıca bul.",
-        ),
     "subscriptionOnboardingSearchTitle": MessageLookupByLibrary.simpleMessage(
       "Daha hızlı ara ve bağlan",
     ),
-    "subscriptionOnboardingSetupCompleteDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Daha gizli gezinmeye başlamak için bir konum seç.",
-        ),
-    "subscriptionOnboardingSetupCompleteTitle":
-        MessageLookupByLibrary.simpleMessage("Kurulum tamamlandı"),
-    "subscriptionOnboardingStartTourLabel":
-        MessageLookupByLibrary.simpleMessage("Tura başla"),
-    "subscriptionOnboardingVPNLocationsDesktopDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Ülkeleri ve şehirleri tek yerde keşfet.",
-        ),
-    "subscriptionOnboardingVPNLocationsMobileDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Ülkeleri, şehirleri, son bağlantıları ve özel sunucuları tek yerde keşfet.",
-        ),
-    "subscriptionOnboardingVPNLocationsTitle":
-        MessageLookupByLibrary.simpleMessage("VPN konumlarına göz at"),
-    "subscriptionPlanBestValue": MessageLookupByLibrary.simpleMessage(
-      "EN İYİ FİYAT",
+    "subscriptionOnboardingSetupCompleteDescription": MessageLookupByLibrary.simpleMessage(
+      "Daha gizli gezinmeye başlamak için bir konum seç.",
     ),
-    "subscriptionPlanCityLevel": MessageLookupByLibrary.simpleMessage(
-      "Şehir düzeyinde seçim",
+    "subscriptionOnboardingSetupCompleteTitle": MessageLookupByLibrary.simpleMessage(
+      "Kurulum tamamlandı",
     ),
+    "subscriptionOnboardingStartTourLabel": MessageLookupByLibrary.simpleMessage("Tura başla"),
+    "subscriptionOnboardingVPNLocationsDesktopDescription": MessageLookupByLibrary.simpleMessage(
+      "Ülkeleri ve şehirleri tek yerde keşfet.",
+    ),
+    "subscriptionOnboardingVPNLocationsMobileDescription": MessageLookupByLibrary.simpleMessage(
+      "Ülkeleri, şehirleri, son bağlantıları ve özel sunucuları tek yerde keşfet.",
+    ),
+    "subscriptionOnboardingVPNLocationsTitle": MessageLookupByLibrary.simpleMessage(
+      "VPN konumlarına göz at",
+    ),
+    "subscriptionPlanBestValue": MessageLookupByLibrary.simpleMessage("EN İYİ FİYAT"),
+    "subscriptionPlanCityLevel": MessageLookupByLibrary.simpleMessage("Şehir düzeyinde seçim"),
     "subscriptionPlanCityLevelDesc": MessageLookupByLibrary.simpleMessage(
       "Çoğu VPN\'e göre daha hassas konum kontrolü sunar; VPN\'ler genellikle seni tüm ülkeleri veya eyaletleri seçmekle sınırlar.",
     ),
     "subscriptionPlanDevicesSecured": MessageLookupByLibrary.simpleMessage(
       "Aynı anda korunan cihazlar",
     ),
-    "subscriptionPlanDoubleVPN": MessageLookupByLibrary.simpleMessage(
-      "Çift VPN",
-    ),
+    "subscriptionPlanDoubleVPN": MessageLookupByLibrary.simpleMessage("Çift VPN"),
     "subscriptionPlanDoubleVPNDesc": MessageLookupByLibrary.simpleMessage(
       "Ekstra güvenlik katmanı. İnternet trafiğini iki farklı VPN sunucusu üzerinden yönlendirir, verilerini iki kez şifreler ve IP adresini ikinci bir sunucunun arkasında gizler",
     ),
@@ -774,53 +612,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanNameBasic": MessageLookupByLibrary.simpleMessage("Basic"),
     "subscriptionPlanNamePlus": MessageLookupByLibrary.simpleMessage("Plus"),
     "subscriptionPlanNamePro": MessageLookupByLibrary.simpleMessage("Pro"),
-    "subscriptionPlanPF1Basic": MessageLookupByLibrary.simpleMessage(
-      "Aynı anda 6 cihazı koru",
-    ),
-    "subscriptionPlanPF1Plus": MessageLookupByLibrary.simpleMessage(
-      "Aynı anda 10 cihazı koru",
-    ),
-    "subscriptionPlanPF2Basic": MessageLookupByLibrary.simpleMessage(
-      "57 desteklenen ülke",
-    ),
-    "subscriptionPlanPF2Plus": MessageLookupByLibrary.simpleMessage(
-      "100+ desteklenen ülke",
-    ),
-    "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage(
-      "10 sunucu",
-    ),
-    "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage(
-      "100 sunucu",
-    ),
-    "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage(
-      "VPN protokolü",
-    ),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage(
-      "7.500+ residential IP",
-    ),
-    "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage(
-      "VPN protokolü",
-    ),
-    "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage(
-      "Şehir düzeyinde seçim",
-    ),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler",
-    ),
+    "subscriptionPlanPF1Basic": MessageLookupByLibrary.simpleMessage("Aynı anda 6 cihazı koru"),
+    "subscriptionPlanPF1Plus": MessageLookupByLibrary.simpleMessage("Aynı anda 10 cihazı koru"),
+    "subscriptionPlanPF2Basic": MessageLookupByLibrary.simpleMessage("57 desteklenen ülke"),
+    "subscriptionPlanPF2Plus": MessageLookupByLibrary.simpleMessage("100+ desteklenen ülke"),
+    "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 sunucu"),
+    "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 sunucu"),
+    "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7.500+ residential IP"),
+    "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
+    "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Şehir düzeyinde seçim"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IP\'ler"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Normal bir ev kullanıcısı gibi görünerek streaming hizmetlerine erişmeni ve VPN tespitinden kaçınmanı sağlar.",
     ),
     "subscriptionPlanSavePercent": m21,
     "subscriptionPlanSaveWith": m22,
-    "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage(
-      "Sunucular",
-    ),
+    "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Sunucular"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage(
       "Desteklenen ülkeler",
     ),
-    "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage(
-      "VPN protokolü",
-    ),
+    "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
     "subscriptionPlanWireGuardDesc": MessageLookupByLibrary.simpleMessage(
       "WireGuard - oyun ve streaming için en iyi hızlı protokol\nOpenVPN - diğer protokollerin başarısız olduğu yerlerde çalışan, yüksek düzeyde yapılandırılabilir protokol (Android\'de kullanılamaz)",
     ),
@@ -833,21 +645,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "7.500+ residential IP\'ye erişmek için",
     ),
     "subscriptionUpgradeModalTitle": m24,
-    "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage(
-      "Tüm planları gör",
-    ),
+    "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage(
       "Doğrulamayı Yeniden Dene",
     ),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abonelik"),
     "switchToLocationBtn": m25,
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
-    "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage(
-      "İnterneti geri al.",
-    ),
-    "termsAndConditions": MessageLookupByLibrary.simpleMessage(
-      "Şartlar ve Koşullar",
-    ),
+    "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("İnterneti geri al."),
+    "termsAndConditions": MessageLookupByLibrary.simpleMessage("Şartlar ve Koşullar"),
     "title": MessageLookupByLibrary.simpleMessage("Merhaba"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Çok fazla istek. Lütfen daha sonra tekrar dene.",
@@ -855,48 +661,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "tokenAlreadyUsed": MessageLookupByLibrary.simpleMessage(
       "Jeton zaten kullanıldı. Lütfen tekrar dene.\n",
     ),
-    "tooManyConnectionsBannerCTADisconnect":
-        MessageLookupByLibrary.simpleMessage("Bağlantıyı kes"),
-    "tooManyConnectionsBannerCTAReconnect":
-        MessageLookupByLibrary.simpleMessage("Yeniden bağlan"),
+    "tooManyConnectionsBannerCTADisconnect": MessageLookupByLibrary.simpleMessage("Bağlantıyı kes"),
+    "tooManyConnectionsBannerCTAReconnect": MessageLookupByLibrary.simpleMessage("Yeniden bağlan"),
     "tooManyConnectionsBannerDesc": MessageLookupByLibrary.simpleMessage(
       "Hesabında bağlı 6 cihaz üst sınırına ulaştın. VPN\'i kullanmaya devam etmek için yeniden bağlanmaya dokun.",
     ),
     "tooManyConnectionsBannerDescConnected": MessageLookupByLibrary.simpleMessage(
       "Hesabında bağlı 6 cihaz üst sınırına ulaştın. VPN\'i kullanmaya devam etmek için bağlantıyı kesip tekrar dene.",
     ),
-    "tooManyConnectionsBannerTitle": MessageLookupByLibrary.simpleMessage(
-      "Bağlantın Kesildi",
-    ),
+    "tooManyConnectionsBannerTitle": MessageLookupByLibrary.simpleMessage("Bağlantın Kesildi"),
     "topLocations": MessageLookupByLibrary.simpleMessage("En iyi konumlar"),
     "tr": MessageLookupByLibrary.simpleMessage("Türkçe"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Tekrar dene"),
-    "tryAnotherLocation": MessageLookupByLibrary.simpleMessage(
-      "Başka bir konum aramayı dene",
-    ),
+    "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Başka bir konum aramayı dene"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "VPN tünelini başlatmak için izin vermen gerekiyor.",
     ),
-    "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
-      "Tünel kurulurken bir hata oluştu",
-    ),
+    "tunnelSetupError": MessageLookupByLibrary.simpleMessage("Tünel kurulurken bir hata oluştu"),
     "typeDelete": m26,
-    "typeFeedback": MessageLookupByLibrary.simpleMessage(
-      "Geri bildirimini buraya yaz...",
-    ),
+    "typeFeedback": MessageLookupByLibrary.simpleMessage("Geri bildirimini buraya yaz..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukrayna"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Ödeme işlemcisine bağlanılamıyor! Lütfen tekrar dene.",
     ),
-    "unauthenticatedBannerTitle": MessageLookupByLibrary.simpleMessage(
-      "Giriş yapmadın",
-    ),
+    "unauthenticatedBannerTitle": MessageLookupByLibrary.simpleMessage("Giriş yapmadın"),
     "unauthenticatedSettingSubtitle": MessageLookupByLibrary.simpleMessage(
       "Hesabına erişmek ve tüm özelliklerin kilidini açmak için giriş yap",
     ),
-    "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage(
-      "Giriş yapmadın",
-    ),
+    "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("Giriş yapmadın"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("KORUMASIZ"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Kararsız hız"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Güncelle"),
@@ -905,21 +697,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "En iyi performans için mevcut en hızlı sunucuya bağlan",
     ),
     "userIntentLabel": MessageLookupByLibrary.simpleMessage("Özel sunucu"),
-    "userIntentLowLatency": MessageLookupByLibrary.simpleMessage(
-      "Düşük gecikme",
-    ),
+    "userIntentLowLatency": MessageLookupByLibrary.simpleMessage("Düşük gecikme"),
     "userIntentLowLatencyDesc": MessageLookupByLibrary.simpleMessage(
       "Kararlı ve güvenilir erişim için seni otomatik olarak en yakın sunucuya bağlar",
     ),
-    "userIntentMaxPrivacy": MessageLookupByLibrary.simpleMessage(
-      "Maksimum gizlilik",
-    ),
+    "userIntentMaxPrivacy": MessageLookupByLibrary.simpleMessage("Maksimum gizlilik"),
     "userIntentMaxPrivacyDesc": MessageLookupByLibrary.simpleMessage(
       "Ülkeye göre en iyi ifade özgürlüğü ve hız seçeneklerine sahip bir sunucu al",
     ),
-    "userIntentNearestLocation": MessageLookupByLibrary.simpleMessage(
-      "En yakın konum",
-    ),
+    "userIntentNearestLocation": MessageLookupByLibrary.simpleMessage("En yakın konum"),
     "userIntentNearestLocationDesc": MessageLookupByLibrary.simpleMessage(
       "Mevcut konumuna göre en iyi hız ve performans için seni en yakın kullanılabilir VPN IP\'sine bağlar",
     ),
@@ -931,14 +717,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "userIntentStreamingDesc": MessageLookupByLibrary.simpleMessage(
       "Bölgeye özel platformlardan favori dizi ve filmlerine eriş",
     ),
-    "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage(
-      "Tüm özellikleri gör",
-    ),
+    "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage("Tüm özellikleri gör"),
     "viewLessBtn": MessageLookupByLibrary.simpleMessage("Daha az göster"),
     "vodafoneLbl": MessageLookupByLibrary.simpleMessage("Vodafone Iberia"),
-    "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage(
-      "VPN protokolü",
-    ),
+    "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
     "year": MessageLookupByLibrary.simpleMessage("yıl"),
     "yearly": MessageLookupByLibrary.simpleMessage("yıllık"),
     "yes": MessageLookupByLibrary.simpleMessage("Evet"),

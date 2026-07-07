@@ -31,11 +31,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(email) => "Abbiamo inviato un\'email a ${email}";
 
-  static String m5(email) =>
-      "Potresti già avere un abbonamento a pagamento con “${email}”";
+  static String m5(email) => "Potresti già avere un abbonamento a pagamento con “${email}”";
 
-  static String m6(errorCode) =>
-      "Connessione non riuscita. Riprova [errore: ${errorCode}]";
+  static String m6(errorCode) => "Connessione non riuscita. Riprova [errore: ${errorCode}]";
 
   static String m7(plan) => "Ottieni ${plan}";
 
@@ -50,8 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(count) =>
       "${Intl.plural(count, one: '${count} città', other: '${count} città')}";
 
-  static String m12(count) =>
-      "${Intl.plural(count, one: '${count} IP', other: '${count} IP')}";
+  static String m12(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IP')}";
 
   static String m13(count) =>
       "${Intl.plural(count, one: '${count} stato', other: '${count} stati')}";
@@ -73,8 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m21(percent) => "Risparmia ${percent}%";
 
-  static String m22(percent, planId) =>
-      "Risparmia ${percent}% con un piano ${planId}";
+  static String m22(percent, planId) => "Risparmia ${percent}% con un piano ${planId}";
 
   static String m23(plan) => "Passa a ${plan}";
 
@@ -91,56 +87,36 @@ class MessageLookup extends MessageLookupByLibrary {
       "Impossibile accedere ai siti bloccati",
     ),
     "account": MessageLookupByLibrary.simpleMessage("Account"),
-    "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage(
-      "Account eliminato",
-    ),
+    "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage("Account eliminato"),
     "activeSubsPaidVia": m0,
     "allLocations": MessageLookupByLibrary.simpleMessage("Tutte le posizioni"),
     "allowBtn": MessageLookupByLibrary.simpleMessage("Consenti"),
-    "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage(
-      "Consenti notifiche",
-    ),
-    "allowPushNotificationsBtn": MessageLookupByLibrary.simpleMessage(
-      "Consenti notifiche",
-    ),
+    "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage("Consenti notifiche"),
+    "allowPushNotificationsBtn": MessageLookupByLibrary.simpleMessage("Consenti notifiche"),
     "and": MessageLookupByLibrary.simpleMessage(" e "),
     "appUpdateAvailableDesc": MessageLookupByLibrary.simpleMessage(
       "È disponibile la nuova versione dell\'app! Aggiorna ora per le ultime funzionalità e i miglioramenti.",
     ),
-    "appUpdateAvailableSetting": MessageLookupByLibrary.simpleMessage(
-      "Aggiornamento disponibile!",
-    ),
-    "appUpdateAvailableTitle": MessageLookupByLibrary.simpleMessage(
-      "Aggiornamento disponibile",
-    ),
+    "appUpdateAvailableSetting": MessageLookupByLibrary.simpleMessage("Aggiornamento disponibile!"),
+    "appUpdateAvailableTitle": MessageLookupByLibrary.simpleMessage("Aggiornamento disponibile"),
     "appearanceSettingLbl": MessageLookupByLibrary.simpleMessage("Aspetto"),
     "ar": MessageLookupByLibrary.simpleMessage("Arabo"),
     "austria": MessageLookupByLibrary.simpleMessage("Austria"),
-    "authenticationFailed": MessageLookupByLibrary.simpleMessage(
-      "Impossibile accedere. Riprova.",
-    ),
+    "authenticationFailed": MessageLookupByLibrary.simpleMessage("Impossibile accedere. Riprova."),
     "back": MessageLookupByLibrary.simpleMessage("Indietro"),
-    "backToSettingsLbl": MessageLookupByLibrary.simpleMessage(
-      "Torna alle impostazioni",
-    ),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage(
-      "Risparmio batteria",
-    ),
+    "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Torna alle impostazioni"),
+    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Risparmio batteria"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlino, Germania 🇩🇪"),
     "billedInTotal": m1,
     "billedPerMonth": m2,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("Blocco"),
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Aggiorna ora"),
-    "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage(
-      "Aggira le restrizioni",
-    ),
+    "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Aggira le restrizioni"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("Annulla"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Inserisci maggiori dettagli...",
     ),
-    "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage(
-      "Motivi dell\'annullamento",
-    ),
+    "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivi dell\'annullamento"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Annulla l\'abbonamento negli abbonamenti dell\'App Store prima di eliminare il tuo account.",
     ),
@@ -153,15 +129,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage(
       "Recupero delle informazioni sul piano...",
     ),
-    "checkYourEmail": MessageLookupByLibrary.simpleMessage(
-      "Controlla la tua email",
-    ),
+    "checkYourEmail": MessageLookupByLibrary.simpleMessage("Controlla la tua email"),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Cancella ricerca"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Chiudi"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Comunicazioni"),
-    "communicationLblDesktop": MessageLookupByLibrary.simpleMessage(
-      "COMUNICAZIONI",
-    ),
+    "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("COMUNICAZIONI"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Completa"),
     "confirm": MessageLookupByLibrary.simpleMessage("Conferma"),
     "connect": MessageLookupByLibrary.simpleMessage("Connetti"),
@@ -172,82 +144,50 @@ class MessageLookup extends MessageLookupByLibrary {
       "Connessione al processore di pagamento...",
     ),
     "connection": MessageLookupByLibrary.simpleMessage("Connessione"),
-    "connectionSettingLbl": MessageLookupByLibrary.simpleMessage(
-      "Connessione e protezione",
-    ),
+    "connectionSettingLbl": MessageLookupByLibrary.simpleMessage("Connessione e protezione"),
     "connectionTimeout": MessageLookupByLibrary.simpleMessage(
       "Connessione scaduta. Riprova più tardi. Se il problema persiste, contatta il team di supporto",
     ),
-    "consistentSpeedReason": MessageLookupByLibrary.simpleMessage(
-      "Velocità costante",
-    ),
+    "consistentSpeedReason": MessageLookupByLibrary.simpleMessage("Velocità costante"),
     "consumeLink": MessageLookupByLibrary.simpleMessage(
       "Funziona solo sul dispositivo che l\'ha richiesto - tocca il link nella tua email per continuare.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Continua"),
-    "continueWithApple": MessageLookupByLibrary.simpleMessage(
-      "Continua con Apple",
-    ),
-    "continueWithEmail": MessageLookupByLibrary.simpleMessage(
-      "Continua con l\'email",
-    ),
-    "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "Continua con Google",
-    ),
-    "copyLink": MessageLookupByLibrary.simpleMessage(
-      "Copia il link e incollalo nel browser",
-    ),
+    "continueWithApple": MessageLookupByLibrary.simpleMessage("Continua con Apple"),
+    "continueWithEmail": MessageLookupByLibrary.simpleMessage("Continua con l\'email"),
+    "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Continua con Google"),
+    "copyLink": MessageLookupByLibrary.simpleMessage("Copia il link e incollalo nel browser"),
     "couponCodeCopied": m3,
     "dark": MessageLookupByLibrary.simpleMessage("Scuro"),
-    "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
-      "Facilmente rilevabili",
-    ),
+    "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("Facilmente rilevabili"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage(
       "Spesso bloccati dai siti",
     ),
-    "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage(
-      "Meno privati",
-    ),
-    "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage(
-      "IP DATA CENTER",
-    ),
+    "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Meno privati"),
+    "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IP DATA CENTER"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage(
       "La maggior parte delle VPN",
     ),
     "de": MessageLookupByLibrary.simpleMessage("Tedesco"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Elimina account"),
-    "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage(
-      "Eliminare l\'account?",
-    ),
+    "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Eliminare l\'account?"),
     "deleteBtn": MessageLookupByLibrary.simpleMessage("Elimina"),
     "deviceLimitReachedDesc": MessageLookupByLibrary.simpleMessage(
       "Hai raggiunto il numero massimo di dispositivi connessi. Per aggiungerne uno nuovo, rimuovine uno esistente dal tuo account.",
     ),
-    "deviceLimitReachedOpenDashboard": MessageLookupByLibrary.simpleMessage(
-      "Apri dashboard",
-    ),
-    "deviceLimitReachedTitle": MessageLookupByLibrary.simpleMessage(
-      "Limite dispositivi raggiunto",
-    ),
+    "deviceLimitReachedOpenDashboard": MessageLookupByLibrary.simpleMessage("Apri dashboard"),
+    "deviceLimitReachedTitle": MessageLookupByLibrary.simpleMessage("Limite dispositivi raggiunto"),
     "disconnect": MessageLookupByLibrary.simpleMessage("Disconnetti"),
     "disconnected": MessageLookupByLibrary.simpleMessage("Disconnesso"),
-    "disconnecting": MessageLookupByLibrary.simpleMessage(
-      "Disconnessione in corso",
-    ),
+    "disconnecting": MessageLookupByLibrary.simpleMessage("Disconnessione in corso"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Solo"),
     "dns": MessageLookupByLibrary.simpleMessage("Protezione DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Previene le fughe DNS"),
     "duration": MessageLookupByLibrary.simpleMessage("Durata"),
     "email": MessageLookupByLibrary.simpleMessage("Indirizzo email"),
-    "emailIsNotValid": MessageLookupByLibrary.simpleMessage(
-      "Indirizzo email non valido",
-    ),
-    "emailIsRequired": MessageLookupByLibrary.simpleMessage(
-      "L\'indirizzo email è obbligatorio",
-    ),
-    "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage(
-      "Notifiche email",
-    ),
+    "emailIsNotValid": MessageLookupByLibrary.simpleMessage("Indirizzo email non valido"),
+    "emailIsRequired": MessageLookupByLibrary.simpleMessage("L\'indirizzo email è obbligatorio"),
+    "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("Notifiche email"),
     "emailSentTo": m4,
     "en": MessageLookupByLibrary.simpleMessage("Inglese"),
     "es": MessageLookupByLibrary.simpleMessage("Spagnolo"),
@@ -274,9 +214,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("Francese"),
     "france": MessageLookupByLibrary.simpleMessage("Francia"),
-    "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage(
-      "Disconnessioni frequenti",
-    ),
+    "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Disconnessioni frequenti"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Prezzo pieno:"),
     "germany": MessageLookupByLibrary.simpleMessage("Germania"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage(
@@ -287,38 +225,26 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "getSubscriptionModalTitle": m7,
     "getSubscriptionPlanBtn": m8,
-    "gettingIPAddress": MessageLookupByLibrary.simpleMessage(
-      "Recupero dell\'indirizzo IP...",
-    ),
+    "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Recupero dell\'indirizzo IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Torna indietro"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Vai all\'accesso"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Aiuto e supporto"),
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Nascosto"),
-    "highLatencyReason": MessageLookupByLibrary.simpleMessage(
-      "Latenza elevata",
-    ),
+    "highLatencyReason": MessageLookupByLibrary.simpleMessage("Latenza elevata"),
     "highSpeed": MessageLookupByLibrary.simpleMessage("Alta velocità"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Home"),
     "id": MessageLookupByLibrary.simpleMessage("Indonesiano"),
-    "incorrectLocationReason": MessageLookupByLibrary.simpleMessage(
-      "Posizione errata",
-    ),
-    "incorrectMagicLink": MessageLookupByLibrary.simpleMessage(
-      "Magic link errato. Riprova.",
-    ),
+    "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Posizione errata"),
+    "incorrectMagicLink": MessageLookupByLibrary.simpleMessage("Magic link errato. Riprova."),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Indirizzo IP"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage(
-      "IP ad alta velocità",
-    ),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP ad alta velocità"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter ottimizzati per velocità e prestazioni.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs",
-    ),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Forniti da famiglie reali. Quasi non rilevabili ma meno stabili.",
     ),
@@ -337,9 +263,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "languageSettingLbl": MessageLookupByLibrary.simpleMessage("Lingua"),
     "light": MessageLookupByLibrary.simpleMessage("Chiaro"),
-    "linkCopied": MessageLookupByLibrary.simpleMessage(
-      "Link copiato negli appunti!",
-    ),
+    "linkCopied": MessageLookupByLibrary.simpleMessage("Link copiato negli appunti!"),
     "linkExpires": MessageLookupByLibrary.simpleMessage(
       "Il link scade tra 30 minuti e può essere usato una sola volta.",
     ),
@@ -360,13 +284,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "La tua sessione è scaduta. Accedi di nuovo.",
     ),
-    "loginSignupLabel": MessageLookupByLibrary.simpleMessage(
-      "Accedi o registrati",
-    ),
+    "loginSignupLabel": MessageLookupByLibrary.simpleMessage("Accedi o registrati"),
     "logout": MessageLookupByLibrary.simpleMessage("Esci"),
-    "logoutConfirmationDesc": MessageLookupByLibrary.simpleMessage(
-      "Stai per uscire. Sei sicuro?",
-    ),
+    "logoutConfirmationDesc": MessageLookupByLibrary.simpleMessage("Stai per uscire. Sei sicuro?"),
     "logoutConfirmationTitle": MessageLookupByLibrary.simpleMessage("Esci"),
     "logoutVPNConnectedDesc": MessageLookupByLibrary.simpleMessage(
       "La VPN è attiva. Verrai disconnesso dal server VPN se continui con il logout.",
@@ -388,27 +308,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "navProducts": MessageLookupByLibrary.simpleMessage("Prodotti"),
     "nextBilling": m17,
     "no": MessageLookupByLibrary.simpleMessage("No"),
-    "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage(
-      "Non hai un abbonamento attivo",
-    ),
+    "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Non hai un abbonamento attivo"),
     "noEmailApp": MessageLookupByLibrary.simpleMessage(
       "Non ci sono app email sul tuo dispositivo.",
     ),
-    "noLocationsFound": MessageLookupByLibrary.simpleMessage(
-      "Nessuna posizione trovata",
-    ),
-    "noServersAvailable": MessageLookupByLibrary.simpleMessage(
-      "Nessun server disponibile",
-    ),
+    "noLocationsFound": MessageLookupByLibrary.simpleMessage("Nessuna posizione trovata"),
+    "noServersAvailable": MessageLookupByLibrary.simpleMessage("Nessun server disponibile"),
     "noServersAvailableSub": MessageLookupByLibrary.simpleMessage(
       "C\'è un problema di connettività e nessun server è disponibile. Riprova più tardi.",
     ),
-    "noSubscriptionAction": MessageLookupByLibrary.simpleMessage(
-      "Ottieni il piano",
-    ),
-    "noSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
-      "Nessun piano attivo disponibile",
-    ),
+    "noSubscriptionAction": MessageLookupByLibrary.simpleMessage("Ottieni il piano"),
+    "noSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Nessun piano attivo disponibile"),
     "noneLbl": MessageLookupByLibrary.simpleMessage("Nessuno"),
     "notAvailableMsg": MessageLookupByLibrary.simpleMessage("Non disponibile"),
     "notNowBtn": MessageLookupByLibrary.simpleMessage("Non ora"),
@@ -416,9 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep1Desc": MessageLookupByLibrary.simpleMessage(
       "Il tuo IP e la tua posizione sono visibili a siti, tracker e reti Wi-Fi pubbliche.",
     ),
-    "onboardingStep1Title": MessageLookupByLibrary.simpleMessage(
-      "La tua connessione è esposta",
-    ),
+    "onboardingStep1Title": MessageLookupByLibrary.simpleMessage("La tua connessione è esposta"),
     "onboardingStep2Desc": MessageLookupByLibrary.simpleMessage(
       "Mysterium VPN maschera il tuo IP, il tuo ISP e la tua posizione così puoi navigare con vera privacy.",
     ),
@@ -432,9 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Non tutte le VPN funzionano allo stesso modo",
     ),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Apri l\'app email"),
-    "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage(
-      "Apri impostazioni di sistema",
-    ),
+    "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Apri impostazioni di sistema"),
     "or": MessageLookupByLibrary.simpleMessage("O"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Ti connetteremo al server migliore - oppure puoi selezionare manualmente un paese.",
@@ -449,9 +355,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tutto pronto! Hai già questo piano attivo.",
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("Piano biennale"),
-    "plan_2_years_basic": MessageLookupByLibrary.simpleMessage(
-      "Basic biennale",
-    ),
+    "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic biennale"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro biennale"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("Piano semestrale"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("Piano mensile"),
@@ -464,33 +368,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro annuale"),
     "poland": MessageLookupByLibrary.simpleMessage("Polonia"),
     "preferences": MessageLookupByLibrary.simpleMessage("Preferenze"),
-    "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage(
-      "Vedi tutti i piani",
-    ),
-    "privacyPolicy": MessageLookupByLibrary.simpleMessage(
-      "Informativa sulla privacy",
-    ),
+    "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Vedi tutti i piani"),
+    "privacyPolicy": MessageLookupByLibrary.simpleMessage("Informativa sulla privacy"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
       "Stiamo elaborando il tuo pagamento. Tutto pronto tra poco…",
     ),
     "productsActivePlanWebSyncAlert": MessageLookupByLibrary.simpleMessage(
       "Hai già un piano attivo. Aggiorna sul web - le modifiche si sincronizzano automaticamente",
     ),
-    "productsAllPlansLbl": MessageLookupByLibrary.simpleMessage(
-      "Tutti i piani:",
-    ),
+    "productsAllPlansLbl": MessageLookupByLibrary.simpleMessage("Tutti i piani:"),
     "productsBasicDescription": MessageLookupByLibrary.simpleMessage(
       "L\'essenziale per la privacy di ogni giorno",
     ),
     "productsDuration1Month": MessageLookupByLibrary.simpleMessage("1 mese"),
     "productsDuration1Year": MessageLookupByLibrary.simpleMessage("Annuale"),
     "productsDuration2Year": MessageLookupByLibrary.simpleMessage("Biennale"),
-    "productsExploreSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Esplora piani e funzionalità",
-    ),
-    "productsManageSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Gestisci e aggiorna sul web",
-    ),
+    "productsExploreSubtitle": MessageLookupByLibrary.simpleMessage("Esplora piani e funzionalità"),
+    "productsManageSubtitle": MessageLookupByLibrary.simpleMessage("Gestisci e aggiorna sul web"),
     "productsMaxPlanAlert": MessageLookupByLibrary.simpleMessage(
       "Hai già il piano più alto disponibile.",
     ),
@@ -506,9 +400,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsSubscribeWebAlert": MessageLookupByLibrary.simpleMessage(
       "Gli abbonamenti si gestiscono sul web. Il tuo piano si sincronizzerà con l\'app automaticamente.",
     ),
-    "productsSubscribeWebSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Abbonati sul web",
-    ),
+    "productsSubscribeWebSubtitle": MessageLookupByLibrary.simpleMessage("Abbonati sul web"),
     "productsTitle": MessageLookupByLibrary.simpleMessage("Prodotti VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("PROTETTO"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protocollo"),
@@ -516,9 +408,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Cambiare il protocollo VPN ti disconnetterà. Dovrai riconnetterti in seguito.",
     ),
-    "protocolPickerSettingTitle": MessageLookupByLibrary.simpleMessage(
-      "Cambio del protocollo VPN",
-    ),
+    "protocolPickerSettingTitle": MessageLookupByLibrary.simpleMessage("Cambio del protocollo VPN"),
     "pt": MessageLookupByLibrary.simpleMessage("Portoghese"),
     "ptBR": MessageLookupByLibrary.simpleMessage("Portoghese brasiliano"),
     "pushNotificationsConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
@@ -527,40 +417,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "pushNotificationsConsentPopupTitle": MessageLookupByLibrary.simpleMessage(
       "Resta aggiornato con le notifiche push",
     ),
-    "pushNotificationsSetting": MessageLookupByLibrary.simpleMessage(
-      "Notifiche push",
-    ),
+    "pushNotificationsSetting": MessageLookupByLibrary.simpleMessage("Notifiche push"),
     "pushNotificationsSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Aggiornamenti sui prodotti, consigli e offerte speciali",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
-    "rateConnection": MessageLookupByLibrary.simpleMessage(
-      "Com\'è la tua connessione?",
-    ),
-    "rateConnectionDislike": MessageLookupByLibrary.simpleMessage(
-      "Cosa non ti è piaciuto?",
-    ),
-    "rateConnectionLike": MessageLookupByLibrary.simpleMessage(
-      "Cosa ti è piaciuto?",
-    ),
-    "recentLocations": MessageLookupByLibrary.simpleMessage(
-      "Posizioni recenti",
-    ),
-    "redeemDiscountCode": MessageLookupByLibrary.simpleMessage(
-      "Riscatta codice sconto",
-    ),
+    "rateConnection": MessageLookupByLibrary.simpleMessage("Com\'è la tua connessione?"),
+    "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Cosa non ti è piaciuto?"),
+    "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Cosa ti è piaciuto?"),
+    "recentLocations": MessageLookupByLibrary.simpleMessage("Posizioni recenti"),
+    "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Riscatta codice sconto"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
       "Il tuo account è stato eliminato con successo. Verrai reindirizzato alla schermata di accesso.",
     ),
     "refresh": MessageLookupByLibrary.simpleMessage("Aggiorna"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Aggiorna IP"),
-    "refreshIPAddress": MessageLookupByLibrary.simpleMessage(
-      "Aggiorna indirizzo IP",
-    ),
+    "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Aggiorna indirizzo IP"),
     "refreshLocationsTooltip": m19,
-    "resetAppDesc": MessageLookupByLibrary.simpleMessage(
-      "Ripristina quando qualcosa non funziona",
-    ),
+    "resetAppDesc": MessageLookupByLibrary.simpleMessage("Ripristina quando qualcosa non funziona"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Se procedi con il ripristino dell\'app, verrai disconnesso da Mysterium VPN.",
     ),
@@ -576,15 +450,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Ripristina app"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Ripristina"),
     "residential": MessageLookupByLibrary.simpleMessage("Residential"),
-    "residentialCentreComparisonCardItem1":
-        MessageLookupByLibrary.simpleMessage("Sembra un utente reale"),
-    "residentialCentreComparisonCardItem2":
-        MessageLookupByLibrary.simpleMessage("Più difficili da rilevare"),
-    "residentialCentreComparisonCardItem3":
-        MessageLookupByLibrary.simpleMessage("Meno blocchi"),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage(
-      "RESIDENTIAL IPS",
+    "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
+      "Sembra un utente reale",
     ),
+    "residentialCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage(
+      "Più difficili da rilevare",
+    ),
+    "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Meno blocchi"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
       "I Residential IPs provengono da dispositivi domestici reali, facendo apparire il tuo traffico come un normale uso di internet.",
     ),
@@ -603,9 +476,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage(
       "Riconnessione automatica",
     ),
-    "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage(
-      "Ho capito",
-    ),
+    "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Ho capito"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
       "I Residential IPs sono diversi dagli IP ad alta velocità. Ecco cosa aspettarti.",
     ),
@@ -613,18 +484,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Come funzionano i Residential IPs",
     ),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Riprova"),
-    "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage(
-      "Lascia una recensione",
-    ),
+    "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Lascia una recensione"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
       "Fantastico! Ti va di lasciarci una recensione?",
     ),
     "reviewSatisfactionTitle": MessageLookupByLibrary.simpleMessage(
       "Consiglieresti questa app ad altri?",
     ),
-    "searchForLocations": MessageLookupByLibrary.simpleMessage(
-      "Cerca posizioni",
-    ),
+    "searchForLocations": MessageLookupByLibrary.simpleMessage("Cerca posizioni"),
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("Vedi i piani"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage(
       "Seleziona un\'app email per continuare",
@@ -646,9 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ci serve la tua autorizzazione",
     ),
     "signIn": MessageLookupByLibrary.simpleMessage("Accedi a Mysterium VPN"),
-    "signInAbortedMsg": MessageLookupByLibrary.simpleMessage(
-      "Accesso interrotto",
-    ),
+    "signInAbortedMsg": MessageLookupByLibrary.simpleMessage("Accesso interrotto"),
     "signInBtn": MessageLookupByLibrary.simpleMessage("Accedi"),
     "signInDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Mysterium VPN non registra le tue attività online e nessun dato è collegato a te, al tuo dispositivo, al tuo indirizzo IP o alla tua email. Accedendo, accetti i nostri",
@@ -658,127 +523,94 @@ class MessageLookup extends MessageLookupByLibrary {
     "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
       "Qualcosa è andato storto. Riprova!",
     ),
-    "stableConnectionReason": MessageLookupByLibrary.simpleMessage(
-      "Connessione stabile",
-    ),
+    "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Connessione stabile"),
     "status": MessageLookupByLibrary.simpleMessage("Stato"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Rimani"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Invia"),
-    "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage(
-      "Abbonati sul web",
-    ),
+    "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Abbonati sul web"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(
       "Ottime notizie! Il tuo abbonamento è ora attivo.",
     ),
-    "subscriptionAllPlansBackToPlans": MessageLookupByLibrary.simpleMessage(
-      "Torna ai piani",
-    ),
+    "subscriptionAllPlansBackToPlans": MessageLookupByLibrary.simpleMessage("Torna ai piani"),
     "subscriptionAllPlansCompareAll": MessageLookupByLibrary.simpleMessage(
       "Confronta tutte le funzionalità",
     ),
-    "subscriptionAllPlansCurrentPlan": MessageLookupByLibrary.simpleMessage(
-      "Piano attuale",
+    "subscriptionAllPlansCurrentPlan": MessageLookupByLibrary.simpleMessage("Piano attuale"),
+    "subscriptionAllPlansPurchase": MessageLookupByLibrary.simpleMessage("Ottieni il piano"),
+    "subscriptionAllPlansTabMonth": MessageLookupByLibrary.simpleMessage("Mensile"),
+    "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("Annuale"),
+    "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Tutti i piani"),
+    "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Aggiorna il tuo piano"),
+    "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
+      "Esplora funzionalità avanzate come i protocolli VPN e il blocco malware.",
     ),
-    "subscriptionAllPlansPurchase": MessageLookupByLibrary.simpleMessage(
-      "Ottieni il piano",
+    "subscriptionOnboardingBoostProtectionTitle": MessageLookupByLibrary.simpleMessage(
+      "Potenzia la tua protezione",
     ),
-    "subscriptionAllPlansTabMonth": MessageLookupByLibrary.simpleMessage(
-      "Mensile",
+    "subscriptionOnboardingCancelTourLabel": MessageLookupByLibrary.simpleMessage("Salta per ora"),
+    "subscriptionOnboardingConnectDescription": MessageLookupByLibrary.simpleMessage(
+      "Ti connetteremo al server migliore.",
     ),
-    "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage(
-      "Annuale",
-    ),
-    "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage(
-      "Tutti i piani",
-    ),
-    "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage(
-      "Aggiorna il tuo piano",
-    ),
-    "subscriptionOnboardingBoostProtectionDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Esplora funzionalità avanzate come i protocolli VPN e il blocco malware.",
-        ),
-    "subscriptionOnboardingBoostProtectionTitle":
-        MessageLookupByLibrary.simpleMessage("Potenzia la tua protezione"),
-    "subscriptionOnboardingCancelTourLabel":
-        MessageLookupByLibrary.simpleMessage("Salta per ora"),
-    "subscriptionOnboardingConnectDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Ti connetteremo al server migliore.",
-        ),
     "subscriptionOnboardingConnectTitle": MessageLookupByLibrary.simpleMessage(
       "Connettiti per navigare in privato",
     ),
-    "subscriptionOnboardingManagePlanDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Acquista, aggiorna o visualizza i piani disponibili in base al tuo livello di accesso.",
-        ),
-    "subscriptionOnboardingManagePlanTitle":
-        MessageLookupByLibrary.simpleMessage("Gestisci il tuo piano"),
-    "subscriptionOnboardingMapDesktopDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Sfoglia la mappa o esplora le posizioni dalla barra laterale.",
-        ),
-    "subscriptionOnboardingMapDesktopTitle":
-        MessageLookupByLibrary.simpleMessage("Esplora le posizioni a modo tuo"),
-    "subscriptionOnboardingMapMobileDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Sfoglia la mappa per scegliere un paese e connetterti all\'istante.",
-        ),
-    "subscriptionOnboardingMapMobileTitle":
-        MessageLookupByLibrary.simpleMessage("Connetti dalla mappa"),
+    "subscriptionOnboardingManagePlanDescription": MessageLookupByLibrary.simpleMessage(
+      "Acquista, aggiorna o visualizza i piani disponibili in base al tuo livello di accesso.",
+    ),
+    "subscriptionOnboardingManagePlanTitle": MessageLookupByLibrary.simpleMessage(
+      "Gestisci il tuo piano",
+    ),
+    "subscriptionOnboardingMapDesktopDescription": MessageLookupByLibrary.simpleMessage(
+      "Sfoglia la mappa o esplora le posizioni dalla barra laterale.",
+    ),
+    "subscriptionOnboardingMapDesktopTitle": MessageLookupByLibrary.simpleMessage(
+      "Esplora le posizioni a modo tuo",
+    ),
+    "subscriptionOnboardingMapMobileDescription": MessageLookupByLibrary.simpleMessage(
+      "Sfoglia la mappa per scegliere un paese e connetterti all\'istante.",
+    ),
+    "subscriptionOnboardingMapMobileTitle": MessageLookupByLibrary.simpleMessage(
+      "Connetti dalla mappa",
+    ),
     "subscriptionOnboardingPromptDescription": MessageLookupByLibrary.simpleMessage(
       "Impara a orientarti nell\'app aggiornata e scopri dove si trovano ora le funzionalità principali.",
     ),
-    "subscriptionOnboardingPromptTitle": MessageLookupByLibrary.simpleMessage(
-      "Fai un breve tour",
+    "subscriptionOnboardingPromptTitle": MessageLookupByLibrary.simpleMessage("Fai un breve tour"),
+    "subscriptionOnboardingSearchDescription": MessageLookupByLibrary.simpleMessage(
+      "Trova rapidamente paesi, città e server con la ricerca.",
     ),
-    "subscriptionOnboardingSearchDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Trova rapidamente paesi, città e server con la ricerca.",
-        ),
     "subscriptionOnboardingSearchTitle": MessageLookupByLibrary.simpleMessage(
       "Cerca e connettiti più velocemente",
     ),
-    "subscriptionOnboardingSetupCompleteDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Scegli una posizione per iniziare a navigare in modo più privato.",
-        ),
-    "subscriptionOnboardingSetupCompleteTitle":
-        MessageLookupByLibrary.simpleMessage("Configurazione completata"),
-    "subscriptionOnboardingStartTourLabel":
-        MessageLookupByLibrary.simpleMessage("Inizia il tour"),
-    "subscriptionOnboardingVPNLocationsDesktopDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Esplora paesi e città in un unico posto.",
-        ),
-    "subscriptionOnboardingVPNLocationsMobileDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
-        ),
-    "subscriptionOnboardingVPNLocationsTitle":
-        MessageLookupByLibrary.simpleMessage("Sfoglia le posizioni VPN"),
-    "subscriptionPlanBestValue": MessageLookupByLibrary.simpleMessage(
-      "MIGLIOR PREZZO",
+    "subscriptionOnboardingSetupCompleteDescription": MessageLookupByLibrary.simpleMessage(
+      "Scegli una posizione per iniziare a navigare in modo più privato.",
     ),
-    "subscriptionPlanCityLevel": MessageLookupByLibrary.simpleMessage(
-      "Scelta a livello di città",
+    "subscriptionOnboardingSetupCompleteTitle": MessageLookupByLibrary.simpleMessage(
+      "Configurazione completata",
     ),
+    "subscriptionOnboardingStartTourLabel": MessageLookupByLibrary.simpleMessage("Inizia il tour"),
+    "subscriptionOnboardingVPNLocationsDesktopDescription": MessageLookupByLibrary.simpleMessage(
+      "Esplora paesi e città in un unico posto.",
+    ),
+    "subscriptionOnboardingVPNLocationsMobileDescription": MessageLookupByLibrary.simpleMessage(
+      "Esplora paesi, città, connessioni recenti e server specializzati in un unico posto.",
+    ),
+    "subscriptionOnboardingVPNLocationsTitle": MessageLookupByLibrary.simpleMessage(
+      "Sfoglia le posizioni VPN",
+    ),
+    "subscriptionPlanBestValue": MessageLookupByLibrary.simpleMessage("MIGLIOR PREZZO"),
+    "subscriptionPlanCityLevel": MessageLookupByLibrary.simpleMessage("Scelta a livello di città"),
     "subscriptionPlanCityLevelDesc": MessageLookupByLibrary.simpleMessage(
       "Offre un controllo della posizione più preciso rispetto alla maggior parte delle VPN, che di solito ti limitano alla selezione di interi paesi o stati.",
     ),
     "subscriptionPlanDevicesSecured": MessageLookupByLibrary.simpleMessage(
       "Dispositivi protetti contemporaneamente",
     ),
-    "subscriptionPlanDoubleVPN": MessageLookupByLibrary.simpleMessage(
-      "Doppia VPN",
-    ),
+    "subscriptionPlanDoubleVPN": MessageLookupByLibrary.simpleMessage("Doppia VPN"),
     "subscriptionPlanDoubleVPNDesc": MessageLookupByLibrary.simpleMessage(
       "Un ulteriore livello di sicurezza. Instrada il tuo traffico internet attraverso due server VPN diversi, crittografando i tuoi dati due volte e mascherando il tuo indirizzo IP dietro un secondo server",
     ),
-    "subscriptionPlanMalwareBlocker": MessageLookupByLibrary.simpleMessage(
-      "Blocco malware",
-    ),
+    "subscriptionPlanMalwareBlocker": MessageLookupByLibrary.simpleMessage("Blocco malware"),
     "subscriptionPlanMalwareBlockerDesc": MessageLookupByLibrary.simpleMessage(
       "Protegge il tuo dispositivo fermando le minacce prima che lo raggiungano, lavorando silenziosamente in background senza interromperti.",
     ),
@@ -794,45 +626,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF1Plus": MessageLookupByLibrary.simpleMessage(
       "Proteggi 10 dispositivi alla volta",
     ),
-    "subscriptionPlanPF2Basic": MessageLookupByLibrary.simpleMessage(
-      "57 paesi supportati",
-    ),
-    "subscriptionPlanPF2Plus": MessageLookupByLibrary.simpleMessage(
-      "Oltre 100 paesi supportati",
-    ),
-    "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage(
-      "10 server",
-    ),
-    "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage(
-      "100 server",
-    ),
-    "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage(
-      "Protocollo VPN",
-    ),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage(
-      "Oltre 7.500 Residential IPs",
-    ),
-    "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage(
-      "Protocollo VPN",
-    ),
-    "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage(
-      "Scelta a livello di città",
-    ),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs",
-    ),
+    "subscriptionPlanPF2Basic": MessageLookupByLibrary.simpleMessage("57 paesi supportati"),
+    "subscriptionPlanPF2Plus": MessageLookupByLibrary.simpleMessage("Oltre 100 paesi supportati"),
+    "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 server"),
+    "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 server"),
+    "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("Oltre 7.500 Residential IPs"),
+    "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
+    "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Scelta a livello di città"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Appari come un normale utente domestico, così puoi accedere ai servizi di streaming ed evitare il rilevamento della VPN.",
     ),
     "subscriptionPlanSavePercent": m21,
     "subscriptionPlanSaveWith": m22,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Server"),
-    "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage(
-      "Paesi supportati",
-    ),
-    "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage(
-      "Protocollo VPN",
-    ),
+    "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("Paesi supportati"),
+    "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
     "subscriptionPlanWireGuardDesc": MessageLookupByLibrary.simpleMessage(
       "WireGuard - protocollo veloce, ideale per gaming e streaming\nOpenVPN - protocollo altamente configurabile che funziona dove gli altri falliscono (non disponibile su Android)",
     ),
@@ -845,44 +655,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "per accedere a oltre 7.500 Residential IPs",
     ),
     "subscriptionUpgradeModalTitle": m24,
-    "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage(
-      "Vedi tutti i piani",
-    ),
-    "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage(
-      "Riprova la verifica",
-    ),
+    "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Vedi tutti i piani"),
+    "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("Riprova la verifica"),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abbonamento"),
     "switchToLocationBtn": m25,
     "system": MessageLookupByLibrary.simpleMessage("Sistema"),
-    "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage(
-      "Riprenditi internet.",
-    ),
-    "termsAndConditions": MessageLookupByLibrary.simpleMessage(
-      "Termini e Condizioni",
-    ),
+    "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Riprenditi internet."),
+    "termsAndConditions": MessageLookupByLibrary.simpleMessage("Termini e Condizioni"),
     "title": MessageLookupByLibrary.simpleMessage("Ciao"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Troppe richieste. Riprova più tardi.",
     ),
-    "tokenAlreadyUsed": MessageLookupByLibrary.simpleMessage(
-      "Token già utilizzato. Riprova.\n",
-    ),
-    "tooManyConnectionsBannerCTADisconnect":
-        MessageLookupByLibrary.simpleMessage("Disconnetti"),
-    "tooManyConnectionsBannerCTAReconnect":
-        MessageLookupByLibrary.simpleMessage("Riconnetti"),
+    "tokenAlreadyUsed": MessageLookupByLibrary.simpleMessage("Token già utilizzato. Riprova.\n"),
+    "tooManyConnectionsBannerCTADisconnect": MessageLookupByLibrary.simpleMessage("Disconnetti"),
+    "tooManyConnectionsBannerCTAReconnect": MessageLookupByLibrary.simpleMessage("Riconnetti"),
     "tooManyConnectionsBannerDesc": MessageLookupByLibrary.simpleMessage(
       "Hai raggiunto il limite massimo di 6 dispositivi connessi al tuo account. Per continuare a usare la VPN, tocca per riconnetterti.",
     ),
     "tooManyConnectionsBannerDescConnected": MessageLookupByLibrary.simpleMessage(
       "Hai raggiunto il limite massimo di 6 dispositivi connessi al tuo account. Per continuare a usare la VPN, tocca disconnetti e riprova.",
     ),
-    "tooManyConnectionsBannerTitle": MessageLookupByLibrary.simpleMessage(
-      "Sei stato disconnesso",
-    ),
-    "topLocations": MessageLookupByLibrary.simpleMessage(
-      "Posizioni principali",
-    ),
+    "tooManyConnectionsBannerTitle": MessageLookupByLibrary.simpleMessage("Sei stato disconnesso"),
+    "topLocations": MessageLookupByLibrary.simpleMessage("Posizioni principali"),
     "tr": MessageLookupByLibrary.simpleMessage("Turco"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Riprova"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage(
@@ -895,9 +689,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Si è verificato un errore durante la configurazione del tunnel",
     ),
     "typeDelete": m26,
-    "typeFeedback": MessageLookupByLibrary.simpleMessage(
-      "Scrivi qui il tuo feedback...",
-    ),
+    "typeFeedback": MessageLookupByLibrary.simpleMessage("Scrivi qui il tuo feedback..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ucraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Impossibile connettersi al processore di pagamento! Riprova.",
@@ -912,34 +704,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "Non hai effettuato l\'accesso",
     ),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("NON PROTETTO"),
-    "unstableSpeedReason": MessageLookupByLibrary.simpleMessage(
-      "Velocità instabile",
-    ),
+    "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Velocità instabile"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Aggiorna"),
-    "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage(
-      "Massima velocità",
-    ),
+    "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("Massima velocità"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "Connettiti al server più veloce disponibile per prestazioni ottimali",
     ),
-    "userIntentLabel": MessageLookupByLibrary.simpleMessage(
-      "Server specializzato",
-    ),
-    "userIntentLowLatency": MessageLookupByLibrary.simpleMessage(
-      "Bassa latenza",
-    ),
+    "userIntentLabel": MessageLookupByLibrary.simpleMessage("Server specializzato"),
+    "userIntentLowLatency": MessageLookupByLibrary.simpleMessage("Bassa latenza"),
     "userIntentLowLatencyDesc": MessageLookupByLibrary.simpleMessage(
       "Si connette automaticamente al server più vicino per un accesso stabile e affidabile",
     ),
-    "userIntentMaxPrivacy": MessageLookupByLibrary.simpleMessage(
-      "Massima privacy",
-    ),
+    "userIntentMaxPrivacy": MessageLookupByLibrary.simpleMessage("Massima privacy"),
     "userIntentMaxPrivacyDesc": MessageLookupByLibrary.simpleMessage(
       "Ottieni un server con le migliori opzioni di libertà di parola e velocità in base al paese",
     ),
-    "userIntentNearestLocation": MessageLookupByLibrary.simpleMessage(
-      "Posizione più vicina",
-    ),
+    "userIntentNearestLocation": MessageLookupByLibrary.simpleMessage("Posizione più vicina"),
     "userIntentNearestLocationDesc": MessageLookupByLibrary.simpleMessage(
       "Ti connette all\'IP VPN disponibile più vicino per velocità e prestazioni ottimali in base alla tua posizione attuale",
     ),
@@ -951,14 +731,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "userIntentStreamingDesc": MessageLookupByLibrary.simpleMessage(
       "Accedi ai tuoi programmi e film preferiti dalle piattaforme specifiche per regione",
     ),
-    "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage(
-      "Vedi tutte le funzionalità",
-    ),
+    "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage("Vedi tutte le funzionalità"),
     "viewLessBtn": MessageLookupByLibrary.simpleMessage("Vedi meno"),
     "vodafoneLbl": MessageLookupByLibrary.simpleMessage("Vodafone Iberia"),
-    "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage(
-      "Protocollo VPN",
-    ),
+    "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
     "year": MessageLookupByLibrary.simpleMessage("anno"),
     "yearly": MessageLookupByLibrary.simpleMessage("annuale"),
     "yes": MessageLookupByLibrary.simpleMessage("Sì"),

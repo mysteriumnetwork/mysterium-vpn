@@ -93,9 +93,6 @@ abstract class _SubscriptionOnboardingStore with Store {
     }
 
     final step = SubscriptionOnboardingStep.fromPlatformIndex(index);
-    return {
-      'step': index + 1,
-      if (step != null) 'step_name': step.name.toSnakeCase,
-    };
+    return {'step': index + 1, if (step != null) 'step_name': step.name.toSnakeCase};
   }
 }

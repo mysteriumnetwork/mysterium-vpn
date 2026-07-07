@@ -29,9 +29,7 @@ class S {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     if (!Localizely.hasMetadata()) {
       Localizely.setMetadata(_metadata);
@@ -483,12 +481,7 @@ class S {
 
   /// `Account deleted`
   String get accountSuccessfullyDeleted {
-    return Intl.message(
-      'Account deleted',
-      name: 'accountSuccessfullyDeleted',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Account deleted', name: 'accountSuccessfullyDeleted', desc: '', args: []);
   }
 
   /// `You already have an active subscription paid via {store}. Manage it in {store}.`
@@ -503,12 +496,7 @@ class S {
 
   /// `All locations`
   String get allLocations {
-    return Intl.message(
-      'All locations',
-      name: 'allLocations',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All locations', name: 'allLocations', desc: '', args: []);
   }
 
   /// `Allow`
@@ -518,12 +506,7 @@ class S {
 
   /// `Allow notifications`
   String get allowNotificationsBtn {
-    return Intl.message(
-      'Allow notifications',
-      name: 'allowNotificationsBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Allow notifications', name: 'allowNotificationsBtn', desc: '', args: []);
   }
 
   /// `Allow notifications`
@@ -543,12 +526,7 @@ class S {
 
   /// `Appearance`
   String get appearanceSettingLbl {
-    return Intl.message(
-      'Appearance',
-      name: 'appearanceSettingLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Appearance', name: 'appearanceSettingLbl', desc: '', args: []);
   }
 
   /// `The new app version is here! Update now for the latest features and improvements.`
@@ -608,32 +586,17 @@ class S {
 
   /// `Back to Settings`
   String get backToSettingsLbl {
-    return Intl.message(
-      'Back to Settings',
-      name: 'backToSettingsLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Back to Settings', name: 'backToSettingsLbl', desc: '', args: []);
   }
 
   /// `Battery saver`
   String get batterySaverLabel {
-    return Intl.message(
-      'Battery saver',
-      name: 'batterySaverLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Battery saver', name: 'batterySaverLabel', desc: '', args: []);
   }
 
   /// `Berlin, Germany 🇩🇪`
   String get berlinLbl {
-    return Intl.message(
-      'Berlin, Germany 🇩🇪',
-      name: 'berlinLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Berlin, Germany 🇩🇪', name: 'berlinLbl', desc: '', args: []);
   }
 
   /// `{amount} /{period}`
@@ -658,22 +621,12 @@ class S {
 
   /// `Blocker`
   String get blockerSettingLbl {
-    return Intl.message(
-      'Blocker',
-      name: 'blockerSettingLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Blocker', name: 'blockerSettingLbl', desc: '', args: []);
   }
 
   /// `Update now`
   String get buttonUpdateApp {
-    return Intl.message(
-      'Update now',
-      name: 'buttonUpdateApp',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Update now', name: 'buttonUpdateApp', desc: '', args: []);
   }
 
   /// `Bypass restrictions`
@@ -703,12 +656,7 @@ class S {
 
   /// `Reasons for cancelling`
   String get cancelSurveyTitle {
-    return Intl.message(
-      'Reasons for cancelling',
-      name: 'cancelSurveyTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reasons for cancelling', name: 'cancelSurveyTitle', desc: '', args: []);
   }
 
   /// `Cancel your subscription on the App Store subscriptions before deleting your account.`
@@ -753,22 +701,12 @@ class S {
 
   /// `Check your email`
   String get checkYourEmail {
-    return Intl.message(
-      'Check your email',
-      name: 'checkYourEmail',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Check your email', name: 'checkYourEmail', desc: '', args: []);
   }
 
   /// `Clear search`
   String get clearSearchBtn {
-    return Intl.message(
-      'Clear search',
-      name: 'clearSearchBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Clear search', name: 'clearSearchBtn', desc: '', args: []);
   }
 
   /// `Close`
@@ -778,22 +716,12 @@ class S {
 
   /// `Communications`
   String get communicationLbl {
-    return Intl.message(
-      'Communications',
-      name: 'communicationLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Communications', name: 'communicationLbl', desc: '', args: []);
   }
 
   /// `COMMUNICATIONS`
   String get communicationLblDesktop {
-    return Intl.message(
-      'COMMUNICATIONS',
-      name: 'communicationLblDesktop',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('COMMUNICATIONS', name: 'communicationLblDesktop', desc: '', args: []);
   }
 
   /// `Complete`
@@ -813,12 +741,7 @@ class S {
 
   /// `Best server`
   String get connectBestServer {
-    return Intl.message(
-      'Best server',
-      name: 'connectBestServer',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Best server', name: 'connectBestServer', desc: '', args: []);
   }
 
   /// `Connected`
@@ -868,12 +791,7 @@ class S {
 
   /// `Consistent speed`
   String get consistentSpeedReason {
-    return Intl.message(
-      'Consistent speed',
-      name: 'consistentSpeedReason',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Consistent speed', name: 'consistentSpeedReason', desc: '', args: []);
   }
 
   /// `It only works on the device that requested it - click the link in your email to continue.`
@@ -893,32 +811,17 @@ class S {
 
   /// `Continue with Apple`
   String get continueWithApple {
-    return Intl.message(
-      'Continue with Apple',
-      name: 'continueWithApple',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Continue with Apple', name: 'continueWithApple', desc: '', args: []);
   }
 
   /// `Continue with Email`
   String get continueWithEmail {
-    return Intl.message(
-      'Continue with Email',
-      name: 'continueWithEmail',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Continue with Email', name: 'continueWithEmail', desc: '', args: []);
   }
 
   /// `Continue with Google`
   String get continueWithGoogle {
-    return Intl.message(
-      'Continue with Google',
-      name: 'continueWithGoogle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Continue with Google', name: 'continueWithGoogle', desc: '', args: []);
   }
 
   /// `Copy the link and paste it into your browser`
@@ -968,32 +871,17 @@ class S {
 
   /// `Less private`
   String get dataCentreComparisonCardItem3 {
-    return Intl.message(
-      'Less private',
-      name: 'dataCentreComparisonCardItem3',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Less private', name: 'dataCentreComparisonCardItem3', desc: '', args: []);
   }
 
   /// `DATA CENTRE IPS`
   String get dataCentreComparisonCardLbl {
-    return Intl.message(
-      'DATA CENTRE IPS',
-      name: 'dataCentreComparisonCardLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('DATA CENTRE IPS', name: 'dataCentreComparisonCardLbl', desc: '', args: []);
   }
 
   /// `Most VPNs`
   String get dataCentreComparisonCardTitle {
-    return Intl.message(
-      'Most VPNs',
-      name: 'dataCentreComparisonCardTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Most VPNs', name: 'dataCentreComparisonCardTitle', desc: '', args: []);
   }
 
   /// `German`
@@ -1003,22 +891,12 @@ class S {
 
   /// `Delete account`
   String get deleteAccount {
-    return Intl.message(
-      'Delete account',
-      name: 'deleteAccount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Delete account', name: 'deleteAccount', desc: '', args: []);
   }
 
   /// `Delete Account?`
   String get deleteAccountQuestion {
-    return Intl.message(
-      'Delete Account?',
-      name: 'deleteAccountQuestion',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Delete Account?', name: 'deleteAccountQuestion', desc: '', args: []);
   }
 
   /// `Delete`
@@ -1063,32 +941,17 @@ class S {
 
   /// `Disconnected`
   String get disconnected {
-    return Intl.message(
-      'Disconnected',
-      name: 'disconnected',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Disconnected', name: 'disconnected', desc: '', args: []);
   }
 
   /// `Disconnecting`
   String get disconnecting {
-    return Intl.message(
-      'Disconnecting',
-      name: 'disconnecting',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Disconnecting', name: 'disconnecting', desc: '', args: []);
   }
 
   /// `Only`
   String get discountedPriceLabel {
-    return Intl.message(
-      'Only',
-      name: 'discountedPriceLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Only', name: 'discountedPriceLabel', desc: '', args: []);
   }
 
   /// `DNS protection`
@@ -1098,12 +961,7 @@ class S {
 
   /// `Prevents DNS leaks`
   String get dnsDesc {
-    return Intl.message(
-      'Prevents DNS leaks',
-      name: 'dnsDesc',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Prevents DNS leaks', name: 'dnsDesc', desc: '', args: []);
   }
 
   /// `Duration`
@@ -1118,22 +976,12 @@ class S {
 
   /// `Email address is not valid`
   String get emailIsNotValid {
-    return Intl.message(
-      'Email address is not valid',
-      name: 'emailIsNotValid',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Email address is not valid', name: 'emailIsNotValid', desc: '', args: []);
   }
 
   /// `Email address is required`
   String get emailIsRequired {
-    return Intl.message(
-      'Email address is required',
-      name: 'emailIsRequired',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Email address is required', name: 'emailIsRequired', desc: '', args: []);
   }
 
   /// `Email Notifications`
@@ -1148,12 +996,7 @@ class S {
 
   /// `We sent an email to {email}`
   String emailSentTo(Object email) {
-    return Intl.message(
-      'We sent an email to $email',
-      name: 'emailSentTo',
-      desc: '',
-      args: [email],
-    );
+    return Intl.message('We sent an email to $email', name: 'emailSentTo', desc: '', args: [email]);
   }
 
   /// `English`
@@ -1273,12 +1116,7 @@ class S {
 
   /// `Full price:`
   String get fullPriceLabel {
-    return Intl.message(
-      'Full price:',
-      name: 'fullPriceLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Full price:', name: 'fullPriceLabel', desc: '', args: []);
   }
 
   /// `Germany`
@@ -1308,32 +1146,17 @@ class S {
 
   /// `Get {plan}`
   String getSubscriptionModalTitle(Object plan) {
-    return Intl.message(
-      'Get $plan',
-      name: 'getSubscriptionModalTitle',
-      desc: '',
-      args: [plan],
-    );
+    return Intl.message('Get $plan', name: 'getSubscriptionModalTitle', desc: '', args: [plan]);
   }
 
   /// `Get {plan} plan`
   String getSubscriptionPlanBtn(Object plan) {
-    return Intl.message(
-      'Get $plan plan',
-      name: 'getSubscriptionPlanBtn',
-      desc: '',
-      args: [plan],
-    );
+    return Intl.message('Get $plan plan', name: 'getSubscriptionPlanBtn', desc: '', args: [plan]);
   }
 
   /// `Getting IP address...`
   String get gettingIPAddress {
-    return Intl.message(
-      'Getting IP address...',
-      name: 'gettingIPAddress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Getting IP address...', name: 'gettingIPAddress', desc: '', args: []);
   }
 
   /// `Go Back`
@@ -1343,22 +1166,12 @@ class S {
 
   /// `Go to log in`
   String get goToLoginBtn {
-    return Intl.message(
-      'Go to log in',
-      name: 'goToLoginBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Go to log in', name: 'goToLoginBtn', desc: '', args: []);
   }
 
   /// `Help & Support`
   String get helpSupportLbl {
-    return Intl.message(
-      'Help & Support',
-      name: 'helpSupportLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Help & Support', name: 'helpSupportLbl', desc: '', args: []);
   }
 
   /// `Hindi`
@@ -1373,12 +1186,7 @@ class S {
 
   /// `High latency`
   String get highLatencyReason {
-    return Intl.message(
-      'High latency',
-      name: 'highLatencyReason',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('High latency', name: 'highLatencyReason', desc: '', args: []);
   }
 
   /// `High-speed`
@@ -1398,12 +1206,7 @@ class S {
 
   /// `Incorrect location`
   String get incorrectLocationReason {
-    return Intl.message(
-      'Incorrect location',
-      name: 'incorrectLocationReason',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Incorrect location', name: 'incorrectLocationReason', desc: '', args: []);
   }
 
   /// `Incorrect magic link. Please try again.`
@@ -1443,12 +1246,7 @@ class S {
 
   /// `High-speed IPs`
   String get ipTypeDataCenter {
-    return Intl.message(
-      'High-speed IPs',
-      name: 'ipTypeDataCenter',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('High-speed IPs', name: 'ipTypeDataCenter', desc: '', args: []);
   }
 
   /// `Datacenter IPs optimised for speed and performance.`
@@ -1463,12 +1261,7 @@ class S {
 
   /// `Residential IPs`
   String get ipTypeResidential {
-    return Intl.message(
-      'Residential IPs',
-      name: 'ipTypeResidential',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Residential IPs', name: 'ipTypeResidential', desc: '', args: []);
   }
 
   /// `Provided by real households. Nearly undetectable but less stable.`
@@ -1533,12 +1326,7 @@ class S {
 
   /// `Language`
   String get languageSettingLbl {
-    return Intl.message(
-      'Language',
-      name: 'languageSettingLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Language', name: 'languageSettingLbl', desc: '', args: []);
   }
 
   /// `Light`
@@ -1548,12 +1336,7 @@ class S {
 
   /// `Link copied to clipboard!`
   String get linkCopied {
-    return Intl.message(
-      'Link copied to clipboard!',
-      name: 'linkCopied',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Link copied to clipboard!', name: 'linkCopied', desc: '', args: []);
   }
 
   /// `The link expires in 30 minutes and can be used only once.`
@@ -1614,12 +1397,7 @@ class S {
 
   /// `{location} updated`
   String locationsUpdated(Object location) {
-    return Intl.message(
-      '$location updated',
-      name: 'locationsUpdated',
-      desc: '',
-      args: [location],
-    );
+    return Intl.message('$location updated', name: 'locationsUpdated', desc: '', args: [location]);
   }
 
   /// `Couldn’t update {location}`
@@ -1664,12 +1442,7 @@ class S {
 
   /// `Logging you in...`
   String get LoggingYouIn {
-    return Intl.message(
-      'Logging you in...',
-      name: 'LoggingYouIn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Logging you in...', name: 'LoggingYouIn', desc: '', args: []);
   }
 
   /// `Your session has expired. Please log in again.`
@@ -1684,12 +1457,7 @@ class S {
 
   /// `Log in or sign up`
   String get loginSignupLabel {
-    return Intl.message(
-      'Log in or sign up',
-      name: 'loginSignupLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Log in or sign up', name: 'loginSignupLabel', desc: '', args: []);
   }
 
   /// `Log out`
@@ -1709,12 +1477,7 @@ class S {
 
   /// `Log out`
   String get logoutConfirmationTitle {
-    return Intl.message(
-      'Log out',
-      name: 'logoutConfirmationTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Log out', name: 'logoutConfirmationTitle', desc: '', args: []);
   }
 
   /// `VPN is on. You will be disconnected from the VPN server if you continue to log out.`
@@ -1729,22 +1492,12 @@ class S {
 
   /// `Low latency`
   String get lowLatencyReason {
-    return Intl.message(
-      'Low latency',
-      name: 'lowLatencyReason',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Low latency', name: 'lowLatencyReason', desc: '', args: []);
   }
 
   /// `Madrid, Spain 🇪🇸`
   String get madridLbl {
-    return Intl.message(
-      'Madrid, Spain 🇪🇸',
-      name: 'madridLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Madrid, Spain 🇪🇸', name: 'madridLbl', desc: '', args: []);
   }
 
   /// `Malware`
@@ -1754,12 +1507,7 @@ class S {
 
   /// `Manage on the web`
   String get manageOnWebBtn {
-    return Intl.message(
-      'Manage on the web',
-      name: 'manageOnWebBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Manage on the web', name: 'manageOnWebBtn', desc: '', args: []);
   }
 
   /// `Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?`
@@ -1809,12 +1557,7 @@ class S {
 
   /// `Next Billing: {date}`
   String nextBilling(Object date) {
-    return Intl.message(
-      'Next Billing: $date',
-      name: 'nextBilling',
-      desc: '',
-      args: [date],
-    );
+    return Intl.message('Next Billing: $date', name: 'nextBilling', desc: '', args: [date]);
   }
 
   /// `No`
@@ -1844,12 +1587,7 @@ class S {
 
   /// `No locations found`
   String get noLocationsFound {
-    return Intl.message(
-      'No locations found',
-      name: 'noLocationsFound',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No locations found', name: 'noLocationsFound', desc: '', args: []);
   }
 
   /// `None`
@@ -1859,12 +1597,7 @@ class S {
 
   /// `No servers are available`
   String get noServersAvailable {
-    return Intl.message(
-      'No servers are available',
-      name: 'noServersAvailable',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No servers are available', name: 'noServersAvailable', desc: '', args: []);
   }
 
   /// `There is connectivity issue and no servers are available. Please try later.`
@@ -1879,12 +1612,7 @@ class S {
 
   /// `Get plan`
   String get noSubscriptionAction {
-    return Intl.message(
-      'Get plan',
-      name: 'noSubscriptionAction',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Get plan', name: 'noSubscriptionAction', desc: '', args: []);
   }
 
   /// `No active plan available`
@@ -1899,12 +1627,7 @@ class S {
 
   /// `Not available`
   String get notAvailableMsg {
-    return Intl.message(
-      'Not available',
-      name: 'notAvailableMsg',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Not available', name: 'notAvailableMsg', desc: '', args: []);
   }
 
   /// `Not now`
@@ -1979,22 +1702,12 @@ class S {
 
   /// `Open email app`
   String get openEmailApp {
-    return Intl.message(
-      'Open email app',
-      name: 'openEmailApp',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Open email app', name: 'openEmailApp', desc: '', args: []);
   }
 
   /// `Open system settings`
   String get openSystemSettingsBtn {
-    return Intl.message(
-      'Open system settings',
-      name: 'openSystemSettingsBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Open system settings', name: 'openSystemSettingsBtn', desc: '', args: []);
   }
 
   /// `OR`
@@ -2039,42 +1752,22 @@ class S {
 
   /// `2-Year Plan`
   String get plan_2_years {
-    return Intl.message(
-      '2-Year Plan',
-      name: 'plan_2_years',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('2-Year Plan', name: 'plan_2_years', desc: '', args: []);
   }
 
   /// `Basic 2-Year`
   String get plan_2_years_basic {
-    return Intl.message(
-      'Basic 2-Year',
-      name: 'plan_2_years_basic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Basic 2-Year', name: 'plan_2_years_basic', desc: '', args: []);
   }
 
   /// `Pro 2-Year`
   String get plan_2_years_pro {
-    return Intl.message(
-      'Pro 2-Year',
-      name: 'plan_2_years_pro',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pro 2-Year', name: 'plan_2_years_pro', desc: '', args: []);
   }
 
   /// `6-Month Plan`
   String get plan_6_months {
-    return Intl.message(
-      '6-Month Plan',
-      name: 'plan_6_months',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('6-Month Plan', name: 'plan_6_months', desc: '', args: []);
   }
 
   /// `You're all set! You already have this plan active.`
@@ -2089,42 +1782,22 @@ class S {
 
   /// `Monthly Plan`
   String get plan_monthly {
-    return Intl.message(
-      'Monthly Plan',
-      name: 'plan_monthly',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Monthly Plan', name: 'plan_monthly', desc: '', args: []);
   }
 
   /// `Basic monthly`
   String get plan_monthly_basic {
-    return Intl.message(
-      'Basic monthly',
-      name: 'plan_monthly_basic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Basic monthly', name: 'plan_monthly_basic', desc: '', args: []);
   }
 
   /// `Plus monthly`
   String get plan_monthly_plus {
-    return Intl.message(
-      'Plus monthly',
-      name: 'plan_monthly_plus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Plus monthly', name: 'plan_monthly_plus', desc: '', args: []);
   }
 
   /// `Pro monthly`
   String get plan_monthly_pro {
-    return Intl.message(
-      'Pro monthly',
-      name: 'plan_monthly_pro',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pro monthly', name: 'plan_monthly_pro', desc: '', args: []);
   }
 
   /// `Annual Plan`
@@ -2134,32 +1807,17 @@ class S {
 
   /// `Basic annual`
   String get plan_yearly_basic {
-    return Intl.message(
-      'Basic annual',
-      name: 'plan_yearly_basic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Basic annual', name: 'plan_yearly_basic', desc: '', args: []);
   }
 
   /// `Plus annual`
   String get plan_yearly_plus {
-    return Intl.message(
-      'Plus annual',
-      name: 'plan_yearly_plus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Plus annual', name: 'plan_yearly_plus', desc: '', args: []);
   }
 
   /// `Pro annual`
   String get plan_yearly_pro {
-    return Intl.message(
-      'Pro annual',
-      name: 'plan_yearly_pro',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pro annual', name: 'plan_yearly_pro', desc: '', args: []);
   }
 
   /// `Poland`
@@ -2174,22 +1832,12 @@ class S {
 
   /// `See all plans`
   String get pricingPlanSeePlansBtn {
-    return Intl.message(
-      'See all plans',
-      name: 'pricingPlanSeePlansBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('See all plans', name: 'pricingPlanSeePlansBtn', desc: '', args: []);
   }
 
   /// `Privacy Policy`
   String get privacyPolicy {
-    return Intl.message(
-      'Privacy Policy',
-      name: 'privacyPolicy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Privacy Policy', name: 'privacyPolicy', desc: '', args: []);
   }
 
   /// `We’re processing your payment. You’ll be all set shortly…`
@@ -2214,12 +1862,7 @@ class S {
 
   /// `All plans:`
   String get productsAllPlansLbl {
-    return Intl.message(
-      'All plans:',
-      name: 'productsAllPlansLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All plans:', name: 'productsAllPlansLbl', desc: '', args: []);
   }
 
   /// `Essentials for everyday privacy`
@@ -2234,32 +1877,17 @@ class S {
 
   /// `1 month`
   String get productsDuration1Month {
-    return Intl.message(
-      '1 month',
-      name: 'productsDuration1Month',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('1 month', name: 'productsDuration1Month', desc: '', args: []);
   }
 
   /// `1-Year`
   String get productsDuration1Year {
-    return Intl.message(
-      '1-Year',
-      name: 'productsDuration1Year',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('1-Year', name: 'productsDuration1Year', desc: '', args: []);
   }
 
   /// `2-Year`
   String get productsDuration2Year {
-    return Intl.message(
-      '2-Year',
-      name: 'productsDuration2Year',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('2-Year', name: 'productsDuration2Year', desc: '', args: []);
   }
 
   /// `Explore plans and features`
@@ -2344,12 +1972,7 @@ class S {
 
   /// `VPN products`
   String get productsTitle {
-    return Intl.message(
-      'VPN products',
-      name: 'productsTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('VPN products', name: 'productsTitle', desc: '', args: []);
   }
 
   /// `PROTECTED`
@@ -2399,12 +2022,7 @@ class S {
 
   /// `Brazilian Portuguese`
   String get ptBR {
-    return Intl.message(
-      'Brazilian Portuguese',
-      name: 'ptBR',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Brazilian Portuguese', name: 'ptBR', desc: '', args: []);
   }
 
   /// `Get notified about new features, helpful tips, and exclusive offers - just useful updates.`
@@ -2429,12 +2047,7 @@ class S {
 
   /// `Push Notifications`
   String get pushNotificationsSetting {
-    return Intl.message(
-      'Push Notifications',
-      name: 'pushNotificationsSetting',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Push Notifications', name: 'pushNotificationsSetting', desc: '', args: []);
   }
 
   /// `Product updates, tips, and special offers`
@@ -2454,52 +2067,27 @@ class S {
 
   /// `How is your connection?`
   String get rateConnection {
-    return Intl.message(
-      'How is your connection?',
-      name: 'rateConnection',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('How is your connection?', name: 'rateConnection', desc: '', args: []);
   }
 
   /// `What didn’t you like?`
   String get rateConnectionDislike {
-    return Intl.message(
-      'What didn’t you like?',
-      name: 'rateConnectionDislike',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('What didn’t you like?', name: 'rateConnectionDislike', desc: '', args: []);
   }
 
   /// `What did you like?`
   String get rateConnectionLike {
-    return Intl.message(
-      'What did you like?',
-      name: 'rateConnectionLike',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('What did you like?', name: 'rateConnectionLike', desc: '', args: []);
   }
 
   /// `Recent locations`
   String get recentLocations {
-    return Intl.message(
-      'Recent locations',
-      name: 'recentLocations',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Recent locations', name: 'recentLocations', desc: '', args: []);
   }
 
   /// `Redeem discount code`
   String get redeemDiscountCode {
-    return Intl.message(
-      'Redeem discount code',
-      name: 'redeemDiscountCode',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Redeem discount code', name: 'redeemDiscountCode', desc: '', args: []);
   }
 
   /// `Your account has been successfully deleted. You'll be redirected to the log in screen.`
@@ -2524,12 +2112,7 @@ class S {
 
   /// `Refresh IP address`
   String get refreshIPAddress {
-    return Intl.message(
-      'Refresh IP address',
-      name: 'refreshIPAddress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Refresh IP address', name: 'refreshIPAddress', desc: '', args: []);
   }
 
   /// `Refresh {location}`
@@ -2709,12 +2292,7 @@ class S {
 
   /// `Got it`
   String get residentialEducationGotIt {
-    return Intl.message(
-      'Got it',
-      name: 'residentialEducationGotIt',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Got it', name: 'residentialEducationGotIt', desc: '', args: []);
   }
 
   /// `Residential IPs are different from high-speed IPs. Here’s what to expect.`
@@ -2744,12 +2322,7 @@ class S {
 
   /// `Leave a review`
   String get reviewLeaveReviewBtn {
-    return Intl.message(
-      'Leave a review',
-      name: 'reviewLeaveReviewBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Leave a review', name: 'reviewLeaveReviewBtn', desc: '', args: []);
   }
 
   /// `That’s great! Would you mind leaving us a review?`
@@ -2774,12 +2347,7 @@ class S {
 
   /// `Search for locations`
   String get searchForLocations {
-    return Intl.message(
-      'Search for locations',
-      name: 'searchForLocations',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Search for locations', name: 'searchForLocations', desc: '', args: []);
   }
 
   /// `See plans`
@@ -2789,22 +2357,12 @@ class S {
 
   /// `Select Email App to Continue`
   String get selectEmailApp {
-    return Intl.message(
-      'Select Email App to Continue',
-      name: 'selectEmailApp',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Email App to Continue', name: 'selectEmailApp', desc: '', args: []);
   }
 
   /// `semi-annually`
   String get semiAnnual {
-    return Intl.message(
-      'semi-annually',
-      name: 'semiAnnual',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('semi-annually', name: 'semiAnnual', desc: '', args: []);
   }
 
   /// `{count, plural, zero{Send again} one{Send again} other{Send again ({count})}}`
@@ -2872,22 +2430,12 @@ class S {
 
   /// `Sign in to Mysterium VPN`
   String get signIn {
-    return Intl.message(
-      'Sign in to Mysterium VPN',
-      name: 'signIn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sign in to Mysterium VPN', name: 'signIn', desc: '', args: []);
   }
 
   /// `Sign in aborted`
   String get signInAbortedMsg {
-    return Intl.message(
-      'Sign in aborted',
-      name: 'signInAbortedMsg',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sign in aborted', name: 'signInAbortedMsg', desc: '', args: []);
   }
 
   /// `Sign in`
@@ -2927,12 +2475,7 @@ class S {
 
   /// `Stable connection`
   String get stableConnectionReason {
-    return Intl.message(
-      'Stable connection',
-      name: 'stableConnectionReason',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Stable connection', name: 'stableConnectionReason', desc: '', args: []);
   }
 
   /// `Status`
@@ -2952,12 +2495,7 @@ class S {
 
   /// `Subscribe on the web`
   String get subscribeOnWebBtn {
-    return Intl.message(
-      'Subscribe on the web',
-      name: 'subscribeOnWebBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Subscribe on the web', name: 'subscribeOnWebBtn', desc: '', args: []);
   }
 
   /// `Great news! Your subscription is now active.`
@@ -3002,42 +2540,22 @@ class S {
 
   /// `Get plan`
   String get subscriptionAllPlansPurchase {
-    return Intl.message(
-      'Get plan',
-      name: 'subscriptionAllPlansPurchase',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Get plan', name: 'subscriptionAllPlansPurchase', desc: '', args: []);
   }
 
   /// `Monthly`
   String get subscriptionAllPlansTabMonth {
-    return Intl.message(
-      'Monthly',
-      name: 'subscriptionAllPlansTabMonth',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Monthly', name: 'subscriptionAllPlansTabMonth', desc: '', args: []);
   }
 
   /// `1-Year`
   String get subscriptionAllPlansTabYear {
-    return Intl.message(
-      '1-Year',
-      name: 'subscriptionAllPlansTabYear',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('1-Year', name: 'subscriptionAllPlansTabYear', desc: '', args: []);
   }
 
   /// `All plans`
   String get subscriptionAllPlansTitle {
-    return Intl.message(
-      'All plans',
-      name: 'subscriptionAllPlansTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All plans', name: 'subscriptionAllPlansTitle', desc: '', args: []);
   }
 
   /// `Upgrade your plan`
@@ -3262,12 +2780,7 @@ class S {
 
   /// `BEST VALUE`
   String get subscriptionPlanBestValue {
-    return Intl.message(
-      'BEST VALUE',
-      name: 'subscriptionPlanBestValue',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('BEST VALUE', name: 'subscriptionPlanBestValue', desc: '', args: []);
   }
 
   /// `City-level choices`
@@ -3302,12 +2815,7 @@ class S {
 
   /// `Double VPN`
   String get subscriptionPlanDoubleVPN {
-    return Intl.message(
-      'Double VPN',
-      name: 'subscriptionPlanDoubleVPN',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Double VPN', name: 'subscriptionPlanDoubleVPN', desc: '', args: []);
   }
 
   /// `Extra layer of security. Routes your internet traffic through two different VPN servers, encrypting your data twice and masking your IP address behind a second server`
@@ -3352,32 +2860,17 @@ class S {
 
   /// `Basic`
   String get subscriptionPlanNameBasic {
-    return Intl.message(
-      'Basic',
-      name: 'subscriptionPlanNameBasic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Basic', name: 'subscriptionPlanNameBasic', desc: '', args: []);
   }
 
   /// `Plus`
   String get subscriptionPlanNamePlus {
-    return Intl.message(
-      'Plus',
-      name: 'subscriptionPlanNamePlus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Plus', name: 'subscriptionPlanNamePlus', desc: '', args: []);
   }
 
   /// `Pro`
   String get subscriptionPlanNamePro {
-    return Intl.message(
-      'Pro',
-      name: 'subscriptionPlanNamePro',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pro', name: 'subscriptionPlanNamePro', desc: '', args: []);
   }
 
   /// `Secure 6 devices at a time`
@@ -3422,32 +2915,17 @@ class S {
 
   /// `10 servers`
   String get subscriptionPlanPF3Basic {
-    return Intl.message(
-      '10 servers',
-      name: 'subscriptionPlanPF3Basic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('10 servers', name: 'subscriptionPlanPF3Basic', desc: '', args: []);
   }
 
   /// `100 servers`
   String get subscriptionPlanPF3Plus {
-    return Intl.message(
-      '100 servers',
-      name: 'subscriptionPlanPF3Plus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('100 servers', name: 'subscriptionPlanPF3Plus', desc: '', args: []);
   }
 
   /// `VPN protocol`
   String get subscriptionPlanPF4Basic {
-    return Intl.message(
-      'VPN protocol',
-      name: 'subscriptionPlanPF4Basic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('VPN protocol', name: 'subscriptionPlanPF4Basic', desc: '', args: []);
   }
 
   /// `7,500+ residential IPs`
@@ -3462,22 +2940,12 @@ class S {
 
   /// `VPN protocol`
   String get subscriptionPlanPF5Plus {
-    return Intl.message(
-      'VPN protocol',
-      name: 'subscriptionPlanPF5Plus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('VPN protocol', name: 'subscriptionPlanPF5Plus', desc: '', args: []);
   }
 
   /// `City-level choices`
   String get subscriptionPlanPF6Plus {
-    return Intl.message(
-      'City-level choices',
-      name: 'subscriptionPlanPF6Plus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('City-level choices', name: 'subscriptionPlanPF6Plus', desc: '', args: []);
   }
 
   /// `Residential IPs`
@@ -3522,12 +2990,7 @@ class S {
 
   /// `Servers`
   String get subscriptionPlanServers {
-    return Intl.message(
-      'Servers',
-      name: 'subscriptionPlanServers',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Servers', name: 'subscriptionPlanServers', desc: '', args: []);
   }
 
   /// `Supported countries`
@@ -3542,12 +3005,7 @@ class S {
 
   /// `VPN protocol`
   String get subscriptionPlanWireGuard {
-    return Intl.message(
-      'VPN protocol',
-      name: 'subscriptionPlanWireGuard',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('VPN protocol', name: 'subscriptionPlanWireGuard', desc: '', args: []);
   }
 
   /// `WireGuard - fast protocol best for gaming and streaming\nOpenVPN - highly configurable protocol that works where other protocols fail (not available on Android)`
@@ -3572,22 +3030,12 @@ class S {
 
   /// `Upgrade`
   String get subscriptionUpgrade {
-    return Intl.message(
-      'Upgrade',
-      name: 'subscriptionUpgrade',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Upgrade', name: 'subscriptionUpgrade', desc: '', args: []);
   }
 
   /// `Upgrade to {plan}`
   String subscriptionUpgradeCTA(Object plan) {
-    return Intl.message(
-      'Upgrade to $plan',
-      name: 'subscriptionUpgradeCTA',
-      desc: '',
-      args: [plan],
-    );
+    return Intl.message('Upgrade to $plan', name: 'subscriptionUpgradeCTA', desc: '', args: [plan]);
   }
 
   /// `to access 7,500+ residential IPs`
@@ -3632,12 +3080,7 @@ class S {
 
   /// `Subscription`
   String get subscripton {
-    return Intl.message(
-      'Subscription',
-      name: 'subscripton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Subscription', name: 'subscripton', desc: '', args: []);
   }
 
   /// `Switch to {location}`
@@ -3667,12 +3110,7 @@ class S {
 
   /// `Terms and Conditions`
   String get termsAndConditions {
-    return Intl.message(
-      'Terms and Conditions',
-      name: 'termsAndConditions',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Terms and Conditions', name: 'termsAndConditions', desc: '', args: []);
   }
 
   /// `Hello Sir`
@@ -3752,12 +3190,7 @@ class S {
 
   /// `Top locations`
   String get topLocations {
-    return Intl.message(
-      'Top locations',
-      name: 'topLocations',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Top locations', name: 'topLocations', desc: '', args: []);
   }
 
   /// `Turkish`
@@ -3802,22 +3235,12 @@ class S {
 
   /// `Type {word}`
   String typeDelete(Object word) {
-    return Intl.message(
-      'Type $word',
-      name: 'typeDelete',
-      desc: '',
-      args: [word],
-    );
+    return Intl.message('Type $word', name: 'typeDelete', desc: '', args: [word]);
   }
 
   /// `Type your feedback here...`
   String get typeFeedback {
-    return Intl.message(
-      'Type your feedback here...',
-      name: 'typeFeedback',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Type your feedback here...', name: 'typeFeedback', desc: '', args: []);
   }
 
   /// `Ukraine`
@@ -3867,22 +3290,12 @@ class S {
 
   /// `UNPROTECTED`
   String get unprotectedLbl {
-    return Intl.message(
-      'UNPROTECTED',
-      name: 'unprotectedLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('UNPROTECTED', name: 'unprotectedLbl', desc: '', args: []);
   }
 
   /// `Unstable speed`
   String get unstableSpeedReason {
-    return Intl.message(
-      'Unstable speed',
-      name: 'unstableSpeedReason',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unstable speed', name: 'unstableSpeedReason', desc: '', args: []);
   }
 
   /// `Update`
@@ -3892,12 +3305,7 @@ class S {
 
   /// `Best speed`
   String get userIntentBestSpeed {
-    return Intl.message(
-      'Best speed',
-      name: 'userIntentBestSpeed',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Best speed', name: 'userIntentBestSpeed', desc: '', args: []);
   }
 
   /// `Connect to the fastest available server for optimal performance`
@@ -3912,22 +3320,12 @@ class S {
 
   /// `Speciality server`
   String get userIntentLabel {
-    return Intl.message(
-      'Speciality server',
-      name: 'userIntentLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Speciality server', name: 'userIntentLabel', desc: '', args: []);
   }
 
   /// `Low latency`
   String get userIntentLowLatency {
-    return Intl.message(
-      'Low latency',
-      name: 'userIntentLowLatency',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Low latency', name: 'userIntentLowLatency', desc: '', args: []);
   }
 
   /// `Automatically connects you to the closest server for stable and reliable access`
@@ -3942,12 +3340,7 @@ class S {
 
   /// `Max privacy`
   String get userIntentMaxPrivacy {
-    return Intl.message(
-      'Max privacy',
-      name: 'userIntentMaxPrivacy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Max privacy', name: 'userIntentMaxPrivacy', desc: '', args: []);
   }
 
   /// `Get a server with the best free speech and speed options based on country`
@@ -3962,12 +3355,7 @@ class S {
 
   /// `Nearest location`
   String get userIntentNearestLocation {
-    return Intl.message(
-      'Nearest location',
-      name: 'userIntentNearestLocation',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Nearest location', name: 'userIntentNearestLocation', desc: '', args: []);
   }
 
   /// `Connects you to the closest available VPN IP for the best speed and performance based on your current location`
@@ -3997,12 +3385,7 @@ class S {
 
   /// `Streaming`
   String get userIntentStreaming {
-    return Intl.message(
-      'Streaming',
-      name: 'userIntentStreaming',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Streaming', name: 'userIntentStreaming', desc: '', args: []);
   }
 
   /// `Access your favorite shows and movies from region-specific platforms`
@@ -4017,12 +3400,7 @@ class S {
 
   /// `View all features`
   String get viewAllFeaturesBtn {
-    return Intl.message(
-      'View all features',
-      name: 'viewAllFeaturesBtn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('View all features', name: 'viewAllFeaturesBtn', desc: '', args: []);
   }
 
   /// `View less`
@@ -4032,22 +3410,12 @@ class S {
 
   /// `Vodafone Iberia`
   String get vodafoneLbl {
-    return Intl.message(
-      'Vodafone Iberia',
-      name: 'vodafoneLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vodafone Iberia', name: 'vodafoneLbl', desc: '', args: []);
   }
 
   /// `VPN protocol`
   String get vpnProtocolSettingLbl {
-    return Intl.message(
-      'VPN protocol',
-      name: 'vpnProtocolSettingLbl',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('VPN protocol', name: 'vpnProtocolSettingLbl', desc: '', args: []);
   }
 
   /// `year`

@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,13 +8,13 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
-import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
+import '../support/test_localizations.dart';
 import 'connection_tile_state_hook_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -119,32 +118,19 @@ void main() {
       subscriptionStorePOD.overrideWithValue(mockSubscriptionStore),
       authSessionStorePOD.overrideWithValue(mockAuthSessionStore),
     ],
-    child: EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('en', 'US')],
-      path: 'resources/langs',
-      fallbackLocale: const Locale('en'),
-      startLocale: const Locale('en'),
-      useOnlyLangCode: true,
-      assetLoader: const CodegenLoader(),
-      child: Builder(
-        builder: (ctx) {
-          final delegate = BeamerDelegate(
-            locationBuilder: RoutesLocationBuilder(
-              routes: {'/': (_, a, b) => const SizedBox.shrink()},
-            ).call,
-          );
-          return BeamerProvider(
-            routerDelegate: delegate,
-            child: MaterialApp(
-              locale: EasyLocalization.of(ctx)?.locale,
-              localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-              supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
-              home: Consumer(
-                builder: (_, ref, child) => _HookHarness(onState: (state) => capturedState = state),
-              ),
-            ),
-          );
-        },
+    child: BeamerProvider(
+      routerDelegate: BeamerDelegate(
+        locationBuilder: RoutesLocationBuilder(
+          routes: {'/': (_, a, b) => const SizedBox.shrink()},
+        ).call,
+      ),
+      child: MaterialApp(
+        locale: testLocale,
+        localizationsDelegates: testLocalizationsDelegates,
+        supportedLocales: testSupportedLocales,
+        home: Consumer(
+          builder: (_, ref, child) => _HookHarness(onState: (state) => capturedState = state),
+        ),
       ),
     ),
   );
