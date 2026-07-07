@@ -541,8 +541,12 @@ abstract class _VpnStore extends VpnGuard with Store {
     TimeoutException() => 'connectionTimeout',
     UnavailableLocationException() => 'locationUnavailable',
     DeviceLimitReachedException() => 'deviceLimitReached',
-    _ => errorCode == 4029 ? 'tooManyRequests' : 'failedToConnect($errorCode)',
+    _ => _isTooManyRequests(errorCode) ? 'tooManyRequests' : 'failedToConnect($errorCode)',
   };
+
+  // Matches ApiErrorsInterceptor: both the backend 4029 and HTTP 429 mean
+  // "too many requests".
+  bool _isTooManyRequests(int errorCode) => errorCode == 4029 || errorCode == 429;
 
   void _handleConnectionTimeout(TimeoutException e, StackTrace stackTrace) {
     _userIntentsStore.userIntent = null;
@@ -602,7 +606,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   VpnError? _buildConnectionError(Object e, int errorCode) => switch (e) {
     UnavailableLocationException() || DeviceLimitReachedException() => null,
     _ =>
-      errorCode == 4029
+      _isTooManyRequests(errorCode)
           ? const VpnError(VpnErrorType.tooManyRequests)
           : VpnError(VpnErrorType.failedToConnect, errorCode: errorCode),
   };
