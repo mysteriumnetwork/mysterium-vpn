@@ -259,12 +259,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IPs de datacenter otimizados para velocidade e desempenho.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("IPs residenciais"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Fornecidos por residências reais. Quase indetectáveis, mas menos estáveis.",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs são fornecidos por dispositivos domésticos reais, então a disponibilidade pode mudar com o tempo.\n\nSe um nó fica offline, o app reconecta você ao Residential IP disponível mais próximo.",
+      "IPs residenciais são fornecidos por dispositivos domésticos reais, então a disponibilidade pode mudar com o tempo.\n\nSe um nó fica offline, o app reconecta você ao IP residencial disponível mais próximo.",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "Por que meu IP pode mudar?",
@@ -351,7 +351,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Oculte sua identidade real com um toque",
     ),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "Com Residential IPs, sua conexão parece natural — não como tráfego típico de VPN.",
+      "Com IPs residenciais, sua conexão parece natural — não como tráfego típico de VPN.",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Nem toda VPN funciona igual"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Abrir app de e-mail"),
@@ -464,7 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppSuccess": MessageLookupByLibrary.simpleMessage("O app foi redefinido com sucesso."),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Redefinir app"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Redefinir"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("Residencial"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "Parece um usuário real",
     ),
@@ -472,9 +472,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Mais difíceis de detectar",
     ),
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Menos bloqueios"),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IPS RESIDENCIAIS"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs vêm de dispositivos domésticos reais, fazendo seu tráfego parecer uso normal da internet.",
+      "IPs residenciais vêm de dispositivos domésticos reais, fazendo seu tráfego parecer uso normal da internet.",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage(
       "Dispositivos domésticos reais",
@@ -486,15 +486,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "A disponibilidade pode mudar",
     ),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "Se seu IP atual ficar indisponível, o app reconecta você ao Residential IP disponível mais próximo.",
+      "Se seu IP atual ficar indisponível, o app reconecta você ao IP residencial disponível mais próximo.",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("Reconexão automática"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Entendi"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs são diferentes dos IPs de datacenter. Veja o que esperar.",
+      "IPs residenciais são diferentes dos IPs de datacenter. Veja o que esperar.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
-      "Como funcionam os Residential IPs",
+      "Como funcionam os IPs residenciais",
     ),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Tentar de novo"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Deixar uma avaliação"),
@@ -649,11 +649,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 servidores"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("Protocolo VPN"),
     "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage(
-      "Mais de 7.500 Residential IPs",
+      "Mais de 7.500 IPs residenciais",
     ),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("Protocolo VPN"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Opções em nível de cidade"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("IPs residenciais"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Apareça como um usuário doméstico comum, permitindo acessar serviços de streaming e evitar a detecção de VPN.",
     ),
@@ -671,7 +671,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "para acessar mais de 7.500 Residential IPs",
+      "para acessar mais de 7.500 IPs residenciais",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Ver todos os planos"),

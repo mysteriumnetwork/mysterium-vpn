@@ -259,12 +259,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP de centres de données optimisées pour la vitesse et la performance.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("IP résidentielles"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Fournies par de vrais foyers. Quasi indétectables mais moins stables.",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Les Residential IPs sont fournies par des appareils domestiques réels, leur disponibilité peut donc varier.\n\nSi un nœud passe hors ligne, l\'application te reconnecte à la Residential IP disponible la plus proche.",
+      "Les IP résidentielles sont fournies par des appareils domestiques réels, leur disponibilité peut donc varier.\n\nSi un nœud passe hors ligne, l\'application te reconnecte à l\'IP résidentielle disponible la plus proche.",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "Pourquoi mon IP peut-elle changer ?",
@@ -349,7 +349,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Masque ta vraie identité en un geste",
     ),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "Avec les Residential IPs, ta connexion paraît naturelle, pas comme un trafic VPN classique.",
+      "Avec les IP résidentielles, ta connexion paraît naturelle, pas comme un trafic VPN classique.",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tous les VPN ne se valent pas"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Ouvrir l\'application e-mail"),
@@ -468,7 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppSuccess": MessageLookupByLibrary.simpleMessage("L\'application a été réinitialisée."),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Réinitialiser l\'application"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Réinitialiser"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("Résidentiel"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "Ressemble à un vrai utilisateur",
     ),
@@ -478,9 +478,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage(
       "Moins de blocages",
     ),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IP RÉSIDENTIELLES"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Les Residential IPs proviennent de vrais appareils domestiques, ce qui donne à ton trafic l\'apparence d\'une utilisation internet classique.",
+      "Les IP résidentielles proviennent de vrais appareils domestiques, ce qui donne à ton trafic l\'apparence d\'une utilisation internet classique.",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage(
       "Vrais appareils domestiques",
@@ -492,17 +492,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "La disponibilité peut changer",
     ),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "Si ton IP actuelle devient indisponible, l\'application te reconnecte à la Residential IP disponible la plus proche.",
+      "Si ton IP actuelle devient indisponible, l\'application te reconnecte à l\'IP résidentielle disponible la plus proche.",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage(
       "Reconnexion automatique",
     ),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("J\'ai compris"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Les Residential IPs sont différentes des IP de centre de données. Voici à quoi t\'attendre.",
+      "Les IP résidentielles sont différentes des IP de centre de données. Voici à quoi t\'attendre.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
-      "Comment fonctionnent les Residential IPs",
+      "Comment fonctionnent les IP résidentielles",
     ),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Réessayer"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Laisser un avis"),
@@ -659,11 +659,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 serveurs"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("Protocole VPN"),
     "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage(
-      "Plus de 7 500 Residential IPs",
+      "Plus de 7 500 IP résidentielles",
     ),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("Protocole VPN"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Choix au niveau de la ville"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("IP résidentielles"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Apparais comme un utilisateur domestique normal, ce qui te permet d\'accéder aux services de streaming et d\'éviter la détection VPN.",
     ),
@@ -683,7 +683,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Améliorer"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "pour accéder à plus de 7 500 Residential IPs",
+      "pour accéder à plus de 7 500 IP résidentielles",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage(

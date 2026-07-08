@@ -225,12 +225,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "速度とパフォーマンスに最適化されたデータセンター IP。",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "実際の家庭から提供。ほぼ検出不可能ですが安定性は低めです。",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs は実際の家庭用デバイスから提供されるため、利用可否は時間とともに変わることがあります。\n\nノードがオフラインになると、アプリは最寄りの利用可能な Residential IP に再接続します。",
+      "レジデンシャル IP は実際の家庭用デバイスから提供されるため、利用可否は時間とともに変わることがあります。\n\nノードがオフラインになると、アプリは最寄りの利用可能な レジデンシャル IP に再接続します。",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage("IP はなぜ変わるのですか？"),
     "it": MessageLookupByLibrary.simpleMessage("イタリア語"),
@@ -299,7 +299,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "onboardingStep2Title": MessageLookupByLibrary.simpleMessage("ワンタップで本当の身元を隠す"),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs なら、接続が自然に見え、一般的な VPN トラフィックのようには見えません。",
+      "レジデンシャル IP なら、接続が自然に見え、一般的な VPN トラフィックのようには見えません。",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("すべての VPN が同じではありません"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("メールアプリを開く"),
@@ -388,13 +388,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppSuccess": MessageLookupByLibrary.simpleMessage("アプリを正常にリセットしました。"),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("アプリをリセット"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("リセット"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("レジデンシャル"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("本物のユーザーに見える"),
     "residentialCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("検出されにくい"),
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("ブロックが少ない"),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs は実際の家庭用デバイスから提供されるため、トラフィックが通常のインターネット利用のように見えます。",
+      "レジデンシャル IP は実際の家庭用デバイスから提供されるため、トラフィックが通常のインターネット利用のように見えます。",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage("実際の家庭用デバイス"),
     "residentialEducationBlock2Body": MessageLookupByLibrary.simpleMessage(
@@ -402,14 +402,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationBlock2Title": MessageLookupByLibrary.simpleMessage("利用可否は変わることがあります"),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "現在の IP が利用できなくなると、アプリは最寄りの利用可能な Residential IP に再接続します。",
+      "現在の IP が利用できなくなると、アプリは最寄りの利用可能な レジデンシャル IP に再接続します。",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("自動再接続"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("わかりました"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs はデータセンター IP とは異なります。知っておきたいポイントをご紹介します。",
+      "レジデンシャル IP はデータセンター IP とは異なります。知っておきたいポイントをご紹介します。",
     ),
-    "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Residential IPs の仕組み"),
+    "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("レジデンシャル IP の仕組み"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("再試行"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("レビューを書く"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage("素晴らしいですね。よろしければレビューを書いていただけますか？"),
@@ -524,10 +524,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 サーバー"),
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 サーバー"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("VPN プロトコル"),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7,500 以上の Residential IPs"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7,500 以上の レジデンシャル IP"),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("VPN プロトコル"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("都市単位で選択"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "通常の家庭ユーザーのように見せることで、ストリーミングサービスにアクセスでき、VPN の検出を回避できます。",
     ),
@@ -543,7 +543,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("アップグレード"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "7,500 以上の Residential IPs にアクセス",
+      "7,500 以上の レジデンシャル IP にアクセス",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("すべてのプランを見る"),

@@ -256,12 +256,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP z centrów danych zoptymalizowane pod kątem prędkości i wydajności.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("IP mieszkaniowe"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Dostarczane przez prawdziwe gospodarstwa domowe. Prawie niewykrywalne, ale mniej stabilne.",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs są dostarczane przez prawdziwe urządzenia domowe, więc ich dostępność może się zmieniać w czasie.\n\nGdy węzeł przejdzie w tryb offline, aplikacja ponownie połączy Cię z najbliższym dostępnym residential IP.",
+      "IP mieszkaniowe są dostarczane przez prawdziwe urządzenia domowe, więc ich dostępność może się zmieniać w czasie.\n\nGdy węzeł przejdzie w tryb offline, aplikacja ponownie połączy Cię z najbliższym dostępnym mieszkaniowym IP.",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "Dlaczego mój adres IP może się zmieniać?",
@@ -348,7 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ukryj swoją prawdziwą tożsamość jednym dotknięciem",
     ),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "Dzięki residential IPs Twoje połączenie wygląda naturalnie – nie jak typowy ruch VPN.",
+      "Dzięki IP mieszkaniowym Twoje połączenie wygląda naturalnie – nie jak typowy ruch VPN.",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage(
       "Nie wszystkie VPN-y działają tak samo",
@@ -463,7 +463,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Zresetuj aplikację"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Resetuj"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("Mieszkaniowe"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "Wygląda jak prawdziwy użytkownik",
     ),
@@ -471,9 +471,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Trudniejsze do wykrycia",
     ),
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Mniej blokad"),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IP MIESZKANIOWE"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs pochodzą z prawdziwych urządzeń domowych, dzięki czemu Twój ruch wygląda jak zwykłe korzystanie z internetu.",
+      "IP mieszkaniowe pochodzą z prawdziwych urządzeń domowych, dzięki czemu Twój ruch wygląda jak zwykłe korzystanie z internetu.",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage(
       "Prawdziwe urządzenia domowe",
@@ -485,17 +485,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dostępność może się zmieniać",
     ),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "Gdy Twój bieżący adres IP stanie się niedostępny, aplikacja ponownie połączy Cię z najbliższym dostępnym residential IP.",
+      "Gdy Twój bieżący adres IP stanie się niedostępny, aplikacja ponownie połączy Cię z najbliższym dostępnym mieszkaniowym IP.",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage(
       "Automatyczne ponowne połączenie",
     ),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Rozumiem"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs różnią się od IP z centrów danych. Oto, czego można się spodziewać.",
+      "IP mieszkaniowe różnią się od IP z centrów danych. Oto, czego można się spodziewać.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
-      "Jak działają residential IPs",
+      "Jak działają IP mieszkaniowe",
     ),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Ponów"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Napisz recenzję"),
@@ -647,10 +647,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 serwerów"),
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 serwerów"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("Protokół VPN"),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("Ponad 7500 residential IPs"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("Ponad 7500 IP mieszkaniowych"),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("Protokół VPN"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Wybór na poziomie miast"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("IP mieszkaniowe"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Wyglądaj jak zwykły użytkownik domowy, co pozwala korzystać z usług streamingowych i unikać wykrycia VPN.",
     ),
@@ -668,7 +668,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Ulepsz"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "aby uzyskać dostęp do ponad 7500 residential IPs",
+      "aby uzyskać dostęp do ponad 7500 IP mieszkaniowych",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage(

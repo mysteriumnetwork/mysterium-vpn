@@ -248,12 +248,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter dioptimalkan untuk kecepatan dan performa.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("IP residensial"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Disediakan oleh rumah tangga asli. Nyaris tak terdeteksi tapi kurang stabil.",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs disediakan oleh perangkat rumah tangga asli, jadi ketersediaannya bisa berubah seiring waktu.\n\nJika sebuah node offline, aplikasi akan menyambungkanmu ke Residential IP terdekat yang tersedia.",
+      "IP residensial disediakan oleh perangkat rumah tangga asli, jadi ketersediaannya bisa berubah seiring waktu.\n\nJika sebuah node offline, aplikasi akan menyambungkanmu ke IP residensial terdekat yang tersedia.",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "Kenapa IP-ku bisa berubah?",
@@ -332,7 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sembunyikan identitas aslimu dalam satu ketukan",
     ),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "Dengan Residential IPs, koneksimu tampak alami - bukan seperti lalu lintas VPN biasa.",
+      "Dengan IP residensial, koneksimu tampak alami - bukan seperti lalu lintas VPN biasa.",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tidak semua VPN bekerja sama"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Buka aplikasi email"),
@@ -439,7 +439,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppSuccess": MessageLookupByLibrary.simpleMessage("Aplikasi berhasil direset."),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Reset aplikasi"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Reset"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("Residensial"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "Tampak seperti pengguna asli",
     ),
@@ -449,9 +449,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage(
       "Lebih jarang diblokir",
     ),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IP RESIDENSIAL"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs berasal dari perangkat rumah tangga asli, membuat lalu lintasmu tampak seperti penggunaan internet biasa.",
+      "IP residensial berasal dari perangkat rumah tangga asli, membuat lalu lintasmu tampak seperti penggunaan internet biasa.",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage(
       "Perangkat rumah tangga asli",
@@ -463,16 +463,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ketersediaan bisa berubah",
     ),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "Jika IP-mu saat ini tidak tersedia, aplikasi akan menyambungkanmu ke Residential IP terdekat yang tersedia.",
+      "Jika IP-mu saat ini tidak tersedia, aplikasi akan menyambungkanmu ke IP residensial terdekat yang tersedia.",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage(
       "Penyambungan ulang otomatis",
     ),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Mengerti"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs berbeda dari IP datacenter. Berikut yang bisa kamu harapkan.",
+      "IP residensial berbeda dari IP datacenter. Berikut yang bisa kamu harapkan.",
     ),
-    "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja Residential IPs"),
+    "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Coba lagi"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Beri ulasan"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
@@ -613,10 +613,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 server"),
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 server"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("Protokol VPN"),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7.500+ Residential IPs"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7.500+ IP residensial"),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("Protokol VPN"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Pilihan tingkat kota"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("IP residensial"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Tampil sebagai pengguna rumahan biasa, memungkinkanmu mengakses layanan streaming dan menghindari deteksi VPN.",
     ),
@@ -634,7 +634,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "untuk mengakses 7.500+ Residential IPs",
+      "untuk mengakses 7.500+ IP residensial",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Lihat semua paket"),

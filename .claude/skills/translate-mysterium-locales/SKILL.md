@@ -105,12 +105,34 @@ When converting English `one/other` plurals to other locales, **only add CLDR-re
 | `preferences` vs `settings` (two section headers in same screen) | both → "Einstellungen" | distinguish with `preferences` → "Allgemein" (General) in DE; "Preferencias" works in ES |
 | `kill switch` (tooltip title) | "Notausschalter" | **"Kill Switch"** — industry term, kept English |
 | `BEST VALUE` (badge above plan card) | "MEJOR VALOR" / "BESTER WERT" | **"MEJOR PRECIO" / "BESTPREIS"** — German/Spanish marketing convention |
-| `residential` / `Residential IPs` (technical term) | "Residencial" / "IPs Residencial" | **"Residential" / "Residential IPs"** — VPN-industry English |
+| `residential` / `Residential IPs` (IP-type term) | keep English "Residential IPs" | **Localize per-locale** — mirror the `datacenter` treatment (native word or transliteration, `IP` acronym stays Latin). See the "Datacenter / Residential IP-type terms" section below. |
 | `stayButton` ("Stay") on logout/device-limit dialog | could be "remain logged in" | "Bleiben" / "Quedarme" — means "stay on this screen", a dismiss action |
 | `recentLocations` (section header for VPN locations) | "Ubicaciones recientes" / "Letzte Standorte" | both work; DE "Zuletzt verwendet" is more idiomatic for a recents list |
 | Comparison-card bullet points (`*ComparisonCardItem*`) | full-sentence translation | trim to ≤ 4 words; these are pill-style bullets |
 | `userIntent*` keys | translate as generic phrase | these are **preset names** (Best speed, Max privacy, Low latency) — keep as product feature labels, not generic advice |
 | `fastLabel` / `batterySaverLabel` (protocol suffix appended in parens) | full descriptor | short adjective (DE: "Schnell" / "Energiesparmodus"; fits in `Protocol (X)`) |
+
+## Datacenter / Residential IP-type terms
+
+The two IP-type terms — **`datacenter`** (`highSpeed`, `ipTypeDataCenter`, …) and **`residential`** (`ipTypeResidential`, `residential`, `residentialCentre…`, `residentialEducation…`, `subscriptionPlanResidentialIPs`, …) — are **localized in every locale**, NOT kept English. The `IP` / `IPs` acronym always stays Latin; only the descriptor word is translated (native term) or transliterated (non-Latin scripts). Keep the two terms parallel within a locale (same strategy for both). Use these agreed forms:
+
+| Locale | `datacenter` → | `residential` → | short label (`residential`) |
+|---|---|---|---|
+| en (source) | Datacenter IPs | Residential IPs | Residential |
+| de | Datacenter-IPs | **Haushalts-IPs** | Haushalt |
+| es | IP de centro de datos | **IP residenciales** | Residencial |
+| fr | IP de centre de données | **IP résidentielles** | Résidentiel |
+| it | IP datacenter | **IP residenziali** | Residenziale |
+| pt / pt-BR | IPs de datacenter | **IPs residenciais** | Residencial |
+| tr | Veri merkezi IP'leri | **Konut IP'leri** (case-suffix per sentence) | Konut |
+| pl | IP z centrów danych | **IP mieszkaniowe** (declined per sentence) | Mieszkaniowe |
+| id | IP datacenter | **IP residensial** | Residensial |
+| ja | データセンター IP | **レジデンシャル IP** (katakana) | レジデンシャル |
+| zh | 数据中心 IP | **住宅 IP** | 住宅 |
+| hi | डेटासेंटर IPs | **आवासीय IPs** | आवासीय |
+| ar | عناوين IP لمراكز البيانات | **عناوين IP سكنية** | سكني |
+
+Established 2026-07: the app-repo owner explicitly decided residential must be localized everywhere (so it stops looking untranslated next to the already-localized datacenter). Do NOT revert either term to bare English in a translated locale.
 
 ## Validation Script
 

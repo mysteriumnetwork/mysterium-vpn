@@ -258,12 +258,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "गति और प्रदर्शन के लिए अनुकूलित डेटासेंटर IPs।",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("आवासीय IPs"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "असली घरों द्वारा प्रदान किए गए। लगभग पता न लगने योग्य लेकिन कम स्थिर।",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs असली घरेलू डिवाइस से प्रदान किए जाते हैं, इसलिए समय के साथ उपलब्धता बदल सकती है।\n\nयदि कोई नोड ऑफ़लाइन हो जाता है, तो ऐप आपको नज़दीकी उपलब्ध residential IP से फिर से कनेक्ट कर देता है।",
+      "आवासीय IPs असली घरेलू डिवाइस से प्रदान किए जाते हैं, इसलिए समय के साथ उपलब्धता बदल सकती है।\n\nयदि कोई नोड ऑफ़लाइन हो जाता है, तो ऐप आपको नज़दीकी उपलब्ध आवासीय IP से फिर से कनेक्ट कर देता है।",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "मेरा IP क्यों बदल सकता है?",
@@ -344,7 +344,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "एक टैप में अपनी असली पहचान छिपाएँ",
     ),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "residential IPs के साथ, आपका कनेक्शन स्वाभाविक दिखता है - सामान्य VPN ट्रैफ़िक जैसा नहीं।",
+      "आवासीय IPs के साथ, आपका कनेक्शन स्वाभाविक दिखता है - सामान्य VPN ट्रैफ़िक जैसा नहीं।",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("सभी VPN एक जैसे काम नहीं करते"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("ईमेल ऐप खोलें"),
@@ -453,15 +453,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppSuccess": MessageLookupByLibrary.simpleMessage("ऐप सफलतापूर्वक रीसेट हो गया।"),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("ऐप रीसेट करें"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("रीसेट करें"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("आवासीय"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "असली उपयोगकर्ता जैसा दिखता है",
     ),
     "residentialCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("पता लगाना कठिन"),
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("कम ब्लॉक"),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("आवासीय IPs"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs असली घरेलू डिवाइस से आते हैं, जिससे आपका ट्रैफ़िक सामान्य इंटरनेट उपयोग जैसा दिखता है।",
+      "आवासीय IPs असली घरेलू डिवाइस से आते हैं, जिससे आपका ट्रैफ़िक सामान्य इंटरनेट उपयोग जैसा दिखता है।",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage("असली घरेलू डिवाइस"),
     "residentialEducationBlock2Body": MessageLookupByLibrary.simpleMessage(
@@ -469,15 +469,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationBlock2Title": MessageLookupByLibrary.simpleMessage("उपलब्धता बदल सकती है"),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "यदि आपका मौजूदा IP अनुपलब्ध हो जाता है, तो ऐप आपको नज़दीकी उपलब्ध residential IP से फिर से कनेक्ट कर देता है।",
+      "यदि आपका मौजूदा IP अनुपलब्ध हो जाता है, तो ऐप आपको नज़दीकी उपलब्ध आवासीय IP से फिर से कनेक्ट कर देता है।",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("स्वतः फिर से कनेक्शन"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("ठीक है"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs डेटासेंटर IPs से अलग होते हैं। यहाँ जानें कि क्या उम्मीद करें।",
+      "आवासीय IPs डेटासेंटर IPs से अलग होते हैं। यहाँ जानें कि क्या उम्मीद करें।",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs कैसे काम करते हैं",
+      "आवासीय IPs कैसे काम करते हैं",
     ),
     "retryBtn": MessageLookupByLibrary.simpleMessage("फिर से प्रयास करें"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("समीक्षा दें"),
@@ -625,10 +625,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 सर्वर"),
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 सर्वर"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("VPN प्रोटोकॉल"),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7,500+ residential IPs"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7,500+ आवासीय IPs"),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("VPN प्रोटोकॉल"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("शहर-स्तर के विकल्प"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IPs"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("आवासीय IPs"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "एक सामान्य घरेलू उपयोगकर्ता की तरह दिखें, जिससे आप स्ट्रीमिंग सेवाओं तक पहुँच पाएँ और VPN डिटेक्शन से बच सकें।",
     ),
@@ -646,7 +646,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("अपग्रेड करें"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "7,500+ residential IPs तक पहुँच के लिए",
+      "7,500+ आवासीय IPs तक पहुँच के लिए",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("सभी प्लान देखें"),

@@ -253,12 +253,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Hız ve performans için optimize edilmiş veri merkezi IP\'leri.",
     ),
-    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IP\'ler"),
+    "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Konut IP\'leri"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Gerçek hanelerce sağlanır. Neredeyse tespit edilemez ama daha az kararlıdır.",
     ),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler gerçek ev cihazlarınca sağlanır, bu yüzden kullanılabilirlik zamanla değişebilir.\n\nBir düğüm çevrimdışı olursa uygulama seni en yakın kullanılabilir residential IP\'ye yeniden bağlar.",
+      "Konut IP\'leri gerçek ev cihazlarınca sağlanır, bu yüzden kullanılabilirlik zamanla değişebilir.\n\nBir düğüm çevrimdışı olursa uygulama seni en yakın kullanılabilir konut IP\'sine yeniden bağlar.",
     ),
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "IP\'m neden değişebilir?",
@@ -339,7 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Gerçek kimliğini tek dokunuşla gizle",
     ),
     "onboardingStep3Desc": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'lerle bağlantın doğal görünür - tipik VPN trafiği gibi değil.",
+      "Konut IP\'leriyle bağlantın doğal görünür - tipik VPN trafiği gibi değil.",
     ),
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tüm VPN\'ler aynı çalışmaz"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("E-posta uygulamasını aç"),
@@ -452,7 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetAppSuccess": MessageLookupByLibrary.simpleMessage("Uygulama başarıyla sıfırlandı."),
     "resetAppTitle": MessageLookupByLibrary.simpleMessage("Uygulamayı sıfırla"),
     "resetBtn": MessageLookupByLibrary.simpleMessage("Sıfırla"),
-    "residential": MessageLookupByLibrary.simpleMessage("Residential"),
+    "residential": MessageLookupByLibrary.simpleMessage("Konut"),
     "residentialCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "Gerçek kullanıcı gibi görünür",
     ),
@@ -460,11 +460,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tespiti daha zor",
     ),
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Daha az engel"),
-    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage(
-      "RESIDENTIAL IP\'LER",
-    ),
+    "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("KONUT IP\'LERİ"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler gerçek ev cihazlarından gelir; böylece trafiğin normal internet kullanımı gibi görünür.",
+      "Konut IP\'leri gerçek ev cihazlarından gelir; böylece trafiğin normal internet kullanımı gibi görünür.",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage("Gerçek ev cihazları"),
     "residentialEducationBlock2Body": MessageLookupByLibrary.simpleMessage(
@@ -474,17 +472,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kullanılabilirlik değişebilir",
     ),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "Mevcut IP\'n kullanılamaz hale gelirse uygulama seni en yakın kullanılabilir residential IP\'ye yeniden bağlar.",
+      "Mevcut IP\'n kullanılamaz hale gelirse uygulama seni en yakın kullanılabilir konut IP\'sine yeniden bağlar.",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage(
       "Otomatik yeniden bağlanma",
     ),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Anladım"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler veri merkezi IP\'lerinden farklıdır. İşte beklemen gerekenler.",
+      "Konut IP\'leri veri merkezi IP\'lerinden farklıdır. İşte beklemen gerekenler.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler nasıl çalışır",
+      "Konut IP\'leri nasıl çalışır",
     ),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Yeniden dene"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Yorum bırak"),
@@ -630,10 +628,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanPF3Basic": MessageLookupByLibrary.simpleMessage("10 sunucu"),
     "subscriptionPlanPF3Plus": MessageLookupByLibrary.simpleMessage("100 sunucu"),
     "subscriptionPlanPF4Basic": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
-    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7.500+ residential IP"),
+    "subscriptionPlanPF4Plus": MessageLookupByLibrary.simpleMessage("7.500+ konut IP"),
     "subscriptionPlanPF5Plus": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
     "subscriptionPlanPF6Plus": MessageLookupByLibrary.simpleMessage("Şehir düzeyinde seçim"),
-    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Residential IP\'ler"),
+    "subscriptionPlanResidentialIPs": MessageLookupByLibrary.simpleMessage("Konut IP\'leri"),
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Normal bir ev kullanıcısı gibi görünerek streaming hizmetlerine erişmeni ve VPN tespitinden kaçınmanı sağlar.",
     ),
@@ -653,7 +651,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Yükselt"),
     "subscriptionUpgradeCTA": m23,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
-      "7.500+ residential IP\'ye erişmek için",
+      "7.500+ konut IP\'ye erişmek için",
     ),
     "subscriptionUpgradeModalTitle": m24,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
