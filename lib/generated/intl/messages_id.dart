@@ -114,10 +114,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Perbarui sekarang"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Lewati pembatasan"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("Batal"),
+    "cancelDisconnects": MessageLookupByLibrary.simpleMessage("Terputus"),
+    "cancelDowntimes": MessageLookupByLibrary.simpleMessage("Waktu henti"),
+    "cancelError7040": MessageLookupByLibrary.simpleMessage("Kesalahan 7040"),
+    "cancelLatency": MessageLookupByLibrary.simpleMessage("Latensi"),
+    "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Fitur hilang"),
+    "cancelSpeed": MessageLookupByLibrary.simpleMessage("Kecepatan"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Masukkan detail selengkapnya...",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Alasan pembatalan"),
+    "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Terlalu mahal"),
+    "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
+      "Tidak dapat mengakses situs yang diblokir",
+    ),
+    "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("Masalah kegunaan"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Batalkan langgananmu di langganan App Store sebelum menghapus akun.",
     ),
@@ -225,7 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Tersembunyi"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("Latensi tinggi"),
-    "highSpeed": MessageLookupByLibrary.simpleMessage("Kecepatan tinggi"),
+    "highSpeed": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Beranda"),
     "id": MessageLookupByLibrary.simpleMessage("Indonesia"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Lokasi salah"),
@@ -233,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Alamat IP"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP kecepatan tinggi"),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter dioptimalkan untuk kecepatan dan performa.",
     ),
@@ -459,7 +470,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Mengerti"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs berbeda dari IP kecepatan tinggi. Berikut yang bisa kamu harapkan.",
+      "Residential IPs berbeda dari IP datacenter. Berikut yang bisa kamu harapkan.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja Residential IPs"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Coba lagi"),

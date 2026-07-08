@@ -83,8 +83,17 @@ class S {
     'buttonUpdateApp': [],
     'bypassRestrictionsReason': [],
     'cancelBtn': [],
+    'cancelDisconnects': [],
+    'cancelDowntimes': [],
+    'cancelError7040': [],
+    'cancelLatency': [],
+    'cancelMissingFeatures': [],
+    'cancelSpeed': [],
     'cancelSurveyFeedbackHint': [],
     'cancelSurveyTitle': [],
+    'cancelTooExpensive': [],
+    'cancelUnableToAccessBlockedSites': [],
+    'cancelUsabilityIssues': [],
     'cancelYourSubsMess': [],
     'checkSubsStatusFailedDesc': [],
     'checkSubsStatusFailedTitle': [],
@@ -644,6 +653,36 @@ class S {
     return Intl.message('Cancel', name: 'cancelBtn', desc: '', args: []);
   }
 
+  /// `Disconnects`
+  String get cancelDisconnects {
+    return Intl.message('Disconnects', name: 'cancelDisconnects', desc: '', args: []);
+  }
+
+  /// `Downtimes`
+  String get cancelDowntimes {
+    return Intl.message('Downtimes', name: 'cancelDowntimes', desc: '', args: []);
+  }
+
+  /// `Error 7040`
+  String get cancelError7040 {
+    return Intl.message('Error 7040', name: 'cancelError7040', desc: '', args: []);
+  }
+
+  /// `Latency`
+  String get cancelLatency {
+    return Intl.message('Latency', name: 'cancelLatency', desc: '', args: []);
+  }
+
+  /// `Missing features`
+  String get cancelMissingFeatures {
+    return Intl.message('Missing features', name: 'cancelMissingFeatures', desc: '', args: []);
+  }
+
+  /// `Speed`
+  String get cancelSpeed {
+    return Intl.message('Speed', name: 'cancelSpeed', desc: '', args: []);
+  }
+
   /// `Please enter more details...`
   String get cancelSurveyFeedbackHint {
     return Intl.message(
@@ -657,6 +696,26 @@ class S {
   /// `Reasons for cancelling`
   String get cancelSurveyTitle {
     return Intl.message('Reasons for cancelling', name: 'cancelSurveyTitle', desc: '', args: []);
+  }
+
+  /// `Too expensive`
+  String get cancelTooExpensive {
+    return Intl.message('Too expensive', name: 'cancelTooExpensive', desc: '', args: []);
+  }
+
+  /// `Unable to access blocked sites`
+  String get cancelUnableToAccessBlockedSites {
+    return Intl.message(
+      'Unable to access blocked sites',
+      name: 'cancelUnableToAccessBlockedSites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Usability issues`
+  String get cancelUsabilityIssues {
+    return Intl.message('Usability issues', name: 'cancelUsabilityIssues', desc: '', args: []);
   }
 
   /// `Cancel your subscription on the App Store subscriptions before deleting your account.`
@@ -1189,9 +1248,9 @@ class S {
     return Intl.message('High latency', name: 'highLatencyReason', desc: '', args: []);
   }
 
-  /// `High-speed`
+  /// `Datacenter`
   String get highSpeed {
-    return Intl.message('High-speed', name: 'highSpeed', desc: '', args: []);
+    return Intl.message('Datacenter', name: 'highSpeed', desc: '', args: []);
   }
 
   /// `Home`
@@ -1244,9 +1303,9 @@ class S {
     );
   }
 
-  /// `High-speed IPs`
+  /// `Datacenter IPs`
   String get ipTypeDataCenter {
-    return Intl.message('High-speed IPs', name: 'ipTypeDataCenter', desc: '', args: []);
+    return Intl.message('Datacenter IPs', name: 'ipTypeDataCenter', desc: '', args: []);
   }
 
   /// `Datacenter IPs optimised for speed and performance.`
@@ -2295,10 +2354,10 @@ class S {
     return Intl.message('Got it', name: 'residentialEducationGotIt', desc: '', args: []);
   }
 
-  /// `Residential IPs are different from high-speed IPs. Here’s what to expect.`
+  /// `Residential IPs are different from datacenter IPs. Here’s what to expect.`
   String get residentialEducationSubtitle {
     return Intl.message(
-      'Residential IPs are different from high-speed IPs. Here’s what to expect.',
+      'Residential IPs are different from datacenter IPs. Here’s what to expect.',
       name: 'residentialEducationSubtitle',
       desc: '',
       args: [],

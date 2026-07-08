@@ -115,10 +115,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("حدّث الآن"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("تجاوز القيود"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "cancelDisconnects": MessageLookupByLibrary.simpleMessage("انقطاعات الاتصال"),
+    "cancelDowntimes": MessageLookupByLibrary.simpleMessage("انقطاعات"),
+    "cancelError7040": MessageLookupByLibrary.simpleMessage("خطأ 7040"),
+    "cancelLatency": MessageLookupByLibrary.simpleMessage("الكمون"),
+    "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("ميزات مفقودة"),
+    "cancelSpeed": MessageLookupByLibrary.simpleMessage("السرعة"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "يُرجى إدخال المزيد من التفاصيل...",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
+    "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
+    "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
+      "غير قادر على الوصول إلى المواقع المحجوبة",
+    ),
+    "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("مشاكل في سهولة الاستخدام"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "ألغِ اشتراكك في اشتراكات App Store قبل حذف حسابك.",
     ),
@@ -230,7 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hi": MessageLookupByLibrary.simpleMessage("الهندية"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("مخفي"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("زمن استجابة مرتفع"),
-    "highSpeed": MessageLookupByLibrary.simpleMessage("عالي السرعة"),
+    "highSpeed": MessageLookupByLibrary.simpleMessage("مركز البيانات"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "id": MessageLookupByLibrary.simpleMessage("الإندونيسية"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("موقع غير صحيح"),
@@ -240,7 +251,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("عنوان IP"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("عناوين IP عالية السرعة"),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("عناوين IP لمراكز البيانات"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "عناوين IP لمراكز البيانات مُحسّنة للسرعة والأداء.",
     ),
@@ -456,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("إعادة اتصال تلقائية"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("فهمت"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "تختلف عناوين IP السكنية عن عناوين IP عالية السرعة. إليك ما يمكن توقعه.",
+      "تختلف عناوين IP السكنية عن عناوين IP لمراكز البيانات. إليك ما يمكن توقعه.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("كيف تعمل عناوين IP السكنية"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),

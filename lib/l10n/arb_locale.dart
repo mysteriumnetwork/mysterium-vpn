@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 
 /// Single source of truth for the locales the app supports — the set `S` was
@@ -18,6 +19,12 @@ Locale arbLocaleFor(Locale locale) {
 
 Locale? _loadedArbLocale;
 
+/// The app's active locale, kept in sync with `S.current` by [loadLocalizations].
+/// Prefer this over `Localizations.localeOf` for display-time locale reads that
+/// must match `S.current` — `Localizations` can lag or differ per context on a
+/// switch, yielding stale values (e.g. location names).
+Locale activeLocale = kFallbackLocale;
+
 /// Bumped after an over-the-air translation update so the widget tree rebuilds
 /// and re-reads `S.current` — `S.load` alone doesn't notify Flutter.
 final localizationRevision = ValueNotifier<int>(0);
@@ -26,6 +33,7 @@ final localizationRevision = ValueNotifier<int>(0);
 /// locale is already active. Pass [force] after an OTA update to reload the same
 /// locale with refreshed translations.
 Future<void> loadLocalizations(Locale locale, {bool force = false}) async {
+  activeLocale = locale;
   final target = arbLocaleFor(locale);
   if (!force && target == _loadedArbLocale) {
     return;

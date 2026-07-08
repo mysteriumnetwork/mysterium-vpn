@@ -116,8 +116,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("अभी अपडेट करें"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("प्रतिबंध बायपास करना"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("रद्द करें"),
+    "cancelDisconnects": MessageLookupByLibrary.simpleMessage("कनेक्शन टूटना"),
+    "cancelDowntimes": MessageLookupByLibrary.simpleMessage("डाउनटाइम"),
+    "cancelError7040": MessageLookupByLibrary.simpleMessage("त्रुटि 7040"),
+    "cancelLatency": MessageLookupByLibrary.simpleMessage("विलंबता"),
+    "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("सुविधाएँ अनुपलब्ध"),
+    "cancelSpeed": MessageLookupByLibrary.simpleMessage("गति"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("कृपया और विवरण दर्ज करें…"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("रद्द करने के कारण"),
+    "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("बहुत महंगा"),
+    "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
+      "अवरुद्ध साइटों तक पहुँच नहीं",
+    ),
+    "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("उपयोगिता संबंधी समस्याएँ"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "खाता हटाने से पहले App Store सदस्यता में अपनी सदस्यता रद्द करें।",
     ),
@@ -233,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hi": MessageLookupByLibrary.simpleMessage("हिन्दी"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("छिपा हुआ"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("उच्च लेटेंसी"),
-    "highSpeed": MessageLookupByLibrary.simpleMessage("हाई-स्पीड"),
+    "highSpeed": MessageLookupByLibrary.simpleMessage("डेटासेंटर"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("होम"),
     "id": MessageLookupByLibrary.simpleMessage("इंडोनेशियाई"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("गलत लोकेशन"),
@@ -243,7 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP पता"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("हाई-स्पीड IPs"),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("डेटासेंटर IPs"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "गति और प्रदर्शन के लिए अनुकूलित डेटासेंटर IPs।",
     ),
@@ -463,7 +474,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("स्वतः फिर से कनेक्शन"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("ठीक है"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs हाई-स्पीड IPs से अलग होते हैं। यहाँ जानें कि क्या उम्मीद करें।",
+      "Residential IPs डेटासेंटर IPs से अलग होते हैं। यहाँ जानें कि क्या उम्मीद करें।",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "Residential IPs कैसे काम करते हैं",

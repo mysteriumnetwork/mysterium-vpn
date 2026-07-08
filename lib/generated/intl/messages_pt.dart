@@ -40,10 +40,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m8(plan) => "Obter plano ${plan}";
 
   static String m9(location) =>
-      "Não há IPs alternativos disponíveis em ${location}. Escolha outro país ou cidade para obter um IP diferente na próxima vez.";
+      "Não existem IPs alternativos disponíveis em ${location}. Escolhe outro país ou cidade para obteres um IP diferente da próxima vez.\n";
 
   static String m10(location) =>
-      "Não há IPs alternativos disponíveis em ${location}. Escolha outro país para obter um IP diferente na próxima vez.";
+      "Não há IPs alternativos disponíveis em ${location}. Escolhe outro país para obter um IP diferente na próxima vez.";
 
   static String m11(count) =>
       "${Intl.plural(count, one: '${count} Cidade', other: '${count} Cidades')}";
@@ -119,8 +119,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Atualizar agora"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Ignorar restrições"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("Cancelar"),
+    "cancelDisconnects": MessageLookupByLibrary.simpleMessage("Desconexões"),
+    "cancelDowntimes": MessageLookupByLibrary.simpleMessage("Tempos de inatividade"),
+    "cancelError7040": MessageLookupByLibrary.simpleMessage("Erro 7040"),
+    "cancelLatency": MessageLookupByLibrary.simpleMessage("Latência"),
+    "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Recursos ausentes"),
+    "cancelSpeed": MessageLookupByLibrary.simpleMessage("Velocidade"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("Informe mais detalhes..."),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivos do cancelamento"),
+    "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Muito caro"),
+    "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
+      "Não consigo acessar sites bloqueados",
+    ),
+    "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("Problemas de usabilidade"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Cancele sua assinatura na App Store antes de excluir sua conta.",
     ),
@@ -234,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Oculto"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("Alta latência"),
-    "highSpeed": MessageLookupByLibrary.simpleMessage("Alta velocidade"),
+    "highSpeed": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Início"),
     "id": MessageLookupByLibrary.simpleMessage("Indonésio"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Localização incorreta"),
@@ -244,7 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Endereço IP"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IPs de alta velocidade"),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IPs de datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IPs de datacenter otimizados para velocidade e desempenho.",
     ),
@@ -416,7 +427,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "protocolPickerSettingTitle": MessageLookupByLibrary.simpleMessage("Trocar protocolo VPN"),
     "pt": MessageLookupByLibrary.simpleMessage("Português"),
-    "ptBR": MessageLookupByLibrary.simpleMessage("Português brasileiro"),
+    "ptBR": MessageLookupByLibrary.simpleMessage("Português do Brasil"),
     "pushNotificationsConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "Receba avisos sobre novos recursos, dicas úteis e ofertas exclusivas - só atualizações úteis.",
     ),
@@ -463,24 +474,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Menos bloqueios"),
     "residentialCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RESIDENTIAL IPS"),
     "residentialEducationBlock1Body": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs vêm de dispositivos domésticos reais, fazendo seu tráfego parecer uso normal da internet.",
+      "IPs residenciais provêm de dispositivos domésticos reais, simulando tráfego normal da Internet.",
     ),
     "residentialEducationBlock1Title": MessageLookupByLibrary.simpleMessage(
       "Dispositivos domésticos reais",
     ),
     "residentialEducationBlock2Body": MessageLookupByLibrary.simpleMessage(
-      "Como esses IPs vêm de dispositivos reais, alguns nós podem ficar offline de vez em quando.",
+      "Como estes IPs vêm de dispositivos reais, alguns podem ficar offline ocasionalmente.",
     ),
     "residentialEducationBlock2Title": MessageLookupByLibrary.simpleMessage(
       "A disponibilidade pode mudar",
     ),
     "residentialEducationBlock3Body": MessageLookupByLibrary.simpleMessage(
-      "Se seu IP atual ficar indisponível, o app reconecta você ao Residential IP disponível mais próximo.",
+      "Se o IP atual ficar indisponível, a app reconeta-te automaticamente ao IP residencial disponível mais próximo.",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("Reconexão automática"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Entendi"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs são diferentes dos IPs de alta velocidade. Veja o que esperar.",
+      "Residential IPs são diferentes dos IPs de datacenter. Veja o que esperar.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "Como funcionam os Residential IPs",
@@ -488,10 +499,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "retryBtn": MessageLookupByLibrary.simpleMessage("Tentar de novo"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Deixar uma avaliação"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
-      "Que ótimo! Você deixaria uma avaliação para nós?",
+      "ótimo! Gostarias de deixar uma avaliação?\n",
     ),
     "reviewSatisfactionTitle": MessageLookupByLibrary.simpleMessage(
-      "Você recomendaria este app a outras pessoas?",
+      "Recomendaria este app a outras pessoas?",
     ),
     "searchForLocations": MessageLookupByLibrary.simpleMessage("Buscar locais"),
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("Ver planos"),
@@ -691,7 +702,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Tentar novamente"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Tente buscar outro local"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
-      "Precisas de conceder permissão para iniciar o túnel VPN.",
+      "Precisas de conceder permissão para iniciar o VPN.",
     ),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Ocorreu um erro ao configurar o túnel",

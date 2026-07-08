@@ -119,8 +119,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Atualizar agora"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Ignorar restrições"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("Cancelar"),
+    "cancelDisconnects": MessageLookupByLibrary.simpleMessage("Desconexões"),
+    "cancelDowntimes": MessageLookupByLibrary.simpleMessage("Tempos de inatividade"),
+    "cancelError7040": MessageLookupByLibrary.simpleMessage("Erro 7040"),
+    "cancelLatency": MessageLookupByLibrary.simpleMessage("Latência"),
+    "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Recursos ausentes"),
+    "cancelSpeed": MessageLookupByLibrary.simpleMessage("Velocidade"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("Informe mais detalhes..."),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivos do cancelamento"),
+    "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Muito caro"),
+    "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
+      "Não consigo acessar sites bloqueados",
+    ),
+    "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("Problemas de usabilidade"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Cancele sua assinatura na App Store antes de excluir sua conta.",
     ),
@@ -234,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Oculto"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("Alta latência"),
-    "highSpeed": MessageLookupByLibrary.simpleMessage("Alta velocidade"),
+    "highSpeed": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Início"),
     "id": MessageLookupByLibrary.simpleMessage("Indonésio"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Localização incorreta"),
@@ -244,7 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Endereço IP"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IPs de alta velocidade"),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IPs de datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IPs de datacenter otimizados para velocidade e desempenho.",
     ),
@@ -480,7 +491,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("Reconexão automática"),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Entendi"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IPs são diferentes dos IPs de alta velocidade. Veja o que esperar.",
+      "Residential IPs são diferentes dos IPs de datacenter. Veja o que esperar.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "Como funcionam os Residential IPs",

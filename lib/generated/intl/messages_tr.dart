@@ -117,10 +117,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Şimdi güncelle"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Kısıtlamaları aş"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("İptal"),
+    "cancelDisconnects": MessageLookupByLibrary.simpleMessage("Bağlantı kopmaları"),
+    "cancelDowntimes": MessageLookupByLibrary.simpleMessage("Kesintiler"),
+    "cancelError7040": MessageLookupByLibrary.simpleMessage("Hata 7040"),
+    "cancelLatency": MessageLookupByLibrary.simpleMessage("Gecikme"),
+    "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Eksik özellikler"),
+    "cancelSpeed": MessageLookupByLibrary.simpleMessage("Hız"),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Lütfen daha fazla ayrıntı gir...",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("İptal nedenleri"),
+    "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Çok pahalı"),
+    "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
+      "Engellenen sitelere erişemiyorum",
+    ),
+    "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("Kullanılabilirlik sorunları"),
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Hesabını silmeden önce App Store aboneliklerinden aboneliğini iptal et.",
     ),
@@ -228,7 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hi": MessageLookupByLibrary.simpleMessage("Hintçe"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Gizli"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("Yüksek gecikme"),
-    "highSpeed": MessageLookupByLibrary.simpleMessage("Yüksek hız"),
+    "highSpeed": MessageLookupByLibrary.simpleMessage("Veri merkezi"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Ana sayfa"),
     "id": MessageLookupByLibrary.simpleMessage("Endonezce"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Hatalı konum"),
@@ -238,7 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP adresi"),
     "ipRefreshExhaustedCity": m9,
     "ipRefreshExhaustedCountry": m10,
-    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("Yüksek hızlı IP\'ler"),
+    "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("Veri merkezi IP\'leri"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Hız ve performans için optimize edilmiş veri merkezi IP\'leri.",
     ),
@@ -470,7 +481,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("Anladım"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Residential IP\'ler yüksek hızlı IP\'lerden farklıdır. İşte beklemen gerekenler.",
+      "Residential IP\'ler veri merkezi IP\'lerinden farklıdır. İşte beklemen gerekenler.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "Residential IP\'ler nasıl çalışır",
