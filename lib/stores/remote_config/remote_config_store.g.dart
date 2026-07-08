@@ -407,6 +407,14 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.canShowSubscriptionOnboardingFlow,
         name: 'RemoteConfigStoreBase.canShowSubscriptionOnboardingFlow',
       )).value;
+  Computed<List<int>>? _$subscriptionFreezeDurationOptionsComputed;
+
+  @override
+  List<int> get subscriptionFreezeDurationOptions =>
+      (_$subscriptionFreezeDurationOptionsComputed ??= Computed<List<int>>(
+        () => super.subscriptionFreezeDurationOptions,
+        name: 'RemoteConfigStoreBase.subscriptionFreezeDurationOptions',
+      )).value;
 
   @override
   String toString() {
@@ -464,7 +472,8 @@ canShowNoSubsOnboardingFlow: ${canShowNoSubsOnboardingFlow},
 residentialEducationConnectThreshold: ${residentialEducationConnectThreshold},
 residentialReminderInterval: ${residentialReminderInterval},
 reviewPromptConfig: ${reviewPromptConfig},
-canShowSubscriptionOnboardingFlow: ${canShowSubscriptionOnboardingFlow}
+canShowSubscriptionOnboardingFlow: ${canShowSubscriptionOnboardingFlow},
+subscriptionFreezeDurationOptions: ${subscriptionFreezeDurationOptions}
     ''';
   }
 }

@@ -65,6 +65,7 @@ enum _FeatureToggleKey {
   canShowSubscriptionOnboardingFlow,
   locationsPullToRefreshEnabled,
   locationsRefreshButtonEnabled,
+  subscriptionFreezeDurations,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -663,6 +664,16 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.canShowSubscriptionOnboardingFlow.name] as bool;
     }
     return true;
+  }
+
+  @computed
+  List<int> get subscriptionFreezeDurationOptions {
+    if (config.containsKey(_FeatureToggleKey.subscriptionFreezeDurations.name)) {
+      final raw = config[_FeatureToggleKey.subscriptionFreezeDurations.name];
+      final decoded = jsonDecode(raw.toString()) as List;
+      return decoded.cast<int>();
+    }
+    return [];
   }
 
   Map<String, String> get asUserProperties =>

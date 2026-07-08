@@ -11,9 +11,11 @@ import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/components/dialogs/cancel_subscription_survey_dialog/cancel_subscription_dialog.dart';
 import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -114,6 +116,7 @@ class _Authenticated extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.read(subscriptionStorePOD);
+    final subscriptionCancellationStore = ref.read(subscriptionCancellationStorePOD);
     final authStore = ref.watch(authStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
@@ -188,6 +191,7 @@ class _Authenticated extends HookConsumerWidget {
         _SubscriptionCard(
           subscriptionStore: subscriptionStore,
           analyticsStore: analyticsStore,
+          subscriptionCancellationStore: subscriptionCancellationStore,
           position: showDeleteAccount ? SettingsCardPosition.middle : SettingsCardPosition.bottom,
           isSubscribing: subscribeStatus.isLoading,
           isDesktop: isDesktop,
@@ -249,6 +253,7 @@ class _Authenticated extends HookConsumerWidget {
 class _SubscriptionCard extends StatelessWidget {
   const _SubscriptionCard({
     required this.subscriptionStore,
+    required this.subscriptionCancellationStore,
     required this.analyticsStore,
     required this.position,
     required this.isSubscribing,
@@ -257,6 +262,7 @@ class _SubscriptionCard extends StatelessWidget {
   });
 
   final SubscriptionStore subscriptionStore;
+  final SubscriptionCancellationStore subscriptionCancellationStore;
   final AnalyticsStore analyticsStore;
   final SettingsCardPosition position;
   final bool isSubscribing;
@@ -301,14 +307,7 @@ class _SubscriptionCard extends StatelessWidget {
           child: Text(LocaleKeys.settingManageBtn.tr()),
         );
         final cancelButton = SettingsActionButton(
-          onPressed: isSubscribing
-              ? null
-              : () async {
-                  final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
-                  if (shouldProceed ?? false) {
-                    await onSubscribePress(manageSubscription: true);
-                  }
-                },
+          onPressed: isSubscribing ? null : () async => showCancelSubscriptionFlowDialog(context),
           child: Text(LocaleKeys.cancelBtn.tr()),
         );
         final spacing = Theme.of(context).spacing;
@@ -349,4 +348,41 @@ class _SubscriptionCard extends StatelessWidget {
       );
     },
   );
+
+  /* Future<void> _handleCancelSubscription(BuildContext context) async {
+    final shouldProceed = await showModal<bool>(
+      context,
+      // ignore: prefer_expression_function_bodies
+      builder: (context) {
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 343),
+          child: AlertModal(
+            title: 'Cancel subscription',
+            supportingText: 'Are you sure you want to cancel your subscription?',
+            type: AlertModalType.warning,
+            screenType: ScreenType.mobile,
+            primaryButton: ButtonPrimary(
+              onPressed: () async => Navigator.pop(context, true),
+              child: const Text('Continue'),
+            ),
+            secondaryButton: ButtonSecondary(
+              onPressed: () async => Navigator.pop(context, false),
+              child: const Text('Keep subscription'),
+            ),
+          ),
+        );
+      },
+    );
+
+    debugPrint('shouldProceed: $shouldProceed');
+
+    if (!(shouldProceed ?? false)) {
+      return;
+    }
+
+    /* final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
+    if (shouldProceed ?? false) {
+      await onSubscribePress(manageSubscription: true);
+    } */
+  } */
 }

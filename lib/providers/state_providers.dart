@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
@@ -213,6 +214,18 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
     analyticsStore: analyticsStore,
     remoteConfigStore: remoteConfigStore,
     configStore: configStore,
+  );
+  ref.onDispose(store.dispose);
+  return store;
+});
+
+final subscriptionCancellationStorePOD = Provider<SubscriptionCancellationStore>((ref) {
+  final analyticsStore = ref.watch(analyticsStorePOD);
+  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+
+  final store = SubscriptionCancellationStore(
+    analyticsStore: analyticsStore,
+    remoteConfigStore: remoteConfigStore,
   );
   ref.onDispose(store.dispose);
   return store;

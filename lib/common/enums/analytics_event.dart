@@ -169,7 +169,21 @@ enum AnalyticsEvent {
   productsTabViewed,
   settingsTabViewed,
   locationsRefreshed,
-  webRedirect;
+  webRedirect,
+  cancellationStarted,
+  cancellationConfirmViewed,
+  cancellationReasonSubmitted,
+  cancellationReasonSkipped,
+  cancellationPauseOfferViewed,
+  cancellationPauseAccepted,
+  cancellationPauseDeclined,
+  cancellationPausePeriod,
+  cancellationDashboardOpened,
+  cancellationDiscountViewed,
+  cancellationDiscountAccepted,
+  cancellationDiscountDeclined,
+  cancellationFinalConfirmViewed,
+  cancellationCompleted;
 
   String get formattedName => name.toSnakeCase;
 }

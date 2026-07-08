@@ -374,6 +374,14 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logCancellationStarted() async {
+    await logEvent(AnalyticsEvent.cancellationStarted);
+  }
+
+  Future<void> logSubscriptionCancellationPauseDuration({required int months}) async {
+    await logEvent(AnalyticsEvent.cancellationPausePeriod, parameters: {'months': months});
+  }
+
   Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;
   Stream<AnalyticsUserProperty> watchUserProperties() => _userPropertiesStreamController.stream;
 }
