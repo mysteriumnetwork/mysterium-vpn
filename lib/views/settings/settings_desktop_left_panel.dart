@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -44,8 +45,11 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
+                  child: AutoSizeText(
                     S.current.settings,
+                    maxLines: 1,
+                    minFontSize: 20,
+                    overflow: TextOverflow.ellipsis,
                     style: theme.textStyles.displayXlg.semibold.copyWith(
                       color: theme.palette.textPrimary,
                     ),
