@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 extension VPNLocationExtensions on VPNLocation {
   String _getName(BuildContext context) {
-    Locale locale;
+    // Register a Localizations dependency so build-context callers rebuild on a
+    // locale switch. Guarded: this also runs inside a Computed's initHook, where
+    // inherited-widget lookups assert — there, rebuilds come from the
+    // locale-keyed Computed / page remount instead.
     try {
-      locale = Localizations.localeOf(context);
-    } catch (e) {
-      locale = kFallbackLocale;
+      Localizations.maybeLocaleOf(context);
+    } catch (_) {
+      // In a hook's initHook — nothing to depend on here.
     }
+    // Resolve the value from `activeLocale`, not Localizations: the latter
+    // lags / differs per context on a switch, which showed stale (mixed
+    // old/new) location names.
+    final locale = activeLocale;
 
     if (translations.isNotEmpty) {
       var value = translations[locale.languageCode.toLowerCase()];

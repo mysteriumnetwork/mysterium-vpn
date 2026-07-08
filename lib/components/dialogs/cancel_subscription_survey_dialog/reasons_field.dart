@@ -38,7 +38,11 @@ class _ReasonsField extends HookWidget {
                       value: selection.contains(itemsList[i + j]),
                       onChanged: () => handleToggle(itemsList[i + j]),
                       label: Text(
-                        Tr.byKey(itemsList[i + j]),
+                        // The "Other" reason's value (kCancelReasonOther) has no
+                        // matching translation key; map it to `otherReason`.
+                        itemsList[i + j] == kCancelReasonOther
+                            ? S.current.otherReason
+                            : Tr.byKey(itemsList[i + j]),
                         style: theme.textStyles.textMd.medium,
                       ),
                     ),
