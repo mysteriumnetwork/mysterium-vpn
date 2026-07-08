@@ -405,7 +405,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "現在の IP が利用できなくなると、アプリは最寄りの利用可能な Residential IP に再接続します。",
     ),
     "residentialEducationBlock3Title": MessageLookupByLibrary.simpleMessage("自動再接続"),
-    "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("OK"),
+    "residentialEducationGotIt": MessageLookupByLibrary.simpleMessage("わかりました"),
     "residentialEducationSubtitle": MessageLookupByLibrary.simpleMessage(
       "Residential IPs はデータセンター IP とは異なります。知っておきたいポイントをご紹介します。",
     ),

@@ -103,7 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "appUpdateAvailableTitle": MessageLookupByLibrary.simpleMessage("Dostępna aktualizacja"),
     "appearanceSettingLbl": MessageLookupByLibrary.simpleMessage("Wygląd"),
-    "ar": MessageLookupByLibrary.simpleMessage("arabski"),
+    "ar": MessageLookupByLibrary.simpleMessage("Arabski"),
     "austria": MessageLookupByLibrary.simpleMessage("Austria"),
     "authenticationFailed": MessageLookupByLibrary.simpleMessage(
       "Nie można się zalogować. Spróbuj ponownie.",
@@ -178,7 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Mniej prywatne"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IP DATA CENTER"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("Większość VPN-ów"),
-    "de": MessageLookupByLibrary.simpleMessage("niemiecki"),
+    "de": MessageLookupByLibrary.simpleMessage("Niemiecki"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Usuń konto"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Usunąć konto?"),
     "deleteBtn": MessageLookupByLibrary.simpleMessage("Usuń"),
@@ -199,8 +199,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("Adres e-mail jest wymagany"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("Powiadomienia e-mail"),
     "emailSentTo": m4,
-    "en": MessageLookupByLibrary.simpleMessage("angielski"),
-    "es": MessageLookupByLibrary.simpleMessage("hiszpański"),
+    "en": MessageLookupByLibrary.simpleMessage("Angielski"),
+    "es": MessageLookupByLibrary.simpleMessage("Hiszpański"),
     "existingSubscriptionDesc": m5,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
       "Możesz się wylogować i spróbować ze swoim e-mailem lub zignorować to ostrzeżenie",
@@ -222,7 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "formValidationError": MessageLookupByLibrary.simpleMessage(
       "Nieprawidłowe dane formularza. Sprawdź pola i spróbuj ponownie.",
     ),
-    "fr": MessageLookupByLibrary.simpleMessage("francuski"),
+    "fr": MessageLookupByLibrary.simpleMessage("Francuski"),
     "france": MessageLookupByLibrary.simpleMessage("Francja"),
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Częste rozłączenia"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Cena pełna:"),
@@ -239,12 +239,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "goBackButton": MessageLookupByLibrary.simpleMessage("Wróć"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Przejdź do logowania"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Pomoc i wsparcie"),
-    "hi": MessageLookupByLibrary.simpleMessage("hindi"),
+    "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Ukryty"),
     "highLatencyReason": MessageLookupByLibrary.simpleMessage("Wysokie opóźnienia"),
     "highSpeed": MessageLookupByLibrary.simpleMessage("Centrum danych"),
     "homeLbl": MessageLookupByLibrary.simpleMessage("Ekran główny"),
-    "id": MessageLookupByLibrary.simpleMessage("indonezyjski"),
+    "id": MessageLookupByLibrary.simpleMessage("Indonezyjski"),
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Nieprawidłowa lokalizacja"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage(
       "Nieprawidłowy magiczny link. Spróbuj ponownie.",
@@ -266,9 +266,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeResidentialTooltipTitle": MessageLookupByLibrary.simpleMessage(
       "Dlaczego mój adres IP może się zmieniać?",
     ),
-    "it": MessageLookupByLibrary.simpleMessage("włoski"),
+    "it": MessageLookupByLibrary.simpleMessage("Włoski"),
     "italy": MessageLookupByLibrary.simpleMessage("Włochy"),
-    "ja": MessageLookupByLibrary.simpleMessage("japoński"),
+    "ja": MessageLookupByLibrary.simpleMessage("Japoński"),
     "killSwitch": MessageLookupByLibrary.simpleMessage("Kill switch"),
     "killSwitchDesc": MessageLookupByLibrary.simpleMessage(
       "Blokuje ruch internetowy, gdy połączenie VPN zostanie przerwane",
@@ -364,7 +364,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Masz już trwającą transakcję płatniczą. Dokończ ją przed rozpoczęciem nowej.",
     ),
     "perMonth": MessageLookupByLibrary.simpleMessage("mies."),
-    "pl": MessageLookupByLibrary.simpleMessage("polski"),
+    "pl": MessageLookupByLibrary.simpleMessage("Polski"),
     "planAlreadyPurchasedMsg": MessageLookupByLibrary.simpleMessage(
       "Wszystko gotowe! Masz już ten plan aktywny.",
     ),
@@ -423,8 +423,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Zmiana protokołu VPN spowoduje rozłączenie. Następnie trzeba będzie połączyć się ponownie.",
     ),
     "protocolPickerSettingTitle": MessageLookupByLibrary.simpleMessage("Zmiana protokołu VPN"),
-    "pt": MessageLookupByLibrary.simpleMessage("portugalski"),
-    "ptBR": MessageLookupByLibrary.simpleMessage("portugalski brazylijski"),
+    "pt": MessageLookupByLibrary.simpleMessage("Portugalski"),
+    "ptBR": MessageLookupByLibrary.simpleMessage("Portugalski brazylijski"),
     "pushNotificationsConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "Otrzymuj informacje o nowych funkcjach, przydatnych wskazówkach i ekskluzywnych ofertach – same przydatne aktualizacje.",
     ),
@@ -699,7 +699,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Połączenie zostało przerwane",
     ),
     "topLocations": MessageLookupByLibrary.simpleMessage("Najlepsze lokalizacje"),
-    "tr": MessageLookupByLibrary.simpleMessage("turecki"),
+    "tr": MessageLookupByLibrary.simpleMessage("Turecki"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Spróbuj ponownie"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Spróbuj wyszukać inną lokalizację"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
@@ -754,6 +754,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "year": MessageLookupByLibrary.simpleMessage("rok"),
     "yearly": MessageLookupByLibrary.simpleMessage("rocznie"),
     "yes": MessageLookupByLibrary.simpleMessage("Tak"),
-    "zh": MessageLookupByLibrary.simpleMessage("chiński"),
+    "zh": MessageLookupByLibrary.simpleMessage("Chiński"),
   };
 }

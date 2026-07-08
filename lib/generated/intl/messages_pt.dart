@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m8(plan) => "Obter plano ${plan}";
 
   static String m9(location) =>
-      "Não existem IPs alternativos disponíveis em ${location}. Escolhe outro país ou cidade para obteres um IP diferente da próxima vez.\n";
+      "Não existem IPs alternativos disponíveis em ${location}. Escolhe outro país ou cidade para obteres um IP diferente da próxima vez.";
 
   static String m10(location) =>
       "Não há IPs alternativos disponíveis em ${location}. Escolhe outro país para obter um IP diferente na próxima vez.";
@@ -499,7 +499,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "retryBtn": MessageLookupByLibrary.simpleMessage("Tentar de novo"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Deixar uma avaliação"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
-      "ótimo! Gostarias de deixar uma avaliação?\n",
+      "Ótimo! Gostarias de deixar uma avaliação?",
     ),
     "reviewSatisfactionTitle": MessageLookupByLibrary.simpleMessage(
       "Recomendaria este app a outras pessoas?",
