@@ -64,10 +64,14 @@ class MyApp extends HookConsumerWidget {
     useConfigCatUserUpdater();
     useSubscriptionWatcher();
 
-    // Keep intl_utils' `S.current` in sync with the active locale.
-    // `loadLocalizations` resolves the right ARB (see arbLocaleFor) and skips
-    // when it's already loaded.
-    useReaction(() => localStore.currentLocale, loadLocalizations, fireImmediately: true);
+    // Keep intl_utils' `S.current` in sync with the active locale, then bump
+    // `localizationRevision` so the tree re-reads `S.current` (it isn't
+    // observable). `loadLocalizations` resolves the right ARB (see arbLocaleFor)
+    // and skips when already loaded.
+    useReaction(() => localStore.currentLocale, (Locale locale) async {
+      await loadLocalizations(locale);
+      localizationRevision.value++;
+    }, fireImmediately: true);
 
     return ReactionBuilder(
       builder: (_) => reaction((_) => authSessionStore.status, (status) {
@@ -116,7 +120,16 @@ class MyApp extends HookConsumerWidget {
                                 physics: const BouncingScrollPhysics(),
                               ),
                               child: AppDeferredInitWidget(
-                                child: FTCheckers(child: NetworkLoggerOverlayView(child: child!)),
+                                child: FTCheckers(
+                                  child: NetworkLoggerOverlayView(
+                                    // Remount pages on locale/OTA change so const
+                                    // widgets re-read the non-observable S.current.
+                                    child: KeyedSubtree(
+                                      key: ValueKey(localizationRevision.value),
+                                      child: child!,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
