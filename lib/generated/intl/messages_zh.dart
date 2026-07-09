@@ -26,53 +26,57 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(amount, period) => "${amount}/月 — 按${period}计费";
 
-  static String m3(couponCode) => "${couponCode} 已复制到剪贴板！";
+  static String m3(location) => "连接到 ${location}";
 
-  static String m4(email) => "我们已向 ${email} 发送了一封电子邮件";
+  static String m4(couponCode) => "${couponCode} 已复制到剪贴板！";
 
-  static String m5(email) => "你可能已使用“${email}”购买了付费订阅";
+  static String m5(email) => "我们已向 ${email} 发送了一封电子邮件";
 
-  static String m6(errorCode) => "连接失败。请重试 [错误：${errorCode}]";
+  static String m6(email) => "你可能已使用“${email}”购买了付费订阅";
 
-  static String m7(plan) => "获取 ${plan}";
+  static String m7(errorCode) => "连接失败。请重试 [错误：${errorCode}]";
 
-  static String m8(plan) => "获取 ${plan} 套餐";
+  static String m8(plan) => "获取 ${plan}";
 
-  static String m9(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区或城市，下次即可获得不同的 IP。";
+  static String m9(plan) => "获取 ${plan} 套餐";
 
-  static String m10(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区，下次即可获得不同的 IP。";
+  static String m10(count) => "IP 池：${count}";
 
-  static String m11(count) => "${Intl.plural(count, other: '${count} 个城市')}";
+  static String m11(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区或城市，下次即可获得不同的 IP。";
 
-  static String m12(count) => "${Intl.plural(count, other: '${count} 个 IP')}";
+  static String m12(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区，下次即可获得不同的 IP。";
 
-  static String m13(count) => "${Intl.plural(count, other: '${count} 个州')}";
+  static String m13(count) => "${Intl.plural(count, other: '${count} 个城市')}";
 
-  static String m14(location) => "${location} 当前不可用";
+  static String m14(count) => "${Intl.plural(count, other: '${count} 个 IP')}";
 
-  static String m15(location) => "无法更新 ${location}";
+  static String m15(count) => "${Intl.plural(count, other: '${count} 个州')}";
 
-  static String m16(location) => "${location} 已更新";
+  static String m16(location) => "${location} 当前不可用";
 
-  static String m17(date) => "下次计费：${date}";
+  static String m17(location) => "无法更新 ${location}";
 
-  static String m18(protocol, label) => "${protocol}（${label}）";
+  static String m18(location) => "${location} 已更新";
 
-  static String m19(location) => "刷新 ${location}";
+  static String m19(date) => "下次计费：${date}";
 
-  static String m20(count) => "${Intl.plural(count, other: '重新发送 (${count})')}";
+  static String m20(protocol, label) => "${protocol}（${label}）";
 
-  static String m21(percent) => "节省 ${percent}%";
+  static String m21(location) => "刷新 ${location}";
 
-  static String m22(percent, planId) => "选择 ${planId} 套餐可节省 ${percent}%";
+  static String m22(count) => "${Intl.plural(count, other: '重新发送 (${count})')}";
 
-  static String m23(plan) => "升级到 ${plan}";
+  static String m23(percent) => "节省 ${percent}%";
 
-  static String m24(plan) => "升级到 ${plan} 套餐";
+  static String m24(percent, planId) => "选择 ${planId} 套餐可节省 ${percent}%";
 
-  static String m25(location) => "切换到 ${location}";
+  static String m25(plan) => "升级到 ${plan}";
 
-  static String m26(word) => "输入 ${word}";
+  static String m26(plan) => "升级到 ${plan} 套餐";
+
+  static String m27(location) => "切换到 ${location}";
+
+  static String m28(word) => "输入 ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -127,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm": MessageLookupByLibrary.simpleMessage("确认"),
     "connect": MessageLookupByLibrary.simpleMessage("连接"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("最佳服务器"),
+    "connectToLocationBtn": m3,
     "connected": MessageLookupByLibrary.simpleMessage("已连接"),
     "connecting": MessageLookupByLibrary.simpleMessage("正在连接"),
     "connectingToPaymentProcesor": MessageLookupByLibrary.simpleMessage("正在连接支付处理器…"),
@@ -140,7 +145,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("使用电子邮件继续"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("使用 Google 继续"),
     "copyLink": MessageLookupByLibrary.simpleMessage("复制链接并粘贴到浏览器中"),
-    "couponCodeCopied": m3,
+    "couponCodeCopied": m4,
     "dark": MessageLookupByLibrary.simpleMessage("深色"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("易被检测"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("常被网站屏蔽"),
@@ -167,12 +172,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("电子邮件地址无效"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("电子邮件地址为必填项"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("电子邮件通知"),
-    "emailSentTo": m4,
+    "emailSentTo": m5,
     "en": MessageLookupByLibrary.simpleMessage("英语"),
     "es": MessageLookupByLibrary.simpleMessage("西班牙语"),
-    "existingSubscriptionDesc": m5,
+    "existingSubscriptionDesc": m6,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage("你可以登出并改用你的电子邮件，或忽略此警告"),
-    "failedToConnectError": m6,
+    "failedToConnectError": m7,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage("反馈提交失败。请重试。"),
     "failedToSubscribe": MessageLookupByLibrary.simpleMessage("你的订阅出现问题。请重试！"),
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage("我们无法验证你上次的订阅购买。请点击下方按钮重试。"),
@@ -188,8 +193,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "germany": MessageLookupByLibrary.simpleMessage("德国"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("刷新时获取新的 IP 地址"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage("保护你的连接，立即享受私密浏览"),
-    "getSubscriptionModalTitle": m7,
-    "getSubscriptionPlanBtn": m8,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("正在获取 IP 地址…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("返回"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("前往登录"),
@@ -203,8 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("位置不正确"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage("魔法链接错误。请重试。"),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP 地址"),
-    "ipRefreshExhaustedCity": m9,
-    "ipRefreshExhaustedCountry": m10,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("数据中心 IP"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage("数据中心 IP，针对速度和性能进行了优化。"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("住宅 IP"),
@@ -223,15 +229,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "linkCopied": MessageLookupByLibrary.simpleMessage("链接已复制到剪贴板！"),
     "linkExpires": MessageLookupByLibrary.simpleMessage("该链接将在 30 分钟后失效，且只能使用一次。"),
     "location": MessageLookupByLibrary.simpleMessage("地点"),
-    "locationItemCityCount": m11,
-    "locationItemNodeCount": m12,
-    "locationItemStatesCount": m13,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("地点"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("连接到最近的 IP"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage("连接到最近的 IP，或手动选择"),
-    "locationUnavailableTitle": m14,
-    "locationsUpdateFailed": m15,
-    "locationsUpdated": m16,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage("你的会话已过期。请重新登录。"),
     "loginSignupLabel": MessageLookupByLibrary.simpleMessage("登录或注册"),
     "logout": MessageLookupByLibrary.simpleMessage("登出"),
@@ -253,7 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("地点"),
     "navMap": MessageLookupByLibrary.simpleMessage("地图"),
     "navProducts": MessageLookupByLibrary.simpleMessage("产品"),
-    "nextBilling": m17,
+    "nextBilling": m19,
     "no": MessageLookupByLibrary.simpleMessage("否"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("你没有有效的订阅"),
     "noEmailApp": MessageLookupByLibrary.simpleMessage("你的设备上没有电子邮件应用。"),
@@ -321,7 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN 产品"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("受保护"),
     "protocol": MessageLookupByLibrary.simpleMessage("协议"),
-    "protocolLabel": m18,
+    "protocolLabel": m20,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage("切换 VPN 协议会断开你的连接。之后需要重新连接。"),
     "protocolPickerSettingTitle": MessageLookupByLibrary.simpleMessage("切换 VPN 协议"),
     "pt": MessageLookupByLibrary.simpleMessage("葡萄牙语"),
@@ -342,7 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("刷新"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("刷新 IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("刷新 IP 地址"),
-    "refreshLocationsTooltip": m19,
+    "refreshLocationsTooltip": m21,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("出现异常时进行重置"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "若继续重置应用，你将与 Mysterium VPN 断开连接。",
@@ -382,7 +388,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("查看套餐"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("选择电子邮件应用以继续"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("每半年"),
-    "sendAgain": m20,
+    "sendAgain": m22,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage("我们遇到临时网络问题。请稍后重试。"),
     "settingManageBtn": MessageLookupByLibrary.simpleMessage("管理"),
     "settings": MessageLookupByLibrary.simpleMessage("设置"),
@@ -489,8 +495,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "让你看起来像普通家庭用户，从而访问流媒体服务并避免被检测为 VPN。",
     ),
-    "subscriptionPlanSavePercent": m21,
-    "subscriptionPlanSaveWith": m22,
+    "subscriptionPlanSavePercent": m23,
+    "subscriptionPlanSaveWith": m24,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("服务器"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("支持的国家/地区"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN 协议"),
@@ -499,15 +505,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("你尚未完成订阅更改。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("升级"),
-    "subscriptionUpgradeCTA": m23,
+    "subscriptionUpgradeCTA": m25,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "以访问 7,500+ 个住宅 IP",
     ),
-    "subscriptionUpgradeModalTitle": m24,
+    "subscriptionUpgradeModalTitle": m26,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("查看所有套餐"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("重试验证"),
     "subscripton": MessageLookupByLibrary.simpleMessage("订阅"),
-    "switchToLocationBtn": m25,
+    "switchToLocationBtn": m27,
     "system": MessageLookupByLibrary.simpleMessage("系统"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("夺回互联网。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("条款和条件"),
@@ -529,7 +535,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("尝试搜索其他地点"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("启动 VPN 隧道需要授予权限。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("设置隧道时发生错误"),
-    "typeDelete": m26,
+    "typeDelete": m28,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("在此输入你的反馈…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("乌克兰"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage("无法连接支付处理器！请重试。"),

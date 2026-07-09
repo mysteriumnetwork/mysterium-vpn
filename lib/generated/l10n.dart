@@ -113,6 +113,7 @@ class S {
     'connection': [],
     'connectionSettingLbl': [],
     'connectionTimeout': [],
+    'connectToLocationBtn': ['location'],
     'consistentSpeedReason': [],
     'consumeLink': [],
     'continueBtn': [],
@@ -179,6 +180,7 @@ class S {
     'incorrectLocationReason': [],
     'incorrectMagicLink': [],
     'ipAddressLbl': [],
+    'ipPoolLabel': ['count'],
     'ipRefreshExhaustedCity': ['location'],
     'ipRefreshExhaustedCountry': ['location'],
     'ipTypeDataCenter': [],
@@ -848,6 +850,16 @@ class S {
     );
   }
 
+  /// `Connect to {location}`
+  String connectToLocationBtn(Object location) {
+    return Intl.message(
+      'Connect to $location',
+      name: 'connectToLocationBtn',
+      desc: '',
+      args: [location],
+    );
+  }
+
   /// `Consistent speed`
   String get consistentSpeedReason {
     return Intl.message('Consistent speed', name: 'consistentSpeedReason', desc: '', args: []);
@@ -1281,6 +1293,11 @@ class S {
   /// `IP address`
   String get ipAddressLbl {
     return Intl.message('IP address', name: 'ipAddressLbl', desc: '', args: []);
+  }
+
+  /// `IP pool: {count}`
+  String ipPoolLabel(Object count) {
+    return Intl.message('IP pool: $count', name: 'ipPoolLabel', desc: '', args: [count]);
   }
 
   /// `No alternative IPs are available in {location}. Choose another country or city to get a different IP next time.`
