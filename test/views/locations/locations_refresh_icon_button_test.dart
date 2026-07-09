@@ -1,19 +1,18 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/locations/components/components.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../support/test_localizations.dart';
 import 'locations_refresh_icon_button_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<LocationsStore>(), MockSpec<AnalyticsStore>()])
@@ -23,9 +22,8 @@ void main() {
   late MockLocationsStore store;
   late MockAnalyticsStore analytics;
 
-  setUpAll(() async {
+  setUpAll(() {
     SharedPreferences.setMockInitialValues({});
-    await EasyLocalization.ensureInitialized();
   });
 
   setUp(() {
@@ -40,22 +38,12 @@ void main() {
           locationsStorePOD.overrideWithValue(store),
           analyticsStorePOD.overrideWithValue(analytics),
         ],
-        child: EasyLocalization(
-          supportedLocales: const [Locale('en')],
-          path: 'resources/langs',
-          fallbackLocale: const Locale('en'),
-          startLocale: const Locale('en'),
-          useOnlyLangCode: true,
-          assetLoader: const CodegenLoader(),
-          child: Builder(
-            builder: (ctx) => MaterialApp(
-              theme: DesignSystem.lightTheme,
-              locale: EasyLocalization.of(ctx)?.locale,
-              localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-              supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
-              home: const Scaffold(body: LocationsRefreshIconButton(type: IPType.datacenter)),
-            ),
-          ),
+        child: MaterialApp(
+          theme: DesignSystem.lightTheme,
+          locale: testLocale,
+          localizationsDelegates: testLocalizationsDelegates,
+          supportedLocales: testSupportedLocales,
+          home: const Scaffold(body: LocationsRefreshIconButton(type: IPType.datacenter)),
         ),
       ),
     );

@@ -312,13 +312,6 @@ final abTestingStorePOD = Provider<ABTestingStore>((ref) {
   return ABTestingStore(client, logger, analyticsStore);
 });
 
-final textsStorePOD = Provider<TextsStore>((ref) {
-  final client = ref.watch(textsClientPOD);
-  final logger = ref.watch(loggerPOD);
-
-  return TextsStore(client, logger);
-});
-
 final bannersStorePOD = Provider<BannersStore>(
   (ref) => BannersStore(
     LocalDBService.instance,

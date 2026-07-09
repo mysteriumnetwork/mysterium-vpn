@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -34,13 +33,13 @@ class LocationsNoServersError extends ConsumerWidget {
           ),
           SizedBox(height: theme.spacing.xl),
           Text(
-            LocaleKeys.noServersAvailable.tr(),
+            S.current.noServersAvailable,
             textAlign: TextAlign.center,
             style: theme.textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
           ),
           SizedBox(height: theme.spacing.xs),
           Text(
-            LocaleKeys.noServersAvailableSub.tr(),
+            S.current.noServersAvailableSub,
             textAlign: TextAlign.center,
             style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary),
           ),
@@ -55,7 +54,7 @@ class LocationsNoServersError extends ConsumerWidget {
                 child: ButtonSecondary(
                   loading: isRefreshing ? const ButtonLoading() : null,
                   onPressed: locationsStore.refreshAll,
-                  child: Text(LocaleKeys.retryBtn.tr()),
+                  child: Text(S.current.retryBtn),
                 ),
               );
             },

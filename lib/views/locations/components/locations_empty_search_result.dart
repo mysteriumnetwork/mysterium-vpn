@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Empty-state shown inside the locations list when the search query returns
@@ -106,13 +105,13 @@ class LocationsEmptySearchResult extends StatelessWidget {
                 ),
                 SizedBox(height: theme.spacing.md),
                 Text(
-                  LocaleKeys.noLocationsFound.tr(),
+                  S.current.noLocationsFound,
                   textAlign: TextAlign.center,
                   style: theme.textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
                 ),
                 SizedBox(height: theme.spacing.xs),
                 Text(
-                  LocaleKeys.tryAnotherLocation.tr(),
+                  S.current.tryAnotherLocation,
                   textAlign: TextAlign.center,
                   style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary),
                 ),
@@ -120,7 +119,7 @@ class LocationsEmptySearchResult extends StatelessWidget {
                 ButtonSecondary(
                   size: ButtonSize.small,
                   onPressed: onClear,
-                  child: Text(LocaleKeys.clearSearchBtn.tr()),
+                  child: Text(S.current.clearSearchBtn),
                 ),
               ],
             ),

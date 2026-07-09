@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -24,13 +23,13 @@ class ConnectionStatusBar extends HookConsumerWidget {
 
   String _statusText(VpnConnectionStatus connectionStatus, bool isFetchingConfig) {
     if (isFetchingConfig) {
-      return LocaleKeys.gettingIPAddress.tr();
+      return S.current.gettingIPAddress;
     }
     return switch (connectionStatus) {
-      VpnConnectionStatus.connected => LocaleKeys.connected.tr(),
-      VpnConnectionStatus.connecting => LocaleKeys.connecting.tr(),
-      VpnConnectionStatus.disconnected => LocaleKeys.disconnected.tr(),
-      VpnConnectionStatus.disconnecting => LocaleKeys.disconnecting.tr(),
+      VpnConnectionStatus.connected => S.current.connected,
+      VpnConnectionStatus.connecting => S.current.connecting,
+      VpnConnectionStatus.disconnected => S.current.disconnected,
+      VpnConnectionStatus.disconnecting => S.current.disconnecting,
       VpnConnectionStatus.unknown => '',
     };
   }

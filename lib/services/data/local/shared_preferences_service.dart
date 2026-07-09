@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,15 +53,24 @@ class SharedPreferenceService {
   bool checkExistance(StorageKeys key) => _prefsInstance.containsKey(key.name);
 
   Locale getLocale() {
-    final languageCode =
-        getString(StorageKeys.languageCode.name) ?? PlatformDispatcher.instance.locale;
+    final stored = getString(StorageKeys.languageCode.name);
+    final source = stored != null ? _parseLanguageTag(stored) : PlatformDispatcher.instance.locale;
 
-    return kSupportedLocales.firstWhereOrNull((e) => e.languageCode == languageCode) ??
+    // Prefer an exact tag match so country variants (e.g. pt-BR vs pt) are
+    // preserved, then fall back to language only, then the app default.
+    return supportedLocales.firstWhereOrNull((e) => e.toLanguageTag() == source.toLanguageTag()) ??
+        supportedLocales.firstWhereOrNull((e) => e.languageCode == source.languageCode) ??
         kFallbackLocale;
   }
 
   Future<bool> setLocale(Locale locale) async =>
-      setString(StorageKeys.languageCode.name, locale.languageCode);
+      setString(StorageKeys.languageCode.name, locale.toLanguageTag());
+
+  // Parses a persisted BCP-47 tag ('pt-BR', 'fr', legacy 'fr-FR') into a Locale.
+  Locale _parseLanguageTag(String tag) {
+    final parts = tag.split('-');
+    return parts.length > 1 ? Locale(parts.first, parts[1]) : Locale(parts.first);
+  }
 
   ThemeMode? getThemeType() {
     final themeType = getString(StorageKeys.themeMype.name);

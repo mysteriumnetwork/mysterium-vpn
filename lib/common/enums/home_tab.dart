@@ -1,7 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 enum HomeTab {
@@ -21,13 +19,6 @@ enum HomeTab {
   /// True when the tab is gated behind authentication — unauthenticated users
   /// who tap it are redirected to the login route instead.
   final bool requiresAuth;
-
-  String label() => switch (this) {
-    HomeTab.map => LocaleKeys.navMap.tr(),
-    HomeTab.locations => LocaleKeys.navLocations.tr(),
-    HomeTab.products => LocaleKeys.navProducts.tr(),
-    HomeTab.settings => LocaleKeys.settings.tr(),
-  };
 
   /// URL path that targets this tab via deep links (push notifications,
   /// campaign redirects, etc.). On platforms where the tab isn't surfaced

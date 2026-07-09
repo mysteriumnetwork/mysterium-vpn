@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide LoadingIndicator;
@@ -34,7 +33,7 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
               : EdgeInsets.zero,
           child: SettingsCard(
             position: SettingsCardPosition.top,
-            title: LocaleKeys.appUpdateAvailableSetting.tr(),
+            title: S.current.appUpdateAvailableSetting,
             trailing: ButtonSecondary(
               size: ButtonSize.small,
               decoration: const ButtonDecoration(
@@ -45,7 +44,7 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
                 analyticsStore.logEvent(AnalyticsEvent.appVersionSettingClicked);
                 openAppStorePage();
               },
-              child: Text(LocaleKeys.updateBtn.tr()),
+              child: Text(S.current.updateBtn),
             ),
           ),
         );

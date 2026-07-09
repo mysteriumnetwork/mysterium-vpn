@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -20,15 +19,15 @@ class _DialogContent extends HookConsumerWidget {
     final userPreferencesStore = ref.watch(userPreferencesStorePOD);
     return PromptDialog(
       image: Asset.images.pnConsent(context).image(),
-      title: LocaleKeys.pushNotificationsConsentPopupTitle.tr(),
-      subtitle: LocaleKeys.pushNotificationsConsentPopupDesc.tr(),
+      title: S.current.pushNotificationsConsentPopupTitle,
+      subtitle: S.current.pushNotificationsConsentPopupDesc,
       primaryButton: ButtonPrimary(
         onPressed: () => _completePushNotificationsFlow(
           context,
           userPreferencesStore: userPreferencesStore,
           userAllowed: true,
         ),
-        child: Text(LocaleKeys.allowPushNotificationsBtn.tr()),
+        child: Text(S.current.allowPushNotificationsBtn, textAlign: TextAlign.center),
       ),
       secondaryButton: ButtonSecondary(
         onPressed: () => _completePushNotificationsFlow(
@@ -36,7 +35,7 @@ class _DialogContent extends HookConsumerWidget {
           userPreferencesStore: userPreferencesStore,
           userAllowed: false,
         ),
-        child: Text(LocaleKeys.notNowBtn.tr()),
+        child: Text(S.current.notNowBtn, textAlign: TextAlign.center),
       ),
     );
   }

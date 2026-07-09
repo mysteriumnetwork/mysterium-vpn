@@ -4,21 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-final List<Locale> kSupportedLocales = [
-  kFallbackLocale,
-  const Locale('fr', 'FR'),
-  const Locale('pt', 'PT'),
-  const Locale('tr', 'TR'),
-  const Locale('de', 'DE'),
-  const Locale('ar', 'AR'),
-  const Locale('es', 'ES'),
-  const Locale('id', 'ID'),
-  const Locale('it', 'IT'),
-  const Locale('ja', 'JP'),
-  const Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
-];
-
-const kFallbackLocale = Locale('en', 'US');
+// The supported-locale set is `supportedLocales` (lib/l10n/arb_locale.dart),
+// derived from `S.delegate.supportedLocales` — the single source of truth.
+const kFallbackLocale = Locale('en');
 
 const String ksemiAnnualPlan = 'plan_6_months';
 const String kMonthlyPlan = 'plan_monthly';

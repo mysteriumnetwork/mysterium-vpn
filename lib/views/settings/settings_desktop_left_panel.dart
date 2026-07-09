@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -45,8 +45,11 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    LocaleKeys.settings.tr(),
+                  child: AutoSizeText(
+                    S.current.settings,
+                    maxLines: 1,
+                    minFontSize: 20,
+                    overflow: TextOverflow.ellipsis,
                     style: theme.textStyles.displayXlg.semibold.copyWith(
                       color: theme.palette.textPrimary,
                     ),
@@ -66,13 +69,13 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
                     if (category != SettingCategory.qaToolbox || enableQaHelpers)
                       NavItem(
                         icon: Icon(category.icon, size: 20),
-                        label: category.trKey.tr(),
+                        label: category.label,
                         current: settingCategory == category,
                         onTap: () => tabsStore.openSettingsSubPage(category),
                       ),
                   NavItem(
                     icon: const Icon(UntitledUI.message_question_square, size: 20),
-                    label: LocaleKeys.helpSupportLbl.tr(),
+                    label: S.current.helpSupportLbl,
                     trailing: Icon(
                       UntitledUI.link_external_02,
                       size: 16,

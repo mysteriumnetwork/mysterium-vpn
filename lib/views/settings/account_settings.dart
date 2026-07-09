@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -11,7 +10,8 @@ import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
@@ -72,7 +72,7 @@ class _Unauthenticated extends HookConsumerWidget {
             ),
             SizedBox(height: spacing.md),
             Text(
-              LocaleKeys.unauthenticatedSettingTitle.tr(),
+              S.current.unauthenticatedSettingTitle,
               style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textPrimary),
               textAlign: TextAlign.center,
             ),
@@ -80,7 +80,7 @@ class _Unauthenticated extends HookConsumerWidget {
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 343),
               child: Text(
-                LocaleKeys.unauthenticatedSettingSubtitle.tr(),
+                S.current.unauthenticatedSettingSubtitle,
                 style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textSecondary),
                 textAlign: TextAlign.center,
               ),
@@ -91,7 +91,7 @@ class _Unauthenticated extends HookConsumerWidget {
               child: ButtonPrimary(
                 onPressed: handleSignIn,
                 size: ButtonSize.large,
-                child: Text(LocaleKeys.signInBtn.tr()),
+                child: Text(S.current.signInBtn),
               ),
             ),
           ],
@@ -128,7 +128,7 @@ class _Authenticated extends HookConsumerWidget {
 
     useValueChanged<AsyncSnapshot<void>, void>(subscribeStatus, (_, _) {
       if (subscribeStatus.hasError) {
-        showSnackbar(LocaleKeys.somethingWentWrong.tr());
+        showSnackbar(S.current.somethingWentWrong);
       }
     });
 
@@ -137,8 +137,8 @@ class _Authenticated extends HookConsumerWidget {
       showLogoutConfirmationDialog(
         context,
         supportingText: vpnStore.isConnected
-            ? LocaleKeys.logoutVPNConnectedDesc.tr()
-            : LocaleKeys.logoutConfirmationDesc.tr(),
+            ? S.current.logoutVPNConnectedDesc
+            : S.current.logoutConfirmationDesc,
         onConfirm: () async {
           analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
           await vpnStore.disconnectTunnel();
@@ -175,13 +175,13 @@ class _Authenticated extends HookConsumerWidget {
     final cards = Column(
       children: [
         SettingsCard(
-          title: email.isEmpty ? LocaleKeys.account.tr() : email,
+          title: email.isEmpty ? S.current.account : email,
           position: SettingsCardPosition.top,
           trailing: isDesktop
               ? SettingsActionButton(
                   onPressed: handleLogout,
                   foregroundColor: theme.palette.textErrorPrimary,
-                  child: Text(LocaleKeys.logout.tr()),
+                  child: Text(S.current.logout),
                 )
               : null,
         ),
@@ -195,11 +195,11 @@ class _Authenticated extends HookConsumerWidget {
         ),
         if (showDeleteAccount)
           SettingsCard(
-            title: LocaleKeys.deleteAccount.tr(),
+            title: S.current.deleteAccount,
             position: SettingsCardPosition.bottom,
             trailing: SettingsActionButton(
               onPressed: handleDeleteAccount,
-              child: Text(LocaleKeys.deleteBtn.tr()),
+              child: Text(S.current.deleteBtn),
             ),
           ),
       ],
@@ -227,7 +227,7 @@ class _Authenticated extends HookConsumerWidget {
             ButtonSecondary(
               onPressed: handleLogout,
               child: Text(
-                LocaleKeys.logout.tr(),
+                S.current.logout,
                 style: theme.textStyles.textMd.semibold.copyWith(
                   color: theme.palette.textErrorPrimary,
                 ),
@@ -276,7 +276,7 @@ class _SubscriptionCard extends StatelessWidget {
       } else if (subscriptionStore.subscriptionFuture.status == FutureStatus.rejected) {
         trailing = SettingsActionButton(
           onPressed: subscriptionStore.refreshSubscription,
-          child: Text(LocaleKeys.retryBtn.tr()),
+          child: Text(S.current.retryBtn),
         );
       } else if (!isSubscriptionActive) {
         trailing = SettingsActionButton(
@@ -286,9 +286,7 @@ class _SubscriptionCard extends StatelessWidget {
                   analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
                   onSubscribePress(manageSubscription: false);
                 },
-          child: isSubscribing
-              ? const LoadingIndicator()
-              : Text(LocaleKeys.pricingPlanSeePlansBtn.tr()),
+          child: isSubscribing ? const LoadingIndicator() : Text(S.current.pricingPlanSeePlansBtn),
         );
       } else {
         final manageButton = SettingsActionButton(
@@ -298,7 +296,7 @@ class _SubscriptionCard extends StatelessWidget {
                   analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
                   await onSubscribePress(manageSubscription: true);
                 },
-          child: Text(LocaleKeys.settingManageBtn.tr()),
+          child: Text(S.current.settingManageBtn),
         );
         final cancelButton = SettingsActionButton(
           onPressed: isSubscribing
@@ -309,7 +307,7 @@ class _SubscriptionCard extends StatelessWidget {
                     await onSubscribePress(manageSubscription: true);
                   }
                 },
-          child: Text(LocaleKeys.cancelBtn.tr()),
+          child: Text(S.current.cancelBtn),
         );
         final spacing = Theme.of(context).spacing;
         trailing = isDesktop
@@ -332,14 +330,13 @@ class _SubscriptionCard extends StatelessWidget {
               );
       }
 
-      final planTitle = isSubscriptionActive
-          ? (subscription!.planId?.tr() ?? LocaleKeys.subscripton.tr())
-          : LocaleKeys.subscripton.tr();
+      final planId = subscription?.planId;
+      final planTitle = isSubscriptionActive && planId != null
+          ? (Tr.byKeyOrNull(planId) ?? planId)
+          : S.current.subscripton;
       final planSubtitle = isSubscriptionActive
-          ? LocaleKeys.nextBilling.tr(
-              namedArgs: {'date': subscription!.activeUntil?.toLocal().formatWithDay() ?? ''},
-            )
-          : LocaleKeys.noActiveSubsDesc.tr();
+          ? S.current.nextBilling(subscription!.activeUntil?.toLocal().formatWithDay() ?? '')
+          : S.current.noActiveSubsDesc;
 
       return SettingsCard(
         title: planTitle,

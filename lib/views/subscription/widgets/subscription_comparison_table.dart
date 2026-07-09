@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -53,7 +53,7 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
         list.add(
           ComparisonFeature(
             values: Map.fromEntries(values),
-            label: key.tr(),
+            label: Tr.byKey(key),
             description: _getDescriptionIfExists(key),
           ),
         );
@@ -71,18 +71,17 @@ class SubscriptionComparisonTable extends HookConsumerWidget {
         decoration: const ButtonDecoration(padding: EdgeInsets.zero),
         leading: Icon(UntitledUI.arrow_up, size: 16, color: theme.palette.textPrimarySelected),
         child: Text(
-          LocaleKeys.subscriptionAllPlansBackToPlans.tr(),
+          S.current.subscriptionAllPlansBackToPlans,
           style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textPrimarySelected),
         ),
       ),
-      headerColumns: Map.fromEntries(columns.map((it) => MapEntry(it, it.tr()))),
+      headerColumns: Map.fromEntries(columns.map((it) => MapEntry(it, Tr.byKey(it)))),
       features: features,
     );
   }
 
   String? _getDescriptionIfExists(String key) {
-    final id = '${key}Desc';
-    final translated = id.tr();
-    return translated != id && translated.isNotEmpty ? translated : null;
+    final translated = Tr.byKeyOrNull('${key}Desc');
+    return (translated != null && translated.isNotEmpty) ? translated : null;
   }
 }

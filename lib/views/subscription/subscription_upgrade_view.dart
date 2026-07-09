@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -13,7 +12,8 @@ import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/subscription_privacy_and_terms.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -83,7 +83,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                 Icon(UntitledUI.alert_circle, size: 48, color: theme.palette.textTertiary),
                 SizedBox(height: theme.spacing.lg),
                 Text(
-                  LocaleKeys.somethingWentWrong.tr(),
+                  S.current.somethingWentWrong,
                   textAlign: TextAlign.center,
                   style: theme.textStyles.textMd.regular,
                 ),
@@ -91,7 +91,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                 ButtonPrimary(
                   onPressed: subscriptionStore.refreshSubscription,
                   decoration: ButtonDecoration(decorationColor: theme.palette.bgBrandPrimary),
-                  child: Text(LocaleKeys.retryBtn.tr()),
+                  child: Text(S.current.retryBtn),
                 ),
               ],
             ),
@@ -119,7 +119,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                   (feature) =>
                       feature != 'subscriptionPlanPF4Basic' && feature != 'subscriptionPlanPF5Plus',
                 )
-                .map((it) => it.tr())
+                .map(Tr.byKey)
                 .toList();
 
             final planData = usePlanData(
@@ -160,15 +160,11 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                                 ),
                               ),
                               title: hasPlan
-                                  ? LocaleKeys.subscriptionUpgradeModalTitle.tr(
-                                      args: [planData.name],
-                                    )
-                                  : LocaleKeys.getSubscriptionModalTitle.tr(
-                                      args: [planWithDuration],
-                                    ),
+                                  ? S.current.subscriptionUpgradeModalTitle(planData.name)
+                                  : S.current.getSubscriptionModalTitle(planWithDuration),
                               description: hasPlan
-                                  ? LocaleKeys.subscriptionUpgradeModalDescription.tr()
-                                  : LocaleKeys.getSubscriptionModalDesc.tr(),
+                                  ? S.current.subscriptionUpgradeModalDescription
+                                  : S.current.getSubscriptionModalDesc,
                             ),
                           ),
                           SizedBox(height: theme.spacing.xl),
@@ -181,8 +177,8 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                                   mode: PlanCardMode.highlight,
                                   data: planData,
                                   features: features,
-                                  viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
-                                  viewLessLabel: LocaleKeys.viewLessBtn.tr(),
+                                  viewMoreLabel: S.current.viewAllFeaturesBtn,
+                                  viewLessLabel: S.current.viewLessBtn,
                                 ),
                               ),
                             ),
@@ -199,7 +195,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                                   ),
                                 ),
                                 CharacterSpan.space(),
-                                TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
+                                TextSpan(text: S.current.subscriptionPlanMoneyBack),
                               ],
                             ),
                             textAlign: TextAlign.center,
@@ -229,7 +225,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                             showError(e);
                           }
                         },
-                        child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                        child: Text(S.current.redeemDiscountCode),
                       ),
                     SizedBox(height: theme.spacing.ms),
                     Observer(
@@ -241,8 +237,8 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
 
                         child: Text(
                           hasPlan
-                              ? LocaleKeys.subscriptionUpgradeCTA.tr(args: [planData.name])
-                              : LocaleKeys.getSubscriptionPlanBtn.tr(args: [planWithDuration]),
+                              ? S.current.subscriptionUpgradeCTA(planData.name)
+                              : S.current.getSubscriptionPlanBtn(planWithDuration),
                         ),
                       ),
                     ),
@@ -253,7 +249,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                         foregroundColor: theme.palette.textPrimarySelected,
                         padding: EdgeInsets.zero,
                       ),
-                      child: Text(LocaleKeys.subscriptionUpgradeSeeAllPlans.tr()),
+                      child: Text(S.current.subscriptionUpgradeSeeAllPlans),
                     ),
                     SizedBox(height: theme.spacing.xl),
                     const SubscriptionPrivacyAndTerms(),

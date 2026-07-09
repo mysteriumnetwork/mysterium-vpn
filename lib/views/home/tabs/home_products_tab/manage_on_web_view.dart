@@ -17,18 +17,16 @@ class _ManageOnWebView extends HookConsumerWidget {
           onPressed: () => handleSubscribe(manageSubscription: hasActiveSub),
           decoration: ButtonDecoration(decorationColor: theme.palette.bgBrandPrimary),
           leading: const Icon(UntitledUI.link_external_02, size: 20),
-          child: Text(
-            hasActiveSub ? LocaleKeys.manageOnWebBtn.tr() : LocaleKeys.subscribeOnWebBtn.tr(),
-          ),
+          child: Text(hasActiveSub ? S.current.manageOnWebBtn : S.current.subscribeOnWebBtn),
         );
 
         return _ProductsBrowsingView(
           subtitle: hasActiveSub
-              ? LocaleKeys.productsManageSubtitle.tr()
-              : LocaleKeys.productsSubscribeWebSubtitle.tr(),
+              ? S.current.productsManageSubtitle
+              : S.current.productsSubscribeWebSubtitle,
           alertMessage: hasActiveSub
-              ? LocaleKeys.productsActivePlanWebSyncAlert.tr()
-              : LocaleKeys.productsSubscribeWebAlert.tr(),
+              ? S.current.productsActivePlanWebSyncAlert
+              : S.current.productsSubscribeWebAlert,
           action: ctaButton,
         );
       },

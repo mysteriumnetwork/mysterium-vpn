@@ -1,8 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/settings_picker_card.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -19,11 +18,15 @@ class ThemePicker extends ConsumerWidget {
 
     return Observer(
       builder: (_) => SettingsPickerCard<ThemeMode>(
-        title: LocaleKeys.appearanceSettingLbl.tr(),
+        title: S.current.appearanceSettingLbl,
         position: position,
         value: store.themeMode,
         items: ThemeMode.values,
-        labelOf: (mode) => mode.name.tr(),
+        labelOf: (mode) => switch (mode) {
+          ThemeMode.light => S.current.light,
+          ThemeMode.dark => S.current.dark,
+          ThemeMode.system => S.current.system,
+        },
         onChanged: (mode) {
           store.setThemeType(mode);
           analyticsStore.logThemeChange(mode.name);

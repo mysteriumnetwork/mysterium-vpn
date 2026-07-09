@@ -2,18 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/vpn_error.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -287,17 +285,16 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   void _handleTunnelSetupError(Object e) {
-    var message = 'Error occurred while setting up tunnel';
+    final permissionDenied =
+        e is PlatformException &&
+        ((e.message ?? '').contains('Permissions are not given') ||
+            (e.message ?? '').contains('permission denied'));
 
-    if (e is PlatformException) {
-      final errorMsg = e.message ?? '';
-      if (errorMsg.contains('Permissions are not given') ||
-          errorMsg.contains('permission denied')) {
-        message = 'You need to grant permission to start VPN tunnel.';
-      }
-    }
-
-    showSnackbar(message);
+    _emitConnectionError(
+      VpnError(
+        permissionDenied ? VpnErrorType.tunnelPermissionRequired : VpnErrorType.tunnelSetupFailed,
+      ),
+    );
   }
 
   @action
@@ -525,19 +522,45 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   // ==================== Error Handling ====================
 
+  /// One-shot connection failure for the UI to translate + display. The UI
+  /// consumes it (via [consumeConnectionError]) after showing. Kept
+  /// translation-free here so presentation stays in the view layer.
+  @readonly
+  VpnError? _connectionError;
+
+  @action
+  // ignore: use_setters_to_change_properties
+  void _emitConnectionError(VpnError error) => _connectionError = error;
+
+  @action
+  void consumeConnectionError() => _connectionError = null;
+
+  // Stable, locale-independent analytics label for a connection failure
+  // (translation happens in the UI, so we can't log the user-facing text here).
+  String _connectFailureLabel(Object e, int errorCode) => switch (e) {
+    TimeoutException() => 'connectionTimeout',
+    UnavailableLocationException() => 'locationUnavailable',
+    DeviceLimitReachedException() => 'deviceLimitReached',
+    _ => _isTooManyRequests(errorCode) ? 'tooManyRequests' : 'failedToConnect($errorCode)',
+  };
+
+  // Matches ApiErrorsInterceptor: both the backend 4029 and HTTP 429 mean
+  // "too many requests".
+  bool _isTooManyRequests(int errorCode) => errorCode == 4029 || errorCode == 429;
+
   void _handleConnectionTimeout(TimeoutException e, StackTrace stackTrace) {
     _userIntentsStore.userIntent = null;
     _logger.handle(e);
     Sentry.captureException(e, stackTrace: stackTrace);
-    final message = LocaleKeys.connectionTimeout.tr();
-    showSnackbar(message);
+    final errorCode = _extractErrorCode(e);
+    _emitConnectionError(const VpnError(VpnErrorType.connectionTimeout));
 
     _analyticsStore.logConnectFailure(
       time: _stopwatch.elapsed,
       error: e.message ?? e.toString(),
       errorType: e.runtimeType.toString(),
-      errorCode: _extractErrorCode(e),
-      errorMessage: message,
+      errorCode: errorCode,
+      errorMessage: _connectFailureLabel(e, errorCode),
       protocol: _protocolStore.protocol,
     );
   }
@@ -553,10 +576,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     Sentry.captureException(e, stackTrace: stackTrace);
 
     final errorCode = _extractErrorCode(e);
-    final errorMessage = _buildErrorMessage(e, errorCode);
-
-    if (_shouldShowErrorSnackbar(e)) {
-      showSnackbar(errorMessage);
+    // Null for exceptions that surface their own UI (device-limit dialog,
+    // location-availability toggle) — those are suppressed from the snackbar.
+    final error = _buildConnectionError(e, errorCode);
+    if (error != null) {
+      _emitConnectionError(error);
     }
 
     _analyticsStore.logConnectFailure(
@@ -564,7 +588,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       error: e.toString(),
       errorType: e.runtimeType.toString(),
       errorCode: errorCode,
-      errorMessage: errorMessage,
+      errorMessage: _connectFailureLabel(e, errorCode),
       protocol: _protocolStore.protocol,
     );
   }
@@ -576,18 +600,15 @@ abstract class _VpnStore extends VpnGuard with Store {
     _ => 1113,
   };
 
-  // These exceptions surface their own UI (device-limit dialog,
-  // location-availability toggle), so the generic snackbar is suppressed.
-  bool _shouldShowErrorSnackbar(Object e) =>
-      e is! UnavailableLocationException && e is! DeviceLimitReachedException;
-
-  String _buildErrorMessage(Object e, int errorCode) => switch (e) {
-    UnavailableLocationException() => LocaleKeys.locationUnavailableTitle.tr(),
-    DeviceLimitReachedException() => LocaleKeys.deviceLimitReachedTitle.tr(),
+  // Builds the displayable error, or null for exceptions that surface their own
+  // UI (device-limit dialog, location-availability toggle) and are suppressed
+  // from the snackbar.
+  VpnError? _buildConnectionError(Object e, int errorCode) => switch (e) {
+    UnavailableLocationException() || DeviceLimitReachedException() => null,
     _ =>
-      errorCode == 4029
-          ? LocaleKeys.toManyRequestsErrorMsg.tr()
-          : LocaleKeys.failedToConnectError.tr(namedArgs: {'errorCode': errorCode.toString()}),
+      _isTooManyRequests(errorCode)
+          ? const VpnError(VpnErrorType.tooManyRequests)
+          : VpnError(VpnErrorType.failedToConnect, errorCode: errorCode),
   };
 
   // ==================== Connection Completion ====================

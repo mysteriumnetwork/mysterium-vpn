@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -27,9 +27,9 @@ PlanData usePlanData({
     final isBestValue = store.bestValueProducts.any((it) => it.id == product.id);
     final isBasic = product.id.contains('basic');
     final config = store.findConfig(product);
-    final period = switch (product.duration) {
-      1 => LocaleKeys.month,
-      12 => LocaleKeys.year,
+    final periodLabel = switch (product.duration) {
+      1 => S.current.month,
+      12 => S.current.year,
       _ => '',
     };
 
@@ -47,28 +47,26 @@ PlanData usePlanData({
         : null;
 
     return PlanData(
-      fullPriceLabel: LocaleKeys.fullPriceLabel.tr(),
-      discountedLabel: LocaleKeys.discountedPriceLabel.tr(),
+      fullPriceLabel: S.current.fullPriceLabel,
+      discountedLabel: S.current.discountedPriceLabel,
       isOffer: isOffer,
-      name: config.name.tr(),
+      name: Tr.byKeyOrNull(config.name) ?? config.name,
       monthlyFullPrice: canUseSalesValues ? oldPrice?.toString() : null,
       monthlyDiscountedPrice: canUseSalesValues ? price.toString() : null,
       fullPrice: '$money',
-      bestValueBadge: isBestValue ? LocaleKeys.subscriptionPlanBestValue.tr() : null,
+      bestValueBadge: isBestValue ? S.current.subscriptionPlanBestValue : null,
       promoBadge: discount > 0 && canUseSalesValues
           ? isOffer
-                ? LocaleKeys.subscriptionPlanSaveWith.tr(
-                    namedArgs: {'percent': discount.toString(), 'planId': '1-${period.tr()}'},
-                  )
-                : LocaleKeys.subscriptionPlanSavePercent.tr(args: [discount.toString()])
+                ? S.current.subscriptionPlanSaveWith(discount.toString(), '1-$periodLabel')
+                : S.current.subscriptionPlanSavePercent(discount.toString())
           : null,
       icon: isOffer
           ? null
           : isBasic
           ? UntitledUI.star_04
           : UntitledUI.stars_02,
-      perMonth: LocaleKeys.perMonth.tr(),
-      periodLabel: period.tr(),
+      perMonth: S.current.perMonth,
+      periodLabel: periodLabel,
     );
   }, [store, product, otherProduct]);
 }

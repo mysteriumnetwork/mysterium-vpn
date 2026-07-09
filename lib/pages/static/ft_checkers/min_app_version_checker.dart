@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -10,7 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -53,7 +52,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                       const Logo(),
                       const Spacer(),
                       Text(
-                        LocaleKeys.featureToggleMinVersionNotSatisfied.tr(),
+                        S.current.featureToggleMinVersionNotSatisfied,
                         textAlign: TextAlign.center,
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
@@ -81,7 +80,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                             canContinue.value = true;
                           }
                         },
-                        child: Text(LocaleKeys.buttonUpdateApp.tr()),
+                        child: Text(S.current.buttonUpdateApp),
                       ),
                       const Spacer(),
                     ],

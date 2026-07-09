@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> shownConfirmationDialog(
@@ -25,7 +24,7 @@ Future<void> shownConfirmationDialog(
       onConfirm();
     }
 
-    final confirmLabel = Text(confirmText ?? LocaleKeys.yes.tr());
+    final confirmLabel = Text(confirmText ?? S.current.yes);
     final confirmButton = switch (confirmVariant) {
       ButtonVariant.primary => ButtonPrimary(onPressed: handleConfirm, child: confirmLabel),
       ButtonVariant.secondary => ButtonSecondary(onPressed: handleConfirm, child: confirmLabel),
@@ -49,7 +48,7 @@ Future<void> shownConfirmationDialog(
                   Navigator.pop(context);
                   onCancel?.call();
                 },
-                child: Text(cancelText ?? LocaleKeys.no.tr()),
+                child: Text(cancelText ?? S.current.no),
               )
             : null,
       ),

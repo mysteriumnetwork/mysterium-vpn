@@ -325,6 +325,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_connectionErrorAtom = Atom(name: '_VpnStore._connectionError', context: context);
+
+  VpnError? get connectionError {
+    _$_connectionErrorAtom.reportRead();
+    return super._connectionError;
+  }
+
+  @override
+  VpnError? get _connectionError => connectionError;
+
+  @override
+  set _connectionError(VpnError? value) {
+    _$_connectionErrorAtom.reportWrite(value, super._connectionError, () {
+      super._connectionError = value;
+    });
+  }
+
   late final _$_initAsyncAction = AsyncAction('_VpnStore._init', context: context);
 
   @override
@@ -510,6 +527,30 @@ mixin _$VpnStore on _VpnStore, Store {
     );
     try {
       return super.markDeviceLimitErrorAsShown();
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _emitConnectionError(VpnError error) {
+    final _$actionInfo = _$_VpnStoreActionController.startAction(
+      name: '_VpnStore._emitConnectionError',
+    );
+    try {
+      return super._emitConnectionError(error);
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void consumeConnectionError() {
+    final _$actionInfo = _$_VpnStoreActionController.startAction(
+      name: '_VpnStore.consumeConnectionError',
+    );
+    try {
+      return super.consumeConnectionError();
     } finally {
       _$_VpnStoreActionController.endAction(_$actionInfo);
     }

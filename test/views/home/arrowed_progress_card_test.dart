@@ -1,19 +1,19 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+
 import 'package:showcaseview/showcaseview.dart';
 
+import '../../support/test_localizations.dart';
 import 'arrowed_progress_card_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -64,22 +64,12 @@ void main() {
       subscriptionOnboardingStorePOD.overrideWithValue(subscriptionOnboardingStore),
       themeStorePOD.overrideWithValue(themeStore),
     ],
-    child: EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('en', 'US')],
-      path: 'resources/langs',
-      fallbackLocale: const Locale('en'),
-      startLocale: const Locale('en'),
-      useOnlyLangCode: true,
-      assetLoader: const CodegenLoader(),
-      child: Builder(
-        builder: (context) => MaterialApp(
-          theme: DesignSystem.lightTheme,
-          locale: EasyLocalization.of(context)?.locale,
-          localizationsDelegates: EasyLocalization.of(context)?.delegates,
-          supportedLocales: EasyLocalization.of(context)?.supportedLocales ?? const [Locale('en')],
-          home: Scaffold(body: child),
-        ),
-      ),
+    child: MaterialApp(
+      theme: DesignSystem.lightTheme,
+      locale: testLocale,
+      localizationsDelegates: testLocalizationsDelegates,
+      supportedLocales: testSupportedLocales,
+      home: Scaffold(body: child),
     ),
   );
 
