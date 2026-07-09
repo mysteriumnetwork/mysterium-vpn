@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/mqtt_service.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_watcher_hook.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
 import 'package:mysterium_vpn/common/utils/snackbar.dart';
@@ -60,7 +59,6 @@ class MyApp extends HookConsumerWidget {
       }
     });
 
-    useMQTTService();
     useConfigCatUserUpdater();
     useSubscriptionWatcher();
 
