@@ -45,11 +45,11 @@ class _DialogContent extends HookConsumerWidget {
       subtitle: S.current.deviceLimitReachedDesc,
       primaryButton: ButtonPrimary(
         onPressed: handleOpenDashboard,
-        child: Text(S.current.deviceLimitReachedOpenDashboard),
+        child: Text(S.current.deviceLimitReachedOpenDashboard, textAlign: TextAlign.center),
       ),
       secondaryButton: ButtonSecondary(
         onPressed: () => Navigator.of(context).pop(),
-        child: Text(S.current.closeBtn),
+        child: Text(S.current.closeBtn, textAlign: TextAlign.center),
       ),
     );
   }

@@ -27,7 +27,7 @@ class _DialogContent extends HookConsumerWidget {
           userPreferencesStore: userPreferencesStore,
           userAllowed: true,
         ),
-        child: Text(S.current.allowPushNotificationsBtn),
+        child: Text(S.current.allowPushNotificationsBtn, textAlign: TextAlign.center),
       ),
       secondaryButton: ButtonSecondary(
         onPressed: () => _completePushNotificationsFlow(
@@ -35,7 +35,7 @@ class _DialogContent extends HookConsumerWidget {
           userPreferencesStore: userPreferencesStore,
           userAllowed: false,
         ),
-        child: Text(S.current.notNowBtn),
+        child: Text(S.current.notNowBtn, textAlign: TextAlign.center),
       ),
     );
   }

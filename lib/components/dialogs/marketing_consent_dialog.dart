@@ -38,7 +38,7 @@ class _DialogContent extends HookConsumerWidget {
             loading: isLoading && (lastClickedConsent.value ?? false)
                 ? const ButtonLoading()
                 : null,
-            child: Text(S.current.allowNotificationsBtn),
+            child: Text(S.current.allowNotificationsBtn, textAlign: TextAlign.center),
           ),
           secondaryButton: ButtonSecondary(
             key: Keys.marketingConsentDeclineButton,
@@ -47,7 +47,7 @@ class _DialogContent extends HookConsumerWidget {
               _updateMarketingConsent(context, consent: false);
             },
             loading: isLoading && lastClickedConsent.value == false ? const ButtonLoading() : null,
-            child: Text(S.current.notNowBtn),
+            child: Text(S.current.notNowBtn, textAlign: TextAlign.center),
           ),
         );
       },

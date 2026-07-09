@@ -54,6 +54,7 @@ class ConnectionTile extends HookConsumerWidget {
           noConnectionDescription: noConnectionDescription,
           connectionRatingLabel: S.current.rateConnection,
           showConnectionRating: false,
+          ipPoolLabel: (count) => S.current.ipPoolLabel(count),
           onConnect: onToggle,
           onDisconnect: onToggle,
           onRefreshIp: onRefreshIP,
