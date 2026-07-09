@@ -25,10 +25,10 @@ class _ExposedStep extends StatelessWidget {
             right: 0,
             top: 0,
             child: OnboardingItem(
-              label: LocaleKeys.connection.tr(),
+              label: S.current.connection,
               borderColor: Palette.error.shade200,
               trailing: _StatusPill(
-                label: LocaleKeys.unprotectedLbl.tr(),
+                label: S.current.unprotectedLbl,
                 background: Palette.error.shade600,
                 borderColor: Palette.error.shade200,
                 icon: UntitledUI.alert_circle,
@@ -43,7 +43,7 @@ class _ExposedStep extends StatelessWidget {
               angle: _deg(0.22),
               child: OnboardingItem(
                 leading: const _LeadingIcon(icon: UntitledUI.globe_05),
-                label: LocaleKeys.ipAddressLbl.tr(),
+                label: S.current.ipAddressLbl,
                 // RFC 5737 documentation-reserved range — never assigned to
                 // a real network, safe to display in illustrative UI.
                 value: '203.0.113.42',
@@ -59,8 +59,8 @@ class _ExposedStep extends StatelessWidget {
               angle: _deg(-0.14),
               child: OnboardingItem(
                 leading: const _LeadingIcon(icon: UntitledUI.marker_pin_01),
-                label: LocaleKeys.locationLbl.tr(),
-                value: LocaleKeys.madridLbl.tr(),
+                label: S.current.locationLbl,
+                value: S.current.madridLbl,
                 trailing: const _StatusDot(exposed: true),
               ),
             ),
@@ -74,7 +74,7 @@ class _ExposedStep extends StatelessWidget {
               child: OnboardingItem(
                 leading: const _LeadingIcon(icon: UntitledUI.wifi),
                 label: _kIspLabel,
-                value: LocaleKeys.vodafoneLbl.tr(),
+                value: S.current.vodafoneLbl,
                 trailing: const _StatusDot(exposed: true),
               ),
             ),

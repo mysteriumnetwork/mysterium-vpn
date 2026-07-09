@@ -24,12 +24,10 @@ dependencies:
   crypto: 3.0.7
   device_info_plus: 13.1.0
   dio: 5.9.2
-  easy_localization: 3.0.8
-  easy_localization_loader: 2.0.2
-  firebase_analytics: 12.4.0
-  firebase_core: 4.8.0
-  firebase_crashlytics: 5.2.1
-  firebase_performance: 0.11.4
+  firebase_analytics: 12.4.3
+  firebase_core: 4.11.0
+  firebase_crashlytics: 5.2.4
+  firebase_performance: 0.11.4+3
   flutter:
     sdk: flutter
   flutter_hooks: 0.21.3+1
@@ -45,10 +43,10 @@ dependencies:
       url: https://github.com/KristijanMitrik/flutter_secure_storage.git
       path: flutter_secure_storage
       ref: 9.2.6
-  flutter_svg: 2.2.4
+  flutter_svg: 2.3.0
   flutter_udid: 4.1.2
   freezed_annotation: 3.1.0
-  google_fonts: 8.0.2
+  google_fonts: 8.1.0
   google_sign_in: 7.2.0
   hive_ce: 2.19.3
   hive_ce_flutter: 2.3.4
@@ -61,6 +59,7 @@ dependencies:
   intl: 0.20.2
   json_annotation: 4.11.0
   latlong2: 0.9.1
+  localizely_sdk: ^2.7.6
   mail_launcher:
     path: ./packages/mail_launcher
   mobx: 2.6.0
@@ -69,7 +68,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.23
+      ref: 0.0.27
   onesignal_flutter: 5.6.3
   open_store: 0.5.0
   openvpn_dart:
@@ -109,9 +108,9 @@ dependencies:
       ref: 0.9.12
 
 dev_dependencies:
+  build: ^4.0.0
   build_runner: 2.13.0
   cider: 0.2.10
-  easy_localization_sheet: 1.1.0
   flutter_gen_runner: 5.13.0+1
   flutter_lints: 6.0.0
   flutter_test:
@@ -120,6 +119,7 @@ dev_dependencies:
   hive_ce_generator: 1.11.0
   integration_test:
     sdk: flutter
+  intl_utils: ^2.8.10
   json_serializable: 6.13.0
   mobx_codegen: 2.7.6
   mockito: 5.6.3
@@ -144,6 +144,17 @@ msix_config:
   protocol_activation: mysteriumvpn
   override_executable: mysterium_vpn.exe
 
+flutter_intl:
+  enabled: false
+  class_name: S
+  main_locale: en
+  arb_dir: lib/l10n
+  output_dir: lib/generated
+  use_deferred_loading: false
+  localizely:
+    project_id: c88d61d8-c2db-4b19-b798-7ab447a7b762
+    ota_enabled: true
+
 flutter:
   uses-material-design: true
 
@@ -153,7 +164,6 @@ flutter:
     - assets/logo/prod/
     - assets/icons/
     - assets/images/
-    - resources/langs/
     - assets/google_fonts/
     - assets/data/
       # BEGIN auto-generated assets
@@ -221,7 +231,3 @@ patrol:
     bundle_id: com.mysteriumvpn.test
   macos:
     bundle_id: com.mysteriumvpn.test
-
-easy_localization_sheet:
-  csv_url: "https://docs.google.com/spreadsheets/d/1_rcGKCSnaBzF-dHnow53aBxBu_av_jhLS-x0HGeY5tE/export?format=csv&gid=216784309"
-  output_dir: "resources/langs" # Optional, default is assets

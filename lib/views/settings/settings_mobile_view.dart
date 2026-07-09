@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/setting_category.dart';
@@ -54,7 +53,7 @@ class _SettingsMainList extends HookConsumerWidget {
         child: SettingsCard(
           position: position,
           icon: Icon(category.icon, size: 20),
-          title: category.trKey.tr(),
+          title: category.label,
           trailing: IconButton(
             onPressed: onTap,
             icon: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
@@ -84,7 +83,7 @@ class _SettingsMainList extends HookConsumerWidget {
                       handleOnSupportPage(context: context, analyticsStore: analyticsStore),
                   child: SettingsCard(
                     icon: const Icon(UntitledUI.message_question_square, size: 20),
-                    title: LocaleKeys.helpSupportLbl.tr(),
+                    title: S.current.helpSupportLbl,
                     position: SettingsCardPosition.bottom,
                     trailing: IconButton(
                       onPressed: () =>
@@ -130,7 +129,7 @@ class _SettingsSubPageContent extends StatelessWidget {
       ),
       sliver: SliverToBoxAdapter(
         child: Text(
-          category.trKey.tr(),
+          category.label,
           style: theme.textStyles.displayXlg.semibold.copyWith(
             color: theme.palette.textPrimary,
             fontSize: 24,

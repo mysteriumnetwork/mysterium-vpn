@@ -1,12 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
+import 'package:mysterium_vpn/views/subscription_onboarding_step_labels.dart';
 import 'package:mysterium_vpn_design/styles/colors/palette.dart';
 import 'package:mysterium_vpn_design/widgets/progress_card.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -36,8 +36,7 @@ class ArrowedProgressCard extends HookConsumerWidget {
 
   bool get _isLastStep => step.platformIndex == (SubscriptionOnboardingStep.values.length - 1);
 
-  String get _actionLabel =>
-      _isLastStep ? LocaleKeys.completeBtn.tr() : LocaleKeys.continueBtn.tr();
+  String get _actionLabel => _isLastStep ? S.current.completeBtn : S.current.continueBtn;
 
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;
@@ -129,8 +128,8 @@ class ArrowedProgressCard extends HookConsumerWidget {
               icon: step.icon,
               progressLabel: '${step.platformIndex + 1}/${step.totalSteps}',
               progressValue: (step.platformIndex + 1) / step.totalSteps,
-              title: step.title.tr(),
-              description: step.description.tr(),
+              title: step.title,
+              description: step.description,
               actionLabel: _actionLabel,
               onActionPressed: () => ShowcaseView.get().next(),
             ),

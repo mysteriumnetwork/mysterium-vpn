@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/residential_education_modal.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -116,9 +115,9 @@ class _ResidentialEducationTriggerState extends ConsumerState<ResidentialEducati
           await showInfoPopover(
             context: context,
             anchorKey: widget.connectedCardKey,
-            title: LocaleKeys.ipTypeResidentialTooltipTitle.tr(),
-            body: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
-            actionLabel: LocaleKeys.residentialEducationGotIt.tr(),
+            title: S.current.ipTypeResidentialTooltipTitle,
+            body: S.current.ipTypeResidentialTooltipBody,
+            actionLabel: S.current.residentialEducationGotIt,
           );
           // Persist only after the reminder is dismissed (per spec).
           await eduStore.markReminderShown(now);

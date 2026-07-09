@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -32,7 +29,6 @@ abstract class _MqttStore with Store {
       });
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      showSnackbar(LocaleKeys.somethingWentWrong.tr());
       rethrow;
     }
   }

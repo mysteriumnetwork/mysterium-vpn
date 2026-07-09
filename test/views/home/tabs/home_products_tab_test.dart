@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,13 +6,13 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+import '../../../support/test_localizations.dart';
 import 'home_products_tab_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SubscriptionStore>()])
@@ -34,31 +33,18 @@ void main() {
 
   Widget buildHarness() => ProviderScope(
     overrides: [subscriptionStorePOD.overrideWithValue(subscriptionStore)],
-    child: EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('en', 'US')],
-      path: 'resources/langs',
-      fallbackLocale: const Locale('en'),
-      startLocale: const Locale('en'),
-      useOnlyLangCode: true,
-      assetLoader: const CodegenLoader(),
-      child: Builder(
-        builder: (ctx) {
-          final delegate = BeamerDelegate(
-            locationBuilder: RoutesLocationBuilder(
-              routes: {'/': (_, _, _) => const SizedBox.shrink()},
-            ).call,
-          );
-          return BeamerProvider(
-            routerDelegate: delegate,
-            child: MaterialApp(
-              theme: DesignSystem.lightTheme,
-              locale: EasyLocalization.of(ctx)?.locale,
-              localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-              supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
-              home: const Scaffold(body: HomeProductsTab()),
-            ),
-          );
-        },
+    child: BeamerProvider(
+      routerDelegate: BeamerDelegate(
+        locationBuilder: RoutesLocationBuilder(
+          routes: {'/': (_, _, _) => const SizedBox.shrink()},
+        ).call,
+      ),
+      child: MaterialApp(
+        theme: DesignSystem.lightTheme,
+        locale: testLocale,
+        localizationsDelegates: testLocalizationsDelegates,
+        supportedLocales: testSupportedLocales,
+        home: const Scaffold(body: HomeProductsTab()),
       ),
     ),
   );

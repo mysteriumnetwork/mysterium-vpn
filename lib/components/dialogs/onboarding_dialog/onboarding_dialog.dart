@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -8,7 +7,7 @@ import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/step_controller_hook.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -24,36 +23,26 @@ part 'step_footer.dart';
 // ─── Steps ────────────────────────────────────────────────────────────────────
 
 enum _Step {
-  exposed(
-    title: LocaleKeys.onboardingStep1Title,
-    desc: LocaleKeys.onboardingStep1Desc,
-    accent: Color(0xFFDE3B3D),
-    content: _ExposedStep(),
-  ),
-  protected(
-    title: LocaleKeys.onboardingStep2Title,
-    desc: LocaleKeys.onboardingStep2Desc,
-    accent: Color(0xFF28AA6E),
-    content: _ProtectedStep(),
-  ),
-  comparison(
-    title: LocaleKeys.onboardingStep3Title,
-    desc: LocaleKeys.onboardingStep3Desc,
-    accent: Color(0xFFDA78FA),
-    content: _ComparisonStep(),
-  );
+  exposed(accent: Color(0xFFDE3B3D), content: _ExposedStep()),
+  protected(accent: Color(0xFF28AA6E), content: _ProtectedStep()),
+  comparison(accent: Color(0xFFDA78FA), content: _ComparisonStep());
 
-  const _Step({
-    required this.title,
-    required this.desc,
-    required this.accent,
-    required this.content,
-  });
+  const _Step({required this.accent, required this.content});
 
-  final String title;
-  final String desc;
   final Color accent;
   final Widget content;
+
+  String get title => switch (this) {
+    _Step.exposed => S.current.onboardingStep1Title,
+    _Step.protected => S.current.onboardingStep2Title,
+    _Step.comparison => S.current.onboardingStep3Title,
+  };
+
+  String get desc => switch (this) {
+    _Step.exposed => S.current.onboardingStep1Desc,
+    _Step.protected => S.current.onboardingStep2Desc,
+    _Step.comparison => S.current.onboardingStep3Desc,
+  };
 }
 
 // ─── Hooks ────────────────────────────────────────────────────────────────────
@@ -242,7 +231,7 @@ class _OnboardingBody extends StatelessWidget {
                     _ContinueButton(
                       isMobile: isMobile,
                       onPressed: onContinue,
-                      label: isLast ? LocaleKeys.seePlansBtn.tr() : LocaleKeys.continueBtn.tr(),
+                      label: isLast ? S.current.seePlansBtn : S.current.continueBtn,
                     ),
                   ],
                 ),

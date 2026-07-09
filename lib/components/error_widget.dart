@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -35,7 +34,7 @@ class RetryOnErrorWidget extends HookWidget {
         ButtonPrimary(
           loading: status.isLoading ? const ButtonLoading() : null,
           onPressed: () => notifier.run(onRetry),
-          child: Text(LocaleKeys.tryAgainBtn.tr()),
+          child: Text(S.current.tryAgainBtn),
         ),
       ],
     ).paddingDirectional(all: 20).center();

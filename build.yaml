@@ -1,3 +1,11 @@
+builders:
+  tr_bridge:
+    import: "tool/tr_bridge_builder.dart"
+    builder_factories: ["trBridgeBuilder"]
+    build_extensions: {"^lib/l10n/intl_en.arb": ["lib/l10n/tr_bridge_keys.g.dart"]}
+    auto_apply: root_package
+    build_to: source
+
 targets:
   $default:
     builders:

@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -42,15 +41,15 @@ class _DialogContent extends HookConsumerWidget {
 
     return PromptDialog(
       image: Asset.images.devicesLimit.svg(),
-      title: LocaleKeys.deviceLimitReachedTitle.tr(),
-      subtitle: LocaleKeys.deviceLimitReachedDesc.tr(),
+      title: S.current.deviceLimitReachedTitle,
+      subtitle: S.current.deviceLimitReachedDesc,
       primaryButton: ButtonPrimary(
         onPressed: handleOpenDashboard,
-        child: Text(LocaleKeys.deviceLimitReachedOpenDashboard.tr()),
+        child: Text(S.current.deviceLimitReachedOpenDashboard, textAlign: TextAlign.center),
       ),
       secondaryButton: ButtonSecondary(
         onPressed: () => Navigator.of(context).pop(),
-        child: Text(LocaleKeys.closeBtn.tr()),
+        child: Text(S.current.closeBtn, textAlign: TextAlign.center),
       ),
     );
   }

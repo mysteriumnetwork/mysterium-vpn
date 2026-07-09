@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,11 +7,12 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/location_item_state_hook.dart';
-import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+
+import '../support/test_localizations.dart';
 
 import 'location_item_state_hook_test.mocks.dart';
 
@@ -98,25 +98,15 @@ void main() {
       remoteConfigStorePOD.overrideWithValue(mockRemoteConfigStore),
       authSessionStorePOD.overrideWithValue(mockAuthSessionStore),
     ],
-    child: EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('en', 'US')],
-      path: 'resources/langs',
-      fallbackLocale: const Locale('en'),
-      startLocale: const Locale('en'),
-      useOnlyLangCode: true,
-      assetLoader: const CodegenLoader(),
-      child: Builder(
-        builder: (ctx) => MaterialApp(
-          locale: EasyLocalization.of(ctx)?.locale,
-          localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-          supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
-          home: Consumer(
-            builder: (ctx, ref, _) => _HookHarness(
-              location: location,
-              onTap: (_) {},
-              onState: (state) => capturedState = state,
-            ),
-          ),
+    child: MaterialApp(
+      locale: testLocale,
+      localizationsDelegates: testLocalizationsDelegates,
+      supportedLocales: testSupportedLocales,
+      home: Consumer(
+        builder: (ctx, ref, _) => _HookHarness(
+          location: location,
+          onTap: (_) {},
+          onState: (state) => capturedState = state,
         ),
       ),
     ),

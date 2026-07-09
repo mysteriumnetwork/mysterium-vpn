@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
@@ -11,11 +10,12 @@ import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
+import 'package:mysterium_vpn/views/vpn_error_message.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 void useHomeAutorun() {
@@ -92,6 +92,16 @@ void useHomeAutorun() {
           }
           return null;
         }),
+        // Translate + surface store-emitted connection errors here, so
+        // `VpnStore` stays translation-free. A `reaction` (not `autorun`) so a
+        // stale error left unconsumed while Home was unmounted isn't replayed
+        // out of context when it remounts — it only fires on new emissions.
+        reaction((_) => vpnStore.connectionError, (error) {
+          if (error != null) {
+            showSnackbar(vpnErrorMessage(error));
+            vpnStore.consumeConnectionError();
+          }
+        }),
         autorun((_) {
           final notification = pushNotificationsStore.lastNotification;
           if (notification?.id == pushNotificationsStore.lastShownPushNotificationId) {
@@ -131,7 +141,7 @@ void useHomeAutorun() {
               }
               FlutterClipboard.copy(couponCode).then((value) {
                 showSnackbar(
-                  LocaleKeys.couponCodeCopied.tr(namedArgs: {'couponCode': '"$couponCode"'}),
+                  S.current.couponCodeCopied('"$couponCode"'),
                   type: SnackbarType.success,
                 );
                 if (context.mounted) {

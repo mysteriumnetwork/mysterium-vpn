@@ -1,5 +1,4 @@
 import 'package:circle_flags/circle_flags.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,7 +8,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -84,11 +83,11 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   });
 
   final MainIpCardStatus status;
-  var noConnectionTitle = LocaleKeys.connectBestServer.tr();
-  var noConnectionDescription = LocaleKeys.orSelectCountryManually.tr();
-  final upgradeLabel = needsUpgrade ? LocaleKeys.subscriptionUpgrade.tr() : null;
-  var connectLabel = upgradeLabel ?? LocaleKeys.connect.tr();
-  final disconnectLabel = upgradeLabel ?? LocaleKeys.disconnect.tr();
+  var noConnectionTitle = S.current.connectBestServer;
+  var noConnectionDescription = S.current.orSelectCountryManually;
+  final upgradeLabel = needsUpgrade ? S.current.subscriptionUpgrade : null;
+  var connectLabel = upgradeLabel ?? S.current.connect;
+  final disconnectLabel = upgradeLabel ?? S.current.disconnect;
 
   if (hasDifferentSelection) {
     final connected = connectedLocation!;
@@ -96,15 +95,15 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final connectedCountry = connectedParent?.getName(context) ?? connected.getName(context);
     final connectedCity = connectedParent != null ? connected.getName(context) : '';
     final connectedServiceQuality = connected.ipType == IPType.residential
-        ? LocaleKeys.residential.tr()
-        : LocaleKeys.highSpeed.tr();
+        ? S.current.residential
+        : S.current.highSpeed;
 
     final isSelectedUnavailable = unavailableLocationsStore.unavailableLocations.contains(
       selectedLocation,
     );
     final switchLabel = isSelectedUnavailable
-        ? LocaleKeys.locationUnavailableAction.tr()
-        : LocaleKeys.switchToLocationBtn.tr(args: [selectedLocation!.getName(context)]);
+        ? S.current.locationUnavailableAction
+        : S.current.switchToLocationBtn(selectedLocation!.getName(context));
 
     status = MainIpCardNewIpPreview(
       country: connectedCountry,
@@ -126,8 +125,8 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
         ? CircleFlag(displayLocation.countryCode, size: 32)
         : const SizedBox(width: 32, height: 32);
     final serviceQuality = ipType == IPType.residential
-        ? LocaleKeys.residential.tr()
-        : LocaleKeys.highSpeed.tr();
+        ? S.current.residential
+        : S.current.highSpeed;
 
     if (displayLocation == null) {
       status = const MainIpCardNotConnected();
@@ -157,11 +156,9 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     }
 
     if (displayLocation != null && !isLocationAvailable) {
-      noConnectionTitle = LocaleKeys.locationUnavailableTitle.tr(
-        args: [displayLocation.getName(context)],
-      );
-      noConnectionDescription = LocaleKeys.locationUnavailableSubtitle.tr();
-      connectLabel = LocaleKeys.locationUnavailableAction.tr();
+      noConnectionTitle = S.current.locationUnavailableTitle(displayLocation.getName(context));
+      noConnectionDescription = S.current.locationUnavailableSubtitle;
+      connectLabel = S.current.locationUnavailableAction;
     }
   }
 
@@ -216,8 +213,8 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     connectLabel: connectLabel,
     disconnectLabel: disconnectLabel,
     connectingLabel: vpnStatus == VpnConnectionStatus.disconnecting
-        ? LocaleKeys.disconnecting.tr()
-        : LocaleKeys.connecting.tr(),
+        ? S.current.disconnecting
+        : S.current.connecting,
     noConnectionTitle: noConnectionTitle,
     noConnectionDescription: noConnectionDescription,
     onToggle: onToggle,

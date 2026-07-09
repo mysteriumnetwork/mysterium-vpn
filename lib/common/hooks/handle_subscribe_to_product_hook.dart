@@ -1,11 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 
 /// [onAfterRedirect] fires after web-checkout hand-off or "already on this
@@ -36,7 +35,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAf
     if ((subscription?.active ?? false) && selectedProduct.id == subscription?.planId) {
       // already subscribed to this product, do nothing
       if (context.mounted) {
-        showSnackbar(LocaleKeys.planAlreadyPurchasedMsg.tr());
+        showSnackbar(S.current.planAlreadyPurchasedMsg);
         onAfterRedirectRef.value?.call();
       }
       return;
@@ -65,9 +64,7 @@ Future<void> Function(String id) useHandleSubscribeToProduct({VoidCallback? onAf
         isMobilePaymentGateway(gateway) &&
         !(subscription?.isGatewayOnCurrentPlatform ?? true)) {
       if (context.mounted) {
-        showSnackbar(
-          LocaleKeys.activeSubsPaidVia.tr(namedArgs: {'store': subscription!.gatewayName}),
-        );
+        showSnackbar(S.current.activeSubsPaidVia(subscription!.gatewayName));
       }
       return;
     }

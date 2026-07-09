@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/views/locations/components/locations_refresh_button.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -35,7 +34,7 @@ class LocationItemEmpty extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                LocaleKeys.noServersAvailable.tr(),
+                S.current.noServersAvailable,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textStyles.textSm.medium,

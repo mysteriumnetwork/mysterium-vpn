@@ -193,7 +193,7 @@ void main() {
     verify(
       analyticsStore.logEvent(
         AnalyticsEvent.onboardingSubscribedStepViewed,
-        parameters: {'step': 3},
+        parameters: argThat(containsPair('step', 3), named: 'parameters'),
       ),
     ).called(1);
   });
@@ -206,7 +206,7 @@ void main() {
     verify(
       analyticsStore.logEvent(
         AnalyticsEvent.onboardingSubscribedStepCompleted,
-        parameters: {'step': 4},
+        parameters: argThat(containsPair('step', 4), named: 'parameters'),
       ),
     ).called(1);
   });

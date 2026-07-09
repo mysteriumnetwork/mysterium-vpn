@@ -78,20 +78,6 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
     () => super.duration,
     name: '_PurchasableProduct.duration',
   )).value;
-  Computed<String>? _$billedPerMonthComputed;
-
-  @override
-  String get billedPerMonth => (_$billedPerMonthComputed ??= Computed<String>(
-    () => super.billedPerMonth,
-    name: '_PurchasableProduct.billedPerMonth',
-  )).value;
-  Computed<String>? _$billedPerMonthShortComputed;
-
-  @override
-  String get billedPerMonthShort => (_$billedPerMonthShortComputed ??= Computed<String>(
-    () => super.billedPerMonthShort,
-    name: '_PurchasableProduct.billedPerMonthShort',
-  )).value;
   Computed<double>? _$monthlyValueComputed;
 
   @override
@@ -119,13 +105,6 @@ mixin _$PurchasableProduct on _PurchasableProduct, Store {
   bool get isPupular => (_$isPupularComputed ??= Computed<bool>(
     () => super.isPupular,
     name: '_PurchasableProduct.isPupular',
-  )).value;
-  Computed<String>? _$billedInTotalComputed;
-
-  @override
-  String get billedInTotal => (_$billedInTotalComputed ??= Computed<String>(
-    () => super.billedInTotal,
-    name: '_PurchasableProduct.billedInTotal',
   )).value;
 
   late final _$statusAtom = Atom(name: '_PurchasableProduct.status', context: context);
@@ -186,13 +165,10 @@ backendMoney: ${backendMoney},
 introductoryDiscountPercentage: ${introductoryDiscountPercentage},
 productPrice: ${productPrice},
 duration: ${duration},
-billedPerMonth: ${billedPerMonth},
-billedPerMonthShort: ${billedPerMonthShort},
 monthlyValue: ${monthlyValue},
 monthlyPrice: ${monthlyPrice},
 annualPrice: ${annualPrice},
-isPupular: ${isPupular},
-billedInTotal: ${billedInTotal}
+isPupular: ${isPupular}
     ''';
   }
 }

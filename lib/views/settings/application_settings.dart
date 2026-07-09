@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/email_marketing_setting.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
@@ -61,7 +60,7 @@ class ApplicationSettings extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      LocaleKeys.communicationLblDesktop.tr(),
+                      S.current.communicationLblDesktop,
                       style: theme.textStyles.textXs.semibold.copyWith(
                         color: theme.palette.textSecondary,
                       ),
@@ -69,7 +68,7 @@ class ApplicationSettings extends ConsumerWidget {
                   )
                 else
                   Text(
-                    LocaleKeys.communicationLbl.tr(),
+                    S.current.communicationLbl,
                     style: theme.textStyles.textMd.regular.copyWith(
                       color: theme.palette.textTertiary,
                     ),

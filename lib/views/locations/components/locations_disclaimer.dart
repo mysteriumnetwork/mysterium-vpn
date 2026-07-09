@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Banner;
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -19,17 +18,17 @@ class LocationsDisclaimer extends ConsumerWidget {
   });
 
   factory LocationsDisclaimer.residential() => LocationsDisclaimer(
-    title: LocaleKeys.ipTypeResidential.tr(),
-    text: LocaleKeys.ipTypeResidentialDisclaimer.tr(),
+    title: S.current.ipTypeResidential,
+    text: S.current.ipTypeResidentialDisclaimer,
     bannerType: BannerType.residentialIPs,
     leadingIcon: UntitledUI.home_03,
-    tooltipTitle: LocaleKeys.ipTypeResidentialTooltipTitle.tr(),
-    tooltipBody: LocaleKeys.ipTypeResidentialTooltipBody.tr(),
+    tooltipTitle: S.current.ipTypeResidentialTooltipTitle,
+    tooltipBody: S.current.ipTypeResidentialTooltipBody,
   );
 
   factory LocationsDisclaimer.dataCenter() => LocationsDisclaimer(
-    title: LocaleKeys.ipTypeDataCenter.tr(),
-    text: LocaleKeys.ipTypeDataCenterDisclaimer.tr(),
+    title: S.current.ipTypeDataCenter,
+    text: S.current.ipTypeDataCenterDisclaimer,
     bannerType: BannerType.highSpeedIPs,
     leadingIcon: UntitledUI.zap_fast,
   );

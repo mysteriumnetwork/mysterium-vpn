@@ -1,7 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 void showSnackbar(String message, {SnackbarType type = SnackbarType.error, Widget? action}) {
@@ -20,5 +19,5 @@ void showSnackbar(String message, {SnackbarType type = SnackbarType.error, Widge
 }
 
 void showError(Object? error) {
-  showSnackbar(error?.toString() ?? LocaleKeys.somethingWentWrong.tr());
+  showSnackbar(error?.toString() ?? S.current.somethingWentWrong);
 }

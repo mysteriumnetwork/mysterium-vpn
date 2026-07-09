@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,7 +5,8 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -36,6 +36,10 @@ LocationItemState useLocationItemState({
   final children = location.children ?? const <VPNLocation>[];
   final showCitiesAndStates = remoteConfig.showCitiesAndStates && children.isNotEmpty;
   final locationHasStates = remoteConfig.countriesWithStates.contains(location.countryCode);
+  // getName resolves the name from `activeLocale` (not MobX), so it must key the
+  // `items` Computed below — otherwise city names wouldn't re-translate on a
+  // locale switch.
+  final localeTag = activeLocale.toLanguageTag();
 
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
   final residentialIPsAllowed = useComputedValue(() => subscriptionStore.residentialIPsAllowed);
@@ -89,15 +93,12 @@ LocationItemState useLocationItemState({
 
   final defaultSubtitle = showCitiesAndStates
       ? locationHasStates
-            ? LocaleKeys.locationItemStatesCount.plural(
-                children.length,
-                namedArgs: {'statesNum': children.length.toString()},
-              )
-            : LocaleKeys.locationItemCityCount.plural(children.length)
-      : LocaleKeys.locationItemNodeCount.plural(location.nodeCount ?? 0);
+            ? S.current.locationItemStatesCount(children.length)
+            : S.current.locationItemCityCount(children.length)
+      : S.current.locationItemNodeCount(location.nodeCount ?? 0);
 
   final subtitle = connectedChild != null
-      ? '${LocaleKeys.connected.tr()} · ${connectedChild.getName(context)}'
+      ? '${S.current.connected} · ${connectedChild.getName(context)}'
       : defaultSubtitle;
 
   final items = useComputedValue(() {
@@ -127,7 +128,7 @@ LocationItemState useLocationItemState({
       };
       return IpCardItem(
         name: child.getName(context),
-        subtitle: LocaleKeys.locationItemNodeCount.plural(child.nodeCount ?? 0),
+        subtitle: S.current.locationItemNodeCount(child.nodeCount ?? 0),
         status: status,
         plusUpgrade: childPlusUpgrade,
         onTap: switch (childMode) {
@@ -141,7 +142,7 @@ LocationItemState useLocationItemState({
     // a MobX observable, and locationMode would cause unnecessary Computed churn
     // on every parent-mode change (child modes are re-derived independently and
     // tracked by MobX inside the closure).
-  }, [children, showCitiesAndStates, subscription, isAuthenticated]);
+  }, [children, showCitiesAndStates, subscription, isAuthenticated, localeTag]);
 
   final needsUpgrade = locationMode == LocationMode.unsupportedByPlan;
 

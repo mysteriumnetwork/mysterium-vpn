@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 
 class ApiErrorsInterceptor extends Interceptor {
   @override
@@ -25,19 +24,19 @@ class ApiErrorsInterceptor extends Interceptor {
 
       var message = '';
       if (errorCode == 4029 || errorCode == 429) {
-        message = LocaleKeys.toManyRequestsErrorMsg.tr();
+        message = S.current.toManyRequestsErrorMsg;
       } else if (errorCode == 503) {
-        message = err.message ?? LocaleKeys.serviceUnavailableError.tr();
+        message = err.message ?? S.current.serviceUnavailableError;
       } else if (data.containsKey('status') && data['status'] == 503) {
-        message = err.message ?? LocaleKeys.serviceUnavailableError.tr();
+        message = err.message ?? S.current.serviceUnavailableError;
       } else if (!data.containsKey('error')) {
-        message = err.message ?? LocaleKeys.somethingWentWrong.tr();
+        message = err.message ?? S.current.somethingWentWrong;
       } else if (data['error'] is Map<String, dynamic> &&
           (data['error'] as Map<String, dynamic>).containsKey('message')) {
         // ignore: avoid_dynamic_calls
-        message = data['error']['message'] as String? ?? LocaleKeys.somethingWentWrong.tr();
+        message = data['error']['message'] as String? ?? S.current.somethingWentWrong;
       } else {
-        message = err.message ?? LocaleKeys.somethingWentWrong.tr();
+        message = err.message ?? S.current.somethingWentWrong;
       }
       return handler.reject(
         ApiException(
@@ -55,7 +54,7 @@ class ApiErrorsInterceptor extends Interceptor {
     return handler.reject(
       ApiException(
         err.requestOptions,
-        err.message ?? LocaleKeys.somethingWentWrong.tr(),
+        err.message ?? S.current.somethingWentWrong,
         code: err.response?.statusCode ?? 500,
         identifier: 'Dio Exception ${err.message} \nat  $endpoint',
         endpoint: endpoint,

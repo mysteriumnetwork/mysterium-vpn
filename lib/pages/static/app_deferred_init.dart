@@ -43,8 +43,17 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
     ..read(realIPInfoStorePOD)
     ..read(pushNotificationsStorePOD);
 
+  // Start MQTT here — after the Future.wait above, remote config is loaded so
+  // `mqttExperiment` holds its real value (not the default false). Not awaited:
+  // connecting must not gate app startup.
+  _initMqtt(ref);
+
   ref.read(loggerPOD).log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
 });
+
+void _initMqtt(Ref ref) {
+  ref.read(vpnApiMQTTPOD).start();
+}
 
 Future<void> _initRemoteConfig(Ref ref, Talker talker) async {
   try {
@@ -62,10 +71,7 @@ Future<void> _initOtherConfigCatStores(Ref ref, Talker logger) async {
   try {
     final configCatUserStore = ref.read(configCatUserStorePOD);
     final configCatUser = await configCatUserStore.future;
-    await Future.wait([
-      ref.read(abTestingStorePOD).setUser(configCatUser),
-      ref.read(textsStorePOD).setUser(configCatUser),
-    ]);
+    await ref.read(abTestingStorePOD).setUser(configCatUser);
   } catch (e) {
     logger.log('ConfigCat stores init error (non-fatal): $e');
   }

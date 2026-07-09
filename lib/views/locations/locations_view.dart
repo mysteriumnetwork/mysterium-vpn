@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,7 +8,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
@@ -221,7 +220,7 @@ class _UserIntent extends HookConsumerWidget {
           children: [
             Flexible(
               child: Text(
-                LocaleKeys.userIntentLabel.tr(),
+                S.current.userIntentLabel,
                 style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textTertiary),
               ),
             ),
@@ -255,7 +254,7 @@ class _RecentLocations extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
     child: LocationsHorizontalList(
-      title: LocaleKeys.recentLocations.tr(),
+      title: S.current.recentLocations,
       items: recentLocations,
       onItemPressed: onLocationTapped,
       connectedLocation: connectedLocation,

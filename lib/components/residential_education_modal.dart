@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide Radius;
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Presents the localized [ResidentialEducationModal] as a bottom sheet on
@@ -9,15 +8,15 @@ Future<void> showResidentialEducationModal(BuildContext context) async {
   await showBottomSheetDialog<void>(
     context,
     builder: (ctx) => ResidentialEducationModal(
-      title: LocaleKeys.residentialEducationTitle.tr(),
-      subtitle: LocaleKeys.residentialEducationSubtitle.tr(),
-      block1Title: LocaleKeys.residentialEducationBlock1Title.tr(),
-      block1Body: LocaleKeys.residentialEducationBlock1Body.tr(),
-      block2Title: LocaleKeys.residentialEducationBlock2Title.tr(),
-      block2Body: LocaleKeys.residentialEducationBlock2Body.tr(),
-      block3Title: LocaleKeys.residentialEducationBlock3Title.tr(),
-      block3Body: LocaleKeys.residentialEducationBlock3Body.tr(),
-      gotItLabel: LocaleKeys.residentialEducationGotIt.tr(),
+      title: S.current.residentialEducationTitle,
+      subtitle: S.current.residentialEducationSubtitle,
+      block1Title: S.current.residentialEducationBlock1Title,
+      block1Body: S.current.residentialEducationBlock1Body,
+      block2Title: S.current.residentialEducationBlock2Title,
+      block2Body: S.current.residentialEducationBlock2Body,
+      block3Title: S.current.residentialEducationBlock3Title,
+      block3Body: S.current.residentialEducationBlock3Body,
+      gotItLabel: S.current.residentialEducationGotIt,
       onGotIt: () => Navigator.of(ctx).pop(),
     ),
   );

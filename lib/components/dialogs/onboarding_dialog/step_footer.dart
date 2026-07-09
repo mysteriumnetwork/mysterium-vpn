@@ -37,7 +37,7 @@ class _StepCopy extends StatelessWidget {
         ConstrainedBox(
           constraints: isMobile ? _titleConstraintsMobile : _copyConstraintsDesktop,
           child: Text(
-            step.title.tr(),
+            step.title,
             textAlign: TextAlign.center,
             style: theme.textStyles.displayXlg.bold.copyWith(color: palette.textPrimary),
           ),
@@ -46,7 +46,7 @@ class _StepCopy extends StatelessWidget {
         ConstrainedBox(
           constraints: isMobile ? _subtitleConstraintsMobile : _copyConstraintsDesktop,
           child: Text(
-            step.desc.tr(),
+            step.desc,
             textAlign: TextAlign.center,
             style: theme.textStyles.textMd.regular.copyWith(color: palette.textTertiary),
           ),
