@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -10,7 +9,8 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
@@ -56,7 +56,7 @@ class _CancelSubscriptionFlowDialog extends HookConsumerWidget {
       SubscriptionCancellationFlow.freeze => const _FreezeDuration(),
       SubscriptionCancellationFlow.offer => const _Offer(),
       SubscriptionCancellationFlow.confirmation => const _Confirmation(),
-      SubscriptionCancellationFlow.summary => const Placeholder(),
+      SubscriptionCancellationFlow.summary => const _Summary(),
     };
   }
 }
@@ -112,7 +112,7 @@ class _Survey extends HookConsumerWidget {
     }
 
     return ModalScaffold(
-      appbar: _createAppBar(context: context, title: LocaleKeys.cancelSurveyTitle.tr()),
+      appbar: _createAppBar(context: context, title: S.of(context).cancelSurveyTitle),
       showGradient: false,
       body: SafeArea(
         child: Padding(
@@ -121,9 +121,9 @@ class _Survey extends HookConsumerWidget {
         ),
       ),
       footer: _ActionFooter(
-        primaryButtonLabel: LocaleKeys.continueBtn.tr(),
+        primaryButtonLabel: S.of(context).continueBtn,
         onPrimaryButtonPressed: handleSubmit,
-        secondaryButtonLabel: LocaleKeys.skipBtn.tr(),
+        secondaryButtonLabel: S.of(context).skipBtn,
         onSecondaryButtonPressed: handleSkip,
       ),
     );
@@ -199,8 +199,8 @@ class _Offer extends HookConsumerWidget {
       periodLabel: '10',
       perMonth: r'$10 / month',
       isOffer: true,
-      bestValueBadge: LocaleKeys.subscriptionPlanBestValue.tr(),
-      promoBadge: LocaleKeys.subscriptionPlanSavePercent.tr(args: ['10']),
+      bestValueBadge: S.of(context).subscriptionPlanBestValue,
+      promoBadge: S.of(context).subscriptionPlanSavePercent(10),
     );
 
     return ModalScaffold(
@@ -227,11 +227,11 @@ class _Offer extends HookConsumerWidget {
                           decoration: IconDecoration(padding: EdgeInsets.all(14), iconSize: 20),
                         ),
                         title: true
-                            ? LocaleKeys.subscriptionUpgradeModalTitle.tr(args: ['Maz Product'])
-                            : LocaleKeys.getSubscriptionModalTitle.tr(args: ['10']),
+                            ? S.of(context).subscriptionUpgradeModalTitle(['Maz Product'])
+                            : S.of(context).getSubscriptionModalTitle(['10']),
                         description: true
-                            ? LocaleKeys.subscriptionUpgradeModalDescription.tr()
-                            : LocaleKeys.getSubscriptionModalDesc.tr(),
+                            ? S.of(context).subscriptionUpgradeModalDescription
+                            : S.of(context).getSubscriptionModalDesc,
                       ),
                     ),
                     SizedBox(height: theme.spacing.xl),
@@ -244,8 +244,8 @@ class _Offer extends HookConsumerWidget {
                             mode: PlanCardMode.highlight,
                             data: data,
                             features: const ['Feature 1', 'Feature 2', 'Feature 3'],
-                            viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
-                            viewLessLabel: LocaleKeys.viewLessBtn.tr(),
+                            viewMoreLabel: S.of(context).viewAllFeaturesBtn,
+                            viewLessLabel: S.of(context).viewLessBtn,
                           ),
                         ),
                       ),
@@ -283,10 +283,10 @@ class _Confirmation extends HookConsumerWidget {
     final retryWidget = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(LocaleKeys.somethingWentWrong.tr()),
+        Text(S.of(context).somethingWentWrong),
         ButtonPrimary(
           onPressed: subscriptionStore.refreshSubscription,
-          child: Text(LocaleKeys.retryBtn.tr()),
+          child: Text(S.of(context).retryBtn),
         ),
       ],
     );
@@ -400,6 +400,60 @@ class _Confirmation extends HookConsumerWidget {
   }
 }
 
+class _Summary extends ConsumerWidget {
+  const _Summary();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
+    return ModalScaffold(
+      showGradient: false,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(UntitledUI.check_circle, size: 40, color: theme.palette.iconSuccessPrimary),
+            Text('Subscription cancelled', style: theme.textStyles.textLg.semibold),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: theme.palette.borderPrimary),
+                borderRadius: BorderRadius.circular(theme.spacing.xl2),
+                color: theme.palette.bgPrimary,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: theme.spacing.xl2,
+                  vertical: theme.spacing.xl,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(theme.spacing.xl2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Access available until:', style: theme.textStyles.textLg.semibold),
+                      Text('May 25, 2027', style: theme.textStyles.textLg.semibold),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              'You can reactivate your subscription anytime before your access ends.',
+              style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
+            ),
+          ],
+        ),
+      ),
+      footer: _ActionFooter(
+        primaryButtonLabel: 'Done',
+        onPrimaryButtonPressed: () => Navigator.pop(context),
+      ),
+    );
+  }
+}
+
 AppBar _createAppBar({required BuildContext context, String? title}) {
   final theme = Theme.of(context);
   return AppBar(
@@ -426,9 +480,6 @@ class _ActionFooter extends StatelessWidget {
     this.secondaryButtonLabel,
     this.onSecondaryButtonPressed,
     this.primaryButtonColor,
-    this.horizontalPadding,
-    this.verticalPadding,
-    this.displayButtonsInRow = true,
     this.isProcessing = false,
   });
 
@@ -437,9 +488,6 @@ class _ActionFooter extends StatelessWidget {
   final VoidCallback onPrimaryButtonPressed;
   final VoidCallback? onSecondaryButtonPressed;
   final Color? primaryButtonColor;
-  final double? horizontalPadding;
-  final double? verticalPadding;
-  final bool displayButtonsInRow;
   final bool isProcessing;
 
   bool get hasSecondaryButton => secondaryButtonLabel != null && onSecondaryButtonPressed != null;
@@ -465,21 +513,15 @@ class _ActionFooter extends StatelessWidget {
           )
         : null;
 
-    final children = [
-      ?secondaryButton?.expanded(),
-      if (hasSecondaryButton) primaryButton.expanded() else primaryButton,
-    ];
-
     return Padding(
-      padding: EdgeInsets.only(
-        left: horizontalPadding ?? theme.spacing.xl2,
-        right: horizontalPadding ?? theme.spacing.xl2,
-        top: theme.spacing.xl2,
-        bottom: verticalPadding ?? theme.spacing.xl4,
+      padding: EdgeInsets.only(top: theme.spacing.xl2, bottom: theme.spacing.xl4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ?secondaryButton?.expanded(),
+          if (hasSecondaryButton) primaryButton.expanded() else primaryButton,
+        ],
       ),
-      child: displayButtonsInRow
-          ? Row(children: children)
-          : Column(children: children.map((e) => Row(children: [e])).toList().cast<Widget>()),
     );
   }
 }

@@ -306,7 +306,7 @@ class _SubscriptionCard extends StatelessWidget {
         );
         final cancelButton = SettingsActionButton(
           onPressed: isSubscribing ? null : () async => showCancelSubscriptionFlowDialog(context),
-          child: Text(LocaleKeys.cancelBtn.tr()),
+          child: Text(S.of(context).cancelBtn),
         );
         final spacing = Theme.of(context).spacing;
         trailing = isDesktop
