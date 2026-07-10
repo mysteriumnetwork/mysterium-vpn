@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(plan) => "احصل على خطة اشتراك ${plan}";
 
-  static String m10(count) => "مجموعة عناوين IP: ${count}";
+  static String m10(count) => "${count} :مجموعة IP";
 
   static String m11(location) =>
       "لا تتوفر عناوين IP بديلة في ${location}. اختر دولة أو مدينة أخرى للحصول على عنوان IP مختلف في المرة القادمة.";

@@ -194,6 +194,70 @@ void main() {
       expect(capturedState!.status, isA<MainIpCardLocationSelected>());
     });
 
+    testWidgets(
+      'child location selected → MainIpCardLocationSelected shows the child name, not the country',
+      (tester) async {
+        const usCountry = VPNLocation(
+          id: 'US',
+          ipType: IPType.residential,
+          translations: {'en': 'United States'},
+          countryCode: 'US',
+        );
+        const california = VPNLocation(
+          id: 'california',
+          ipType: IPType.residential,
+          translations: {'en': 'California'},
+          countryCode: 'US',
+        );
+        when(mockVpnStore.isConnected).thenReturn(false);
+        when(mockConnectionDisplayStore.isConnected).thenReturn(false);
+        when(mockConnectionDisplayStore.isLoading).thenReturn(false);
+        when(mockConnectionDisplayStore.displayLocation).thenReturn(california);
+        when(mockConnectionDisplayStore.parentLocation).thenReturn(usCountry);
+        when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+        when(mockLocationsStore.findParent(any)).thenReturn(usCountry);
+
+        await tester.pumpWidget(buildHarness());
+        await tester.pump();
+
+        final status = capturedState!.status;
+        expect(status, isA<MainIpCardLocationSelected>());
+        expect((status as MainIpCardLocationSelected).country, 'California');
+      },
+    );
+
+    testWidgets(
+      'child location connecting → MainIpCardConnecting shows the child name, not the country',
+      (tester) async {
+        const usCountry = VPNLocation(
+          id: 'US',
+          ipType: IPType.residential,
+          translations: {'en': 'United States'},
+          countryCode: 'US',
+        );
+        const california = VPNLocation(
+          id: 'california',
+          ipType: IPType.residential,
+          translations: {'en': 'California'},
+          countryCode: 'US',
+        );
+        when(mockVpnStore.isConnected).thenReturn(false);
+        when(mockConnectionDisplayStore.isConnected).thenReturn(false);
+        when(mockConnectionDisplayStore.isLoading).thenReturn(true);
+        when(mockConnectionDisplayStore.displayLocation).thenReturn(california);
+        when(mockConnectionDisplayStore.parentLocation).thenReturn(usCountry);
+        when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+        when(mockLocationsStore.findParent(any)).thenReturn(usCountry);
+
+        await tester.pumpWidget(buildHarness());
+        await tester.pump();
+
+        final status = capturedState!.status;
+        expect(status, isA<MainIpCardConnecting>());
+        expect((status as MainIpCardConnecting).country, 'California');
+      },
+    );
+
     testWidgets('connectingLabel is "Disconnecting" when vpnStatus == disconnecting', (
       tester,
     ) async {

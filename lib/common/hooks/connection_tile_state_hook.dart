@@ -141,15 +141,18 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
         serviceQuality: serviceQuality,
         ipPoolCount: ipPoolCount,
       );
+      // Before connecting, show the specific location the user picked (city or
+      // state), not its parent country. For country-level picks this is the
+      // country itself.
     } else if (isLoading) {
       status = MainIpCardConnecting(
-        country: country,
+        country: displayLocation.getName(context),
         countryIcon: countryIcon,
         serviceQuality: serviceQuality,
       );
     } else {
       status = MainIpCardLocationSelected(
-        country: country,
+        country: displayLocation.getName(context),
         countryIcon: countryIcon,
         serviceQuality: serviceQuality,
       );
