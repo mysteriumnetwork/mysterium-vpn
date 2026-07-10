@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:patrol/patrol.dart';
 
@@ -10,9 +11,15 @@ void main() {
     environment = await bootApp();
   });
 
-  patrolTest('Happy path: log in, then open the subscription page', ($) async {
+  patrolTest('Locations: the locations tab opens with its search field', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
     await login($, const String.fromEnvironment('LOGIN_EMAIL'));
-    await openSubscriptionPage($);
+
+    await $(#locationsTab).waitUntilVisible();
+    await $(#locationsTab).tap();
+
+    // The locations screen is up once its search field renders.
+    await $(#locationSearch).waitUntilVisible();
+    expect($(#locationSearch), findsOneWidget);
   });
 }

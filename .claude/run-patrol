@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -e
+
+# Launcher for the Patrol MCP server (used by .mcp.json).
+#
+# patrol_mcp is installed GLOBALLY, not as an app dev-dependency: its patrol_cli
+# dependency pulls win32 ^5.11.0, which conflicts with the app's device_info_plus
+# (win32 ^6.0.1). Running it from the global pub cache keeps its deps isolated
+# from the app while still operating on this project via PROJECT_ROOT.
+#
+# One-time install:  fvm dart pub global activate patrol_mcp
+# Requires patrol_cli 4.3.x (matches the app's patrol 4.5.0).
+
+cd "${PROJECT_ROOT:-.}"
+export PROJECT_ROOT=$PWD
+export PATROL_FLUTTER_COMMAND="${PATROL_FLUTTER_COMMAND:-fvm flutter}"
+
+exec fvm dart pub global run patrol_mcp:patrol_mcp

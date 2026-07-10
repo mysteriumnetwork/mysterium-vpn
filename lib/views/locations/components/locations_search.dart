@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsSearch extends HookConsumerWidget {
-  const LocationsSearch({this.enabled = true, this.focusNode, super.key});
+  const LocationsSearch({this.enabled = true, this.focusNode, super.key = K.locationSearch});
 
   final bool enabled;
   final FocusNode? focusNode;

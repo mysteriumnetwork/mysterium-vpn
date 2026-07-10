@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/step_controller_hook.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -143,6 +144,7 @@ class _OnboardingDialog extends HookWidget {
         }
       },
       child: Dialog.fullscreen(
+        key: K.onboardingDialog,
         backgroundColor: Theme.of(context).palette.bgSidePanel,
         child: _OnboardingContent(
           step: step,
@@ -183,7 +185,11 @@ class _OnboardingContent extends StatelessWidget {
               onBackPressed: onBack,
               centerTitle: true,
               actions: [
-                IconButton(onPressed: onClose, icon: const Icon(UntitledUI.x_close, size: 24)),
+                IconButton(
+                  key: K.onboardingCloseButton,
+                  onPressed: onClose,
+                  icon: const Icon(UntitledUI.x_close, size: 24),
+                ),
               ],
             ),
             Expanded(
@@ -229,6 +235,7 @@ class _OnboardingBody extends StatelessWidget {
                     _StepCopy(step: step, isMobile: isMobile),
                     SizedBox(height: spacing.xl3),
                     _ContinueButton(
+                      key: K.onboardingContinueButton,
                       isMobile: isMobile,
                       onPressed: onContinue,
                       label: isLast ? S.current.seePlansBtn : S.current.continueBtn,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -31,16 +32,18 @@ class ConnectionTile extends HookConsumerWidget {
       ref,
     );
 
-    Widget buttonWrapper({required BuildContext context, required Widget child}) =>
-        ArrowedProgressCard(
-          step: SubscriptionOnboardingStep.connectButton,
-          globalKey: ref
-              .read(homeStateProvider)
-              .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
-          tooltipPosition: TooltipPosition.top,
-          showcasePadding: const EdgeInsets.all(8),
-          child: child,
-        );
+    Widget buttonWrapper({required BuildContext context, required Widget child}) => KeyedSubtree(
+      key: K.connectButton,
+      child: ArrowedProgressCard(
+        step: SubscriptionOnboardingStep.connectButton,
+        globalKey: ref
+            .read(homeStateProvider)
+            .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
+        tooltipPosition: TooltipPosition.top,
+        showcasePadding: const EdgeInsets.all(8),
+        child: child,
+      ),
+    );
 
     return Column(
       children: [

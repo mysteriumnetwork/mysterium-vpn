@@ -79,7 +79,7 @@ jobs:
 
       - name: Install Patrol CLI
         run: |
-          dart pub global activate patrol_cli 3.10.0
+          dart pub global activate patrol_cli 4.3.1
           patrol --version
 
       - name: Setup Android keystore

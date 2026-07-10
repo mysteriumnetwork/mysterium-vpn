@@ -174,6 +174,7 @@ class SubscriptionUpgradeView extends HookConsumerWidget {
                                 width: min(constraints.maxWidth, 393),
                                 padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
                                 child: PlanCard.features(
+                                  key: K.subscriptionPlanCard,
                                   mode: PlanCardMode.highlight,
                                   data: planData,
                                   features: features,

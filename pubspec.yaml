@@ -124,7 +124,7 @@ dev_dependencies:
   mobx_codegen: 2.7.6
   mockito: 5.6.3
   msix: 3.16.13
-  patrol: 4.3.0
+  patrol: 4.5.0
   plugin_platform_interface: 2.1.8
   url_launcher_platform_interface: 2.3.2
 
@@ -225,6 +225,7 @@ flutter:
 
 patrol:
   app_name: Mysterium VPN
+  test_directory: integration_test
   android:
     package_name: com.mysteriumvpn.android.test
   ios:

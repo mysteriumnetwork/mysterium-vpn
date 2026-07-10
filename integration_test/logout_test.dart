@@ -10,9 +10,9 @@ void main() {
     environment = await bootApp();
   });
 
-  patrolTest('Happy path: log in, then open the subscription page', ($) async {
+  patrolTest('Logout: from Settings > Account returns to the login screen', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
     await login($, const String.fromEnvironment('LOGIN_EMAIL'));
-    await openSubscriptionPage($);
+    await logout($);
   });
 }
