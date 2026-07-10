@@ -131,6 +131,16 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     return _$setFreezeDurationAsyncAction.run(() => super.setFreezeDuration(months));
   }
 
+  late final _$cancelSubscriptionAsyncAction = AsyncAction(
+    '_SubscriptionCancellationStore.cancelSubscription',
+    context: context,
+  );
+
+  @override
+  Future<void> cancelSubscription() {
+    return _$cancelSubscriptionAsyncAction.run(() => super.cancelSubscription());
+  }
+
   late final _$_SubscriptionCancellationStoreActionController = ActionController(
     name: '_SubscriptionCancellationStore',
     context: context,

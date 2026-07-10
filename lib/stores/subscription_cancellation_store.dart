@@ -37,12 +37,16 @@ abstract class _SubscriptionCancellationStore with Store {
        _remoteConfigStore = remoteConfigStore {
     _reactions.add(
       autorun((_) {
-        _freezeDurations = _remoteConfigStore.subscriptionFreezeDurationOptions;
+        final options = _remoteConfigStore.subscriptionFreezeDurationOptions;
+        _freezeDurations = options;
+        if (_freezeDurations.isEmpty) {
+          _freezeDurations = [1, 3, 6];
+        }
       }),
     );
   }
 
-  late final List<ReactionDisposer> _reactions;
+  late final List<ReactionDisposer> _reactions = [];
   late final AnalyticsStore _analyticsStore;
   late final RemoteConfigStore _remoteConfigStore;
 
@@ -85,10 +89,20 @@ abstract class _SubscriptionCancellationStore with Store {
   Future<void> setFreezeDuration(int months) async {
     _isProcessing = true;
     _selectedFreezeDuration = months;
-    await _analyticsStore.logSubscriptionCancellationPauseDuration(months: months);
+    await Future.delayed(const Duration(seconds: 3));
+    // await _analyticsStore.logSubscriptionCancellationPauseDuration(months: months);
     //TODO: Implement the logic to set the freeze duration.
     _isProcessing = false;
 
+    await moveToNextStep();
+  }
+
+  @action
+  Future<void> cancelSubscription() async {
+    _isProcessing = true;
+    await Future.delayed(const Duration(seconds: 3));
+    // await _analyticsStore.logSubscriptionCancellation();
+    _isProcessing = false;
     await moveToNextStep();
   }
 
@@ -99,7 +113,11 @@ abstract class _SubscriptionCancellationStore with Store {
         _analyticsStore.logCancellationStarted().ignore();
         break;
       case SubscriptionCancellationFlow.survey:
-        _cancellationFlowStep = SubscriptionCancellationFlow.freeze;
+        if (_freezeDurations.isEmpty) {
+          _cancellationFlowStep = SubscriptionCancellationFlow.confirmation;
+        } else {
+          _cancellationFlowStep = SubscriptionCancellationFlow.freeze;
+        }
         break;
       case SubscriptionCancellationFlow.freeze:
         _cancellationFlowStep = SubscriptionCancellationFlow.offer;

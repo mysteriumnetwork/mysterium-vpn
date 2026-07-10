@@ -669,9 +669,13 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   @computed
   List<int> get subscriptionFreezeDurationOptions {
     if (config.containsKey(_FeatureToggleKey.subscriptionFreezeDurations.name)) {
-      final raw = config[_FeatureToggleKey.subscriptionFreezeDurations.name];
-      final decoded = jsonDecode(raw.toString()) as List;
-      return decoded.cast<int>();
+      try {
+        final raw = config[_FeatureToggleKey.subscriptionFreezeDurations.name];
+        final decoded = jsonDecode(raw.toString()) as List;
+        return decoded.cast<int>();
+      } catch (e, stack) {
+        logger.handle(e, stack);
+      }
     }
     return [];
   }

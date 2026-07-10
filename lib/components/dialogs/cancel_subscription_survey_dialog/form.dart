@@ -20,7 +20,7 @@ class _Form extends StatelessWidget {
             padding: EdgeInsets.only(top: theme.spacing.xl2),
             child: ReactiveTextField(
               formControlName: 'feedback',
-              maxLines: 5,
+              maxLines: 6,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 filled: true,
@@ -34,7 +34,7 @@ class _Form extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: theme.palette.borderBrand),
                 ),
-                hintText: LocaleKeys.cancelSurveyFeedbackHint.tr(),
+                hintText: 'Tell us more (optional)',
                 hintMaxLines: 3,
                 hintStyle: theme.textStyles.textMd.regular.copyWith(
                   color: theme.palette.textTertiary,

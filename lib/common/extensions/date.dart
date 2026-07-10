@@ -16,6 +16,7 @@ extension DurationExtension on Duration {
 }
 
 extension DateExtension on DateTime {
+  String formatWithMonthDayYear() => DateFormat('MMM d, yyyy').format(this);
   String formatWithDay() => DateFormat('EEEE, d MMM, yyyy').format(this);
   String formatWithTime() => DateFormat('HH:mm:ss').format(this);
   String formatWithDayAndTime() => DateFormat('EEEE, d MMM, yyyy HH:mm').format(this);
