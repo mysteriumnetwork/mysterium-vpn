@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,15 +12,19 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/mqtt_service.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_watcher_hook.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
+import 'package:mysterium_vpn/common/utils/snackbar.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/pages/static/app_deferred_init.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/ft_checkers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/auth/auth_error.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/views/auth_error_message.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class MyApp extends HookConsumerWidget {
@@ -46,9 +50,26 @@ class MyApp extends HookConsumerWidget {
       }
     });
 
-    useMQTTService();
+    // Translate + surface store-emitted auth errors in the view layer, so the
+    // store stays translation-free.
+    useReaction<AuthError?>(() => authStore.authError, (error) {
+      if (error != null) {
+        showSnackbar(authErrorMessage(error));
+        authStore.consumeAuthError();
+      }
+    });
+
     useConfigCatUserUpdater();
     useSubscriptionWatcher();
+
+    // Keep intl_utils' `S.current` in sync with the active locale, then bump
+    // `localizationRevision` so the tree re-reads `S.current` (it isn't
+    // observable). `loadLocalizations` resolves the right ARB (see arbLocaleFor)
+    // and skips when already loaded.
+    useReaction(() => localStore.currentLocale, (Locale locale) async {
+      await loadLocalizations(locale);
+      localizationRevision.value++;
+    }, fireImmediately: true);
 
     return ReactionBuilder(
       builder: (_) => reaction((_) => authSessionStore.status, (status) {
@@ -64,30 +85,50 @@ class MyApp extends HookConsumerWidget {
                 child: BeamerProvider(
                   routerDelegate: routeDelegate,
                   child: Portal(
-                    child: MaterialApp.router(
-                      title: Env.appName,
-                      scaffoldMessengerKey: snackbarKey,
-                      theme: themeStore.lightTheme,
-                      darkTheme: themeStore.darkTheme,
-                      themeMode: themeStore.themeMode,
-                      routerDelegate: routeDelegate,
-                      routeInformationParser: routeInformationParser,
-                      localizationsDelegates: context.localizationDelegates,
-                      supportedLocales: context.supportedLocales,
-                      locale: localStore.currentLocale,
-                      backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
-                      builder: (context, child) => ScreenTypeObserver(
-                        child: MediaQuery(
-                          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                          child: ScrollConfiguration(
-                            behavior: ScrollConfiguration.of(context).copyWith(
-                              dragDevices: PointerDeviceKind.values.toSet(),
-                              scrollbars: false,
-                              overscroll: true,
-                              physics: const BouncingScrollPhysics(),
-                            ),
-                            child: AppDeferredInitWidget(
-                              child: FTCheckers(child: NetworkLoggerOverlayView(child: child!)),
+                    // Rebuild the app when OTA translations arrive at runtime;
+                    // `S.current` isn't observable, so a bumped revision is what
+                    // repaints the current screen with the new strings.
+                    child: ValueListenableBuilder<int>(
+                      valueListenable: localizationRevision,
+                      builder: (_, _, _) => MaterialApp.router(
+                        title: Env.appName,
+                        scaffoldMessengerKey: snackbarKey,
+                        theme: themeStore.lightTheme,
+                        darkTheme: themeStore.darkTheme,
+                        themeMode: themeStore.themeMode,
+                        routerDelegate: routeDelegate,
+                        routeInformationParser: routeInformationParser,
+                        localizationsDelegates: const [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: localStore.currentLocale,
+                        backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
+                        builder: (context, child) => ScreenTypeObserver(
+                          child: MediaQuery(
+                            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                            child: ScrollConfiguration(
+                              behavior: ScrollConfiguration.of(context).copyWith(
+                                dragDevices: PointerDeviceKind.values.toSet(),
+                                scrollbars: false,
+                                overscroll: true,
+                                physics: const BouncingScrollPhysics(),
+                              ),
+                              child: AppDeferredInitWidget(
+                                child: FTCheckers(
+                                  child: NetworkLoggerOverlayView(
+                                    // Remount pages on locale/OTA change so const
+                                    // widgets re-read the non-observable S.current.
+                                    child: KeyedSubtree(
+                                      key: ValueKey(localizationRevision.value),
+                                      child: child!,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),

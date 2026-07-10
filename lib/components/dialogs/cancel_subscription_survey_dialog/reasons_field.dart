@@ -37,7 +37,14 @@ class _ReasonsField extends HookWidget {
                     child: CheckboxItem(
                       value: selection.contains(itemsList[i + j]),
                       onChanged: () => handleToggle(itemsList[i + j]),
-                      label: Text(itemsList[i + j].tr(), style: theme.textStyles.textMd.medium),
+                      label: Text(
+                        // The "Other" reason's value (kCancelReasonOther) has no
+                        // matching translation key; map it to `otherReason`.
+                        itemsList[i + j] == kCancelReasonOther
+                            ? S.current.otherReason
+                            : Tr.byKey(itemsList[i + j]),
+                        style: theme.textStyles.textMd.medium,
+                      ),
                     ),
                   )
                 else

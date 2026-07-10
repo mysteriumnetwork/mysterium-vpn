@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
 import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -13,7 +12,6 @@ import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -180,24 +178,6 @@ final abTestingClientPOD = Provider<ConfigCatClient>(
     ),
   ),
 );
-
-final textsClientPOD = Provider<ConfigCatClient>(
-  (ref) => ConfigCatClient.get(
-    sdkKey: Env.textsSdkKey,
-    options: ConfigCatOptions(
-      pollingMode: PollingMode.lazyLoad(
-        cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
-      ),
-      logger: Env.flavor.isDev ? ConfigCatLogger() : null,
-      cache: ConfigCatPreferencesCache(),
-    ),
-  ),
-);
-
-final assetsLoaderPOD = Provider<AssetLoader>((ref) {
-  final textsStore = ref.watch(textsStorePOD);
-  return TranslationAssetLoader(textsStore);
-});
 
 final filterServicePOD = Provider<FilterService>((ref) => FilterService());
 

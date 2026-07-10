@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,7 +8,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
@@ -72,14 +71,14 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
 
         if (isLoading) {
           return LoadingIndicator.message(
-            LocaleKeys.connectingToPaymentProcesor.tr(),
+            S.current.connectingToPaymentProcesor,
             color: theme.palette.iconBrandSecondary,
           ).center();
         } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
           return RetryOnErrorWidget(
             error: (products?.isEmpty ?? true)
-                ? LocaleKeys.productsNotAvailable.tr()
-                : LocaleKeys.unableToConnectToPaymentProcesor.tr(),
+                ? S.current.productsNotAvailable
+                : S.current.unableToConnectToPaymentProcesor,
             onRetry: refreshAll,
           ).center();
         }
@@ -101,7 +100,7 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
                   color: theme.palette.bgPopover,
                   child: Center(
                     child: LoadingIndicator.message(
-                      LocaleKeys.processingPayment.tr(),
+                      S.current.processingPayment,
                       color: theme.palette.iconBrandSecondary,
                       style: theme.textStyles.textMd.regular.copyWith(
                         color: theme.palette.iconBrandSecondary,
@@ -130,7 +129,7 @@ void _subscriptionStatusReaction(
       // tab) decide whether to close, navigate, or stay put via their own
       // post-purchase hooks. Beaming to /main from here would tear down the
       // route tree even when the caller is already at /main (Products tab).
-      showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
+      showSnackbar(S.current.subscriptionActive, type: SnackbarType.success);
     } else if (store.subscriptionConfigFuture.error is ApiException &&
         (store.subscriptionConfigFuture.error as ApiException).code == 409) {
       showSnackbar((store.subscriptionConfigFuture.error as ApiException).message);
@@ -145,8 +144,8 @@ void _subscriptionStatusReaction(
           constraints: const BoxConstraints(maxWidth: 350),
           child: AlertModal(
             type: AlertModalType.error,
-            title: LocaleKeys.subscriptionVerificationFailed.tr(),
-            supportingText: LocaleKeys.failedToVerifySubs.tr(),
+            title: S.current.subscriptionVerificationFailed,
+            supportingText: S.current.failedToVerifySubs,
             onClose: () {
               analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
               Navigator.of(context).pop();
@@ -157,14 +156,14 @@ void _subscriptionStatusReaction(
                 analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryClick);
                 purchaseStore.retryVerificationProcess();
               },
-              child: Text(LocaleKeys.retryBtn.tr()),
+              child: Text(S.current.retryBtn),
             ),
             secondaryButton: ButtonSecondary(
               onPressed: () {
                 analyticsStore.logEvent(AnalyticsEvent.subscriptionVerificationRetryCancel);
                 Navigator.of(context).pop();
               },
-              child: Text(LocaleKeys.cancelBtn.tr()),
+              child: Text(S.current.cancelBtn),
             ),
           ),
         ),
@@ -173,14 +172,14 @@ void _subscriptionStatusReaction(
   }
 
   if (status == SubscriptionStatus.canceled) {
-    showSnackbar(LocaleKeys.subscriptionProcessCanceled.tr());
+    showSnackbar(S.current.subscriptionProcessCanceled);
   }
   if (status == SubscriptionStatus.error) {
-    showSnackbar(LocaleKeys.failedToSubscribe.tr());
+    showSnackbar(S.current.failedToSubscribe);
   }
 
   if (status == SubscriptionStatus.pendingTransaction) {
-    showSnackbar(LocaleKeys.pendingTransactionMessage.tr());
+    showSnackbar(S.current.pendingTransactionMessage);
   }
 }
 
@@ -217,18 +216,18 @@ Future<void> _checkForExistingSubscription(
         child: AlertModal(
           screenType: ScreenType.mobile,
           type: AlertModalType.info,
-          title: LocaleKeys.existingSubscriptionTitle.tr(),
-          supportingText: LocaleKeys.existingSubscriptionDesc.tr(namedArgs: {'email': email}),
+          title: S.current.existingSubscriptionTitle,
+          supportingText: S.current.existingSubscriptionDesc(email),
           primaryButton: ButtonPrimary(
             onPressed: () {
               Navigator.of(context).pop();
               ref.read(authStorePOD).logout();
             },
-            child: Text(LocaleKeys.logout.tr()),
+            child: Text(S.current.logout),
           ),
           secondaryButton: ButtonSecondary(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(LocaleKeys.stayButton.tr()),
+            child: Text(S.current.stayButton),
           ),
         ),
       ),

@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -33,12 +32,12 @@ class _Item extends StatelessWidget {
       children: [
         TextSpan(
           text: switch (value) {
-            UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeed.tr(),
-            UserIntent.lowLatency => LocaleKeys.userIntentLowLatency.tr(),
-            UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocation.tr(),
-            UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacy.tr(),
-            UserIntent.streaming => LocaleKeys.userIntentStreaming.tr(),
-            UserIntent.p2p => LocaleKeys.userIntentP2P.tr(),
+            UserIntent.bestSpeed => S.current.userIntentBestSpeed,
+            UserIntent.lowLatency => S.current.userIntentLowLatency,
+            UserIntent.nearestLocation => S.current.userIntentNearestLocation,
+            UserIntent.maxPrivacy => S.current.userIntentMaxPrivacy,
+            UserIntent.streaming => S.current.userIntentStreaming,
+            UserIntent.p2p => S.current.userIntentP2P,
           },
           style: Theme.of(
             context,
@@ -49,12 +48,12 @@ class _Item extends StatelessWidget {
         CharacterSpan.space(),
         TextSpan(
           text: switch (value) {
-            UserIntent.bestSpeed => LocaleKeys.userIntentBestSpeedDesc.tr(),
-            UserIntent.lowLatency => LocaleKeys.userIntentLowLatencyDesc.tr(),
-            UserIntent.nearestLocation => LocaleKeys.userIntentNearestLocationDesc.tr(),
-            UserIntent.maxPrivacy => LocaleKeys.userIntentMaxPrivacyDesc.tr(),
-            UserIntent.streaming => LocaleKeys.userIntentStreamingDesc.tr(),
-            UserIntent.p2p => LocaleKeys.userIntentP2PDesc.tr(),
+            UserIntent.bestSpeed => S.current.userIntentBestSpeedDesc,
+            UserIntent.lowLatency => S.current.userIntentLowLatencyDesc,
+            UserIntent.nearestLocation => S.current.userIntentNearestLocationDesc,
+            UserIntent.maxPrivacy => S.current.userIntentMaxPrivacyDesc,
+            UserIntent.streaming => S.current.userIntentStreamingDesc,
+            UserIntent.p2p => S.current.userIntentP2PDesc,
           },
         ),
       ],

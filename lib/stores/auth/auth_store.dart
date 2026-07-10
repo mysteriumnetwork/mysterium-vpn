@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -12,9 +11,9 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/auth/auth_error.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
@@ -64,6 +63,19 @@ abstract class _AuthStore with Store {
   @observable
   String? email;
 
+  /// One-shot auth failure for the UI to translate + display. The UI consumes
+  /// it (via [consumeAuthError]) after showing. Kept translation-free here so
+  /// presentation stays in the view layer.
+  @readonly
+  AuthError? _authError;
+
+  @action
+  // ignore: use_setters_to_change_properties
+  void _emitError(AuthError error) => _authError = error;
+
+  @action
+  void consumeAuthError() => _authError = null;
+
   @observable
   bool marketingConsent = false;
 
@@ -95,7 +107,7 @@ abstract class _AuthStore with Store {
           await verifyMagicLinkAndAuthenticate(appLink);
         } else {
           Sentry.captureException(TokenAlreadyUsedException());
-          showSnackbar(LocaleKeys.tokenAlreadyUsed.tr());
+          _emitError(const AuthError(AuthErrorType.tokenAlreadyUsed));
         }
       });
     } catch (e) {
@@ -128,7 +140,7 @@ abstract class _AuthStore with Store {
         ),
       );
     } catch (e) {
-      showSnackbar(LocaleKeys.incorrectMagicLink.tr());
+      _emitError(const AuthError(AuthErrorType.incorrectMagicLink));
       Sentry.captureException(e);
       rethrow;
     }
@@ -150,10 +162,10 @@ abstract class _AuthStore with Store {
       }
 
       _logger.handle(e, stackTrace);
-      showSnackbar(e.message);
+      _emitError(AuthError(AuthErrorType.serverMessage, e.message));
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
-      showSnackbar(LocaleKeys.authenticationFailed.tr());
+      _emitError(const AuthError(AuthErrorType.authenticationFailed));
     }
   }
 
@@ -165,9 +177,9 @@ abstract class _AuthStore with Store {
       await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
       _analyticsStore.setLogin(grantType);
     } on ApiException catch (e) {
-      showSnackbar(e.message);
+      _emitError(AuthError(AuthErrorType.serverMessage, e.message));
     } catch (e) {
-      showSnackbar(LocaleKeys.authenticationFailed.tr());
+      _emitError(const AuthError(AuthErrorType.authenticationFailed));
     }
   }
 
@@ -233,9 +245,9 @@ abstract class _AuthStore with Store {
       this.email = email;
       return code;
     } catch (e) {
-      e is ApiException
-          ? showSnackbar(e.message)
-          : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+      _emitError(
+        e is ApiException ? AuthError(AuthErrorType.serverMessage, e.message) : AuthError.generic,
+      );
 
       rethrow;
     }
@@ -260,9 +272,9 @@ abstract class _AuthStore with Store {
         );
       }
     } catch (e) {
-      e is SignInAborted
-          ? showSnackbar(LocaleKeys.signInAbortedMsg.tr())
-          : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+      _emitError(
+        e is SignInAborted ? const AuthError(AuthErrorType.signInAborted) : AuthError.generic,
+      );
 
       rethrow;
     }
@@ -287,11 +299,13 @@ abstract class _AuthStore with Store {
         );
       }
     } catch (e) {
-      e is NotAvailableException
-          ? showSnackbar(LocaleKeys.notAvailableMsg.tr())
-          : e is SignInAborted
-          ? showSnackbar(LocaleKeys.signInAbortedMsg.tr())
-          : showSnackbar(LocaleKeys.somethingWentWrong.tr());
+      _emitError(
+        e is NotAvailableException
+            ? const AuthError(AuthErrorType.notAvailable)
+            : e is SignInAborted
+            ? const AuthError(AuthErrorType.signInAborted)
+            : AuthError.generic,
+      );
 
       rethrow;
     }
@@ -347,7 +361,7 @@ abstract class _AuthStore with Store {
     } catch (e) {
       final authState = _authSessionStore.status;
       if (authState == AuthStatus.authenticated) {
-        showSnackbar(LocaleKeys.loginSessionExpired.tr());
+        _emitError(const AuthError(AuthErrorType.sessionExpired));
       }
       await logout(invalidateRemotely: false);
 

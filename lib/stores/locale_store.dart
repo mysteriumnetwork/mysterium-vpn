@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
 // Include generated file
@@ -20,8 +21,8 @@ abstract class _LocaleStore with Store {
 
   @action
   Future<void> setLocale(Locale locale) async {
-    // Set the locale if it's in our list of supported locales
-    if (kSupportedLocales.contains(locale)) {
+    // Set the locale if it's one we support.
+    if (supportedLocales.contains(locale)) {
       await _sharedPrefs.setLocale(locale);
       _currentLocale = locale;
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
+import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +25,9 @@ void main() {
 
   test('setLocale persists and updates a supported locale', () async {
     final store = LocaleStore();
-    final supported = kSupportedLocales.first;
+    final supported = supportedLocales.firstWhere(
+      (l) => l.languageCode != kFallbackLocale.languageCode,
+    );
 
     await store.setLocale(supported);
 

@@ -12,6 +12,5 @@ export 'resolve_error_msg.dart';
 export 'semantic_version.dart';
 export 'snackbar.dart';
 export 'subscription_plan_resolver.dart';
-export 'translation_asset_loader.dart';
 export 'url_launcher.dart';
 export 'uuid.dart';

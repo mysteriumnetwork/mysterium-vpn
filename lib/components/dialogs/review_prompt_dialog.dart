@@ -1,8 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/url_launcher.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -61,7 +60,7 @@ Future<_SatisfactionAction?> _showSatisfactionModal(BuildContext context) =>
         child: AlertModal(
           screenType: ScreenType.mobile,
           showIcon: false,
-          title: LocaleKeys.reviewSatisfactionTitle.tr(),
+          title: S.current.reviewSatisfactionTitle,
           onClose: () => Navigator.of(context).pop(_SatisfactionAction.dismiss),
           // Figma: 40 top / 32 bottom / 16 sides.
           padding: EdgeInsets.fromLTRB(
@@ -77,14 +76,14 @@ Future<_SatisfactionAction?> _showSatisfactionModal(BuildContext context) =>
                 child: ButtonSecondary(
                   onPressed: () => Navigator.of(context).pop(_SatisfactionAction.yes),
                   leading: const Icon(UntitledUI.thumbs_up, size: 16),
-                  child: Text(LocaleKeys.yes.tr()),
+                  child: Text(S.current.yes),
                 ),
               ),
               Expanded(
                 child: ButtonSecondary(
                   onPressed: () => Navigator.of(context).pop(_SatisfactionAction.no),
                   leading: const Icon(UntitledUI.thumbs_down, size: 16),
-                  child: Text(LocaleKeys.no.tr()),
+                  child: Text(S.current.no),
                 ),
               ),
             ],
@@ -100,15 +99,15 @@ Future<void> _showPositiveModal(BuildContext context, ReviewPromptStore store) a
       child: AlertModal(
         screenType: ScreenType.mobile,
         icon: UntitledUI.thumbs_up,
-        title: LocaleKeys.reviewPositiveTitle.tr(),
+        title: S.current.reviewPositiveTitle,
         onClose: () => Navigator.of(context).pop(_PositiveAction.dismiss),
         primaryButton: ButtonPrimary(
           onPressed: () => Navigator.of(context).pop(_PositiveAction.review),
-          child: Text(LocaleKeys.reviewLeaveReviewBtn.tr()),
+          child: Text(S.current.reviewLeaveReviewBtn),
         ),
         secondaryButton: ButtonSecondary(
           onPressed: () => Navigator.of(context).pop(_PositiveAction.dismiss),
-          child: Text(LocaleKeys.notNowBtn.tr()),
+          child: Text(S.current.notNowBtn),
         ),
       ),
     ),

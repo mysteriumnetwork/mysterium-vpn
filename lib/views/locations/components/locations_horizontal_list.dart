@@ -1,11 +1,10 @@
 import 'package:circle_flags/circle_flags.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -44,8 +43,8 @@ class LocationsHorizontalList extends HookWidget {
             icon: CircleFlag(item.countryCode, size: 24),
             name: item.getName(context),
             subtitle: item.ipType == IPType.datacenter
-                ? LocaleKeys.highSpeed.tr()
-                : LocaleKeys.residential.tr(),
+                ? S.current.highSpeed
+                : S.current.residential,
             onTap: () => onItemPressed(item),
             status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
           );

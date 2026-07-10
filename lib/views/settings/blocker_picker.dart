@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_picker_card.dart';
@@ -29,11 +28,15 @@ class BlockerPicker extends ConsumerWidget {
         final current = dnsStore.blockerType;
 
         return SettingsPickerCard<BlockerType>(
-          title: LocaleKeys.blockerSettingLbl.tr(),
+          title: S.current.blockerSettingLbl,
           position: position,
           value: current,
           items: _availableTypes(dnsStore, current),
-          labelOf: (t) => t.localeKey.tr(),
+          labelOf: (t) => switch (t) {
+            BlockerType.none => S.current.noneLbl,
+            BlockerType.malware => S.current.malwareLbl,
+            BlockerType.nsfwAndMalware => S.current.nsfwLbl,
+          },
           onChanged: (type) => _applyBlockerType(type, dnsStore, analyticsStore),
           enabled: !isLoading && authSessionStore.isAuthenticated,
           isLoading: isLoading,

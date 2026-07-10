@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showSubscriptionOnboardingDialog({
@@ -48,8 +47,8 @@ class _StartSubscriptionOnboardingDialog extends StatelessWidget {
 
     return AppDialog(
       width: 343,
-      title: LocaleKeys.subscriptionOnboardingPromptTitle.tr(),
-      description: LocaleKeys.subscriptionOnboardingPromptDescription.tr(),
+      title: S.current.subscriptionOnboardingPromptTitle,
+      description: S.current.subscriptionOnboardingPromptDescription,
       emblem: _DialogEmblem(
         icon: UntitledUI.flag_05,
         iconColor: palette.iconBrandSecondary,
@@ -64,7 +63,7 @@ class _StartSubscriptionOnboardingDialog extends StatelessWidget {
           onStartTour();
         },
         child: Text(
-          LocaleKeys.subscriptionOnboardingStartTourLabel.tr(),
+          S.current.subscriptionOnboardingStartTourLabel,
           style: textStyles.textSm.semibold.copyWith(color: palette.textWhite),
         ),
       ),
@@ -75,7 +74,7 @@ class _StartSubscriptionOnboardingDialog extends StatelessWidget {
           onCancelTour();
         },
         child: Text(
-          LocaleKeys.subscriptionOnboardingCancelTourLabel.tr(),
+          S.current.subscriptionOnboardingCancelTourLabel,
           style: textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
         ),
       ),
@@ -119,8 +118,8 @@ class _CompleteSubscriptionOnboardingDialogState
 
     return AppDialog(
       width: 343,
-      title: LocaleKeys.subscriptionOnboardingSetupCompleteTitle.tr(),
-      description: LocaleKeys.subscriptionOnboardingSetupCompleteDescription.tr(),
+      title: S.current.subscriptionOnboardingSetupCompleteTitle,
+      description: S.current.subscriptionOnboardingSetupCompleteDescription,
       emblem: _DialogEmblem(
         icon: UntitledUI.check,
         iconColor: palette.iconSuccessPrimary,

@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -11,7 +10,8 @@ import 'package:mysterium_vpn/common/hooks/handle_subscribe_to_product_hook.dart
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/plan_data_hook.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
@@ -58,7 +58,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
       }
       if (status != null && !status.isLoading) {
         if (status == SubscriptionStatus.purchased) {
-          showSnackbar(LocaleKeys.subscriptionActive.tr(), type: SnackbarType.success);
+          showSnackbar(S.current.subscriptionActive, type: SnackbarType.success);
         }
         Navigator.of(context).pop();
         subscriptionStore.refreshAll().ignore();
@@ -92,14 +92,14 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                     ),
                     SizedBox(height: Theme.of(context).spacing.lg),
                     Text(
-                      LocaleKeys.somethingWentWrong.tr(),
+                      S.current.somethingWentWrong,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textStyles.textMd.regular,
                     ),
                     SizedBox(height: Theme.of(context).spacing.lg),
                     ButtonPrimary(
                       onPressed: subscriptionStore.refreshSubscription,
-                      child: Text(LocaleKeys.retryBtn.tr()),
+                      child: Text(S.current.retryBtn),
                     ),
                   ],
                 ),
@@ -125,7 +125,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
                             child: ModalHeader(
-                              title: LocaleKeys.subscriptionAllPlansTitle.tr(),
+                              title: S.current.subscriptionAllPlansTitle,
                               titleStyle: theme.textStyles.textLg.semibold,
                             ),
                           ),
@@ -133,8 +133,8 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                           TabBar(
                             controller: tabController,
                             tabs: [
-                              Tab(text: LocaleKeys.subscriptionAllPlansTabYear.tr()),
-                              Tab(text: LocaleKeys.subscriptionAllPlansTabMonth.tr()),
+                              Tab(text: S.current.subscriptionAllPlansTabYear),
+                              Tab(text: S.current.subscriptionAllPlansTabMonth),
                             ],
                           ),
                           Observer(
@@ -199,7 +199,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                                   ),
                                 ),
                                 CharacterSpan.space(),
-                                TextSpan(text: LocaleKeys.subscriptionPlanMoneyBack.tr()),
+                                TextSpan(text: S.current.subscriptionPlanMoneyBack),
                               ],
                             ),
                             textAlign: TextAlign.center,
@@ -209,7 +209,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                           ),
                           const SizedBox(height: 32),
                           Text(
-                            LocaleKeys.subscriptionAllPlansCompareAll.tr(),
+                            S.current.subscriptionAllPlansCompareAll,
                             style: theme.textStyles.textMd.medium.copyWith(
                               color: theme.palette.textPrimary,
                             ),
@@ -242,7 +242,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                             showError(e);
                           }
                         },
-                        child: Text(LocaleKeys.redeemDiscountCode.tr()),
+                        child: Text(S.current.redeemDiscountCode),
                       ),
                     SizedBox(height: theme.spacing.ms),
                     ButtonPrimary(
@@ -251,8 +251,8 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
 
                       child: Text(
                         (subscriptionStore.isSubscribed ?? false)
-                            ? LocaleKeys.subscriptionAllPlansUpgrade.tr()
-                            : LocaleKeys.subscriptionAllPlansPurchase.tr(),
+                            ? S.current.subscriptionAllPlansUpgrade
+                            : S.current.subscriptionAllPlansPurchase,
                       ),
                     ),
                     SizedBox(height: theme.spacing.xl),
@@ -265,7 +265,7 @@ class _SubscriptionPlansModalPage extends HookConsumerWidget {
                         textStyle: theme.textStyles.textMd.semibold,
                         padding: EdgeInsets.zero,
                       ),
-                      child: Text(LocaleKeys.subscriptionAllPlansCompareAll.tr()),
+                      child: Text(S.current.subscriptionAllPlansCompareAll),
                     ),
                     SizedBox(height: theme.spacing.xl),
                     const SubscriptionPrivacyAndTerms(),
@@ -365,18 +365,18 @@ class _Plan extends HookWidget {
       data: data,
       value: value,
       features: features,
-      viewMoreLabel: LocaleKeys.viewAllFeaturesBtn.tr(),
-      viewLessLabel: LocaleKeys.viewLessBtn.tr(),
-      currentPlanLabel: isCurrentPlan ? LocaleKeys.subscriptionAllPlansCurrentPlan.tr() : null,
+      viewMoreLabel: S.current.viewAllFeaturesBtn,
+      viewLessLabel: S.current.viewLessBtn,
+      currentPlanLabel: isCurrentPlan ? S.current.subscriptionAllPlansCurrentPlan : null,
     );
   }
 
   List<String> _getPreviewFeatures(SubscriptionPlansStore store, PurchasableProduct product) {
     final config = store.findConfig(product);
-    final allFeatures = config.previewFeatures.map((it) => it.tr()).toList();
+    final allFeatures = config.previewFeatures.map(Tr.byKey).toList();
 
     // Basic plan: show 3 features, Pro/Plus plan: show 4 features
-    final isBasic = config.name == LocaleKeys.subscriptionPlanNameBasic;
+    final isBasic = config.name == 'subscriptionPlanNameBasic';
     final featureCount = isBasic ? 3 : 4;
 
     return allFeatures.take(featureCount).toList();

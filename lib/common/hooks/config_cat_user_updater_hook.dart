@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/stores/stores.dart';
 void useConfigCatUserUpdater() {
   final remoteConfigStore = useProvider<RemoteConfigStore>(remoteConfigStorePOD);
   final abTestingStore = useProvider<ABTestingStore>(abTestingStorePOD);
-  final textsStore = useProvider<TextsStore>(textsStorePOD);
   final configCatUserStore = useProvider<ConfigCatUserStore>(configCatUserStorePOD);
 
   useEffect(() {
@@ -18,9 +17,8 @@ void useConfigCatUserUpdater() {
       }
       await abTestingStore.setUser(user);
       await remoteConfigStore.setUser(user);
-      await textsStore.setUser(user);
     }, fireImmediately: true);
 
     return disposer.call;
-  }, [remoteConfigStore, abTestingStore, textsStore, configCatUserStore]);
+  }, [remoteConfigStore, abTestingStore, configCatUserStore]);
 }

@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class SubscriptionPrivacyAndTerms extends StatelessWidget {
@@ -25,14 +24,10 @@ class SubscriptionPrivacyAndTerms extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
+          LinkSpan(text: S.current.privacyPolicy, onTap: handleShowPrivacyPolicy, style: style),
+          TextSpan(text: S.current.and),
           LinkSpan(
-            text: LocaleKeys.privacyPolicy.tr(),
-            onTap: handleShowPrivacyPolicy,
-            style: style,
-          ),
-          TextSpan(text: LocaleKeys.and.tr()),
-          LinkSpan(
-            text: LocaleKeys.termsAndConditions.tr(),
+            text: S.current.termsAndConditions,
             onTap: handleShowTermsAndConditions,
             style: style,
           ),

@@ -1,19 +1,18 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/generated/codegen_loader.g.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/views/locations/components/components.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../support/test_localizations.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async {
+  setUpAll(() {
     SharedPreferences.setMockInitialValues({});
-    await EasyLocalization.ensureInitialized();
   });
 
   Future<void> pumpSwitcher(
@@ -22,30 +21,20 @@ void main() {
     required VoidCallback onTrailingPressed,
   }) async {
     await tester.pumpWidget(
-      EasyLocalization(
-        supportedLocales: const [Locale('en')],
-        path: 'resources/langs',
-        fallbackLocale: const Locale('en'),
-        startLocale: const Locale('en'),
-        useOnlyLangCode: true,
-        assetLoader: const CodegenLoader(),
-        child: Builder(
-          builder: (ctx) => MaterialApp(
-            theme: DesignSystem.lightTheme,
-            locale: EasyLocalization.of(ctx)?.locale,
-            localizationsDelegates: EasyLocalization.of(ctx)?.delegates,
-            supportedLocales: EasyLocalization.of(ctx)?.supportedLocales ?? const [Locale('en')],
-            home: Scaffold(
-              body: LocationTypeSwitcher(
-                value: IPType.datacenter,
-                options: const [IPType.datacenter, IPType.residential],
-                onChanged: onChanged,
-                activeTabTrailing: IconButton(
-                  key: const Key('trailing'),
-                  icon: const Icon(Icons.refresh),
-                  onPressed: onTrailingPressed,
-                ),
-              ),
+      MaterialApp(
+        theme: DesignSystem.lightTheme,
+        locale: testLocale,
+        localizationsDelegates: testLocalizationsDelegates,
+        supportedLocales: testSupportedLocales,
+        home: Scaffold(
+          body: LocationTypeSwitcher(
+            value: IPType.datacenter,
+            options: const [IPType.datacenter, IPType.residential],
+            onChanged: onChanged,
+            activeTabTrailing: IconButton(
+              key: const Key('trailing'),
+              icon: const Icon(Icons.refresh),
+              onPressed: onTrailingPressed,
             ),
           ),
         ),
@@ -79,7 +68,7 @@ void main() {
 
     await pumpSwitcher(tester, onChanged: (v) => changedTo = v, onTrailingPressed: () {});
 
-    await tester.tap(find.text(LocaleKeys.ipTypeResidential.tr()));
+    await tester.tap(find.text(S.current.ipTypeResidential));
     await tester.pump();
 
     expect(changedTo, IPType.residential);

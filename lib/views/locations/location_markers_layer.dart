@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -140,7 +141,11 @@ List<Marker> _useLocationMarkers({
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IntrinsicWidth(child: MapLocationTooltip(label: it.getName(context))),
+                    IntrinsicWidth(
+                      child: MapLocationTooltip(
+                        text: S.current.connectToLocationBtn(it.getName(context)),
+                      ),
+                    ),
                     const SizedBox(height: 16),
                   ],
                 ),

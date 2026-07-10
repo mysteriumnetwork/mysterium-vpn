@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,7 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/blocker_picker.dart';
@@ -47,8 +46,8 @@ class ConnectionSettings extends HookConsumerWidget {
         if (showReset) {
           builders.add(
             (pos) => SettingsCard(
-              title: LocaleKeys.resetAppTitle.tr(),
-              subtitle: LocaleKeys.resetAppDesc.tr(),
+              title: S.current.resetAppTitle,
+              subtitle: S.current.resetAppDesc,
               position: pos,
               trailing: SettingsActionButton(
                 onPressed:
@@ -60,7 +59,7 @@ class ConnectionSettings extends HookConsumerWidget {
                         vpnStore: vpnStore,
                         handleToggleConnection: handleToggleConnection,
                       ),
-                child: Text(LocaleKeys.resetBtn.tr()),
+                child: Text(S.current.resetBtn),
               ),
             ),
           );
@@ -68,8 +67,8 @@ class ConnectionSettings extends HookConsumerWidget {
 
         builders.add(
           (pos) => SettingsCard(
-            title: LocaleKeys.refreshIPAddress.tr(),
-            subtitle: LocaleKeys.getNewIPAddress.tr(),
+            title: S.current.refreshIPAddress,
+            subtitle: S.current.getNewIPAddress,
             position: pos,
             trailing: Observer(
               builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending
@@ -102,8 +101,8 @@ class ConnectionSettings extends HookConsumerWidget {
         // DNS — always on for every authenticated session.
         builders.add(
           (pos) => SettingsCard(
-            title: LocaleKeys.dns.tr(),
-            subtitle: LocaleKeys.dnsDesc.tr(),
+            title: S.current.dns,
+            subtitle: S.current.dnsDesc,
             position: pos,
             trailing: const ReadOnlySwitch(value: true),
           ),
@@ -113,8 +112,8 @@ class ConnectionSettings extends HookConsumerWidget {
         if (vpnProtocolStore.protocol == ProtocolType.wireguard) {
           builders.add(
             (pos) => SettingsCard(
-              title: LocaleKeys.killSwitch.tr(),
-              subtitle: LocaleKeys.killSwitchDesc.tr(),
+              title: S.current.killSwitch,
+              subtitle: S.current.killSwitchDesc,
               position: pos,
               trailing: const ReadOnlySwitch(value: true),
             ),
@@ -167,10 +166,10 @@ class ConnectionSettings extends HookConsumerWidget {
     analyticsStore.logEvent(AnalyticsEvent.resetAppConfirmShown);
     shownConfirmationDialog(
       context,
-      confirmText: LocaleKeys.resetBtn.tr(),
-      cancelText: LocaleKeys.goBackButton.tr(),
-      title: LocaleKeys.resetAppDialogTitle.tr(),
-      supportingText: LocaleKeys.resetAppDialogContent.tr(),
+      confirmText: S.current.resetBtn,
+      cancelText: S.current.goBackButton,
+      title: S.current.resetAppDialogTitle,
+      supportingText: S.current.resetAppDialogContent,
       onConfirm: () {
         analyticsStore.logEvent(AnalyticsEvent.resetAppConfirm);
         _onResetApp(context, vpnStore, analyticsStore, handleToggleConnection);
@@ -190,7 +189,7 @@ class ConnectionSettings extends HookConsumerWidget {
     try {
       await vpnStore.resetApp();
       showSnackbar(
-        LocaleKeys.resetAppSuccess.tr(),
+        S.current.resetAppSuccess,
         type: SnackbarType.success,
         action: handleToggleConnection != null
             ? IconButton(
@@ -204,7 +203,7 @@ class ConnectionSettings extends HookConsumerWidget {
       );
       analyticsStore.logEvent(AnalyticsEvent.resetAppSuccess);
     } catch (e, s) {
-      showSnackbar(LocaleKeys.resetAppFailed.tr());
+      showSnackbar(S.current.resetAppFailed);
       analyticsStore
         ..logEvent(AnalyticsEvent.resetAppError)
         ..logError(err: e, stack: s);

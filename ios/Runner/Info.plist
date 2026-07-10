@@ -26,6 +26,9 @@
 		<string>id</string>
 		<string>it</string>
 		<string>ja</string>
+		<string>hi</string>
+		<string>pl</string>
+		<string>pt-BR</string>
 		<string>zh-CN</string>
 	</array>
 	<key>CFBundleName</key>

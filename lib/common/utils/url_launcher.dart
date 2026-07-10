@@ -1,10 +1,9 @@
 import 'package:clipboard/clipboard.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/snackbar.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:open_store/open_store.dart';
@@ -44,12 +43,12 @@ Future<void> openUrlLink(
     // Strip the unsanitized URL (and its access_token) out of the error text.
     parameters['error_reason'] = e.toString().replaceAll(url.toString(), sanitizeRedirectUrl(url));
     showSnackbar(
-      LocaleKeys.copyLink.tr(),
+      S.current.copyLink,
       action: IconButton(
         icon: const Icon(Icons.copy, size: 16),
         onPressed: () => FlutterClipboard.copy(
           url.toString(),
-        ).then((value) => showSnackbar(LocaleKeys.linkCopied.tr(), type: SnackbarType.success)),
+        ).then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
       ),
       type: SnackbarType.info,
     );

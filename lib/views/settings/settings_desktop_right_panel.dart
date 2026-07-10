@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -47,7 +46,7 @@ class _ContentPanelHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Text(
-      category.trKey.tr(),
+      category.label,
       style: theme.textStyles.textLg.semibold.copyWith(color: theme.palette.textTertiary),
     ).padding(horizontal: theme.spacing.xl3, vertical: theme.spacing.xl2);
   }

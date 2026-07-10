@@ -1,8 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/generated/locale_keys.g.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -24,17 +23,17 @@ class TooManyConnectionsBanner extends HookConsumerWidget {
 
     return AlertModal(
       type: AlertModalType.error,
-      title: LocaleKeys.tooManyConnectionsBannerTitle.tr(),
+      title: S.current.tooManyConnectionsBannerTitle,
       supportingText: isConnected
-          ? LocaleKeys.tooManyConnectionsBannerDescConnected.tr()
-          : LocaleKeys.tooManyConnectionsBannerDesc.tr(),
+          ? S.current.tooManyConnectionsBannerDescConnected
+          : S.current.tooManyConnectionsBannerDesc,
       primaryButton: ButtonSecondary(
         size: ButtonSize.small,
         onPressed: handleDisconnect,
         child: Text(
           isConnected
-              ? LocaleKeys.tooManyConnectionsBannerCTADisconnect.tr()
-              : LocaleKeys.tooManyConnectionsBannerCTAReconnect.tr(),
+              ? S.current.tooManyConnectionsBannerCTADisconnect
+              : S.current.tooManyConnectionsBannerCTAReconnect,
         ),
       ),
     );

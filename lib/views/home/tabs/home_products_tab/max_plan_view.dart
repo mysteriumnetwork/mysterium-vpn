@@ -5,7 +5,7 @@ class _MaxPlanView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _ProductsBrowsingView(
-    subtitle: LocaleKeys.productsExploreSubtitle.tr(),
-    alertMessage: LocaleKeys.productsMaxPlanAlert.tr(),
+    subtitle: S.current.productsExploreSubtitle,
+    alertMessage: S.current.productsMaxPlanAlert,
   );
 }
