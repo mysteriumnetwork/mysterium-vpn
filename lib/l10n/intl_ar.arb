@@ -246,7 +246,7 @@
   "@incorrectMagicLink": {},
   "ipAddressLbl": "عنوان IP",
   "@ipAddressLbl": {},
-  "ipPoolLabel": "مجموعة عناوين IP: {count}",
+  "ipPoolLabel": "{count} :مجموعة IP",
   "@ipPoolLabel": {},
   "ipRefreshExhaustedCity": "لا تتوفر عناوين IP بديلة في {location}. اختر دولة أو مدينة أخرى للحصول على عنوان IP مختلف في المرة القادمة.",
   "@ipRefreshExhaustedCity": {},
