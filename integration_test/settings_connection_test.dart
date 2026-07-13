@@ -12,7 +12,7 @@ void main() {
 
   patrolTest('Connection: change the content blocker when available', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
 
     await openSettingsCategory($, #settingsConnectionCategory);
 

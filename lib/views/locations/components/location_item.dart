@@ -75,20 +75,18 @@ class ExpandableLocationItem extends HookConsumerWidget {
       return false;
     }, [query, mapSelectedCountryCode, expansionOverride, showCitiesAndStates, children]);
 
-    return KeyedSubtree(
+    return ExpandableIpCard(
       key: locationItemKey(location.countryCode),
-      child: ExpandableIpCard(
-        name: location.getName(context),
-        subtitle: subtitle,
-        countryIcon: CircleFlag(location.countryCode, size: 24),
-        items: items,
-        status: countryStatus,
-        plusUpgrade: needsUpgrade,
-        expanded: isExpanded,
-        searchHighlight: query,
-        onExpansionChanged: onExpansionChanged,
-        onConnect: onConnect,
-      ),
+      name: location.getName(context),
+      subtitle: subtitle,
+      countryIcon: CircleFlag(location.countryCode, size: 24),
+      items: items,
+      status: countryStatus,
+      plusUpgrade: needsUpgrade,
+      expanded: isExpanded,
+      searchHighlight: query,
+      onExpansionChanged: onExpansionChanged,
+      onConnect: onConnect,
     );
   }
 }

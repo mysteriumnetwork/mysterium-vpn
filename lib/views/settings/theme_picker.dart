@@ -21,11 +21,7 @@ class ThemePicker extends ConsumerWidget {
       builder: (_) => SettingsPickerCard<ThemeMode>(
         key: K.themePickerCard,
         sheetKey: K.themePickerSheet,
-        itemKeyOf: (mode) => switch (mode) {
-          ThemeMode.light => K.themeOptionLight,
-          ThemeMode.dark => K.themeOptionDark,
-          ThemeMode.system => K.themeOptionSystem,
-        },
+        itemKeyOf: (mode) => Key('themeOption_${mode.name}'),
         title: S.current.appearanceSettingLbl,
         position: position,
         value: store.themeMode,

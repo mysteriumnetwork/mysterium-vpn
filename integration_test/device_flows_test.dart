@@ -20,7 +20,7 @@ void main() {
 
   patrolTest('Connection: connect then disconnect the VPN', skip: !_runDeviceTests, ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
 
     // Connect from the map tab's connection card.
     await $(#connectButton).scrollTo();
@@ -38,7 +38,7 @@ void main() {
 
   patrolTest('Connection: switch the VPN protocol to OpenVPN', skip: !_runDeviceTests, ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
 
     await openSettingsCategory($, #settingsConnectionCategory);
 
@@ -50,7 +50,7 @@ void main() {
 
   patrolTest('Locations: selecting a location connects to it', skip: !_runDeviceTests, ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
 
     await $(#locationsTab).tap();
     await $(#locationSearch).waitUntilVisible();

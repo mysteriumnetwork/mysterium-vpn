@@ -2,12 +2,7 @@ part of 'onboarding_dialog.dart';
 
 /// Full-width on mobile, hugs content on desktop.
 class _ContinueButton extends StatelessWidget {
-  const _ContinueButton({
-    required this.isMobile,
-    required this.onPressed,
-    required this.label,
-    super.key,
-  });
+  const _ContinueButton({required this.isMobile, required this.onPressed, required this.label});
 
   final bool isMobile;
   final VoidCallback onPressed;

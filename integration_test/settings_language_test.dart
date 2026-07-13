@@ -12,7 +12,7 @@ void main() {
 
   patrolTest('Preferences: change the app language', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
 
     await openSettingsCategory($, #settingsPreferencesCategory);
 

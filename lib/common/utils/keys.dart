@@ -18,7 +18,6 @@ class Keys {
 
   // subscription
   static const subscriptionPage = Key('subscriptionPage');
-  static const subscriptionPlanCard = Key('subscriptionPlanCard');
 
   // home products tab content
   static const productsView = Key('productsView');
@@ -31,7 +30,6 @@ class Keys {
   // non-subscriber onboarding dialog
   static const onboardingDialog = Key('onboardingDialog');
   static const onboardingCloseButton = Key('onboardingCloseButton');
-  static const onboardingContinueButton = Key('onboardingContinueButton');
 
   // push notifications permission prompt
   static const pushNotificationsDialog = Key('pushNotificationsDialog');
@@ -56,9 +54,6 @@ class Keys {
   // `<name>Option_<value>` (e.g. #themeOption_dark) via the picker's itemKeyOf.
   static const themePickerCard = Key('themePickerCard');
   static const themePickerSheet = Key('themePickerSheet');
-  static const themeOptionLight = Key('themeOption_light');
-  static const themeOptionDark = Key('themeOption_dark');
-  static const themeOptionSystem = Key('themeOption_system');
   static const languagePickerCard = Key('languagePickerCard');
   static const languagePickerSheet = Key('languagePickerSheet');
   static const protocolPickerCard = Key('protocolPickerCard');

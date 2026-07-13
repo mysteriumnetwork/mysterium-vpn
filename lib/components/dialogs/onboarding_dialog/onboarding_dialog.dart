@@ -235,7 +235,6 @@ class _OnboardingBody extends StatelessWidget {
                     _StepCopy(step: step, isMobile: isMobile),
                     SizedBox(height: spacing.xl3),
                     _ContinueButton(
-                      key: K.onboardingContinueButton,
                       isMobile: isMobile,
                       onPressed: onContinue,
                       label: isLast ? S.current.seePlansBtn : S.current.continueBtn,

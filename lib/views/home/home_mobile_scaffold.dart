@@ -69,15 +69,13 @@ class HomeMobileScaffold extends HookConsumerWidget {
                 SubscriptionOnboardingStep.settings,
               ][index];
               final globalKey = homeState.subscriptionOnboardingKeys[step.platformIndex];
-              final tabKey = [K.mapTab, K.locationsTab, K.productsTab, K.settingsTab][index];
-              return KeyedSubtree(
-                key: tabKey,
-                child: ArrowedProgressCard(
-                  globalKey: globalKey,
-                  step: step,
-                  tooltipPosition: TooltipPosition.top,
-                  child: child,
-                ),
+              const tabKeys = [K.mapTab, K.locationsTab, K.productsTab, K.settingsTab];
+              return ArrowedProgressCard(
+                key: tabKeys[index],
+                globalKey: globalKey,
+                step: step,
+                tooltipPosition: TooltipPosition.top,
+                child: child,
               );
             },
             onDestinationSelected: (i) {

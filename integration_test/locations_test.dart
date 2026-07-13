@@ -13,7 +13,7 @@ void main() {
 
   patrolTest('Locations: the locations tab opens with its search field', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
 
     await $(#locationsTab).waitUntilVisible();
     await $(#locationsTab).tap();

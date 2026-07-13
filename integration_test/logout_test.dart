@@ -12,7 +12,7 @@ void main() {
 
   patrolTest('Logout: from Settings > Account returns to the login screen', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
-    await login($, const String.fromEnvironment('LOGIN_EMAIL'));
+    await loginWithEnv($);
     await logout($);
   });
 }
