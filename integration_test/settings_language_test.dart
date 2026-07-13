@@ -16,9 +16,10 @@ void main() {
 
     await openSettingsCategory($, #settingsPreferencesCategory);
 
-    // Switching the locale rebuilds the entire app (MaterialApp.locale changes
-    // and `S` reloads). Switch to Spanish, then back to English — keys are
-    // language-independent, so this leaves the app in a known state.
+    // Switch to Spanish, then back to English. The locale change bumps
+    // `localizationRevision`, which now only remounts the page subtree (below
+    // the Beamer Router) — so it no longer triggers the Router's restoration /
+    // "setState during build" assertion that used to flake here.
     await selectFromPicker($, #languagePickerCard, #languagePickerSheet, #languageOption_es);
     await selectFromPicker($, #languagePickerCard, #languagePickerSheet, #languageOption_en);
   });
