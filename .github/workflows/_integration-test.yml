@@ -166,14 +166,15 @@ jobs:
       - name: Install dependencies
         run: make init
 
-      # iOS runs first so the signing fix gets fast feedback (Android is known-green).
-      # DEVICE_TESTS is intentionally NOT passed: the real VPN-tunnel flows stay
-      # off for now (they can be enabled here later — iphone15 is a real device).
       - name: 'Build iOS test app'
         run: make build-ios-integration-test
 
       - name: 'Run iOS tests'
-        run: make run-ios-testlab
+        run: |
+          MODEL=$(gcloud firebase test ios models list --filter="tags:default" --format="value(id)" | head -1)
+          VERSION=$(gcloud firebase test ios versions list --filter="tags:default" --format="value(id)" | head -1)
+          echo "iOS Test Lab device: ${MODEL} / ${VERSION}"
+          make run-ios-testlab IOS_DEVICE_MODEL="${MODEL}" IOS_DEVICE_VERSION="${VERSION}"
 
       - name: 'Build Android test app'
         # NOTE: device_flows_test (real VPN tunnel) is intentionally NOT enabled
