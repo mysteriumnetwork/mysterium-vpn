@@ -121,8 +121,9 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
           app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
-          # The XCUITest runner is a separate bundle id and signs Automatic (like
-          # the app), so it needs its own profile fetched into the keychain too.
+          # The XCUITest runner is a separate bundle id, so `use-profiles` (below)
+          # needs its own profile in the keychain to map onto that target —
+          # otherwise its committed placeholder specifier is left unresolved.
           # It must be a DEVELOPMENT profile: Xcode auto-injects the get-task-allow
           # entitlement for UI-test bundles, which only development profiles carry
           # (an App Store/distribution profile fails with "get-task-allow not found").
