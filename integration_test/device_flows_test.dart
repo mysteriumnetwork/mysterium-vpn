@@ -56,8 +56,8 @@ void main() {
     await $(#locationSearch).waitUntilVisible();
 
     // Country code depends on the backend's available nodes; adjust for the
-    // target environment. Selecting a location initiates a connection.
-    final germany = locationItemKey('de');
+    // target environment. Uppercase to match `VPNLocation.countryCode`.
+    final germany = locationItemKey('DE');
     await $(germany).scrollTo();
     await $(germany).tap();
 
