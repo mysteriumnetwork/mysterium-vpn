@@ -43,7 +43,7 @@ class _RadioOptionForm extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: theme.spacing.sm, left: theme.spacing.xl2),
               child: Text(
-                'Please select one of the freeze durations.',
+                S.current.freezeDurationRequiredError,
                 style: theme.textStyles.textSm.regular.copyWith(
                   color: theme.palette.textErrorPrimary,
                 ),
@@ -54,11 +54,5 @@ class _RadioOptionForm extends StatelessWidget {
     );
   }
 
-  String _textForDuration(int duration) {
-    if (duration == 1) {
-      return 'Freeze for 1 month';
-    }
-
-    return 'Freeze for $duration months';
-  }
+  String _textForDuration(int duration) => S.current.freezeForMonths(duration);
 }

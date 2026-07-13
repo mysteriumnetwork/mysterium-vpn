@@ -70,14 +70,17 @@ class _Prompt extends StatelessWidget {
   Widget build(BuildContext context) => ConstrainedBox(
     constraints: const BoxConstraints(maxWidth: 343),
     child: AlertModal(
-      title: 'Cancel subscription',
-      supportingText: 'Are you sure you want to cancel your subscription?',
+      title: S.current.cancelSubscriptionTitle,
+      supportingText: S.current.cancelSubscriptionPromptDesc,
       type: AlertModalType.warning,
       screenType: ScreenType.mobile,
-      primaryButton: ButtonPrimary(onPressed: onContinuePressed, child: const Text('Continue')),
+      primaryButton: ButtonPrimary(
+        onPressed: onContinuePressed,
+        child: Text(S.current.continueBtn),
+      ),
       secondaryButton: ButtonSecondary(
         onPressed: () async => Navigator.pop(context),
-        child: const Text('Keep subscription'),
+        child: Text(S.current.keepSubscriptionBtn),
       ),
     ),
   );
@@ -112,7 +115,7 @@ class _Survey extends HookConsumerWidget {
     }
 
     return ModalScaffold(
-      appbar: _createAppBar(context: context, title: S.of(context).cancelSurveyTitle),
+      appbar: _createAppBar(context: context, title: S.current.cancelSurveyTitle),
       showGradient: false,
       body: SafeArea(
         child: Padding(
@@ -121,9 +124,9 @@ class _Survey extends HookConsumerWidget {
         ),
       ),
       footer: _ActionFooter(
-        primaryButtonLabel: S.of(context).continueBtn,
+        primaryButtonLabel: S.current.continueBtn,
         onPrimaryButtonPressed: handleSubmit,
-        secondaryButtonLabel: S.of(context).skipBtn,
+        secondaryButtonLabel: S.current.skipBtn,
         onSecondaryButtonPressed: handleSkip,
       ),
     );
@@ -155,11 +158,10 @@ class _FreezeDuration extends HookConsumerWidget {
 
     return ModalScaffold(
       showGradient: false,
-      appbar: _createAppBar(context: context, title: 'Not ready to cancel?'),
+      appbar: _createAppBar(context: context, title: S.current.notReadyToCancelTitle),
       body: SafeArea(
         child: Column(
           children: [
-            //  Text('Not ready to cancel?', style: theme.textStyles.textLg.semibold),
             SizedBox(height: theme.spacing.xl2),
             _RadioOptionForm(
               form: form,
@@ -171,10 +173,10 @@ class _FreezeDuration extends HookConsumerWidget {
       ),
       footer: Observer(
         builder: (context) => _ActionFooter(
-          primaryButtonLabel: 'Pause subscription',
+          primaryButtonLabel: S.current.pauseSubscriptionBtn,
           isProcessing: cancelSubscriptionStore.isProcessing,
           onPrimaryButtonPressed: handleSubmit,
-          secondaryButtonLabel: 'Continue to cancel',
+          secondaryButtonLabel: S.current.continueToCancelBtn,
           onSecondaryButtonPressed: handleSkip,
         ),
       ),
@@ -199,8 +201,8 @@ class _Offer extends HookConsumerWidget {
       periodLabel: '10',
       perMonth: r'$10 / month',
       isOffer: true,
-      bestValueBadge: S.of(context).subscriptionPlanBestValue,
-      promoBadge: S.of(context).subscriptionPlanSavePercent(10),
+      bestValueBadge: S.current.subscriptionPlanBestValue,
+      promoBadge: S.current.subscriptionPlanSavePercent(10),
     );
 
     return ModalScaffold(
@@ -227,11 +229,11 @@ class _Offer extends HookConsumerWidget {
                           decoration: IconDecoration(padding: EdgeInsets.all(14), iconSize: 20),
                         ),
                         title: true
-                            ? S.of(context).subscriptionUpgradeModalTitle(['Maz Product'])
-                            : S.of(context).getSubscriptionModalTitle(['10']),
+                            ? S.current.subscriptionUpgradeModalTitle(['Maz Product'])
+                            : S.current.getSubscriptionModalTitle(['10']),
                         description: true
-                            ? S.of(context).subscriptionUpgradeModalDescription
-                            : S.of(context).getSubscriptionModalDesc,
+                            ? S.current.subscriptionUpgradeModalDescription
+                            : S.current.getSubscriptionModalDesc,
                       ),
                     ),
                     SizedBox(height: theme.spacing.xl),
@@ -244,8 +246,8 @@ class _Offer extends HookConsumerWidget {
                             mode: PlanCardMode.highlight,
                             data: data,
                             features: const ['Feature 1', 'Feature 2', 'Feature 3'],
-                            viewMoreLabel: S.of(context).viewAllFeaturesBtn,
-                            viewLessLabel: S.of(context).viewLessBtn,
+                            viewMoreLabel: S.current.viewAllFeaturesBtn,
+                            viewLessLabel: S.current.viewLessBtn,
                           ),
                         ),
                       ),
@@ -260,9 +262,9 @@ class _Offer extends HookConsumerWidget {
       footer: Observer(
         builder: (context) => _ActionFooter(
           isProcessing: cancelSubscriptionStore.isProcessing,
-          primaryButtonLabel: 'Accept offer',
+          primaryButtonLabel: S.current.acceptOfferBtn,
           onPrimaryButtonPressed: cancelSubscriptionStore.cancelSubscription,
-          secondaryButtonLabel: 'Continue to cancel',
+          secondaryButtonLabel: S.current.continueToCancelBtn,
           onSecondaryButtonPressed: cancelSubscriptionStore.moveToNextStep,
         ),
       ),
@@ -283,25 +285,24 @@ class _Confirmation extends HookConsumerWidget {
     final retryWidget = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(S.of(context).somethingWentWrong),
+        Text(S.current.somethingWentWrong),
         ButtonPrimary(
           onPressed: subscriptionStore.refreshSubscription,
-          child: Text(S.of(context).retryBtn),
+          child: Text(S.current.retryBtn),
         ),
       ],
     );
 
     return ModalScaffold(
       showGradient: false,
-      appbar: _createAppBar(context: context, title: 'Confirm cancellation'),
+      appbar: _createAppBar(context: context, title: S.current.confirmCancellationTitle),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl7, vertical: theme.spacing.xl2),
           child: Column(
             children: [
-              const AlertModal(
-                title:
-                    'Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.',
+              AlertModal(
+                title: S.current.cancelSubscriptionWarningDesc,
                 type: AlertModalType.warning,
               ),
               SizedBox(height: theme.spacing.xl),
@@ -330,12 +331,15 @@ class _Confirmation extends HookConsumerWidget {
                                     return retryWidget;
                                   }
                                   final data = [
-                                    {'Cancellation date:': DateTime.now().formatWithMonthDayYear()},
-                                    {
-                                      'Access available until:': subscription.activeUntil
-                                          ?.formatWithMonthDayYear(),
-                                    },
-                                    {'Next billing date:': 'None'},
+                                    (
+                                      S.current.cancellationDateLbl,
+                                      DateTime.now().formatWithMonthDayYear(),
+                                    ),
+                                    (
+                                      S.current.accessAvailableUntilLbl,
+                                      subscription.activeUntil?.formatWithMonthDayYear(),
+                                    ),
+                                    (S.current.nextBillingDateLbl, S.current.noneLbl),
                                   ];
                                   final item = data[index];
                                   return ListTile(
@@ -347,13 +351,13 @@ class _Confirmation extends HookConsumerWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          item.keys.first,
+                                          item.$1,
                                           style: theme.textStyles.textSm.regular.copyWith(
                                             color: theme.palette.textTertiary,
                                           ),
                                         ),
                                         Text(
-                                          item.values.first ?? '',
+                                          item.$2 ?? '',
                                           style: theme.textStyles.textSm.medium.copyWith(
                                             color: theme.palette.textPrimary,
                                           ),
@@ -372,7 +376,7 @@ class _Confirmation extends HookConsumerWidget {
                       ),
                       SizedBox(height: theme.spacing.ms),
                       Text(
-                        'You can reactivate your subscription anytime before your access ends.',
+                        S.current.reactivateSubscriptionAnytimeDesc,
                         style: theme.textStyles.textSm.regular.copyWith(
                           color: theme.palette.textTertiary,
                         ),
@@ -389,10 +393,10 @@ class _Confirmation extends HookConsumerWidget {
       footer: Observer(
         builder: (context) => _ActionFooter(
           isProcessing: cancelSubscriptionStore.isProcessing,
-          primaryButtonLabel: 'Confirm cancellation',
+          primaryButtonLabel: S.current.confirmCancellationTitle,
           onPrimaryButtonPressed: cancelSubscriptionStore.cancelSubscription,
           primaryButtonColor: theme.palette.iconErrorPrimary,
-          secondaryButtonLabel: 'Back',
+          secondaryButtonLabel: S.current.back,
           onSecondaryButtonPressed: cancelSubscriptionStore.moveToNextStep,
         ),
       ),
@@ -414,7 +418,7 @@ class _Summary extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(UntitledUI.check_circle, size: 40, color: theme.palette.iconSuccessPrimary),
-            Text('Subscription cancelled', style: theme.textStyles.textLg.semibold),
+            Text(S.current.subscriptionCancelledTitle, style: theme.textStyles.textLg.semibold),
             DecoratedBox(
               decoration: BoxDecoration(
                 border: Border.all(color: theme.palette.borderPrimary),
@@ -432,7 +436,10 @@ class _Summary extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Access available until:', style: theme.textStyles.textLg.semibold),
+                      Text(
+                        S.current.accessAvailableUntilLbl,
+                        style: theme.textStyles.textLg.semibold,
+                      ),
                       Text('May 25, 2027', style: theme.textStyles.textLg.semibold),
                     ],
                   ),
@@ -440,14 +447,14 @@ class _Summary extends ConsumerWidget {
               ),
             ),
             Text(
-              'You can reactivate your subscription anytime before your access ends.',
+              S.current.reactivateSubscriptionAnytimeDesc,
               style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
             ),
           ],
         ),
       ),
       footer: _ActionFooter(
-        primaryButtonLabel: 'Done',
+        primaryButtonLabel: S.current.doneBtn,
         onPrimaryButtonPressed: () => Navigator.pop(context),
       ),
     );

@@ -57,6 +57,8 @@ class S {
   }
 
   static final Map<String, List<String>> _metadata = {
+    'acceptOfferBtn': [],
+    'accessAvailableUntilLbl': [],
     'accessBlockedSitesReason': [],
     'account': [],
     'accountSuccessfullyDeleted': [],
@@ -87,9 +89,14 @@ class S {
     'cancelDowntimes': [],
     'cancelError7040': [],
     'cancelLatency': [],
+    'cancellationDateLbl': [],
     'cancelMissingFeatures': [],
     'cancelSpeed': [],
+    'cancelSubscriptionPromptDesc': [],
+    'cancelSubscriptionTitle': [],
+    'cancelSubscriptionWarningDesc': [],
     'cancelSurveyFeedbackHint': [],
+    'cancelSurveyTellUsMoreHint': [],
     'cancelSurveyTitle': [],
     'cancelTooExpensive': [],
     'cancelUnableToAccessBlockedSites': [],
@@ -105,6 +112,7 @@ class S {
     'communicationLblDesktop': [],
     'completeBtn': [],
     'confirm': [],
+    'confirmCancellationTitle': [],
     'connect': [],
     'connectBestServer': [],
     'connected': [],
@@ -117,6 +125,7 @@ class S {
     'consistentSpeedReason': [],
     'consumeLink': [],
     'continueBtn': [],
+    'continueToCancelBtn': [],
     'continueWithApple': [],
     'continueWithEmail': [],
     'continueWithGoogle': [],
@@ -141,6 +150,7 @@ class S {
     'discountedPriceLabel': [],
     'dns': [],
     'dnsDesc': [],
+    'doneBtn': [],
     'duration': [],
     'email': [],
     'emailIsNotValid': [],
@@ -160,6 +170,8 @@ class S {
     'formValidationError': [],
     'fr': [],
     'france': [],
+    'freezeDurationRequiredError': [],
+    'freezeForMonths': ['count'],
     'frequentDisconnectsReason': [],
     'fullPriceLabel': [],
     'germany': [],
@@ -192,6 +204,7 @@ class S {
     'it': [],
     'italy': [],
     'ja': [],
+    'keepSubscriptionBtn': [],
     'killSwitch': [],
     'killSwitchDesc': [],
     'languageSettingLbl': [],
@@ -227,6 +240,7 @@ class S {
     'navMap': [],
     'navProducts': [],
     'nextBilling': ['date'],
+    'nextBillingDateLbl': [],
     'no': [],
     'noActiveSubsDesc': [],
     'noEmailApp': [],
@@ -238,6 +252,7 @@ class S {
     'noSubscriptionTitle': [],
     'notAvailableMsg': [],
     'notNowBtn': [],
+    'notReadyToCancelTitle': [],
     'nsfwLbl': [],
     'onboardingStep1Desc': [],
     'onboardingStep1Title': [],
@@ -250,6 +265,7 @@ class S {
     'or': [],
     'orSelectCountryManually': [],
     'otherReason': [],
+    'pauseSubscriptionBtn': [],
     'pendingTransactionMessage': [],
     'perMonth': [],
     'pl': [],
@@ -301,6 +317,7 @@ class S {
     'rateConnection': [],
     'rateConnectionDislike': [],
     'rateConnectionLike': [],
+    'reactivateSubscriptionAnytimeDesc': [],
     'recentLocations': [],
     'redeemDiscountCode': [],
     'redirectToLoginPage': [],
@@ -365,6 +382,7 @@ class S {
     'subscriptionAllPlansTabYear': [],
     'subscriptionAllPlansTitle': [],
     'subscriptionAllPlansUpgrade': [],
+    'subscriptionCancelledTitle': [],
     'subscriptionOnboardingBoostProtectionDescription': [],
     'subscriptionOnboardingBoostProtectionTitle': [],
     'subscriptionOnboardingCancelTourLabel': [],
@@ -474,6 +492,21 @@ class S {
     'yes': [],
     'zh': [],
   };
+
+  /// `Accept offer`
+  String get acceptOfferBtn {
+    return Intl.message('Accept offer', name: 'acceptOfferBtn', desc: '', args: []);
+  }
+
+  /// `Access available until:`
+  String get accessAvailableUntilLbl {
+    return Intl.message(
+      'Access available until:',
+      name: 'accessAvailableUntilLbl',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Unable to access blocked sites`
   String get accessBlockedSitesReason {
@@ -675,6 +708,11 @@ class S {
     return Intl.message('Latency', name: 'cancelLatency', desc: '', args: []);
   }
 
+  /// `Cancellation date:`
+  String get cancellationDateLbl {
+    return Intl.message('Cancellation date:', name: 'cancellationDateLbl', desc: '', args: []);
+  }
+
   /// `Missing features`
   String get cancelMissingFeatures {
     return Intl.message('Missing features', name: 'cancelMissingFeatures', desc: '', args: []);
@@ -685,11 +723,46 @@ class S {
     return Intl.message('Speed', name: 'cancelSpeed', desc: '', args: []);
   }
 
+  /// `Are you sure you want to cancel your subscription?`
+  String get cancelSubscriptionPromptDesc {
+    return Intl.message(
+      'Are you sure you want to cancel your subscription?',
+      name: 'cancelSubscriptionPromptDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel subscription`
+  String get cancelSubscriptionTitle {
+    return Intl.message('Cancel subscription', name: 'cancelSubscriptionTitle', desc: '', args: []);
+  }
+
+  /// `Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.`
+  String get cancelSubscriptionWarningDesc {
+    return Intl.message(
+      'Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.',
+      name: 'cancelSubscriptionWarningDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please enter more details...`
   String get cancelSurveyFeedbackHint {
     return Intl.message(
       'Please enter more details...',
       name: 'cancelSurveyFeedbackHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell us more (optional)`
+  String get cancelSurveyTellUsMoreHint {
+    return Intl.message(
+      'Tell us more (optional)',
+      name: 'cancelSurveyTellUsMoreHint',
       desc: '',
       args: [],
     );
@@ -795,6 +868,16 @@ class S {
     return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
   }
 
+  /// `Confirm cancellation`
+  String get confirmCancellationTitle {
+    return Intl.message(
+      'Confirm cancellation',
+      name: 'confirmCancellationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Connect`
   String get connect {
     return Intl.message('Connect', name: 'connect', desc: '', args: []);
@@ -878,6 +961,11 @@ class S {
   /// `Continue`
   String get continueBtn {
     return Intl.message('Continue', name: 'continueBtn', desc: '', args: []);
+  }
+
+  /// `Continue to cancel`
+  String get continueToCancelBtn {
+    return Intl.message('Continue to cancel', name: 'continueToCancelBtn', desc: '', args: []);
   }
 
   /// `Continue with Apple`
@@ -1035,6 +1123,11 @@ class S {
     return Intl.message('Prevents DNS leaks', name: 'dnsDesc', desc: '', args: []);
   }
 
+  /// `Done`
+  String get doneBtn {
+    return Intl.message('Done', name: 'doneBtn', desc: '', args: []);
+  }
+
   /// `Duration`
   String get duration {
     return Intl.message('Duration', name: 'duration', desc: '', args: []);
@@ -1173,6 +1266,29 @@ class S {
   /// `France`
   String get france {
     return Intl.message('France', name: 'france', desc: '', args: []);
+  }
+
+  /// `Please select one of the freeze durations.`
+  String get freezeDurationRequiredError {
+    return Intl.message(
+      'Please select one of the freeze durations.',
+      name: 'freezeDurationRequiredError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, zero{} one{Freeze for {count} month} other{Freeze for {count} months}}`
+  String freezeForMonths(num count) {
+    return Intl.plural(
+      count,
+      zero: '',
+      one: 'Freeze for $count month',
+      other: 'Freeze for $count months',
+      name: 'freezeForMonths',
+      desc: '',
+      args: [count],
+    );
   }
 
   /// `Frequent disconnects`
@@ -1383,6 +1499,11 @@ class S {
   /// `Japanese`
   String get ja {
     return Intl.message('Japanese', name: 'ja', desc: '', args: []);
+  }
+
+  /// `Keep subscription`
+  String get keepSubscriptionBtn {
+    return Intl.message('Keep subscription', name: 'keepSubscriptionBtn', desc: '', args: []);
   }
 
   /// `Kill switch`
@@ -1636,6 +1757,11 @@ class S {
     return Intl.message('Next Billing: $date', name: 'nextBilling', desc: '', args: [date]);
   }
 
+  /// `Next billing date:`
+  String get nextBillingDateLbl {
+    return Intl.message('Next billing date:', name: 'nextBillingDateLbl', desc: '', args: []);
+  }
+
   /// `No`
   String get no {
     return Intl.message('No', name: 'no', desc: '', args: []);
@@ -1709,6 +1835,11 @@ class S {
   /// `Not now`
   String get notNowBtn {
     return Intl.message('Not now', name: 'notNowBtn', desc: '', args: []);
+  }
+
+  /// `Not ready to cancel?`
+  String get notReadyToCancelTitle {
+    return Intl.message('Not ready to cancel?', name: 'notReadyToCancelTitle', desc: '', args: []);
   }
 
   /// `NSFW & Malware`
@@ -1804,6 +1935,11 @@ class S {
   /// `Other...`
   String get otherReason {
     return Intl.message('Other...', name: 'otherReason', desc: '', args: []);
+  }
+
+  /// `Pause subscription`
+  String get pauseSubscriptionBtn {
+    return Intl.message('Pause subscription', name: 'pauseSubscriptionBtn', desc: '', args: []);
   }
 
   /// `You already have an ongoing payment transaction. Please complete it before starting a new one.`
@@ -2154,6 +2290,16 @@ class S {
   /// `What did you like?`
   String get rateConnectionLike {
     return Intl.message('What did you like?', name: 'rateConnectionLike', desc: '', args: []);
+  }
+
+  /// `You can reactivate your subscription anytime before your access ends.`
+  String get reactivateSubscriptionAnytimeDesc {
+    return Intl.message(
+      'You can reactivate your subscription anytime before your access ends.',
+      name: 'reactivateSubscriptionAnytimeDesc',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Recent locations`
@@ -2639,6 +2785,16 @@ class S {
     return Intl.message(
       'Upgrade your plan',
       name: 'subscriptionAllPlansUpgrade',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscription cancelled`
+  String get subscriptionCancelledTitle {
+    return Intl.message(
+      'Subscription cancelled',
+      name: 'subscriptionCancelledTitle',
       desc: '',
       args: [],
     );

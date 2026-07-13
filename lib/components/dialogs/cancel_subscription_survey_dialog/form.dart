@@ -34,7 +34,7 @@ class _Form extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: theme.palette.borderBrand),
                 ),
-                hintText: 'Tell us more (optional)',
+                hintText: S.current.cancelSurveyTellUsMoreHint,
                 hintMaxLines: 3,
                 hintStyle: theme.textStyles.textMd.regular.copyWith(
                   color: theme.palette.textTertiary,
