@@ -521,7 +521,12 @@ class _ActionFooter extends StatelessWidget {
         : null;
 
     return Padding(
-      padding: EdgeInsets.only(top: theme.spacing.xl2, bottom: theme.spacing.xl4),
+      padding: EdgeInsets.only(
+        top: theme.spacing.xl2,
+        bottom: theme.spacing.xl4,
+        left: theme.spacing.xl2,
+        right: theme.spacing.xl2,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

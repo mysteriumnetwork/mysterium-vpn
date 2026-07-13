@@ -20,7 +20,7 @@ class _Form extends StatelessWidget {
             padding: EdgeInsets.only(top: theme.spacing.xl2),
             child: ReactiveTextField(
               formControlName: 'feedback',
-              maxLines: 6,
+              maxLines: 5,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 filled: true,
