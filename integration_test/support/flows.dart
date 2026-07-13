@@ -28,6 +28,16 @@ const _firstRunPrompts = <(Symbol dialog, Symbol dismiss)>[
 /// Fresh, non-subscriber accounts land on the surfaces above; they are
 /// dismissed here so callers reliably land on `homePage`.
 Future<void> login(PatrolIntegrationTester $, String email) async {
+  // Fail fast with an actionable message: an empty LOGIN_EMAIL otherwise
+  // surfaces downstream as a confusing "email is required" form error.
+  if (email.isEmpty) {
+    fail(
+      'LOGIN_EMAIL is empty. Pass it via `--dart-define-from-file '
+      'integration_test/.env` (locally) or the ENV_E2E secret (CI), together '
+      'with IS_AUTOMATED=true so quick-auth login works.',
+    );
+  }
+
   await $(#loginPage).waitUntilVisible();
   await $(#loginEmailField).enterText(email);
   await $(#loginButton).tap();

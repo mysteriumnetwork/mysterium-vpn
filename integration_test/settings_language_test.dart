@@ -10,11 +10,16 @@ void main() {
     environment = await bootApp();
   });
 
-  patrolTest('Preferences: change the app theme', ($) async {
+  patrolTest('Preferences: change the app language', ($) async {
     await $.pumpWidgetAndSettle(environment.getApp());
     await login($, const String.fromEnvironment('LOGIN_EMAIL'));
 
     await openSettingsCategory($, #settingsPreferencesCategory);
-    await selectFromPicker($, #themePickerCard, #themePickerSheet, #themeOption_dark);
+
+    // Switching the locale rebuilds the entire app (MaterialApp.locale changes
+    // and `S` reloads). Switch to Spanish, then back to English — keys are
+    // language-independent, so this leaves the app in a known state.
+    await selectFromPicker($, #languagePickerCard, #languagePickerSheet, #languageOption_es);
+    await selectFromPicker($, #languagePickerCard, #languagePickerSheet, #languageOption_en);
   });
 }
