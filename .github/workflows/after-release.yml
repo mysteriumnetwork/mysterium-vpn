@@ -16,7 +16,7 @@ jobs:
 
       - name: Reset "hideDeleteAccount" to defaults
         run: |
-          positions=`configcat flag-v2 value show --flag-id 587567 --json | jq '.values[] | select(.environmentId=="08dcf9bb-7e45-4853-8b0e-0129d6009a4e") | .targetingRules | range(length) as $i | select(.[$i].conditions[].userCondition.comparisonAttribute == "version") | $i + 1'`
+          positions=`configcat flag-v2 value show --flag-id 927243 --json | jq '.values[] | select(.environmentId=="08dcf9bb-7e45-4853-8b0e-0129d6009a4e") | .targetingRules | range(length) as $i | select(.[$i].conditions[].userCondition.comparisonAttribute == "version") | $i + 1'`
           for position in $positions; do
-            configcat flag-v2 targeting rule rm --flag-id 587567 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1
+            configcat flag-v2 targeting rule rm --flag-id 927243 -e 08dcf9bb-7e45-4853-8b0e-0129d6009a4e --rule-position 1
           done
