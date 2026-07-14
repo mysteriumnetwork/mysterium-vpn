@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "patrol": {
+      "command": "./.claude/run-patrol",
+      "env": {
+        "PROJECT_ROOT": ".",
+        "PATROL_FLAGS": "--flavor dev --dart-define-from-file integration_test/.env",
+        "SHOW_TERMINAL": "false"
+      }
+    }
+  }
+}

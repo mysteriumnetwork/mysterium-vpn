@@ -85,47 +85,51 @@ class MyApp extends HookConsumerWidget {
                 child: BeamerProvider(
                   routerDelegate: routeDelegate,
                   child: Portal(
-                    // Rebuild the app when OTA translations arrive at runtime;
-                    // `S.current` isn't observable, so a bumped revision is what
-                    // repaints the current screen with the new strings.
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: localizationRevision,
-                      builder: (_, _, _) => MaterialApp.router(
-                        title: Env.appName,
-                        scaffoldMessengerKey: snackbarKey,
-                        theme: themeStore.lightTheme,
-                        darkTheme: themeStore.darkTheme,
-                        themeMode: themeStore.themeMode,
-                        routerDelegate: routeDelegate,
-                        routeInformationParser: routeInformationParser,
-                        localizationsDelegates: const [
-                          S.delegate,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate,
-                        ],
-                        supportedLocales: S.delegate.supportedLocales,
-                        locale: localStore.currentLocale,
-                        backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
-                        builder: (context, child) => ScreenTypeObserver(
-                          child: MediaQuery(
-                            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                            child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context).copyWith(
-                                dragDevices: PointerDeviceKind.values.toSet(),
-                                scrollbars: false,
-                                overscroll: true,
-                                physics: const BouncingScrollPhysics(),
-                              ),
-                              child: AppDeferredInitWidget(
-                                child: FTCheckers(
-                                  child: NetworkLoggerOverlayView(
-                                    // Remount pages on locale/OTA change so const
-                                    // widgets re-read the non-observable S.current.
-                                    child: KeyedSubtree(
-                                      key: ValueKey(localizationRevision.value),
-                                      child: child!,
-                                    ),
+                    child: MaterialApp.router(
+                      title: Env.appName,
+                      scaffoldMessengerKey: snackbarKey,
+                      theme: themeStore.lightTheme,
+                      darkTheme: themeStore.darkTheme,
+                      themeMode: themeStore.themeMode,
+                      routerDelegate: routeDelegate,
+                      routeInformationParser: routeInformationParser,
+                      localizationsDelegates: const [
+                        S.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      supportedLocales: S.delegate.supportedLocales,
+                      locale: localStore.currentLocale,
+                      backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
+                      builder: (context, child) => ScreenTypeObserver(
+                        child: MediaQuery(
+                          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                          child: ScrollConfiguration(
+                            behavior: ScrollConfiguration.of(context).copyWith(
+                              dragDevices: PointerDeviceKind.values.toSet(),
+                              scrollbars: false,
+                              overscroll: true,
+                              physics: const BouncingScrollPhysics(),
+                            ),
+                            child: AppDeferredInitWidget(
+                              child: FTCheckers(
+                                child: NetworkLoggerOverlayView(
+                                  // Remount the pages when OTA translations arrive
+                                  // or the locale changes, so const widgets re-read
+                                  // the non-observable `S.current`.
+                                  //
+                                  // Scoped BELOW the Beamer `Router` on purpose: a
+                                  // revision bump must NOT rebuild `MaterialApp.router`
+                                  // / the `Router`, otherwise `BeamerDelegate` runs its
+                                  // route restoration and calls `notifyListeners()`
+                                  // during the build phase ("setState() called during
+                                  // build"), which flakily crashes locale switches
+                                  // (debug asserts) — see settings_language_test.
+                                  child: ValueListenableBuilder<int>(
+                                    valueListenable: localizationRevision,
+                                    builder: (_, revision, _) =>
+                                        KeyedSubtree(key: ValueKey(revision), child: child!),
                                   ),
                                 ),
                               ),

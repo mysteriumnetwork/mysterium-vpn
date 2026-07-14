@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/subscription_plans_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/subscription_status_container.dart';
@@ -11,11 +12,14 @@ Future<void> showSubscriptionUpgradeModalPage(BuildContext context) async {
     context,
     listen: false,
   ).read(analyticsStorePOD).logScreenViewed('subscription_upgrade_modal').ignore();
-  await showModal(context, builder: (context) => const _SubscriptionUpgradeModalPage());
+  await showModal(
+    context,
+    builder: (context) => const _SubscriptionUpgradeModalPage(key: K.subscriptionPage),
+  );
 }
 
 class _SubscriptionUpgradeModalPage extends StatelessWidget {
-  const _SubscriptionUpgradeModalPage();
+  const _SubscriptionUpgradeModalPage({super.key});
 
   @override
   Widget build(BuildContext context) => ModalScaffold(

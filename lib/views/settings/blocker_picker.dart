@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -28,6 +29,9 @@ class BlockerPicker extends ConsumerWidget {
         final current = dnsStore.blockerType;
 
         return SettingsPickerCard<BlockerType>(
+          key: K.blockerPickerCard,
+          sheetKey: K.blockerPickerSheet,
+          itemKeyOf: (t) => Key('blockerOption_${t.name}'),
           title: S.current.blockerSettingLbl,
           position: position,
           value: current,

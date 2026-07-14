@@ -11,11 +11,14 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
-  await showModal<void>(context, builder: (_) => const _DialogContent());
+  await showModal<void>(
+    context,
+    builder: (_) => const _DialogContent(key: Keys.marketingConsentDialog),
+  );
 }
 
 class _DialogContent extends HookConsumerWidget {
-  const _DialogContent();
+  const _DialogContent({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

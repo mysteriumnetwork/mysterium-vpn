@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
@@ -20,6 +21,9 @@ class LanguagePicker extends ConsumerWidget {
 
     return Observer(
       builder: (_) => SettingsPickerCard<Locale>(
+        key: K.languagePickerCard,
+        sheetKey: K.languagePickerSheet,
+        itemKeyOf: (locale) => Key('languageOption_${locale.toLanguageTag()}'),
         title: S.current.languageSettingLbl,
         position: position,
         value: store.currentLocale,
