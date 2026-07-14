@@ -79,7 +79,7 @@ jobs:
 
       - name: Install Patrol CLI
         run: |
-          dart pub global activate patrol_cli 3.10.0
+          dart pub global activate patrol_cli 4.3.1
           patrol --version
 
       - name: Setup Android keystore
@@ -91,12 +91,6 @@ jobs:
           echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }}" >> android/key.properties
           cat android/key.properties
-
-      - name: Download provisioning profiles
-        run: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/prod.mobileprovision
-          curl -o ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision https://zm-random.s3.eu-central-1.amazonaws.com/test.mobileprovision
 
       - name: Set up XCode
         run: sudo xcode-select --switch /Applications/Xcode_26.3.app
@@ -112,11 +106,11 @@ jobs:
           keychain initialize
           keychain get-default
 
-      - name: Download and add .p12 certificate to keychain
-        run: |
-          curl -o integration_tests.p12 https://zm-random.s3.eu-central-1.amazonaws.com/integration_tests.p12
-          keychain add-certificates --certificate integration_tests.p12
-
+      # iOS signing (distribution cert + provisioning profiles) is provided
+      # entirely by the step below via App Store Connect. The previous
+      # curl-from-S3 cert/profile downloads were removed: that bucket
+      # (zm-random) no longer exists and returned a 404, which `keychain
+      # add-certificates` rejected as "Unknown format".
       # Signing files are imported to keychain from:
       #  ls -la ~/Library/MobileDevice/Provisioning\ Profiles
       #  ls -la ~/Library/MobileDevice/Certificates/
@@ -127,7 +121,38 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
           app-store-connect fetch-signing-files "com.mysteriumvpn.test" --platform IOS --type IOS_APP_STORE --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
+          # The XCUITest runner is a separate bundle id, so `use-profiles` (below)
+          # needs its own profile in the keychain to map onto that target —
+          # otherwise its committed placeholder specifier is left unresolved.
+          # It must be a DEVELOPMENT profile: Xcode auto-injects the get-task-allow
+          # entitlement for UI-test bundles, which only development profiles carry
+          # (an App Store/distribution profile fails with "get-task-allow not found").
+          app-store-connect fetch-signing-files "com.mysteriumvpn.RunnerUITests" --platform IOS --type IOS_APP_DEVELOPMENT --certificate-key "${{ secrets.APPLE_CERTIFICATE_PRIVATE_KEY }}" --create
           keychain add-certificates
+
+      # ── Fallback: manual iOS signing from GitHub Secrets ──────────────────
+      # Use this ONLY if the `Fetch signing files` step above cannot sign
+      # standalone from App Store Connect. It mirrors the Android keystore
+      # pattern (assets live in repo secrets, not an external host), replacing
+      # the deleted zm-random S3 bucket.
+      #
+      # To enable:
+      #   1. Add these repository secrets, base64-encoded:
+      #        IOS_CERTIFICATE_P12_BASE64            # base64 of the .p12
+      #        IOS_CERTIFICATE_PASSWORD              # the .p12 export password
+      #        IOS_PROD_PROVISIONING_PROFILE_BASE64  # base64 of prod.mobileprovision
+      #        IOS_TEST_PROVISIONING_PROFILE_BASE64  # base64 of test.mobileprovision
+      #      e.g.  base64 -i integration_tests.p12 | pbcopy
+      #   2. Comment out the `Fetch signing files` step above.
+      #   3. Uncomment the step below.
+      #
+      # - name: Install iOS signing assets from secrets
+      #   run: |
+      #     mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+      #     echo "${{ secrets.IOS_PROD_PROVISIONING_PROFILE_BASE64 }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/prod.mobileprovision
+      #     echo "${{ secrets.IOS_TEST_PROVISIONING_PROFILE_BASE64 }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/test.mobileprovision
+      #     echo "${{ secrets.IOS_CERTIFICATE_P12_BASE64 }}" | base64 --decode > integration_tests.p12
+      #     keychain add-certificates --certificate integration_tests.p12 --certificate-password "${{ secrets.IOS_CERTIFICATE_PASSWORD }}"
 
       - name: Set up signing preferences on Xcode project
         run: |
@@ -141,14 +166,23 @@ jobs:
       - name: Install dependencies
         run: make init
 
-      - name: 'Build Android test app'
-        run: make build-android-integration-test
-
-      - name: 'Run Android tests'
-        run: make run-android-testlab
-
       - name: 'Build iOS test app'
         run: make build-ios-integration-test
 
       - name: 'Run iOS tests'
-        run: make run-ios-testlab
+        run: |
+          MODEL=$(gcloud firebase test ios models list --filter="tags:default" --format="value(id)" | head -1)
+          VERSION=$(gcloud firebase test ios versions list --filter="tags:default" --format="value(id)" | head -1)
+          echo "iOS Test Lab device: ${MODEL} / ${VERSION}"
+          make run-ios-testlab IOS_DEVICE_MODEL="${MODEL}" IOS_DEVICE_VERSION="${VERSION}"
+
+      - name: 'Build Android test app'
+        # NOTE: device_flows_test (real VPN tunnel) is intentionally NOT enabled
+        # here — the Android Test Lab device is MediumPhone.arm, a *virtual*
+        # device that can't establish a tunnel (would run-and-fail, not skip).
+        # To run them on Android, switch ANDROID_DEVICE_MODEL to a physical
+        # device (e.g. shiba/Pixel 8) and add flags="--dart-define DEVICE_TESTS=true".
+        run: make build-android-integration-test
+
+      - name: 'Run Android tests'
+        run: make run-android-testlab

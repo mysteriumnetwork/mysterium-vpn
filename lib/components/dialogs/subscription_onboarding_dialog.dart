@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -15,6 +16,7 @@ Future<void> showSubscriptionOnboardingDialog({
     builder: (context) => Dialog(
       elevation: 0,
       child: _StartSubscriptionOnboardingDialog(
+        key: K.subscriptionOnboardingDialog,
         onStartTour: onStartTour,
         onCancelTour: onCancelTour,
       ),
@@ -34,7 +36,11 @@ Future<void> showSubscriptionOnboardingCompleteDialog({required BuildContext con
 }
 
 class _StartSubscriptionOnboardingDialog extends StatelessWidget {
-  const _StartSubscriptionOnboardingDialog({required this.onStartTour, required this.onCancelTour});
+  const _StartSubscriptionOnboardingDialog({
+    required this.onStartTour,
+    required this.onCancelTour,
+    super.key,
+  });
 
   final VoidCallback onStartTour;
   final VoidCallback onCancelTour;
@@ -68,6 +74,7 @@ class _StartSubscriptionOnboardingDialog extends StatelessWidget {
         ),
       ),
       secondaryButton: ButtonTertiary(
+        key: K.subscriptionOnboardingCancelButton,
         decoration: ButtonDecoration(padding: EdgeInsets.all(spacing.none)),
         onPressed: () {
           Navigator.pop(context);

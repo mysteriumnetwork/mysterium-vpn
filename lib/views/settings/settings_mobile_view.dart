@@ -48,6 +48,12 @@ class _SettingsMainList extends HookConsumerWidget {
     Widget categoryCard(SettingCategory category, SettingsCardPosition position) {
       void onTap() => tabsStore.openSettingsSubPage(category);
       return GestureDetector(
+        key: switch (category) {
+          SettingCategory.account => K.settingsAccountCategory,
+          SettingCategory.connection => K.settingsConnectionCategory,
+          SettingCategory.preferences => K.settingsPreferencesCategory,
+          _ => null,
+        },
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: SettingsCard(
