@@ -126,6 +126,13 @@ class QAToolbox extends HookConsumerWidget {
           },
         ),
         _QAActionButton(
+          label: 'Reset News Read',
+          onPressed: () async {
+            await ref.read(newsCenterStorePOD).clearRead();
+            showSnackbar('News Center read state cleared — all items unread again');
+          },
+        ),
+        _QAActionButton(
           label: 'Reset Subscription Onboarding',
           onPressed: () async {
             try {
