@@ -32,13 +32,22 @@ class _NewsWebViewScreen extends HookWidget {
       child: ModalScaffold(
         autoApplyPadding: false,
         showGradient: false,
-        // Only mount the WebView once the page has loaded — the native view
-        // paints an opaque white surface while it initializes/loads, which
-        // otherwise covers the spinner for the first 1-2s. The controller loads
-        // the URL in the background regardless of whether the widget is mounted.
-        body: isLoading.value
-            ? const Center(child: LoadingIndicator())
-            : WebViewWidget(controller: controller),
+        // Mount the WebView immediately so it initializes and `onPageFinished`
+        // actually fires (an unmounted WebView never loads, which would leave
+        // the spinner stuck forever). While it loads, an opaque overlay hides
+        // the white surface the native view paints on init.
+        body: Stack(
+          children: [
+            WebViewWidget(controller: controller),
+            if (isLoading.value)
+              Positioned.fill(
+                child: ColoredBox(
+                  color: Theme.of(context).palette.bgPopover,
+                  child: const Center(child: LoadingIndicator()),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

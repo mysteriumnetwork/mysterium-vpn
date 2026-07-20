@@ -120,4 +120,18 @@ void main() {
       findsOneWidget,
     );
   });
+
+  group('newsWebViewUri', () {
+    test('accepts http(s) urls', () {
+      expect(newsWebViewUri('https://example.com/a'), Uri.parse('https://example.com/a'));
+      expect(newsWebViewUri('http://example.com'), Uri.parse('http://example.com'));
+    });
+
+    test('rejects non-web and unparseable schemes', () {
+      expect(newsWebViewUri('file:///etc/passwd'), isNull);
+      expect(newsWebViewUri('javascript:alert(1)'), isNull);
+      expect(newsWebViewUri('intent://foo'), isNull);
+      expect(newsWebViewUri(''), isNull);
+    });
+  });
 }

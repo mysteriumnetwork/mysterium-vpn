@@ -19,6 +19,7 @@ void main() {
     config = MockRemoteConfigStore();
     now = DateTime.utc(2026, 7, 14, 12);
     when(news.refresh()).thenAnswer((_) async => true);
+    when(config.newsCenterEnabled).thenReturn(true);
     when(config.newsCenterRefreshIntervalMinutes).thenReturn(30);
   });
 
@@ -53,6 +54,17 @@ void main() {
 
   test('does not refresh when the interval is 0 (disabled)', () {
     when(config.newsCenterRefreshIntervalMinutes).thenReturn(0);
+    final store = build();
+
+    dispatch(store, AppLifecycleState.paused);
+    now = now.add(const Duration(hours: 2));
+    dispatch(store, AppLifecycleState.resumed);
+
+    verifyNever(news.refresh());
+  });
+
+  test('does not refresh when the feature is disabled', () {
+    when(config.newsCenterEnabled).thenReturn(false);
     final store = build();
 
     dispatch(store, AppLifecycleState.paused);

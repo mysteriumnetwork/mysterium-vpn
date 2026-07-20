@@ -1298,7 +1298,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/news-center"
+      ref: "114d47e456c0a01175e7af33b515e9a402c5d8cc"
       resolved-ref: "114d47e456c0a01175e7af33b515e9a402c5d8cc"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git

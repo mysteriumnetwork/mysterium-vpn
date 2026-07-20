@@ -208,8 +208,20 @@ class _DesktopBackButton extends StatelessWidget {
   }
 }
 
+/// Parses [url] into a webview-safe [Uri], or null if it is unparseable or not
+/// an http(s) URL. Rejects non-web schemes (file:, intent:, javascript:, …)
+/// that a backend item URL might otherwise carry.
+@visibleForTesting
+Uri? newsWebViewUri(String url) {
+  final uri = Uri.tryParse(url);
+  if (uri == null || (uri.scheme != 'http' && uri.scheme != 'https')) {
+    return null;
+  }
+  return uri;
+}
+
 void _openNewsWebView(BuildContext context, NewscenterInboxListResponseItem item) {
-  final uri = Uri.tryParse(item.webViewUrl);
+  final uri = newsWebViewUri(item.webViewUrl);
   if (uri == null) {
     return;
   }

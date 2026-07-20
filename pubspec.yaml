@@ -68,7 +68,9 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: feat/news-center
+      # Pinned to an immutable commit for reproducible builds. Bump when the
+      # design library changes (ideally to a released tag once merged).
+      ref: 114d47e456c0a01175e7af33b515e9a402c5d8cc
   onesignal_flutter: 5.6.4
   open_store: 0.5.0
   openvpn_dart:

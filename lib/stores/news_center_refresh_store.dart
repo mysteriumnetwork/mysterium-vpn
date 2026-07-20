@@ -44,6 +44,11 @@ class NewsCenterRefreshStore with WidgetsBindingObserver {
   }
 
   void _maybeRefresh(Duration inactiveFor) {
+    // Respect the feature kill switch — no background network calls when the
+    // News Center is disabled.
+    if (!_config.newsCenterEnabled) {
+      return;
+    }
     final minutes = _config.newsCenterRefreshIntervalMinutes;
     if (minutes <= 0 || inactiveFor < Duration(minutes: minutes)) {
       return;
