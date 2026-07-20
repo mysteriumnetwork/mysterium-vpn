@@ -189,6 +189,21 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.locationsPullToRefreshEnabled,
         name: 'RemoteConfigStoreBase.locationsPullToRefreshEnabled',
       )).value;
+  Computed<bool>? _$newsCenterEnabledComputed;
+
+  @override
+  bool get newsCenterEnabled => (_$newsCenterEnabledComputed ??= Computed<bool>(
+    () => super.newsCenterEnabled,
+    name: 'RemoteConfigStoreBase.newsCenterEnabled',
+  )).value;
+  Computed<int>? _$newsCenterRefreshIntervalMinutesComputed;
+
+  @override
+  int get newsCenterRefreshIntervalMinutes =>
+      (_$newsCenterRefreshIntervalMinutesComputed ??= Computed<int>(
+        () => super.newsCenterRefreshIntervalMinutes,
+        name: 'RemoteConfigStoreBase.newsCenterRefreshIntervalMinutes',
+      )).value;
   Computed<bool>? _$locationsRefreshButtonEnabledComputed;
 
   @override
@@ -436,6 +451,8 @@ useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
+newsCenterEnabled: ${newsCenterEnabled},
+newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},

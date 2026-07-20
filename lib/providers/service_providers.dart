@@ -188,6 +188,16 @@ final locationsServicePOD = Provider<LocationsService>((ref) {
 
 final assetsServicePOD = Provider((_) => const AssetsService());
 
+final newsCenterServicePOD = Provider<NewsCenterService>(
+  (ref) => RestNewsCenterService(
+    api: ref.watch(vpnApiPOD).getNewscenter(),
+    prefs: SharedPreferenceService.instance,
+    originCountry: () => ref.read(realIPInfoStorePOD).info?.country ?? '',
+    osType: Platform.operatingSystem,
+    appVersion: Env.buildInfo.buildVersion,
+  ),
+);
+
 final wireguradKeyServicePOD = Provider<WireguradKeyService>(
   (ref) => WireguradKeyService(
     wireguardService: ref.watch(wireguardServicePOD),

@@ -248,6 +248,23 @@ mixin AnalyticsStore {
     },
   );
 
+  Future<void> logNewsCenterViewed() => logEvent(AnalyticsEvent.newsCenterViewed);
+
+  Future<void> logNewsCenterFilterSelected(NewsFilter filter) =>
+      logEvent(AnalyticsEvent.newsCenterFilterSelected, parameters: {'filter': filter.name});
+
+  Future<void> logNewsCenterItemOpened({required int id, required NewscenterCategory category}) =>
+      logEvent(
+        AnalyticsEvent.newsCenterItemOpened,
+        parameters: {'item_id': id, 'category': category.name},
+      );
+
+  Future<void> logNewsCenterRefreshed() => logEvent(AnalyticsEvent.newsCenterRefreshed);
+
+  Future<void> logNewsCenterRetryClicked() => logEvent(AnalyticsEvent.newsCenterRetryClicked);
+
+  Future<void> logNewsCenterBack() => logEvent(AnalyticsEvent.newsCenterBackClicked);
+
   void dispose() {
     _debouncer.dispose();
     _logStreamController.close();

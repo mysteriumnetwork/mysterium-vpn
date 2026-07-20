@@ -65,6 +65,8 @@ enum _FeatureToggleKey {
   canShowSubscriptionOnboardingFlow,
   locationsPullToRefreshEnabled,
   locationsRefreshButtonEnabled,
+  newsCenterEnabled,
+  newsCenterRefreshIntervalMinutes,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -281,6 +283,32 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return value;
     }
     return true;
+  }
+
+  /// Whether the News Center feature (bell entry point + feed page) is enabled.
+  /// Defaults to `true` (on in dev and prod); ConfigCat can flip it to `false`
+  /// as a kill switch.
+  @computed
+  bool get newsCenterEnabled {
+    final value = config[_FeatureToggleKey.newsCenterEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return true;
+  }
+
+  /// How long the app must stay backgrounded before the News Center feed is
+  /// auto-refreshed on resume, in minutes. `0` disables the auto-refresh.
+  /// Defaults to 30 minutes; a missing, wrong-typed, or negative value falls
+  /// back to the default.
+  @computed
+  int get newsCenterRefreshIntervalMinutes {
+    const defaultMinutes = 30;
+    final value = config[_FeatureToggleKey.newsCenterRefreshIntervalMinutes.name];
+    if (value is int && value >= 0) {
+      return value;
+    }
+    return defaultMinutes;
   }
 
   /// Whether the per-tab refresh icon button on the locations list is enabled.
