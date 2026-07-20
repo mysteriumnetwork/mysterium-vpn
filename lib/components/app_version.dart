@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class AppVersion extends StatelessWidget {
+class AppVersion extends HookConsumerWidget {
   const AppVersion({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final apiStore = ref.watch(apiStorePOD);
+    useAutorun(apiStore.initStore);
+
     final theme = Theme.of(context);
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
@@ -19,7 +26,21 @@ class AppVersion extends StatelessWidget {
               theme.spacing.md,
               theme.spacing.xl2,
             ),
-      child: AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
+      child: Observer(
+        builder: (_) {
+          var version = Env.buildInfo.buildVersion;
+          if (apiStore.lastHealthcheck?.version != null) {
+            version = '$version ${apiStore.lastHealthcheck?.version}';
+          }
+          return Row(
+            children: [
+              AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
+              if (apiStore.lastHealthcheck != null)
+                AppBadge(text: '${apiStore.lastHealthcheck?.version}'),
+            ],
+          );
+        },
+      ),
     );
   }
 }
