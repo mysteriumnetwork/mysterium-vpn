@@ -67,7 +67,7 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                     Header.logo(
                       showBackButton: false,
                       backgroundColor: pallete.bgSidePanel,
-                      actions: const [HelpSupportIconButton()],
+                      actions: const [HelpSupportIconButton(), NewsCenterBellButton()],
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(
