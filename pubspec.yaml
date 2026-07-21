@@ -123,7 +123,7 @@ dev_dependencies:
   json_serializable: 6.13.0
   mobx_codegen: 2.7.6
   mockito: 5.6.3
-  msix: 3.16.13
+  msix: 3.18.0
   patrol: 4.5.0
   plugin_platform_interface: 2.1.8
   url_launcher_platform_interface: 2.3.2
