@@ -82,6 +82,26 @@ void main() {
     expect(store.filteredItems.map((i) => i.id), [1, 2, 3]);
   });
 
+  test('nonEmptyFilters is empty before load and when the feed is empty', () async {
+    final store = build();
+    expect(store.nonEmptyFilters, isEmpty);
+
+    when(service.getFeed()).thenAnswer((_) async => <NewscenterInboxListResponseItem>[]);
+    await store.load();
+    expect(store.nonEmptyFilters, isEmpty);
+  });
+
+  test('nonEmptyFilters includes all plus only the categories present', () async {
+    when(service.getFeed()).thenAnswer(
+      (_) async => [item(1, category: NewscenterCategory.incident), item(2)],
+    );
+
+    final store = build();
+    await store.load();
+
+    expect(store.nonEmptyFilters, {NewsFilter.all, NewsFilter.incidents, NewsFilter.news});
+  });
+
   test('derives read state from the persisted read ids', () async {
     when(service.readIds()).thenReturn({2});
     when(service.getFeed()).thenAnswer((_) async => [item(1), item(2), item(3)]);

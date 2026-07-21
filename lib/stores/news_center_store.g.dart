@@ -17,6 +17,13 @@ mixin _$NewsCenterStore on _NewsCenterStore, Store {
         () => super.filteredItems,
         name: '_NewsCenterStore.filteredItems',
       )).value;
+  Computed<Set<NewsFilter>>? _$nonEmptyFiltersComputed;
+
+  @override
+  Set<NewsFilter> get nonEmptyFilters => (_$nonEmptyFiltersComputed ??= Computed<Set<NewsFilter>>(
+    () => super.nonEmptyFilters,
+    name: '_NewsCenterStore.nonEmptyFilters',
+  )).value;
   Computed<int>? _$unreadCountComputed;
 
   @override
@@ -150,6 +157,7 @@ mixin _$NewsCenterStore on _NewsCenterStore, Store {
     return '''
 selectedFilter: ${selectedFilter},
 filteredItems: ${filteredItems},
+nonEmptyFilters: ${nonEmptyFilters},
 unreadCount: ${unreadCount},
 isEmpty: ${isEmpty},
 isInitialLoading: ${isInitialLoading},

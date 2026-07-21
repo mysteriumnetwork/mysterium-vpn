@@ -57,6 +57,24 @@ abstract class _NewsCenterStore with Store {
     };
   }
 
+  /// Filters that currently have at least one item. [NewsFilter.all] is present
+  /// whenever the feed is non-empty; each category filter only when an item of
+  /// that category exists. Drives per-tab enablement (empty categories disable).
+  @computed
+  Set<NewsFilter> get nonEmptyFilters {
+    final items = _items ?? const [];
+    if (items.isEmpty) {
+      return const {};
+    }
+    final categories = items.map((i) => i.category).toSet();
+    return {
+      NewsFilter.all,
+      if (categories.contains(NewscenterCategory.incident)) NewsFilter.incidents,
+      if (categories.contains(NewscenterCategory.news)) NewsFilter.news,
+      if (categories.contains(NewscenterCategory.offer)) NewsFilter.offers,
+    };
+  }
+
   /// Unread count across the whole feed, independent of the active filter.
   @computed
   int get unreadCount => (_items ?? const []).where((i) => !isRead(i.id)).length;

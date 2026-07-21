@@ -82,7 +82,7 @@ class NewsCenterView extends HookConsumerWidget {
                     color: theme.palette.bgSidePanel,
                     child: _NewsFilterTabs(
                       selectedFilter: store.selectedFilter,
-                      enabled: !isEmpty,
+                      nonEmptyFilters: store.nonEmptyFilters,
                       onSelected: onFilterSelected,
                     ),
                   ),
@@ -137,12 +137,14 @@ class NewsCenterView extends HookConsumerWidget {
 class _NewsFilterTabs extends StatelessWidget {
   const _NewsFilterTabs({
     required this.selectedFilter,
-    required this.enabled,
+    required this.nonEmptyFilters,
     required this.onSelected,
   });
 
   final NewsFilter selectedFilter;
-  final bool enabled;
+
+  /// Filters with at least one item; the rest render disabled.
+  final Set<NewsFilter> nonEmptyFilters;
   final void Function(NewsFilter filter) onSelected;
 
   @override
@@ -154,11 +156,14 @@ class _NewsFilterTabs extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: theme.spacing.md),
       child: NewsTabs(
         selectedIndex: filters.indexOf(selectedFilter),
-        enabled: enabled,
         onSelected: (i) => onSelected(filters[i]),
         items: [
           for (final filter in filters)
-            NewsTabItem(icon: newsFilterIcon(filter), label: newsFilterLabel(filter)),
+            NewsTabItem(
+              icon: newsFilterIcon(filter),
+              label: newsFilterLabel(filter),
+              enabled: nonEmptyFilters.contains(filter),
+            ),
         ],
       ),
     );

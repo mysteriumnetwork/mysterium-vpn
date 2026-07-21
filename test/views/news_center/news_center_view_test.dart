@@ -135,6 +135,25 @@ void main() {
     verify(analytics.logNewsCenterFilterSelected(NewsFilter.incidents)).called(1);
   });
 
+  testWidgets('disables filter tabs whose category has no items', (tester) async {
+    when(
+      service.getFeed(),
+    ).thenAnswer((_) async => [item(1, category: NewscenterCategory.incident)]);
+
+    await pump(tester);
+    await tester.pumpAndSettle();
+
+    NewsTab tab(String label) => tester.widget<NewsTab>(
+      find.byWidgetPredicate((w) => w is NewsTab && w.label == label),
+    );
+
+    // Only incidents present → All + Incidents enabled, News + Offers disabled.
+    expect(tab(newsFilterAllText).status, isNot(NewsTabStatus.disabled));
+    expect(tab(newsFilterIncidentsText).status, isNot(NewsTabStatus.disabled));
+    expect(tab(newsFilterNewsText).status, NewsTabStatus.disabled);
+    expect(tab(newsFilterOffersText).status, NewsTabStatus.disabled);
+  });
+
   testWidgets('tapping a card invokes onItemTap with the item', (tester) async {
     NewscenterInboxListResponseItem? tapped;
     when(service.getFeed()).thenAnswer((_) async => [item(1)]);
