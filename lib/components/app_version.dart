@@ -11,6 +11,7 @@ class AppVersion extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final remoteConfig = ref.watch(remoteConfigStorePOD);
     final apiStore = ref.watch(apiStorePOD);
     useAutorun(apiStore.initStore);
 
@@ -35,7 +36,7 @@ class AppVersion extends HookConsumerWidget {
           return Row(
             children: [
               AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
-              if (apiStore.lastHealthcheck != null)
+              if (remoteConfig.showApiVersion && apiStore.lastHealthcheck != null)
                 AppBadge(text: '${apiStore.lastHealthcheck?.version}'),
             ],
           );
