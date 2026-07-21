@@ -121,33 +121,31 @@ class MQTTService {
   }
 
   void _subscribeReal(String topic, StreamController<String> subject) {
-    subject.onListen = () {
-      final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
-      if (sub == null) {
-        throw MQQTException();
-      }
+    final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
+    if (sub == null) {
+      throw MQQTException();
+    }
 
-      // make sure to unsubscribe when the stream is cancelled
-      subject.onCancel = () => _mqtt.unsubscribeSubscription(sub);
+    // make sure to unsubscribe when the stream is cancelled
+    subject.onCancel = () => _mqtt.unsubscribeSubscription(sub);
 
-      // filter and map the messages
-      final stream = _mqtt.updates
-          // filter the messages by the topic
-          .where((messages) => messages.any((message) => message.topic == topic))
-          // map the messages to the payload
-          .map(
-            (messages) => messages
-                .where((message) => message.topic == topic && message.payload is MqttPublishMessage)
-                .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
-                .nonNulls
-                .toList(),
-          )
-          // flatten the list of messages
-          .expand((messages) => messages);
+    // filter and map the messages
+    final stream = _mqtt.updates
+        // filter the messages by the topic
+        .where((messages) => messages.any((message) => message.topic == topic))
+        // map the messages to the payload
+        .map(
+          (messages) => messages
+              .where((message) => message.topic == topic && message.payload is MqttPublishMessage)
+              .map((message) => _deserializePayload(message.payload as MqttPublishMessage))
+              .nonNulls
+              .toList(),
+        )
+        // flatten the list of messages
+        .expand((messages) => messages);
 
-      // add the stream to the subject
-      subject.addStream(stream);
-    };
+    // add the stream to the subject
+    subject.addStream(stream);
   }
 
   String? _deserializePayload(MqttPublishMessage message) {
