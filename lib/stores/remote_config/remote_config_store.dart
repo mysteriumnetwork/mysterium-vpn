@@ -63,6 +63,7 @@ enum _FeatureToggleKey {
   locationsRefreshButtonEnabled,
   newsCenterEnabled,
   newsCenterRefreshIntervalMinutes,
+  showApiVersion,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -651,6 +652,14 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.canShowSubscriptionOnboardingFlow.name] as bool;
     }
     return true;
+  }
+
+  @computed
+  bool get showApiVersion {
+    if (config.containsKey(_FeatureToggleKey.showApiVersion.name)) {
+      return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
+    }
+    return false;
   }
 
   Map<String, String> get asUserProperties =>
