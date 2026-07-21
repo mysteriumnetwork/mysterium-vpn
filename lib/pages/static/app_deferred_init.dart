@@ -46,13 +46,17 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
   // Start MQTT here — after the Future.wait above, remote config is loaded so
   // `mqttExperiment` holds its real value (not the default false). Not awaited:
   // connecting must not gate app startup.
-  _initMqtt(ref);
+  _initMqtt(ref, logger);
 
   ref.read(loggerPOD).log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
 });
 
-void _initMqtt(Ref ref) {
-  ref.read(vpnApiMQTTPOD).start();
+Future<void> _initMqtt(Ref ref, Talker talker) async {
+  try {
+    await ref.read(vpnApiMQTTPOD).start();
+  } catch (e) {
+    talker.log('MQTT init error (non-fatal): $e');
+  }
 }
 
 Future<void> _initRemoteConfig(Ref ref, Talker talker) async {
