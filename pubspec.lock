@@ -731,13 +731,14 @@ packages:
     source: hosted
     version: "2.1.1"
   flutter_secure_storage_windows:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: flutter_secure_storage_windows
-      sha256: "471951813a97006d899db4948acc654a4f28c440083ea08178935ce20b173ec1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.2"
+      path: flutter_secure_storage_windows
+      ref: "9.2.6"
+      resolved-ref: "8e1ea6e6fef0ce8521c7b852e40b86fe74ef9bb9"
+      url: "https://github.com/KristijanMitrik/flutter_secure_storage.git"
+    source: git
+    version: "4.0.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -1296,9 +1297,11 @@ packages:
   mysterium_vpn_design:
     dependency: "direct main"
     description:
-      path: "../mysterium-vpn-design"
-      relative: true
-    source: path
+      path: "."
+      ref: "114d47e456c0a01175e7af33b515e9a402c5d8cc"
+      resolved-ref: "114d47e456c0a01175e7af33b515e9a402c5d8cc"
+      url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
+    source: git
     version: "0.0.4"
   native_toolchain_c:
     dependency: transitive
