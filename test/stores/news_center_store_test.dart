@@ -92,9 +92,9 @@ void main() {
   });
 
   test('nonEmptyFilters includes all plus only the categories present', () async {
-    when(service.getFeed()).thenAnswer(
-      (_) async => [item(1, category: NewscenterCategory.incident), item(2)],
-    );
+    when(
+      service.getFeed(),
+    ).thenAnswer((_) async => [item(1, category: NewscenterCategory.incident), item(2)]);
 
     final store = build();
     await store.load();

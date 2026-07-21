@@ -98,6 +98,14 @@ Future<void> openSubscriptionPage(PatrolIntegrationTester $) async {
   expect($(#subscriptionPage), findsOneWidget);
 }
 
+/// Opens the News Center by tapping the header bell, dismissing any first-run
+/// prompt on the way. Waits until the News Center page is visible.
+Future<void> openNewsCenter(PatrolIntegrationTester $) async {
+  await waitPastPrompts($, #newsCenterBell);
+  await $(#newsCenterBell).tap();
+  await $(#newsCenterPage).waitUntilVisible();
+}
+
 /// Opens the Settings tab from the home bottom navigation.
 Future<void> openSettings(PatrolIntegrationTester $) async {
   await waitPastPrompts($, #settingsTab);

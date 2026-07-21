@@ -4,6 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
@@ -52,6 +53,7 @@ class NewsCenterPage extends ConsumerWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
+        key: K.newsCenterPage,
         backgroundColor: theme.palette.bgSidePanel,
         body: SafeArea(
           child: isDesktop

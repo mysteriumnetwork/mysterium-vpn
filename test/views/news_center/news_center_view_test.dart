@@ -143,9 +143,8 @@ void main() {
     await pump(tester);
     await tester.pumpAndSettle();
 
-    NewsTab tab(String label) => tester.widget<NewsTab>(
-      find.byWidgetPredicate((w) => w is NewsTab && w.label == label),
-    );
+    NewsTab tab(String label) =>
+        tester.widget<NewsTab>(find.byWidgetPredicate((w) => w is NewsTab && w.label == label));
 
     // Only incidents present → All + Incidents enabled, News + Offers disabled.
     expect(tab(newsFilterAllText).status, isNot(NewsTabStatus.disabled));
