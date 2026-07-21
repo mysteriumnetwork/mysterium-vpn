@@ -30,7 +30,6 @@ enum _FeatureToggleKey {
   browseUnauthenticated,
   shouldCheckUdp,
   latestStableAppVersion,
-  isRateConnectionAvailable,
   cancelSurveyOptions,
   useStoreVersionChecker,
   enableQaHelpers,
@@ -41,11 +40,8 @@ enum _FeatureToggleKey {
   userIntentsRefreshInterval,
   recentLocationsLimit,
   mapConfig,
-  subscriptionUpgradeBannerEnabled,
-  subscriptionUpgradeAutoDisplayEnabled,
   limitedTimeOfferExpiryDate,
   limitedTimeOfferId,
-  limitedTimeOfferImage,
   isProtocolPickerAvailable,
   planFeatures,
   plansBestValue,
@@ -232,14 +228,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  bool get isRateConnectionAvailable {
-    if (config.containsKey(_FeatureToggleKey.isRateConnectionAvailable.name)) {
-      return config[_FeatureToggleKey.isRateConnectionAvailable.name] as bool;
-    }
-    return false;
-  }
-
-  @computed
   Set<String>? get cancelSubscriptionReasonKeys {
     if (config.containsKey(_FeatureToggleKey.cancelSurveyOptions.name)) {
       final raw = config[_FeatureToggleKey.cancelSurveyOptions.name].toString();
@@ -402,22 +390,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  bool get subscriptionUpgradeBannerEnabled {
-    if (config.containsKey(_FeatureToggleKey.subscriptionUpgradeBannerEnabled.name)) {
-      return config[_FeatureToggleKey.subscriptionUpgradeBannerEnabled.name] as bool;
-    }
-    return true;
-  }
-
-  @computed
-  bool get subscriptionUpgradeAutoDisplayEnabled {
-    if (config.containsKey(_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name)) {
-      return config[_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name] as bool;
-    }
-    return true;
-  }
-
-  @computed
   String? get limitedTimeOfferId {
     if (config.containsKey(_FeatureToggleKey.limitedTimeOfferId.name)) {
       final raw = config[_FeatureToggleKey.limitedTimeOfferId.name];
@@ -434,18 +406,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
         return DateTime.parse(raw.toString());
       } catch (e, stack) {
         logger.handle(e, stack);
-      }
-    }
-    return null;
-  }
-
-  @computed
-  String? get limitedTimeOfferImage {
-    if (config.containsKey(_FeatureToggleKey.limitedTimeOfferImage.name)) {
-      final raw = config[_FeatureToggleKey.limitedTimeOfferImage.name];
-      final trimmed = raw.toString().trim();
-      if (trimmed.isNotEmpty) {
-        return trimmed;
       }
     }
     return null;

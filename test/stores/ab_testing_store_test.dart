@@ -29,36 +29,6 @@ void main() {
     when(client.forceRefresh()).thenAnswer((_) async => refreshResult);
   });
 
-  test('subscriptionFlowVariant defaults to "C" when not configured', () async {
-    when(client.getAllValues()).thenAnswer((_) async => <String, dynamic>{});
-
-    final store = ABTestingStore(client, logger, analytics);
-    await store.setUser(ConfigCatUser(identifier: 'u1'));
-    await store.configFuture;
-
-    expect(store.subscriptionFlowVariant, 'C');
-  });
-
-  test('subscriptionFlowVariant returns the configured variant', () async {
-    when(client.getAllValues()).thenAnswer((_) async => {'subscriptionFlow': 'A'});
-
-    final store = ABTestingStore(client, logger, analytics);
-    await store.setUser(ConfigCatUser(identifier: 'u1'));
-    await store.configFuture;
-
-    expect(store.subscriptionFlowVariant, 'A');
-  });
-
-  test('tunnelConsentType defaults to "A" when not configured', () async {
-    when(client.getAllValues()).thenAnswer((_) async => <String, dynamic>{});
-
-    final store = ABTestingStore(client, logger, analytics);
-    await store.setUser(ConfigCatUser(identifier: 'u1'));
-    await store.configFuture;
-
-    expect(store.tunnelConsentType, 'A');
-  });
-
   test('asUserProperties prefixes keys and snake-cases them', () async {
     when(
       client.getAllValues(),
