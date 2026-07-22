@@ -3,6 +3,8 @@ import 'dart:io';
 enum Routes {
   welcome('/welcome'),
   main('/main'),
+  // Nested under /main so Beamer stacks it on top of home.
+  newsCenter('/main/news-center'),
   login('/login'),
   checkYourEmail('/login/check-your-email'),
   splash('/splash'),

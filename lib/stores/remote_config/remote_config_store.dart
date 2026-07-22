@@ -30,7 +30,6 @@ enum _FeatureToggleKey {
   browseUnauthenticated,
   shouldCheckUdp,
   latestStableAppVersion,
-  isRateConnectionAvailable,
   cancelSurveyOptions,
   useStoreVersionChecker,
   enableQaHelpers,
@@ -41,11 +40,8 @@ enum _FeatureToggleKey {
   userIntentsRefreshInterval,
   recentLocationsLimit,
   mapConfig,
-  subscriptionUpgradeBannerEnabled,
-  subscriptionUpgradeAutoDisplayEnabled,
   limitedTimeOfferExpiryDate,
   limitedTimeOfferId,
-  limitedTimeOfferImage,
   isProtocolPickerAvailable,
   planFeatures,
   plansBestValue,
@@ -65,6 +61,8 @@ enum _FeatureToggleKey {
   canShowSubscriptionOnboardingFlow,
   locationsPullToRefreshEnabled,
   locationsRefreshButtonEnabled,
+  newsCenterEnabled,
+  newsCenterRefreshIntervalMinutes,
   showApiVersion,
 }
 
@@ -231,14 +229,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  bool get isRateConnectionAvailable {
-    if (config.containsKey(_FeatureToggleKey.isRateConnectionAvailable.name)) {
-      return config[_FeatureToggleKey.isRateConnectionAvailable.name] as bool;
-    }
-    return false;
-  }
-
-  @computed
   Set<String>? get cancelSubscriptionReasonKeys {
     if (config.containsKey(_FeatureToggleKey.cancelSurveyOptions.name)) {
       final raw = config[_FeatureToggleKey.cancelSurveyOptions.name].toString();
@@ -282,6 +272,32 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return value;
     }
     return true;
+  }
+
+  /// Whether the News Center feature (bell entry point + feed page) is enabled.
+  /// Defaults to `true` (on in dev and prod); ConfigCat can flip it to `false`
+  /// as a kill switch.
+  @computed
+  bool get newsCenterEnabled {
+    final value = config[_FeatureToggleKey.newsCenterEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return true;
+  }
+
+  /// How long the app must stay backgrounded before the News Center feed is
+  /// auto-refreshed on resume, in minutes. `0` disables the auto-refresh.
+  /// Defaults to 30 minutes; a missing, wrong-typed, or negative value falls
+  /// back to the default.
+  @computed
+  int get newsCenterRefreshIntervalMinutes {
+    const defaultMinutes = 30;
+    final value = config[_FeatureToggleKey.newsCenterRefreshIntervalMinutes.name];
+    if (value is int && value >= 0) {
+      return value;
+    }
+    return defaultMinutes;
   }
 
   /// Whether the per-tab refresh icon button on the locations list is enabled.
@@ -375,22 +391,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   @computed
-  bool get subscriptionUpgradeBannerEnabled {
-    if (config.containsKey(_FeatureToggleKey.subscriptionUpgradeBannerEnabled.name)) {
-      return config[_FeatureToggleKey.subscriptionUpgradeBannerEnabled.name] as bool;
-    }
-    return true;
-  }
-
-  @computed
-  bool get subscriptionUpgradeAutoDisplayEnabled {
-    if (config.containsKey(_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name)) {
-      return config[_FeatureToggleKey.subscriptionUpgradeAutoDisplayEnabled.name] as bool;
-    }
-    return true;
-  }
-
-  @computed
   String? get limitedTimeOfferId {
     if (config.containsKey(_FeatureToggleKey.limitedTimeOfferId.name)) {
       final raw = config[_FeatureToggleKey.limitedTimeOfferId.name];
@@ -407,18 +407,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
         return DateTime.parse(raw.toString());
       } catch (e, stack) {
         logger.handle(e, stack);
-      }
-    }
-    return null;
-  }
-
-  @computed
-  String? get limitedTimeOfferImage {
-    if (config.containsKey(_FeatureToggleKey.limitedTimeOfferImage.name)) {
-      final raw = config[_FeatureToggleKey.limitedTimeOfferImage.name];
-      final trimmed = raw.toString().trim();
-      if (trimmed.isNotEmpty) {
-        return trimmed;
       }
     }
     return null;

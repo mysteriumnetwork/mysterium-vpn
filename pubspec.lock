@@ -398,10 +398,10 @@ packages:
     dependency: transitive
     description:
       name: decimal
-      sha256: fc706a5618b81e5b367b01dd62621def37abc096f2b46a9bd9068b64c1fa36d0
+      sha256: "4988f89bbbf9de235430300d5ee0e8e87c733a56145dc7d0dd97e6cf90cf809b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.4"
+    version: "3.2.5"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -1147,10 +1147,10 @@ packages:
     dependency: "direct main"
     description:
       name: localizely_sdk
-      sha256: "7e7818f0aef4c95d955a269fa3f78893709c8839bd0ef7fd60e64bef2d499fd8"
+      sha256: "89e9e6dca62f96433a992cb7276799a8d72aee993e4b3238dc929fdb1805d250"
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.6"
+    version: "2.7.7"
   logger:
     dependency: transitive
     description:
@@ -1298,8 +1298,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.27"
-      resolved-ref: "437e59ea415eb90044d6546e3024f739ccfe642f"
+      ref: "0.0.28"
+      resolved-ref: "2a7bef4ddecc4df19822b5ae21cd2594fa11cf99"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
@@ -1944,10 +1944,10 @@ packages:
     dependency: transitive
     description:
       name: talker_logger
-      sha256: "459205c3e571f97ecc6be6e1b1b7e6b97b853e78ea458894650be407596e3216"
+      sha256: "999b76cb583ee89da098e8ef3a7b863eb5261326f0d33e0877f20c9df1003790"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.17"
+    version: "5.1.19"
   term_glyph:
     dependency: transitive
     description:
@@ -2105,10 +2105,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: "1fef9e8e11e2991bb773070d4656b7bd5d850967a2456cfc83cf47925ba79489"
+      sha256: "9b129329f58692f6e6578329498a8fe9fbe98f090beb764ffbb8ee2eadd01dcd"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.3"
+    version: "4.6.0"
   vector_graphics:
     dependency: transitive
     description:
@@ -2161,11 +2161,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.66"
-      resolved-ref: "5e660f79d1790a9474fdd04db36db46227c4728c"
+      ref: "1.0.78"
+      resolved-ref: "348309d11c24545027eb653c240a872ed5d69a56"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.66+46"
+    version: "1.0.78+58"
   watcher:
     dependency: transitive
     description:

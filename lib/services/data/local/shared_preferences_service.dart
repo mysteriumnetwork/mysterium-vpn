@@ -146,23 +146,29 @@ class SharedPreferenceService {
   Future<bool> setReviewCooldownUntil(int value) async =>
       setInt(StorageKeys.reviewCooldownUntil.name, value);
 
-  /// Epoch-millis timestamps of every prompt display (drives the yearly cap).
-  List<int> getReviewPromptShownTimestamps() {
-    final raw = getStringList(StorageKeys.reviewPromptShownTimestamps.name);
-    if (raw == null) {
-      return const [];
-    }
-    return raw.map(int.tryParse).whereType<int>().toList();
-  }
+  /// Reads a list of ints stored as a `List<String>` (see [_setIntList]).
+  List<int> _getIntList(String key) =>
+      getStringList(key)?.map(int.tryParse).whereType<int>().toList() ?? const [];
 
-  Future<bool> setReviewPromptShownTimestamps(List<int> value) async => setStringList(
-    StorageKeys.reviewPromptShownTimestamps.name,
-    value.map((it) => '$it').toList(),
-  );
+  Future<bool> _setIntList(String key, Iterable<int> values) =>
+      setStringList(key, values.map((it) => '$it').toList());
+
+  /// Epoch-millis timestamps of every prompt display (drives the yearly cap).
+  List<int> getReviewPromptShownTimestamps() =>
+      _getIntList(StorageKeys.reviewPromptShownTimestamps.name);
+
+  Future<bool> setReviewPromptShownTimestamps(List<int> value) async =>
+      _setIntList(StorageKeys.reviewPromptShownTimestamps.name, value);
 
   int? getReviewNativeReviewOpenedAt() => getInt(StorageKeys.reviewNativeReviewOpenedAt.name);
   Future<bool> setReviewNativeReviewOpenedAt(int value) async =>
       setInt(StorageKeys.reviewNativeReviewOpenedAt.name, value);
+
+  /// Ids of News Center items the user has read.
+  Set<int> getNewsCenterReadIds() => _getIntList(StorageKeys.newsCenterReadIds.name).toSet();
+
+  Future<bool> setNewsCenterReadIds(Set<int> value) async =>
+      _setIntList(StorageKeys.newsCenterReadIds.name, value);
 
   /// Clears all persisted review-prompt state (counters, cooldown, yearly-cap
   /// timestamps, native-review marker). Used by the QA toolbox to re-test.
