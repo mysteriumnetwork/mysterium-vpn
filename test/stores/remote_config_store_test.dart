@@ -142,6 +142,68 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.newsCenterEnabled', () {
+    test('returns the config value when present (false acts as a kill switch)', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'newsCenterEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterEnabled, isFalse);
+    });
+
+    test('defaults to true when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterEnabled, isTrue);
+    });
+
+    test('defaults to true when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'newsCenterEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterEnabled, isTrue);
+    });
+  });
+
+  group('RemoteConfigStore.newsCenterRefreshIntervalMinutes', () {
+    test('returns the config value when present (0 disables auto-refresh)', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': 0});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterRefreshIntervalMinutes, 0);
+    });
+
+    test('returns a valid positive value', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': 15});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterRefreshIntervalMinutes, 15);
+    });
+
+    test('defaults to 30 when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterRefreshIntervalMinutes, 30);
+    });
+
+    test('defaults to 30 when value has the wrong type', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': '15'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterRefreshIntervalMinutes, 30);
+    });
+
+    test('defaults to 30 when value is negative (out of range)', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': -5});
+      store = createStore();
+      await store.configFuture;
+      expect(store.newsCenterRefreshIntervalMinutes, 30);
+    });
+  });
+
   group('RemoteConfigStore.locationsRefreshButtonEnabled', () {
     test('returns value from config if present', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'locationsRefreshButtonEnabled': false});

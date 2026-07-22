@@ -71,6 +71,10 @@ class Keys {
 
   // locations
   static const locationSearch = Key('locationSearch');
+
+  // news center
+  static const newsCenterBell = Key('newsCenterBell');
+  static const newsCenterPage = Key('newsCenterPage');
 }
 
 /// Key for a location list row, addressable from Patrol as e.g.

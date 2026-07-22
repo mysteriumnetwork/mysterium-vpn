@@ -22,6 +22,8 @@ export 'in_app_review/in_app_review_service.dart';
 export 'location/locations_service.dart';
 export 'location/ping.dart';
 export 'mqtt/mqtt_service.dart';
+export 'news_center/news_center_service.dart';
+export 'news_center/rest_news_center_service.dart';
 export 'performance/performance_monitor.dart';
 export 'subscription/rest_subscription_service.dart';
 export 'subscription/subscription_service.dart';
