@@ -85,6 +85,8 @@ class _NewsWebViewScreen extends HookWidget {
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(UntitledUI.x_close, color: glyphColor),
               iconSize: 24,
+              // Screen-reader label + desktop hover tooltip.
+              tooltip: 'Close',
               // Hover/focus/press highlight follows the glyph colour so a faint
               // contrasting circle fades in behind the ×.
               hoverColor: glyphColor.withValues(alpha: 0.16),

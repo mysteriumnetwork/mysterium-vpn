@@ -148,6 +148,44 @@ void main() {
     );
   });
 
+  testWidgets('a changed deepLinkItemId re-opens on a reused page', (tester) async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+    final opened = <int>[];
+    final id = ValueNotifier<int?>(1);
+    addTearDown(id.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          newsCenterServicePOD.overrideWithValue(service),
+          analyticsStorePOD.overrideWithValue(analytics),
+        ],
+        child: MaterialApp(
+          theme: DesignSystem.lightTheme,
+          locale: testLocale,
+          localizationsDelegates: testLocalizationsDelegates,
+          supportedLocales: testSupportedLocales,
+          // Same widget position/key across rebuilds, so the page state is
+          // reused and only `deepLinkItemId` changes (mirrors Beamer reusing the
+          // route's page for a new `?id=`).
+          home: ValueListenableBuilder<int?>(
+            valueListenable: id,
+            builder: (_, value, _) => NewsCenterPage(
+              onOpenItem: (_, i) => opened.add(i.id.toInt()),
+              deepLinkItemId: value,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(opened, [1]);
+
+    id.value = 2;
+    await tester.pumpAndSettle();
+    expect(opened, [1, 2]);
+  });
+
   group('newsWebViewUri', () {
     test('accepts http(s) urls', () {
       expect(newsWebViewUri('https://example.com/a'), Uri.parse('https://example.com/a'));

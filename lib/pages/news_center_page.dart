@@ -54,7 +54,8 @@ class NewsCenterPage extends HookConsumerWidget {
 
     // Deep link: once the feed is loaded (awaiting a load still in flight), open
     // the item — same as a tap, so it is marked read and logged. No-ops when
-    // there is no id or it isn't in the feed.
+    // there is no id or it isn't in the feed. Keyed on [deepLinkItemId] so a new
+    // id re-triggers even when Beamer reuses this page's state for the route.
     useEffect(() {
       final id = deepLinkItemId;
       if (id == null) {
@@ -75,7 +76,7 @@ class NewsCenterPage extends HookConsumerWidget {
         }
       }());
       return null;
-    }, const []);
+    }, [deepLinkItemId]);
 
     void onBack() => _onBack(context, ref);
 

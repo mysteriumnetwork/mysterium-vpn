@@ -124,14 +124,16 @@ abstract class _NewsCenterStore with Store {
   @action
   Future<bool> refresh() => _fetch();
 
-  /// Awaits an initial load so a deep link can act on the feed. Returns
-  /// immediately when items are already cached; otherwise [load] awaits a load
-  /// in flight or starts one. A failed load leaves `items` null.
+  /// Awaits the freshest reasonably-available feed so a deep link can act on it.
+  /// Awaits a load in flight (e.g. the on-entry refresh, which may bring in the
+  /// deep-linked item) even when a cached feed already exists; only returns
+  /// immediately when there is cached data and nothing is loading.
   Future<void> ensureLoaded() async {
-    if (_items != null) {
-      return;
+    final pending = _feedFuture;
+    final loading = pending != null && pending.status == FutureStatus.pending;
+    if (loading || _items == null) {
+      await load();
     }
-    await load();
   }
 
   /// The loaded feed item with [id], or null when the feed isn't loaded or has
