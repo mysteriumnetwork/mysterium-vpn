@@ -28,6 +28,9 @@ const newsCenterUpdateFailedText = "Couldn't update notifications";
 /// expired, or a bad id).
 const newsCenterItemUnavailableText = 'This notification has expired or is no longer available.';
 
+/// Close button label on the in-app webview toolbar (tooltip + a11y label).
+const newsWebViewCloseText = 'Close';
+
 const newsTimeJustNowText = 'Just now';
 String newsTimeMinutesAgoText(int minutes) => '${minutes}min ago';
 String newsTimeHoursAgoText(int hours) => '${hours}h ago';
