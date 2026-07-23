@@ -74,9 +74,25 @@ class _NewsWebViewScreen extends HookWidget {
       child: ModalScaffold(
         autoApplyPadding: false,
         showGradient: false,
-        // Suppress the default × (it inherits the theme and can vanish against
-        // page content); we render our own contrast-tinted one instead.
-        appbar: const PreferredSize(preferredSize: Size.zero, child: SizedBox.shrink()),
+        // Our own contrast-tinted × as an app-bar action instead of the default
+        // themed one (which can vanish against page content). Using the app bar
+        // — not a floating button in the body — keeps it inside the safe area
+        // and reliably tappable over the webview platform view.
+        appbar: ModalAppbar(
+          showCloseButton: false,
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(UntitledUI.x_close, color: glyphColor),
+              iconSize: 24,
+              // Hover/focus/press highlight follows the glyph colour so a faint
+              // contrasting circle fades in behind the ×.
+              hoverColor: glyphColor.withValues(alpha: 0.16),
+              focusColor: glyphColor.withValues(alpha: 0.16),
+              highlightColor: glyphColor.withValues(alpha: 0.24),
+            ),
+          ],
+        ),
         body: Stack(
           children: [
             // Mounted immediately so the WebView initializes and `onPageFinished`
@@ -90,25 +106,6 @@ class _NewsWebViewScreen extends HookWidget {
                   child: const Center(child: LoadingIndicator()),
                 ),
               ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.all(theme.spacing.md),
-                  child: IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(UntitledUI.x_close, color: glyphColor),
-                    iconSize: 24,
-                    // Hover/focus/press highlight follows the glyph colour so a
-                    // faint contrasting circle fades in behind the ×.
-                    hoverColor: glyphColor.withValues(alpha: 0.16),
-                    focusColor: glyphColor.withValues(alpha: 0.16),
-                    highlightColor: glyphColor.withValues(alpha: 0.24),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

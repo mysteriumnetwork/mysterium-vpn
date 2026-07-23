@@ -45,6 +45,7 @@ void main() {
     WidgetTester tester, {
     Locale locale = testLocale,
     NewsItemOpener? onOpenItem,
+    int? deepLinkItemId,
   }) async {
     late ProviderContainer container;
     await tester.pumpWidget(
@@ -61,7 +62,10 @@ void main() {
           home: Builder(
             builder: (context) {
               container = ProviderScope.containerOf(context);
-              return NewsCenterPage(onOpenItem: onOpenItem ?? (_, _) {});
+              return NewsCenterPage(
+                onOpenItem: onOpenItem ?? (_, _) {},
+                deepLinkItemId: deepLinkItemId,
+              );
             },
           ),
         ),
@@ -118,6 +122,29 @@ void main() {
     expect(
       find.byWidgetPredicate((w) => w is SizedBox && w.width == NewsCenterPage.desktopContentWidth),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('deepLinkItemId opens that item once loaded, marking it read', (tester) async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+    NewscenterInboxListResponseItem? opened;
+
+    final container = await pumpPage(tester, onOpenItem: (_, i) => opened = i, deepLinkItemId: 2);
+
+    expect(opened?.id, 2);
+    expect(container.read(newsCenterStorePOD).isRead(2), isTrue);
+    verify(analytics.logNewsCenterItemOpened(id: 2, category: NewscenterCategory.news)).called(1);
+  });
+
+  testWidgets('an unknown deepLinkItemId opens nothing', (tester) async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    NewscenterInboxListResponseItem? opened;
+
+    await pumpPage(tester, onOpenItem: (_, i) => opened = i, deepLinkItemId: 999);
+
+    expect(opened, isNull);
+    verifyNever(
+      analytics.logNewsCenterItemOpened(id: anyNamed('id'), category: anyNamed('category')),
     );
   });
 

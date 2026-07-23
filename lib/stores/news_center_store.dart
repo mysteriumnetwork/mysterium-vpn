@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -105,7 +106,14 @@ abstract class _NewsCenterStore with Store {
   /// eager badge load and the on-entry load).
   @action
   Future<void> load() async {
-    if (_feedFuture?.status == FutureStatus.pending) {
+    final pending = _feedFuture;
+    if (pending != null && pending.status == FutureStatus.pending) {
+      // Await the load already in flight instead of starting another.
+      try {
+        await pending;
+      } catch (_) {
+        // Failure is surfaced via hasError; awaiting callers just continue.
+      }
       return;
     }
     await _fetch();
@@ -115,6 +123,21 @@ abstract class _NewsCenterStore with Store {
   /// pull-to-refresh snackbar. Old data is retained on failure.
   @action
   Future<bool> refresh() => _fetch();
+
+  /// Awaits an initial load so a deep link can act on the feed. Returns
+  /// immediately when items are already cached; otherwise [load] awaits a load
+  /// in flight or starts one. A failed load leaves `items` null.
+  Future<void> ensureLoaded() async {
+    if (_items != null) {
+      return;
+    }
+    await load();
+  }
+
+  /// The loaded feed item with [id], or null when the feed isn't loaded or has
+  /// no such item.
+  NewscenterInboxListResponseItem? itemById(num id) =>
+      (_items ?? const []).firstWhereOrNull((i) => i.id.toInt() == id.toInt());
 
   Future<bool> _fetch() async {
     // Future.sync converts a synchronous throw from the service into a rejected

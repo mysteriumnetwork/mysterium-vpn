@@ -87,14 +87,20 @@ extension NavigationExtensions on BeamerDelegate {
 
     final route = Routes.values.firstWhereOrNull((it) => it.name == path || it.path == path);
     if (route != null) {
-      beamToNamed(route.path);
+      // Preserve query params (e.g. news-center `?id=`) so the destination page
+      // can act on them.
+      final query = uri.hasQuery ? '?${uri.query}' : '';
+      beamToNamed('${route.path}$query');
     }
   }
 
   String _normalizeInAppPath(Uri uri) {
-    final path = uri.path;
+    var path = uri.path;
+    if (!path.startsWith('/')) {
+      path = '/$path';
+    }
     if (path.length > 1 && path.endsWith('/')) {
-      return path.substring(0, path.length - 1);
+      path = path.substring(0, path.length - 1);
     }
     return path;
   }

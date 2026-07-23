@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -100,6 +102,51 @@ void main() {
     await store.load();
 
     expect(store.nonEmptyFilters, {NewsFilter.all, NewsFilter.incidents, NewsFilter.news});
+  });
+
+  test('ensureLoaded triggers a load when none has started', () async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+
+    final store = build();
+    await store.ensureLoaded();
+
+    expect(store.itemById(1)?.id, 1);
+    verify(service.getFeed()).called(1);
+  });
+
+  test('ensureLoaded does not reload when items are already present', () async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+
+    final store = build();
+    await store.load();
+    await store.ensureLoaded();
+
+    verify(service.getFeed()).called(1);
+  });
+
+  test('ensureLoaded awaits a load already in flight (no duplicate fetch)', () async {
+    final completer = Completer<List<NewscenterInboxListResponseItem>>();
+    when(service.getFeed()).thenAnswer((_) => completer.future);
+
+    final store = build();
+    final loading = store.load();
+    final ensuring = store.ensureLoaded();
+    completer.complete([item(1)]);
+    await Future.wait([loading, ensuring]);
+
+    expect(store.itemById(1)?.id, 1);
+    verify(service.getFeed()).called(1);
+  });
+
+  test('itemById finds a loaded item and returns null otherwise', () async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+
+    final store = build();
+    expect(store.itemById(1), isNull);
+
+    await store.load();
+    expect(store.itemById(2)?.id, 2);
+    expect(store.itemById(99), isNull);
   });
 
   test('derives read state from the persisted read ids', () async {
