@@ -28,10 +28,12 @@ class NewsCenterBellButton extends HookConsumerWidget {
     final hasUnread = useComputedValue(() => store.unreadCount > 0);
 
     // Eagerly load once the feature is enabled so the badge is accurate before
-    // the user opens the page.
+    // the user opens the page. `ensureLoaded` (not `load`) so this doesn't
+    // re-fetch every time the bell remounts — e.g. the header is absent on the
+    // Products tab, so leaving it would otherwise trigger a fresh fetch.
     useEffect(() {
       if (enabled) {
-        store.load();
+        store.ensureLoaded();
       }
       return null;
     }, [enabled]);
