@@ -16,6 +16,7 @@
 		4928C77B7AD6413241F3C6A6 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4873B569D90E52049707520 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		4FC2971EC5E181F7A3BDD0DB /* Pods_Runner_RunnerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2E407CE1D671151F053AAC /* Pods_Runner_RunnerUITests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		7E7AF9F9D10CC83B5BAD0168 /* Pods_OVpnExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E28BD8191D3AA3BDEF5B6DF9 /* Pods_OVpnExtension.framework */; };
 		9729FC4D2BC6D94700E926F9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9729FC4C2BC6D94700E926F9 /* PrivacyInfo.xcprivacy */; };
 		9776639A2ECBA38400BC54E9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA225D529D42E5C001CD70B /* NetworkExtension.framework */; };
@@ -110,6 +111,7 @@
 		6B21E297E1606CCD0C76D2D6 /* Pods-OVpnExtension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.release-dev.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.release-dev.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		860F0972798D5B440AD5A3A5 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; sourceTree = "<group>"; };
 		89015709BC5362C1019CA3DB /* Pods-Runner-RunnerUITests.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner-RunnerUITests.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests.profile-dev.xcconfig"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 				C9BA2B85F49069A19940A27F /* Pods_Runner.framework in Frameworks */,
 				977D12872D5E43A900223A2A /* AdServices.framework in Frameworks */,
 				977D12892D5E43AC00223A2A /* AdSupport.framework in Frameworks */,
@@ -303,6 +306,7 @@
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
+				78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */,
 				3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */,
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
@@ -458,7 +462,7 @@
 				65AFC80260EB588B94378EEB /* [CP] Embed Pods Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				439EFABEAA2BB584300F3B81 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
-				A6A4F1FAEC4EE922063352A0 /* [CP] Copy Pods Resources */,
+				C5D1424DDCE568494825F2F6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -468,6 +472,9 @@
 				97C18D602F1F91FB005DF321 /* PBXTargetDependency */,
 			);
 			name = Runner;
+			packageProductDependencies = (
+				78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */,
+			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
@@ -503,8 +510,8 @@
 				9915442B2DD20A7100D6F505 /* Frameworks */,
 				9915442C2DD20A7100D6F505 /* Resources */,
 				32C67FF9E629E41308A9BA04 /* [CP] Embed Pods Frameworks */,
-				FAF6A0AB90E00C3F878C153C /* [CP] Copy Pods Resources */,
 				991544442DD20BCA00D6F505 /* xcode_backend embed_and_thin */,
+				D30A36406C59B1B80A89945A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -558,6 +565,9 @@
 				Base,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
+			packageReferences = (
+				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
+			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -860,7 +870,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
-		A6A4F1FAEC4EE922063352A0 /* [CP] Copy Pods Resources */ = {
+		C5D1424DDCE568494825F2F6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -875,6 +885,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D30A36406C59B1B80A89945A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F89EB004EA438AE590E329CC /* [CP] Check Pods Manifest.lock */ = {
@@ -897,23 +924,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FAF6A0AB90E00C3F878C153C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner-RunnerUITests/Pods-Runner-RunnerUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1064,7 +1074,7 @@
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-prod;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1272,7 +1282,7 @@
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1406,7 +1416,7 @@
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1532,7 +1542,7 @@
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2202,7 +2212,7 @@
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-prod;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2238,7 +2248,7 @@
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-prod;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2385,7 +2395,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension-dev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension-dev.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -2548,7 +2558,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension-dev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension-dev.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -2704,7 +2714,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension-dev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension-dev.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -2815,12 +2825,12 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.RunnerUITests;
-				SWIFT_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = prod;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = prod;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Runner;
 			};
@@ -2893,12 +2903,12 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.RunnerUITests;
-				SWIFT_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = prod;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = prod;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Runner;
 			};
@@ -2964,12 +2974,12 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.RunnerUITests;
-				SWIFT_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = prod;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = prod;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Runner;
 				VALIDATE_PRODUCT = YES;
@@ -3036,12 +3046,12 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.RunnerUITests;
-				SWIFT_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = prod;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = prod;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Runner;
 				VALIDATE_PRODUCT = YES;
@@ -3108,12 +3118,12 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.RunnerUITests;
-				SWIFT_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = prod;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = prod;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Runner;
 				VALIDATE_PRODUCT = YES;
@@ -3180,12 +3190,12 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.RunnerUITests;
-				SWIFT_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = prod;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = prod;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Runner;
 				VALIDATE_PRODUCT = YES;
@@ -3274,6 +3284,20 @@
 			defaultConfigurationName = "Debug-dev";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }
