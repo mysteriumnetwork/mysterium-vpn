@@ -6,11 +6,11 @@ version: 2.4.8-dev
 
 environment:
   sdk: ">=3.11.0 <4.0.0"
-  flutter: 3.41.9
+  flutter: 3.44.7
 
 dependencies:
   app_links: 7.0.0
-  app_settings: 7.0.0
+  app_settings: 8.0.3
   auto_size_text: 3.0.0
   beamer: 1.7.0
   circle_flags: 5.0.1
@@ -22,44 +22,40 @@ dependencies:
   configcat_client: 4.1.1
   connectivity_plus: 6.1.5
   crypto: 3.0.7
-  device_info_plus: 13.1.0
+  device_info_plus: 13.2.0
   dio: 5.9.2
-  firebase_analytics: 12.4.3
-  firebase_core: 4.11.0
-  firebase_crashlytics: 5.2.4
-  firebase_performance: 0.11.4+3
+  firebase_analytics: 12.4.5
+  firebase_core: 4.12.1
+  firebase_crashlytics: 5.2.6
+  firebase_performance: 0.11.4+5
   flutter:
     sdk: flutter
   flutter_hooks: 0.21.3+1
-  flutter_launcher_icons: 0.13.1
+  flutter_launcher_icons: 0.14.4
   flutter_localizations:
     sdk: flutter
-  flutter_map: 8.3.0
+  flutter_map: 8.3.1
   flutter_mobx: 2.3.0
-  flutter_native_splash: 2.4.7
+  flutter_native_splash: 2.4.8
   flutter_portal: 1.1.4
-  flutter_secure_storage:
-    git:
-      url: https://github.com/KristijanMitrik/flutter_secure_storage.git
-      path: flutter_secure_storage
-      ref: 9.2.6
+  flutter_secure_storage: 10.3.1
   flutter_svg: 2.3.0
-  flutter_udid: 4.1.2
+  flutter_udid: 4.1.6
   freezed_annotation: 3.1.0
-  google_fonts: 8.1.0
+  google_fonts: 8.2.0
   google_sign_in: 7.2.0
   hive_ce: 2.19.3
   hive_ce_flutter: 2.3.4
   hooks_riverpod: 3.3.1
-  in_app_purchase: 3.2.3
-  in_app_purchase_android: ^0.4.0+8
-  in_app_purchase_storekit: 0.4.5
+  in_app_purchase: 3.3.0
+  in_app_purchase_android: 0.5.2
+  in_app_purchase_storekit: 0.4.11
   in_app_review: 2.0.12
-  in_app_update: 4.2.5
+  in_app_update: 5.0.0
   intl: 0.20.2
   json_annotation: 4.11.0
-  latlong2: 0.9.1
-  localizely_sdk: ^2.7.6
+  latlong2: 0.10.1
+  localizely_sdk: 2.7.7
   mail_launcher:
     path: ./packages/mail_launcher
   mobx: 2.6.0
@@ -68,29 +64,28 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.28
-  onesignal_flutter: 5.6.4
+      ref: 0.0.29
+  onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: extract-driver
-  package_info_plus: 10.1.0
+      ref: 0.0.8
+  package_info_plus: 10.2.1
   reactive_forms: 17.0.1
   retry: 3.1.2
-  sentry_flutter: 9.19.0
+  sentry_flutter: 9.25.0
   shared_preferences: 2.5.5
   shimmer: 3.0.0
   showcaseview: 5.0.2
-  sign_in_with_apple: 8.0.0
+  sign_in_with_apple: 8.1.0
   sliver_tools: 0.2.12
   stack_trace: 1.12.1
   store_checker_windows:
     path: ./packages/store_checker_windows
-  styled_widget: 0.4.1
-  talker: 5.1.17
-  talker_dio_logger: 5.1.17
-  tray_manager: 0.5.2
+  talker: 5.1.19
+  talker_dio_logger: 5.1.19
+  tray_manager: 0.5.3
   url_launcher: 6.3.2
   url_protocol:
     git:
@@ -100,12 +95,12 @@ dependencies:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
       ref: 1.0.78
-  webview_flutter: 4.13.1
-  window_manager: 0.5.1
+  webview_flutter: 4.14.1
+  window_manager: 0.5.2
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: 0.9.12
+      ref: 0.9.13
 
 dev_dependencies:
   build: ^4.0.0
@@ -121,19 +116,16 @@ dev_dependencies:
     sdk: flutter
   intl_utils: ^2.8.10
   json_serializable: 6.13.0
-  mobx_codegen: 2.7.6
-  mockito: 5.6.3
-  msix: 3.16.13
-  patrol: 4.5.0
+  mobx_codegen: 2.7.7
+  mockito: 5.7.0
+  msix: 3.18.0
+  patrol: 4.7.1
   plugin_platform_interface: 2.1.8
   url_launcher_platform_interface: 2.3.2
 
 dependency_overrides:
-  flutter_secure_storage_windows:
-    git:
-      url: https://github.com/KristijanMitrik/flutter_secure_storage.git
-      path: flutter_secure_storage_windows
-      ref: 9.2.6
+  # mockito >=5.6.5 needs analyzer ^13, incompatible with mobx_codegen 2.7.7 (analyzer <13).
+  mockito: 5.6.4
 
 msix_config:
   display_name: Mysterium VPN

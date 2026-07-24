@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class HeadlineText extends ConsumerWidget {
   const HeadlineText({
@@ -33,17 +32,20 @@ class HeadlineText extends ConsumerWidget {
         final themeColor = themeStore.isDarkMode || checkMediaWidth(context, 750)
             ? Palette.white
             : Palette.grayPurple.shade800;
-        return Text(
-          text,
-          maxLines: maxLines,
-          overflow: TextOverflow.ellipsis,
-          textAlign: textAlign,
-          style: theme.textStyles.displayXlg.bold.copyWith(
-            color: color ?? themeColor,
-            fontSize: fontSize,
-            fontWeight: fontWeight,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Text(
+            text,
+            maxLines: maxLines,
+            overflow: TextOverflow.ellipsis,
+            textAlign: textAlign,
+            style: theme.textStyles.displayXlg.bold.copyWith(
+              color: color ?? themeColor,
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+            ),
           ),
-        ).padding(vertical: 6);
+        );
       },
     );
   }

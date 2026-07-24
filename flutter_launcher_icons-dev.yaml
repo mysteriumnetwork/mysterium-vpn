@@ -11,6 +11,7 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/logo/dev/desktop.png"
     icon_size: 48
+  # macOS icons are maintained manually as flavored sets (AppIcon-dev/AppIcon-prod);
+  # flutter_launcher_icons can't target flavored macOS appiconsets, so generation is off.
   macos:
-    generate: true
-    image_path: "assets/logo/dev/desktop.png"
+    generate: false

@@ -24,6 +24,8 @@ analyzer:
     - "packages/vpn_api/**"
     - "lib/gen/**"
     - "lib/generated/**"
+    # Swift Package Manager vendors third-party plugin Dart source here.
+    - "build/**"
 formatter:
   page_width: 100
 linter:

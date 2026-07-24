@@ -24,7 +24,6 @@ class SecureStorageService {
       iOptions: IOSOptions(accountName: Env.accountName),
       mOptions: MacOsOptions(accountName: Env.accountName, synchronizable: true),
       wOptions: WindowsOptions(useBackwardCompatibility: true),
-      aOptions: AndroidOptions(resetOnError: true),
     );
   }
 
