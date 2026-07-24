@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -184,6 +186,48 @@ void main() {
     id.value = 2;
     await tester.pumpAndSettle();
     expect(opened, [1, 2]);
+  });
+
+  testWidgets('a deepLinkItemId change mid-load does not open the stale item', (tester) async {
+    // Feed load stays in flight until we complete it, so we can change the id
+    // while the first deep-link task is still awaiting.
+    final completer = Completer<List<NewscenterInboxListResponseItem>>();
+    when(service.getFeed()).thenAnswer((_) => completer.future);
+    final opened = <int>[];
+    final id = ValueNotifier<int?>(1);
+    addTearDown(id.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          newsCenterServicePOD.overrideWithValue(service),
+          analyticsStorePOD.overrideWithValue(analytics),
+        ],
+        child: MaterialApp(
+          theme: DesignSystem.lightTheme,
+          locale: testLocale,
+          localizationsDelegates: testLocalizationsDelegates,
+          supportedLocales: testSupportedLocales,
+          home: ValueListenableBuilder<int?>(
+            valueListenable: id,
+            builder: (_, value, _) => NewsCenterPage(
+              onOpenItem: (_, i) => opened.add(i.id.toInt()),
+              deepLinkItemId: value,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // Switch the target id before the feed resolves, then resolve it.
+    id.value = 2;
+    await tester.pump();
+    completer.complete([item(1), item(2)]);
+    await tester.pumpAndSettle();
+
+    // Only the current id opened; the stale id-1 task was cancelled.
+    expect(opened, [2]);
   });
 
   group('newsWebViewUri', () {

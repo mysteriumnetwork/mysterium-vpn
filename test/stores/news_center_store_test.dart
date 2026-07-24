@@ -158,6 +158,27 @@ void main() {
     expect(store.itemById(2)?.id, 2);
   });
 
+  test('feedFetchFailed is false after a successful load', () async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    final store = build();
+    await store.load();
+
+    expect(store.feedFetchFailed, isFalse);
+  });
+
+  test('feedFetchFailed is true when the latest fetch is rejected, even with cache', () async {
+    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    final store = build();
+    await store.load();
+
+    // A refresh fails; the cache remains but the freshest fetch was rejected.
+    when(service.getFeed()).thenThrow(Exception('network'));
+    await store.refresh();
+
+    expect(store.feedFetchFailed, isTrue);
+    expect(store.hasError, isFalse); // cache-gated: still false because items remain
+  });
+
   test('itemById finds a loaded item and returns null otherwise', () async {
     when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
 

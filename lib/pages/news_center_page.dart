@@ -61,21 +61,25 @@ class NewsCenterPage extends HookConsumerWidget {
       if (id == null) {
         return null;
       }
+      // Guard against the id changing mid-load: the cleanup marks this run
+      // stale so a slow `ensureLoaded` can't open the previous item.
+      var cancelled = false;
       unawaited(() async {
         await store.ensureLoaded();
-        if (!context.mounted) {
+        if (cancelled || !context.mounted) {
           return;
         }
         final item = store.itemById(id);
         if (item != null) {
           onItemTap(item);
-        } else if (!store.hasError) {
-          // Loaded, but no such item — tell the user (a load failure instead
-          // shows the page's own retry state, so don't claim "expired" there).
+        } else if (!store.feedFetchFailed) {
+          // The feed loaded but has no such item — tell the user. (A failed
+          // fetch shows the page's own retry state instead, so we don't
+          // misreport it as "expired".)
           showSnackbar(newsCenterItemUnavailableText, type: SnackbarType.info);
         }
       }());
-      return null;
+      return () => cancelled = true;
     }, [deepLinkItemId]);
 
     void onBack() => _onBack(context, ref);

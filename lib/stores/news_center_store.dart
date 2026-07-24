@@ -92,9 +92,15 @@ abstract class _NewsCenterStore with Store {
   bool get isInitialLoading =>
       _items == null && (_feedFuture == null || _feedFuture!.status == FutureStatus.pending);
 
+  /// Whether the latest fetch was rejected, regardless of whether stale cached
+  /// items remain. Distinct from [hasError] (which is cache-gated): lets callers
+  /// tell "the fetch failed" apart from "loaded, but the item isn't here".
+  @computed
+  bool get feedFetchFailed => _feedFuture?.status == FutureStatus.rejected;
+
   /// Show the error/retry state only when there is no cache to fall back on.
   @computed
-  bool get hasError => _items == null && _feedFuture?.status == FutureStatus.rejected;
+  bool get hasError => _items == null && feedFetchFailed;
 
   /// True while a full-screen loading or error state occupies the page (no feed
   /// chrome), so callers can hide the title/tabs and center the state.
@@ -127,7 +133,8 @@ abstract class _NewsCenterStore with Store {
   /// Awaits the freshest reasonably-available feed so a deep link can act on it.
   /// Awaits a load in flight (e.g. the on-entry refresh, which may bring in the
   /// deep-linked item) even when a cached feed already exists; only returns
-  /// immediately when there is cached data and nothing is loading.
+  /// immediately when there is cached data and nothing is loading. Read
+  /// [feedFetchFailed] afterwards to tell a genuine miss from a failed fetch.
   Future<void> ensureLoaded() async {
     final pending = _feedFuture;
     final loading = pending != null && pending.status == FutureStatus.pending;

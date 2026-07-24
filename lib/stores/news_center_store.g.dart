@@ -45,6 +45,13 @@ mixin _$NewsCenterStore on _NewsCenterStore, Store {
     () => super.isInitialLoading,
     name: '_NewsCenterStore.isInitialLoading',
   )).value;
+  Computed<bool>? _$feedFetchFailedComputed;
+
+  @override
+  bool get feedFetchFailed => (_$feedFetchFailedComputed ??= Computed<bool>(
+    () => super.feedFetchFailed,
+    name: '_NewsCenterStore.feedFetchFailed',
+  )).value;
   Computed<bool>? _$hasErrorComputed;
 
   @override
@@ -161,6 +168,7 @@ nonEmptyFilters: ${nonEmptyFilters},
 unreadCount: ${unreadCount},
 isEmpty: ${isEmpty},
 isInitialLoading: ${isInitialLoading},
+feedFetchFailed: ${feedFetchFailed},
 hasError: ${hasError},
 showsFullScreenState: ${showsFullScreenState}
     ''';
