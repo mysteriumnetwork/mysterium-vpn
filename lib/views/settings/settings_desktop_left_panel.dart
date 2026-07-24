@@ -56,6 +56,7 @@ class SettingsDesktopLeftPanel extends HookConsumerWidget {
                   ),
                 ),
                 const HelpSupportIconButton(),
+                const NewsCenterBellButton(),
               ],
             ),
           ),

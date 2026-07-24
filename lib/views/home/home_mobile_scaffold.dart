@@ -99,7 +99,7 @@ class _MobileTabHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const actions = [HelpSupportIconButton()];
+    const actions = [HelpSupportIconButton(), NewsCenterBellButton()];
     final theme = Theme.of(context);
 
     if (onBack != null) {

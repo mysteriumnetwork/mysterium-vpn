@@ -396,6 +396,19 @@ final ipRefreshExhaustionStorePOD = Provider<IpRefreshExhaustionStore>(
   (ref) => IpRefreshExhaustionStore(ref.watch(analyticsStorePOD)),
 );
 
+final newsCenterStorePOD = Provider<NewsCenterStore>(
+  (ref) => NewsCenterStore(ref.watch(newsCenterServicePOD), ref.watch(loggerPOD)),
+);
+
+final newsCenterRefreshStorePOD = Provider<NewsCenterRefreshStore>((ref) {
+  final store = NewsCenterRefreshStore(
+    ref.watch(newsCenterStorePOD),
+    ref.watch(remoteConfigStorePOD),
+  );
+  ref.onDispose(store.dispose);
+  return store;
+});
+
 final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
   (ref) => SubscriptionUpgradeStore(
     ref.watch(subscriptionStorePOD),

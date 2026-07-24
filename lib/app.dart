@@ -174,7 +174,13 @@ class MyApp extends HookConsumerWidget {
     // auto-invalidated by the lines above. Nothing else reads it, so without
     // this explicit read the old instance stays disposed and its auth
     // reaction can't refresh locations on the next login.
-    ref.read(smartRefreshStorePOD);
+    //
+    // NewsCenterRefreshStore is the News Center lifecycle observer; reading it
+    // here starts auto-refreshing the feed after the app is backgrounded past
+    // the configured interval.
+    ref
+      ..read(smartRefreshStorePOD)
+      ..read(newsCenterRefreshStorePOD);
   }
 
   Future<void> _disposeStore<T>(

@@ -10,6 +10,7 @@ export 'home_tab.dart';
 export 'ip_type.dart';
 export 'location_mode.dart';
 export 'marketing_analytics_event.dart';
+export 'news_filter.dart';
 export 'orientation_type.dart';
 export 'products_screen_variant.dart';
 export 'protocol_type.dart';

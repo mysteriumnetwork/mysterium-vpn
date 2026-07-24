@@ -145,13 +145,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.latestStableAppVersion,
     name: 'RemoteConfigStoreBase.latestStableAppVersion',
   )).value;
-  Computed<bool>? _$isRateConnectionAvailableComputed;
-
-  @override
-  bool get isRateConnectionAvailable => (_$isRateConnectionAvailableComputed ??= Computed<bool>(
-    () => super.isRateConnectionAvailable,
-    name: 'RemoteConfigStoreBase.isRateConnectionAvailable',
-  )).value;
   Computed<Set<String>?>? _$cancelSubscriptionReasonKeysComputed;
 
   @override
@@ -188,6 +181,21 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
       (_$locationsPullToRefreshEnabledComputed ??= Computed<bool>(
         () => super.locationsPullToRefreshEnabled,
         name: 'RemoteConfigStoreBase.locationsPullToRefreshEnabled',
+      )).value;
+  Computed<bool>? _$newsCenterEnabledComputed;
+
+  @override
+  bool get newsCenterEnabled => (_$newsCenterEnabledComputed ??= Computed<bool>(
+    () => super.newsCenterEnabled,
+    name: 'RemoteConfigStoreBase.newsCenterEnabled',
+  )).value;
+  Computed<int>? _$newsCenterRefreshIntervalMinutesComputed;
+
+  @override
+  int get newsCenterRefreshIntervalMinutes =>
+      (_$newsCenterRefreshIntervalMinutesComputed ??= Computed<int>(
+        () => super.newsCenterRefreshIntervalMinutes,
+        name: 'RemoteConfigStoreBase.newsCenterRefreshIntervalMinutes',
       )).value;
   Computed<bool>? _$locationsRefreshButtonEnabledComputed;
 
@@ -242,22 +250,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.mapConfig,
     name: 'RemoteConfigStoreBase.mapConfig',
   )).value;
-  Computed<bool>? _$subscriptionUpgradeBannerEnabledComputed;
-
-  @override
-  bool get subscriptionUpgradeBannerEnabled =>
-      (_$subscriptionUpgradeBannerEnabledComputed ??= Computed<bool>(
-        () => super.subscriptionUpgradeBannerEnabled,
-        name: 'RemoteConfigStoreBase.subscriptionUpgradeBannerEnabled',
-      )).value;
-  Computed<bool>? _$subscriptionUpgradeAutoDisplayEnabledComputed;
-
-  @override
-  bool get subscriptionUpgradeAutoDisplayEnabled =>
-      (_$subscriptionUpgradeAutoDisplayEnabledComputed ??= Computed<bool>(
-        () => super.subscriptionUpgradeAutoDisplayEnabled,
-        name: 'RemoteConfigStoreBase.subscriptionUpgradeAutoDisplayEnabled',
-      )).value;
   Computed<String?>? _$limitedTimeOfferIdComputed;
 
   @override
@@ -273,13 +265,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.limitedTimeOfferExpiryDate,
         name: 'RemoteConfigStoreBase.limitedTimeOfferExpiryDate',
       )).value;
-  Computed<String?>? _$limitedTimeOfferImageComputed;
-
-  @override
-  String? get limitedTimeOfferImage => (_$limitedTimeOfferImageComputed ??= Computed<String?>(
-    () => super.limitedTimeOfferImage,
-    name: 'RemoteConfigStoreBase.limitedTimeOfferImage',
-  )).value;
   Computed<bool>? _$isProtocolPickerAvailableComputed;
 
   @override
@@ -445,12 +430,13 @@ hideResetAppSetting: ${hideResetAppSetting},
 browseUnauthenticated: ${browseUnauthenticated},
 shouldCheckUdp: ${shouldCheckUdp},
 latestStableAppVersion: ${latestStableAppVersion},
-isRateConnectionAvailable: ${isRateConnectionAvailable},
 cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
 useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
+newsCenterEnabled: ${newsCenterEnabled},
+newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},
@@ -458,11 +444,8 @@ userIntentBlacklist: ${userIntentBlacklist},
 userIntentsRefreshInterval: ${userIntentsRefreshInterval},
 recentLocationsLimit: ${recentLocationsLimit},
 mapConfig: ${mapConfig},
-subscriptionUpgradeBannerEnabled: ${subscriptionUpgradeBannerEnabled},
-subscriptionUpgradeAutoDisplayEnabled: ${subscriptionUpgradeAutoDisplayEnabled},
 limitedTimeOfferId: ${limitedTimeOfferId},
 limitedTimeOfferExpiryDate: ${limitedTimeOfferExpiryDate},
-limitedTimeOfferImage: ${limitedTimeOfferImage},
 isProtocolPickerAvailable: ${isProtocolPickerAvailable},
 planFeatures: ${planFeatures},
 plansBestValue: ${plansBestValue},

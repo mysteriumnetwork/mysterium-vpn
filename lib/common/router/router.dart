@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
+import 'package:mysterium_vpn/pages/news_center_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/pages/verify_email_page.dart';
 import 'package:mysterium_vpn/pages/welcome_page.dart';
@@ -16,6 +17,7 @@ class BeamerLocations extends BeamLocation<BeamState> {
   List<Pattern> get pathPatterns => [
     Routes.welcome.path,
     Routes.main.path,
+    Routes.newsCenter.path,
     Routes.splash.path,
     Routes.login.path,
     Routes.checkYourEmail.path,
@@ -38,6 +40,14 @@ class BeamerLocations extends BeamLocation<BeamState> {
           name: Routes.main.path,
           title: Routes.main.name,
           child: const HomePage(key: K.homePage),
+        ),
+      if (path.contains(Routes.newsCenter.path))
+        BeamPage(
+          key: ValueKey(Routes.newsCenter.toDashCase),
+          name: Routes.newsCenter.path,
+          title: Routes.newsCenter.name,
+          // Deep link `/main/news-center?id=<id>` auto-opens that item.
+          child: NewsCenterPage(deepLinkItemId: int.tryParse(state.queryParameters['id'] ?? '')),
         ),
       if (path.contains(Routes.splash.path))
         BeamPage(
