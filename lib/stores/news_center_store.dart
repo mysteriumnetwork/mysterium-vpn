@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -91,9 +92,15 @@ abstract class _NewsCenterStore with Store {
   bool get isInitialLoading =>
       _items == null && (_feedFuture == null || _feedFuture!.status == FutureStatus.pending);
 
+  /// Whether the latest fetch was rejected, regardless of whether stale cached
+  /// items remain. Distinct from [hasError] (which is cache-gated): lets callers
+  /// tell "the fetch failed" apart from "loaded, but the item isn't here".
+  @computed
+  bool get feedFetchFailed => _feedFuture?.status == FutureStatus.rejected;
+
   /// Show the error/retry state only when there is no cache to fall back on.
   @computed
-  bool get hasError => _items == null && _feedFuture?.status == FutureStatus.rejected;
+  bool get hasError => _items == null && feedFetchFailed;
 
   /// True while a full-screen loading or error state occupies the page (no feed
   /// chrome), so callers can hide the title/tabs and center the state.
@@ -105,7 +112,14 @@ abstract class _NewsCenterStore with Store {
   /// eager badge load and the on-entry load).
   @action
   Future<void> load() async {
-    if (_feedFuture?.status == FutureStatus.pending) {
+    final pending = _feedFuture;
+    if (pending != null && pending.status == FutureStatus.pending) {
+      // Await the load already in flight instead of starting another.
+      try {
+        await pending;
+      } catch (_) {
+        // Failure is surfaced via hasError; awaiting callers just continue.
+      }
       return;
     }
     await _fetch();
@@ -115,6 +129,24 @@ abstract class _NewsCenterStore with Store {
   /// pull-to-refresh snackbar. Old data is retained on failure.
   @action
   Future<bool> refresh() => _fetch();
+
+  /// Awaits the freshest reasonably-available feed so a deep link can act on it.
+  /// Awaits a load in flight (e.g. the on-entry refresh, which may bring in the
+  /// deep-linked item) even when a cached feed already exists; only returns
+  /// immediately when there is cached data and nothing is loading. Read
+  /// [feedFetchFailed] afterwards to tell a genuine miss from a failed fetch.
+  Future<void> ensureLoaded() async {
+    final pending = _feedFuture;
+    final loading = pending != null && pending.status == FutureStatus.pending;
+    if (loading || _items == null) {
+      await load();
+    }
+  }
+
+  /// The loaded feed item with [id], or null when the feed isn't loaded or has
+  /// no such item.
+  NewscenterInboxListResponseItem? itemById(num id) =>
+      (_items ?? const []).firstWhereOrNull((i) => i.id.toInt() == id.toInt());
 
   Future<bool> _fetch() async {
     // Future.sync converts a synchronous throw from the service into a rejected

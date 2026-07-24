@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:beamer/beamer.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
@@ -56,6 +58,11 @@ class QAToolbox extends HookConsumerWidget {
           title: 'Analytics & Debugging',
           icon: Icons.analytics,
           children: [_buildAnalyticsActions(context)],
+        ),
+        const _ExpandableSection(
+          title: 'Deep Links',
+          icon: Icons.link,
+          children: [_DeepLinkTester()],
         ),
         _ExpandableSection(
           title: 'UI Testing',
@@ -732,6 +739,71 @@ class _QAActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _QAButtonChrome(label: label, onTap: onPressed);
+}
+
+/// Textbox + submit that drives the same `navigateToUrl` path a push
+/// notification uses, so QA can replay arbitrary deep links (e.g.
+/// `main/news-center?id=321`). Submit repeatedly with different values to test
+/// multiple links.
+class _DeepLinkTester extends HookConsumerWidget {
+  const _DeepLinkTester();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useTextEditingController(text: '/main/news-center?id=');
+
+    void submit() {
+      final url = controller.text.trim();
+      if (url.isEmpty) {
+        return;
+      }
+      final authSession = ref.read(authSessionStorePOD);
+      Beamer.of(context).navigateToUrl(
+        url: url,
+        context: context,
+        isAuthenticated: authSession.isAuthenticated,
+        accessToken: authSession.accessToken,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Simulate a notification deep link',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Routes through the same handler as a real push notification',
+            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  autocorrect: false,
+                  onSubmitted: (_) => submit(),
+                  style: const TextStyle(fontSize: 13),
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    hintText: 'main/news-center?id=321',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              _QAButtonChrome(label: 'Go', onTap: submit),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// QA trigger for the residential reminder/tooltip popover, anchored to itself

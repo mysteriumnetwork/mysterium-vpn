@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/views/news_center/components/news_center_loading_view.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -70,14 +71,16 @@ void main() {
     );
   }
 
-  testWidgets('shows a spinner during the initial load with no cached data', (tester) async {
+  testWidgets('shows the shimmer skeleton during the initial load with no cached data', (
+    tester,
+  ) async {
     final completer = Completer<List<NewscenterInboxListResponseItem>>();
     when(service.getFeed()).thenAnswer((_) => completer.future);
 
     await pump(tester);
     await tester.pump();
 
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(NewsCenterLoadingView), findsOneWidget);
 
     completer.complete(const []);
     await tester.pumpAndSettle();

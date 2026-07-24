@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -23,10 +24,15 @@ typedef NewsItemOpener = void Function(BuildContext context, NewscenterInboxList
 /// left-to-right regardless of the app locale. Mobile stacks the back bar above
 /// the title; desktop puts the back control top-left with the title above a
 /// centered, fixed-width content column.
-class NewsCenterPage extends ConsumerWidget {
-  const NewsCenterPage({super.key, NewsItemOpener? onOpenItem}) : _onOpenItem = onOpenItem;
+class NewsCenterPage extends HookConsumerWidget {
+  const NewsCenterPage({super.key, NewsItemOpener? onOpenItem, this.deepLinkItemId})
+    : _onOpenItem = onOpenItem;
 
   final NewsItemOpener? _onOpenItem;
+
+  /// Feed item id from a deep link (`/main/news-center?id=<id>`); when it
+  /// resolves to a loaded item, that item is opened on entry — same as a tap.
+  final int? deepLinkItemId;
 
   /// Fixed width of the feed column on desktop/tablet.
   static const desktopContentWidth = 426.0;
@@ -45,6 +51,36 @@ class NewsCenterPage extends ConsumerWidget {
       store.markRead(item.id);
       openItem(context, item);
     }
+
+    // Deep link: once the feed is loaded (awaiting a load still in flight), open
+    // the item — same as a tap, so it is marked read and logged. No-ops when
+    // there is no id or it isn't in the feed. Keyed on [deepLinkItemId] so a new
+    // id re-triggers even when Beamer reuses this page's state for the route.
+    useEffect(() {
+      final id = deepLinkItemId;
+      if (id == null) {
+        return null;
+      }
+      // Guard against the id changing mid-load: the cleanup marks this run
+      // stale so a slow `ensureLoaded` can't open the previous item.
+      var cancelled = false;
+      unawaited(() async {
+        await store.ensureLoaded();
+        if (cancelled || !context.mounted) {
+          return;
+        }
+        final item = store.itemById(id);
+        if (item != null) {
+          onItemTap(item);
+        } else if (!store.feedFetchFailed) {
+          // The feed loaded but has no such item — tell the user. (A failed
+          // fetch shows the page's own retry state instead, so we don't
+          // misreport it as "expired".)
+          showSnackbar(newsCenterItemUnavailableText, type: SnackbarType.info);
+        }
+      }());
+      return () => cancelled = true;
+    }, [deepLinkItemId]);
 
     void onBack() => _onBack(context, ref);
 

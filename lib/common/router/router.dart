@@ -46,7 +46,8 @@ class BeamerLocations extends BeamLocation<BeamState> {
           key: ValueKey(Routes.newsCenter.toDashCase),
           name: Routes.newsCenter.path,
           title: Routes.newsCenter.name,
-          child: const NewsCenterPage(),
+          // Deep link `/main/news-center?id=<id>` auto-opens that item.
+          child: NewsCenterPage(deepLinkItemId: int.tryParse(state.queryParameters['id'] ?? '')),
         ),
       if (path.contains(Routes.splash.path))
         BeamPage(

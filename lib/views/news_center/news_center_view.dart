@@ -7,6 +7,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/news_center/components/news_center_empty_view.dart';
+import 'package:mysterium_vpn/views/news_center/components/news_center_loading_view.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_presentation.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -55,7 +56,7 @@ class NewsCenterView extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         if (store.isInitialLoading) {
-          return const Center(child: CircularProgressIndicator.adaptive());
+          return const NewsCenterLoadingView();
         }
 
         final theme = Theme.of(context);
