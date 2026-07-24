@@ -148,6 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Erzähl uns mehr (optional)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Gründe für die Kündigung"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
+      "Gründe für die Kündigung (optional)",
+    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Zu teuer"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Kein Zugriff auf gesperrte Seiten",

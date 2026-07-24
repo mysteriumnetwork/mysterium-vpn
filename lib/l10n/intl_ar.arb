@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "أسباب الإلغاء",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "أسباب الإلغاء (اختياري)",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "باهظ الثمن",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "غير قادر على الوصول إلى المواقع المحجوبة",

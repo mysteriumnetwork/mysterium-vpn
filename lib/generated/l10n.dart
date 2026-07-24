@@ -98,6 +98,7 @@ class S {
     'cancelSurveyFeedbackHint': [],
     'cancelSurveyTellUsMoreHint': [],
     'cancelSurveyTitle': [],
+    'cancelSurveyTitleOptional': [],
     'cancelTooExpensive': [],
     'cancelUnableToAccessBlockedSites': [],
     'cancelUsabilityIssues': [],
@@ -771,6 +772,16 @@ class S {
   /// `Reasons for cancelling`
   String get cancelSurveyTitle {
     return Intl.message('Reasons for cancelling', name: 'cancelSurveyTitle', desc: '', args: []);
+  }
+
+  /// `Reasons for cancelling (optional)`
+  String get cancelSurveyTitleOptional {
+    return Intl.message(
+      'Reasons for cancelling (optional)',
+      name: 'cancelSurveyTitleOptional',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Too expensive`

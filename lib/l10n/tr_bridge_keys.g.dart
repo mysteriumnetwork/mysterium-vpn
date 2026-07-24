@@ -41,6 +41,7 @@ final Map<String, String Function(S)> kTrBridge = {
   'cancelSurveyFeedbackHint': (s) => s.cancelSurveyFeedbackHint,
   'cancelSurveyTellUsMoreHint': (s) => s.cancelSurveyTellUsMoreHint,
   'cancelSurveyTitle': (s) => s.cancelSurveyTitle,
+  'cancelSurveyTitleOptional': (s) => s.cancelSurveyTitleOptional,
   'cancelTooExpensive': (s) => s.cancelTooExpensive,
   'cancelUnableToAccessBlockedSites': (s) => s.cancelUnableToAccessBlockedSites,
   'cancelUsabilityIssues': (s) => s.cancelUsabilityIssues,

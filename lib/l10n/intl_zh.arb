@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "取消原因",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "取消原因（可选）",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "太贵了",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "无法访问被屏蔽的网站",

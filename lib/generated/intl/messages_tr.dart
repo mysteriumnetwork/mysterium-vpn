@@ -146,6 +146,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Daha fazla anlat (isteğe bağlı)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("İptal nedenleri"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
+      "İptal nedenleri (isteğe bağlı)",
+    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Çok pahalı"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Engellenen sitelere erişemiyorum",

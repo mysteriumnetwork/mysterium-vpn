@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "Powody anulowania",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "Powody anulowania (opcjonalnie)",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "Zbyt drogie",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "Brak dostępu do zablokowanych stron",

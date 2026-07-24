@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "キャンセルの理由",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "キャンセルの理由（任意）",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "高すぎる",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "ブロックされたサイトにアクセスできない",

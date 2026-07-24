@@ -142,6 +142,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Raccontaci di più (facoltativo)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivi dell\'annullamento"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
+      "Motivi dell\'annullamento (facoltativo)",
+    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Troppo costoso"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Impossibile accedere ai siti bloccati",

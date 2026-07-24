@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,14 +16,9 @@ import 'package:mysterium_vpn_design/styles/design_system.dart';
 import 'package:mysterium_vpn_design/utils/screen_type.dart';
 import 'package:mysterium_vpn_design/widgets/button.dart';
 import 'package:mysterium_vpn_design/widgets/checkbox_item.dart';
-import 'package:mysterium_vpn_design/widgets/decorated_icon.dart';
 import 'package:mysterium_vpn_design/widgets/modals/alert_modal.dart';
-import 'package:mysterium_vpn_design/widgets/modals/modal_header.dart';
-import 'package:mysterium_vpn_design/widgets/modals/modal_padding.dart';
 import 'package:mysterium_vpn_design/widgets/modals/modal_scaffold.dart';
 import 'package:mysterium_vpn_design/widgets/modals/show_modal.dart';
-import 'package:mysterium_vpn_design/widgets/plan_card.dart';
-import 'package:mysterium_vpn_design/widgets/plan_card/plan_data.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -54,9 +47,8 @@ class _CancelSubscriptionFlowDialog extends HookConsumerWidget {
       ),
       SubscriptionCancellationFlow.survey => const _Survey(),
       SubscriptionCancellationFlow.freeze => const _FreezeDuration(),
-      SubscriptionCancellationFlow.offer => const _Offer(),
-      SubscriptionCancellationFlow.confirmation => const _Confirmation(),
-      SubscriptionCancellationFlow.summary => const _Summary(),
+      SubscriptionCancellationFlow.transferToWebFlow => const SizedBox.shrink(),
+      SubscriptionCancellationFlow.cancellationSummary => const _Confirmation(),
     };
   }
 }
@@ -67,23 +59,30 @@ class _Prompt extends StatelessWidget {
   final VoidCallback onContinuePressed;
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
-    constraints: const BoxConstraints(maxWidth: 343),
-    child: AlertModal(
-      title: S.current.cancelSubscriptionTitle,
-      supportingText: S.current.cancelSubscriptionPromptDesc,
-      type: AlertModalType.warning,
-      screenType: ScreenType.mobile,
-      primaryButton: ButtonPrimary(
-        onPressed: onContinuePressed,
-        child: Text(S.current.continueBtn),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 343),
+      child: AlertModal(
+        title: S.current.cancelSubscriptionTitle,
+        supportingText: S.current.cancelSubscriptionPromptDesc,
+        type: AlertModalType.warning,
+        screenType: ScreenType.mobile,
+        primaryButton: ButtonPrimary(
+          onPressed: onContinuePressed,
+          child: Text(S.current.continueBtn),
+        ),
+        secondaryButton: ButtonTertiary(
+          onPressed: () async => Navigator.pop(context),
+          child: Text(
+            S.current.keepSubscriptionBtn,
+            style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textSecondary),
+          ),
+        ),
       ),
-      secondaryButton: ButtonSecondary(
-        onPressed: () async => Navigator.pop(context),
-        child: Text(S.current.keepSubscriptionBtn),
-      ),
-    ),
-  );
+    );
+  }
 }
 
 class _Survey extends HookConsumerWidget {
@@ -115,7 +114,7 @@ class _Survey extends HookConsumerWidget {
     }
 
     return ModalScaffold(
-      appbar: _createAppBar(context: context, title: S.current.cancelSurveyTitle),
+      appbar: _createAppBar(context: context, title: S.current.cancelSurveyTitleOptional),
       showGradient: false,
       body: SafeArea(
         child: Padding(
@@ -178,94 +177,6 @@ class _FreezeDuration extends HookConsumerWidget {
           onPrimaryButtonPressed: handleSubmit,
           secondaryButtonLabel: S.current.continueToCancelBtn,
           onSecondaryButtonPressed: handleSkip,
-        ),
-      ),
-    );
-  }
-}
-
-class _Offer extends HookConsumerWidget {
-  const _Offer();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
-    final screenType = ScreenType.of(context);
-
-    // final data = usePlanData(product: value, isOffer: true);
-    final data = PlanData(
-      name: 'Maz Product',
-      fullPriceLabel: r'$10 / month',
-      fullPrice: r'$100 / year',
-      periodLabel: '10',
-      perMonth: r'$10 / month',
-      isOffer: true,
-      bestValueBadge: S.current.subscriptionPlanBestValue,
-      promoBadge: S.current.subscriptionPlanSavePercent(10),
-    );
-
-    return ModalScaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: ModalPadding.insets(context),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (screenType >= ScreenType.tablet) SizedBox(height: theme.spacing.xl2),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: theme.spacing.md,
-                        right: theme.spacing.md,
-                        top: theme.spacing.xl3,
-                      ),
-                      child: ModalHeader(
-                        emblem: const DecoratedIcon(
-                          icon: UntitledUI.stars_02,
-                          decoration: IconDecoration(padding: EdgeInsets.all(14), iconSize: 20),
-                        ),
-                        title: true
-                            ? S.current.subscriptionUpgradeModalTitle(['Maz Product'])
-                            : S.current.getSubscriptionModalTitle(['10']),
-                        description: true
-                            ? S.current.subscriptionUpgradeModalDescription
-                            : S.current.getSubscriptionModalDesc,
-                      ),
-                    ),
-                    SizedBox(height: theme.spacing.xl),
-                    Center(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) => Container(
-                          width: min(constraints.maxWidth, 393),
-                          padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-                          child: PlanCard.features(
-                            mode: PlanCardMode.highlight,
-                            data: data,
-                            features: const ['Feature 1', 'Feature 2', 'Feature 3'],
-                            viewMoreLabel: S.current.viewAllFeaturesBtn,
-                            viewLessLabel: S.current.viewLessBtn,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      footer: Observer(
-        builder: (context) => _ActionFooter(
-          isProcessing: cancelSubscriptionStore.isProcessing,
-          primaryButtonLabel: S.current.acceptOfferBtn,
-          onPrimaryButtonPressed: cancelSubscriptionStore.cancelSubscription,
-          secondaryButtonLabel: S.current.continueToCancelBtn,
-          onSecondaryButtonPressed: cancelSubscriptionStore.moveToNextStep,
         ),
       ),
     );

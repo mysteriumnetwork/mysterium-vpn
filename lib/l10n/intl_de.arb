@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "Gründe für die Kündigung",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "Gründe für die Kündigung (optional)",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "Zu teuer",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "Kein Zugriff auf gesperrte Seiten",

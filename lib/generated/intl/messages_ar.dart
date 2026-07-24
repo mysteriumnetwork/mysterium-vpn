@@ -142,6 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("أخبرنا بالمزيد (اختياري)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء (اختياري)"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "غير قادر على الوصول إلى المواقع المحجوبة",

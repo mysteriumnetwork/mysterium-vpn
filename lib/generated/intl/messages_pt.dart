@@ -144,6 +144,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("Informe mais detalhes..."),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("Conta-nos mais (opcional)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivos do cancelamento"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
+      "Motivos do cancelamento (opcional)",
+    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Muito caro"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Não consigo acessar sites bloqueados",

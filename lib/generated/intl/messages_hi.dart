@@ -141,6 +141,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("कृपया और विवरण दर्ज करें…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("और बताएँ (वैकल्पिक)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("रद्द करने के कारण"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
+      "रद्द करने के कारण (वैकल्पिक)",
+    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("बहुत महंगा"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "अवरुद्ध साइटों तक पहुँच नहीं",

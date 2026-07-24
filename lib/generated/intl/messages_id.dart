@@ -142,6 +142,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ceritakan lebih lanjut (opsional)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Alasan pembatalan"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
+      "Alasan pembatalan (opsional)",
+    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Terlalu mahal"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Tidak dapat mengakses situs yang diblokir",

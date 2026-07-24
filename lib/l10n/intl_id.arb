@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "Alasan pembatalan",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "Alasan pembatalan (opsional)",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "Terlalu mahal",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "Tidak dapat mengakses situs yang diblokir",

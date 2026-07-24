@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "रद्द करने के कारण",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "रद्द करने के कारण (वैकल्पिक)",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "बहुत महंगा",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "अवरुद्ध साइटों तक पहुँच नहीं",

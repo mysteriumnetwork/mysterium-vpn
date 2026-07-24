@@ -82,6 +82,8 @@
   "@cancelSurveyTellUsMoreHint": {},
   "cancelSurveyTitle": "İptal nedenleri",
   "@cancelSurveyTitle": {},
+  "cancelSurveyTitleOptional": "İptal nedenleri (isteğe bağlı)",
+  "@cancelSurveyTitleOptional": {},
   "cancelTooExpensive": "Çok pahalı",
   "@cancelTooExpensive": {},
   "cancelUnableToAccessBlockedSites": "Engellenen sitelere erişemiyorum",

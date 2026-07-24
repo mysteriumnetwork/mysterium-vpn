@@ -125,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("请填写更多详情…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("告诉我们更多（可选）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("取消原因"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage("取消原因（可选）"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("太贵了"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage("无法访问被屏蔽的网站"),
     "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("可用性问题"),

@@ -15,14 +15,11 @@ enum SubscriptionCancellationFlow {
   /// Freezes the subscription for the next month.
   freeze,
 
-  /// Offers a discount subscription to applicable users.
-  offer,
-
-  /// Displays a confirmation modal to confirm the cancellation.
-  confirmation,
+  /// Sends the user to the web flow to continue the cancellation.
+  transferToWebFlow,
 
   /// Displays a summary modal with the cancellation details.
-  summary,
+  cancellationSummary,
 }
 
 // ignore: library_private_types_in_public_api
@@ -114,20 +111,19 @@ abstract class _SubscriptionCancellationStore with Store {
         break;
       case SubscriptionCancellationFlow.survey:
         if (_freezeDurations.isEmpty) {
-          _cancellationFlowStep = SubscriptionCancellationFlow.confirmation;
+          _cancellationFlowStep = SubscriptionCancellationFlow.cancellationSummary;
         } else {
           _cancellationFlowStep = SubscriptionCancellationFlow.freeze;
         }
         break;
       case SubscriptionCancellationFlow.freeze:
-        _cancellationFlowStep = SubscriptionCancellationFlow.offer;
-      case SubscriptionCancellationFlow.offer:
-        _cancellationFlowStep = SubscriptionCancellationFlow.confirmation;
+      //TODO: Check if the user decided to freeze the subscription or cancel it.
+      // If the user decided to freeze the subscription, the flow should end here.
+      // If the user decided to cancel the subscription, the user should be redirected to the web flow.
+      case SubscriptionCancellationFlow.transferToWebFlow:
+        //TODO: Redirect the user to the web flow.
         break;
-      case SubscriptionCancellationFlow.confirmation:
-        _cancellationFlowStep = SubscriptionCancellationFlow.summary;
-        break;
-      case SubscriptionCancellationFlow.summary:
+      case SubscriptionCancellationFlow.cancellationSummary:
         _cancellationFlowStep = SubscriptionCancellationFlow.prompt;
     }
   }

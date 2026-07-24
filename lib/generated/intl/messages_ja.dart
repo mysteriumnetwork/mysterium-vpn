@@ -127,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("詳細を入力してください…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("詳しく教えて（任意）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("キャンセルの理由"),
+    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage("キャンセルの理由（任意）"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("高すぎる"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage("ブロックされたサイトにアクセスできない"),
     "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("使いやすさの問題"),
