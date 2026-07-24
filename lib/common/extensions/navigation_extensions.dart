@@ -87,6 +87,15 @@ extension NavigationExtensions on BeamerDelegate {
 
     final route = Routes.values.firstWhereOrNull((it) => it.name == path || it.path == path);
     if (route != null) {
+      // Ignore News Center deep links while the feature is killed remotely — a
+      // notification must not open a disabled feature.
+      if (route == Routes.newsCenter &&
+          !ProviderScope.containerOf(
+            context,
+            listen: false,
+          ).read(remoteConfigStorePOD).newsCenterEnabled) {
+        return;
+      }
       // Preserve query params (e.g. news-center `?id=`) so the destination page
       // can act on them.
       final query = uri.hasQuery ? '?${uri.query}' : '';
