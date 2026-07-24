@@ -15,16 +15,20 @@ FutureOr<void> showPickerBottomSheet<T>({
   required FutureOr<void> Function(T) onChanged,
   required String Function(T) labelOf,
   String? Function(T)? subtitleOf,
+  Key? sheetKey,
+  Key? Function(T)? itemKeyOf,
 }) => showBottomSheetDialog(
   context,
   mobileConstraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
   builder: (context) => _PickerSheet<T>(
+    key: sheetKey,
     title: title,
     items: items,
     value: value,
     onChanged: onChanged,
     labelOf: labelOf,
     subtitleOf: subtitleOf,
+    itemKeyOf: itemKeyOf,
   ),
 );
 
@@ -38,6 +42,7 @@ class _PickerSheet<T> extends StatefulWidget {
     required this.onChanged,
     required this.labelOf,
     this.subtitleOf,
+    this.itemKeyOf,
     super.key,
   });
 
@@ -47,6 +52,7 @@ class _PickerSheet<T> extends StatefulWidget {
   final FutureOr<void> Function(T) onChanged;
   final String Function(T) labelOf;
   final String? Function(T)? subtitleOf;
+  final Key? Function(T)? itemKeyOf;
 
   @override
   State<_PickerSheet<T>> createState() => _PickerSheetState<T>();
@@ -69,6 +75,7 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
       children: [
         for (final item in widget.items)
           _PickerItem(
+            key: widget.itemKeyOf?.call(item),
             label: widget.labelOf(item),
             subtitle: widget.subtitleOf?.call(item),
             selected: _selected == item,
@@ -93,6 +100,7 @@ class _PickerItem extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.subtitle,
+    super.key,
   });
 
   final String label;

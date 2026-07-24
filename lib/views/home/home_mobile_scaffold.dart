@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -68,7 +69,9 @@ class HomeMobileScaffold extends HookConsumerWidget {
                 SubscriptionOnboardingStep.settings,
               ][index];
               final globalKey = homeState.subscriptionOnboardingKeys[step.platformIndex];
+              const tabKeys = [K.mapTab, K.locationsTab, K.productsTab, K.settingsTab];
               return ArrowedProgressCard(
+                key: tabKeys[index],
                 globalKey: globalKey,
                 step: step,
                 tooltipPosition: TooltipPosition.top,

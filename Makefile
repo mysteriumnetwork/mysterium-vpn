@@ -98,7 +98,7 @@ run-ios-testlab:
 		--type xctest \
 		--test "build/ios_integ/Build/Products/ios_tests.zip" \
 		--device model="$(IOS_DEVICE_MODEL)",version="$(IOS_DEVICE_VERSION)",locale=en_US,orientation=portrait \
-		--timeout 10m \
+		--timeout 45m \
 		--project "$(FIREBASE_PROJECT_ID)"
 
 run-android-testlab:
@@ -107,7 +107,7 @@ run-android-testlab:
 		--app $(shell find build/app/outputs/apk/dev -name "*.apk" | head -n 1) \
 		--test $(shell find build/app/outputs/apk/androidTest/dev -name "*.apk" | head -n 1) \
     	--device model="$(ANDROID_DEVICE_MODEL)",version="$(ANDROID_DEVICE_VERSION)",locale=en,orientation=portrait \
-    	--timeout 10m \
+    	--timeout 45m \
     	--use-orchestrator \
     	--environment-variables clearPackageData=true \
 		--project "$(FIREBASE_PROJECT_ID)"

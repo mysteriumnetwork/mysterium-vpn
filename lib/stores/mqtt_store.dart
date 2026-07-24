@@ -19,13 +19,13 @@ abstract class _MqttStore with Store {
   final Talker _logger;
   StreamSubscription<String>? _healthcheckSub;
 
-  @readonly
-  HealthcheckMessage? _lastHealthcheck;
+  @observable
+  HealthcheckMessage? lastHealthcheck;
 
   Future<void> initStore() async {
     try {
       _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
-        _lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
+        lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
       });
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);

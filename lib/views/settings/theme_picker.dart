@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/settings_picker_card.dart';
@@ -18,6 +19,9 @@ class ThemePicker extends ConsumerWidget {
 
     return Observer(
       builder: (_) => SettingsPickerCard<ThemeMode>(
+        key: K.themePickerCard,
+        sheetKey: K.themePickerSheet,
+        itemKeyOf: (mode) => Key('themeOption_${mode.name}'),
         title: S.current.appearanceSettingLbl,
         position: position,
         value: store.themeMode,

@@ -407,6 +407,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.canShowSubscriptionOnboardingFlow,
         name: 'RemoteConfigStoreBase.canShowSubscriptionOnboardingFlow',
       )).value;
+  Computed<bool>? _$showApiVersionComputed;
+
+  @override
+  bool get showApiVersion => (_$showApiVersionComputed ??= Computed<bool>(
+    () => super.showApiVersion,
+    name: 'RemoteConfigStoreBase.showApiVersion',
+  )).value;
   Computed<List<int>>? _$subscriptionFreezeDurationOptionsComputed;
 
   @override
@@ -473,6 +480,7 @@ residentialEducationConnectThreshold: ${residentialEducationConnectThreshold},
 residentialReminderInterval: ${residentialReminderInterval},
 reviewPromptConfig: ${reviewPromptConfig},
 canShowSubscriptionOnboardingFlow: ${canShowSubscriptionOnboardingFlow},
+showApiVersion: ${showApiVersion},
 subscriptionFreezeDurationOptions: ${subscriptionFreezeDurationOptions}
     ''';
   }

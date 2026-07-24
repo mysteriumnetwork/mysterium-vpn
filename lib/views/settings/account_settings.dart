@@ -229,6 +229,7 @@ class _Authenticated extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ButtonSecondary(
+              key: K.logoutButton,
               onPressed: handleLogout,
               child: Text(
                 S.current.logout,

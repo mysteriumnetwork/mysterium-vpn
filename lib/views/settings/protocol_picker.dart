@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -23,6 +24,9 @@ class ProtocolPicker extends ConsumerWidget {
 
     return Observer(
       builder: (_) => SettingsPickerCard<ProtocolType>(
+        key: K.protocolPickerCard,
+        sheetKey: K.protocolPickerSheet,
+        itemKeyOf: (p) => Key('protocolOption_${p.name}'),
         title: S.current.vpnProtocolSettingLbl,
         position: position,
         value: vpnProtocolStore.protocol,

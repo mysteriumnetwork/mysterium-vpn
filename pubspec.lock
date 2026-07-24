@@ -1282,10 +1282,10 @@ packages:
     dependency: "direct main"
     description:
       name: mqtt5_client
-      sha256: "643ceb3154d93fd1fb990dbc870064543d1750b23cf69d71329c5e1d13d02e4b"
+      sha256: a716e6bddc4715cd585ac7147383080dffafb6b7d55f370dc596b38c85e8c557
       url: "https://pub.dev"
     source: hosted
-    version: "4.17.0"
+    version: "4.17.1"
   msix:
     dependency: "direct dev"
     description:
@@ -1347,10 +1347,10 @@ packages:
     dependency: "direct main"
     description:
       name: onesignal_flutter
-      sha256: b0910a2585ca70f2ffa370c0878625781807fd301e89005868fbedb1e933dbbd
+      sha256: "9ee3ca02dcc93877623100496aa9cd9f84974f3a87b440b8e8eaa58097e3b5c6"
       url: "https://pub.dev"
     source: hosted
-    version: "5.6.3"
+    version: "5.6.4"
   open_store:
     dependency: "direct main"
     description:
@@ -1460,26 +1460,26 @@ packages:
     dependency: "direct dev"
     description:
       name: patrol
-      sha256: ca7d659c58ef735e27c4300af43cc367b67a129a0a1720082dc21b5a096efb1c
+      sha256: "7825a6e96a8f0755f68eec600a91a08b19bd0975488a70885b3696f6b65ffc0f"
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.0"
+    version: "4.5.0"
   patrol_finders:
     dependency: transitive
     description:
       name: patrol_finders
-      sha256: ac0bfaf3eaaa6cc3d49c8a365329cc7f4361a5f486f1adb45edc96dbfc854da9
+      sha256: "9970eac0669a90b20ec7e1bcaabd0475655655998068ca656f4df9f6ec84f336"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.0"
   patrol_log:
     dependency: transitive
     description:
       name: patrol_log
-      sha256: b3bd2862c15bd6b163763d7d2a80ae07c24af6da07d62d202798ceea327045d7
+      sha256: a2360db165c34692665c0de146e5157887d6b584fdccca8f141f947a5acf1b2e
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.8.0"
   petitparser:
     dependency: transitive
     description:
