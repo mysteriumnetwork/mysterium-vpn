@@ -90,10 +90,10 @@ class _WebViewBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // `ModalScaffold`'s app bar strips the top `padding` from the body, so a
-    // `SafeArea` here sees a zero inset and the bar rides up under the status
-    // bar. `viewPadding` keeps the real inset, so pad by it directly.
-    final topInset = MediaQuery.viewPaddingOf(context).top;
+    // `ModalScaffold`'s app bar makes the inner Scaffold zero the body's
+    // padding/viewPadding, so pull the status-bar inset from the view (as
+    // `ModalAppbar`/`Header` do) rather than from MediaQuery here.
+    final topInset = ScreenType.topSafeAreaInset(context);
     return Material(
       color: theme.palette.bgSidePanel,
       child: Padding(
