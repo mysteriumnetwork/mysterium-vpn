@@ -36,31 +36,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(errorCode) => "接続に失敗しました。もう一度お試しください [エラー: ${errorCode}]";
 
-  static String m8(count) => "${Intl.plural(count, zero: '', other: '${count}か月一時停止')}";
+  static String m8(plan) => "${plan} を入手";
 
-  static String m9(plan) => "${plan} を入手";
+  static String m9(plan) => "${plan} プランを入手";
 
-  static String m10(plan) => "${plan} プランを入手";
+  static String m10(count) => "IP プール: ${count}";
 
-  static String m11(count) => "IP プール: ${count}";
+  static String m11(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国または都市を選んでください。";
 
-  static String m12(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国または都市を選んでください。";
+  static String m12(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国を選んでください。";
 
-  static String m13(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国を選んでください。";
+  static String m13(count) => "${Intl.plural(count, other: '${count} 都市')}";
 
-  static String m14(count) => "${Intl.plural(count, other: '${count} 都市')}";
+  static String m14(count) => "${Intl.plural(count, other: '${count} IP')}";
 
-  static String m15(count) => "${Intl.plural(count, other: '${count} IP')}";
+  static String m15(count) => "${Intl.plural(count, other: '${count} 州')}";
 
-  static String m16(count) => "${Intl.plural(count, other: '${count} 州')}";
+  static String m16(location) => "${location} は利用できません";
 
-  static String m17(location) => "${location} は利用できません";
+  static String m17(location) => "${location} を更新できませんでした";
 
-  static String m18(location) => "${location} を更新できませんでした";
+  static String m18(location) => "${location} を更新しました";
 
-  static String m19(location) => "${location} を更新しました";
+  static String m19(date) => "次回の請求: ${date}";
 
-  static String m20(date) => "次回の請求: ${date}";
+  static String m20(count) => "${Intl.plural(count, zero: '', other: '${count}か月一時停止')}";
 
   static String m21(protocol, label) => "${protocol} (${label})";
 
@@ -162,7 +162,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "リクエストしたデバイスでのみ動作します。続行するには、メール内のリンクをクリックしてください。",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("続行"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "解約を完了するため、Mysterium VPN のウェブサイトに移動します。",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage("ウェブで解約を続ける"),
     "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("解約を続ける"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("ウェブサイトへ"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Apple で続行"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("メールで続行"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Google で続行"),
@@ -217,8 +222,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("フランス語"),
     "france": MessageLookupByLibrary.simpleMessage("フランス"),
-    "freezeDurationRequiredError": MessageLookupByLibrary.simpleMessage("一時停止の期間を選択"),
-    "freezeForMonths": m8,
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("頻繁な切断"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("通常価格:"),
     "germany": MessageLookupByLibrary.simpleMessage("ドイツ"),
@@ -226,8 +229,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "接続を保護し、すぐにプライベートな閲覧をお楽しみください",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP アドレスを取得中…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("戻る"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("ログインへ"),
@@ -241,9 +244,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("ロケーションが正しくない"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage("マジックリンクが正しくありません。もう一度お試しください。"),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP アドレス"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("データセンター IP"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "速度とパフォーマンスに最適化されたデータセンター IP。",
@@ -267,17 +270,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "linkCopied": MessageLookupByLibrary.simpleMessage("リンクをクリップボードにコピーしました"),
     "linkExpires": MessageLookupByLibrary.simpleMessage("このリンクは 30 分で期限切れになり、1 回だけ使用できます。"),
     "location": MessageLookupByLibrary.simpleMessage("ロケーション"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("ロケーション"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("最寄りの IP に接続"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "最寄りの IP に接続するか、手動で選択してください",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage("セッションの有効期限が切れました。もう一度ログインしてください。"),
     "loginSignupLabel": MessageLookupByLibrary.simpleMessage("ログインまたは新規登録"),
     "logout": MessageLookupByLibrary.simpleMessage("ログアウト"),
@@ -299,7 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("ロケーション"),
     "navMap": MessageLookupByLibrary.simpleMessage("地図"),
     "navProducts": MessageLookupByLibrary.simpleMessage("製品"),
-    "nextBilling": m20,
+    "nextBilling": m19,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("次回請求日:"),
     "no": MessageLookupByLibrary.simpleMessage("いいえ"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("有効なサブスクリプションがありません"),
@@ -335,7 +338,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "最適なサーバーに接続します。または国を手動で選択できます。",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("その他…"),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage("一時停止の期間を選択"),
+    "pauseForMonths": m20,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("一時停止する"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage("プランは請求サイクルごとに1回まで一時停止できます。"),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "進行中の決済がすでにあります。新しい決済を開始する前に完了してください。",
     ),
@@ -473,6 +479,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("安定した接続"),
     "status": MessageLookupByLibrary.simpleMessage("ステータス"),
     "stayButton": MessageLookupByLibrary.simpleMessage("残る"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("アプリに残る"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("送信"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("ウェブで登録"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage("朗報です。サブスクリプションが有効になりました。"),

@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "Devam et",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "İptali tamamlamak için Mysterium VPN web sitesine yönlendirileceksin.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "İptale web’de devam et",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "İptale devam et",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "Siteye git",
+  "@continueToWebBtn": {},
   "continueWithApple": "Apple ile devam et",
   "@continueWithApple": {},
   "continueWithEmail": "E-posta ile devam et",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "Fransa",
   "@france": {},
-  "freezeDurationRequiredError": "Lütfen bir duraklatma süresi seç.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} one{{count} ay duraklat} other{{count} ay duraklat}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "Sık bağlantı kesilmesi",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "Tam fiyat:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "Diğer...",
   "@otherReason": {},
+  "pauseDurationRequiredError": "Lütfen bir duraklatma süresi seç.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} one{{count} ay duraklat} other{{count} ay duraklat}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "Aboneliği duraklat",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "Aboneliğini faturalandırma döngüsü başına bir kez duraklatabilirsin.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "Devam eden bir ödeme işlemin zaten var. Yeni bir işlem başlatmadan önce lütfen bunu tamamla.",
   "@pendingTransactionMessage": {},
   "perMonth": "ay",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "Kal",
   "@stayButton": {},
+  "stayOnAppBtn": "Uygulamada kal",
+  "@stayOnAppBtn": {},
   "submitBtn": "Gönder",
   "@submitBtn": {},
   "subscribeOnWebBtn": "Web'de abone ol",

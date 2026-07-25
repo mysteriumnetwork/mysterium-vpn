@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "Continue",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "You'll be redirected to the Mysterium VPN website to complete your cancellation.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "Continue cancellation on the web",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "Continue to cancel",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "Continue to website",
+  "@continueToWebBtn": {},
   "continueWithApple": "Continue with Apple",
   "@continueWithApple": {},
   "continueWithEmail": "Continue with Email",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "France",
   "@france": {},
-  "freezeDurationRequiredError": "Please select one of the freeze durations.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} one{Freeze for {count} month} other{Freeze for {count} months}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "Frequent disconnects",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "Full price:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "Other...",
   "@otherReason": {},
+  "pauseDurationRequiredError": "Please select one of the pause durations.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} one{Pause for {count} month} other{Pause for {count} months}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "Pause subscription",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "You can pause your plan once per billing cycle.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "You already have an ongoing payment transaction. Please complete it before starting a new one.",
   "@pendingTransactionMessage": {},
   "perMonth": "mo",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "Stay",
   "@stayButton": {},
+  "stayOnAppBtn": "Stay on the app",
+  "@stayOnAppBtn": {},
   "submitBtn": "Submit",
   "@submitBtn": {},
   "subscribeOnWebBtn": "Subscribe on the web",

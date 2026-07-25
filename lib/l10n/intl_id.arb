@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "Lanjut",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "Kamu akan diarahkan ke situs Mysterium VPN untuk menyelesaikan pembatalan.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "Lanjutkan pembatalan di web",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "Lanjut batalkan",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "Lanjut ke situs",
+  "@continueToWebBtn": {},
   "continueWithApple": "Lanjutkan dengan Apple",
   "@continueWithApple": {},
   "continueWithEmail": "Lanjutkan dengan Email",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "Prancis",
   "@france": {},
-  "freezeDurationRequiredError": "Pilih salah satu durasi jeda.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} other{Jeda selama {count} bulan}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "Sering terputus",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "Harga penuh:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "Lainnya...",
   "@otherReason": {},
+  "pauseDurationRequiredError": "Pilih salah satu durasi jeda.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} other{Jeda selama {count} bulan}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "Jeda langganan",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "Kamu sudah punya transaksi pembayaran yang berjalan. Selesaikan dulu sebelum memulai yang baru.",
   "@pendingTransactionMessage": {},
   "perMonth": "bln",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "Tetap di sini",
   "@stayButton": {},
+  "stayOnAppBtn": "Tetap di aplikasi",
+  "@stayOnAppBtn": {},
   "submitBtn": "Kirim",
   "@submitBtn": {},
   "subscribeOnWebBtn": "Berlangganan di web",

@@ -37,36 +37,36 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(errorCode) => "Failed to connect. Please try again [error: ${errorCode}]";
 
-  static String m8(count) =>
-      "${Intl.plural(count, zero: '', one: 'Freeze for ${count} month', other: 'Freeze for ${count} months')}";
+  static String m8(plan) => "Get ${plan}";
 
-  static String m9(plan) => "Get ${plan}";
+  static String m9(plan) => "Get ${plan} plan";
 
-  static String m10(plan) => "Get ${plan} plan";
+  static String m10(count) => "IP pool: ${count}";
 
-  static String m11(count) => "IP pool: ${count}";
-
-  static String m12(location) =>
+  static String m11(location) =>
       "No alternative IPs are available in ${location}. Choose another country or city to get a different IP next time.";
 
-  static String m13(location) =>
+  static String m12(location) =>
       "No alternative IPs are available in ${location}. Choose another country to get a different IP next time.";
 
-  static String m14(count) =>
+  static String m13(count) =>
       "${Intl.plural(count, one: '${count} City', other: '${count} Cities')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m14(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
 
-  static String m16(count) =>
+  static String m15(count) =>
       "${Intl.plural(count, one: '${count} State', other: '${count} States')}";
 
-  static String m17(location) => "${location} is not available";
+  static String m16(location) => "${location} is not available";
 
-  static String m18(location) => "Couldn’t update ${location}";
+  static String m17(location) => "Couldn’t update ${location}";
 
-  static String m19(location) => "${location} updated";
+  static String m18(location) => "${location} updated";
 
-  static String m20(date) => "Next Billing: ${date}";
+  static String m19(date) => "Next Billing: ${date}";
+
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', one: 'Pause for ${count} month', other: 'Pause for ${count} months')}";
 
   static String m21(protocol, label) => "${protocol} (${label})";
 
@@ -187,7 +187,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "It only works on the device that requested it - click the link in your email to continue.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Continue"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "You\'ll be redirected to the Mysterium VPN website to complete your cancellation.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "Continue cancellation on the web",
+    ),
     "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("Continue to cancel"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Continue to website"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Continue with Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Continue with Email"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Continue with Google"),
@@ -250,10 +257,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("French"),
     "france": MessageLookupByLibrary.simpleMessage("France"),
-    "freezeDurationRequiredError": MessageLookupByLibrary.simpleMessage(
-      "Please select one of the freeze durations.",
-    ),
-    "freezeForMonths": m8,
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Frequent disconnects"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Full price:"),
     "germany": MessageLookupByLibrary.simpleMessage("Germany"),
@@ -261,8 +264,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Secure your connection and enjoy private browsing instantly",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Getting IP address..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Go Back"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Go to log in"),
@@ -278,9 +281,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Incorrect magic link. Please try again.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP address"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("Datacenter IPs"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Datacenter IPs optimised for speed and performance.",
@@ -308,17 +311,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "The link expires in 30 minutes and can be used only once.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Location"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("Connect to nearest IP"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "Connect to the nearest IP - or choose it manually",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Your session has expired. Please log in again.",
     ),
@@ -344,7 +347,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("Locations"),
     "navMap": MessageLookupByLibrary.simpleMessage("Map"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Products"),
-    "nextBilling": m20,
+    "nextBilling": m19,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Next billing date:"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("You have no active subscription"),
@@ -382,7 +385,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "We\'ll connect you to the best server - or you can manually select a country.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Other..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Please select one of the pause durations.",
+    ),
+    "pauseForMonths": m20,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pause subscription"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "You can pause your plan once per billing cycle.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "You already have an ongoing payment transaction. Please complete it before starting a new one.",
     ),
@@ -558,6 +568,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Stable connection"),
     "status": MessageLookupByLibrary.simpleMessage("Status"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Stay"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Stay on the app"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Submit"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Subscribe on the web"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(

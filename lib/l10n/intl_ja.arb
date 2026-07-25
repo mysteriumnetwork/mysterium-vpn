@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "続行",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "解約を完了するため、Mysterium VPN のウェブサイトに移動します。",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "ウェブで解約を続ける",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "解約を続ける",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "ウェブサイトへ",
+  "@continueToWebBtn": {},
   "continueWithApple": "Apple で続行",
   "@continueWithApple": {},
   "continueWithEmail": "メールで続行",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "フランス",
   "@france": {},
-  "freezeDurationRequiredError": "一時停止の期間を選択",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} other{{count}か月一時停止}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "頻繁な切断",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "通常価格:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "その他…",
   "@otherReason": {},
+  "pauseDurationRequiredError": "一時停止の期間を選択",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} other{{count}か月一時停止}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "一時停止する",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "プランは請求サイクルごとに1回まで一時停止できます。",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "進行中の決済がすでにあります。新しい決済を開始する前に完了してください。",
   "@pendingTransactionMessage": {},
   "perMonth": "月",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "残る",
   "@stayButton": {},
+  "stayOnAppBtn": "アプリに残る",
+  "@stayOnAppBtn": {},
   "submitBtn": "送信",
   "@submitBtn": {},
   "subscribeOnWebBtn": "ウェブで登録",

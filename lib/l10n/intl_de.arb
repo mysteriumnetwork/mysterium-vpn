@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "Fortfahren",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "Du wirst zur Mysterium VPN-Website weitergeleitet, um die Kündigung abzuschließen.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "Kündigung im Web fortsetzen",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "Weiter zur Kündigung",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "Zur Website",
+  "@continueToWebBtn": {},
   "continueWithApple": "Weiter mit Apple",
   "@continueWithApple": {},
   "continueWithEmail": "Weiter mit E-Mail",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "Frankreich",
   "@france": {},
-  "freezeDurationRequiredError": "Bitte wähle eine Pausendauer.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} one{Für {count} Monat pausieren} other{Für {count} Monate pausieren}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "Häufige Verbindungsabbrüche",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "Voller Preis:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "Andere...",
   "@otherReason": {},
+  "pauseDurationRequiredError": "Bitte wähle eine Pausendauer.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} one{Für {count} Monat pausieren} other{Für {count} Monate pausieren}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "Abo pausieren",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "Du kannst dein Abo einmal pro Abrechnungszyklus pausieren.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "Du hast bereits einen laufenden Zahlungsvorgang. Bitte schließe ihn ab, bevor du einen neuen startest.",
   "@pendingTransactionMessage": {},
   "perMonth": "Mon.",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "Bleiben",
   "@stayButton": {},
+  "stayOnAppBtn": "In der App bleiben",
+  "@stayOnAppBtn": {},
   "submitBtn": "Absenden",
   "@submitBtn": {},
   "subscribeOnWebBtn": "Im Web abonnieren",

@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "继续",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "你将被跳转到 Mysterium VPN 网站以完成取消。",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "在网页上继续取消",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "继续取消",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "前往网站",
+  "@continueToWebBtn": {},
   "continueWithApple": "使用 Apple 继续",
   "@continueWithApple": {},
   "continueWithEmail": "使用电子邮件继续",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "法国",
   "@france": {},
-  "freezeDurationRequiredError": "请选择一个暂停时长。",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} other{暂停 {count} 个月}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "频繁断开连接",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "原价：",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "其他…",
   "@otherReason": {},
+  "pauseDurationRequiredError": "请选择一个暂停时长。",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} other{暂停 {count} 个月}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "暂停订阅",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "每个账单周期只能暂停计划一次。",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "你已有一笔进行中的付款交易。请先完成后再发起新交易。",
   "@pendingTransactionMessage": {},
   "perMonth": "月",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "留下",
   "@stayButton": {},
+  "stayOnAppBtn": "留在应用中",
+  "@stayOnAppBtn": {},
   "submitBtn": "提交",
   "@submitBtn": {},
   "subscribeOnWebBtn": "在网页上订阅",

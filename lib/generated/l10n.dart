@@ -126,7 +126,10 @@ class S {
     'consistentSpeedReason': [],
     'consumeLink': [],
     'continueBtn': [],
+    'continueCancellationOnWebDesc': [],
+    'continueCancellationOnWebTitle': [],
     'continueToCancelBtn': [],
+    'continueToWebBtn': [],
     'continueWithApple': [],
     'continueWithEmail': [],
     'continueWithGoogle': [],
@@ -171,8 +174,6 @@ class S {
     'formValidationError': [],
     'fr': [],
     'france': [],
-    'freezeDurationRequiredError': [],
-    'freezeForMonths': ['count'],
     'frequentDisconnectsReason': [],
     'fullPriceLabel': [],
     'germany': [],
@@ -266,7 +267,10 @@ class S {
     'or': [],
     'orSelectCountryManually': [],
     'otherReason': [],
+    'pauseDurationRequiredError': [],
+    'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
+    'pauseSubscriptionInfoDesc': [],
     'pendingTransactionMessage': [],
     'perMonth': [],
     'pl': [],
@@ -372,6 +376,7 @@ class S {
     'stableConnectionReason': [],
     'status': [],
     'stayButton': [],
+    'stayOnAppBtn': [],
     'submitBtn': [],
     'subscribeOnWebBtn': [],
     'subscriptionActive': [],
@@ -974,9 +979,34 @@ class S {
     return Intl.message('Continue', name: 'continueBtn', desc: '', args: []);
   }
 
+  /// `You'll be redirected to the Mysterium VPN website to complete your cancellation.`
+  String get continueCancellationOnWebDesc {
+    return Intl.message(
+      'You\'ll be redirected to the Mysterium VPN website to complete your cancellation.',
+      name: 'continueCancellationOnWebDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue cancellation on the web`
+  String get continueCancellationOnWebTitle {
+    return Intl.message(
+      'Continue cancellation on the web',
+      name: 'continueCancellationOnWebTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Continue to cancel`
   String get continueToCancelBtn {
     return Intl.message('Continue to cancel', name: 'continueToCancelBtn', desc: '', args: []);
+  }
+
+  /// `Continue to website`
+  String get continueToWebBtn {
+    return Intl.message('Continue to website', name: 'continueToWebBtn', desc: '', args: []);
   }
 
   /// `Continue with Apple`
@@ -1277,29 +1307,6 @@ class S {
   /// `France`
   String get france {
     return Intl.message('France', name: 'france', desc: '', args: []);
-  }
-
-  /// `Please select one of the freeze durations.`
-  String get freezeDurationRequiredError {
-    return Intl.message(
-      'Please select one of the freeze durations.',
-      name: 'freezeDurationRequiredError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `{count, plural, zero{} one{Freeze for {count} month} other{Freeze for {count} months}}`
-  String freezeForMonths(num count) {
-    return Intl.plural(
-      count,
-      zero: '',
-      one: 'Freeze for $count month',
-      other: 'Freeze for $count months',
-      name: 'freezeForMonths',
-      desc: '',
-      args: [count],
-    );
   }
 
   /// `Frequent disconnects`
@@ -1948,9 +1955,42 @@ class S {
     return Intl.message('Other...', name: 'otherReason', desc: '', args: []);
   }
 
+  /// `Please select one of the pause durations.`
+  String get pauseDurationRequiredError {
+    return Intl.message(
+      'Please select one of the pause durations.',
+      name: 'pauseDurationRequiredError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, zero{} one{Pause for {count} month} other{Pause for {count} months}}`
+  String pauseForMonths(num count) {
+    return Intl.plural(
+      count,
+      zero: '',
+      one: 'Pause for $count month',
+      other: 'Pause for $count months',
+      name: 'pauseForMonths',
+      desc: '',
+      args: [count],
+    );
+  }
+
   /// `Pause subscription`
   String get pauseSubscriptionBtn {
     return Intl.message('Pause subscription', name: 'pauseSubscriptionBtn', desc: '', args: []);
+  }
+
+  /// `You can pause your plan once per billing cycle.`
+  String get pauseSubscriptionInfoDesc {
+    return Intl.message(
+      'You can pause your plan once per billing cycle.',
+      name: 'pauseSubscriptionInfoDesc',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `You already have an ongoing payment transaction. Please complete it before starting a new one.`
@@ -2719,6 +2759,11 @@ class S {
   /// `Stay`
   String get stayButton {
     return Intl.message('Stay', name: 'stayButton', desc: '', args: []);
+  }
+
+  /// `Stay on the app`
+  String get stayOnAppBtn {
+    return Intl.message('Stay on the app', name: 'stayOnAppBtn', desc: '', args: []);
   }
 
   /// `Submit`

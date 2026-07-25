@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "Continuar",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "Serás redirecionado para o site da Mysterium VPN para concluir o cancelamento.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "Continuar o cancelamento na web",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "Continuar a cancelar",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "Ir para o site",
+  "@continueToWebBtn": {},
   "continueWithApple": "Continuar com Apple",
   "@continueWithApple": {},
   "continueWithEmail": "Continuar com e-mail",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "França",
   "@france": {},
-  "freezeDurationRequiredError": "Seleciona uma duração de pausa.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} one{Pausar por {count} mês} other{Pausar por {count} meses}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "Desconexões frequentes",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "Preço integral:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "Outro...",
   "@otherReason": {},
+  "pauseDurationRequiredError": "Seleciona uma duração de pausa.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} one{Pausar por {count} mês} other{Pausar por {count} meses}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "Pausar subscrição",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "Podes pausar o teu plano uma vez por ciclo de faturação.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "Você já tem uma transação de pagamento em andamento. Conclua-a antes de iniciar uma nova.",
   "@pendingTransactionMessage": {},
   "perMonth": "mês",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "Ficar",
   "@stayButton": {},
+  "stayOnAppBtn": "Ficar na app",
+  "@stayOnAppBtn": {},
   "submitBtn": "Enviar",
   "@submitBtn": {},
   "subscribeOnWebBtn": "Assinar na web",

@@ -37,36 +37,36 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(errorCode) => "No se pudo conectar. Inténtalo de nuevo [error: ${errorCode}]";
 
-  static String m8(count) =>
-      "${Intl.plural(count, zero: '', one: 'Pausar ${count} mes', other: 'Pausar ${count} meses')}";
+  static String m8(plan) => "Obtén ${plan}";
 
-  static String m9(plan) => "Obtén ${plan}";
+  static String m9(plan) => "Obtener plan ${plan}";
 
-  static String m10(plan) => "Obtener plan ${plan}";
+  static String m10(count) => "Grupo de IP: ${count}";
 
-  static String m11(count) => "Grupo de IP: ${count}";
-
-  static String m12(location) =>
+  static String m11(location) =>
       "No hay IP alternativas disponibles en ${location}. Elige otro país o ciudad para obtener una IP distinta la próxima vez.";
 
-  static String m13(location) =>
+  static String m12(location) =>
       "No hay IP alternativas disponibles en ${location}. Elige otro país para obtener una IP distinta la próxima vez.";
 
-  static String m14(count) =>
+  static String m13(count) =>
       "${Intl.plural(count, one: '${count} ciudad', other: '${count} ciudades')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m14(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
 
-  static String m16(count) =>
+  static String m15(count) =>
       "${Intl.plural(count, one: '${count} estado', other: '${count} estados')}";
 
-  static String m17(location) => "${location} no está disponible";
+  static String m16(location) => "${location} no está disponible";
 
-  static String m18(location) => "No se pudo actualizar ${location}";
+  static String m17(location) => "No se pudo actualizar ${location}";
 
-  static String m19(location) => "${location} actualizado";
+  static String m18(location) => "${location} actualizado";
 
-  static String m20(date) => "Próxima facturación: ${date}";
+  static String m19(date) => "Próxima facturación: ${date}";
+
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', one: 'Pausar ${count} mes', other: 'Pausar ${count} meses')}";
 
   static String m21(protocol, label) => "${protocol} (${label})";
 
@@ -187,7 +187,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Solo funciona en el dispositivo que lo solicitó: pulsa el enlace de tu correo para continuar.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Continuar"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "Te redirigiremos al sitio web de Mysterium VPN para completar la cancelación.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "Continuar la cancelación en la web",
+    ),
     "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("Seguir con la cancelación"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Ir al sitio web"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Continuar con Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Continuar con correo"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Continuar con Google"),
@@ -250,10 +257,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("Francés"),
     "france": MessageLookupByLibrary.simpleMessage("Francia"),
-    "freezeDurationRequiredError": MessageLookupByLibrary.simpleMessage(
-      "Selecciona una duración de la pausa.",
-    ),
-    "freezeForMonths": m8,
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Desconexiones frecuentes"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Precio completo:"),
     "germany": MessageLookupByLibrary.simpleMessage("Alemania"),
@@ -263,8 +266,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Protege tu conexión y disfruta de la navegación privada al instante",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Obteniendo dirección IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Volver"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Ir a iniciar sesión"),
@@ -280,9 +283,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enlace mágico incorrecto. Inténtalo de nuevo.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Dirección IP"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP de centro de datos"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP de centro de datos optimizadas para velocidad y rendimiento.",
@@ -312,9 +315,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "El enlace caduca en 30 minutos y solo se puede usar una vez.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("Ubicación"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Ubicación"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage(
       "Conectar a la IP más cercana",
@@ -322,9 +325,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "Conéctate a la IP más cercana o elígela manualmente",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Tu sesión ha caducado. Inicia sesión de nuevo.",
     ),
@@ -352,7 +355,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("Ubicaciones"),
     "navMap": MessageLookupByLibrary.simpleMessage("Mapa"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Productos"),
-    "nextBilling": m20,
+    "nextBilling": m19,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Próxima fecha de cobro:"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage(
@@ -396,7 +399,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Te conectaremos al mejor servidor, o puedes elegir un país manualmente.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Otro..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Selecciona una duración de la pausa.",
+    ),
+    "pauseForMonths": m20,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pausar suscripción"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Puedes pausar tu plan una vez por ciclo de facturación.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Ya tienes una transacción de pago en curso. Complétala antes de iniciar una nueva.",
     ),
@@ -578,6 +588,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Conexión estable"),
     "status": MessageLookupByLibrary.simpleMessage("Estado"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Quedarme"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Quedarme en la app"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Enviar"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Suscríbete en la web"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(

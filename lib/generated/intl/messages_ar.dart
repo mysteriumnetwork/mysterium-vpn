@@ -36,37 +36,37 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(errorCode) => "فشل الاتصال. يُرجى المحاولة مرة أخرى [الخطأ: ${errorCode}]";
 
-  static String m8(count) =>
-      "${Intl.plural(count, zero: 'إيقاف مؤقت لمدة ${count} شهر', one: 'إيقاف مؤقت لمدة شهر', two: 'إيقاف مؤقت لمدة شهرين', few: 'إيقاف مؤقت لمدة ${count} أشهر', many: 'إيقاف مؤقت لمدة ${count} شهرًا', other: 'إيقاف مؤقت لمدة ${count} شهر')}";
+  static String m8(plan) => "احصل على ${plan}";
 
-  static String m9(plan) => "احصل على ${plan}";
+  static String m9(plan) => "احصل على خطة اشتراك ${plan}";
 
-  static String m10(plan) => "احصل على خطة اشتراك ${plan}";
+  static String m10(count) => "${count} :مجموعة IP";
 
-  static String m11(count) => "${count} :مجموعة IP";
-
-  static String m12(location) =>
+  static String m11(location) =>
       "لا تتوفر عناوين IP بديلة في ${location}. اختر دولة أو مدينة أخرى للحصول على عنوان IP مختلف في المرة القادمة.";
 
-  static String m13(location) =>
+  static String m12(location) =>
       "لا تتوفر عناوين IP بديلة في ${location}. اختر دولة أخرى للحصول على عنوان IP مختلف في المرة القادمة.";
 
-  static String m14(count) =>
+  static String m13(count) =>
       "${Intl.plural(count, zero: '${count} مدينة', one: 'مدينة واحدة', two: 'مدينتان', few: '${count} مدن', many: '${count} مدينة', other: '${count} مدينة')}";
 
-  static String m15(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, zero: '${count} IP', one: 'IP واحد', two: 'عنوانا IP', few: '${count} عناوين IP', many: '${count} عنوان IP', other: '${count} IP')}";
 
-  static String m16(count) =>
+  static String m15(count) =>
       "${Intl.plural(count, zero: '${count} ولاية', one: 'ولاية واحدة', two: 'ولايتان', few: '${count} ولايات', many: '${count} ولاية', other: '${count} ولاية')}";
 
-  static String m17(location) => "${location} غير متاح";
+  static String m16(location) => "${location} غير متاح";
 
-  static String m18(location) => "تعذّر تحديث ${location}";
+  static String m17(location) => "تعذّر تحديث ${location}";
 
-  static String m19(location) => "تم تحديث ${location}";
+  static String m18(location) => "تم تحديث ${location}";
 
-  static String m20(date) => "الفوترة التالية: ${date}";
+  static String m19(date) => "الفوترة التالية: ${date}";
+
+  static String m20(count) =>
+      "${Intl.plural(count, zero: 'إيقاف مؤقت لمدة ${count} شهر', one: 'إيقاف مؤقت لمدة شهر', two: 'إيقاف مؤقت لمدة شهرين', few: 'إيقاف مؤقت لمدة ${count} أشهر', many: 'إيقاف مؤقت لمدة ${count} شهرًا', other: 'إيقاف مؤقت لمدة ${count} شهر')}";
 
   static String m21(protocol, label) => "${protocol} (${label})";
 
@@ -185,7 +185,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "يعمل فقط على الجهاز الذي طلبه — اضغط الرابط في بريدك الإلكتروني للمتابعة.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("متابعة"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "سيتم توجيهك إلى موقع Mysterium VPN لإكمال الإلغاء.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "متابعة الإلغاء عبر الويب",
+    ),
     "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("متابعة الإلغاء"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("المتابعة إلى الموقع"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("المتابعة عبر Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("المتابعة عبر البريد الإلكتروني"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("المتابعة عبر Google"),
@@ -248,10 +255,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("الفرنسية"),
     "france": MessageLookupByLibrary.simpleMessage("فرنسا"),
-    "freezeDurationRequiredError": MessageLookupByLibrary.simpleMessage(
-      "يرجى اختيار مدة الإيقاف المؤقت.",
-    ),
-    "freezeForMonths": m8,
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("انقطاعات متكررة"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("السعر الكامل:"),
     "germany": MessageLookupByLibrary.simpleMessage("ألمانيا"),
@@ -259,8 +262,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "أمّن اتصالك واستمتع بتصفح خاص فورًا",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("جارٍ الحصول على عنوان IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("رجوع"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("الانتقال إلى تسجيل الدخول"),
@@ -276,9 +279,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "رابط سحري غير صحيح. يُرجى المحاولة مرة أخرى.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("عنوان IP"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("عناوين IP لمراكز البيانات"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "عناوين IP لمراكز البيانات مُحسّنة للسرعة والأداء.",
@@ -308,17 +311,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "تنتهي صلاحية الرابط خلال 30 دقيقة ويمكن استخدامه مرة واحدة فقط.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("الموقع"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("الاتصال بأقرب عنوان IP"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "اتصل بأقرب عنوان IP — أو اختره يدويًا",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "انتهت صلاحية جلستك. يُرجى تسجيل الدخول مرة أخرى.",
     ),
@@ -346,7 +349,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("المواقع"),
     "navMap": MessageLookupByLibrary.simpleMessage("الخريطة"),
     "navProducts": MessageLookupByLibrary.simpleMessage("المنتجات"),
-    "nextBilling": m20,
+    "nextBilling": m19,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("تاريخ الفوترة التالي:"),
     "no": MessageLookupByLibrary.simpleMessage("لا"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("ليس لديك اشتراك نشط"),
@@ -382,7 +385,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "سنوصلك بأفضل خادم — أو يمكنك اختيار دولة يدويًا.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("أخرى..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "يرجى اختيار مدة الإيقاف المؤقت.",
+    ),
+    "pauseForMonths": m20,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("إيقاف الاشتراك مؤقتًا"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "يمكنك إيقاف خطتك مؤقتًا مرة واحدة لكل دورة فوترة.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "لديك بالفعل عملية دفع جارية. يُرجى إكمالها قبل بدء عملية جديدة.",
     ),
@@ -542,6 +552,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("اتصال مستقر"),
     "status": MessageLookupByLibrary.simpleMessage("الحالة"),
     "stayButton": MessageLookupByLibrary.simpleMessage("البقاء"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("البقاء في التطبيق"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("إرسال"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("الاشتراك عبر الويب"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage("خبر رائع! اشتراكك نشط الآن."),

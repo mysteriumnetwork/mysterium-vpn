@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "Dalej",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "Zostaniesz przekierowany na stronę Mysterium VPN, aby dokończyć anulowanie.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "Kontynuuj anulowanie w sieci",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "Kontynuuj anulowanie",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "Przejdź na stronę",
+  "@continueToWebBtn": {},
   "continueWithApple": "Kontynuuj z Apple",
   "@continueWithApple": {},
   "continueWithEmail": "Kontynuuj z e-mailem",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "Francja",
   "@france": {},
-  "freezeDurationRequiredError": "Wybierz okres wstrzymania.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} one{Wstrzymaj na {count} miesiąc} few{Wstrzymaj na {count} miesiące} many{Wstrzymaj na {count} miesięcy} other{Wstrzymaj na {count} miesiąca}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "Częste rozłączenia",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "Cena pełna:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "Inne…",
   "@otherReason": {},
+  "pauseDurationRequiredError": "Wybierz okres wstrzymania.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} one{Wstrzymaj na {count} miesiąc} few{Wstrzymaj na {count} miesiące} many{Wstrzymaj na {count} miesięcy} other{Wstrzymaj na {count} miesiąca}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "Wstrzymaj subskrypcję",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "Możesz wstrzymać swój plan raz na cykl rozliczeniowy.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "Masz już trwającą transakcję płatniczą. Dokończ ją przed rozpoczęciem nowej.",
   "@pendingTransactionMessage": {},
   "perMonth": "mies.",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "Zostań",
   "@stayButton": {},
+  "stayOnAppBtn": "Zostań w aplikacji",
+  "@stayOnAppBtn": {},
   "submitBtn": "Wyślij",
   "@submitBtn": {},
   "subscribeOnWebBtn": "Subskrybuj w sieci",

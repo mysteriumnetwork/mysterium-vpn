@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "متابعة",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "سيتم توجيهك إلى موقع Mysterium VPN لإكمال الإلغاء.",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "متابعة الإلغاء عبر الويب",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "متابعة الإلغاء",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "المتابعة إلى الموقع",
+  "@continueToWebBtn": {},
   "continueWithApple": "المتابعة عبر Apple",
   "@continueWithApple": {},
   "continueWithEmail": "المتابعة عبر البريد الإلكتروني",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "فرنسا",
   "@france": {},
-  "freezeDurationRequiredError": "يرجى اختيار مدة الإيقاف المؤقت.",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{إيقاف مؤقت لمدة {count} شهر} one{إيقاف مؤقت لمدة شهر} two{إيقاف مؤقت لمدة شهرين} few{إيقاف مؤقت لمدة {count} أشهر} many{إيقاف مؤقت لمدة {count} شهرًا} other{إيقاف مؤقت لمدة {count} شهر}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "انقطاعات متكررة",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "السعر الكامل:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "أخرى...",
   "@otherReason": {},
+  "pauseDurationRequiredError": "يرجى اختيار مدة الإيقاف المؤقت.",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{إيقاف مؤقت لمدة {count} شهر} one{إيقاف مؤقت لمدة شهر} two{إيقاف مؤقت لمدة شهرين} few{إيقاف مؤقت لمدة {count} أشهر} many{إيقاف مؤقت لمدة {count} شهرًا} other{إيقاف مؤقت لمدة {count} شهر}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "إيقاف الاشتراك مؤقتًا",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "يمكنك إيقاف خطتك مؤقتًا مرة واحدة لكل دورة فوترة.",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "لديك بالفعل عملية دفع جارية. يُرجى إكمالها قبل بدء عملية جديدة.",
   "@pendingTransactionMessage": {},
   "perMonth": "شهر",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "البقاء",
   "@stayButton": {},
+  "stayOnAppBtn": "البقاء في التطبيق",
+  "@stayOnAppBtn": {},
   "submitBtn": "إرسال",
   "@submitBtn": {},
   "subscribeOnWebBtn": "الاشتراك عبر الويب",

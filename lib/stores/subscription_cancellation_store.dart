@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -30,8 +31,10 @@ abstract class _SubscriptionCancellationStore with Store {
   _SubscriptionCancellationStore({
     required AnalyticsStore analyticsStore,
     required RemoteConfigStore remoteConfigStore,
+    required SubscriptionStore subscriptionStore,
   }) : _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore {
+       _remoteConfigStore = remoteConfigStore,
+       _subscriptionStore = subscriptionStore {
     _reactions.add(
       autorun((_) {
         final options = _remoteConfigStore.subscriptionFreezeDurationOptions;
@@ -44,6 +47,7 @@ abstract class _SubscriptionCancellationStore with Store {
   }
 
   late final List<ReactionDisposer> _reactions = [];
+  late final SubscriptionStore _subscriptionStore;
   late final AnalyticsStore _analyticsStore;
   late final RemoteConfigStore _remoteConfigStore;
 
@@ -71,6 +75,20 @@ abstract class _SubscriptionCancellationStore with Store {
   @computed
   int? get selectedFreezeDuration => _selectedFreezeDuration;
 
+  String get linkToCancelSubscription {
+    if (_subscriptionStore.useWebFlow) {
+      return 'https://www.google.com';
+    } else {
+      if (Platform.isAndroid) {
+        return 'https://play.google.com/store/account/subscriptions';
+      } else if (Platform.isIOS || Platform.isMacOS) {
+        return 'https://account.apple.com/account/manage/section/subscriptions';
+      } else {
+        return 'https://www.google.com';
+      }
+    }
+  }
+
   @action
   Future<void> setSurvey({required Set<String> reasons, String? feedback}) async {
     if (reasons.isNotEmpty || feedback != null || feedback!.isNotEmpty) {
@@ -83,7 +101,7 @@ abstract class _SubscriptionCancellationStore with Store {
   }
 
   @action
-  Future<void> setFreezeDuration(int months) async {
+  Future<void> setPauseDuration(int months) async {
     _isProcessing = true;
     _selectedFreezeDuration = months;
     await Future.delayed(const Duration(seconds: 3));
@@ -117,9 +135,11 @@ abstract class _SubscriptionCancellationStore with Store {
         }
         break;
       case SubscriptionCancellationFlow.freeze:
-      //TODO: Check if the user decided to freeze the subscription or cancel it.
-      // If the user decided to freeze the subscription, the flow should end here.
-      // If the user decided to cancel the subscription, the user should be redirected to the web flow.
+        //TODO: Check if the user decided to freeze the subscription or cancel it.
+        // If the user decided to freeze the subscription, the flow should end here.
+        // If the user decided to cancel the subscription, the user should be redirected to the web flow.
+        _cancellationFlowStep = SubscriptionCancellationFlow.transferToWebFlow;
+        break;
       case SubscriptionCancellationFlow.transferToWebFlow:
         //TODO: Redirect the user to the web flow.
         break;

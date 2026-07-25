@@ -175,7 +175,7 @@ enum AnalyticsEvent {
   newsCenterRefreshed,
   newsCenterRetryClicked,
   newsCenterBackClicked,
-  webRedirect;
+  webRedirect,
   cancellationStarted,
   cancellationConfirmViewed,
   cancellationReasonSubmitted,

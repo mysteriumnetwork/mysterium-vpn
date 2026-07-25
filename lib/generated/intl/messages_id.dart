@@ -37,34 +37,35 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(errorCode) => "Gagal terhubung. Coba lagi [error: ${errorCode}]";
 
-  static String m8(count) => "${Intl.plural(count, zero: '', other: 'Jeda selama ${count} bulan')}";
+  static String m8(plan) => "Ambil ${plan}";
 
-  static String m9(plan) => "Ambil ${plan}";
+  static String m9(plan) => "Ambil paket ${plan}";
 
-  static String m10(plan) => "Ambil paket ${plan}";
+  static String m10(count) => "Kumpulan IP: ${count}";
 
-  static String m11(count) => "Kumpulan IP: ${count}";
-
-  static String m12(location) =>
+  static String m11(location) =>
       "Tidak ada IP alternatif tersedia di ${location}. Pilih negara atau kota lain untuk mendapat IP berbeda lain kali.";
 
-  static String m13(location) =>
+  static String m12(location) =>
       "Tidak ada IP alternatif tersedia di ${location}. Pilih negara lain untuk mendapat IP berbeda lain kali.";
 
-  static String m14(count) => "${Intl.plural(count, one: '${count} Kota', other: '${count} Kota')}";
+  static String m13(count) => "${Intl.plural(count, one: '${count} Kota', other: '${count} Kota')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m14(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
 
-  static String m16(count) =>
+  static String m15(count) =>
       "${Intl.plural(count, one: '${count} Negara Bagian', other: '${count} Negara Bagian')}";
 
-  static String m17(location) => "${location} tidak tersedia";
+  static String m16(location) => "${location} tidak tersedia";
 
-  static String m18(location) => "Tidak bisa memperbarui ${location}";
+  static String m17(location) => "Tidak bisa memperbarui ${location}";
 
-  static String m19(location) => "${location} diperbarui";
+  static String m18(location) => "${location} diperbarui";
 
-  static String m20(date) => "Tagihan Berikutnya: ${date}";
+  static String m19(date) => "Tagihan Berikutnya: ${date}";
+
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', other: 'Jeda selama ${count} bulan')}";
 
   static String m21(protocol, label) => "${protocol} (${label})";
 
@@ -185,7 +186,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ini hanya berfungsi di perangkat yang memintanya - klik tautan di emailmu untuk lanjut.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Lanjut"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu akan diarahkan ke situs Mysterium VPN untuk menyelesaikan pembatalan.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "Lanjutkan pembatalan di web",
+    ),
     "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("Lanjut batalkan"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Lanjut ke situs"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Email"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Google"),
@@ -244,10 +252,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("Prancis"),
     "france": MessageLookupByLibrary.simpleMessage("Prancis"),
-    "freezeDurationRequiredError": MessageLookupByLibrary.simpleMessage(
-      "Pilih salah satu durasi jeda.",
-    ),
-    "freezeForMonths": m8,
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Sering terputus"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Harga penuh:"),
     "germany": MessageLookupByLibrary.simpleMessage("Jerman"),
@@ -257,8 +261,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Amankan koneksimu dan nikmati penjelajahan privat seketika",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Mengambil alamat IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Kembali"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Ke halaman masuk"),
@@ -272,9 +276,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Lokasi salah"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage("Magic link salah. Coba lagi."),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Alamat IP"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter dioptimalkan untuk kecepatan dan performa.",
@@ -304,17 +308,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tautan kedaluwarsa dalam 30 menit dan hanya bisa dipakai sekali.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("Lokasi"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Lokasi"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("Hubungkan ke IP terdekat"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "Hubungkan ke IP terdekat - atau pilih manual",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Sesimu sudah kedaluwarsa. Masuk lagi.",
     ),
@@ -338,7 +342,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("Lokasi"),
     "navMap": MessageLookupByLibrary.simpleMessage("Peta"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Produk"),
-    "nextBilling": m20,
+    "nextBilling": m19,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal penagihan berikutnya:"),
     "no": MessageLookupByLibrary.simpleMessage("Tidak"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Kamu tidak punya langganan aktif"),
@@ -376,7 +380,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kami akan menghubungkanmu ke server terbaik - atau kamu bisa memilih negara secara manual.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Lainnya..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Pilih salah satu durasi jeda.",
+    ),
+    "pauseForMonths": m20,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Jeda langganan"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Kamu sudah punya transaksi pembayaran yang berjalan. Selesaikan dulu sebelum memulai yang baru.",
     ),
@@ -548,6 +559,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Koneksi stabil"),
     "status": MessageLookupByLibrary.simpleMessage("Status"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Tetap di sini"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Tetap di aplikasi"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Kirim"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Berlangganan di web"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(

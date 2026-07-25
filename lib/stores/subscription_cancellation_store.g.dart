@@ -121,14 +121,14 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     return _$setSurveyAsyncAction.run(() => super.setSurvey(reasons: reasons, feedback: feedback));
   }
 
-  late final _$setFreezeDurationAsyncAction = AsyncAction(
-    '_SubscriptionCancellationStore.setFreezeDuration',
+  late final _$setPauseDurationAsyncAction = AsyncAction(
+    '_SubscriptionCancellationStore.setPauseDuration',
     context: context,
   );
 
   @override
-  Future<void> setFreezeDuration(int months) {
-    return _$setFreezeDurationAsyncAction.run(() => super.setFreezeDuration(months));
+  Future<void> setPauseDuration(int months) {
+    return _$setPauseDurationAsyncAction.run(() => super.setPauseDuration(months));
   }
 
   late final _$cancelSubscriptionAsyncAction = AsyncAction(

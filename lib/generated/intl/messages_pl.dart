@@ -37,37 +37,37 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(errorCode) => "Nie udało się połączyć. Spróbuj ponownie [błąd: ${errorCode}]";
 
-  static String m8(count) =>
-      "${Intl.plural(count, zero: '', one: 'Wstrzymaj na ${count} miesiąc', few: 'Wstrzymaj na ${count} miesiące', many: 'Wstrzymaj na ${count} miesięcy', other: 'Wstrzymaj na ${count} miesiąca')}";
+  static String m8(plan) => "Wybierz ${plan}";
 
-  static String m9(plan) => "Wybierz ${plan}";
+  static String m9(plan) => "Wybierz plan ${plan}";
 
-  static String m10(plan) => "Wybierz plan ${plan}";
+  static String m10(count) => "Pula IP: ${count}";
 
-  static String m11(count) => "Pula IP: ${count}";
-
-  static String m12(location) =>
+  static String m11(location) =>
       "Brak alternatywnych IP w lokalizacji ${location}. Wybierz inny kraj lub miasto, aby następnym razem otrzymać inny adres IP.";
 
-  static String m13(location) =>
+  static String m12(location) =>
       "Brak alternatywnych IP w lokalizacji ${location}. Wybierz inny kraj, aby następnym razem otrzymać inny adres IP.";
 
-  static String m14(count) =>
+  static String m13(count) =>
       "${Intl.plural(count, one: '${count} miasto', few: '${count} miasta', many: '${count} miast', other: '${count} miasta')}";
 
-  static String m15(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: '${count} IP', few: '${count} IP', many: '${count} IP', other: '${count} IP')}";
 
-  static String m16(count) =>
+  static String m15(count) =>
       "${Intl.plural(count, one: '${count} region', few: '${count} regiony', many: '${count} regionów', other: '${count} regionu')}";
 
-  static String m17(location) => "${location} jest niedostępna";
+  static String m16(location) => "${location} jest niedostępna";
 
-  static String m18(location) => "Nie udało się zaktualizować ${location}";
+  static String m17(location) => "Nie udało się zaktualizować ${location}";
 
-  static String m19(location) => "Zaktualizowano ${location}";
+  static String m18(location) => "Zaktualizowano ${location}";
 
-  static String m20(date) => "Następne rozliczenie: ${date}";
+  static String m19(date) => "Następne rozliczenie: ${date}";
+
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', one: 'Wstrzymaj na ${count} miesiąc', few: 'Wstrzymaj na ${count} miesiące', many: 'Wstrzymaj na ${count} miesięcy', other: 'Wstrzymaj na ${count} miesiąca')}";
 
   static String m21(protocol, label) => "${protocol} (${label})";
 
@@ -190,7 +190,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Działa tylko na urządzeniu, które go zażądało – kliknij link w e-mailu, aby kontynuować.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Dalej"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "Zostaniesz przekierowany na stronę Mysterium VPN, aby dokończyć anulowanie.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "Kontynuuj anulowanie w sieci",
+    ),
     "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("Kontynuuj anulowanie"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Przejdź na stronę"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Kontynuuj z Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Kontynuuj z e-mailem"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Kontynuuj z Google"),
@@ -251,10 +258,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fr": MessageLookupByLibrary.simpleMessage("Francuski"),
     "france": MessageLookupByLibrary.simpleMessage("Francja"),
-    "freezeDurationRequiredError": MessageLookupByLibrary.simpleMessage(
-      "Wybierz okres wstrzymania.",
-    ),
-    "freezeForMonths": m8,
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Częste rozłączenia"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Cena pełna:"),
     "germany": MessageLookupByLibrary.simpleMessage("Niemcy"),
@@ -264,8 +267,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Zabezpiecz połączenie i ciesz się prywatnym przeglądaniem od razu",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m8,
+    "getSubscriptionPlanBtn": m9,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Pobieranie adresu IP…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Wróć"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Przejdź do logowania"),
@@ -281,9 +284,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Nieprawidłowy magiczny link. Spróbuj ponownie.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Adres IP"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m10,
+    "ipRefreshExhaustedCity": m11,
+    "ipRefreshExhaustedCountry": m12,
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP z centrów danych"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP z centrów danych zoptymalizowane pod kątem prędkości i wydajności.",
@@ -313,17 +316,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Link wygasa po 30 minutach i może zostać użyty tylko raz.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("Lokalizacja"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m13,
+    "locationItemNodeCount": m14,
+    "locationItemStatesCount": m15,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Lokalizacja"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("Połącz z najbliższym IP"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "Połącz z najbliższym IP – lub wybierz je ręcznie",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m16,
+    "locationsUpdateFailed": m17,
+    "locationsUpdated": m18,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Twoja sesja wygasła. Zaloguj się ponownie.",
     ),
@@ -351,7 +354,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("Lokalizacje"),
     "navMap": MessageLookupByLibrary.simpleMessage("Mapa"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Produkty"),
-    "nextBilling": m20,
+    "nextBilling": m19,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Następna data rozliczenia:"),
     "no": MessageLookupByLibrary.simpleMessage("Nie"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Nie masz aktywnej subskrypcji"),
@@ -395,7 +398,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Połączymy Cię z najlepszym serwerem – lub możesz ręcznie wybrać kraj.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Inne…"),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Wybierz okres wstrzymania.",
+    ),
+    "pauseForMonths": m20,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Wstrzymaj subskrypcję"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Możesz wstrzymać swój plan raz na cykl rozliczeniowy.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Masz już trwającą transakcję płatniczą. Dokończ ją przed rozpoczęciem nowej.",
     ),
@@ -579,6 +589,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Stabilne połączenie"),
     "status": MessageLookupByLibrary.simpleMessage("Status"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Zostań"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Zostań w aplikacji"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Wyślij"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Subskrybuj w sieci"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(

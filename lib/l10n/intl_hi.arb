@@ -138,8 +138,14 @@
   "@consumeLink": {},
   "continueBtn": "जारी रखें",
   "@continueBtn": {},
+  "continueCancellationOnWebDesc": "रद्दीकरण पूरा करने के लिए आपको Mysterium VPN वेबसाइट पर भेजा जाएगा।",
+  "@continueCancellationOnWebDesc": {},
+  "continueCancellationOnWebTitle": "वेब पर रद्दीकरण जारी रखें",
+  "@continueCancellationOnWebTitle": {},
   "continueToCancelBtn": "रद्द करना जारी रखें",
   "@continueToCancelBtn": {},
+  "continueToWebBtn": "वेबसाइट पर जाएँ",
+  "@continueToWebBtn": {},
   "continueWithApple": "Apple के साथ जारी रखें",
   "@continueWithApple": {},
   "continueWithEmail": "ईमेल के साथ जारी रखें",
@@ -228,16 +234,6 @@
   "@fr": {},
   "france": "फ़्रांस",
   "@france": {},
-  "freezeDurationRequiredError": "कृपया एक रोकने की अवधि चुनें।",
-  "@freezeDurationRequiredError": {},
-  "freezeForMonths": "{count, plural, zero{} one{{count} महीने के लिए रोकें} other{{count} महीनों के लिए रोकें}}",
-  "@freezeForMonths": {
-    "placeholders": {
-      "count": {
-        "type": "num"
-      }
-    }
-  },
   "frequentDisconnectsReason": "बार-बार डिस्कनेक्ट",
   "@frequentDisconnectsReason": {},
   "fullPriceLabel": "पूरी कीमत:",
@@ -424,8 +420,20 @@
   "@orSelectCountryManually": {},
   "otherReason": "अन्य…",
   "@otherReason": {},
+  "pauseDurationRequiredError": "कृपया एक रोकने की अवधि चुनें।",
+  "@pauseDurationRequiredError": {},
+  "pauseForMonths": "{count, plural, zero{} one{{count} महीने के लिए रोकें} other{{count} महीनों के लिए रोकें}}",
+  "@pauseForMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "pauseSubscriptionBtn": "सदस्यता रोकें",
   "@pauseSubscriptionBtn": {},
+  "pauseSubscriptionInfoDesc": "आप प्रति बिलिंग चक्र में एक बार अपना प्लान रोक सकते हैं।",
+  "@pauseSubscriptionInfoDesc": {},
   "pendingTransactionMessage": "आपका पहले से एक भुगतान लेनदेन चल रहा है। कृपया नया शुरू करने से पहले उसे पूरा करें।",
   "@pendingTransactionMessage": {},
   "perMonth": "माह",
@@ -636,6 +644,8 @@
   "@status": {},
   "stayButton": "बने रहें",
   "@stayButton": {},
+  "stayOnAppBtn": "ऐप में रहें",
+  "@stayOnAppBtn": {},
   "submitBtn": "सबमिट करें",
   "@submitBtn": {},
   "subscribeOnWebBtn": "वेब पर सदस्यता लें",

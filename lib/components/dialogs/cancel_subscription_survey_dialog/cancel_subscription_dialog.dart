@@ -21,9 +21,9 @@ import 'package:mysterium_vpn_design/widgets/modals/modal_scaffold.dart';
 import 'package:mysterium_vpn_design/widgets/modals/show_modal.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 part 'form.dart';
-part 'radio_option_form.dart';
 part 'reasons_field.dart';
 
 Future<void> showCancelSubscriptionFlowDialog(BuildContext context) async =>
@@ -42,19 +42,24 @@ class _CancelSubscriptionFlowDialog extends HookConsumerWidget {
     useEffect(() => subscriptionCancellationStore.reset, []);
 
     return switch (cancellationStep) {
-      SubscriptionCancellationFlow.prompt => _Prompt(
+      SubscriptionCancellationFlow.prompt => _CancelPrompt(
         onContinuePressed: () async => subscriptionCancellationStore.moveToNextStep(),
       ),
       SubscriptionCancellationFlow.survey => const _Survey(),
-      SubscriptionCancellationFlow.freeze => const _FreezeDuration(),
-      SubscriptionCancellationFlow.transferToWebFlow => const SizedBox.shrink(),
+      SubscriptionCancellationFlow.freeze => const _PauseDuration(),
+      SubscriptionCancellationFlow.transferToWebFlow => _ContinueToWebPrompt(
+        onContinuePressed: () {
+          launchUrlString(subscriptionCancellationStore.linkToCancelSubscription);
+          Navigator.pop(context);
+        },
+      ),
       SubscriptionCancellationFlow.cancellationSummary => const _Confirmation(),
     };
   }
 }
 
-class _Prompt extends StatelessWidget {
-  const _Prompt({required this.onContinuePressed});
+class _CancelPrompt extends StatelessWidget {
+  const _CancelPrompt({required this.onContinuePressed});
 
   final VoidCallback onContinuePressed;
 
@@ -77,6 +82,39 @@ class _Prompt extends StatelessWidget {
           onPressed: () async => Navigator.pop(context),
           child: Text(
             S.current.keepSubscriptionBtn,
+            style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textSecondary),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ContinueToWebPrompt extends StatelessWidget {
+  const _ContinueToWebPrompt({required this.onContinuePressed});
+
+  final VoidCallback onContinuePressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 343),
+      child: AlertModal(
+        icon: UntitledUI.link_external_02,
+        title: S.current.continueCancellationOnWebTitle,
+        supportingText: S.current.continueCancellationOnWebDesc,
+        type: AlertModalType.warning,
+        screenType: ScreenType.mobile,
+        primaryButton: ButtonPrimary(
+          onPressed: onContinuePressed,
+          child: Text(S.current.continueToWebBtn),
+        ),
+        secondaryButton: ButtonTertiary(
+          onPressed: () async => Navigator.pop(context),
+          child: Text(
+            S.current.stayOnAppBtn,
             style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textSecondary),
           ),
         ),
@@ -132,27 +170,21 @@ class _Survey extends HookConsumerWidget {
   }
 }
 
-class _FreezeDuration extends HookConsumerWidget {
-  const _FreezeDuration();
+class _PauseDuration extends HookConsumerWidget {
+  const _PauseDuration();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
-    final form = _useRadioForm();
-    final showError = useState(false);
+    final selectedPauseDuration = useState<int?>(null);
 
     void handleSkip() {
       cancelSubscriptionStore.moveToNextStep();
     }
 
     void handleSubmit() {
-      if (form.invalid) {
-        showError.value = true;
-        return;
-      }
-      showError.value = false;
-      cancelSubscriptionStore.setFreezeDuration(form.freezeDuration.value!);
+      cancelSubscriptionStore.setPauseDuration(selectedPauseDuration.value!);
     }
 
     return ModalScaffold(
@@ -162,10 +194,62 @@ class _FreezeDuration extends HookConsumerWidget {
         child: Column(
           children: [
             SizedBox(height: theme.spacing.xl2),
-            _RadioOptionForm(
-              form: form,
-              freezeDurations: cancelSubscriptionStore.freezeDurations,
-              showError: showError.value,
+            RadioGroup(
+              groupValue: selectedPauseDuration.value,
+              onChanged: (value) => {selectedPauseDuration.value = value},
+              child: Column(
+                children: cancelSubscriptionStore.freezeDurations
+                    .map(
+                      (duration) => RadioListTile(
+                        value: duration,
+                        title: Text(S.current.pauseForMonths(duration)),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: theme.spacing.xl2,
+                vertical: theme.spacing.md,
+              ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: theme.palette.bgPrimary,
+                  borderRadius: BorderRadius.circular(theme.spacing.md),
+                  border: Border.all(color: theme.palette.borderPrimary),
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        theme.spacing.ms,
+                        theme.spacing.ms,
+                        theme.spacing.s,
+                        theme.spacing.ms,
+                      ),
+                      child: CircleAvatar(
+                        radius: theme.spacing.ms,
+                        backgroundColor: theme.palette.bgSecondary,
+                        child: Icon(
+                          UntitledUI.info_circle,
+                          size: theme.spacing.md,
+                          color: theme.palette.iconTertiary,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: theme.spacing.md),
+                      child: Text(
+                        S.current.pauseSubscriptionInfoDesc,
+                        style: theme.textStyles.textXs.medium.copyWith(
+                          color: theme.palette.textTertiary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -177,6 +261,7 @@ class _FreezeDuration extends HookConsumerWidget {
           onPrimaryButtonPressed: handleSubmit,
           secondaryButtonLabel: S.current.continueToCancelBtn,
           onSecondaryButtonPressed: handleSkip,
+          primaryButtonEnabled: selectedPauseDuration.value != null,
         ),
       ),
     );
@@ -315,63 +400,6 @@ class _Confirmation extends HookConsumerWidget {
   }
 }
 
-class _Summary extends ConsumerWidget {
-  const _Summary();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
-    return ModalScaffold(
-      showGradient: false,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(UntitledUI.check_circle, size: 40, color: theme.palette.iconSuccessPrimary),
-            Text(S.current.subscriptionCancelledTitle, style: theme.textStyles.textLg.semibold),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: theme.palette.borderPrimary),
-                borderRadius: BorderRadius.circular(theme.spacing.xl2),
-                color: theme.palette.bgPrimary,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: theme.spacing.xl2,
-                  vertical: theme.spacing.xl,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(theme.spacing.xl2),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        S.current.accessAvailableUntilLbl,
-                        style: theme.textStyles.textLg.semibold,
-                      ),
-                      Text('May 25, 2027', style: theme.textStyles.textLg.semibold),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Text(
-              S.current.reactivateSubscriptionAnytimeDesc,
-              style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
-            ),
-          ],
-        ),
-      ),
-      footer: _ActionFooter(
-        primaryButtonLabel: S.current.doneBtn,
-        onPrimaryButtonPressed: () => Navigator.pop(context),
-      ),
-    );
-  }
-}
-
 AppBar _createAppBar({required BuildContext context, String? title}) {
   final theme = Theme.of(context);
   return AppBar(
@@ -395,6 +423,7 @@ class _ActionFooter extends StatelessWidget {
   const _ActionFooter({
     required this.primaryButtonLabel,
     required this.onPrimaryButtonPressed,
+    this.primaryButtonEnabled = true,
     this.secondaryButtonLabel,
     this.onSecondaryButtonPressed,
     this.primaryButtonColor,
@@ -407,6 +436,7 @@ class _ActionFooter extends StatelessWidget {
   final VoidCallback? onSecondaryButtonPressed;
   final Color? primaryButtonColor;
   final bool isProcessing;
+  final bool primaryButtonEnabled;
 
   bool get hasSecondaryButton => secondaryButtonLabel != null && onSecondaryButtonPressed != null;
 
@@ -414,14 +444,26 @@ class _ActionFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final primaryButton = ButtonPrimary(
-      onPressed: isProcessing ? () {} : onPrimaryButtonPressed,
-      decoration: primaryButtonColor != null
-          ? ButtonDecoration(decorationColor: primaryButtonColor)
-          : const ButtonDecoration(),
-      child: isProcessing
-          ? const CircularProgressIndicator.adaptive()
-          : Text(primaryButtonLabel, style: theme.textStyles.textMd.semibold),
+    final primaryButton = IgnorePointer(
+      ignoring: !primaryButtonEnabled || isProcessing,
+      child: ButtonPrimary(
+        loading: isProcessing ? const ButtonLoading() : null,
+        onPressed: isProcessing ? () {} : onPrimaryButtonPressed,
+        decoration: ButtonDecoration(
+          decorationColor: primaryButtonEnabled
+              ? primaryButtonColor
+              : theme.palette.bgSecondaryDisabled,
+          foregroundColor: primaryButtonEnabled
+              ? theme.palette.textWhite
+              : theme.palette.textDisabled,
+        ),
+        child: Text(
+          primaryButtonLabel,
+          style: theme.textStyles.textMd.semibold.copyWith(
+            color: primaryButtonEnabled ? theme.palette.textWhite : theme.palette.textDisabled,
+          ),
+        ),
+      ),
     );
 
     final secondaryButton = hasSecondaryButton
