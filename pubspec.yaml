@@ -117,15 +117,11 @@ dev_dependencies:
   intl_utils: ^2.8.10
   json_serializable: 6.13.0
   mobx_codegen: 2.7.7
-  mockito: 5.7.0
+  mockito: 5.6.4
   msix: 3.18.0
   patrol: 4.8.0
   plugin_platform_interface: 2.1.8
   url_launcher_platform_interface: 2.3.2
-
-dependency_overrides:
-  # mockito >=5.6.5 needs analyzer ^13, incompatible with mobx_codegen 2.7.7 (analyzer <13).
-  mockito: 5.6.4
 
 msix_config:
   display_name: Mysterium VPN
