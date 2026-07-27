@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/setting_category.dart';
 import 'package:mysterium_vpn/views/settings/version_update_setting.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class SettingsMobileView extends HookConsumerWidget {
   const SettingsMobileView({super.key});
@@ -24,7 +23,7 @@ class SettingsMobileView extends HookConsumerWidget {
         ? const _SettingsMainList()
         : _SettingsSubPageContent(category: subPage);
 
-    return body.backgroundColor(theme.palette.bgSidePanel);
+    return ColoredBox(color: theme.palette.bgSidePanel, child: body);
   }
 }
 
@@ -103,10 +102,10 @@ class _SettingsMainList extends HookConsumerWidget {
                   ),
                 ),
                 if (enableQaHelpers)
-                  categoryCard(
-                    SettingCategory.qaToolbox,
-                    SettingsCardPosition.single,
-                  ).padding(top: theme.spacing.md),
+                  Padding(
+                    padding: EdgeInsets.only(top: theme.spacing.md),
+                    child: categoryCard(SettingCategory.qaToolbox, SettingsCardPosition.single),
+                  ),
               ],
             ),
           ),

@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class EmailMarketingSetting extends HookConsumerWidget {
   const EmailMarketingSetting({required this.position, super.key});
@@ -38,7 +37,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
           title: S.current.emailNotificationsSetting,
           position: position,
           trailing: isLoading
-              ? const LoadingIndicator().padding(all: 8)
+              ? const Padding(padding: EdgeInsets.all(8), child: LoadingIndicator())
               : Switch(
                   value: userPreferencesStore.marketingConsent!,
                   onChanged: (val) async {

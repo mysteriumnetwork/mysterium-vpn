@@ -18,12 +18,17 @@ analyzer:
     missing_required_param: warning
     missing_return: warning
     todo: ignore
+    # Incompatible with our named-parameter + private-field DI convention; the
+    # fix (initializing formals) can't express private named params in Dart.
+    prefer_initializing_formals: ignore
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "packages/vpn_api/**"
     - "lib/gen/**"
     - "lib/generated/**"
+    # Swift Package Manager vendors third-party plugin Dart source here.
+    - "build/**"
 formatter:
   page_width: 100
 linter:
@@ -140,7 +145,6 @@ linter:
     - prefer_generic_function_type_aliases
     - prefer_if_elements_to_conditional_expressions
     - prefer_if_null_operators
-    - prefer_initializing_formals
     - prefer_inlined_adds
     - prefer_int_literals
     - prefer_interpolation_to_compose_strings

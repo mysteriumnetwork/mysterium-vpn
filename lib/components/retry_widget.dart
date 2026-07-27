@@ -4,7 +4,6 @@ import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class RetryWdiget extends StatelessWidget {
   const RetryWdiget({required this.onRetry, required this.error, required this.asset, super.key});
@@ -19,14 +18,20 @@ class RetryWdiget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SvgIcon(asset: asset).padding(top: 10, bottom: 10),
-        Text(
-          error is Object ? resolveErrorMessage(error as Object) : S.current.somethingWentWrong,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textStyles.textMd.bold,
-        ).padding(bottom: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: SvgIcon(asset: asset),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Text(
+            error is Object ? resolveErrorMessage(error as Object) : S.current.somethingWentWrong,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textStyles.textMd.bold,
+          ),
+        ),
         ButtonPrimary(onPressed: onRetry, child: Text(S.current.retryBtn)),
       ],
     );

@@ -8,7 +8,7 @@ Next-gen Mysterium VPN client — a single Flutter codebase targeting mobile (iO
 
 ## Commands
 
-All Flutter/Dart commands **must** be prefixed with `fvm` (Flutter 3.41.9 is pinned in `.fvmrc`). Prefer the `Makefile` targets, which already include `fvm`:
+All Flutter/Dart commands **must** be prefixed with `fvm` (Flutter 3.44.7 is pinned in `.fvmrc`). Prefer the `Makefile` targets, which already include `fvm`:
 
 - `make run-dev` — run the app in the `dev` flavor (runs `pub get` + codegen first)
 - `make generate` — regenerate all codegen (`build_runner` for MobX `.g.dart`, Freezed `.freezed.dart`, JSON, Hive, asset gen) then `dart format --line-length 100`. **Always use this for codegen — do not call `build_runner` directly.**
