@@ -17,6 +17,7 @@
 		4FC2971EC5E181F7A3BDD0DB /* Pods_Runner_RunnerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2E407CE1D671151F053AAC /* Pods_Runner_RunnerUITests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
+		AB7E2F01D5B8A00000000001 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = AB7E2F01D5B8A00000000002 /* FlutterGeneratedPluginSwiftPackage */; };
 		7E7AF9F9D10CC83B5BAD0168 /* Pods_OVpnExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E28BD8191D3AA3BDEF5B6DF9 /* Pods_OVpnExtension.framework */; };
 		9729FC4D2BC6D94700E926F9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9729FC4C2BC6D94700E926F9 /* PrivacyInfo.xcprivacy */; };
 		9776639A2ECBA38400BC54E9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA225D529D42E5C001CD70B /* NetworkExtension.framework */; };
@@ -270,6 +271,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB7E2F01D5B8A00000000001 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 				4FC2971EC5E181F7A3BDD0DB /* Pods_Runner_RunnerUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,6 +522,9 @@
 				9915442F2DD20A7100D6F505 /* RunnerUITests */,
 			);
 			name = RunnerUITests;
+			packageProductDependencies = (
+				AB7E2F01D5B8A00000000002 /* FlutterGeneratedPluginSwiftPackage */,
+			);
 			productName = RunnerUITests;
 			productReference = 9915442E2DD20A7100D6F505 /* RunnerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -3264,6 +3269,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlutterGeneratedPluginSwiftPackage;
+		};
+		AB7E2F01D5B8A00000000002 /* FlutterGeneratedPluginSwiftPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlutterGeneratedPluginSwiftPackage;
 		};
