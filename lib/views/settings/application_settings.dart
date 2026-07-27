@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/push_notifications_settings.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class ApplicationSettings extends ConsumerWidget {
   const ApplicationSettings({super.key});
@@ -67,12 +66,15 @@ class ApplicationSettings extends ConsumerWidget {
                     ),
                   )
                 else
-                  Text(
-                    S.current.communicationLbl,
-                    style: theme.textStyles.textMd.regular.copyWith(
-                      color: theme.palette.textTertiary,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: theme.spacing.sm),
+                    child: Text(
+                      S.current.communicationLbl,
+                      style: theme.textStyles.textMd.regular.copyWith(
+                        color: theme.palette.textTertiary,
+                      ),
                     ),
-                  ).padding(bottom: theme.spacing.sm),
+                  ),
                 if (showPush) PushNotificationsSetting(position: pushPosition),
                 if (showEmail) EmailMarketingSetting(position: emailPosition),
               ],

@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class SubscriptionStatusContainer extends HookConsumerWidget {
   const SubscriptionStatusContainer({required this.child, super.key});
@@ -70,17 +69,21 @@ class SubscriptionStatusContainer extends HookConsumerWidget {
             plansStore.future.status == FutureStatus.pending;
 
         if (isLoading) {
-          return LoadingIndicator.message(
-            S.current.connectingToPaymentProcesor,
-            color: theme.palette.iconBrandSecondary,
-          ).center();
+          return Center(
+            child: LoadingIndicator.message(
+              S.current.connectingToPaymentProcesor,
+              color: theme.palette.iconBrandSecondary,
+            ),
+          );
         } else if (storeState == StoreState.notAvailable || (products?.isEmpty ?? true)) {
-          return RetryOnErrorWidget(
-            error: (products?.isEmpty ?? true)
-                ? S.current.productsNotAvailable
-                : S.current.unableToConnectToPaymentProcesor,
-            onRetry: refreshAll,
-          ).center();
+          return Center(
+            child: RetryOnErrorWidget(
+              error: (products?.isEmpty ?? true)
+                  ? S.current.productsNotAvailable
+                  : S.current.unableToConnectToPaymentProcesor,
+              onRetry: refreshAll,
+            ),
+          );
         }
         return ReactionBuilder(
           builder: (context) => reaction((_) => purchaseStore.subscriptionStatus, (status) {

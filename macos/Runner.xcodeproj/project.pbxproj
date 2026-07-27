@@ -27,6 +27,7 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		6198FAC921E6966AE77CE567 /* Pods_OVpnExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69537F5D7930AE56CC967958 /* Pods_OVpnExtension.framework */; };
+		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		7A3FA883AC89AF4BDA273390 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A15643BBB2264B1A29C6CE2 /* Pods_Runner.framework */; };
 		7EF7285C7C37D036965B2CA0 /* Pods_tun.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC821B0DB56E1DD3159DDD5E /* Pods_tun.framework */; };
 		977662C22ECB8F6800BC54E9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C8B25C29D46D680017C38F /* NetworkExtension.framework */; };
@@ -104,6 +105,7 @@
 		5B08E0D6EDA9068590AA7A10 /* Pods-tun.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release-dev.xcconfig"; sourceTree = "<group>"; };
 		69537F5D7930AE56CC967958 /* Pods_OVpnExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OVpnExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C3E857D1A43D3E99F193490 /* Pods-OVpnExtension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.release-dev.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.release-dev.xcconfig"; sourceTree = "<group>"; };
+		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7992B301DE97FDC5C94719E3 /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		7A15643BBB2264B1A29C6CE2 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -130,7 +132,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		977662D12ECB8F6800BC54E9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		977662D12ECB8F6800BC54E9 /* Exceptions for "OVpnExtension" folder in "OVpnExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -140,7 +142,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		977662C32ECB8F6800BC54E9 /* OVpnExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (977662D12ECB8F6800BC54E9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = OVpnExtension; sourceTree = "<group>"; };
+		977662C32ECB8F6800BC54E9 /* OVpnExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				977662D12ECB8F6800BC54E9 /* Exceptions for "OVpnExtension" folder in "OVpnExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = OVpnExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 				977D12902D5E4C6A00223A2A /* StoreKit.framework in Frameworks */,
 				977D12922D5E4C7600223A2A /* AdServices.framework in Frameworks */,
 				7A3FA883AC89AF4BDA273390 /* Pods_Runner.framework in Frameworks */,
@@ -225,6 +239,7 @@
 		33CEB47122A05771004F2AC0 /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
+				78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */,
 				335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */,
 				33CEB47222A05771004F2AC0 /* Flutter-Debug.xcconfig */,
 				33CEB47422A05771004F2AC0 /* Flutter-Release.xcconfig */,
@@ -312,7 +327,7 @@
 				97E13FD52A4F23E6000F2BBF /* Copy Goole-Service info */,
 				96349604B345CA6972A6E4E1 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 				BEB7F37DAEF057C6F6C2E176 /* [CP] Embed Pods Frameworks */,
-				5D3BDB04B8AE5EB477C1CAAA /* [CP] Copy Pods Resources */,
+				737804E25DD3DA314A9BBF1A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -322,6 +337,9 @@
 				977662C92ECB8F6800BC54E9 /* PBXTargetDependency */,
 			);
 			name = Runner;
+			packageProductDependencies = (
+				78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */,
+			);
 			productName = Runner;
 			productReference = 33CC10ED2044A3C60003C045 /* Mysterium VPN.app */;
 			productType = "com.apple.product-type.application";
@@ -407,6 +425,9 @@
 				Base,
 			);
 			mainGroup = 33CC10E42044A3C60003C045;
+			packageReferences = (
+				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
+			);
 			productRefGroup = 33CC10EE2044A3C60003C045 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -506,7 +527,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"$FLUTTER_ROOT\"/packages/flutter_tools/bin/macos_assemble.sh && touch Flutter/ephemeral/tripwire\n";
 		};
-		5D3BDB04B8AE5EB477C1CAAA /* [CP] Copy Pods Resources */ = {
+		737804E25DD3DA314A9BBF1A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2306,6 +2327,20 @@
 			defaultConfigurationName = "Release-prod";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 33CC10E52044A3C60003C045 /* Project object */;
 }

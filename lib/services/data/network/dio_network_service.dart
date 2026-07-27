@@ -16,7 +16,7 @@ class DioNetworkService extends NetworkService {
       endpoint,
       data: data,
       cancelToken: CancelToken(),
-      options: Options(headers: {...dio.options.headers, if (headers != null) ...headers}),
+      options: Options(headers: {...dio.options.headers, ...?headers}),
     );
 
     return response.Response(
@@ -35,7 +35,7 @@ class DioNetworkService extends NetworkService {
     final res = await dio.get(
       endpoint,
       queryParameters: queryParameters,
-      options: Options(headers: {...dio.options.headers, if (headers != null) ...headers}),
+      options: Options(headers: {...dio.options.headers, ...?headers}),
       cancelToken: CancelToken(),
     );
 
