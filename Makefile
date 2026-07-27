@@ -5,14 +5,17 @@ ANDROID_DEVICE_MODEL = MediumPhone.arm
 ANDROID_DEVICE_VERSION = 34
 FIREBASE_PROJECT_ID = new-mysterium-vpn
 
-# Flutter 3.44.7 defaults Swift Package Manager ON, but SPM breaks our Apple
-# builds: iOS embeds the OneSignal frameworks twice (SPM via onesignal_flutter +
-# CocoaPods NSE pod → "Multiple commands produce"), and macOS fails on patrol's
-# SPM module ("module 'PatrolImpl' not found"). We use CocoaPods, so keep SPM
-# off. app_settings is pinned to 7.0.0 (the last CocoaPods-compatible release;
-# 8.0.3 is SPM-only). Removing this line re-breaks both platforms.
+# SPM is enabled explicitly so every machine builds the same way regardless of
+# global flutter config. Apple targets use hybrid SPM + CocoaPods: SPM-capable
+# plugins resolve via FlutterGeneratedPluginSwiftPackage, the rest (WireGuardKit,
+# OpenVPNAdapter, OneSignal NSE) stay on CocoaPods. Two workarounds keep this
+# hybrid green — remove them once fixed upstream:
+# 1. ios/Podfile post_integrate strips OneSignal from CocoaPods' embed phase
+#    (SPM already embeds it; two producers = "Multiple commands produce").
+# 2. all macos Runner configs pass patrol's generated PatrolImpl modulemap via
+#    OTHER_SWIFT_FLAGS (https://github.com/leancodepl/patrol/issues/3177).
 init:
-	fvm flutter config --no-enable-swift-package-manager
+	fvm flutter config --enable-swift-package-manager
 	fvm flutter pub get
 
 run-dev: init generate
