@@ -1035,6 +1035,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0F969F4DA2DECFD2A7DC09F7 /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
@@ -1243,6 +1244,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BACD40A1D539DDD4BF2E8128 /* Pods-Runner.debug-dev.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
@@ -1377,6 +1379,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0396409251F10374BE9DA258 /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
@@ -1503,6 +1506,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C8FAC1EB378822D8D73B5FCD /* Pods-Runner.profile-dev.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
@@ -2173,6 +2177,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0D3C50D397FB137A78B3E498 /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
@@ -2209,6 +2214,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BFD9F06C1779ACD99E4DEFAD /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";

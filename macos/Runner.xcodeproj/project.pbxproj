@@ -739,6 +739,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
@@ -932,6 +933,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7992B301DE97FDC5C94719E3 /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
@@ -1013,6 +1015,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 390386498A1EB506C0362F4D /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
@@ -1765,6 +1768,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB83271AAF8776C8559C08DD /* Pods-Runner.debug-dev.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
@@ -1945,6 +1949,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
@@ -2122,6 +2127,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858BF13E46FB883F063E725 /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;

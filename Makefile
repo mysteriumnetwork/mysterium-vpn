@@ -14,6 +14,9 @@ FIREBASE_PROJECT_ID = new-mysterium-vpn
 #    (SPM already embeds it; two producers = "Multiple commands produce").
 # 2. all macos Runner configs pass patrol's generated PatrolImpl modulemap via
 #    OTHER_SWIFT_FLAGS (https://github.com/leancodepl/patrol/issues/3177).
+# 3. Runner targets set ENABLE_TESTING_SEARCH_PATHS=YES: patrol_cli builds link
+#    XCTest into the app, and SPM (unlike patrol's podspec) can't inject the
+#    developer test-framework search paths.
 init:
 	fvm flutter config --enable-swift-package-manager
 	fvm flutter pub get
