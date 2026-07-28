@@ -125,7 +125,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("请填写更多详情…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("告诉我们更多（可选）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("取消原因"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage("取消原因（可选）"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("太贵了"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage("无法访问被屏蔽的网站"),
     "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("可用性问题"),
@@ -305,6 +304,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("并非所有 VPN 都一样"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("打开电子邮件应用"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("打开系统设置"),
+    "optional": MessageLookupByLibrary.simpleMessage("可选"),
     "or": MessageLookupByLibrary.simpleMessage("或"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "我们会为你连接到最佳服务器——或者你可以手动选择国家/地区。",

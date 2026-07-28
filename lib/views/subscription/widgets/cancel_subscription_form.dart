@@ -1,6 +1,6 @@
-part of 'cancel_subscription_dialog.dart';
+part of '../cancel_subscription_flow_view.dart';
 
-class _Form extends StatelessWidget {
+class _Form extends HookWidget {
   const _Form({required this.form, required this.items});
 
   final _FormGroup form;
@@ -9,6 +9,16 @@ class _Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    useStream(form.reasons.valueChanges);
+    final showFeedback = form.reasons.value?.contains(kCancelReasonOther) ?? false;
+
+    useEffect(() {
+      if (!showFeedback) {
+        form.feedback.value = '';
+      }
+      return null;
+    }, [showFeedback]);
+
     return ReactiveForm(
       formGroup: form,
       child: Column(
@@ -16,32 +26,33 @@ class _Form extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _ReactiveReasonsField(formControlName: 'reasons', items: items),
-          Padding(
-            padding: EdgeInsets.only(top: theme.spacing.xl2),
-            child: ReactiveTextField(
-              formControlName: 'feedback',
-              maxLines: 5,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: theme.palette.bgPrimary,
-                contentPadding: const EdgeInsets.all(14),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: theme.palette.borderPrimary),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: theme.palette.borderBrand),
-                ),
-                hintText: S.current.cancelSurveyTellUsMoreHint,
-                hintMaxLines: 3,
-                hintStyle: theme.textStyles.textMd.regular.copyWith(
-                  color: theme.palette.textTertiary,
+          if (showFeedback)
+            Padding(
+              padding: EdgeInsets.only(top: theme.spacing.xl2),
+              child: ReactiveTextField(
+                formControlName: 'feedback',
+                maxLines: 5,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: theme.palette.bgPrimary,
+                  contentPadding: const EdgeInsets.all(14),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: theme.palette.borderPrimary),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: theme.palette.borderBrand),
+                  ),
+                  hintText: S.current.cancelSurveyTellUsMoreHint,
+                  hintMaxLines: 3,
+                  hintStyle: theme.textStyles.textMd.regular.copyWith(
+                    color: theme.palette.textTertiary,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -76,7 +87,7 @@ class _FeedbackLengthValidator extends Validator<dynamic> {
     }
     final reasons = form.reasons.value ?? const <String>{};
     final feedback = form.feedback.value ?? '';
-    if (reasons.every((it) => it == kCancelReasonOther) && feedback.length < minLength) {
+    if (reasons.contains(kCancelReasonOther) && feedback.length < minLength) {
       return <String, dynamic>{
         'feedbackLength': {'requiredLength': minLength, 'actualLength': feedback.length},
       };

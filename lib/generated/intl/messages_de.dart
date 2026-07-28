@@ -148,9 +148,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Erzähl uns mehr (optional)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Gründe für die Kündigung"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "Gründe für die Kündigung (optional)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Zu teuer"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Kein Zugriff auf gesperrte Seiten",
@@ -402,6 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("E-Mail-App öffnen"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Systemeinstellungen öffnen"),
+    "optional": MessageLookupByLibrary.simpleMessage("optional"),
     "or": MessageLookupByLibrary.simpleMessage("ODER"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Wir verbinden dich mit dem besten Server – oder du kannst manuell ein Land auswählen.",

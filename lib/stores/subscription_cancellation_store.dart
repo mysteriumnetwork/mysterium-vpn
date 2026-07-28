@@ -7,9 +7,6 @@ import 'package:mysterium_vpn/stores/stores.dart';
 part 'subscription_cancellation_store.g.dart';
 
 enum SubscriptionCancellationFlow {
-  /// Displays a prompt modal to confirm the cancellation.
-  prompt,
-
   /// Retrieves the reason for cancellation from the user.
   survey,
 
@@ -52,7 +49,7 @@ abstract class _SubscriptionCancellationStore with Store {
   late final RemoteConfigStore _remoteConfigStore;
 
   @observable
-  SubscriptionCancellationFlow _cancellationFlowStep = SubscriptionCancellationFlow.prompt;
+  SubscriptionCancellationFlow _cancellationFlowStep = SubscriptionCancellationFlow.survey;
 
   @computed
   SubscriptionCancellationFlow get cancellationFlowStep => _cancellationFlowStep;
@@ -89,6 +86,11 @@ abstract class _SubscriptionCancellationStore with Store {
     }
   }
 
+  /// Called when the user confirms the pre-flow cancellation prompt.
+  void onCancellationConfirmed() {
+    _analyticsStore.logCancellationStarted().ignore();
+  }
+
   @action
   Future<void> setSurvey({required Set<String> reasons, String? feedback}) async {
     if (reasons.isNotEmpty || feedback != null || feedback!.isNotEmpty) {
@@ -106,7 +108,7 @@ abstract class _SubscriptionCancellationStore with Store {
     _selectedFreezeDuration = months;
     await Future.delayed(const Duration(seconds: 3));
     // await _analyticsStore.logSubscriptionCancellationPauseDuration(months: months);
-    //TODO: Implement the logic to set the freeze duration.
+    // TODO(Mazen): Implement the logic to set the freeze duration.
     _isProcessing = false;
 
     await moveToNextStep();
@@ -123,34 +125,28 @@ abstract class _SubscriptionCancellationStore with Store {
 
   Future<void> moveToNextStep() async {
     switch (_cancellationFlowStep) {
-      case SubscriptionCancellationFlow.prompt:
-        _cancellationFlowStep = SubscriptionCancellationFlow.survey;
-        _analyticsStore.logCancellationStarted().ignore();
-        break;
       case SubscriptionCancellationFlow.survey:
         if (_freezeDurations.isEmpty) {
           _cancellationFlowStep = SubscriptionCancellationFlow.cancellationSummary;
         } else {
           _cancellationFlowStep = SubscriptionCancellationFlow.freeze;
         }
-        break;
       case SubscriptionCancellationFlow.freeze:
-        //TODO: Check if the user decided to freeze the subscription or cancel it.
+        // TODO(Mazen): Check if the user decided to freeze the subscription or cancel it.
         // If the user decided to freeze the subscription, the flow should end here.
         // If the user decided to cancel the subscription, the user should be redirected to the web flow.
         _cancellationFlowStep = SubscriptionCancellationFlow.transferToWebFlow;
-        break;
       case SubscriptionCancellationFlow.transferToWebFlow:
-        //TODO: Redirect the user to the web flow.
+        // TODO(Mazen): Redirect the user to the web flow.
         break;
       case SubscriptionCancellationFlow.cancellationSummary:
-        _cancellationFlowStep = SubscriptionCancellationFlow.prompt;
+        _cancellationFlowStep = SubscriptionCancellationFlow.survey;
     }
   }
 
   @action
   void reset() {
-    _cancellationFlowStep = SubscriptionCancellationFlow.prompt;
+    _cancellationFlowStep = SubscriptionCancellationFlow.survey;
     _isProcessing = false;
     _selectedFreezeDuration = null;
   }

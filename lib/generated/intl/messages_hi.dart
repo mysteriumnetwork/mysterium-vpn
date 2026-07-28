@@ -141,9 +141,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("कृपया और विवरण दर्ज करें…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("और बताएँ (वैकल्पिक)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("रद्द करने के कारण"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "रद्द करने के कारण (वैकल्पिक)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("बहुत महंगा"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "अवरुद्ध साइटों तक पहुँच नहीं",
@@ -387,6 +384,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("सभी VPN एक जैसे काम नहीं करते"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("ईमेल ऐप खोलें"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("सिस्टम सेटिंग्स खोलें"),
+    "optional": MessageLookupByLibrary.simpleMessage("वैकल्पिक"),
     "or": MessageLookupByLibrary.simpleMessage("या"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "हम आपको बेहतरीन सर्वर से कनेक्ट करेंगे - या आप मैन्युअल रूप से कोई देश चुन सकते हैं।",

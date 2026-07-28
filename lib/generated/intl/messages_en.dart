@@ -142,9 +142,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("Tell us more (optional)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Reasons for cancelling"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "Reasons for cancelling (optional)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Too expensive"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Unable to access blocked sites",
@@ -380,6 +377,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Not all VPNs work the same"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Open email app"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Open system settings"),
+    "optional": MessageLookupByLibrary.simpleMessage("optional"),
     "or": MessageLookupByLibrary.simpleMessage("OR"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "We\'ll connect you to the best server - or you can manually select a country.",

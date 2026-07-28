@@ -146,9 +146,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Daha fazla anlat (isteğe bağlı)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("İptal nedenleri"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "İptal nedenleri (isteğe bağlı)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Çok pahalı"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Engellenen sitelere erişemiyorum",
@@ -384,6 +381,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tüm VPN\'ler aynı çalışmaz"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("E-posta uygulamasını aç"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Sistem ayarlarını aç"),
+    "optional": MessageLookupByLibrary.simpleMessage("isteğe bağlı"),
     "or": MessageLookupByLibrary.simpleMessage("VEYA"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Seni en iyi sunucuya bağlayacağız - ya da manuel olarak bir ülke seçebilirsin.",

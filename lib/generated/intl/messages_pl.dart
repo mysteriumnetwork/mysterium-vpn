@@ -145,9 +145,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Powiedz nam więcej (opcjonalnie)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Powody anulowania"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "Powody anulowania (opcjonalnie)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Zbyt drogie"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Brak dostępu do zablokowanych stron",
@@ -393,6 +390,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Otwórz aplikację pocztową"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Otwórz ustawienia systemowe"),
+    "optional": MessageLookupByLibrary.simpleMessage("opcjonalnie"),
     "or": MessageLookupByLibrary.simpleMessage("LUB"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Połączymy Cię z najlepszym serwerem – lub możesz ręcznie wybrać kraj.",

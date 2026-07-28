@@ -98,7 +98,6 @@ class S {
     'cancelSurveyFeedbackHint': [],
     'cancelSurveyTellUsMoreHint': [],
     'cancelSurveyTitle': [],
-    'cancelSurveyTitleOptional': [],
     'cancelTooExpensive': [],
     'cancelUnableToAccessBlockedSites': [],
     'cancelUsabilityIssues': [],
@@ -264,6 +263,7 @@ class S {
     'onboardingStep3Title': [],
     'openEmailApp': [],
     'openSystemSettingsBtn': [],
+    'optional': [],
     'or': [],
     'orSelectCountryManually': [],
     'otherReason': [],
@@ -777,16 +777,6 @@ class S {
   /// `Reasons for cancelling`
   String get cancelSurveyTitle {
     return Intl.message('Reasons for cancelling', name: 'cancelSurveyTitle', desc: '', args: []);
-  }
-
-  /// `Reasons for cancelling (optional)`
-  String get cancelSurveyTitleOptional {
-    return Intl.message(
-      'Reasons for cancelling (optional)',
-      name: 'cancelSurveyTitleOptional',
-      desc: '',
-      args: [],
-    );
   }
 
   /// `Too expensive`
@@ -1933,6 +1923,11 @@ class S {
   /// `Open system settings`
   String get openSystemSettingsBtn {
     return Intl.message('Open system settings', name: 'openSystemSettingsBtn', desc: '', args: []);
+  }
+
+  /// `optional`
+  String get optional {
+    return Intl.message('optional', name: 'optional', desc: '', args: []);
   }
 
   /// `OR`

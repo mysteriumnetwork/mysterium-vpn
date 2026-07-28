@@ -144,9 +144,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dis-nous en plus (facultatif)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motifs d\'annulation"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "Motifs d\'annulation (facultatif)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Trop cher"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Impossible d\'accéder aux sites bloqués",
@@ -392,6 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tous les VPN ne se valent pas"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Ouvrir l\'application e-mail"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Ouvrir les paramètres système"),
+    "optional": MessageLookupByLibrary.simpleMessage("facultatif"),
     "or": MessageLookupByLibrary.simpleMessage("OU"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Nous te connecterons au meilleur serveur, ou tu peux sélectionner un pays manuellement.",

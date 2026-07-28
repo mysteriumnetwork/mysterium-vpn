@@ -127,7 +127,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("詳細を入力してください…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("詳しく教えて（任意）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("キャンセルの理由"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage("キャンセルの理由（任意）"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("高すぎる"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage("ブロックされたサイトにアクセスできない"),
     "cancelUsabilityIssues": MessageLookupByLibrary.simpleMessage("使いやすさの問題"),
@@ -333,6 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("すべての VPN が同じではありません"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("メールアプリを開く"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("システム設定を開く"),
+    "optional": MessageLookupByLibrary.simpleMessage("任意"),
     "or": MessageLookupByLibrary.simpleMessage("または"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "最適なサーバーに接続します。または国を手動で選択できます。",

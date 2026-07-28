@@ -140,9 +140,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("Introduce más detalles..."),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("Cuéntanos más (opcional)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivos de cancelación"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "Motivos de cancelación (opcional)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Demasiado caro"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "No puedo acceder a sitios bloqueados",
@@ -394,6 +391,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Abrir app de correo"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Abrir ajustes del sistema"),
+    "optional": MessageLookupByLibrary.simpleMessage("opcional"),
     "or": MessageLookupByLibrary.simpleMessage("O"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Te conectaremos al mejor servidor, o puedes elegir un país manualmente.",

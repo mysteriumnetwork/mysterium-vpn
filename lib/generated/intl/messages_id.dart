@@ -143,9 +143,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ceritakan lebih lanjut (opsional)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Alasan pembatalan"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage(
-      "Alasan pembatalan (opsional)",
-    ),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Terlalu mahal"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "Tidak dapat mengakses situs yang diblokir",
@@ -375,6 +372,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tidak semua VPN bekerja sama"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Buka aplikasi email"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Buka pengaturan sistem"),
+    "optional": MessageLookupByLibrary.simpleMessage("opsional"),
     "or": MessageLookupByLibrary.simpleMessage("ATAU"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Kami akan menghubungkanmu ke server terbaik - atau kamu bisa memilih negara secara manual.",

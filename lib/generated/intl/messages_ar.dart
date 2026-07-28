@@ -142,7 +142,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("أخبرنا بالمزيد (اختياري)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
-    "cancelSurveyTitleOptional": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء (اختياري)"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
       "غير قادر على الوصول إلى المواقع المحجوبة",
@@ -380,6 +379,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("ليست كل شبكات VPN متشابهة"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("فتح تطبيق البريد الإلكتروني"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("فتح إعدادات النظام"),
+    "optional": MessageLookupByLibrary.simpleMessage("اختياري"),
     "or": MessageLookupByLibrary.simpleMessage("أو"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "سنوصلك بأفضل خادم — أو يمكنك اختيار دولة يدويًا.",
