@@ -79,7 +79,9 @@ jobs:
 
       - name: Install Patrol CLI
         run: |
-          dart pub global activate patrol_cli 4.3.1
+          # 4.6.1+ required with SPM: older CLIs pass PATROL_ENABLED via OTHER_SWIFT_FLAGS,
+          # which never reaches the patrol Swift package — tests silently compile to stubs.
+          dart pub global activate patrol_cli 4.6.1
           patrol --version
 
       - name: Setup Android keystore

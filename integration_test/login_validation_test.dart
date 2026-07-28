@@ -11,7 +11,7 @@ void main() {
   });
 
   patrolTest('Login validation: an invalid email keeps the user on the login screen', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
 
     await $(#loginPage).waitUntilVisible();
     await $(#loginEmailField).enterText('not-an-email');

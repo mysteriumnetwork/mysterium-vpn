@@ -11,7 +11,7 @@ void main() {
   });
 
   patrolTest('Connection: change the content blocker when available', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
 
     await openSettingsCategory($, #settingsConnectionCategory);

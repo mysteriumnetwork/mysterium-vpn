@@ -15,6 +15,8 @@ All Flutter/Dart commands **must** be prefixed with `fvm` (Flutter 3.44.7 is pin
 - `make run-unit-tests` — full unit-test suite; runs once with `.env.dev` and once with `.env.prod` (the second pass only re-runs `env_test.dart`)
 - `make clean` — `flutter clean`
 
+Apple builds are hybrid Swift Package Manager + CocoaPods (`make init` enables SPM explicitly). Do not disable SPM or remove the workarounds documented in the Makefile header (OneSignal embed strip in `ios/Podfile`, PatrolImpl modulemap flag in the macOS Runner configs).
+
 Single test / targeted runs (unit & widget tests need the dotenv defines):
 
 ```

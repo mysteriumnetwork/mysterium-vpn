@@ -67,5 +67,21 @@ end
 
 target 'OneSignalNotificationServiceExtension' do
   use_frameworks!
-  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
+  # Keep in lockstep with the OneSignal-XCFramework version pinned by
+  # onesignal_flutter's Package.swift — SPM embeds these frameworks at runtime.
+  pod 'OneSignalXCFramework', '5.5.5'
+end
+
+# onesignal_flutter resolves via SPM, which already embeds the OneSignal
+# frameworks into Runner.app/Frameworks. CocoaPods hoists the NSE's OneSignal
+# pod into Runner's embed phase too, so the same frameworks get two producers
+# ("Multiple commands produce"). Strip OneSignal from the CocoaPods embed
+# script and its declared outputs; the pod remains only the NSE's link-time
+# dependency, and at runtime the NSE loads SPM's copies from the host app.
+post_integrate do |installer|
+  support_dir = File.join(__dir__, 'Pods', 'Target Support Files', 'Pods-Runner')
+  Dir.glob(File.join(support_dir, 'Pods-Runner-frameworks*')).each do |file|
+    stripped = File.read(file).lines.reject { |line| line.include?('OneSignal') }.join
+    File.write(file, stripped)
+  end
 end

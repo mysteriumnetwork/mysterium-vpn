@@ -11,7 +11,7 @@ void main() {
   });
 
   patrolTest('Logout: from Settings > Account returns to the login screen', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
     await logout($);
   });

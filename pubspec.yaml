@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   app_links: 7.0.0
-  app_settings: 7.0.0
+  app_settings: 8.0.3
   auto_size_text: 3.0.0
   beamer: 1.7.0
   circle_flags: 5.0.1
@@ -117,14 +117,16 @@ dev_dependencies:
   intl_utils: ^2.8.10
   json_serializable: 6.13.0
   mobx_codegen: 2.7.7
-  mockito: 5.7.0
+  mockito: 5.6.4
   msix: 3.18.0
-  patrol: 4.7.1
+  patrol: 4.8.0
   plugin_platform_interface: 2.1.8
   url_launcher_platform_interface: 2.3.2
 
 dependency_overrides:
   # mockito >=5.6.5 needs analyzer ^13, incompatible with mobx_codegen 2.7.7 (analyzer <13).
+  # Override needed because wireguard_dart wrongly ships mockito 5.7.0 as a regular
+  # dependency — drop this once wireguard_dart moves it to dev_dependencies.
   mockito: 5.6.4
 
 msix_config:
