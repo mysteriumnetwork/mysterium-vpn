@@ -11,7 +11,7 @@ void main() {
   });
 
   patrolTest('Navigation: each bottom-nav tab opens its screen', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
 
     // Map is the landing tab — its connection status bar is showing.

@@ -11,7 +11,7 @@ void main() {
   });
 
   patrolTest('Preferences: change the app theme', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
 
     await openSettingsCategory($, #settingsPreferencesCategory);

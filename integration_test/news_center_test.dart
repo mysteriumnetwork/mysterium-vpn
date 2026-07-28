@@ -13,7 +13,7 @@ void main() {
   });
 
   patrolTest('News Center: header bell opens the feed and back returns home', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
 
     // Land on home (map is the landing tab).
@@ -28,7 +28,7 @@ void main() {
   });
 
   patrolTest('News Center: the feed resolves to a real state, not a stuck spinner', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
     await $(#connectionStatusBar).waitUntilVisible();
 

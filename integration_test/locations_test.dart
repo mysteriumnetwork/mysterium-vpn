@@ -12,7 +12,7 @@ void main() {
   });
 
   patrolTest('Locations: the locations tab opens with its search field', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     await loginWithEnv($);
 
     await $(#locationsTab).waitUntilVisible();

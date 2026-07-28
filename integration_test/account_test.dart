@@ -12,7 +12,7 @@ void main() {
   });
 
   patrolTest('Account: the settings account screen shows the signed-in email', ($) async {
-    await $.pumpWidgetAndSettle(environment.getApp());
+    await pumpApp($, environment);
     const email = String.fromEnvironment('LOGIN_EMAIL');
     await login($, email);
 
