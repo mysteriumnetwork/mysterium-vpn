@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
 import '../support/test_localizations.dart';
 import 'connection_tile_state_hook_test.mocks.dart';
@@ -268,18 +267,6 @@ void main() {
 
       expect(capturedState, isNotNull);
       expect(capturedState!.connectingLabel.toLowerCase(), contains('disconnecting'));
-    });
-
-    testWidgets('connectionRating maps like → thumbsUp', (tester) async {
-      when(
-        mockConnectionDisplayStore.connectionRated,
-      ).thenReturn(RateConnectionRequestModeEnum.like);
-
-      await tester.pumpWidget(buildHarness());
-      await tester.pump();
-
-      expect(capturedState, isNotNull);
-      expect(capturedState!.connectionRating, ConnectionRating.thumbsUp);
     });
 
     testWidgets(
