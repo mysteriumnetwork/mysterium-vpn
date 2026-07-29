@@ -65,28 +65,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m19(date) => "Sonraki Faturalandırma: ${date}";
 
-  static String m20(protocol, label) => "${protocol} (${label})";
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', one: '${count} ay duraklat', other: '${count} ay duraklat')}";
 
-  static String m21(location) => "${location} yenile";
+  static String m21(protocol, label) => "${protocol} (${label})";
 
-  static String m22(count) =>
+  static String m22(location) => "${location} yenile";
+
+  static String m23(count) =>
       "${Intl.plural(count, one: 'Tekrar gönder', other: 'Tekrar gönder (${count})')}";
 
-  static String m23(percent) => "%${percent} tasarruf";
+  static String m24(percent) => "%${percent} tasarruf";
 
-  static String m24(percent, planId) => "${planId} planıyla %${percent} tasarruf";
-
-  static String m25(plan) => "${plan} planına yükselt";
+  static String m25(percent, planId) => "${planId} planıyla %${percent} tasarruf";
 
   static String m26(plan) => "${plan} planına yükselt";
 
-  static String m27(location) => "${location} konumuna geç";
+  static String m27(plan) => "${plan} planına yükselt";
 
-  static String m28(word) => "${word} yaz";
+  static String m28(location) => "${location} konumuna geç";
+
+  static String m29(word) => "${word} yaz";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "LoggingYouIn": MessageLookupByLibrary.simpleMessage("Giriş yapılıyor..."),
+    "acceptOfferBtn": MessageLookupByLibrary.simpleMessage("Teklifi kabul et"),
+    "accessAvailableUntilLbl": MessageLookupByLibrary.simpleMessage("Erişim şu tarihe kadar:"),
     "accessBlockedSitesReason": MessageLookupByLibrary.simpleMessage(
       "Engellenen sitelere erişilemiyor",
     ),
@@ -127,8 +132,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelLatency": MessageLookupByLibrary.simpleMessage("Gecikme"),
     "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Eksik özellikler"),
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("Hız"),
+    "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
+      "Aboneliğini iptal etmek istediğinden emin misin?",
+    ),
+    "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Aboneliği iptal et"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Aboneliğin iptal edilecek. Erişimin bitene kadar Mysterium VPN’i kullanmaya devam edebilirsin.",
+    ),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Lütfen daha fazla ayrıntı gir...",
+    ),
+    "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
+      "Daha fazla anlat (isteğe bağlı)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("İptal nedenleri"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Çok pahalı"),
@@ -139,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Hesabını silmeden önce App Store aboneliklerinden aboneliğini iptal et.",
     ),
+    "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("İptal tarihi:"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Plan bilgilerine ulaşamıyoruz.",
     ),
@@ -153,15 +169,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("İLETİŞİM"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Tamamla"),
     "confirm": MessageLookupByLibrary.simpleMessage("Onayla"),
+    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("İptali onayla"),
     "connect": MessageLookupByLibrary.simpleMessage("Bağlan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("En iyi sunucu"),
     "connectToLocationBtn": m3,
     "connected": MessageLookupByLibrary.simpleMessage("Bağlandı"),
+    "connectedSince": MessageLookupByLibrary.simpleMessage("Bağlantı süresi"),
     "connecting": MessageLookupByLibrary.simpleMessage("Bağlanıyor"),
     "connectingToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Ödeme işlemcisine bağlanılıyor...",
     ),
     "connection": MessageLookupByLibrary.simpleMessage("Bağlantı"),
+    "connectionDetails": MessageLookupByLibrary.simpleMessage("Bağlantı ayrıntıları"),
     "connectionSettingLbl": MessageLookupByLibrary.simpleMessage("Bağlantı ve Koruma"),
     "connectionTimeout": MessageLookupByLibrary.simpleMessage(
       "Bağlantı zaman aşımına uğradı. Lütfen daha sonra tekrar dene. Sorun devam ederse destek ekibiyle iletişime geç",
@@ -171,6 +190,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Yalnızca talep eden cihazda çalışır - devam etmek için e-postandaki bağlantıya dokun.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Devam et"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "İptali tamamlamak için Mysterium VPN web sitesine yönlendirileceksin.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "İptale web’de devam et",
+    ),
+    "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("İptale devam et"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Siteye git"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Apple ile devam et"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("E-posta ile devam et"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Google ile devam et"),
@@ -197,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Yalnızca"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS koruması"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("DNS sızıntılarını önler"),
+    "doneBtn": MessageLookupByLibrary.simpleMessage("Tamam"),
     "duration": MessageLookupByLibrary.simpleMessage("Süre"),
     "email": MessageLookupByLibrary.simpleMessage("E-posta adresi"),
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("E-posta adresi geçerli değil"),
@@ -252,9 +280,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Hatalı sihirli bağlantı. Lütfen tekrar dene.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP adresi"),
+    "ipDetails": MessageLookupByLibrary.simpleMessage("IP ayrıntıları"),
+    "ipPool": MessageLookupByLibrary.simpleMessage("IP havuzu"),
     "ipPoolLabel": m10,
     "ipRefreshExhaustedCity": m11,
     "ipRefreshExhaustedCountry": m12,
+    "ipType": MessageLookupByLibrary.simpleMessage("IP türü"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("Veri merkezi IP\'leri"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Hız ve performans için optimize edilmiş veri merkezi IP\'leri.",
@@ -272,6 +303,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "it": MessageLookupByLibrary.simpleMessage("İtalyanca"),
     "italy": MessageLookupByLibrary.simpleMessage("İtalya"),
     "ja": MessageLookupByLibrary.simpleMessage("Japonca"),
+    "keepSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Aboneliği koru"),
     "killSwitch": MessageLookupByLibrary.simpleMessage("Kill switch"),
     "killSwitchDesc": MessageLookupByLibrary.simpleMessage(
       "VPN bağlantısı kesilirse internet trafiğini engeller",
@@ -316,10 +348,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "marketingConsentPopupTitle": MessageLookupByLibrary.simpleMessage("E-postayla güncel kal"),
     "month": MessageLookupByLibrary.simpleMessage("ay"),
     "monthly": MessageLookupByLibrary.simpleMessage("aylık"),
+    "myIp": MessageLookupByLibrary.simpleMessage("IP adresim"),
     "navLocations": MessageLookupByLibrary.simpleMessage("Konumlar"),
     "navMap": MessageLookupByLibrary.simpleMessage("Harita"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Ürünler"),
     "nextBilling": m19,
+    "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Sonraki fatura tarihi:"),
     "no": MessageLookupByLibrary.simpleMessage("Hayır"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Etkin aboneliğin yok"),
     "noEmailApp": MessageLookupByLibrary.simpleMessage("Cihazında e-posta uygulaması yok."),
@@ -333,6 +367,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noneLbl": MessageLookupByLibrary.simpleMessage("Hiçbiri"),
     "notAvailableMsg": MessageLookupByLibrary.simpleMessage("Kullanılamıyor"),
     "notNowBtn": MessageLookupByLibrary.simpleMessage("Şimdi değil"),
+    "notReadyToCancelTitle": MessageLookupByLibrary.simpleMessage(
+      "Henüz iptal etmeye hazır değil misin?",
+    ),
     "nsfwLbl": MessageLookupByLibrary.simpleMessage("NSFW ve Kötü Amaçlı Yazılım"),
     "onboardingStep1Desc": MessageLookupByLibrary.simpleMessage(
       "IP adresin ve konumun web sitelerine, izleme araçlarına ve halka açık Wi-Fi ağlarına görünür durumda.",
@@ -350,11 +387,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tüm VPN\'ler aynı çalışmaz"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("E-posta uygulamasını aç"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Sistem ayarlarını aç"),
+    "optional": MessageLookupByLibrary.simpleMessage("isteğe bağlı"),
     "or": MessageLookupByLibrary.simpleMessage("VEYA"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Seni en iyi sunucuya bağlayacağız - ya da manuel olarak bir ülke seçebilirsin.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Diğer..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Lütfen bir duraklatma süresi seç.",
+    ),
+    "pauseForMonths": m20,
+    "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Aboneliği duraklat"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Aboneliğini faturalandırma döngüsü başına bir kez duraklatabilirsin.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Devam eden bir ödeme işlemin zaten var. Yeni bir işlem başlatmadan önce lütfen bunu tamamla.",
     ),
@@ -415,7 +461,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN ürünleri"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("KORUMALI"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protokol"),
-    "protocolLabel": m20,
+    "protocolLabel": m21,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "VPN protokolünü değiştirmek bağlantını kesecek. Sonrasında yeniden bağlanman gerekir.",
     ),
@@ -438,6 +484,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bağlantın nasıl?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Neyi beğenmedin?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Neyi beğendin?"),
+    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
+      "Erişimin bitmeden aboneliğini istediğin zaman yeniden etkinleştirebilirsin.",
+    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Son konumlar"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("İndirim kodunu kullan"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -446,7 +495,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Yenile"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP\'yi yenile"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP adresini yenile"),
-    "refreshLocationsTooltip": m21,
+    "refreshLocationsTooltip": m22,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Bir şey çalışmadığında sıfırla"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Uygulamayı sıfırlamaya devam edersen Mysterium VPN bağlantın kesilir.",
@@ -504,7 +553,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Devam etmek için e-posta uygulaması seç",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("altı ayda bir"),
-    "sendAgain": m22,
+    "sendAgain": m23,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar dene..",
     ),
@@ -533,6 +582,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Kararlı bağlantı"),
     "status": MessageLookupByLibrary.simpleMessage("Durum"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Kal"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Uygulamada kal"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Gönder"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Web\'de abone ol"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(
@@ -548,6 +598,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 Yıl"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Tüm planlar"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Planını yükselt"),
+    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Abonelik iptal edildi"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "VPN protokolleri ve kötü amaçlı yazılım engelleme gibi gelişmiş özellikleri keşfet.",
     ),
@@ -641,8 +692,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Normal bir ev kullanıcısı gibi görünerek streaming hizmetlerine erişmeni ve VPN tespitinden kaçınmanı sağlar.",
     ),
-    "subscriptionPlanSavePercent": m23,
-    "subscriptionPlanSaveWith": m24,
+    "subscriptionPlanSavePercent": m24,
+    "subscriptionPlanSaveWith": m25,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Sunucular"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage(
       "Desteklenen ülkeler",
@@ -655,17 +706,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aboneliğindeki değişiklikleri tamamlamadın.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Yükselt"),
-    "subscriptionUpgradeCTA": m25,
+    "subscriptionUpgradeCTA": m26,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7.500+ konut IP\'ye erişmek için",
     ),
-    "subscriptionUpgradeModalTitle": m26,
+    "subscriptionUpgradeModalTitle": m27,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage(
       "Doğrulamayı Yeniden Dene",
     ),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abonelik"),
-    "switchToLocationBtn": m27,
+    "switchToLocationBtn": m28,
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("İnterneti geri al."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Şartlar ve Koşullar"),
@@ -693,7 +744,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "VPN tünelini başlatmak için izin vermen gerekiyor.",
     ),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("Tünel kurulurken bir hata oluştu"),
-    "typeDelete": m28,
+    "typeDelete": m29,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Geri bildirimini buraya yaz..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukrayna"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
@@ -735,6 +786,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage("Tüm özellikleri gör"),
     "viewLessBtn": MessageLookupByLibrary.simpleMessage("Daha az göster"),
     "vodafoneLbl": MessageLookupByLibrary.simpleMessage("Vodafone Iberia"),
+    "vpnDetails": MessageLookupByLibrary.simpleMessage("VPN ayrıntıları"),
+    "vpnIp": MessageLookupByLibrary.simpleMessage("VPN IP\'si"),
     "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage("VPN protokolü"),
     "year": MessageLookupByLibrary.simpleMessage("yıl"),
     "yearly": MessageLookupByLibrary.simpleMessage("yıllık"),
