@@ -238,7 +238,12 @@ class _ConnectedSinceCard extends HookWidget {
       return timer.cancel;
     }, [connectedAt]);
 
-    final elapsed = connectedAt == null ? Duration.zero : now.value.difference(connectedAt!);
+    // Clamp: the device clock can move backwards while connected (or a
+    // persisted connectedAt can be in the future), yielding a negative diff.
+    var elapsed = connectedAt == null ? Duration.zero : now.value.difference(connectedAt!);
+    if (elapsed.isNegative) {
+      elapsed = Duration.zero;
+    }
     return DetailCard(
       title: S.current.connectedSince,
       value: elapsed.toHoursMinutesSeconds(),

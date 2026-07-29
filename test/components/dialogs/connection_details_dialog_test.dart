@@ -193,6 +193,13 @@ void main() {
     await tester.pump(const Duration(seconds: 5));
   });
 
+  testWidgets('connected-since clamps to zero when connectedAt is in the future', (tester) async {
+    when(vpnStore.connectedAt).thenReturn(DateTime.now().add(const Duration(hours: 2)));
+    await openDialog(tester);
+
+    expect(find.text('00:00:00'), findsOneWidget);
+  });
+
   testWidgets('shows getting-IP status while fetching config', (tester) async {
     when(vpnStore.isFetchingConfig).thenReturn(true);
     await openDialog(tester);
