@@ -32,4 +32,5 @@ enum StorageKeys {
   reviewPromptShownTimestamps,
   reviewNativeReviewOpenedAt,
   newsCenterReadIds,
+  connectedAt,
 }
