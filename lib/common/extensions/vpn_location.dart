@@ -58,3 +58,15 @@ extension VPNLocationExtensions on VPNLocation {
 
   String get shortString => '${{id, countryCode}.join('-')} ($nodeCount)';
 }
+
+/// Country/city display names for a location and its optional parent: with a
+/// parent, the parent names the country and the location the city; without
+/// one, the location itself is the country.
+({String country, String city}) locationDisplayNames(
+  BuildContext context, {
+  required VPNLocation? location,
+  required VPNLocation? parent,
+}) => (
+  country: parent?.getName(context) ?? location?.getName(context) ?? '',
+  city: parent != null ? location?.getName(context) ?? '' : '',
+);

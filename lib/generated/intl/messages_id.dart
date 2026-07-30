@@ -64,28 +64,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m19(date) => "Tagihan Berikutnya: ${date}";
 
-  static String m20(protocol, label) => "${protocol} (${label})";
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', other: 'Jeda selama ${count} bulan')}";
 
-  static String m21(location) => "Segarkan ${location}";
+  static String m21(protocol, label) => "${protocol} (${label})";
 
-  static String m22(count) =>
+  static String m22(location) => "Segarkan ${location}";
+
+  static String m23(count) =>
       "${Intl.plural(count, zero: 'Kirim lagi', one: 'Kirim lagi', other: 'Kirim lagi (${count})')}";
 
-  static String m23(percent) => "Hemat ${percent}%";
+  static String m24(percent) => "Hemat ${percent}%";
 
-  static String m24(percent, planId) => "Hemat ${percent}% dengan paket ${planId}";
+  static String m25(percent, planId) => "Hemat ${percent}% dengan paket ${planId}";
 
-  static String m25(plan) => "Tingkatkan ke ${plan}";
+  static String m26(plan) => "Tingkatkan ke ${plan}";
 
-  static String m26(plan) => "Tingkatkan ke paket ${plan}";
+  static String m27(plan) => "Tingkatkan ke paket ${plan}";
 
-  static String m27(location) => "Beralih ke ${location}";
+  static String m28(location) => "Beralih ke ${location}";
 
-  static String m28(word) => "Ketik ${word}";
+  static String m29(word) => "Ketik ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "LoggingYouIn": MessageLookupByLibrary.simpleMessage("Sedang masuk..."),
+    "acceptOfferBtn": MessageLookupByLibrary.simpleMessage("Terima penawaran"),
+    "accessAvailableUntilLbl": MessageLookupByLibrary.simpleMessage("Akses tersedia hingga:"),
     "accessBlockedSitesReason": MessageLookupByLibrary.simpleMessage(
       "Tidak bisa mengakses situs yang diblokir",
     ),
@@ -124,8 +129,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelLatency": MessageLookupByLibrary.simpleMessage("Latensi"),
     "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Fitur hilang"),
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("Kecepatan"),
+    "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
+      "Yakin ingin membatalkan langgananmu?",
+    ),
+    "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Batalkan langganan"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Langgananmu akan dibatalkan. Kamu tetap bisa memakai Mysterium VPN hingga aksesmu berakhir.",
+    ),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Masukkan detail selengkapnya...",
+    ),
+    "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
+      "Ceritakan lebih lanjut (opsional)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Alasan pembatalan"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Terlalu mahal"),
@@ -136,6 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Batalkan langgananmu di langganan App Store sebelum menghapus akun.",
     ),
+    "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal pembatalan:"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Kami tidak bisa mengambil info paketmu.",
     ),
@@ -148,15 +164,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("KOMUNIKASI"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Selesai"),
     "confirm": MessageLookupByLibrary.simpleMessage("Konfirmasi"),
+    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Konfirmasi pembatalan"),
     "connect": MessageLookupByLibrary.simpleMessage("Hubungkan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Server terbaik"),
     "connectToLocationBtn": m3,
     "connected": MessageLookupByLibrary.simpleMessage("Terhubung"),
+    "connectedSince": MessageLookupByLibrary.simpleMessage("Durasi koneksi"),
     "connecting": MessageLookupByLibrary.simpleMessage("Menghubungkan"),
     "connectingToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Menghubungkan ke pemroses pembayaran...",
     ),
     "connection": MessageLookupByLibrary.simpleMessage("Koneksi"),
+    "connectionDetails": MessageLookupByLibrary.simpleMessage("Detail koneksi"),
     "connectionSettingLbl": MessageLookupByLibrary.simpleMessage("Koneksi & Perlindungan"),
     "connectionTimeout": MessageLookupByLibrary.simpleMessage(
       "Koneksi habis waktu. Coba lagi nanti. Jika masalah berlanjut, hubungi tim dukungan",
@@ -166,6 +185,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ini hanya berfungsi di perangkat yang memintanya - klik tautan di emailmu untuk lanjut.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Lanjut"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu akan diarahkan ke situs Mysterium VPN untuk menyelesaikan pembatalan.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "Lanjutkan pembatalan di web",
+    ),
+    "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("Lanjut batalkan"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Lanjut ke situs"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Email"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Google"),
@@ -192,6 +219,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Cuma"),
     "dns": MessageLookupByLibrary.simpleMessage("Perlindungan DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Mencegah kebocoran DNS"),
+    "doneBtn": MessageLookupByLibrary.simpleMessage("Selesai"),
     "duration": MessageLookupByLibrary.simpleMessage("Durasi"),
     "email": MessageLookupByLibrary.simpleMessage("Alamat email"),
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("Alamat email tidak valid"),
@@ -247,9 +275,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Lokasi salah"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage("Magic link salah. Coba lagi."),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Alamat IP"),
+    "ipDetails": MessageLookupByLibrary.simpleMessage("Detail IP"),
+    "ipPool": MessageLookupByLibrary.simpleMessage("Pool IP"),
     "ipPoolLabel": m10,
     "ipRefreshExhaustedCity": m11,
     "ipRefreshExhaustedCountry": m12,
+    "ipType": MessageLookupByLibrary.simpleMessage("Jenis IP"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter dioptimalkan untuk kecepatan dan performa.",
@@ -267,6 +298,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "it": MessageLookupByLibrary.simpleMessage("Italia"),
     "italy": MessageLookupByLibrary.simpleMessage("Italia"),
     "ja": MessageLookupByLibrary.simpleMessage("Jepang"),
+    "keepSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pertahankan langganan"),
     "killSwitch": MessageLookupByLibrary.simpleMessage("Kill switch"),
     "killSwitchDesc": MessageLookupByLibrary.simpleMessage(
       "Memblokir lalu lintas internet jika koneksi VPN terputus",
@@ -309,10 +341,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "marketingConsentPopupTitle": MessageLookupByLibrary.simpleMessage("Tetap terkini lewat email"),
     "month": MessageLookupByLibrary.simpleMessage("bulan"),
     "monthly": MessageLookupByLibrary.simpleMessage("bulanan"),
+    "myIp": MessageLookupByLibrary.simpleMessage("IP saya"),
     "navLocations": MessageLookupByLibrary.simpleMessage("Lokasi"),
     "navMap": MessageLookupByLibrary.simpleMessage("Peta"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Produk"),
     "nextBilling": m19,
+    "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal penagihan berikutnya:"),
     "no": MessageLookupByLibrary.simpleMessage("Tidak"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Kamu tidak punya langganan aktif"),
     "noEmailApp": MessageLookupByLibrary.simpleMessage("Tidak ada aplikasi email di perangkatmu."),
@@ -326,6 +360,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noneLbl": MessageLookupByLibrary.simpleMessage("Tidak ada"),
     "notAvailableMsg": MessageLookupByLibrary.simpleMessage("Tidak tersedia"),
     "notNowBtn": MessageLookupByLibrary.simpleMessage("Nanti saja"),
+    "notReadyToCancelTitle": MessageLookupByLibrary.simpleMessage("Belum siap membatalkan?"),
     "nsfwLbl": MessageLookupByLibrary.simpleMessage("NSFW & Malware"),
     "onboardingStep1Desc": MessageLookupByLibrary.simpleMessage(
       "IP dan lokasimu terlihat oleh situs, pelacak, dan jaringan Wi-Fi publik.",
@@ -343,11 +378,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("Tidak semua VPN bekerja sama"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Buka aplikasi email"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Buka pengaturan sistem"),
+    "optional": MessageLookupByLibrary.simpleMessage("opsional"),
     "or": MessageLookupByLibrary.simpleMessage("ATAU"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Kami akan menghubungkanmu ke server terbaik - atau kamu bisa memilih negara secara manual.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Lainnya..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Pilih salah satu durasi jeda.",
+    ),
+    "pauseForMonths": m20,
+    "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Jeda langganan"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Kamu sudah punya transaksi pembayaran yang berjalan. Selesaikan dulu sebelum memulai yang baru.",
     ),
@@ -406,7 +450,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("Produk VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("TERLINDUNGI"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protokol"),
-    "protocolLabel": m20,
+    "protocolLabel": m21,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Mengganti protokol VPN akan memutuskan koneksimu. Kamu perlu menyambung ulang setelahnya.",
     ),
@@ -427,6 +471,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bagaimana koneksimu?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Apa yang kurang kamu suka?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Apa yang kamu suka?"),
+    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu bisa mengaktifkan ulang langgananmu kapan saja sebelum aksesmu berakhir.",
+    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Lokasi terkini"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Tukarkan kode diskon"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -435,7 +482,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Segarkan"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Segarkan IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Segarkan alamat IP"),
-    "refreshLocationsTooltip": m21,
+    "refreshLocationsTooltip": m22,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Reset saat ada yang tidak berfungsi"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Jika kamu lanjut mereset aplikasi, kamu akan terputus dari Mysterium VPN.",
@@ -491,7 +538,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("Lihat paket"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("Pilih Aplikasi Email untuk Lanjut"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("per semester"),
-    "sendAgain": m22,
+    "sendAgain": m23,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Kami sedang mengalami gangguan jaringan sementara. Coba lagi nanti..",
     ),
@@ -516,6 +563,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Koneksi stabil"),
     "status": MessageLookupByLibrary.simpleMessage("Status"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Tetap di sini"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Tetap di aplikasi"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Kirim"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Berlangganan di web"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(
@@ -531,6 +579,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 Tahun"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Semua paket"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan paketmu"),
+    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Langganan dibatalkan"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Jelajahi fitur canggih seperti protokol VPN dan pemblokiran malware.",
     ),
@@ -626,8 +675,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Tampil sebagai pengguna rumahan biasa, memungkinkanmu mengakses layanan streaming dan menghindari deteksi VPN.",
     ),
-    "subscriptionPlanSavePercent": m23,
-    "subscriptionPlanSaveWith": m24,
+    "subscriptionPlanSavePercent": m24,
+    "subscriptionPlanSaveWith": m25,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Server"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("Negara didukung"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("Protokol VPN"),
@@ -638,15 +687,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kamu belum menyelesaikan perubahan pada langgananmu.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan"),
-    "subscriptionUpgradeCTA": m25,
+    "subscriptionUpgradeCTA": m26,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "untuk mengakses 7.500+ IP residensial",
     ),
-    "subscriptionUpgradeModalTitle": m26,
+    "subscriptionUpgradeModalTitle": m27,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Lihat semua paket"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("Ulangi Verifikasi"),
     "subscripton": MessageLookupByLibrary.simpleMessage("Langganan"),
-    "switchToLocationBtn": m27,
+    "switchToLocationBtn": m28,
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Rebut kembali internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Syarat dan Ketentuan"),
@@ -674,7 +723,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Terjadi kesalahan saat menyiapkan tunnel",
     ),
-    "typeDelete": m28,
+    "typeDelete": m29,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Ketik masukanmu di sini..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
@@ -716,6 +765,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage("Lihat semua fitur"),
     "viewLessBtn": MessageLookupByLibrary.simpleMessage("Tampilkan lebih sedikit"),
     "vodafoneLbl": MessageLookupByLibrary.simpleMessage("Vodafone Iberia"),
+    "vpnDetails": MessageLookupByLibrary.simpleMessage("Detail VPN"),
+    "vpnIp": MessageLookupByLibrary.simpleMessage("IP VPN"),
     "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage("Protokol VPN"),
     "year": MessageLookupByLibrary.simpleMessage("tahun"),
     "yearly": MessageLookupByLibrary.simpleMessage("tahunan"),

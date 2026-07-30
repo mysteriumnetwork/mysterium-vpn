@@ -100,11 +100,13 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
+  final SharedPreferenceService _prefs = SharedPreferenceService.instance;
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
   ReactionDisposer? _authReactionDisposer;
   ReactionDisposer? _protocolReactionDisposer;
+  ReactionDisposer? _connectedAtReactionDisposer;
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -114,6 +116,12 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @readonly
   VpnConnectionStatus _connectionStatus = VpnConnectionStatus.disconnected;
+
+  /// When the current tunnel session reached the connected state. Persisted so
+  /// a session that outlives an app restart keeps its original start time.
+  /// Null while disconnected.
+  @readonly
+  DateTime? _connectedAt;
 
   /// True while an existing connection is being torn down and re-established
   /// (IP refresh or server switch). The transitional `disconnected` it emits is
@@ -216,6 +224,30 @@ abstract class _VpnStore extends VpnGuard with Store {
       (_) => _protocolStore.protocol,
       _handleProtocolChange,
     );
+
+    _connectedAtReactionDisposer = reaction<bool>(
+      (_) => _connectionStatus == VpnConnectionStatus.connected,
+      _updateConnectedAt,
+    );
+  }
+
+  @action
+  void _updateConnectedAt(bool connected) {
+    if (!connected) {
+      _connectedAt = null;
+      _prefs.remove(StorageKeys.connectedAt.name).ignore();
+      return;
+    }
+    // A stamp persisted by a previous run means this session was already up
+    // before launch — keep its original start time so the clock survives
+    // restarts. In-run connects find no stamp (disconnect removes it).
+    final storedMs = _prefs.getInt(StorageKeys.connectedAt.name);
+    if (storedMs != null) {
+      _connectedAt = DateTime.fromMillisecondsSinceEpoch(storedMs);
+    } else {
+      _connectedAt = DateTime.now();
+      _prefs.setInt(StorageKeys.connectedAt.name, _connectedAt!.millisecondsSinceEpoch).ignore();
+    }
   }
 
   @action
@@ -269,6 +301,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     await _connectionStatusStream?.cancel();
     _authReactionDisposer?.call();
     _protocolReactionDisposer?.call();
+    _connectedAtReactionDisposer?.call();
   }
 
   // ==================== Tunnel Management ====================
@@ -300,7 +333,13 @@ abstract class _VpnStore extends VpnGuard with Store {
   @action
   Future<void> _setupAndListenToConnectionStatus() async {
     _connectingLocation = null;
-    _connectionStatus = await _vpnRepository.currentStatus();
+    final status = await _vpnRepository.currentStatus();
+    // Tunnel down at launch — drop any stale connectedAt stamp left by a
+    // previous run so a later connect doesn't restore it.
+    if (status != VpnConnectionStatus.connected) {
+      await _prefs.remove(StorageKeys.connectedAt.name);
+    }
+    _connectionStatus = status;
 
     await _recentLocationsStore.future;
 

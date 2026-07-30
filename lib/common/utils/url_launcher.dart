@@ -1,5 +1,5 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/snackbar.dart';
@@ -46,8 +46,8 @@ Future<void> openUrlLink(
       S.current.copyLink,
       action: IconButton(
         icon: const Icon(Icons.copy, size: 16),
-        onPressed: () => FlutterClipboard.copy(
-          url.toString(),
+        onPressed: () => Clipboard.setData(
+          ClipboardData(text: url.toString()),
         ).then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
       ),
       type: SnackbarType.info,

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
-import 'package:clipboard/clipboard.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
@@ -139,7 +139,7 @@ void useHomeAutorun() {
               if (!authSessionStore.isAuthenticated) {
                 return;
               }
-              FlutterClipboard.copy(couponCode).then((value) {
+              Clipboard.setData(ClipboardData(text: couponCode)).then((value) {
                 showSnackbar(
                   S.current.couponCodeCopied('"$couponCode"'),
                   type: SnackbarType.success,

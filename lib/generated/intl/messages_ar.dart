@@ -65,28 +65,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m19(date) => "الفوترة التالية: ${date}";
 
-  static String m20(protocol, label) => "${protocol} (${label})";
+  static String m20(count) =>
+      "${Intl.plural(count, zero: 'إيقاف مؤقت لمدة ${count} شهر', one: 'إيقاف مؤقت لمدة شهر', two: 'إيقاف مؤقت لمدة شهرين', few: 'إيقاف مؤقت لمدة ${count} أشهر', many: 'إيقاف مؤقت لمدة ${count} شهرًا', other: 'إيقاف مؤقت لمدة ${count} شهر')}";
 
-  static String m21(location) => "تحديث ${location}";
+  static String m21(protocol, label) => "${protocol} (${label})";
 
-  static String m22(count) =>
+  static String m22(location) => "تحديث ${location}";
+
+  static String m23(count) =>
       "${Intl.plural(count, zero: 'إعادة الإرسال', one: 'إعادة الإرسال', two: 'إعادة الإرسال', few: 'إعادة الإرسال (${count})', many: 'إعادة الإرسال (${count})', other: 'إعادة الإرسال (${count})')}";
 
-  static String m23(percent) => "وفّر ${percent}%";
+  static String m24(percent) => "وفّر ${percent}%";
 
-  static String m24(percent, planId) => "وفّر ${percent}% مع خطة ${planId}";
+  static String m25(percent, planId) => "وفّر ${percent}% مع خطة ${planId}";
 
-  static String m25(plan) => "الترقية إلى ${plan}";
+  static String m26(plan) => "الترقية إلى ${plan}";
 
-  static String m26(plan) => "الترقية إلى خطة ${plan}";
+  static String m27(plan) => "الترقية إلى خطة ${plan}";
 
-  static String m27(location) => "التبديل إلى ${location}";
+  static String m28(location) => "التبديل إلى ${location}";
 
-  static String m28(word) => "اكتب ${word}";
+  static String m29(word) => "اكتب ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "LoggingYouIn": MessageLookupByLibrary.simpleMessage("جارٍ تسجيل دخولك..."),
+    "acceptOfferBtn": MessageLookupByLibrary.simpleMessage("قبول العرض"),
+    "accessAvailableUntilLbl": MessageLookupByLibrary.simpleMessage("الوصول متاح حتى:"),
     "accessBlockedSitesReason": MessageLookupByLibrary.simpleMessage(
       "تعذّر الوصول إلى المواقع المحجوبة",
     ),
@@ -125,9 +130,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelLatency": MessageLookupByLibrary.simpleMessage("الكمون"),
     "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("ميزات مفقودة"),
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("السرعة"),
+    "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
+    ),
+    "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("إلغاء الاشتراك"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "سيتم إلغاء اشتراكك. يمكنك مواصلة استخدام Mysterium VPN حتى ينتهي وصولك.",
+    ),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "يُرجى إدخال المزيد من التفاصيل...",
     ),
+    "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("أخبرنا بالمزيد (اختياري)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
     "cancelUnableToAccessBlockedSites": MessageLookupByLibrary.simpleMessage(
@@ -137,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "ألغِ اشتراكك في اشتراكات App Store قبل حذف حسابك.",
     ),
+    "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("تاريخ الإلغاء:"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "تعذّر علينا استرداد معلومات خطتك.",
     ),
@@ -151,15 +165,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("الاتصالات"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("إكمال"),
     "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
+    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("تأكيد الإلغاء"),
     "connect": MessageLookupByLibrary.simpleMessage("اتصال"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("أفضل خادم"),
     "connectToLocationBtn": m3,
     "connected": MessageLookupByLibrary.simpleMessage("متصل"),
+    "connectedSince": MessageLookupByLibrary.simpleMessage("مدة الاتصال"),
     "connecting": MessageLookupByLibrary.simpleMessage("جارٍ الاتصال"),
     "connectingToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "جارٍ الاتصال بمعالج الدفع...",
     ),
     "connection": MessageLookupByLibrary.simpleMessage("الاتصال"),
+    "connectionDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الاتصال"),
     "connectionSettingLbl": MessageLookupByLibrary.simpleMessage("الاتصال والحماية"),
     "connectionTimeout": MessageLookupByLibrary.simpleMessage(
       "انتهت مهلة الاتصال. يُرجى المحاولة لاحقًا. إذا استمرت المشكلة، تواصل مع فريق الدعم",
@@ -169,6 +186,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "يعمل فقط على الجهاز الذي طلبه — اضغط الرابط في بريدك الإلكتروني للمتابعة.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("متابعة"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "سيتم توجيهك إلى موقع Mysterium VPN لإكمال الإلغاء.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "متابعة الإلغاء عبر الويب",
+    ),
+    "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("متابعة الإلغاء"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("المتابعة إلى الموقع"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("المتابعة عبر Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("المتابعة عبر البريد الإلكتروني"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("المتابعة عبر Google"),
@@ -199,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("فقط"),
     "dns": MessageLookupByLibrary.simpleMessage("حماية DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("يمنع تسريبات DNS"),
+    "doneBtn": MessageLookupByLibrary.simpleMessage("تم"),
     "duration": MessageLookupByLibrary.simpleMessage("المدة"),
     "email": MessageLookupByLibrary.simpleMessage("عنوان البريد الإلكتروني"),
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("عنوان البريد الإلكتروني غير صالح"),
@@ -254,9 +280,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "رابط سحري غير صحيح. يُرجى المحاولة مرة أخرى.",
     ),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("عنوان IP"),
+    "ipDetails": MessageLookupByLibrary.simpleMessage("تفاصيل IP"),
+    "ipPool": MessageLookupByLibrary.simpleMessage("مجموعة IP"),
     "ipPoolLabel": m10,
     "ipRefreshExhaustedCity": m11,
     "ipRefreshExhaustedCountry": m12,
+    "ipType": MessageLookupByLibrary.simpleMessage("نوع IP"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("عناوين IP لمراكز البيانات"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "عناوين IP لمراكز البيانات مُحسّنة للسرعة والأداء.",
@@ -274,6 +303,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "it": MessageLookupByLibrary.simpleMessage("الإيطالية"),
     "italy": MessageLookupByLibrary.simpleMessage("إيطاليا"),
     "ja": MessageLookupByLibrary.simpleMessage("اليابانية"),
+    "keepSubscriptionBtn": MessageLookupByLibrary.simpleMessage("الإبقاء على الاشتراك"),
     "killSwitch": MessageLookupByLibrary.simpleMessage("Kill switch"),
     "killSwitchDesc": MessageLookupByLibrary.simpleMessage(
       "يحجب حركة الإنترنت إذا انقطع اتصال VPN",
@@ -320,10 +350,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "month": MessageLookupByLibrary.simpleMessage("شهر"),
     "monthly": MessageLookupByLibrary.simpleMessage("شهريًا"),
+    "myIp": MessageLookupByLibrary.simpleMessage("عنوان IP الخاص بي"),
     "navLocations": MessageLookupByLibrary.simpleMessage("المواقع"),
     "navMap": MessageLookupByLibrary.simpleMessage("الخريطة"),
     "navProducts": MessageLookupByLibrary.simpleMessage("المنتجات"),
     "nextBilling": m19,
+    "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("تاريخ الفوترة التالي:"),
     "no": MessageLookupByLibrary.simpleMessage("لا"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("ليس لديك اشتراك نشط"),
     "noEmailApp": MessageLookupByLibrary.simpleMessage("لا توجد تطبيقات بريد إلكتروني على جهازك."),
@@ -337,6 +369,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noneLbl": MessageLookupByLibrary.simpleMessage("بدون"),
     "notAvailableMsg": MessageLookupByLibrary.simpleMessage("غير متاح"),
     "notNowBtn": MessageLookupByLibrary.simpleMessage("ليس الآن"),
+    "notReadyToCancelTitle": MessageLookupByLibrary.simpleMessage("لست مستعدًا للإلغاء بعد؟"),
     "nsfwLbl": MessageLookupByLibrary.simpleMessage("NSFW وبرامج ضارة"),
     "onboardingStep1Desc": MessageLookupByLibrary.simpleMessage(
       "عنوان IP وموقعك مرئيان للمواقع وأدوات التتبع وشبكات Wi-Fi العامة.",
@@ -352,11 +385,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingStep3Title": MessageLookupByLibrary.simpleMessage("ليست كل شبكات VPN متشابهة"),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("فتح تطبيق البريد الإلكتروني"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("فتح إعدادات النظام"),
+    "optional": MessageLookupByLibrary.simpleMessage("اختياري"),
     "or": MessageLookupByLibrary.simpleMessage("أو"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "سنوصلك بأفضل خادم — أو يمكنك اختيار دولة يدويًا.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("أخرى..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "يرجى اختيار مدة الإيقاف المؤقت.",
+    ),
+    "pauseForMonths": m20,
+    "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("إيقاف الاشتراك مؤقتًا"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "يمكنك إيقاف خطتك مؤقتًا مرة واحدة لكل دورة فوترة.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "لديك بالفعل عملية دفع جارية. يُرجى إكمالها قبل بدء عملية جديدة.",
     ),
@@ -409,7 +451,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("منتجات VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("محمي"),
     "protocol": MessageLookupByLibrary.simpleMessage("البروتوكول"),
-    "protocolLabel": m20,
+    "protocolLabel": m21,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "سيؤدي تبديل بروتوكول VPN إلى قطع اتصالك. ستحتاج إلى إعادة الاتصال بعد ذلك.",
     ),
@@ -430,6 +472,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("كيف هو اتصالك؟"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("ما الذي لم يعجبك؟"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("ما الذي أعجبك؟"),
+    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
+      "يمكنك إعادة تفعيل اشتراكك في أي وقت قبل انتهاء وصولك.",
+    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("المواقع الأخيرة"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("استخدام رمز الخصم"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -438,7 +483,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("تحديث IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("تحديث عنوان IP"),
-    "refreshLocationsTooltip": m21,
+    "refreshLocationsTooltip": m22,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("أعد الضبط عندما لا يعمل شيء ما"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "إذا تابعت إعادة ضبط التطبيق، فسيتم فصلك عن Mysterium VPN.",
@@ -486,7 +531,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("عرض الخطط"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("اختر تطبيق البريد الإلكتروني للمتابعة"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("نصف سنوي"),
-    "sendAgain": m22,
+    "sendAgain": m23,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "نواجه مشكلات مؤقتة في الشبكة. يُرجى المحاولة لاحقًا..",
     ),
@@ -513,6 +558,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("اتصال مستقر"),
     "status": MessageLookupByLibrary.simpleMessage("الحالة"),
     "stayButton": MessageLookupByLibrary.simpleMessage("البقاء"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("البقاء في التطبيق"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("إرسال"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("الاشتراك عبر الويب"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage("خبر رائع! اشتراكك نشط الآن."),
@@ -524,6 +570,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("سنة واحدة"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("جميع الخطط"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("ترقية خطتك"),
+    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("تم إلغاء الاشتراك"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "استكشف ميزات متقدمة مثل بروتوكولات VPN وحظر البرامج الضارة.",
     ),
@@ -613,8 +660,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "اظهر كمستخدم منزلي عادي، مما يتيح لك الوصول إلى خدمات البث وتجنّب اكتشاف VPN.",
     ),
-    "subscriptionPlanSavePercent": m23,
-    "subscriptionPlanSaveWith": m24,
+    "subscriptionPlanSavePercent": m24,
+    "subscriptionPlanSaveWith": m25,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("الخوادم"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("الدول المدعومة"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("بروتوكول VPN"),
@@ -625,15 +672,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "لم تُكمل التغييرات على اشتراكك.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("ترقية"),
-    "subscriptionUpgradeCTA": m25,
+    "subscriptionUpgradeCTA": m26,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "للوصول إلى أكثر من 7,500 عنوان IP سكني",
     ),
-    "subscriptionUpgradeModalTitle": m26,
+    "subscriptionUpgradeModalTitle": m27,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("عرض جميع الخطط"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("إعادة محاولة التحقق"),
     "subscripton": MessageLookupByLibrary.simpleMessage("الاشتراك"),
-    "switchToLocationBtn": m27,
+    "switchToLocationBtn": m28,
     "system": MessageLookupByLibrary.simpleMessage("النظام"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("استعد الإنترنت."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("الأحكام والشروط"),
@@ -659,7 +706,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("حاول البحث عن موقع آخر"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("يجب منح الإذن لبدء نفق VPN."),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء إعداد النفق"),
-    "typeDelete": m28,
+    "typeDelete": m29,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("اكتب ملاحظاتك هنا..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("أوكرانيا"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
@@ -701,6 +748,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage("عرض جميع الميزات"),
     "viewLessBtn": MessageLookupByLibrary.simpleMessage("عرض أقل"),
     "vodafoneLbl": MessageLookupByLibrary.simpleMessage("Vodafone Iberia"),
+    "vpnDetails": MessageLookupByLibrary.simpleMessage("تفاصيل VPN"),
+    "vpnIp": MessageLookupByLibrary.simpleMessage("عنوان IP لشبكة VPN"),
     "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage("بروتوكول VPN"),
     "year": MessageLookupByLibrary.simpleMessage("سنة"),
     "yearly": MessageLookupByLibrary.simpleMessage("سنويًا"),

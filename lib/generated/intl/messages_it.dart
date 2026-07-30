@@ -65,28 +65,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m19(date) => "Prossima fatturazione: ${date}";
 
-  static String m20(protocol, label) => "${protocol} (${label})";
+  static String m20(count) =>
+      "${Intl.plural(count, zero: '', one: 'Pausa di ${count} mese', other: 'Pausa di ${count} mesi')}";
 
-  static String m21(location) => "Aggiorna ${location}";
+  static String m21(protocol, label) => "${protocol} (${label})";
 
-  static String m22(count) =>
+  static String m22(location) => "Aggiorna ${location}";
+
+  static String m23(count) =>
       "${Intl.plural(count, zero: 'Invia di nuovo', one: 'Invia di nuovo', other: 'Invia di nuovo (${count})')}";
 
-  static String m23(percent) => "Risparmia ${percent}%";
+  static String m24(percent) => "Risparmia ${percent}%";
 
-  static String m24(percent, planId) => "Risparmia ${percent}% con un piano ${planId}";
+  static String m25(percent, planId) => "Risparmia ${percent}% con un piano ${planId}";
 
-  static String m25(plan) => "Passa a ${plan}";
+  static String m26(plan) => "Passa a ${plan}";
 
-  static String m26(plan) => "Passa al piano ${plan}";
+  static String m27(plan) => "Passa al piano ${plan}";
 
-  static String m27(location) => "Passa a ${location}";
+  static String m28(location) => "Passa a ${location}";
 
-  static String m28(word) => "Digita ${word}";
+  static String m29(word) => "Digita ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "LoggingYouIn": MessageLookupByLibrary.simpleMessage("Accesso in corso..."),
+    "acceptOfferBtn": MessageLookupByLibrary.simpleMessage("Accetta offerta"),
+    "accessAvailableUntilLbl": MessageLookupByLibrary.simpleMessage("Accesso disponibile fino al:"),
     "accessBlockedSitesReason": MessageLookupByLibrary.simpleMessage(
       "Impossibile accedere ai siti bloccati",
     ),
@@ -123,8 +128,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelLatency": MessageLookupByLibrary.simpleMessage("Latenza"),
     "cancelMissingFeatures": MessageLookupByLibrary.simpleMessage("Funzionalità mancanti"),
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("Velocità"),
+    "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
+      "Sei sicuro di voler annullare l’abbonamento?",
+    ),
+    "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Annulla abbonamento"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Il tuo abbonamento verrà annullato. Potrai continuare a usare Mysterium VPN fino alla fine dell’accesso.",
+    ),
     "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
       "Inserisci maggiori dettagli...",
+    ),
+    "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
+      "Raccontaci di più (facoltativo)",
     ),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivi dell\'annullamento"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Troppo costoso"),
@@ -135,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage(
       "Annulla l\'abbonamento negli abbonamenti dell\'App Store prima di eliminare il tuo account.",
     ),
+    "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Data di annullamento:"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Non riusciamo a recuperare le informazioni sul tuo piano.",
     ),
@@ -151,15 +167,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("COMUNICAZIONI"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Completa"),
     "confirm": MessageLookupByLibrary.simpleMessage("Conferma"),
+    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Conferma annullamento"),
     "connect": MessageLookupByLibrary.simpleMessage("Connetti"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Miglior server"),
     "connectToLocationBtn": m3,
     "connected": MessageLookupByLibrary.simpleMessage("Connesso"),
+    "connectedSince": MessageLookupByLibrary.simpleMessage("Connesso da"),
     "connecting": MessageLookupByLibrary.simpleMessage("Connessione in corso"),
     "connectingToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Connessione al processore di pagamento...",
     ),
     "connection": MessageLookupByLibrary.simpleMessage("Connessione"),
+    "connectionDetails": MessageLookupByLibrary.simpleMessage("Dettagli connessione"),
     "connectionSettingLbl": MessageLookupByLibrary.simpleMessage("Connessione e protezione"),
     "connectionTimeout": MessageLookupByLibrary.simpleMessage(
       "Connessione scaduta. Riprova più tardi. Se il problema persiste, contatta il team di supporto",
@@ -169,6 +188,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Funziona solo sul dispositivo che l\'ha richiesto - tocca il link nella tua email per continuare.",
     ),
     "continueBtn": MessageLookupByLibrary.simpleMessage("Continua"),
+    "continueCancellationOnWebDesc": MessageLookupByLibrary.simpleMessage(
+      "Verrai reindirizzato al sito Mysterium VPN per completare l’annullamento.",
+    ),
+    "continueCancellationOnWebTitle": MessageLookupByLibrary.simpleMessage(
+      "Continua l’annullamento sul web",
+    ),
+    "continueToCancelBtn": MessageLookupByLibrary.simpleMessage("Continua l’annullamento"),
+    "continueToWebBtn": MessageLookupByLibrary.simpleMessage("Vai al sito"),
     "continueWithApple": MessageLookupByLibrary.simpleMessage("Continua con Apple"),
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Continua con l\'email"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Continua con Google"),
@@ -199,6 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Solo"),
     "dns": MessageLookupByLibrary.simpleMessage("Protezione DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Previene le fughe DNS"),
+    "doneBtn": MessageLookupByLibrary.simpleMessage("Fatto"),
     "duration": MessageLookupByLibrary.simpleMessage("Durata"),
     "email": MessageLookupByLibrary.simpleMessage("Indirizzo email"),
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("Indirizzo email non valido"),
@@ -254,9 +282,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "incorrectLocationReason": MessageLookupByLibrary.simpleMessage("Posizione errata"),
     "incorrectMagicLink": MessageLookupByLibrary.simpleMessage("Magic link errato. Riprova."),
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Indirizzo IP"),
+    "ipDetails": MessageLookupByLibrary.simpleMessage("Dettagli IP"),
+    "ipPool": MessageLookupByLibrary.simpleMessage("Pool di IP"),
     "ipPoolLabel": m10,
     "ipRefreshExhaustedCity": m11,
     "ipRefreshExhaustedCountry": m12,
+    "ipType": MessageLookupByLibrary.simpleMessage("Tipo di IP"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter ottimizzati per velocità e prestazioni.",
@@ -274,6 +305,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "it": MessageLookupByLibrary.simpleMessage("Italiano"),
     "italy": MessageLookupByLibrary.simpleMessage("Italia"),
     "ja": MessageLookupByLibrary.simpleMessage("Giapponese"),
+    "keepSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Mantieni abbonamento"),
     "killSwitch": MessageLookupByLibrary.simpleMessage("Kill switch"),
     "killSwitchDesc": MessageLookupByLibrary.simpleMessage(
       "Blocca il traffico internet se la connessione VPN si interrompe",
@@ -320,10 +352,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "month": MessageLookupByLibrary.simpleMessage("mese"),
     "monthly": MessageLookupByLibrary.simpleMessage("mensile"),
+    "myIp": MessageLookupByLibrary.simpleMessage("Il mio IP"),
     "navLocations": MessageLookupByLibrary.simpleMessage("Posizioni"),
     "navMap": MessageLookupByLibrary.simpleMessage("Mappa"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Prodotti"),
     "nextBilling": m19,
+    "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Prossima data di fatturazione:"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Non hai un abbonamento attivo"),
     "noEmailApp": MessageLookupByLibrary.simpleMessage(
@@ -339,6 +373,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noneLbl": MessageLookupByLibrary.simpleMessage("Nessuno"),
     "notAvailableMsg": MessageLookupByLibrary.simpleMessage("Non disponibile"),
     "notNowBtn": MessageLookupByLibrary.simpleMessage("Non ora"),
+    "notReadyToCancelTitle": MessageLookupByLibrary.simpleMessage(
+      "Non sei ancora pronto ad annullare?",
+    ),
     "nsfwLbl": MessageLookupByLibrary.simpleMessage("NSFW e malware"),
     "onboardingStep1Desc": MessageLookupByLibrary.simpleMessage(
       "Il tuo IP e la tua posizione sono visibili a siti, tracker e reti Wi-Fi pubbliche.",
@@ -358,11 +395,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "openEmailApp": MessageLookupByLibrary.simpleMessage("Apri l\'app email"),
     "openSystemSettingsBtn": MessageLookupByLibrary.simpleMessage("Apri impostazioni di sistema"),
+    "optional": MessageLookupByLibrary.simpleMessage("facoltativo"),
     "or": MessageLookupByLibrary.simpleMessage("O"),
     "orSelectCountryManually": MessageLookupByLibrary.simpleMessage(
       "Ti connetteremo al server migliore - oppure puoi selezionare manualmente un paese.",
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("Altro..."),
+    "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
+      "Seleziona una durata della pausa.",
+    ),
+    "pauseForMonths": m20,
+    "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Metti in pausa"),
+    "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Puoi mettere in pausa il tuo piano una volta per ciclo di fatturazione.",
+    ),
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Hai già una transazione di pagamento in corso. Completala prima di iniziarne una nuova.",
     ),
@@ -421,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("Prodotti VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("PROTETTO"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protocollo"),
-    "protocolLabel": m20,
+    "protocolLabel": m21,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Cambiare il protocollo VPN ti disconnetterà. Dovrai riconnetterti in seguito.",
     ),
@@ -442,6 +488,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Com\'è la tua connessione?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Cosa non ti è piaciuto?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Cosa ti è piaciuto?"),
+    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
+      "Puoi riattivare l’abbonamento in qualsiasi momento prima della fine dell’accesso.",
+    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Posizioni recenti"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Riscatta codice sconto"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -450,7 +499,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Aggiorna"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Aggiorna IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Aggiorna indirizzo IP"),
-    "refreshLocationsTooltip": m21,
+    "refreshLocationsTooltip": m22,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Ripristina quando qualcosa non funziona"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Se procedi con il ripristino dell\'app, verrai disconnesso da Mysterium VPN.",
@@ -514,7 +563,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Seleziona un\'app email per continuare",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("semestrale"),
-    "sendAgain": m22,
+    "sendAgain": m23,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Stiamo riscontrando problemi di rete temporanei. Riprova più tardi..",
     ),
@@ -543,6 +592,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stableConnectionReason": MessageLookupByLibrary.simpleMessage("Connessione stabile"),
     "status": MessageLookupByLibrary.simpleMessage("Stato"),
     "stayButton": MessageLookupByLibrary.simpleMessage("Rimani"),
+    "stayOnAppBtn": MessageLookupByLibrary.simpleMessage("Resta nell’app"),
     "submitBtn": MessageLookupByLibrary.simpleMessage("Invia"),
     "subscribeOnWebBtn": MessageLookupByLibrary.simpleMessage("Abbonati sul web"),
     "subscriptionActive": MessageLookupByLibrary.simpleMessage(
@@ -558,6 +608,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("Annuale"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Tutti i piani"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Aggiorna il tuo piano"),
+    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Abbonamento annullato"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Esplora funzionalità avanzate come i protocolli VPN e il blocco malware.",
     ),
@@ -655,8 +706,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Appari come un normale utente domestico, così puoi accedere ai servizi di streaming ed evitare il rilevamento della VPN.",
     ),
-    "subscriptionPlanSavePercent": m23,
-    "subscriptionPlanSaveWith": m24,
+    "subscriptionPlanSavePercent": m24,
+    "subscriptionPlanSaveWith": m25,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Server"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("Paesi supportati"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
@@ -667,15 +718,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Non hai completato le modifiche al tuo abbonamento.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Aggiorna"),
-    "subscriptionUpgradeCTA": m25,
+    "subscriptionUpgradeCTA": m26,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "per accedere a oltre 7.500 IP residenziali",
     ),
-    "subscriptionUpgradeModalTitle": m26,
+    "subscriptionUpgradeModalTitle": m27,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Vedi tutti i piani"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("Riprova la verifica"),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abbonamento"),
-    "switchToLocationBtn": m27,
+    "switchToLocationBtn": m28,
     "system": MessageLookupByLibrary.simpleMessage("Sistema"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Riprenditi internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Termini e Condizioni"),
@@ -705,7 +756,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Si è verificato un errore durante la configurazione del tunnel",
     ),
-    "typeDelete": m28,
+    "typeDelete": m29,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Scrivi qui il tuo feedback..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ucraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
@@ -751,6 +802,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "viewAllFeaturesBtn": MessageLookupByLibrary.simpleMessage("Vedi tutte le funzionalità"),
     "viewLessBtn": MessageLookupByLibrary.simpleMessage("Vedi meno"),
     "vodafoneLbl": MessageLookupByLibrary.simpleMessage("Vodafone Iberia"),
+    "vpnDetails": MessageLookupByLibrary.simpleMessage("Dettagli VPN"),
+    "vpnIp": MessageLookupByLibrary.simpleMessage("IP della VPN"),
     "vpnProtocolSettingLbl": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
     "year": MessageLookupByLibrary.simpleMessage("anno"),
     "yearly": MessageLookupByLibrary.simpleMessage("annuale"),

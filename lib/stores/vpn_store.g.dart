@@ -117,6 +117,23 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_connectedAtAtom = Atom(name: '_VpnStore._connectedAt', context: context);
+
+  DateTime? get connectedAt {
+    _$_connectedAtAtom.reportRead();
+    return super._connectedAt;
+  }
+
+  @override
+  DateTime? get _connectedAt => connectedAt;
+
+  @override
+  set _connectedAt(DateTime? value) {
+    _$_connectedAtAtom.reportWrite(value, super._connectedAt, () {
+      super._connectedAt = value;
+    });
+  }
+
   late final _$_isReconnectingAtom = Atom(name: '_VpnStore._isReconnecting', context: context);
 
   bool get isReconnecting {
@@ -527,6 +544,18 @@ mixin _$VpnStore on _VpnStore, Store {
     );
     try {
       return super.markDeviceLimitErrorAsShown();
+    } finally {
+      _$_VpnStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _updateConnectedAt(bool connected) {
+    final _$actionInfo = _$_VpnStoreActionController.startAction(
+      name: '_VpnStore._updateConnectedAt',
+    );
+    try {
+      return super._updateConnectedAt(connected);
     } finally {
       _$_VpnStoreActionController.endAction(_$actionInfo);
     }
