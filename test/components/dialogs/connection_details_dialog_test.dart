@@ -100,6 +100,19 @@ void main() {
     await tester.pump(const Duration(milliseconds: 400));
   }
 
+  testWidgets('mobile layout is top-aligned directly below the header', (tester) async {
+    tester.view.physicalSize = const Size(375, 812);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    await openDialog(tester);
+
+    final appbarBottom = tester.getRect(find.byType(ModalAppbar)).bottom;
+    final cardTop = tester.getRect(find.byType(LocationStatusCard)).top;
+    // Content hugs the header (scroll padding only) — a regression here
+    // (e.g. double app-bar inset) pushes it towards the screen centre.
+    expect(cardTop - appbarBottom, lessThanOrEqualTo(24));
+  });
+
   testWidgets('shows location, status and all detail rows', (tester) async {
     await openDialog(tester);
 

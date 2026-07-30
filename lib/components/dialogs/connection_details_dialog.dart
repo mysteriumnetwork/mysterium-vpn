@@ -132,6 +132,7 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
 
     return ModalScaffold(
       showGradient: false,
+      backgroundColor: palette.bgSidePanel,
       appbar: ModalAppbar(title: isDesktop ? S.current.connectionDetails : S.current.vpnDetails),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(theme.spacing.md),
