@@ -233,15 +233,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.2"
-  clipboard:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "6f8dce7b71396b713ab3d71cb20a04967c5458fd"
-      resolved-ref: "6f8dce7b71396b713ab3d71cb20a04967c5458fd"
-      url: "https://github.com/samuelezedi/flutter_clipboard.git"
-    source: git
-    version: "3.0.14"
   clock:
     dependency: transitive
     description:
