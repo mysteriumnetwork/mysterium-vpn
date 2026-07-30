@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -47,11 +45,9 @@ abstract class _VpnProtocolStore with Store {
   @computed
   ProtocolType get protocol => protocolFuture.value ?? _defaultProtocol;
 
-  // Protocol picker is available only on platforms other than Android
   // Enabled via remote config
   @computed
-  bool get isProtocolPickerAvailable =>
-      _remoteConfigStore.isProtocolPickerAvailable && !Platform.isAndroid;
+  bool get isProtocolPickerAvailable => _remoteConfigStore.isProtocolPickerAvailable;
 
   @action
   Future<ProtocolType> getProtocol() async {

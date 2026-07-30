@@ -36,6 +36,14 @@ android {
         execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
+    // Required by ics-openvpn (openvpn_dart): the OpenVPN binary is executed as a
+    // process, which needs native libs extracted to disk.
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     defaultConfig {
         applicationId "com.mysteriumvpn.android"
         // You can update the following values to match your application needs.
