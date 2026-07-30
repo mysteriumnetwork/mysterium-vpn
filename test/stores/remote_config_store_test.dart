@@ -142,6 +142,29 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.favoriteLocationsEnabled', () {
+    test('returns the config value when present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'favoriteLocationsEnabled': true});
+      store = createStore();
+      await store.configFuture;
+      expect(store.favoriteLocationsEnabled, isTrue);
+    });
+
+    test('defaults to false when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.favoriteLocationsEnabled, isFalse);
+    });
+
+    test('defaults to false when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'favoriteLocationsEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.favoriteLocationsEnabled, isFalse);
+    });
+  });
+
   group('RemoteConfigStore.newsCenterEnabled', () {
     test('returns the config value when present (false acts as a kill switch)', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'newsCenterEnabled': false});

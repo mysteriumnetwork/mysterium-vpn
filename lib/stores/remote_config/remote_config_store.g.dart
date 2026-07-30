@@ -182,6 +182,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.locationsPullToRefreshEnabled,
         name: 'RemoteConfigStoreBase.locationsPullToRefreshEnabled',
       )).value;
+  Computed<bool>? _$favoriteLocationsEnabledComputed;
+
+  @override
+  bool get favoriteLocationsEnabled => (_$favoriteLocationsEnabledComputed ??= Computed<bool>(
+    () => super.favoriteLocationsEnabled,
+    name: 'RemoteConfigStoreBase.favoriteLocationsEnabled',
+  )).value;
   Computed<bool>? _$newsCenterEnabledComputed;
 
   @override
@@ -427,6 +434,7 @@ useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
+favoriteLocationsEnabled: ${favoriteLocationsEnabled},
 newsCenterEnabled: ${newsCenterEnabled},
 newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},

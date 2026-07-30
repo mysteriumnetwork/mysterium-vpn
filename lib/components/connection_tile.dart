@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
+import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/connection_details_dialog.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -15,6 +16,8 @@ class ConnectionTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final remoteConfig = ref.watch(remoteConfigStorePOD);
+    final favoriteLocationsEnabled = useComputedValue(() => remoteConfig.favoriteLocationsEnabled);
     final (
       :status,
       :connectLabel,
@@ -53,9 +56,10 @@ class ConnectionTile extends HookConsumerWidget {
           onConnect: onToggle,
           onDisconnect: onToggle,
           onDetails: () => showConnectionDetailsDialog(context),
-          // Favorites are not implemented yet — inert heart + untranslated
+          // Favorites are not implemented yet — behind the favoriteLocationsEnabled
+          // flag the heart is an inert placeholder with an untranslated
           // tester-facing tooltip until the feature ships.
-          onFavorite: () {},
+          onFavorite: favoriteLocationsEnabled ? () {} : null,
           favoriteTooltip: 'Favorites coming soon',
           onDismissPreview: onDismissPreview,
           onSwitchCountry: onToggle,

@@ -1280,7 +1280,7 @@ packages:
     description:
       path: "."
       ref: "feat/connection-details-dialog"
-      resolved-ref: c23f37b3b68c417487d7140bd1b4801c486a8c61
+      resolved-ref: "226b976ca3cd7caa4e5f4daeee23cb3b1a2bf3fc"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
