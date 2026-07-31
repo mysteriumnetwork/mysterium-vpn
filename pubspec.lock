@@ -1344,8 +1344,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/openvpn-android"
-      resolved-ref: "04e07a944ef593223577e944a181d401d020effe"
+      ref: "0.0.9"
+      resolved-ref: "7ac4d91f5e401f2802c6942dcb868a476236cdcd"
       url: "https://github.com/mysteriumnetwork/openvpn_dart.git"
     source: git
     version: "0.0.1"
