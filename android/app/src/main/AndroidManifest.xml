@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- ics-openvpn declares specialUse; we run it as systemExempted like WireGuard -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" tools:node="remove" />
 
     <permission
         android:name="${applicationId}.permission.CONTROL_TUNNELS"
@@ -82,6 +84,20 @@
             </intent-filter>
         </activity>
 
+        <!-- Mirrors the ics-openvpn AAR declaration, with specialUse -> systemExempted -->
+        <service
+            android:name="de.blinkt.openvpn.core.OpenVPNService"
+            android:exported="true"
+            android:foregroundServiceType="systemExempted"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            tools:replace="android:foregroundServiceType">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                tools:node="remove" />
+        </service>
         <service
             android:name="network.mysterium.wireguard_dart.WireguardWrapperService"
             android:exported="false"

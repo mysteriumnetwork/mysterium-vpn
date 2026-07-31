@@ -2,6 +2,12 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // Local Maven repo bundled inside the openvpn_dart plugin, holding the
+        // from-source ics-openvpn AAR (network.mysterium.openvpn:icsopenvpn).
+        def openvpnDart = rootProject.findProject(':openvpn_dart')
+        if (openvpnDart != null) {
+            maven { url = uri("${openvpnDart.projectDir}/localmaven") }
+        }
     }
     subprojects {
         afterEvaluate { project ->
