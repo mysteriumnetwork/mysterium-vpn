@@ -47,6 +47,23 @@ abstract class _ConnectionDisplayStore with Store {
     return _locationsStore.findParent(displayLocation!);
   }
 
+  /// The location of the current connection (connected or connecting),
+  /// falling back to [displayLocation] when there is none. Unlike
+  /// [displayLocation], a pending selection never wins here — use this for
+  /// surfaces that describe the connection itself (e.g. connection details).
+  @computed
+  VPNLocation? get connectedOrDisplayLocation {
+    final location = _vpnStore.location ?? displayLocation;
+    return location == VPNLocation.closest ? null : location;
+  }
+
+  /// The parent location (country) of [connectedOrDisplayLocation].
+  @computed
+  VPNLocation? get connectedParentLocation {
+    final location = connectedOrDisplayLocation;
+    return location == null ? null : _locationsStore.findParent(location);
+  }
+
   /// The actual target location to connect to.
   /// If selected location is unavailable, returns parent location (country).
   /// If parent is also unavailable, returns null (will use best location).
