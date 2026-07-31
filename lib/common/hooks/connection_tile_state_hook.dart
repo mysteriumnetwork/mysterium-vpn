@@ -3,16 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
-import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 typedef ConnectionTileState = ({
   MainIpCardStatus status,
@@ -22,23 +19,17 @@ typedef ConnectionTileState = ({
   String noConnectionTitle,
   String noConnectionDescription,
   VoidCallback? onToggle,
-  VoidCallback onRefreshIP,
   VoidCallback onDismissPreview,
-  VoidCallback onThumbsUp,
-  VoidCallback onThumbsDown,
-  ConnectionRating connectionRating,
 });
 
 ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final context = useContext();
   final connectionDisplayStore = ref.watch(connectionDisplayStorePOD);
   final vpnStore = ref.watch(vpnStorePOD);
-  final analyticsStore = ref.watch(analyticsStorePOD);
   final selectedLocationStore = ref.watch(selectedLocationStorePOD);
   final locationsStore = ref.watch(locationsStorePOD);
   final unavailableLocationsStore = ref.watch(unavailableLocationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
-  final ipRefreshExhaustionStore = ref.watch(ipRefreshExhaustionStorePOD);
   final handleToggleConnection = useHandleToggleConnection();
   final handleUpgradePlan = useHandleUpgradePlan();
   final isAuthenticated = useIsAuthenticated();
@@ -48,7 +39,6 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   );
   final selectedLocation = useComputedValue(() => selectedLocationStore.value);
   final connectedLocation = useComputedValue(() => vpnStore.location);
-  final connectedIpPoolCount = useComputedValue(() => vpnStore.connectedIpPoolCount);
   final isConnected = useComputedValue(() => vpnStore.isConnected);
   final isLoading = useComputedValue(() => connectionDisplayStore.isLoading);
   final ipInfo = useComputedValue(() => connectionDisplayStore.connectionIP);
@@ -57,7 +47,6 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final displayLocation = useComputedValue(() => connectionDisplayStore.displayLocation);
   final parentLocation = useComputedValue(() => connectionDisplayStore.parentLocation);
   final isLocationAvailable = useComputedValue(() => connectionDisplayStore.isLocationAvailable);
-  final connectionRated = useComputedValue(() => connectionDisplayStore.connectionRated);
   final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
   final needsUpgrade = useComputedValue(() {
     // Read directly from MobX stores so the Computed tracks these dependencies.
@@ -92,11 +81,11 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   if (hasDifferentSelection) {
     final connected = connectedLocation!;
     final connectedParent = locationsStore.findParent(connected);
-    final connectedCountry = connectedParent?.getName(context) ?? connected.getName(context);
-    final connectedCity = connectedParent != null ? connected.getName(context) : '';
-    final connectedServiceQuality = connected.ipType == IPType.residential
-        ? S.current.residential
-        : S.current.highSpeed;
+    final (country: connectedCountry, city: connectedCity) = locationDisplayNames(
+      context,
+      location: connected,
+      parent: connectedParent,
+    );
 
     final isSelectedUnavailable = unavailableLocationsStore.unavailableLocations.contains(
       selectedLocation,
@@ -107,26 +96,19 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
 
     status = MainIpCardNewIpPreview(
       country: connectedCountry,
-      countryIcon: CircleFlag(connected.countryCode, size: 32),
+      countryIcon: CircleFlag(connected.countryCode, size: 40),
       city: connectedCity,
       ipAddress: ipInfo ?? '',
-      serviceQuality: connectedServiceQuality,
-      ipPoolCount: connectedIpPoolCount,
       previewCountry: selectedLocation!.getName(context),
       previewCountryIcon: CircleFlag(selectedLocation.countryCode, size: 32),
       switchLabel: switchLabel,
     );
   } else {
-    final country = parentLocation?.getName(context) ?? displayLocation?.getName(context) ?? '';
-    final city = parentLocation != null ? displayLocation?.getName(context) ?? '' : '';
-    final ipType = displayLocation?.ipType;
-    final ipPoolCount = isConnected ? connectedIpPoolCount : (displayLocation?.nodeCount ?? 0);
-    final countryIcon = displayLocation != null
-        ? CircleFlag(displayLocation.countryCode, size: 32)
-        : const SizedBox(width: 32, height: 32);
-    final serviceQuality = ipType == IPType.residential
-        ? S.current.residential
-        : S.current.highSpeed;
+    final (:country, :city) = locationDisplayNames(
+      context,
+      location: displayLocation,
+      parent: parentLocation,
+    );
 
     if (displayLocation == null) {
       status = const MainIpCardNotConnected();
@@ -135,11 +117,9 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     } else if (isConnected) {
       status = MainIpCardConnected(
         country: country,
-        countryIcon: countryIcon,
+        countryIcon: CircleFlag(displayLocation.countryCode, size: 40),
         city: city,
         ipAddress: ipInfo ?? '',
-        serviceQuality: serviceQuality,
-        ipPoolCount: ipPoolCount,
       );
       // Before connecting, show the specific location the user picked (city or
       // state), not its parent country. For country-level picks this is the
@@ -147,14 +127,14 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     } else if (isLoading) {
       status = MainIpCardConnecting(
         country: displayLocation.getName(context),
-        countryIcon: countryIcon,
-        serviceQuality: serviceQuality,
+        countryIcon: CircleFlag(displayLocation.countryCode, size: 32),
+        serviceQuality: displayLocation.ipType.localizedLabel,
       );
     } else {
       status = MainIpCardLocationSelected(
         country: displayLocation.getName(context),
-        countryIcon: countryIcon,
-        serviceQuality: serviceQuality,
+        countryIcon: CircleFlag(displayLocation.countryCode, size: 32),
+        serviceQuality: displayLocation.ipType.localizedLabel,
       );
     }
 
@@ -171,45 +151,9 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
       ? handleUpgradePlan
       : () => handleToggleConnection(location: targetLocation, intent: intent);
 
-  final onRefreshIP = useCallback(() async {
-    analyticsStore.logRefreshIP(connectionDisplayStore.connectionIP);
-    selectedLocationStore.value = null;
-    await vpnStore.manageConnection(refreshIP: true);
-  }, [analyticsStore, connectionDisplayStore, selectedLocationStore, vpnStore]);
-
   final onDismissPreview = useCallback(() {
     selectedLocationStore.value = null;
   }, [selectedLocationStore]);
-
-  final onThumbsUp = useCallback(
-    () => showRateConnectionDialog(context, RateConnectionRequestModeEnum.like),
-    [],
-  );
-
-  final onThumbsDown = useCallback(
-    () => showRateConnectionDialog(context, RateConnectionRequestModeEnum.dislike),
-    [],
-  );
-
-  useReaction(() => ipRefreshExhaustionStore.exhaustionNotice, (VPNLocation? location) {
-    if (location == null) {
-      return;
-    }
-    showSnackbar(
-      ipRefreshExhaustedMessage(
-        isCountry: location.isCountry,
-        locationName: location.getName(context),
-      ),
-      type: SnackbarType.info,
-    );
-    ipRefreshExhaustionStore.clearNotice();
-  });
-
-  final connectionRating = switch (connectionRated) {
-    RateConnectionRequestModeEnum.like => ConnectionRating.thumbsUp,
-    RateConnectionRequestModeEnum.dislike => ConnectionRating.thumbsDown,
-    _ => ConnectionRating.none,
-  };
 
   return (
     status: status,
@@ -221,10 +165,6 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     noConnectionTitle: noConnectionTitle,
     noConnectionDescription: noConnectionDescription,
     onToggle: onToggle,
-    onRefreshIP: onRefreshIP,
     onDismissPreview: onDismissPreview,
-    onThumbsUp: onThumbsUp,
-    onThumbsDown: onThumbsDown,
-    connectionRating: connectionRating,
   );
 }

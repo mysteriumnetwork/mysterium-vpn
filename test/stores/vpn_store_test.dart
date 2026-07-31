@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker/talker.dart';
 
 @GenerateNiceMocks([
@@ -64,7 +65,34 @@ void main() {
   late MockSubscriptionStore mockSubscriptionStore;
   late MockVpnProtocolStore mockVpnProtocolStore;
 
-  setUp(() {
+  VpnStore buildStore() => VpnStore(
+    externalApiService: mockExternalApi,
+    mqtt: mockMqtt,
+    locationsStore: mockLocationsStore,
+    locationsService: mockLocationsService,
+    subscriptionStore: mockSubscriptionStore,
+    logger: mockLogger,
+    analyticsStore: mockAnalytics,
+    remoteConfigStore: mockRemoteConfig,
+    authSessionStore: mockAuthSession,
+    realIPInfo: mockRealIPInfo,
+    dnsStore: mockDns,
+    refreshIPStore: mockRefreshIP,
+    recentLocationsStore: mockRecentLocations,
+    locationsQueryStore: mockLocationsQuery,
+    unavailableLocationsStore: mockUnavailableLocations,
+    userIntentsStore: mockUserIntents,
+    connectionsLimitStore: mockConnectionsLimit,
+    wireguardRepository: mockWireguardRepo,
+    openVpnRepository: mockOpenVpnRepo,
+    connectionDecisionStore: mockConnectionDecision,
+    protocolStore: mockVpnProtocolStore,
+    ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
+  );
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    await SharedPreferenceService.instance.init();
     mockWireguardRepo = MockWireguardRepository();
     mockOpenVpnRepo = MockOpenVpnRepository();
     mockExternalApi = MockExternalApiService();
@@ -91,30 +119,7 @@ void main() {
     when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
     when(mockAuthSession.status).thenReturn(AuthStatus.unauthenticated);
 
-    vpnStore = VpnStore(
-      externalApiService: mockExternalApi,
-      mqtt: mockMqtt,
-      locationsStore: mockLocationsStore,
-      locationsService: mockLocationsService,
-      subscriptionStore: mockSubscriptionStore,
-      logger: mockLogger,
-      analyticsStore: mockAnalytics,
-      remoteConfigStore: mockRemoteConfig,
-      authSessionStore: mockAuthSession,
-      realIPInfo: mockRealIPInfo,
-      dnsStore: mockDns,
-      refreshIPStore: mockRefreshIP,
-      recentLocationsStore: mockRecentLocations,
-      locationsQueryStore: mockLocationsQuery,
-      unavailableLocationsStore: mockUnavailableLocations,
-      userIntentsStore: mockUserIntents,
-      connectionsLimitStore: mockConnectionsLimit,
-      wireguardRepository: mockWireguardRepo,
-      openVpnRepository: mockOpenVpnRepo,
-      connectionDecisionStore: mockConnectionDecision,
-      protocolStore: mockVpnProtocolStore,
-      ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
-    );
+    vpnStore = buildStore();
   });
 
   tearDown(() async {
@@ -147,30 +152,7 @@ void main() {
     test('initializes with WireGuard repository when protocol is WireGuard', () {
       when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
 
-      final store = VpnStore(
-        externalApiService: mockExternalApi,
-        mqtt: mockMqtt,
-        locationsStore: mockLocationsStore,
-        locationsService: mockLocationsService,
-        subscriptionStore: mockSubscriptionStore,
-        logger: mockLogger,
-        analyticsStore: mockAnalytics,
-        remoteConfigStore: mockRemoteConfig,
-        authSessionStore: mockAuthSession,
-        realIPInfo: mockRealIPInfo,
-        dnsStore: mockDns,
-        refreshIPStore: mockRefreshIP,
-        recentLocationsStore: mockRecentLocations,
-        locationsQueryStore: mockLocationsQuery,
-        unavailableLocationsStore: mockUnavailableLocations,
-        userIntentsStore: mockUserIntents,
-        connectionsLimitStore: mockConnectionsLimit,
-        wireguardRepository: mockWireguardRepo,
-        openVpnRepository: mockOpenVpnRepo,
-        connectionDecisionStore: mockConnectionDecision,
-        protocolStore: mockVpnProtocolStore,
-        ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
-      );
+      final store = buildStore();
 
       expect(store, isNotNull);
     });
@@ -178,30 +160,7 @@ void main() {
     test('initializes with OpenVPN repository when protocol is OpenVPN', () {
       when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
 
-      final store = VpnStore(
-        externalApiService: mockExternalApi,
-        mqtt: mockMqtt,
-        locationsStore: mockLocationsStore,
-        locationsService: mockLocationsService,
-        subscriptionStore: mockSubscriptionStore,
-        logger: mockLogger,
-        analyticsStore: mockAnalytics,
-        remoteConfigStore: mockRemoteConfig,
-        authSessionStore: mockAuthSession,
-        realIPInfo: mockRealIPInfo,
-        dnsStore: mockDns,
-        refreshIPStore: mockRefreshIP,
-        recentLocationsStore: mockRecentLocations,
-        locationsQueryStore: mockLocationsQuery,
-        unavailableLocationsStore: mockUnavailableLocations,
-        userIntentsStore: mockUserIntents,
-        connectionsLimitStore: mockConnectionsLimit,
-        wireguardRepository: mockWireguardRepo,
-        openVpnRepository: mockOpenVpnRepo,
-        connectionDecisionStore: mockConnectionDecision,
-        protocolStore: mockVpnProtocolStore,
-        ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
-      );
+      final store = buildStore();
 
       expect(store, isNotNull);
     });
@@ -381,30 +340,7 @@ void main() {
       test('uses OpenVPN repository when protocol is OpenVPN', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
 
-        final storeWithOpenVpn = VpnStore(
-          externalApiService: mockExternalApi,
-          mqtt: mockMqtt,
-          locationsStore: mockLocationsStore,
-          locationsService: mockLocationsService,
-          subscriptionStore: mockSubscriptionStore,
-          logger: mockLogger,
-          analyticsStore: mockAnalytics,
-          remoteConfigStore: mockRemoteConfig,
-          authSessionStore: mockAuthSession,
-          realIPInfo: mockRealIPInfo,
-          dnsStore: mockDns,
-          refreshIPStore: mockRefreshIP,
-          recentLocationsStore: mockRecentLocations,
-          locationsQueryStore: mockLocationsQuery,
-          unavailableLocationsStore: mockUnavailableLocations,
-          userIntentsStore: mockUserIntents,
-          connectionsLimitStore: mockConnectionsLimit,
-          wireguardRepository: mockWireguardRepo,
-          openVpnRepository: mockOpenVpnRepo,
-          connectionDecisionStore: mockConnectionDecision,
-          protocolStore: mockVpnProtocolStore,
-          ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
-        );
+        final storeWithOpenVpn = buildStore();
 
         when(mockRealIPInfo.infoFuture).thenAnswer(
           (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
@@ -599,30 +535,7 @@ void main() {
       test('connects using OpenVPN repository', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
 
-        final storeWithOpenVpn = VpnStore(
-          externalApiService: mockExternalApi,
-          mqtt: mockMqtt,
-          locationsStore: mockLocationsStore,
-          locationsService: mockLocationsService,
-          subscriptionStore: mockSubscriptionStore,
-          logger: mockLogger,
-          analyticsStore: mockAnalytics,
-          remoteConfigStore: mockRemoteConfig,
-          authSessionStore: mockAuthSession,
-          realIPInfo: mockRealIPInfo,
-          dnsStore: mockDns,
-          refreshIPStore: mockRefreshIP,
-          recentLocationsStore: mockRecentLocations,
-          locationsQueryStore: mockLocationsQuery,
-          unavailableLocationsStore: mockUnavailableLocations,
-          userIntentsStore: mockUserIntents,
-          connectionsLimitStore: mockConnectionsLimit,
-          wireguardRepository: mockWireguardRepo,
-          openVpnRepository: mockOpenVpnRepo,
-          connectionDecisionStore: mockConnectionDecision,
-          protocolStore: mockVpnProtocolStore,
-          ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
-        );
+        final storeWithOpenVpn = buildStore();
 
         when(
           mockOpenVpnRepo.currentStatus(),
@@ -634,6 +547,119 @@ void main() {
         verifyNever(mockWireguardRepo.currentStatus());
 
         await storeWithOpenVpn.disposeStore();
+      });
+    });
+
+    group('connectedAt persistence', () {
+      const loc = VPNLocation(
+        id: 'de',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'de',
+      );
+
+      late StreamController<VpnConnectionStatus> statusController;
+
+      setUp(() {
+        statusController = StreamController<VpnConnectionStatus>.broadcast();
+        when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
+        when(mockAuthSession.status).thenReturn(AuthStatus.authenticated);
+        when(mockWireguardRepo.init()).thenAnswer((_) async {});
+        when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.statusStream()).thenAnswer((_) => statusController.stream);
+        when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+        when(mockRecentLocations.add(any)).thenAnswer((_) async {});
+        when(mockConnectionDecision.potentialLocation).thenReturn(loc);
+        when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '3.3.3.3');
+      });
+
+      tearDown(() async {
+        await statusController.close();
+      });
+
+      test('restores the persisted connectedAt when the tunnel is already up at launch', () async {
+        final storedAt = DateTime.now().subtract(const Duration(minutes: 5));
+        await SharedPreferenceService.instance.setInt(
+          StorageKeys.connectedAt.name,
+          storedAt.millisecondsSinceEpoch,
+        );
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+
+        final store = buildStore();
+        await pumpEventQueue();
+
+        expect(store.vpnStatus, VpnConnectionStatus.connected);
+        expect(store.connectedAt?.millisecondsSinceEpoch, storedAt.millisecondsSinceEpoch);
+
+        await store.disposeStore();
+      });
+
+      test('stamps and persists a fresh connectedAt when no stamp is stored', () async {
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        final before = DateTime.now();
+
+        final store = buildStore();
+        await pumpEventQueue();
+
+        expect(store.connectedAt, isNotNull);
+        expect(store.connectedAt!.isBefore(before), isFalse);
+        expect(
+          SharedPreferenceService.instance.getInt(StorageKeys.connectedAt.name),
+          store.connectedAt!.millisecondsSinceEpoch,
+        );
+
+        await store.disposeStore();
+      });
+
+      test('clears connectedAt and the stored stamp on disconnect', () async {
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+
+        final store = buildStore();
+        await pumpEventQueue();
+        expect(store.connectedAt, isNotNull);
+
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        statusController.add(VpnConnectionStatus.disconnected);
+        await pumpEventQueue();
+
+        expect(store.connectedAt, isNull);
+        expect(SharedPreferenceService.instance.getInt(StorageKeys.connectedAt.name), isNull);
+
+        await store.disposeStore();
+      });
+
+      test('ignores a stale stored stamp when connecting after a disconnected launch', () async {
+        final staleAt = DateTime.now().subtract(const Duration(hours: 2));
+        await SharedPreferenceService.instance.setInt(
+          StorageKeys.connectedAt.name,
+          staleAt.millisecondsSinceEpoch,
+        );
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+
+        final store = buildStore();
+        await pumpEventQueue();
+        expect(store.connectedAt, isNull);
+
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        statusController.add(VpnConnectionStatus.connected);
+        await pumpEventQueue();
+
+        expect(store.connectedAt, isNotNull);
+        expect(store.connectedAt!.isAfter(staleAt), isTrue);
+
+        await store.disposeStore();
       });
     });
 

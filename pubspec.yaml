@@ -14,10 +14,6 @@ dependencies:
   auto_size_text: 3.0.0
   beamer: 1.7.0
   circle_flags: 5.0.1
-  clipboard:
-    git:
-      url: https://github.com/samuelezedi/flutter_clipboard.git
-      ref: 6f8dce7b71396b713ab3d71cb20a04967c5458fd
   collection: 1.19.1
   configcat_client: 4.1.1
   connectivity_plus: 6.1.5
@@ -64,7 +60,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.29
+      ref: 0.0.30
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:

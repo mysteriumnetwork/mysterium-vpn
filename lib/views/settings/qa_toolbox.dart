@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:beamer/beamer.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -282,7 +282,7 @@ class QAToolbox extends HookConsumerWidget {
         resetConnection: false,
         dnsAddress: ref.read(dnsStorePOD).dnsAddress,
       );
-      await FlutterClipboard.copy(config.config);
+      await Clipboard.setData(ClipboardData(text: config.config));
       final sizeKb = (config.config.length / 1024).toStringAsFixed(1);
       final exitIp = config.exitIp == null ? '' : ' — exit IP ${config.exitIp}';
       showSnackbar('$label config copied ($sizeKb KB)$exitIp', type: SnackbarType.success);
@@ -508,8 +508,8 @@ class QAToolbox extends HookConsumerWidget {
           'Log preview (from ${foundPath.split(r'\').last}):\n$logPreview',
           action: IconButton(
             icon: const Icon(Icons.copy, size: 16),
-            onPressed: () => FlutterClipboard.copy(
-              logs,
+            onPressed: () => Clipboard.setData(
+              ClipboardData(text: logs),
             ).then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
           ),
         );

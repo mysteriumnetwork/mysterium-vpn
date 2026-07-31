@@ -242,5 +242,26 @@ void main() {
       expect(newsWebViewUri('intent://foo'), isNull);
       expect(newsWebViewUri(''), isNull);
     });
+
+    test('appends user_id when provided', () {
+      expect(
+        newsWebViewUri('https://example.com/a', userId: 'u-1'),
+        Uri.parse('https://example.com/a?user_id=u-1'),
+      );
+    });
+
+    test('preserves existing query parameters when appending user_id', () {
+      expect(
+        newsWebViewUri('https://example.com/a?foo=bar', userId: 'u-1'),
+        Uri.parse('https://example.com/a?foo=bar&user_id=u-1'),
+      );
+    });
+
+    test('omits empty user_id', () {
+      expect(
+        newsWebViewUri('https://example.com/a', userId: ''),
+        Uri.parse('https://example.com/a'),
+      );
+    });
   });
 }

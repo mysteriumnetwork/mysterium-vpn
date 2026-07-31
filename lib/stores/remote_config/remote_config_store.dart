@@ -64,6 +64,7 @@ enum _FeatureToggleKey {
   newsCenterEnabled,
   newsCenterRefreshIntervalMinutes,
   showApiVersion,
+  favoriteLocationsEnabled,
   subscriptionFreezeDurations,
 }
 
@@ -273,6 +274,18 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return value;
     }
     return true;
+  }
+
+  /// Whether the favorites heart is shown on the main IP card. Defaults to
+  /// `false` — the button is an inert placeholder until the favorites feature
+  /// ships; ConfigCat turns it on for testers.
+  @computed
+  bool get favoriteLocationsEnabled {
+    final value = config[_FeatureToggleKey.favoriteLocationsEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return false;
   }
 
   /// Whether the News Center feature (bell entry point + feed page) is enabled.

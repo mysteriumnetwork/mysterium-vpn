@@ -116,9 +116,11 @@ class S {
     'connect': [],
     'connectBestServer': [],
     'connected': [],
+    'connectedSince': [],
     'connecting': [],
     'connectingToPaymentProcesor': [],
     'connection': [],
+    'connectionDetails': [],
     'connectionSettingLbl': [],
     'connectionTimeout': [],
     'connectToLocationBtn': ['location'],
@@ -193,9 +195,12 @@ class S {
     'incorrectLocationReason': [],
     'incorrectMagicLink': [],
     'ipAddressLbl': [],
+    'ipDetails': [],
+    'ipPool': [],
     'ipPoolLabel': ['count'],
     'ipRefreshExhaustedCity': ['location'],
     'ipRefreshExhaustedCountry': ['location'],
+    'ipType': [],
     'ipTypeDataCenter': [],
     'ipTypeDataCenterDisclaimer': [],
     'ipTypeResidential': [],
@@ -237,6 +242,7 @@ class S {
     'marketingConsentPopupTitle': [],
     'month': [],
     'monthly': [],
+    'myIp': [],
     'navLocations': [],
     'navMap': [],
     'navProducts': [],
@@ -492,6 +498,8 @@ class S {
     'viewAllFeaturesBtn': [],
     'viewLessBtn': [],
     'vodafoneLbl': [],
+    'vpnDetails': [],
+    'vpnIp': [],
     'vpnProtocolSettingLbl': [],
     'year': [],
     'yearly': [],
@@ -899,6 +907,11 @@ class S {
     return Intl.message('Connected', name: 'connected', desc: '', args: []);
   }
 
+  /// `Connected since`
+  String get connectedSince {
+    return Intl.message('Connected since', name: 'connectedSince', desc: '', args: []);
+  }
+
   /// `Connecting`
   String get connecting {
     return Intl.message('Connecting', name: 'connecting', desc: '', args: []);
@@ -917,6 +930,11 @@ class S {
   /// `Connection`
   String get connection {
     return Intl.message('Connection', name: 'connection', desc: '', args: []);
+  }
+
+  /// `Connection details`
+  String get connectionDetails {
+    return Intl.message('Connection details', name: 'connectionDetails', desc: '', args: []);
   }
 
   /// `Connection & Protection`
@@ -1419,6 +1437,16 @@ class S {
     return Intl.message('IP address', name: 'ipAddressLbl', desc: '', args: []);
   }
 
+  /// `IP details`
+  String get ipDetails {
+    return Intl.message('IP details', name: 'ipDetails', desc: '', args: []);
+  }
+
+  /// `IP pool`
+  String get ipPool {
+    return Intl.message('IP pool', name: 'ipPool', desc: '', args: []);
+  }
+
   /// `IP pool: {count}`
   String ipPoolLabel(Object count) {
     return Intl.message('IP pool: $count', name: 'ipPoolLabel', desc: '', args: [count]);
@@ -1442,6 +1470,11 @@ class S {
       desc: '',
       args: [location],
     );
+  }
+
+  /// `IP type`
+  String get ipType {
+    return Intl.message('IP type', name: 'ipType', desc: '', args: []);
   }
 
   /// `Datacenter IPs`
@@ -1743,6 +1776,11 @@ class S {
   /// `monthly`
   String get monthly {
     return Intl.message('monthly', name: 'monthly', desc: '', args: []);
+  }
+
+  /// `My IP`
+  String get myIp {
+    return Intl.message('My IP', name: 'myIp', desc: '', args: []);
   }
 
   /// `Locations`
@@ -3694,6 +3732,16 @@ class S {
   /// `Vodafone Iberia`
   String get vodafoneLbl {
     return Intl.message('Vodafone Iberia', name: 'vodafoneLbl', desc: '', args: []);
+  }
+
+  /// `VPN details`
+  String get vpnDetails {
+    return Intl.message('VPN details', name: 'vpnDetails', desc: '', args: []);
+  }
+
+  /// `VPN IP`
+  String get vpnIp {
+    return Intl.message('VPN IP', name: 'vpnIp', desc: '', args: []);
   }
 
   /// `VPN protocol`
