@@ -193,6 +193,16 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return _$refreshAllAsyncAction.run(() => super.refreshAll());
   }
 
+  late final _$pauseSubscriptionAsyncAction = AsyncAction(
+    '_SubscriptionStore.pauseSubscription',
+    context: context,
+  );
+
+  @override
+  Future<void> pauseSubscription(SubscriptionPauseDuration pauseDuration) {
+    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(pauseDuration));
+  }
+
   late final _$_SubscriptionStoreActionController = ActionController(
     name: '_SubscriptionStore',
     context: context,

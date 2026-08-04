@@ -26,6 +26,10 @@ abstract class SubscriptionService {
 
   Future<api.SubscriptionConfigResponse> fetchSubscriptionConfig();
 
+  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period);
+
+  Future<void> resumeSubscription();
+
   Future<void> clearPendingTransactions();
 
   Future<bool> isEligibleForIntroOffer(String productId);

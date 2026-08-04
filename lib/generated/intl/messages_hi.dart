@@ -20,73 +20,79 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'hi';
 
-  static String m0(store) =>
+  static String m0(date) => "${date} तक पहुंच उपलब्ध";
+
+  static String m1(store) =>
       "आपके पास पहले से ${store} के ज़रिए भुगतान की गई सक्रिय सदस्यता है। इसे ${store} में प्रबंधित करें।";
 
-  static String m1(amount, period) => "${amount} /${period}";
+  static String m2(amount, period) => "${amount} /${period}";
 
-  static String m2(amount, period) => "${amount}/माह — ${period} बिल किया गया";
+  static String m3(amount, period) => "${amount}/माह — ${period} बिल किया गया";
 
-  static String m3(location) => "${location} से कनेक्ट करें";
+  static String m4(location) => "${location} से कनेक्ट करें";
 
-  static String m4(couponCode) => "${couponCode} क्लिपबोर्ड पर कॉपी हुआ!";
+  static String m5(couponCode) => "${couponCode} क्लिपबोर्ड पर कॉपी हुआ!";
 
-  static String m5(email) => "हमने ${email} पर एक ईमेल भेजा है";
+  static String m6(email) => "हमने ${email} पर एक ईमेल भेजा है";
 
-  static String m6(email) => "शायद आपके पास पहले से “${email}” के साथ एक सशुल्क सदस्यता है";
+  static String m7(email) => "शायद आपके पास पहले से “${email}” के साथ एक सशुल्क सदस्यता है";
 
-  static String m7(errorCode) =>
+  static String m8(errorCode) =>
       "कनेक्ट नहीं हो सका। कृपया फिर से प्रयास करें [error: ${errorCode}]";
 
-  static String m8(plan) => "${plan} लें";
+  static String m9(plan) => "${plan} लें";
 
-  static String m9(plan) => "${plan} प्लान लें";
+  static String m10(plan) => "${plan} प्लान लें";
 
-  static String m10(count) => "IP पूल: ${count}";
-
-  static String m11(location) =>
-      "${location} में कोई वैकल्पिक IP उपलब्ध नहीं है। अगली बार अलग IP पाने के लिए कोई दूसरा देश या शहर चुनें।";
+  static String m11(count) => "IP पूल: ${count}";
 
   static String m12(location) =>
+      "${location} में कोई वैकल्पिक IP उपलब्ध नहीं है। अगली बार अलग IP पाने के लिए कोई दूसरा देश या शहर चुनें।";
+
+  static String m13(location) =>
       "${location} में कोई वैकल्पिक IP उपलब्ध नहीं है। अगली बार अलग IP पाने के लिए कोई दूसरा देश चुनें।";
 
-  static String m13(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: '${count} City', other: '${count} Cities')}";
 
-  static String m14(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
 
-  static String m15(count) =>
+  static String m16(count) =>
       "${Intl.plural(count, one: '${count} State', other: '${count} States')}";
 
-  static String m16(location) => "${location} उपलब्ध नहीं है";
+  static String m17(location) => "${location} उपलब्ध नहीं है";
 
-  static String m17(location) => "${location} अपडेट नहीं हो सका";
+  static String m18(location) => "${location} अपडेट नहीं हो सका";
 
-  static String m18(location) => "${location} अपडेट हुआ";
+  static String m19(location) => "${location} अपडेट हुआ";
 
-  static String m19(date) => "अगला बिलिंग: ${date}";
+  static String m20(date) => "अगला बिलिंग: ${date}";
 
-  static String m20(count) =>
+  static String m21(count) =>
       "${Intl.plural(count, zero: '', one: '${count} महीने के लिए रोकें', other: '${count} महीनों के लिए रोकें')}";
 
-  static String m21(protocol, label) => "${protocol} (${label})";
+  static String m22(date) => "${date} तक रोका गया";
 
-  static String m22(location) => "${location} रिफ्रेश करें";
+  static String m23(protocol, label) => "${protocol} (${label})";
 
-  static String m23(count) =>
+  static String m24(location) => "${location} रिफ्रेश करें";
+
+  static String m25(date) => "${date} को नवीनीकृत होगा";
+
+  static String m26(count) =>
       "${Intl.plural(count, one: 'फिर से भेजें', other: 'फिर से भेजें (${count})')}";
 
-  static String m24(percent) => "${percent}% की बचत";
+  static String m27(percent) => "${percent}% की बचत";
 
-  static String m25(percent, planId) => "${planId} प्लान के साथ ${percent}% की बचत";
+  static String m28(percent, planId) => "${planId} प्लान के साथ ${percent}% की बचत";
 
-  static String m26(plan) => "${plan} में अपग्रेड करें";
+  static String m29(plan) => "${plan} में अपग्रेड करें";
 
-  static String m27(plan) => "${plan} प्लान में अपग्रेड करें";
+  static String m30(plan) => "${plan} प्लान में अपग्रेड करें";
 
-  static String m28(location) => "${location} पर स्विच करें";
+  static String m31(location) => "${location} पर स्विच करें";
 
-  static String m29(word) => "${word} टाइप करें";
+  static String m32(word) => "${word} टाइप करें";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -96,9 +102,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "accessBlockedSitesReason": MessageLookupByLibrary.simpleMessage(
       "ब्लॉक की गई साइटों तक पहुँच नहीं",
     ),
+    "accessUntil": m0,
     "account": MessageLookupByLibrary.simpleMessage("खाता"),
     "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage("खाता हटाया गया"),
-    "activeSubsPaidVia": m0,
+    "activeSubsPaidVia": m1,
     "allLocations": MessageLookupByLibrary.simpleMessage("सभी लोकेशन"),
     "allowBtn": MessageLookupByLibrary.simpleMessage("अनुमति दें"),
     "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage("नोटिफिकेशन की अनुमति दें"),
@@ -119,8 +126,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("सेटिंग्स पर वापस"),
     "batterySaverLabel": MessageLookupByLibrary.simpleMessage("बैटरी सेवर"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("बर्लिन, जर्मनी 🇩🇪"),
-    "billedInTotal": m1,
-    "billedPerMonth": m2,
+    "billedInTotal": m2,
+    "billedPerMonth": m3,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("ब्लॉकर"),
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("अभी अपडेट करें"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("प्रतिबंध बायपास करना"),
@@ -150,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "खाता हटाने से पहले App Store सदस्यता में अपनी सदस्यता रद्द करें।",
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("रद्द करने की तिथि:"),
+    "cancelled": MessageLookupByLibrary.simpleMessage("रद्द"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "हम आपकी प्लान जानकारी प्राप्त नहीं कर पा रहे हैं।",
     ),
@@ -169,7 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("रद्दीकरण की पुष्टि करें"),
     "connect": MessageLookupByLibrary.simpleMessage("कनेक्ट करें"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("बेहतरीन सर्वर"),
-    "connectToLocationBtn": m3,
+    "connectToLocationBtn": m4,
     "connected": MessageLookupByLibrary.simpleMessage("कनेक्टेड"),
     "connectedSince": MessageLookupByLibrary.simpleMessage("कनेक्शन अवधि"),
     "connecting": MessageLookupByLibrary.simpleMessage("कनेक्ट हो रहा है…"),
@@ -201,7 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "copyLink": MessageLookupByLibrary.simpleMessage(
       "लिंक कॉपी करें और उसे अपने ब्राउज़र में पेस्ट करें",
     ),
-    "couponCodeCopied": m4,
+    "couponCodeCopied": m5,
     "dark": MessageLookupByLibrary.simpleMessage("डार्क"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage(
       "आसानी से पता लगने योग्य",
@@ -233,14 +241,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("ईमेल पता मान्य नहीं है"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("ईमेल पता आवश्यक है"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("ईमेल नोटिफिकेशन"),
-    "emailSentTo": m5,
+    "emailSentTo": m6,
     "en": MessageLookupByLibrary.simpleMessage("अंग्रेज़ी"),
     "es": MessageLookupByLibrary.simpleMessage("स्पैनिश"),
-    "existingSubscriptionDesc": m6,
+    "existingSubscriptionDesc": m7,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
       "आप लॉगआउट करके अपने ईमेल से प्रयास कर सकते हैं या इस चेतावनी को अनदेखा कर सकते हैं",
     ),
-    "failedToConnectError": m7,
+    "failedToConnectError": m8,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage(
       "फ़ीडबैक सबमिट नहीं हो सका। कृपया फिर से प्रयास करें।",
     ),
@@ -266,8 +274,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "अपना कनेक्शन सुरक्षित करें और तुरंत निजी ब्राउज़िंग का आनंद लें",
     ),
-    "getSubscriptionModalTitle": m8,
-    "getSubscriptionPlanBtn": m9,
+    "getSubscriptionModalTitle": m9,
+    "getSubscriptionPlanBtn": m10,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP पता प्राप्त हो रहा है…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("वापस जाएँ"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("लॉग इन पर जाएँ"),
@@ -285,9 +293,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP पता"),
     "ipDetails": MessageLookupByLibrary.simpleMessage("IP विवरण"),
     "ipPool": MessageLookupByLibrary.simpleMessage("IP पूल"),
-    "ipPoolLabel": m10,
-    "ipRefreshExhaustedCity": m11,
-    "ipRefreshExhaustedCountry": m12,
+    "ipPoolLabel": m11,
+    "ipRefreshExhaustedCity": m12,
+    "ipRefreshExhaustedCountry": m13,
     "ipType": MessageLookupByLibrary.simpleMessage("IP प्रकार"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("डेटासेंटर IPs"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -318,17 +326,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "लिंक 30 मिनट में समाप्त हो जाता है और केवल एक बार इस्तेमाल किया जा सकता है।",
     ),
     "location": MessageLookupByLibrary.simpleMessage("लोकेशन"),
-    "locationItemCityCount": m13,
-    "locationItemNodeCount": m14,
-    "locationItemStatesCount": m15,
+    "locationItemCityCount": m14,
+    "locationItemNodeCount": m15,
+    "locationItemStatesCount": m16,
     "locationLbl": MessageLookupByLibrary.simpleMessage("लोकेशन"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("नज़दीकी IP से कनेक्ट करें"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "नज़दीकी IP से कनेक्ट करें - या इसे मैन्युअल रूप से चुनें",
     ),
-    "locationUnavailableTitle": m16,
-    "locationsUpdateFailed": m17,
-    "locationsUpdated": m18,
+    "locationUnavailableTitle": m17,
+    "locationsUpdateFailed": m18,
+    "locationsUpdated": m19,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "आपका सत्र समाप्त हो गया है। कृपया फिर से लॉग इन करें।",
     ),
@@ -355,7 +363,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("लोकेशन"),
     "navMap": MessageLookupByLibrary.simpleMessage("मैप"),
     "navProducts": MessageLookupByLibrary.simpleMessage("उत्पाद"),
-    "nextBilling": m19,
+    "nextBilling": m20,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("अगली बिलिंग तिथि:"),
     "no": MessageLookupByLibrary.simpleMessage("नहीं"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("आपके पास कोई सक्रिय सदस्यता नहीं है"),
@@ -399,11 +407,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
       "कृपया एक रोकने की अवधि चुनें।",
     ),
-    "pauseForMonths": m20,
+    "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("सदस्यता रोकें"),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "आप प्रति बिलिंग चक्र में एक बार अपना प्लान रोक सकते हैं।",
     ),
+    "paused": MessageLookupByLibrary.simpleMessage("रोका गया"),
+    "pausedUntil": m22,
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "आपका पहले से एक भुगतान लेनदेन चल रहा है। कृपया नया शुरू करने से पहले उसे पूरा करें।",
     ),
@@ -462,7 +472,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN उत्पाद"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("सुरक्षित"),
     "protocol": MessageLookupByLibrary.simpleMessage("प्रोटोकॉल"),
-    "protocolLabel": m21,
+    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "VPN प्रोटोकॉल बदलने से आप डिस्कनेक्ट हो जाएँगे। इसके बाद आपको फिर से कनेक्ट करना होगा।",
     ),
@@ -494,7 +504,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("रिफ्रेश करें"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP रिफ्रेश करें"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP पता रिफ्रेश करें"),
-    "refreshLocationsTooltip": m22,
+    "refreshLocationsTooltip": m24,
+    "renewsOn": m25,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("जब कुछ काम न कर रहा हो तो रीसेट करें"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "अगर आप ऐप रीसेट करना जारी रखते हैं, तो आप Mysterium VPN से डिस्कनेक्ट हो जाएँगे।",
@@ -532,6 +543,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "आवासीय IPs कैसे काम करते हैं",
     ),
+    "resumeBtn": MessageLookupByLibrary.simpleMessage("फिर शुरू करें"),
+    "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता तुरंत फिर शुरू हो जाएगी।",
+    ),
+    "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("सदस्यता फिर शुरू करें?"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("फिर से प्रयास करें"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("समीक्षा दें"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
@@ -544,7 +560,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("प्लान देखें"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("जारी रखने के लिए ईमेल ऐप चुनें"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("अर्ध-वार्षिक"),
-    "sendAgain": m23,
+    "sendAgain": m26,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "हमें अस्थायी नेटवर्क समस्याएँ आ रही हैं। कृपया बाद में फिर से प्रयास करें।",
     ),
@@ -687,8 +703,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "एक सामान्य घरेलू उपयोगकर्ता की तरह दिखें, जिससे आप स्ट्रीमिंग सेवाओं तक पहुँच पाएँ और VPN डिटेक्शन से बच सकें।",
     ),
-    "subscriptionPlanSavePercent": m24,
-    "subscriptionPlanSaveWith": m25,
+    "subscriptionPlanSavePercent": m27,
+    "subscriptionPlanSaveWith": m28,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("सर्वर"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("समर्थित देश"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN प्रोटोकॉल"),
@@ -699,15 +715,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "आपने अपनी सदस्यता में बदलाव पूरे नहीं किए।",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("अपग्रेड करें"),
-    "subscriptionUpgradeCTA": m26,
+    "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7,500+ आवासीय IPs तक पहुँच के लिए",
     ),
-    "subscriptionUpgradeModalTitle": m27,
+    "subscriptionUpgradeModalTitle": m30,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("सभी प्लान देखें"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("सत्यापन दोबारा करें"),
     "subscripton": MessageLookupByLibrary.simpleMessage("सदस्यता"),
-    "switchToLocationBtn": m28,
+    "switchToLocationBtn": m31,
     "system": MessageLookupByLibrary.simpleMessage("सिस्टम"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("इंटरनेट को वापस पाएँ।"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("नियम और शर्तें"),
@@ -743,7 +759,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "VPN टनल शुरू करने के लिए आपको अनुमति देनी होगी।",
     ),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("टनल सेटअप करते समय एक त्रुटि हुई"),
-    "typeDelete": m29,
+    "typeDelete": m32,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("अपना फ़ीडबैक यहाँ लिखें…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("यूक्रेन"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(

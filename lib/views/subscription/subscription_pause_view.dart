@@ -1,0 +1,190 @@
+import 'package:beamer/beamer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
+import 'package:mysterium_vpn/common/utils/platform.dart';
+import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_action_footer.dart';
+import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_app_bar.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+/// Optional pause offer. "Continue to cancel" opens the web confirmation prompt.
+class SubscriptionPauseView extends HookConsumerWidget {
+  const SubscriptionPauseView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
+    final selectedPauseDuration = useState<SubscriptionPauseDuration?>(null);
+
+    void handleDismiss() {
+      cancelSubscriptionStore.reset();
+      if (isDesktop()) {
+        Navigator.of(context).pop();
+        return;
+      }
+      final beamer = Beamer.of(context);
+      if (beamer.canBeamBack) {
+        beamer.beamBack();
+      } else {
+        beamer.beamToNamed(Routes.main.path);
+      }
+    }
+
+    Future<void> handleSubmit() async {
+      final paused = await cancelSubscriptionStore.pauseSubscription(selectedPauseDuration.value!);
+      if (paused && context.mounted) {
+        handleDismiss();
+      }
+    }
+
+    Future<void> handleContinueOnWeb() async {
+      final link = cancelSubscriptionStore.linkToCancelSubscription;
+      final navigator = Navigator.of(context, rootNavigator: true);
+
+      if (isDesktop()) {
+        Navigator.of(context).pop();
+      } else {
+        final beamer = Beamer.of(context);
+        if (beamer.canBeamBack) {
+          beamer.beamBack();
+        } else {
+          beamer.beamToNamed(Routes.main.path);
+        }
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!navigator.mounted) {
+          cancelSubscriptionStore.reset();
+          return;
+        }
+        await showContinueToWebPrompt(
+          context: navigator.context,
+          onContinuePressed: () => launchUrlString(link),
+        );
+        cancelSubscriptionStore.reset();
+      });
+    }
+
+    return Scaffold(
+      appBar: isDesktop()
+          ? CancelSubscriptionAppBar(title: S.current.notReadyToCancelTitle, onClose: handleDismiss)
+          : null,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            if (!isDesktop())
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Header(
+                      showBackButton: true,
+                      backgroundColor: theme.palette.bgPopover,
+                      backLabel: S.current.back,
+                      onBackPressed: handleDismiss,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+                      child: Text(
+                        S.current.notReadyToCancelTitle,
+                        style: theme.textStyles.textLg.semibold.copyWith(fontSize: 24),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: theme.spacing.xl2),
+                  RadioGroup(
+                    groupValue: selectedPauseDuration.value,
+                    onChanged: (value) => {selectedPauseDuration.value = value},
+                    child: Column(
+                      children: SubscriptionPauseDuration.values
+                          .map(
+                            (duration) => RadioListTile(
+                              value: duration,
+                              title: Text(S.current.pauseForMonths(duration.value)),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isDesktop() ? theme.spacing.xl2 : theme.spacing.md,
+                      vertical: theme.spacing.md,
+                    ),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: theme.palette.bgPrimary,
+                        borderRadius: BorderRadius.circular(theme.spacing.md),
+                        border: Border.all(color: theme.palette.borderPrimary),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              theme.spacing.ms,
+                              theme.spacing.ms,
+                              theme.spacing.s,
+                              theme.spacing.ms,
+                            ),
+                            child: CircleAvatar(
+                              radius: theme.spacing.ms,
+                              backgroundColor: theme.palette.bgSecondary,
+                              child: Icon(
+                                UntitledUI.info_circle,
+                                size: theme.spacing.md,
+                                color: theme.palette.iconTertiary,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: theme.spacing.md),
+                            child: Text(
+                              S.current.pauseSubscriptionInfoDesc,
+                              style: theme.textStyles.textXs.medium.copyWith(
+                                color: theme.palette.textTertiary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Observer(
+                  builder: (context) => CancelSubscriptionActionFooter(
+                    primaryButtonLabel: S.current.pauseSubscriptionBtn,
+                    isProcessing: cancelSubscriptionStore.isProcessing,
+                    onPrimaryButtonPressed: handleSubmit,
+                    secondaryButtonLabel: S.current.continueToCancelBtn,
+                    onSecondaryButtonPressed: handleContinueOnWeb,
+                    primaryButtonEnabled: selectedPauseDuration.value != null,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

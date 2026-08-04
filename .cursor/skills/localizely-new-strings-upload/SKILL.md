@@ -1,123 +1,88 @@
 ---
 name: localizely-new-strings-upload
-description: Extract hardcoded UI strings from a new Flutter feature, confirm sources with the user, translate into all supported locales, and generate partial Flutter ARB files for Localizely upload (add-only, no overwrite). Use when the user asks to prepare Localizely uploads, translate new feature strings, extract literal strings for localization, or create ARB upload packs for new keys.
+description: >-
+  Add new UI copy to every lib/l10n/intl_*.arb locale with translations, upload
+  EN + all other locales to Localizely, then sync. Use when the user asks to add
+  localization keys, translate new feature strings, prepare Localizely strings,
+  or wire S.current for new copy.
 ---
 
-# Localizely new-strings upload pack
+# Localizely new strings (full pipeline)
 
-End-to-end workflow for shipping **new** UI copy to Localizely after a feature lands with hardcoded English strings.
+Personal / Cursor preference. This overrides the upload-pack-oriented skill
+under `.claude/skills/` when working in Cursor.
+
+**Always** (unless the user says otherwise): translate every locale → write
+`lib/l10n` → generate → upload EN + all other languages → sync. Do not leave
+empty non-EN values on Localizely or hand sync back to the user.
 
 ## Related skills (read when needed)
 
-- **Stack / tooling:** `.claude/skills/flutter-setup-localization/SKILL.md` — ARBs live in `lib/l10n/intl_*.arb`, access via `S.current`, `make localizely-*`.
-- **Translation quality:** `.claude/skills/translate-mysterium-locales/SKILL.md` — glossary, brevity, tone, ICU plurals, call-site context. Follow it for every non-EN locale.
+- **Stack / tooling:** `.claude/skills/flutter-setup-localization/SKILL.md`
+- **Translation quality:** `.claude/skills/translate-mysterium-locales/SKILL.md`
 
-Live locale files are `lib/l10n/intl_*.arb` (not the legacy `resources/` paths in the translate skill).
+Live locale files: `lib/l10n/intl_*.arb`.
 
 ## Default target locales
 
-`de`, `pt`, `pl`, `fr`, `tr`, `ar`, `es`, `id`, `it`, `ja`, `zh`, `pt_BR`, `hi` (+ English source). Match existing `lib/l10n/intl_*.arb` set unless the user lists a subset.
+`en`, `de`, `pt`, `pl`, `fr`, `tr`, `ar`, `es`, `id`, `it`, `ja`, `zh`, `pt_BR`, `hi`
 
-## Upload safety (always tell the user)
+## End-to-end workflow (default)
 
-| Setting | Effect |
-|---|---|
-| `overwrite=false` (Localizely default; this repo’s `make localizely-upload`) | **Adds** new keys only; existing Localizely values stay |
-| `overwrite=true` | Can replace values for keys present in the upload file |
+1. **Confirm** — Short table (English → key → UI context) unless the user already gave exact copy/key.
+2. **Translate** — All non-EN locales via **translate-mysterium-locales**. Keep `{placeholders}` / ICU. Informal tone. `pt` vs `pt_BR` differences.
+3. **Write `lib/l10n/`** — New key(s) in **every** locale ARB (never EN-only). Prefer `"@key": {}` like `pausedUntil` / `renewsOn`. Same key order everywhere.
+4. **Wire + generate** — `S.current.*` if needed, then `make localizely-generate`.
+5. **Upload EN** — `make localizely-upload` (add-only; does **not** push other languages).
+6. **Upload other locales** — Localizely REST API, **partial ARBs containing only the new key(s)**:
 
-**Always emit partial ARBs** (new keys only) under:
+   ```bash
+   # token from LOCALIZELY_API_TOKEN or .env.localizely
+   # project_id from pubspec.yaml flutter_intl.localizely.project_id
+   POST https://api.localizely.com/v1/projects/{project_id}/files/upload?lang_code={code}&overwrite=false&reviewed=false
+   Header: X-Api-Token
+   Form file: partial Flutter ARB (new keys only)
+   ```
 
-`resources/localizely-upload/<feature-slug>/intl_<locale>.arb`
+   - `lang_code`: `pt_BR` → `pt-BR`; others as-is (`de`, `ja`, …).
+   - Default `overwrite=false` (add new keys only).
+   - If Localizely already has the key with an **empty** value, re-upload that **partial** file with `overwrite=true` so empties get filled. Never upload a full `intl_*.arb` with `overwrite=true`.
+7. **Verify uploads** — HTTP 200 for each locale; spot-check non-EN values are non-empty.
+8. **Sync** — `make localizely-sync` only **after** step 7 succeeds. Confirm new keys still have real translations (not `""`).
+9. **Hand off** — Summarize keys added + that Localizely is updated.
 
-Never upload a full locale file unless the user explicitly asks. Include a short `README.md` in that folder with upload steps and the overwrite warning.
+### Order that must not be broken
 
-Format: **Flutter ARB** (also acceptable on Localizely: flat Key-Value JSON — prefer ARB here).
-
-## Workflow (do in order)
-
-### 1. Scope
-
-Ask which feature/files if unclear. Prefer the user’s open files / mentioned paths. Scan `lib/**/*.dart` (exclude `lib/generated/`) for user-facing string literals.
-
-**Include:** dialog titles, body copy, buttons, hints, labels, errors shown in product UI.
-
-**Exclude:**
-- Already wired `S.current.*` / `S.of(context).*` / `Tr.byKey`
-- Placeholder/test data (`Maz Product`, `Feature 1`, fake dates/prices)
-- Commented-out / dead code
-- QA Toolbox, network logger, other dig-only tools
-- Analytics identifiers, enum `.name` values, non-UI logs
-
-**Reuse existing keys** when the English text already exists in `lib/l10n/intl_en.arb` (e.g. `continueBtn`, `back`, `noneLbl`, `skipBtn`). Do not duplicate them in the upload pack.
-
-### 2. Confirm with the user (required gate)
-
-Before translating, show a summary table and **wait for confirmation**:
-
-| # | English text | File | UI context | Proposed key |
-|---|---|---|---|---|
-| … | … | `path.dart` (`Widget`) | button / title / … | `camelCaseSuffix` |
-
-Also list: **reuse existing keys**, **excluded** strings (with why).
-
-Do not generate translations or ARB files until the user confirms (or edits the list).
-
-### 3. Key naming
-
-Match `intl_en.arb` conventions:
-
-- Suffixes: `Btn`, `Lbl`, `Title`, `Desc`, `Hint`, `Error`, `Action`, `Subtitle`, `Disclaimer`
-- CamelCase; feature prefix when helpful (`cancelSubscriptionTitle`, `freezeForMonths`)
-- ICU plurals: declare `@key.placeholders` with `{ "count": { "type": "num" } }` when needed
-- Same English for title + button → prefer two keys if register may diverge later; otherwise one key is fine
-
-### 4. Translate
-
-Read and apply **translate-mysterium-locales** (glossary, brevity, formality, ICU arms for `ar` / `pl` / `ja` / `zh`, brand terms).
-
-Check call-site context in `lib/` before translating ambiguous one-word verbs/nouns.
-
-### 5. Write partial ARBs
-
-For each locale, write only the new keys (+ `@` metadata). Structure:
-
-```json
-{
-  "@@locale": "en",
-  "someKey": "…",
-  "@someKey": {},
-  "freezeForMonths": "{count, plural, one{…} other{…}}",
-  "@freezeForMonths": {
-    "placeholders": { "count": { "type": "num" } }
-  }
-}
+```
+write all locales → generate → upload EN → upload other langs (partial) → sync
 ```
 
-Rules:
+**Never** `make localizely-sync` (or fetch) before non-EN uploads finish — sync will pull empty strings and wipe local translations.
 
-- 2-space indent, UTF-8, no ASCII-escaping of non-ASCII, trailing newline
-- Same key order across all locale files (EN order)
-- Preserve placeholders and ICU structure
-- `pt` vs `pt_BR`: keep natural differences (e.g. *subscrição* vs *assinatura*) when both exist
+## Undesired results / risks
 
-### 6. Validate
+| Action | Risk | Mitigation |
+|---|---|---|
+| Sync before non-EN upload | Empties overwrite good local strings | Upload all langs first; sync last |
+| `overwrite=true` on a **full** locale ARB | Can replace unrelated Localizely translations | Partial ARBs with **only** new keys |
+| Sync after successful upload | May also pull unrelated Localizely edits into the working tree (other keys translators changed) | Expected if Localizely is source of truth; review `git diff lib/l10n` after sync |
+| EN-only `make localizely-upload` | Other langs stay empty on the platform | Always follow with per-locale partial uploads |
+| Skipping generate | `S.current.key` missing / analyze errors | Always `make localizely-generate` after ARB edits |
 
-Run a quick check across the pack: same key set/order as EN; placeholders match after stripping ICU plural blocks; ICU present where EN has it; `{count}` still in plural strings.
+Sync itself is fine and desired once Localizely has complete translations — it aligns the repo with the platform. The failure mode we hit was syncing **incomplete** Localizely state.
 
-### 7. Hand off
+## Key naming
 
-Tell the user:
+- Suffixes: `Btn`, `Lbl`, `Title`, `Desc`, `Hint`, `Error`, `Action`, `Subtitle`, `Disclaimer`
+- CamelCase; feature prefix when helpful
+- Reuse existing keys when English already exists
 
-1. Folder path to upload
-2. Upload as **Flutter ARB**, language per file, **Overwrite unchecked**
-3. Upload `intl_en.arb` first, then other locales
-4. Optional next steps (only if asked): merge keys into `lib/l10n/intl_en.arb`, wire `S.current.*` in Dart, `make localizely-generate` / `make localizely-fetch`
+## Include / exclude when extracting
 
-Do **not** upload to Localizely or mutate `lib/l10n/` unless the user asks.
+**Include:** product UI copy. **Exclude:** wired `S.current.*` / `Tr.byKey`, test placeholders, QA/dig tools, analytics ids.
 
-## Invocations (examples)
+## Invocations
 
-- “Extract new strings from this feature and make a Localizely upload pack”
-- “Translate these hardcoded strings for Localizely”
-- “Prepare ARBs for the cancel-subscription dialog”
+- “Add Access available until {date} as accessUntil”
+- “Translate these strings for Localizely”
 - “New feature strings → Localizely”

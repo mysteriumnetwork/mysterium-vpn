@@ -7,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
@@ -27,17 +28,12 @@ class SubscriptionStore = _SubscriptionStore with _$SubscriptionStore;
 abstract class _SubscriptionStore with Store {
   _SubscriptionStore({
     required api.VpnApi api,
-    required SubscriptionService subscriptionService,
-    required AuthSessionStore authSessionStore,
-    required AnalyticsStore analyticsStore,
-    required RemoteConfigStore remoteConfigStore,
-    required SubscriptionConfigStore configStore,
-  }) : _apiSubscription = api.getSubscription(),
-       _subscriptionService = subscriptionService,
-       _authSessionStore = authSessionStore,
-       _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore,
-       _configStore = configStore {
+    required this._subscriptionService,
+    required this._authSessionStore,
+    required this._analyticsStore,
+    required this._remoteConfigStore,
+    required this._configStore,
+  }) : _apiSubscription = api.getSubscription() {
     _reactions = [
       reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
         _hasShownExistingSubscriptionDialog = false;
@@ -252,6 +248,7 @@ abstract class _SubscriptionStore with Store {
       return Subscription.empty();
     }
     final subscription = await _subscriptionService.fetchSubscriptionDetails();
+    debugPrint('MAZLOG fetchSubscription: $subscription');
     _setSubscriptionAnalyticsProps(subscription).ignore();
     return subscription;
   }
@@ -348,6 +345,23 @@ abstract class _SubscriptionStore with Store {
   Future<void> refreshAll() async {
     await Future.wait([refreshSubscriptionConfig(), refreshSubscription()]);
     await refreshOtherSubscriber();
+  }
+
+  @action
+  Future<void> pauseSubscription(SubscriptionPauseDuration pauseDuration) async {
+    final period = switch (pauseDuration) {
+      SubscriptionPauseDuration.oneMonth => api.PauseSubscriptionRequestPeriodEnum.n1m,
+      SubscriptionPauseDuration.threeMonths => api.PauseSubscriptionRequestPeriodEnum.n3m,
+      SubscriptionPauseDuration.sixMonths => api.PauseSubscriptionRequestPeriodEnum.n6m,
+    };
+
+    await _subscriptionService.pauseSubscription(period);
+    await refreshSubscription(force: true);
+  }
+
+  Future<void> resumeSubscription() async {
+    await _subscriptionService.resumeSubscription();
+    await refreshSubscription(force: true);
   }
 
   Future<api.OrderSummaryResponse> calculateOrderBreakdown({

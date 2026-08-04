@@ -39,6 +39,7 @@ void main() {
   group('fetchSubscriptionDetails', () {
     test('maps a populated GetSubscriptionResponse into a Subscription', () async {
       final apiResponse = api.GetSubscriptionResponse(
+        paused: false,
         active: true,
         expired: false,
         recurring: true,

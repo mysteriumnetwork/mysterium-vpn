@@ -2,57 +2,22 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'subscription_cancellation_store.g.dart';
-
-enum SubscriptionCancellationFlow {
-  /// Retrieves the reason for cancellation from the user.
-  survey,
-
-  /// Freezes the subscription for the next month.
-  freeze,
-
-  /// Sends the user to the web flow to continue the cancellation.
-  transferToWebFlow,
-
-  /// Displays a summary modal with the cancellation details.
-  cancellationSummary,
-}
 
 // ignore: library_private_types_in_public_api
 class SubscriptionCancellationStore = _SubscriptionCancellationStore
     with _$SubscriptionCancellationStore;
 
 abstract class _SubscriptionCancellationStore with Store {
-  _SubscriptionCancellationStore({
-    required AnalyticsStore analyticsStore,
-    required RemoteConfigStore remoteConfigStore,
-    required SubscriptionStore subscriptionStore,
-  }) : _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore,
-       _subscriptionStore = subscriptionStore {
-    _reactions.add(
-      autorun((_) {
-        final options = _remoteConfigStore.subscriptionFreezeDurationOptions;
-        _freezeDurations = options;
-        if (_freezeDurations.isEmpty) {
-          _freezeDurations = [1, 3, 6];
-        }
-      }),
-    );
-  }
+  _SubscriptionCancellationStore({required this._analyticsStore, required this._subscriptionStore});
 
   late final List<ReactionDisposer> _reactions = [];
   late final SubscriptionStore _subscriptionStore;
   late final AnalyticsStore _analyticsStore;
-  late final RemoteConfigStore _remoteConfigStore;
-
-  @observable
-  SubscriptionCancellationFlow _cancellationFlowStep = SubscriptionCancellationFlow.survey;
-
-  @computed
-  SubscriptionCancellationFlow get cancellationFlowStep => _cancellationFlowStep;
 
   @observable
   bool _isProcessing = false;
@@ -61,16 +26,10 @@ abstract class _SubscriptionCancellationStore with Store {
   bool get isProcessing => _isProcessing;
 
   @observable
-  List<int> _freezeDurations = [];
+  Exception? _error;
 
   @computed
-  List<int> get freezeDurations => _freezeDurations;
-
-  @observable
-  int? _selectedFreezeDuration;
-
-  @computed
-  int? get selectedFreezeDuration => _selectedFreezeDuration;
+  Exception? get error => _error;
 
   String get linkToCancelSubscription {
     if (_subscriptionStore.useWebFlow) {
@@ -93,62 +52,45 @@ abstract class _SubscriptionCancellationStore with Store {
 
   @action
   Future<void> setSurvey({required Set<String> reasons, String? feedback}) async {
-    if (reasons.isNotEmpty || feedback != null || feedback!.isNotEmpty) {
-      _isProcessing = true;
-      await _analyticsStore.logSubscriptionCancellationSurvey(reasons: reasons, feedback: feedback);
+    final trimmedFeedback = feedback?.trim();
+    if (reasons.isEmpty && (trimmedFeedback == null || trimmedFeedback.isEmpty)) {
+      return;
+    }
+    _isProcessing = true;
+    await _analyticsStore.logSubscriptionCancellationSurvey(
+      reasons: reasons,
+      feedback: trimmedFeedback,
+    );
+    _isProcessing = false;
+  }
+
+  /// Returns `true` when the pause succeeded.
+  @action
+  Future<bool> pauseSubscription(SubscriptionPauseDuration duration) async {
+    _isProcessing = true;
+
+    try {
+      await _subscriptionStore.pauseSubscription(duration);
+      await _analyticsStore.logSubscriptionCancellationPauseDuration(months: duration.value);
       _isProcessing = false;
+      return true;
+    } on Exception catch (e) {
+      showSnackbar(e.toString());
+      _error = e;
+      _isProcessing = false;
+      return false;
     }
-
-    await moveToNextStep();
   }
 
-  @action
-  Future<void> setPauseDuration(int months) async {
-    _isProcessing = true;
-    _selectedFreezeDuration = months;
-    await Future.delayed(const Duration(seconds: 3));
-    // await _analyticsStore.logSubscriptionCancellationPauseDuration(months: months);
-    // TODO(Mazen): Implement the logic to set the freeze duration.
-    _isProcessing = false;
-
-    await moveToNextStep();
-  }
-
-  @action
-  Future<void> cancelSubscription() async {
-    _isProcessing = true;
-    await Future.delayed(const Duration(seconds: 3));
-    // await _analyticsStore.logSubscriptionCancellation();
-    _isProcessing = false;
-    await moveToNextStep();
-  }
-
-  Future<void> moveToNextStep() async {
-    switch (_cancellationFlowStep) {
-      case SubscriptionCancellationFlow.survey:
-        if (_freezeDurations.isEmpty) {
-          _cancellationFlowStep = SubscriptionCancellationFlow.cancellationSummary;
-        } else {
-          _cancellationFlowStep = SubscriptionCancellationFlow.freeze;
-        }
-      case SubscriptionCancellationFlow.freeze:
-        // TODO(Mazen): Check if the user decided to freeze the subscription or cancel it.
-        // If the user decided to freeze the subscription, the flow should end here.
-        // If the user decided to cancel the subscription, the user should be redirected to the web flow.
-        _cancellationFlowStep = SubscriptionCancellationFlow.transferToWebFlow;
-      case SubscriptionCancellationFlow.transferToWebFlow:
-        // TODO(Mazen): Redirect the user to the web flow.
-        break;
-      case SubscriptionCancellationFlow.cancellationSummary:
-        _cancellationFlowStep = SubscriptionCancellationFlow.survey;
-    }
+  Future<bool> canPauseSubscription() async {
+    final subscription = await _subscriptionStore.subscriptionFuture;
+    return !(subscription.paused ?? false);
   }
 
   @action
   void reset() {
-    _cancellationFlowStep = SubscriptionCancellationFlow.survey;
     _isProcessing = false;
-    _selectedFreezeDuration = null;
+    _error = null;
   }
 
   FutureOr<void> dispose() async {

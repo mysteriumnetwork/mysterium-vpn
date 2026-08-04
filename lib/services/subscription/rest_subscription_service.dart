@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -273,6 +274,8 @@ class RestSubscriptionService extends SubscriptionService {
         recurring: data.recurring,
         storePlanId: data.storePlanId,
         periodStart: data.periodStart,
+        paused: data.paused,
+        pausedUntil: data.pausedUntil,
       );
     } on ApiException {
       rethrow;
@@ -342,5 +345,23 @@ class RestSubscriptionService extends SubscriptionService {
         purchasedProductId: null,
       );
     }
+  }
+
+  @override
+  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period) async {
+    final res = await _apiSubscription.pause(
+      pauseSubscriptionRequest: api.PauseSubscriptionRequest(period: period),
+    );
+    debugPrint('MAZLOG pauseSubscription statusCode ${res.statusCode}');
+    debugPrint('MAZLOG pauseSubscription extra ${res.extra}');
+    debugPrint('MAZLOG pauseSubscription data ${res.statusMessage}');
+  }
+
+  @override
+  Future<void> resumeSubscription() async {
+    final res = await _apiSubscription.resume();
+    debugPrint('MAZLOG resumeSubscription statusCode ${res.statusCode}');
+    debugPrint('MAZLOG resumeSubscription extra ${res.extra}');
+    debugPrint('MAZLOG resumeSubscription data ${res.statusMessage}');
   }
 }

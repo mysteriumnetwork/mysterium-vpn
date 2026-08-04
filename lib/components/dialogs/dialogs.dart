@@ -1,5 +1,5 @@
 export 'adaptive_action_sheet/adaptive_action_sheet.dart';
-export 'cancel_subscription_flow_dialog.dart';
+export 'cancel_subscription_dialog.dart';
 export 'confirmation_dialog.dart';
 export 'connection_details_dialog.dart';
 export 'delete_account_dialog.dart';

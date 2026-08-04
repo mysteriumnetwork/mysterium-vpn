@@ -65,7 +65,6 @@ enum _FeatureToggleKey {
   newsCenterRefreshIntervalMinutes,
   showApiVersion,
   favoriteLocationsEnabled,
-  subscriptionFreezeDurations,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -674,20 +673,6 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
     }
     return false;
-  }
-
-  @computed
-  List<int> get subscriptionFreezeDurationOptions {
-    if (config.containsKey(_FeatureToggleKey.subscriptionFreezeDurations.name)) {
-      try {
-        final raw = config[_FeatureToggleKey.subscriptionFreezeDurations.name];
-        final decoded = jsonDecode(raw.toString()) as List;
-        return decoded.cast<int>();
-      } catch (e, stack) {
-        logger.handle(e, stack);
-      }
-    }
-    return [];
   }
 
   Map<String, String> get asUserProperties =>

@@ -4,6 +4,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/cancel_subscription_page.dart';
+import 'package:mysterium_vpn/pages/subscription_pause_page.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
 import 'package:mysterium_vpn/pages/news_center_page.dart';
@@ -20,6 +21,7 @@ class BeamerLocations extends BeamLocation<BeamState> {
     Routes.main.path,
     Routes.newsCenter.path,
     Routes.cancelSubscription.path,
+    Routes.cancelSubscriptionPause.path,
     Routes.splash.path,
     Routes.login.path,
     Routes.checkYourEmail.path,
@@ -51,7 +53,14 @@ class BeamerLocations extends BeamLocation<BeamState> {
           // Deep link `/main/news-center?id=<id>` auto-opens that item.
           child: NewsCenterPage(deepLinkItemId: int.tryParse(state.queryParameters['id'] ?? '')),
         ),
-      if (path.contains(Routes.cancelSubscription.path))
+      if (path.contains(Routes.cancelSubscriptionPause.path))
+        BeamPage(
+          key: ValueKey(Routes.cancelSubscriptionPause.toDashCase),
+          name: Routes.cancelSubscriptionPause.path,
+          title: Routes.cancelSubscriptionPause.name,
+          child: const SubscriptionPausePage(),
+        )
+      else if (path.contains(Routes.cancelSubscription.path))
         BeamPage(
           key: ValueKey(Routes.cancelSubscription.toDashCase),
           name: Routes.cancelSubscription.path,

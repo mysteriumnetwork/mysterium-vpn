@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/components/dialogs/onboarding_dialog/resume_subscription_dialog.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -168,6 +169,13 @@ class _Authenticated extends HookConsumerWidget {
       );
     }
 
+    Future<void> onResumePress() async {
+      final shouldResume = await showResumeSubscriptionPrompt(context);
+      if (shouldResume ?? false) {
+        await notifier.runAndAwait(() async => subscriptionStore.resumeSubscription());
+      }
+    }
+
     // `user` is populated asynchronously by fetchAuthUser after login, so read
     // it reactively — otherwise the email stays blank until the widget is
     // rebuilt for another reason (e.g. switching settings tabs).
@@ -195,6 +203,7 @@ class _Authenticated extends HookConsumerWidget {
           isSubscribing: subscribeStatus.isLoading,
           isDesktop: isDesktop,
           onSubscribePress: onSubscribePress,
+          onResumePress: onResumePress,
         ),
         if (showDeleteAccount)
           SettingsCard(
@@ -259,6 +268,7 @@ class _SubscriptionCard extends StatelessWidget {
     required this.isSubscribing,
     required this.isDesktop,
     required this.onSubscribePress,
+    required this.onResumePress,
   });
 
   final SubscriptionStore subscriptionStore;
@@ -268,6 +278,7 @@ class _SubscriptionCard extends StatelessWidget {
   final bool isSubscribing;
   final bool isDesktop;
   final Future<void> Function({required bool manageSubscription}) onSubscribePress;
+  final Future<void> Function() onResumePress;
 
   @override
   Widget build(BuildContext context) => Observer(
@@ -275,6 +286,46 @@ class _SubscriptionCard extends StatelessWidget {
       final subscription = subscriptionStore.subscriptionFuture.value;
       final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
       final isSubscriptionActive = subscription?.active ?? false;
+      final isSubscriptionInPauseState = !isSubscriptionActive && (subscription?.paused ?? false);
+
+      final planId = subscription?.planId;
+      final planTitle = isSubscriptionActive && planId != null
+          ? (Tr.byKeyOrNull(planId) ?? planId)
+          : S.current.subscripton;
+
+      late final String planSubtitle;
+      String? badgeText;
+      var badgeType = BadgeType.warning;
+
+      // Active subscription can be recurring or cancelled
+      if (isSubscriptionActive) {
+        // subscription recurring
+        if (subscription?.recurring ?? false) {
+          planSubtitle = S.current.renewsOn(
+            subscription!.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
+          );
+          // subscription cancelled
+        } else {
+          planSubtitle = S.current.accessUntil(
+            subscription!.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
+          );
+          badgeText = S.current.cancelled;
+          badgeType = BadgeType.error;
+        }
+        // Inactive subscription can be paused or unsubscribed
+      } else {
+        if (isSubscriptionInPauseState) {
+          planSubtitle = S.current.pausedUntil(
+            subscription!.pausedUntil?.toLocal().formatWithDay() ?? '',
+          );
+          badgeText = S.current.paused;
+          badgeType = BadgeType.warning;
+        } else {
+          planSubtitle = S.current.noActiveSubsDesc;
+        }
+      }
+
+      final spacing = Theme.of(context).spacing;
 
       Widget trailing;
       if (isLoading) {
@@ -284,6 +335,18 @@ class _SubscriptionCard extends StatelessWidget {
           onPressed: subscriptionStore.refreshSubscription,
           child: Text(S.current.retryBtn),
         );
+        // Paused Subscription
+      } else if (isSubscriptionInPauseState) {
+        trailing = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () async {
+                  analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeStarted, parameters: {});
+                  await onResumePress();
+                },
+          child: Text(S.current.resumeBtn),
+        );
+        // No subscription
       } else if (!isSubscriptionActive) {
         trailing = SettingsActionButton(
           onPressed: isSubscribing
@@ -295,6 +358,22 @@ class _SubscriptionCard extends StatelessWidget {
           child: isSubscribing ? const LoadingIndicator() : Text(S.current.pricingPlanSeePlansBtn),
         );
       } else {
+        final getPlanButton = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () {
+                  analyticsStore.logEvent(AnalyticsEvent.clickSeeAllPlans);
+                  if (isMobilePaymentGateway(subscription?.gateway)) {
+                    ProviderScope.containerOf(
+                      context,
+                      listen: false,
+                    ).read(homeTabsStorePOD).trySelect(HomeTab.products);
+                  } else {
+                    onSubscribePress(manageSubscription: false);
+                  }
+                },
+          child: Text(S.current.getAPlanBtn),
+        );
         final manageButton = SettingsActionButton(
           onPressed: isSubscribing
               ? null
@@ -305,43 +384,41 @@ class _SubscriptionCard extends StatelessWidget {
           child: Text(S.current.settingManageBtn),
         );
         final cancelButton = SettingsActionButton(
-          onPressed: isSubscribing ? null : () async => showCancelSubscriptionFlowDialog(context),
+          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
           child: Text(S.of(context).cancelBtn),
         );
-        final spacing = Theme.of(context).spacing;
-        trailing = isDesktop
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  manageButton,
-                  SizedBox(width: spacing.md),
-                  cancelButton,
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  manageButton,
-                  SizedBox(height: spacing.xs),
-                  cancelButton,
-                ],
-              );
+        final isRecurring = subscription?.recurring ?? false;
+        if (!isRecurring) {
+          trailing = getPlanButton;
+        } else {
+          trailing = isDesktop
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    manageButton,
+                    SizedBox(width: spacing.md),
+                    cancelButton,
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    manageButton,
+                    SizedBox(height: spacing.xs),
+                    cancelButton,
+                  ],
+                );
+        }
       }
-
-      final planId = subscription?.planId;
-      final planTitle = isSubscriptionActive && planId != null
-          ? (Tr.byKeyOrNull(planId) ?? planId)
-          : S.current.subscripton;
-      final planSubtitle = isSubscriptionActive
-          ? S.current.nextBilling(subscription!.activeUntil?.toLocal().formatWithDay() ?? '')
-          : S.current.noActiveSubsDesc;
 
       return SettingsCard(
         title: planTitle,
         subtitle: planSubtitle,
         position: position,
         trailing: trailing,
+        badgeText: badgeText,
+        badgeType: badgeType,
       );
     },
   );

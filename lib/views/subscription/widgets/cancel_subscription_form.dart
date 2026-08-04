@@ -1,4 +1,4 @@
-part of '../cancel_subscription_flow_view.dart';
+part of '../cancel_subscription_survey_view.dart';
 
 class _Form extends HookWidget {
   const _Form({required this.form, required this.items});

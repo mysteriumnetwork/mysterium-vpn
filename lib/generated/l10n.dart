@@ -60,6 +60,7 @@ class S {
     'acceptOfferBtn': [],
     'accessAvailableUntilLbl': [],
     'accessBlockedSitesReason': [],
+    'accessUntil': ['date'],
     'account': [],
     'accountSuccessfullyDeleted': [],
     'activeSubsPaidVia': ['store'],
@@ -90,6 +91,7 @@ class S {
     'cancelError7040': [],
     'cancelLatency': [],
     'cancellationDateLbl': [],
+    'cancelled': [],
     'cancelMissingFeatures': [],
     'cancelSpeed': [],
     'cancelSubscriptionPromptDesc': [],
@@ -178,6 +180,7 @@ class S {
     'frequentDisconnectsReason': [],
     'fullPriceLabel': [],
     'germany': [],
+    'getAPlanBtn': [],
     'getNewIPAddress': [],
     'getSubscriptionModalDesc': [],
     'getSubscriptionModalTitle': ['plan'],
@@ -273,6 +276,8 @@ class S {
     'or': [],
     'orSelectCountryManually': [],
     'otherReason': [],
+    'paused': [],
+    'pausedUntil': ['date'],
     'pauseDurationRequiredError': [],
     'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
@@ -336,6 +341,7 @@ class S {
     'refreshIP': [],
     'refreshIPAddress': [],
     'refreshLocationsTooltip': ['location'],
+    'renewsOn': ['date'],
     'resetAppDesc': [],
     'resetAppDialogContent': [],
     'resetAppDialogTitle': [],
@@ -357,6 +363,9 @@ class S {
     'residentialEducationGotIt': [],
     'residentialEducationSubtitle': [],
     'residentialEducationTitle': [],
+    'resumeBtn': [],
+    'resumeSubscriptionPromptDesc': [],
+    'resumeSubscriptionTitle': [],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -529,6 +538,16 @@ class S {
       name: 'accessBlockedSitesReason',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Access available until {date}`
+  String accessUntil(Object date) {
+    return Intl.message(
+      'Access available until $date',
+      name: 'accessUntil',
+      desc: '',
+      args: [date],
     );
   }
 
@@ -725,6 +744,11 @@ class S {
   /// `Cancellation date:`
   String get cancellationDateLbl {
     return Intl.message('Cancellation date:', name: 'cancellationDateLbl', desc: '', args: []);
+  }
+
+  /// `Cancelled`
+  String get cancelled {
+    return Intl.message('Cancelled', name: 'cancelled', desc: '', args: []);
   }
 
   /// `Missing features`
@@ -1335,6 +1359,11 @@ class S {
   /// `Germany`
   String get germany {
     return Intl.message('Germany', name: 'germany', desc: '', args: []);
+  }
+
+  /// `Get a plan`
+  String get getAPlanBtn {
+    return Intl.message('Get a plan', name: 'getAPlanBtn', desc: '', args: []);
   }
 
   /// `Get a new IP address on refresh`
@@ -1988,6 +2017,16 @@ class S {
     return Intl.message('Other...', name: 'otherReason', desc: '', args: []);
   }
 
+  /// `Paused`
+  String get paused {
+    return Intl.message('Paused', name: 'paused', desc: '', args: []);
+  }
+
+  /// `Paused until {date}`
+  String pausedUntil(Object date) {
+    return Intl.message('Paused until $date', name: 'pausedUntil', desc: '', args: [date]);
+  }
+
   /// `Please select one of the pause durations.`
   String get pauseDurationRequiredError {
     return Intl.message(
@@ -2431,6 +2470,11 @@ class S {
     );
   }
 
+  /// `Renews on {date}`
+  String renewsOn(Object date) {
+    return Intl.message('Renews on $date', name: 'renewsOn', desc: '', args: [date]);
+  }
+
   /// `Reset when something isn't working`
   String get resetAppDesc {
     return Intl.message(
@@ -2616,6 +2660,31 @@ class S {
     return Intl.message(
       'How Residential IPs work',
       name: 'residentialEducationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resume`
+  String get resumeBtn {
+    return Intl.message('Resume', name: 'resumeBtn', desc: '', args: []);
+  }
+
+  /// `Your subscription will resume immediately.`
+  String get resumeSubscriptionPromptDesc {
+    return Intl.message(
+      'Your subscription will resume immediately.',
+      name: 'resumeSubscriptionPromptDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resume Subscription?`
+  String get resumeSubscriptionTitle {
+    return Intl.message(
+      'Resume Subscription?',
+      name: 'resumeSubscriptionTitle',
       desc: '',
       args: [],
     );

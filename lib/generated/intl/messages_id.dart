@@ -20,71 +20,77 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'id';
 
-  static String m0(store) =>
+  static String m0(date) => "Akses tersedia hingga ${date}";
+
+  static String m1(store) =>
       "Kamu sudah punya langganan aktif yang dibayar lewat ${store}. Kelola di ${store}.";
 
-  static String m1(amount, period) => "${amount} /${period}";
+  static String m2(amount, period) => "${amount} /${period}";
 
-  static String m2(amount, period) => "${amount}/bulan — Ditagih ${period}";
+  static String m3(amount, period) => "${amount}/bulan — Ditagih ${period}";
 
-  static String m3(location) => "Hubungkan ke ${location}";
+  static String m4(location) => "Hubungkan ke ${location}";
 
-  static String m4(couponCode) => "${couponCode} disalin ke papan klip!";
+  static String m5(couponCode) => "${couponCode} disalin ke papan klip!";
 
-  static String m5(email) => "Kami mengirim email ke ${email}";
+  static String m6(email) => "Kami mengirim email ke ${email}";
 
-  static String m6(email) => "Kamu mungkin sudah punya langganan berbayar dengan “${email}”";
+  static String m7(email) => "Kamu mungkin sudah punya langganan berbayar dengan “${email}”";
 
-  static String m7(errorCode) => "Gagal terhubung. Coba lagi [error: ${errorCode}]";
+  static String m8(errorCode) => "Gagal terhubung. Coba lagi [error: ${errorCode}]";
 
-  static String m8(plan) => "Ambil ${plan}";
+  static String m9(plan) => "Ambil ${plan}";
 
-  static String m9(plan) => "Ambil paket ${plan}";
+  static String m10(plan) => "Ambil paket ${plan}";
 
-  static String m10(count) => "Kumpulan IP: ${count}";
-
-  static String m11(location) =>
-      "Tidak ada IP alternatif tersedia di ${location}. Pilih negara atau kota lain untuk mendapat IP berbeda lain kali.";
+  static String m11(count) => "Kumpulan IP: ${count}";
 
   static String m12(location) =>
+      "Tidak ada IP alternatif tersedia di ${location}. Pilih negara atau kota lain untuk mendapat IP berbeda lain kali.";
+
+  static String m13(location) =>
       "Tidak ada IP alternatif tersedia di ${location}. Pilih negara lain untuk mendapat IP berbeda lain kali.";
 
-  static String m13(count) => "${Intl.plural(count, one: '${count} Kota', other: '${count} Kota')}";
+  static String m14(count) => "${Intl.plural(count, one: '${count} Kota', other: '${count} Kota')}";
 
-  static String m14(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
 
-  static String m15(count) =>
+  static String m16(count) =>
       "${Intl.plural(count, one: '${count} Negara Bagian', other: '${count} Negara Bagian')}";
 
-  static String m16(location) => "${location} tidak tersedia";
+  static String m17(location) => "${location} tidak tersedia";
 
-  static String m17(location) => "Tidak bisa memperbarui ${location}";
+  static String m18(location) => "Tidak bisa memperbarui ${location}";
 
-  static String m18(location) => "${location} diperbarui";
+  static String m19(location) => "${location} diperbarui";
 
-  static String m19(date) => "Tagihan Berikutnya: ${date}";
+  static String m20(date) => "Tagihan Berikutnya: ${date}";
 
-  static String m20(count) =>
+  static String m21(count) =>
       "${Intl.plural(count, zero: '', other: 'Jeda selama ${count} bulan')}";
 
-  static String m21(protocol, label) => "${protocol} (${label})";
+  static String m22(date) => "Dijeda hingga ${date}";
 
-  static String m22(location) => "Segarkan ${location}";
+  static String m23(protocol, label) => "${protocol} (${label})";
 
-  static String m23(count) =>
+  static String m24(location) => "Segarkan ${location}";
+
+  static String m25(date) => "Diperpanjang pada ${date}";
+
+  static String m26(count) =>
       "${Intl.plural(count, zero: 'Kirim lagi', one: 'Kirim lagi', other: 'Kirim lagi (${count})')}";
 
-  static String m24(percent) => "Hemat ${percent}%";
+  static String m27(percent) => "Hemat ${percent}%";
 
-  static String m25(percent, planId) => "Hemat ${percent}% dengan paket ${planId}";
+  static String m28(percent, planId) => "Hemat ${percent}% dengan paket ${planId}";
 
-  static String m26(plan) => "Tingkatkan ke ${plan}";
+  static String m29(plan) => "Tingkatkan ke ${plan}";
 
-  static String m27(plan) => "Tingkatkan ke paket ${plan}";
+  static String m30(plan) => "Tingkatkan ke paket ${plan}";
 
-  static String m28(location) => "Beralih ke ${location}";
+  static String m31(location) => "Beralih ke ${location}";
 
-  static String m29(word) => "Ketik ${word}";
+  static String m32(word) => "Ketik ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -94,9 +100,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "accessBlockedSitesReason": MessageLookupByLibrary.simpleMessage(
       "Tidak bisa mengakses situs yang diblokir",
     ),
+    "accessUntil": m0,
     "account": MessageLookupByLibrary.simpleMessage("Akun"),
     "accountSuccessfullyDeleted": MessageLookupByLibrary.simpleMessage("Akun dihapus"),
-    "activeSubsPaidVia": m0,
+    "activeSubsPaidVia": m1,
     "allLocations": MessageLookupByLibrary.simpleMessage("Semua lokasi"),
     "allowBtn": MessageLookupByLibrary.simpleMessage("Izinkan"),
     "allowNotificationsBtn": MessageLookupByLibrary.simpleMessage("Izinkan notifikasi"),
@@ -117,8 +124,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Kembali ke Pengaturan"),
     "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Hemat baterai"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlin, Jerman 🇩🇪"),
-    "billedInTotal": m1,
-    "billedPerMonth": m2,
+    "billedInTotal": m2,
+    "billedPerMonth": m3,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("Pemblokir"),
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Perbarui sekarang"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Lewati pembatasan"),
@@ -152,6 +159,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Batalkan langgananmu di langganan App Store sebelum menghapus akun.",
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal pembatalan:"),
+    "cancelled": MessageLookupByLibrary.simpleMessage("Dibatalkan"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Kami tidak bisa mengambil info paketmu.",
     ),
@@ -167,7 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Konfirmasi pembatalan"),
     "connect": MessageLookupByLibrary.simpleMessage("Hubungkan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Server terbaik"),
-    "connectToLocationBtn": m3,
+    "connectToLocationBtn": m4,
     "connected": MessageLookupByLibrary.simpleMessage("Terhubung"),
     "connectedSince": MessageLookupByLibrary.simpleMessage("Durasi koneksi"),
     "connecting": MessageLookupByLibrary.simpleMessage("Menghubungkan"),
@@ -197,7 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Email"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Lanjutkan dengan Google"),
     "copyLink": MessageLookupByLibrary.simpleMessage("Salin tautan dan tempel di browser-mu"),
-    "couponCodeCopied": m4,
+    "couponCodeCopied": m5,
     "dark": MessageLookupByLibrary.simpleMessage("Gelap"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("Mudah dideteksi"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("Sering diblokir situs"),
@@ -225,14 +233,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("Alamat email tidak valid"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("Alamat email wajib diisi"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("Notifikasi Email"),
-    "emailSentTo": m5,
+    "emailSentTo": m6,
     "en": MessageLookupByLibrary.simpleMessage("Inggris"),
     "es": MessageLookupByLibrary.simpleMessage("Spanyol"),
-    "existingSubscriptionDesc": m6,
+    "existingSubscriptionDesc": m7,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
       "Kamu bisa keluar dan coba dengan emailmu atau abaikan peringatan ini",
     ),
-    "failedToConnectError": m7,
+    "failedToConnectError": m8,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage(
       "Gagal mengirim masukan. Coba lagi.",
     ),
@@ -260,8 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Amankan koneksimu dan nikmati penjelajahan privat seketika",
     ),
-    "getSubscriptionModalTitle": m8,
-    "getSubscriptionPlanBtn": m9,
+    "getSubscriptionModalTitle": m9,
+    "getSubscriptionPlanBtn": m10,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Mengambil alamat IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Kembali"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Ke halaman masuk"),
@@ -277,9 +285,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("Alamat IP"),
     "ipDetails": MessageLookupByLibrary.simpleMessage("Detail IP"),
     "ipPool": MessageLookupByLibrary.simpleMessage("Pool IP"),
-    "ipPoolLabel": m10,
-    "ipRefreshExhaustedCity": m11,
-    "ipRefreshExhaustedCountry": m12,
+    "ipPoolLabel": m11,
+    "ipRefreshExhaustedCity": m12,
+    "ipRefreshExhaustedCountry": m13,
     "ipType": MessageLookupByLibrary.simpleMessage("Jenis IP"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("IP datacenter"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -310,17 +318,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tautan kedaluwarsa dalam 30 menit dan hanya bisa dipakai sekali.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("Lokasi"),
-    "locationItemCityCount": m13,
-    "locationItemNodeCount": m14,
-    "locationItemStatesCount": m15,
+    "locationItemCityCount": m14,
+    "locationItemNodeCount": m15,
+    "locationItemStatesCount": m16,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Lokasi"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("Hubungkan ke IP terdekat"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "Hubungkan ke IP terdekat - atau pilih manual",
     ),
-    "locationUnavailableTitle": m16,
-    "locationsUpdateFailed": m17,
-    "locationsUpdated": m18,
+    "locationUnavailableTitle": m17,
+    "locationsUpdateFailed": m18,
+    "locationsUpdated": m19,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Sesimu sudah kedaluwarsa. Masuk lagi.",
     ),
@@ -345,7 +353,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("Lokasi"),
     "navMap": MessageLookupByLibrary.simpleMessage("Peta"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Produk"),
-    "nextBilling": m19,
+    "nextBilling": m20,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal penagihan berikutnya:"),
     "no": MessageLookupByLibrary.simpleMessage("Tidak"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Kamu tidak punya langganan aktif"),
@@ -387,11 +395,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
       "Pilih salah satu durasi jeda.",
     ),
-    "pauseForMonths": m20,
+    "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Jeda langganan"),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
     ),
+    "paused": MessageLookupByLibrary.simpleMessage("Dijeda"),
+    "pausedUntil": m22,
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Kamu sudah punya transaksi pembayaran yang berjalan. Selesaikan dulu sebelum memulai yang baru.",
     ),
@@ -450,7 +460,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("Produk VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("TERLINDUNGI"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protokol"),
-    "protocolLabel": m21,
+    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Mengganti protokol VPN akan memutuskan koneksimu. Kamu perlu menyambung ulang setelahnya.",
     ),
@@ -482,7 +492,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Segarkan"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Segarkan IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Segarkan alamat IP"),
-    "refreshLocationsTooltip": m22,
+    "refreshLocationsTooltip": m24,
+    "renewsOn": m25,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Reset saat ada yang tidak berfungsi"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Jika kamu lanjut mereset aplikasi, kamu akan terputus dari Mysterium VPN.",
@@ -526,6 +537,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "IP residensial berbeda dari IP datacenter. Berikut yang bisa kamu harapkan.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
+    "resumeBtn": MessageLookupByLibrary.simpleMessage("Lanjutkan"),
+    "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
+      "Langgananmu akan langsung dilanjutkan.",
+    ),
+    "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Lanjutkan langganan?"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("Coba lagi"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Beri ulasan"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
@@ -538,7 +554,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("Lihat paket"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("Pilih Aplikasi Email untuk Lanjut"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("per semester"),
-    "sendAgain": m23,
+    "sendAgain": m26,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Kami sedang mengalami gangguan jaringan sementara. Coba lagi nanti..",
     ),
@@ -675,8 +691,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Tampil sebagai pengguna rumahan biasa, memungkinkanmu mengakses layanan streaming dan menghindari deteksi VPN.",
     ),
-    "subscriptionPlanSavePercent": m24,
-    "subscriptionPlanSaveWith": m25,
+    "subscriptionPlanSavePercent": m27,
+    "subscriptionPlanSaveWith": m28,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Server"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("Negara didukung"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("Protokol VPN"),
@@ -687,15 +703,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kamu belum menyelesaikan perubahan pada langgananmu.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan"),
-    "subscriptionUpgradeCTA": m26,
+    "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "untuk mengakses 7.500+ IP residensial",
     ),
-    "subscriptionUpgradeModalTitle": m27,
+    "subscriptionUpgradeModalTitle": m30,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Lihat semua paket"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("Ulangi Verifikasi"),
     "subscripton": MessageLookupByLibrary.simpleMessage("Langganan"),
-    "switchToLocationBtn": m28,
+    "switchToLocationBtn": m31,
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Rebut kembali internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Syarat dan Ketentuan"),
@@ -723,7 +739,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Terjadi kesalahan saat menyiapkan tunnel",
     ),
-    "typeDelete": m29,
+    "typeDelete": m32,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Ketik masukanmu di sini..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(

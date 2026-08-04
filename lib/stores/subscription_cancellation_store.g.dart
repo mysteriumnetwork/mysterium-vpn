@@ -9,14 +9,6 @@ part of 'subscription_cancellation_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
-  Computed<SubscriptionCancellationFlow>? _$cancellationFlowStepComputed;
-
-  @override
-  SubscriptionCancellationFlow get cancellationFlowStep =>
-      (_$cancellationFlowStepComputed ??= Computed<SubscriptionCancellationFlow>(
-        () => super.cancellationFlowStep,
-        name: '_SubscriptionCancellationStore.cancellationFlowStep',
-      )).value;
   Computed<bool>? _$isProcessingComputed;
 
   @override
@@ -24,38 +16,13 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     () => super.isProcessing,
     name: '_SubscriptionCancellationStore.isProcessing',
   )).value;
-  Computed<List<int>>? _$freezeDurationsComputed;
+  Computed<Exception?>? _$errorComputed;
 
   @override
-  List<int> get freezeDurations => (_$freezeDurationsComputed ??= Computed<List<int>>(
-    () => super.freezeDurations,
-    name: '_SubscriptionCancellationStore.freezeDurations',
+  Exception? get error => (_$errorComputed ??= Computed<Exception?>(
+    () => super.error,
+    name: '_SubscriptionCancellationStore.error',
   )).value;
-  Computed<int?>? _$selectedFreezeDurationComputed;
-
-  @override
-  int? get selectedFreezeDuration => (_$selectedFreezeDurationComputed ??= Computed<int?>(
-    () => super.selectedFreezeDuration,
-    name: '_SubscriptionCancellationStore.selectedFreezeDuration',
-  )).value;
-
-  late final _$_cancellationFlowStepAtom = Atom(
-    name: '_SubscriptionCancellationStore._cancellationFlowStep',
-    context: context,
-  );
-
-  @override
-  SubscriptionCancellationFlow get _cancellationFlowStep {
-    _$_cancellationFlowStepAtom.reportRead();
-    return super._cancellationFlowStep;
-  }
-
-  @override
-  set _cancellationFlowStep(SubscriptionCancellationFlow value) {
-    _$_cancellationFlowStepAtom.reportWrite(value, super._cancellationFlowStep, () {
-      super._cancellationFlowStep = value;
-    });
-  }
 
   late final _$_isProcessingAtom = Atom(
     name: '_SubscriptionCancellationStore._isProcessing',
@@ -75,39 +42,18 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     });
   }
 
-  late final _$_freezeDurationsAtom = Atom(
-    name: '_SubscriptionCancellationStore._freezeDurations',
-    context: context,
-  );
+  late final _$_errorAtom = Atom(name: '_SubscriptionCancellationStore._error', context: context);
 
   @override
-  List<int> get _freezeDurations {
-    _$_freezeDurationsAtom.reportRead();
-    return super._freezeDurations;
+  Exception? get _error {
+    _$_errorAtom.reportRead();
+    return super._error;
   }
 
   @override
-  set _freezeDurations(List<int> value) {
-    _$_freezeDurationsAtom.reportWrite(value, super._freezeDurations, () {
-      super._freezeDurations = value;
-    });
-  }
-
-  late final _$_selectedFreezeDurationAtom = Atom(
-    name: '_SubscriptionCancellationStore._selectedFreezeDuration',
-    context: context,
-  );
-
-  @override
-  int? get _selectedFreezeDuration {
-    _$_selectedFreezeDurationAtom.reportRead();
-    return super._selectedFreezeDuration;
-  }
-
-  @override
-  set _selectedFreezeDuration(int? value) {
-    _$_selectedFreezeDurationAtom.reportWrite(value, super._selectedFreezeDuration, () {
-      super._selectedFreezeDuration = value;
+  set _error(Exception? value) {
+    _$_errorAtom.reportWrite(value, super._error, () {
+      super._error = value;
     });
   }
 
@@ -121,24 +67,14 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     return _$setSurveyAsyncAction.run(() => super.setSurvey(reasons: reasons, feedback: feedback));
   }
 
-  late final _$setPauseDurationAsyncAction = AsyncAction(
-    '_SubscriptionCancellationStore.setPauseDuration',
+  late final _$pauseSubscriptionAsyncAction = AsyncAction(
+    '_SubscriptionCancellationStore.pauseSubscription',
     context: context,
   );
 
   @override
-  Future<void> setPauseDuration(int months) {
-    return _$setPauseDurationAsyncAction.run(() => super.setPauseDuration(months));
-  }
-
-  late final _$cancelSubscriptionAsyncAction = AsyncAction(
-    '_SubscriptionCancellationStore.cancelSubscription',
-    context: context,
-  );
-
-  @override
-  Future<void> cancelSubscription() {
-    return _$cancelSubscriptionAsyncAction.run(() => super.cancelSubscription());
+  Future<bool> pauseSubscription(SubscriptionPauseDuration duration) {
+    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(duration));
   }
 
   late final _$_SubscriptionCancellationStoreActionController = ActionController(
@@ -161,10 +97,8 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   @override
   String toString() {
     return '''
-cancellationFlowStep: ${cancellationFlowStep},
 isProcessing: ${isProcessing},
-freezeDurations: ${freezeDurations},
-selectedFreezeDuration: ${selectedFreezeDuration}
+error: ${error}
     ''';
   }
 }
