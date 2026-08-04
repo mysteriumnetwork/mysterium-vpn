@@ -219,6 +219,26 @@ void main() {
     expect(find.text('Getting IP address...'), findsOneWidget);
   });
 
+  testWidgets('pool count stays on the requested location while refreshing', (tester) async {
+    // Mid-refresh: tunnel down, the connecting location is a specific CITY —
+    // its pool must not replace the requested country's count.
+    const bucharest = VPNLocation(
+      id: 'RO-B',
+      ipType: IPType.datacenter,
+      translations: {'en': 'Bucharest'},
+      countryCode: 'RO',
+      nodeCount: 7,
+    );
+    when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.connecting);
+    when(vpnStore.isConnected).thenReturn(false);
+    when(vpnStore.connectedIpPoolCount).thenReturn(42);
+    when(connectionDisplayStore.connectedOrDisplayLocation).thenReturn(bucharest);
+    await openDialog(tester);
+
+    expect(find.text('42'), findsOneWidget);
+    expect(find.text('7'), findsNothing);
+  });
+
   group('disconnected', () {
     setUp(() {
       when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
@@ -246,6 +266,23 @@ void main() {
       await tester.pump();
 
       verify(vpnStore.manageConnection()).called(1);
+    });
+
+    testWidgets('pool count falls back to the rejoin location when nothing is requested', (
+      tester,
+    ) async {
+      const romania = VPNLocation(
+        id: 'RO',
+        ipType: IPType.datacenter,
+        translations: {'en': 'Romania'},
+        countryCode: 'RO',
+        nodeCount: 9,
+      );
+      when(vpnStore.connectedIpPoolCount).thenReturn(0);
+      when(connectionDisplayStore.connectedOrDisplayLocation).thenReturn(romania);
+      await openDialog(tester);
+
+      expect(find.text('9'), findsOneWidget);
     });
   });
 }

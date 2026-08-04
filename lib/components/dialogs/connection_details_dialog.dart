@@ -44,13 +44,17 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
       () => connectionDisplayStore.connectedOrDisplayLocation,
     );
     final parentLocation = useComputedValue(() => connectionDisplayStore.connectedParentLocation);
-    // While disconnected, show the pool of the location Connect would re-join.
-    final ipPoolCount = useComputedValue(
-      () => vpnStore.isConnected
-          ? vpnStore.connectedIpPoolCount
-          : connectionDisplayStore.connectedOrDisplayLocation?.nodeCount ??
-                vpnStore.connectedIpPoolCount,
-    );
+    // connectedIpPoolCount tracks the REQUESTED location (e.g. the country),
+    // so it stays stable through a refresh — mid-refresh the connecting
+    // location is the specific city, whose pool must not flash here. Only
+    // when nothing is requested/connected (settled disconnect) fall back to
+    // the location Connect would re-join.
+    final ipPoolCount = useComputedValue(() {
+      final connectedPool = vpnStore.connectedIpPoolCount;
+      return connectedPool > 0
+          ? connectedPool
+          : connectionDisplayStore.connectedOrDisplayLocation?.nodeCount ?? 0;
+    });
     final connectedAt = useComputedValue(() => vpnStore.connectedAt);
     final protocol = useComputedValue(() => protocolStore.protocol);
     final handleToggleConnection = useHandleToggleConnection();
