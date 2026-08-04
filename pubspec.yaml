@@ -56,7 +56,7 @@ dependencies:
     path: ./packages/mail_launcher
   mobx: 2.6.0
   money2: 6.3.0
-  mqtt5_client: 4.17.1
+  mqtt5_client: 5.0.0
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git

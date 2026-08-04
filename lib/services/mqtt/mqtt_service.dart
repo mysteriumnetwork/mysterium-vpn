@@ -15,15 +15,31 @@ class MQTTService {
     String clientID,
     Talker logger,
     RemoteConfigStore remoteConfigStore,
-  ) : _mqtt = MqttServerClient(url, clientID, maxConnectionAttempts: 2),
-      _username = username,
+  ) : this.withClient(
+        MqttServerClient(url, clientID, maxConnectionAttempts: 2),
+        url,
+        username,
+        password,
+        logger,
+        remoteConfigStore,
+      );
+
+  @visibleForTesting
+  MQTTService.withClient(
+    this._mqtt,
+    String url,
+    String username,
+    String password,
+    Talker logger,
+    RemoteConfigStore remoteConfigStore,
+  ) : _username = username,
       _password = password,
       _logger = logger,
       _remoteConfigStore = remoteConfigStore {
     final uri = Uri.parse(url);
 
     // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
-    if (clientID.length > 23) {
+    if (_mqtt.clientIdentifier.length > 23) {
       throw MQQTException();
     }
 
@@ -61,6 +77,7 @@ class MQTTService {
   final RemoteConfigStore _remoteConfigStore;
 
   final Map<String, StreamController<String>> _subscriptions = {};
+  final Map<String, StreamSubscription<String>> _forwards = {};
 
   Future<void> start() async {
     if (!_remoteConfigStore.mqttExperiment) {
@@ -116,21 +133,30 @@ class MQTTService {
   }
 
   StreamController<String> _subscribeDeferred(String topic) {
-    _subscriptions[topic] = StreamController();
-    return _subscriptions[topic]!;
+    final subject = StreamController<String>();
+    subject.onCancel = () {
+      if (_subscriptions[topic] == subject) {
+        _subscriptions.remove(topic);
+      }
+    };
+    _subscriptions[topic] = subject;
+    return subject;
   }
 
   void _subscribeReal(String topic, StreamController<String> subject) {
+    // null while disconnected; the next onConnected re-attaches
+    final updates = _mqtt.updates;
+    if (updates == null) {
+      return;
+    }
+
     final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
     if (sub == null) {
       throw MQQTException();
     }
 
-    // make sure to unsubscribe when the stream is cancelled
-    subject.onCancel = () => _mqtt.unsubscribeSubscription(sub);
-
     // filter and map the messages
-    final stream = _mqtt.updates
+    final stream = updates
         // filter the messages by the topic
         .where((messages) => messages.any((message) => message.topic == topic))
         // map the messages to the payload
@@ -144,8 +170,25 @@ class MQTTService {
         // flatten the list of messages
         .expand((messages) => messages);
 
-    // add the stream to the subject
-    subject.addStream(stream);
+    // listen instead of addStream: onConnected re-fires on every reconnect and
+    // addStream on a never-done stream cannot be called twice
+    _forwards[topic]?.cancel();
+    final forward = stream.listen(subject.add);
+    _forwards[topic] = forward;
+
+    // make sure to unsubscribe when the stream is cancelled
+    subject.onCancel = () {
+      forward.cancel();
+      if (_forwards[topic] == forward) {
+        _forwards.remove(topic);
+      }
+      if (_subscriptions[topic] == subject) {
+        _subscriptions.remove(topic);
+      }
+      if (isStarted()) {
+        _mqtt.unsubscribeSubscription(sub);
+      }
+    };
   }
 
   String? _deserializePayload(MqttPublishMessage message) {
