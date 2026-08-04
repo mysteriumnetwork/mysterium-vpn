@@ -94,6 +94,12 @@ class _ResidentialEducationTriggerState extends ConsumerState<ResidentialEducati
       if (!mounted || !_connectedOnResidential) {
         return;
       }
+      // Skip while another route (e.g. the connection-details dialog) covers
+      // the home shell — the surfaces would render over it, anchored to
+      // content the user can't see. Retries on the next qualifying connect.
+      if (!(ModalRoute.isCurrentOf(context) ?? true)) {
+        return;
+      }
       final tab = tabsStore.selected;
       // The modal may show on the map or locations tab; the reminder anchors to
       // the connection card, which only lives on the map tab.

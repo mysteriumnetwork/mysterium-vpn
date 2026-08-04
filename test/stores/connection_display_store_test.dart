@@ -114,5 +114,49 @@ void main() {
         expect(store.hasDifferentSelection, isTrue);
       });
     });
+
+    group('connectedOrDisplayLocation', () {
+      const germany = VPNLocation(
+        id: 'DE',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'DE',
+      );
+
+      const france = VPNLocation(
+        id: 'FR',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'FR',
+      );
+
+      test('the connection wins over a pending selection', () {
+        when(mockVpnStore.location).thenReturn(germany);
+        when(mockSelectedLocationStore.value).thenReturn(france);
+
+        expect(store.connectedOrDisplayLocation, germany);
+      });
+
+      test('falls back to displayLocation when there is no connection', () {
+        when(mockVpnStore.location).thenReturn(null);
+        when(mockSelectedLocationStore.value).thenReturn(france);
+
+        expect(store.connectedOrDisplayLocation, france);
+      });
+
+      test('normalizes the closest sentinel to null', () {
+        when(mockVpnStore.location).thenReturn(VPNLocation.closest);
+
+        expect(store.connectedOrDisplayLocation, isNull);
+      });
+
+      test('connectedParentLocation resolves via LocationsStore', () {
+        when(mockVpnStore.location).thenReturn(germany);
+        when(mockSelectedLocationStore.value).thenReturn(france);
+        when(mockLocationsStore.findParent(germany)).thenReturn(france);
+
+        expect(store.connectedParentLocation, france);
+      });
+    });
   });
 }

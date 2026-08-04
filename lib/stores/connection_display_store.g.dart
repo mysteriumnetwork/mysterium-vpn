@@ -23,6 +23,22 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
     () => super.parentLocation,
     name: '_ConnectionDisplayStore.parentLocation',
   )).value;
+  Computed<VPNLocation?>? _$connectedOrDisplayLocationComputed;
+
+  @override
+  VPNLocation? get connectedOrDisplayLocation =>
+      (_$connectedOrDisplayLocationComputed ??= Computed<VPNLocation?>(
+        () => super.connectedOrDisplayLocation,
+        name: '_ConnectionDisplayStore.connectedOrDisplayLocation',
+      )).value;
+  Computed<VPNLocation?>? _$connectedParentLocationComputed;
+
+  @override
+  VPNLocation? get connectedParentLocation =>
+      (_$connectedParentLocationComputed ??= Computed<VPNLocation?>(
+        () => super.connectedParentLocation,
+        name: '_ConnectionDisplayStore.connectedParentLocation',
+      )).value;
   Computed<VPNLocation?>? _$targetLocationComputed;
 
   @override
@@ -86,6 +102,8 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
     return '''
 displayLocation: ${displayLocation},
 parentLocation: ${parentLocation},
+connectedOrDisplayLocation: ${connectedOrDisplayLocation},
+connectedParentLocation: ${connectedParentLocation},
 targetLocation: ${targetLocation},
 isLocationAvailable: ${isLocationAvailable},
 connectionIP: ${connectionIP},
