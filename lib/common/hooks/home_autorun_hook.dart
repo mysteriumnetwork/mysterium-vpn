@@ -14,7 +14,6 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
 import 'package:mysterium_vpn/views/vpn_error_message.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -120,17 +119,6 @@ void useHomeAutorun() {
                 isAuthenticated: authSessionStore.isAuthenticated,
                 accessToken: authSessionStore.accessToken,
               );
-            } else if (notification.additionalData!.containsKey('campaign_url')) {
-              final campaignUrl = notification.additionalData!['campaign_url'];
-              if (campaignUrl is! String || campaignUrl.isEmpty) {
-                return;
-              }
-              final couponCode = notification.additionalData!['coupon_code'];
-              if (couponCode is! String || couponCode.isEmpty) {
-                return;
-              }
-
-              showCampaignDialog(context, Uri.parse(campaignUrl), couponCode);
             } else if (notification.additionalData!.containsKey('coupon_code')) {
               final couponCode = notification.additionalData!['coupon_code'];
               if (couponCode is! String || couponCode.isEmpty) {

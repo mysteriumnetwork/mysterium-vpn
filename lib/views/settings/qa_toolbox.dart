@@ -16,7 +16,6 @@ import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
-import 'package:mysterium_vpn/views/campaign/campaign_view.dart';
 import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -399,11 +398,6 @@ class QAToolbox extends HookConsumerWidget {
           _QAActionButton(
             label: 'Marketing Consent',
             onPressed: () => showMarketingConsentDialog(context),
-          ),
-          _QAActionButton(
-            label: 'Web campaign',
-            onPressed: () =>
-                showCampaignDialog(context, Uri.parse('http://localhost:3000/campaign'), ''),
           ),
           _QAActionButton(label: 'Device Limit', onPressed: () => showDeviceLimitDialog(context)),
           _QAActionButton(label: 'Onboarding', onPressed: () => showOnboardingDialog(context)),
