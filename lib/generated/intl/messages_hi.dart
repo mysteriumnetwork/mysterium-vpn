@@ -270,6 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("बार-बार डिस्कनेक्ट"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("पूरी कीमत:"),
     "germany": MessageLookupByLibrary.simpleMessage("जर्मनी"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("प्लान लें"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("रिफ्रेश पर नया IP पता पाएँ"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "अपना कनेक्शन सुरक्षित करें और तुरंत निजी ब्राउज़िंग का आनंद लें",
@@ -713,6 +714,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "आपने अपनी सदस्यता में बदलाव पूरे नहीं किए।",
+    ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता सफलतापूर्वक फिर शुरू हो गई!",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("अपग्रेड करें"),
     "subscriptionUpgradeCTA": m29,

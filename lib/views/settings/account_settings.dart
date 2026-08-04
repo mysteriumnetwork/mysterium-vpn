@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
-import 'package:mysterium_vpn/components/dialogs/onboarding_dialog/resume_subscription_dialog.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -170,10 +169,7 @@ class _Authenticated extends HookConsumerWidget {
     }
 
     Future<void> onResumePress() async {
-      final shouldResume = await showResumeSubscriptionPrompt(context);
-      if (shouldResume ?? false) {
-        await notifier.runAndAwait(() async => subscriptionStore.resumeSubscription());
-      }
+      await showResumeSubscriptionPrompt(context);
     }
 
     // `user` is populated asynchronously by fetchAuthUser after login, so read
@@ -286,7 +282,7 @@ class _SubscriptionCard extends StatelessWidget {
       final subscription = subscriptionStore.subscriptionFuture.value;
       final isLoading = subscriptionStore.subscriptionFuture.status == FutureStatus.pending;
       final isSubscriptionActive = subscription?.active ?? false;
-      final isSubscriptionInPauseState = !isSubscriptionActive && (subscription?.paused ?? false);
+      final isSubscriptionInPauseState = isSubscriptionActive && (subscription?.paused ?? false);
 
       final planId = subscription?.planId;
       final planTitle = isSubscriptionActive && planId != null
@@ -299,8 +295,16 @@ class _SubscriptionCard extends StatelessWidget {
 
       // Active subscription can be recurring or cancelled
       if (isSubscriptionActive) {
-        // subscription recurring
-        if (subscription?.recurring ?? false) {
+        // subscription paused
+        if (subscription?.paused ?? false) {
+          planSubtitle = S.current.pausedUntil(
+            subscription!.pausedUntil?.toLocal().formatWithDay() ?? '',
+          );
+          badgeText = S.current.paused;
+          badgeType = BadgeType.warning;
+
+          // subscription recurring
+        } else if (subscription?.recurring ?? false) {
           planSubtitle = S.current.renewsOn(
             subscription!.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
           );
@@ -312,17 +316,9 @@ class _SubscriptionCard extends StatelessWidget {
           badgeText = S.current.cancelled;
           badgeType = BadgeType.error;
         }
-        // Inactive subscription can be paused or unsubscribed
+        // Inactive subscription -> unsubscribed
       } else {
-        if (isSubscriptionInPauseState) {
-          planSubtitle = S.current.pausedUntil(
-            subscription!.pausedUntil?.toLocal().formatWithDay() ?? '',
-          );
-          badgeText = S.current.paused;
-          badgeType = BadgeType.warning;
-        } else {
-          planSubtitle = S.current.noActiveSubsDesc;
-        }
+        planSubtitle = S.current.noActiveSubsDesc;
       }
 
       final spacing = Theme.of(context).spacing;
@@ -337,15 +333,32 @@ class _SubscriptionCard extends StatelessWidget {
         );
         // Paused Subscription
       } else if (isSubscriptionInPauseState) {
-        trailing = SettingsActionButton(
-          onPressed: isSubscribing
-              ? null
-              : () async {
-                  analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeStarted, parameters: {});
-                  await onResumePress();
-                },
+        final resumeButton = SettingsActionButton(
+          onPressed: isSubscribing ? null : onResumePress,
           child: Text(S.current.resumeBtn),
         );
+        final cancelButton = SettingsActionButton(
+          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
+          child: Text(S.of(context).cancelBtn),
+        );
+        trailing = isDesktop
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  resumeButton,
+                  SizedBox(width: spacing.md),
+                  cancelButton,
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  resumeButton,
+                  SizedBox(height: spacing.xs),
+                  cancelButton,
+                ],
+              );
         // No subscription
       } else if (!isSubscriptionActive) {
         trailing = SettingsActionButton(

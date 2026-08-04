@@ -220,6 +220,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("频繁断开连接"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("原价："),
     "germany": MessageLookupByLibrary.simpleMessage("德国"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("获取套餐"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("刷新时获取新的 IP 地址"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage("保护你的连接，立即享受私密浏览"),
     "getSubscriptionModalTitle": m9,
@@ -554,6 +555,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "WireGuard - 快速协议，最适合游戏和流媒体\nOpenVPN - 高度可配置的协议，在其他协议失效时仍可用（Android 不支持）",
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("你尚未完成订阅更改。"),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("你的订阅已成功恢复！"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("升级"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

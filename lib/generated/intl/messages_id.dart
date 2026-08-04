@@ -262,6 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Sering terputus"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Harga penuh:"),
     "germany": MessageLookupByLibrary.simpleMessage("Jerman"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("Dapatkan paket"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage(
       "Dapatkan alamat IP baru saat menyegarkan",
     ),
@@ -701,6 +702,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "Kamu belum menyelesaikan perubahan pada langgananmu.",
+    ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
+      "Langgananmu berhasil dilanjutkan!",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan"),
     "subscriptionUpgradeCTA": m29,

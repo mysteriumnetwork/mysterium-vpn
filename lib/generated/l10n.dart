@@ -456,6 +456,7 @@ class S {
     'subscriptionPlanWireGuard': [],
     'subscriptionPlanWireGuardDesc': [],
     'subscriptionProcessCanceled': [],
+    'subscriptionResumed': [],
     'subscriptionUpgrade': [],
     'subscriptionUpgradeCTA': ['plan'],
     'subscriptionUpgradeModalDescription': [],
@@ -3413,6 +3414,16 @@ class S {
     return Intl.message(
       'You didn\'t complete the changes to your subscription.',
       name: 'subscriptionProcessCanceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your subscription has resumed successfully!`
+  String get subscriptionResumed {
+    return Intl.message(
+      'Your subscription has resumed successfully!',
+      name: 'subscriptionResumed',
       desc: '',
       args: [],
     );

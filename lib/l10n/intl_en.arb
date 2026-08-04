@@ -804,6 +804,8 @@
   "@subscriptionPlanWireGuardDesc": {},
   "subscriptionProcessCanceled": "You didn't complete the changes to your subscription.",
   "@subscriptionProcessCanceled": {},
+  "subscriptionResumed": "Your subscription has resumed successfully!",
+  "@subscriptionResumed": {},
   "subscriptionUpgrade": "Upgrade",
   "@subscriptionUpgrade": {},
   "subscriptionUpgradeCTA": "Upgrade to {plan}",

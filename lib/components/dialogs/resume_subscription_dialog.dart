@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+
+/// Confirms resume, runs it in-place with a button spinner, then pops.
+///
+/// Returns `true` when resume succeeds, `false` when dismissed. On failure the
+/// dialog stays open and a toast is shown so the user can retry or go back.
+Future<bool?> showResumeSubscriptionPrompt(BuildContext context) async => await showModal<bool?>(
+  context,
+  allowDismiss: false,
+  builder: (context) => const _ResumeSubscriptionPrompt(),
+);
+
+class _ResumeSubscriptionPrompt extends HookConsumerWidget {
+  const _ResumeSubscriptionPrompt();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = useState(false);
+
+    Future<void> onResume() async {
+      if (isLoading.value) {
+        return;
+      }
+      isLoading.value = true;
+      final analyticsStore = ref.read(analyticsStorePOD)
+        ..logEvent(AnalyticsEvent.subscriptionResumeStarted, parameters: {});
+      try {
+        await ref.read(subscriptionStorePOD).resumeSubscription();
+        analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeCompleted, parameters: {});
+        showSnackbar(S.current.subscriptionResumed, type: SnackbarType.success);
+        if (context.mounted) {
+          Navigator.pop(context, true);
+        }
+      } catch (_) {
+        analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeFailed, parameters: {});
+        showSnackbar(S.current.somethingWentWrong);
+        if (context.mounted) {
+          isLoading.value = false;
+        }
+      }
+    }
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 343),
+      child: AlertModal(
+        icon: UntitledUI.star_06,
+        title: S.current.resumeSubscriptionTitle,
+        supportingText: S.current.resumeSubscriptionPromptDesc,
+        screenType: ScreenType.mobile,
+        onClose: isLoading.value ? null : () => Navigator.pop(context, false),
+        primaryButton: ButtonPrimary(
+          onPressed: isLoading.value ? null : onResume,
+          loading: isLoading.value ? const ButtonLoading() : null,
+          child: Text(S.current.resumeBtn),
+        ),
+        secondaryButton: ButtonTertiary(
+          onPressed: isLoading.value ? null : () => Navigator.pop(context, false),
+          child: Text(S.current.back),
+        ),
+      ),
+    );
+  }
+}

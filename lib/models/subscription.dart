@@ -18,6 +18,7 @@ abstract class Subscription with _$Subscription {
     bool? expired,
     bool? recurring,
     bool? paused,
+    DateTime? pausedFrom,
     DateTime? pausedUntil,
     String? storePlanId,
     DateTime? periodStart,

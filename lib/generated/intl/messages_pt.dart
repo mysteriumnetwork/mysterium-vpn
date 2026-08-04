@@ -269,6 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Desconexões frequentes"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Preço integral:"),
     "germany": MessageLookupByLibrary.simpleMessage("Alemanha"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("Obter um plano"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage(
       "Obtenha um novo endereço IP ao atualizar",
     ),
@@ -736,6 +737,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "Você não concluiu as alterações na sua assinatura.",
+    ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
+      "A tua subscrição foi retomada com sucesso!",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
     "subscriptionUpgradeCTA": m29,

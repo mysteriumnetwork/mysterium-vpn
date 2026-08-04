@@ -4,11 +4,11 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/enum.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/pages/cancel_subscription_page.dart';
-import 'package:mysterium_vpn/pages/subscription_pause_page.dart';
 import 'package:mysterium_vpn/pages/home_page.dart';
 import 'package:mysterium_vpn/pages/login_page.dart';
 import 'package:mysterium_vpn/pages/news_center_page.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
+import 'package:mysterium_vpn/pages/subscription_pause_page.dart';
 import 'package:mysterium_vpn/pages/verify_email_page.dart';
 import 'package:mysterium_vpn/pages/welcome_page.dart';
 

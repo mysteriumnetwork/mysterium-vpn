@@ -30,6 +30,14 @@ useHandleToggleConnection() {
       if (context.mounted) {
         Beamer.of(context).beamToNamed(Routes.platformLogin.path);
       }
+    } on SubscriptionPausedException catch (_) {
+      if (!context.mounted) {
+        return;
+      }
+      final resumed = await showResumeSubscriptionPrompt(context);
+      if (resumed == true && context.mounted) {
+        await vpnStore.manageConnection(location: location, intent: intent);
+      }
     } on SubscriptionRequiredException catch (_) {
       handleSubscribe();
     } on TunnelSetupRequiredException catch (_) {

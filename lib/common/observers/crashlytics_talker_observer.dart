@@ -61,7 +61,8 @@ class CrashlyticsLoggerObserver extends TalkerObserver {
         exception is KeyDoesntExistsException ||
         exception is TimeoutException ||
         exception is OperationCancelledException ||
-        exception is SubscriptionRequiredException) {
+        exception is SubscriptionRequiredException ||
+        exception is SubscriptionPausedException) {
       return true;
     }
     return false;

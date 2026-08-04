@@ -379,6 +379,7 @@ final Map<String, String Function(S)> kTrBridge = {
   'subscriptionPlanWireGuard': (s) => s.subscriptionPlanWireGuard,
   'subscriptionPlanWireGuardDesc': (s) => s.subscriptionPlanWireGuardDesc,
   'subscriptionProcessCanceled': (s) => s.subscriptionProcessCanceled,
+  'subscriptionResumed': (s) => s.subscriptionResumed,
   'subscriptionUpgrade': (s) => s.subscriptionUpgrade,
   'subscriptionUpgradeModalDescription': (s) => s.subscriptionUpgradeModalDescription,
   'subscriptionUpgradeSeeAllPlans': (s) => s.subscriptionUpgradeSeeAllPlans,

@@ -267,6 +267,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("انقطاعات متكررة"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("السعر الكامل:"),
     "germany": MessageLookupByLibrary.simpleMessage("ألمانيا"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("احصل على خطة"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("احصل على عنوان IP جديد عند التحديث"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "أمّن اتصالك واستمتع بتصفح خاص فورًا",
@@ -687,6 +688,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "لم تُكمل التغييرات على اشتراكك.",
     ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("تم استئناف اشتراكك بنجاح!"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("ترقية"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

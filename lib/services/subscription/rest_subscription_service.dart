@@ -275,6 +275,7 @@ class RestSubscriptionService extends SubscriptionService {
         storePlanId: data.storePlanId,
         periodStart: data.periodStart,
         paused: data.paused,
+        pausedFrom: data.pausedFrom,
         pausedUntil: data.pausedUntil,
       );
     } on ApiException {

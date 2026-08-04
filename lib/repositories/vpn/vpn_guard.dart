@@ -23,6 +23,8 @@ abstract class VpnGuard {
       final subscription = await _subscriptionStore.subscriptionFuture;
       if (!subscription.active) {
         throw const SubscriptionRequiredException();
+      } else if (subscription.paused ?? false) {
+        throw const SubscriptionPausedException();
       }
     } catch (e) {
       if (e is! SubscriptionRequiredException) {

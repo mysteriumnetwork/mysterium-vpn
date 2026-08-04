@@ -54,6 +54,7 @@ SentryEvent? _sentryBeforeSend(SentryEvent event, Hint hint) {
       event.throwable is TokenAlreadyUsedException ||
       event.throwable is OperationCancelledException ||
       event.throwable is SubscriptionRequiredException ||
+      event.throwable is SubscriptionPausedException ||
       event.throwable is RefreshTokenNotFoundException) {
     return null;
   }

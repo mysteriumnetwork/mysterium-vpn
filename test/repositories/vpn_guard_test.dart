@@ -62,6 +62,17 @@ void main() {
     await newGuard().checkVpnGuards();
   });
 
+  test('throws SubscriptionPausedException when subscription is active and paused', () async {
+    when(subscription.subscriptionFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        Subscription(active: true, expired: false, recurring: true, paused: true),
+      ),
+    );
+
+    await expectLater(newGuard().checkVpnGuards(), throwsA(isA<SubscriptionPausedException>()));
+    verifyNever(subscription.refreshSubscription());
+  });
+
   test('refreshes subscription on non-SubscriptionRequiredException errors', () async {
     when(
       subscription.subscriptionFuture,

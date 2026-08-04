@@ -267,6 +267,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("Sık bağlantı kesilmesi"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Tam fiyat:"),
     "germany": MessageLookupByLibrary.simpleMessage("Almanya"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("Plan al"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("Yenilemede yeni bir IP adresi al"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Bağlantını güvence altına al ve anında gizli gezinmenin keyfini çıkar",
@@ -721,6 +722,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "Aboneliğindeki değişiklikleri tamamlamadın.",
     ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("Aboneliğin başarıyla sürdürüldü!"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Yükselt"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

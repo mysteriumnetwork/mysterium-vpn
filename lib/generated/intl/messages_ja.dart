@@ -234,6 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "frequentDisconnectsReason": MessageLookupByLibrary.simpleMessage("頻繁な切断"),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("通常価格:"),
     "germany": MessageLookupByLibrary.simpleMessage("ドイツ"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("プランを入手"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("更新時に新しい IP アドレスを取得"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "接続を保護し、すぐにプライベートな閲覧をお楽しみください",
@@ -598,6 +599,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "WireGuard - ゲームやストリーミングに最適な高速プロトコル\nOpenVPN - 他のプロトコルが機能しない環境でも動作する高度な設定が可能なプロトコル（Android では利用不可）",
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("サブスクリプションの変更が完了していません。"),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("サブスクリプションが正常に再開されました！"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("アップグレード"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

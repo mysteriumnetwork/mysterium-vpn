@@ -277,6 +277,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "fullPriceLabel": MessageLookupByLibrary.simpleMessage("Voller Preis:"),
     "germany": MessageLookupByLibrary.simpleMessage("Deutschland"),
+    "getAPlanBtn": MessageLookupByLibrary.simpleMessage("Einen Plan holen"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage(
       "Beim Aktualisieren eine neue IP-Adresse erhalten",
     ),
@@ -752,6 +753,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "Du hast die Änderungen an deinem Abo nicht abgeschlossen.",
+    ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
+      "Dein Abo wurde erfolgreich fortgesetzt!",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
     "subscriptionUpgradeCTA": m29,
