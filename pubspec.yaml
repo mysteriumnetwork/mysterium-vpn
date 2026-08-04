@@ -20,10 +20,10 @@ dependencies:
   crypto: 3.0.7
   device_info_plus: 13.2.0
   dio: 5.9.2
-  firebase_analytics: 12.4.5
-  firebase_core: 4.12.1
-  firebase_crashlytics: 5.2.6
-  firebase_performance: 0.11.4+5
+  firebase_analytics: 12.4.6
+  firebase_core: 4.13.0
+  firebase_crashlytics: 5.2.7
+  firebase_performance: 0.11.4+6
   flutter:
     sdk: flutter
   flutter_hooks: 0.21.3+1
@@ -67,7 +67,7 @@ dependencies:
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: 0.0.8
+      ref: 0.0.9
   package_info_plus: 10.2.1
   reactive_forms: 17.0.1
   retry: 3.1.2

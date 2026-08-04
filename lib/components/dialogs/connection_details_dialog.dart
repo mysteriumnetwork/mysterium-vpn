@@ -38,13 +38,18 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
     final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
     final isLoading = useComputedValue(() => connectionDisplayStore.isLoading);
     final connectionIP = useComputedValue(() => connectionDisplayStore.connectionIP);
-    final displayLocation = useComputedValue(() => connectionDisplayStore.displayLocation);
-    final parentLocation = useComputedValue(() => connectionDisplayStore.parentLocation);
+    // The dialog describes the CURRENT connection — a pending selection of a
+    // different country/city must not change what is shown here.
+    final currentLocation = useComputedValue(
+      () => connectionDisplayStore.connectedOrDisplayLocation,
+    );
+    final parentLocation = useComputedValue(() => connectionDisplayStore.connectedParentLocation);
     // While disconnected, show the pool of the location Connect would re-join.
     final ipPoolCount = useComputedValue(
       () => vpnStore.isConnected
           ? vpnStore.connectedIpPoolCount
-          : connectionDisplayStore.displayLocation?.nodeCount ?? vpnStore.connectedIpPoolCount,
+          : connectionDisplayStore.connectedOrDisplayLocation?.nodeCount ??
+                vpnStore.connectedIpPoolCount,
     );
     final connectedAt = useComputedValue(() => vpnStore.connectedAt);
     final protocol = useComputedValue(() => protocolStore.protocol);
@@ -108,10 +113,10 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
     final barStatus = vpnStatus.toBarStatus(isFetchingConfig: isFetchingConfig);
     final (:country, :city) = locationDisplayNames(
       context,
-      location: displayLocation,
+      location: currentLocation,
       parent: parentLocation,
     );
-    final serviceQuality = (displayLocation?.ipType ?? IPType.datacenter).localizedLabel;
+    final serviceQuality = (currentLocation?.ipType ?? IPType.datacenter).localizedLabel;
 
     Widget poolAction({
       required VoidCallback? onPressed,
@@ -147,8 +152,8 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
                 LocationStatusCard(
                   country: country,
                   city: city,
-                  countryIcon: displayLocation != null
-                      ? CircleFlag(displayLocation.countryCode, size: 36)
+                  countryIcon: currentLocation != null
+                      ? CircleFlag(currentLocation.countryCode, size: 36)
                       : const SizedBox(width: 36, height: 36),
                   status: barStatus,
                   statusLabel: barStatus.localizedLabel,

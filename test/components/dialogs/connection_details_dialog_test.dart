@@ -54,8 +54,7 @@ void main() {
     when(vpnStore.connectedIpPoolCount).thenReturn(4);
     when(vpnStore.connectedAt).thenReturn(DateTime.now());
     when(connectionDisplayStore.connectionIP).thenReturn('203.0.113.5');
-    when(connectionDisplayStore.displayLocation).thenReturn(germany);
-    when(connectionDisplayStore.parentLocation).thenReturn(null);
+    when(connectionDisplayStore.connectedOrDisplayLocation).thenReturn(germany);
     when(protocolStore.protocol).thenReturn(ProtocolType.wireguard);
     when(ipRefreshExhaustionStore.exhaustionNotice).thenReturn(null);
   });
