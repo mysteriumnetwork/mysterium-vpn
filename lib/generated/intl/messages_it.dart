@@ -735,7 +735,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Non hai completato le modifiche al tuo abbonamento.",
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
-      "Il tuo abbonamento è ripreso correttamente!",
+      "Il tuo abbonamento è di nuovo attivo.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Aggiorna"),
     "subscriptionUpgradeCTA": m29,

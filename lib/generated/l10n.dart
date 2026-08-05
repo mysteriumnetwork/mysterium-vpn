@@ -3419,10 +3419,10 @@ class S {
     );
   }
 
-  /// `Your subscription has resumed successfully!`
+  /// `Your subscription is active again.`
   String get subscriptionResumed {
     return Intl.message(
-      'Your subscription has resumed successfully!',
+      'Your subscription is active again.',
       name: 'subscriptionResumed',
       desc: '',
       args: [],

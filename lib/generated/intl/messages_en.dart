@@ -709,7 +709,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "You didn\'t complete the changes to your subscription.",
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
-      "Your subscription has resumed successfully!",
+      "Your subscription is active again.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
     "subscriptionUpgradeCTA": m29,

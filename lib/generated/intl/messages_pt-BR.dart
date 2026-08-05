@@ -739,7 +739,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Você não concluiu as alterações na sua assinatura.",
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
-      "Sua assinatura foi retomada com sucesso!",
+      "Sua assinatura está ativa novamente.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
     "subscriptionUpgradeCTA": m29,

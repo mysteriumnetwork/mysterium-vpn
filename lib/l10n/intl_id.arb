@@ -804,7 +804,7 @@
   "@subscriptionPlanWireGuardDesc": {},
   "subscriptionProcessCanceled": "Kamu belum menyelesaikan perubahan pada langgananmu.",
   "@subscriptionProcessCanceled": {},
-  "subscriptionResumed": "Langgananmu berhasil dilanjutkan!",
+  "subscriptionResumed": "Langgananmu aktif lagi.",
   "@subscriptionResumed": {},
   "subscriptionUpgrade": "Tingkatkan",
   "@subscriptionUpgrade": {},

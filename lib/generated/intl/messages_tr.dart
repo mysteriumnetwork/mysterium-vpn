@@ -722,7 +722,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "Aboneliğindeki değişiklikleri tamamlamadın.",
     ),
-    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("Aboneliğin başarıyla sürdürüldü!"),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("Aboneliğin yeniden etkin."),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Yükselt"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

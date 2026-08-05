@@ -738,7 +738,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Zmiany w subskrypcji nie zostały dokończone.",
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
-      "Twoja subskrypcja została pomyślnie wznowiona!",
+      "Twoja subskrypcja jest znowu aktywna.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Ulepsz"),
     "subscriptionUpgradeCTA": m29,

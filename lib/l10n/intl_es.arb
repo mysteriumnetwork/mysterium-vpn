@@ -804,7 +804,7 @@
   "@subscriptionPlanWireGuardDesc": {},
   "subscriptionProcessCanceled": "No completaste los cambios en tu suscripción.",
   "@subscriptionProcessCanceled": {},
-  "subscriptionResumed": "¡Tu suscripción se ha reanudado correctamente!",
+  "subscriptionResumed": "Tu suscripción está activa de nuevo.",
   "@subscriptionResumed": {},
   "subscriptionUpgrade": "Mejorar",
   "@subscriptionUpgrade": {},

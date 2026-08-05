@@ -599,7 +599,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "WireGuard - ゲームやストリーミングに最適な高速プロトコル\nOpenVPN - 他のプロトコルが機能しない環境でも動作する高度な設定が可能なプロトコル（Android では利用不可）",
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("サブスクリプションの変更が完了していません。"),
-    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("サブスクリプションが正常に再開されました！"),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("サブスクリプションが再び有効になりました。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("アップグレード"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

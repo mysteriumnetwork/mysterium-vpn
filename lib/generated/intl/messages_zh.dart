@@ -555,7 +555,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "WireGuard - 快速协议，最适合游戏和流媒体\nOpenVPN - 高度可配置的协议，在其他协议失效时仍可用（Android 不支持）",
     ),
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("你尚未完成订阅更改。"),
-    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("你的订阅已成功恢复！"),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("你的订阅已重新激活。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("升级"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

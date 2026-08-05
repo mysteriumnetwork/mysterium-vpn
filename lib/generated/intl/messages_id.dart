@@ -703,9 +703,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage(
       "Kamu belum menyelesaikan perubahan pada langgananmu.",
     ),
-    "subscriptionResumed": MessageLookupByLibrary.simpleMessage(
-      "Langgananmu berhasil dilanjutkan!",
-    ),
+    "subscriptionResumed": MessageLookupByLibrary.simpleMessage("Langgananmu aktif lagi."),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan"),
     "subscriptionUpgradeCTA": m29,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(

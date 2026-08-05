@@ -323,17 +323,14 @@ final Map<String, String Function(S)> kTrBridge = {
   'subscriptionAllPlansTitle': (s) => s.subscriptionAllPlansTitle,
   'subscriptionAllPlansUpgrade': (s) => s.subscriptionAllPlansUpgrade,
   'subscriptionCancelledTitle': (s) => s.subscriptionCancelledTitle,
-  'subscriptionOnboardingBoostProtectionDescription': (s) =>
-      s.subscriptionOnboardingBoostProtectionDescription,
+  'subscriptionOnboardingBoostProtectionDescription': (s) => s.subscriptionOnboardingBoostProtectionDescription,
   'subscriptionOnboardingBoostProtectionTitle': (s) => s.subscriptionOnboardingBoostProtectionTitle,
   'subscriptionOnboardingCancelTourLabel': (s) => s.subscriptionOnboardingCancelTourLabel,
   'subscriptionOnboardingConnectDescription': (s) => s.subscriptionOnboardingConnectDescription,
   'subscriptionOnboardingConnectTitle': (s) => s.subscriptionOnboardingConnectTitle,
-  'subscriptionOnboardingManagePlanDescription': (s) =>
-      s.subscriptionOnboardingManagePlanDescription,
+  'subscriptionOnboardingManagePlanDescription': (s) => s.subscriptionOnboardingManagePlanDescription,
   'subscriptionOnboardingManagePlanTitle': (s) => s.subscriptionOnboardingManagePlanTitle,
-  'subscriptionOnboardingMapDesktopDescription': (s) =>
-      s.subscriptionOnboardingMapDesktopDescription,
+  'subscriptionOnboardingMapDesktopDescription': (s) => s.subscriptionOnboardingMapDesktopDescription,
   'subscriptionOnboardingMapDesktopTitle': (s) => s.subscriptionOnboardingMapDesktopTitle,
   'subscriptionOnboardingMapMobileDescription': (s) => s.subscriptionOnboardingMapMobileDescription,
   'subscriptionOnboardingMapMobileTitle': (s) => s.subscriptionOnboardingMapMobileTitle,
@@ -341,14 +338,11 @@ final Map<String, String Function(S)> kTrBridge = {
   'subscriptionOnboardingPromptTitle': (s) => s.subscriptionOnboardingPromptTitle,
   'subscriptionOnboardingSearchDescription': (s) => s.subscriptionOnboardingSearchDescription,
   'subscriptionOnboardingSearchTitle': (s) => s.subscriptionOnboardingSearchTitle,
-  'subscriptionOnboardingSetupCompleteDescription': (s) =>
-      s.subscriptionOnboardingSetupCompleteDescription,
+  'subscriptionOnboardingSetupCompleteDescription': (s) => s.subscriptionOnboardingSetupCompleteDescription,
   'subscriptionOnboardingSetupCompleteTitle': (s) => s.subscriptionOnboardingSetupCompleteTitle,
   'subscriptionOnboardingStartTourLabel': (s) => s.subscriptionOnboardingStartTourLabel,
-  'subscriptionOnboardingVPNLocationsDesktopDescription': (s) =>
-      s.subscriptionOnboardingVPNLocationsDesktopDescription,
-  'subscriptionOnboardingVPNLocationsMobileDescription': (s) =>
-      s.subscriptionOnboardingVPNLocationsMobileDescription,
+  'subscriptionOnboardingVPNLocationsDesktopDescription': (s) => s.subscriptionOnboardingVPNLocationsDesktopDescription,
+  'subscriptionOnboardingVPNLocationsMobileDescription': (s) => s.subscriptionOnboardingVPNLocationsMobileDescription,
   'subscriptionOnboardingVPNLocationsTitle': (s) => s.subscriptionOnboardingVPNLocationsTitle,
   'subscriptionPlanBestValue': (s) => s.subscriptionPlanBestValue,
   'subscriptionPlanCityLevel': (s) => s.subscriptionPlanCityLevel,

@@ -804,7 +804,7 @@
   "@subscriptionPlanWireGuardDesc": {},
   "subscriptionProcessCanceled": "आपने अपनी सदस्यता में बदलाव पूरे नहीं किए।",
   "@subscriptionProcessCanceled": {},
-  "subscriptionResumed": "आपकी सदस्यता सफलतापूर्वक फिर शुरू हो गई!",
+  "subscriptionResumed": "आपकी सदस्यता फिर से सक्रिय है।",
   "@subscriptionResumed": {},
   "subscriptionUpgrade": "अपग्रेड करें",
   "@subscriptionUpgrade": {},

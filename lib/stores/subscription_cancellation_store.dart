@@ -82,8 +82,13 @@ abstract class _SubscriptionCancellationStore with Store {
     }
   }
 
+  bool isStoreSubscription() => !_subscriptionStore.useWebFlow;
+
   Future<bool> canPauseSubscription() async {
     final subscription = await _subscriptionStore.subscriptionFuture;
+    if (isStoreSubscription()) {
+      return false;
+    }
     return !(subscription.paused ?? false);
   }
 

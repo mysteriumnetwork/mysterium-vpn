@@ -804,7 +804,7 @@
   "@subscriptionPlanWireGuardDesc": {},
   "subscriptionProcessCanceled": "サブスクリプションの変更が完了していません。",
   "@subscriptionProcessCanceled": {},
-  "subscriptionResumed": "サブスクリプションが正常に再開されました！",
+  "subscriptionResumed": "サブスクリプションが再び有効になりました。",
   "@subscriptionResumed": {},
   "subscriptionUpgrade": "アップグレード",
   "@subscriptionUpgrade": {},

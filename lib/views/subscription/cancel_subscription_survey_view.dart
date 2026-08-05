@@ -95,10 +95,15 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
           cancelSubscriptionStore.reset();
           return;
         }
-        await showContinueToWebPrompt(
-          context: navigator.context,
-          onContinuePressed: () => launchUrlString(link),
-        );
+
+        if (cancelSubscriptionStore.isStoreSubscription()) {
+          launchUrlString(link);
+        } else {
+          await showContinueToWebPrompt(
+            context: navigator.context,
+            onContinuePressed: () => launchUrlString(link),
+          );
+        }
         cancelSubscriptionStore.reset();
       });
     }
