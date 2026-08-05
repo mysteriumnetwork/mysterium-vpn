@@ -14,6 +14,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 Future<bool?> showResumeSubscriptionPrompt(BuildContext context) async => await showModal<bool?>(
   context,
   allowDismiss: false,
+  screenType: ScreenType.mobile,
   builder: (context) => const _ResumeSubscriptionPrompt(),
 );
 
@@ -47,22 +48,27 @@ class _ResumeSubscriptionPrompt extends HookConsumerWidget {
       }
     }
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 343),
-      child: AlertModal(
-        icon: UntitledUI.star_06,
-        title: S.current.resumeSubscriptionTitle,
-        supportingText: S.current.resumeSubscriptionPromptDesc,
-        screenType: ScreenType.mobile,
-        onClose: isLoading.value ? null : () => Navigator.pop(context, false),
-        primaryButton: ButtonPrimary(
-          onPressed: isLoading.value ? null : onResume,
-          loading: isLoading.value ? const ButtonLoading() : null,
-          child: Text(S.current.resumeBtn),
-        ),
-        secondaryButton: ButtonTertiary(
-          onPressed: isLoading.value ? null : () => Navigator.pop(context, false),
-          child: Text(S.current.back),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 343),
+        child: Material(
+          type: MaterialType.transparency,
+          child: AlertModal(
+            icon: UntitledUI.star_06,
+            title: S.current.resumeSubscriptionTitle,
+            supportingText: S.current.resumeSubscriptionPromptDesc,
+            screenType: ScreenType.mobile,
+            onClose: isLoading.value ? null : () => Navigator.pop(context, false),
+            primaryButton: ButtonPrimary(
+              onPressed: isLoading.value ? null : onResume,
+              loading: isLoading.value ? const ButtonLoading() : null,
+              child: Text(S.current.resumeBtn),
+            ),
+            secondaryButton: ButtonTertiary(
+              onPressed: isLoading.value ? null : () => Navigator.pop(context, false),
+              child: Text(S.current.back),
+            ),
+          ),
         ),
       ),
     );

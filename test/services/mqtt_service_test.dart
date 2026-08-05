@@ -11,7 +11,6 @@ import 'package:talker/talker.dart';
 
 import 'mqtt_service_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<RemoteConfigStore>(), MockSpec<Talker>()])
 class FakeMqttClient extends MqttServerClient {
   FakeMqttClient() : super('wss://broker.test:443', 'test-client');
 
@@ -51,6 +50,7 @@ class FakeMqttClient extends MqttServerClient {
   }
 }
 
+@GenerateNiceMocks([MockSpec<RemoteConfigStore>(), MockSpec<Talker>()])
 void main() {
   late FakeMqttClient client;
   late MockRemoteConfigStore remoteConfig;

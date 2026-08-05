@@ -30,16 +30,15 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
       ignoring: !primaryButtonEnabled || isProcessing,
       child: ButtonPrimary(
         loading: isProcessing ? const ButtonLoading() : null,
-        onPressed: isProcessing ? () {} : onPrimaryButtonPressed,
+        onPressed: isProcessing || !primaryButtonEnabled ? () {} : onPrimaryButtonPressed,
         decoration: ButtonDecoration(
-          foregroundColor: primaryButtonEnabled
-              ? theme.palette.textWhite
-              : theme.palette.textDisabled,
+          decorationColor: primaryButtonEnabled ? null : theme.palette.bgDisabled,
+          foregroundColor: primaryButtonEnabled ? null : theme.palette.textDisabled,
         ),
         child: Text(
           primaryButtonLabel,
           style: theme.textStyles.textMd.semibold.copyWith(
-            color: primaryButtonEnabled ? theme.palette.textWhite : theme.palette.textDisabled,
+            color: primaryButtonEnabled ? null : theme.palette.textDisabled,
           ),
         ),
       ),
