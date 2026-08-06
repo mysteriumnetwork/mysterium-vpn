@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/storage_keys.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -16,6 +18,8 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
     this._locationsStore,
     this._subscriptionStore,
     this._authSessionStore,
+    this._subscriptionService,
+    this._prefs,
     this._logger,
   ) {
     _init();
@@ -24,6 +28,8 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   final LocationsStore _locationsStore;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
+  final SubscriptionService _subscriptionService;
+  final SharedPreferenceService _prefs;
   final Talker _logger;
   late final List<ReactionDisposer> _disposers;
   late final Debouncer _subscriptionDebouncer;
@@ -46,6 +52,21 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
         (_) => _authSessionStore.isAuthenticated,
         (_) => _refreshLocations(invalidate: true),
         fireImmediately: false,
+      ),
+      reaction(
+        (_) =>
+            !_subscriptionStore.useWebFlow &&
+            (_subscriptionStore.subscriptionFuture.value?.active ?? false),
+        (isStoreSub) {
+          if (isStoreSub) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              // Force a refresh on cold start to check if user cancelled
+              // the subscription from store while app is closed.
+              refreshStoreSubscription(force: true).ignore();
+            });
+          }
+        },
+        fireImmediately: true,
       ),
     ];
     WidgetsBinding.instance.addObserver(this);
@@ -76,11 +97,29 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
 
   Future<void> _onResume() async {
     _subscriptionDebouncer.debounce(() {
-      // Post-frame so the warm-start frame paints before the network refresh.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _subscriptionStore.refreshSubscription(force: true);
+        refreshStoreSubscription().ignore();
       });
     });
+  }
+
+  @visibleForTesting
+  Future<void> refreshStoreSubscription({bool force = false}) async {
+    try {
+      final shouldVerifyPurchase = _prefs.getBool(StorageKeys.shouldVerifyPurchase.name) ?? false;
+      if (shouldVerifyPurchase || force) {
+        try {
+          await _subscriptionService.resyncStorePurchase();
+          await _prefs.setBool(StorageKeys.shouldVerifyPurchase.name, value: false);
+        } on Object catch (e, stack) {
+          // Keep the flag so the next resume retries. Status refresh still runs.
+          _logger.handle(e, stack);
+        }
+      }
+      await _subscriptionStore.refreshSubscription(force: true);
+    } on Object catch (e, stack) {
+      _logger.handle(e, stack);
+    }
   }
 
   Future<void> _onPause() async {}

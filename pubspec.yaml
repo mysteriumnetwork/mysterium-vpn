@@ -16,7 +16,7 @@ dependencies:
   circle_flags: 5.0.1
   collection: 1.19.1
   configcat_client: 4.1.1
-  connectivity_plus: 6.1.5
+  connectivity_plus: 7.3.1
   crypto: 3.0.7
   device_info_plus: 13.2.0
   dio: 5.9.2

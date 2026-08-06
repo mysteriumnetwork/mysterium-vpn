@@ -31,6 +31,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     this._authSessionStore,
     this._subscriptionStore,
     this._plansStore,
+    this._prefs,
   ) {
     _future.ignore();
   }
@@ -44,6 +45,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
   final AuthSessionStore _authSessionStore;
   final SubscriptionStore _subscriptionStore;
   final SubscriptionPlansStore _plansStore;
+  final SharedPreferenceService _prefs;
 
   StreamSubscription<List<PurchaseDetails>>? _purchaseStream;
 
@@ -323,6 +325,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
           transactionId: purchaseDetails.purchaseID ?? '',
         ),
       );
+      await _prefs.setBool(StorageKeys.shouldVerifyPurchase.name, value: false);
       _analyticsStore.logPaymentSuccess(
         productId: productId,
         price: price,
@@ -330,6 +333,10 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         currency: currency,
       );
     } catch (e) {
+      // Cancelling subscription when app is in background will fail to verify purchase,
+      // so we need to set this flag so that we verify purchase when app is active again.
+      // Main problem: no internet connection when app is in background.
+      await _prefs.setBool(StorageKeys.shouldVerifyPurchase.name, value: true);
       _subscriptionStatus = SubscriptionStatus.verifyingError;
       _subscriptionError = e;
       _analyticsStore.logEvent(

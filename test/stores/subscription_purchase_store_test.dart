@@ -26,6 +26,7 @@ import 'subscription_purchase_store_test.mocks.dart';
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<SubscriptionPlansStore>(),
+  MockSpec<SharedPreferenceService>(),
   MockSpec<ProductDetails>(),
   MockSpec<PurchasableProduct>(),
 ])
@@ -38,6 +39,7 @@ void main() {
   late MockAuthSessionStore session;
   late MockSubscriptionStore subscriptions;
   late MockSubscriptionPlansStore plans;
+  late MockSharedPreferenceService prefs;
   late SubscriptionPurchaseStore store;
 
   late MockProductDetails productDetails;
@@ -61,6 +63,7 @@ void main() {
     session = MockAuthSessionStore();
     subscriptions = MockSubscriptionStore();
     plans = MockSubscriptionPlansStore();
+    prefs = MockSharedPreferenceService();
     productDetails = MockProductDetails();
 
     when(productDetails.id).thenReturn('plan_monthly');
@@ -74,6 +77,8 @@ void main() {
     when(subscriptions.subscriptionFuture).thenAnswer((_) => ObservableFuture.value(activeSub));
     when(plans.future).thenAnswer((_) => ObservableFuture.value(<PurchasableProduct>[]));
     when(plans.refresh()).thenAnswer((_) async => <PurchasableProduct>[]);
+    when(prefs.setBool(any, value: anyNamed('value'))).thenAnswer((_) async => true);
+    when(prefs.getBool(any)).thenReturn(false);
 
     when(
       service.subscribeToPackage(
@@ -99,6 +104,7 @@ void main() {
       session,
       subscriptions,
       plans,
+      prefs,
     );
   });
 

@@ -35,4 +35,7 @@ abstract class SubscriptionService {
   Future<bool> isEligibleForIntroOffer(String productId);
 
   Future<void> manageSubscription({required ProductDetails productDetails, required String userId});
+
+  /// Re-posts the latest store purchase token so the backend re-reads Google/Apple.
+  Future<void> resyncStorePurchase();
 }
