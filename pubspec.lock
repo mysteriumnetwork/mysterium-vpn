@@ -1279,7 +1279,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/favourite-ips"
+      ref: f77a0cf42f9a9517f247f42cd3f629fdcf5b0233
       resolved-ref: f77a0cf42f9a9517f247f42cd3f629fdcf5b0233
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git

@@ -51,11 +51,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m13(location) =>
       "No alternative IPs are available in ${location}. Choose another country to get a different IP next time.";
 
-  static String m14(count) => "{one=${count} City, other=${count} Cities}";
+  static String m14(count) =>
+      "${Intl.plural(count, zero: '${count} Cities', one: '${count} City', other: '${count} Cities')}";
 
-  static String m15(count) => "{one=${count} IP, other=${count} IPs}";
+  static String m15(count) =>
+      "${Intl.plural(count, zero: '${count} IPs', one: '${count} IP', other: '${count} IPs')}";
 
-  static String m16(count) => "{one=${count} State, other=${count} States}";
+  static String m16(count) =>
+      "${Intl.plural(count, zero: '${count} States', one: '${count} State', other: '${count} States')}";
 
   static String m17(location) => "${location} is not available";
 
@@ -76,7 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m25(date) => "Renews on ${date}";
 
-  static String m26(count) => "{zero=Send again, one=Send again, other=Send again (${count})}";
+  static String m26(count) =>
+      "${Intl.plural(count, zero: 'Send again', one: 'Send again', other: 'Send again (${count})')}";
 
   static String m27(percent) => "Save ${percent}%";
 

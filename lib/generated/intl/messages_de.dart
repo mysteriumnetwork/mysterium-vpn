@@ -54,12 +54,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "In ${location} sind keine alternativen IPs verfügbar. Wähle ein anderes Land, um beim nächsten Mal eine andere IP zu erhalten.";
 
   static String m14(count) =>
-      "${Intl.plural(count, one: '${count} Stadt', other: '${count} Städte')}";
+      "${Intl.plural(count, zero: '${count} Städte', one: '${count} Stadt', other: '${count} Städte')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) =>
+      "${Intl.plural(count, zero: '${count} IPs', one: '${count} IP', other: '${count} IPs')}";
 
   static String m16(count) =>
-      "${Intl.plural(count, one: '${count} Staat', other: '${count} Staaten')}";
+      "${Intl.plural(count, zero: '${count} Staaten', one: '${count} Staat', other: '${count} Staaten')}";
 
   static String m17(location) => "${location} ist nicht verfügbar";
 
@@ -81,7 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m25(date) => "Verlängert am ${date}";
 
   static String m26(count) =>
-      "${Intl.plural(count, one: 'Erneut senden', other: 'Erneut senden (${count})')}";
+      "${Intl.plural(count, zero: 'Erneut senden', one: 'Erneut senden', other: 'Erneut senden (${count})')}";
 
   static String m27(percent) => "${percent}% sparen";
 
@@ -225,7 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Weniger privat"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("RECHENZENTRUMS-IPS"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("Die meisten VPNs"),
-    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage(""),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("Datacenter-IP"),
     "de": MessageLookupByLibrary.simpleMessage("Deutsch"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Konto löschen"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Konto löschen?"),
@@ -265,18 +266,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "Wir konnten deinen letzten Abo-Kauf nicht prüfen. Tippe unten, um es erneut zu versuchen.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Schnell"),
-    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage(""),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP zu Favoriten hinzugefügt"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "Limit für Favoriten-IPs erreicht. Entferne eine IP, um eine neue zu speichern.",
+    ),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP aus Favoriten entfernt"),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "Verbinde dich und tippe auf das Herz auf der Verbindungskarte, um eine IP für den schnellen Zugriff zu speichern.",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("Noch keine Favoriten-IPs"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("Favoriten-IPs"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Mach ein Upgrade auf Plus oder Pro, um IPs zu speichern, die gut für dich funktionieren, und sie jederzeit schnell aufzurufen.",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("Favoriten-IPs speichern"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Gespeicherte IPs sind in deinem aktuellen Plan nicht verfügbar.",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("Favoriten"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("Nicht verfügbare IPs"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("Plan upgraden"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "Deine App-Version ist veraltet. Bitte aktualisiere die App, um sie weiterhin zu nutzen.",
     ),
@@ -324,12 +333,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Datacenter-IPs, optimiert für Geschwindigkeit und Leistung.",
     ),
-    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage(""),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Haushalts-IPs"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Bereitgestellt von echten Haushalten. Nahezu unerkennbar, aber weniger stabil.",
     ),
-    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage(""),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("Haushalt"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "Haushalts-IPs stammen von echten Haushaltsgeräten, daher kann sich die Verfügbarkeit im Laufe der Zeit ändern.\n\nWenn ein Knoten offline geht, verbindet dich die App mit der nächstgelegenen verfügbaren Haushalts-IP.",
     ),
@@ -588,7 +597,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "Wie Haushalts-IPs funktionieren",
     ),
-    "residentialIpBadge": MessageLookupByLibrary.simpleMessage(""),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("Haushalts-IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Fortsetzen"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Dein Abo wird sofort fortgesetzt.",
@@ -827,7 +836,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Melde dich an, um auf dein Konto zuzugreifen und alle Funktionen freizuschalten",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("Du bist nicht angemeldet"),
-    "undo": MessageLookupByLibrary.simpleMessage(""),
+    "undo": MessageLookupByLibrary.simpleMessage("Rückgängig"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("UNGESCHÜTZT"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Instabile Geschwindigkeit"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Aktualisieren"),

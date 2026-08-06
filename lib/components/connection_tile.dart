@@ -52,7 +52,7 @@ class ConnectionTile extends HookConsumerWidget {
       }
       showSnackbar(S.current.favoriteIpLimitReached);
       favoriteIpsStore.clearNotice();
-    });
+    }, keys: keys);
 
     Future<void> handleFavorite() async {
       final ip = connectionDisplayStore.connectionIP;

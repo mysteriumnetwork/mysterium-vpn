@@ -164,7 +164,7 @@
   "@couponCodeCopied": {},
   "dark": "Koyu",
   "@dark": {},
-  "datacenterIpBadge": "",
+  "datacenterIpBadge": "Veri merkezi IP'si",
   "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Kolayca tespit edilir",
   "@dataCentreComparisonCardItem1": {},
@@ -234,29 +234,29 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Hızlı",
   "@fastLabel": {},
-  "favoriteIpAddedToast": "",
+  "favoriteIpAddedToast": "IP favorilere eklendi",
   "@favoriteIpAddedToast": {},
-  "favoriteIpLimitReached": "",
+  "favoriteIpLimitReached": "Favori IP sınırına ulaşıldı. Yeni bir IP kaydetmek için birini kaldır.",
   "@favoriteIpLimitReached": {},
-  "favoriteIpRemovedToast": "",
+  "favoriteIpRemovedToast": "IP favorilerden kaldırıldı",
   "@favoriteIpRemovedToast": {},
-  "favoriteIpsEmptyBody": "",
+  "favoriteIpsEmptyBody": "Bağlan ve hızlı erişim için bir IP kaydetmek üzere bağlantı kartındaki kalbe dokun.",
   "@favoriteIpsEmptyBody": {},
-  "favoriteIpsEmptyTitle": "",
+  "favoriteIpsEmptyTitle": "Henüz favori IP yok",
   "@favoriteIpsEmptyTitle": {},
-  "favoriteIpsLabel": "",
+  "favoriteIpsLabel": "Favori IP'ler",
   "@favoriteIpsLabel": {},
-  "favoriteIpsLockedBody": "",
+  "favoriteIpsLockedBody": "Sana en uygun IP'leri kaydetmek ve ihtiyacın olduğunda hızlıca erişmek için Plus ya da Pro'ya yükselt.",
   "@favoriteIpsLockedBody": {},
-  "favoriteIpsLockedTitle": "",
+  "favoriteIpsLockedTitle": "Favori IP'leri kaydet",
   "@favoriteIpsLockedTitle": {},
-  "favoriteIpsNotAvailableOnPlan": "",
+  "favoriteIpsNotAvailableOnPlan": "Kayıtlı IP'ler mevcut planında kullanılamıyor.",
   "@favoriteIpsNotAvailableOnPlan": {},
-  "favoriteIpsTab": "",
+  "favoriteIpsTab": "Favoriler",
   "@favoriteIpsTab": {},
-  "favoriteIpsUnavailableHeading": "",
+  "favoriteIpsUnavailableHeading": "Kullanılamayan IP'ler",
   "@favoriteIpsUnavailableHeading": {},
-  "favoriteIpsUpgradePlan": "",
+  "favoriteIpsUpgradePlan": "Planı yükselt",
   "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Uygulama sürümün güncel değil. Kullanmaya devam etmek için lütfen uygulamayı güncelle.",
   "@featureToggleMinVersionNotSatisfied": {},
@@ -324,13 +324,13 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "Hız ve performans için optimize edilmiş veri merkezi IP'leri.",
   "@ipTypeDataCenterDisclaimer": {},
-  "ipTypeDataCenterTab": "",
+  "ipTypeDataCenterTab": "Veri merkezi",
   "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "Konut IP'leri",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Gerçek hanelerce sağlanır. Neredeyse tespit edilemez ama daha az kararlıdır.",
   "@ipTypeResidentialDisclaimer": {},
-  "ipTypeResidentialTab": "",
+  "ipTypeResidentialTab": "Konut",
   "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Konut IP'leri gerçek ev cihazlarınca sağlanır, bu yüzden kullanılabilirlik zamanla değişebilir.\n\nBir düğüm çevrimdışı olursa uygulama seni en yakın kullanılabilir konut IP'sine yeniden bağlar.",
   "@ipTypeResidentialTooltipBody": {},
@@ -358,12 +358,30 @@
   "@linkExpires": {},
   "location": "Konum",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} Şehir} other{{count} Şehir}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IP}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} Eyalet} other{{count} Eyalet}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Şehir} one{{count} Şehir} other{{count} Şehir}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IP} one{{count} IP} other{{count} IP}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} Eyalet} one{{count} Eyalet} other{{count} Eyalet}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Konum",
   "@locationLbl": {},
   "locationsUpdated": "{location} güncellendi",
@@ -648,7 +666,7 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Konut IP'leri nasıl çalışır",
   "@residentialEducationTitle": {},
-  "residentialIpBadge": "",
+  "residentialIpBadge": "Konut IP'si",
   "@residentialIpBadge": {},
   "resumeBtn": "Sürdür",
   "@resumeBtn": {},
@@ -672,8 +690,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "altı ayda bir",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{Tekrar gönder} other{Tekrar gönder ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Tekrar gönder} one{Tekrar gönder} other{Tekrar gönder ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar dene..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Yönet",
@@ -902,7 +926,7 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Giriş yapmadın",
   "@unauthenticatedSettingTitle": {},
-  "undo": "",
+  "undo": "Geri al",
   "@undo": {},
   "unprotectedLbl": "KORUMASIZ",
   "@unprotectedLbl": {},

@@ -164,7 +164,7 @@
   "@couponCodeCopied": {},
   "dark": "Oscuro",
   "@dark": {},
-  "datacenterIpBadge": "",
+  "datacenterIpBadge": "IP de centro de datos",
   "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Fáciles de detectar",
   "@dataCentreComparisonCardItem1": {},
@@ -234,29 +234,29 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Rápido",
   "@fastLabel": {},
-  "favoriteIpAddedToast": "",
+  "favoriteIpAddedToast": "IP añadida a Favoritas",
   "@favoriteIpAddedToast": {},
-  "favoriteIpLimitReached": "",
+  "favoriteIpLimitReached": "Límite de IP favoritas alcanzado. Elimina una IP para guardar otra.",
   "@favoriteIpLimitReached": {},
-  "favoriteIpRemovedToast": "",
+  "favoriteIpRemovedToast": "IP eliminada de Favoritas",
   "@favoriteIpRemovedToast": {},
-  "favoriteIpsEmptyBody": "",
+  "favoriteIpsEmptyBody": "Conéctate y toca el corazón en la tarjeta de conexión para guardar una IP y acceder a ella rápido.",
   "@favoriteIpsEmptyBody": {},
-  "favoriteIpsEmptyTitle": "",
+  "favoriteIpsEmptyTitle": "Aún no tienes IP favoritas",
   "@favoriteIpsEmptyTitle": {},
-  "favoriteIpsLabel": "",
+  "favoriteIpsLabel": "IP favoritas",
   "@favoriteIpsLabel": {},
-  "favoriteIpsLockedBody": "",
+  "favoriteIpsLockedBody": "Mejora a Plus o Pro para guardar las IP que mejor te funcionan y acceder a ellas al instante.",
   "@favoriteIpsLockedBody": {},
-  "favoriteIpsLockedTitle": "",
+  "favoriteIpsLockedTitle": "Guarda tus IP favoritas",
   "@favoriteIpsLockedTitle": {},
-  "favoriteIpsNotAvailableOnPlan": "",
+  "favoriteIpsNotAvailableOnPlan": "Las IP guardadas no están disponibles en tu plan actual.",
   "@favoriteIpsNotAvailableOnPlan": {},
-  "favoriteIpsTab": "",
+  "favoriteIpsTab": "Favoritas",
   "@favoriteIpsTab": {},
-  "favoriteIpsUnavailableHeading": "",
+  "favoriteIpsUnavailableHeading": "IP no disponibles",
   "@favoriteIpsUnavailableHeading": {},
-  "favoriteIpsUpgradePlan": "",
+  "favoriteIpsUpgradePlan": "Mejorar plan",
   "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Tu versión de la app está desactualizada. Actualízala para seguir usándola.",
   "@featureToggleMinVersionNotSatisfied": {},
@@ -324,13 +324,13 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "IP de centro de datos optimizadas para velocidad y rendimiento.",
   "@ipTypeDataCenterDisclaimer": {},
-  "ipTypeDataCenterTab": "",
+  "ipTypeDataCenterTab": "Centro de datos",
   "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "IP residenciales",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Proporcionadas por hogares reales. Casi indetectables, pero menos estables.",
   "@ipTypeResidentialDisclaimer": {},
-  "ipTypeResidentialTab": "",
+  "ipTypeResidentialTab": "Residencial",
   "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Las IP residenciales las proporcionan dispositivos domésticos reales, por lo que la disponibilidad puede cambiar con el tiempo.\n\nSi un nodo se desconecta, la app te reconecta a la IP residencial disponible más cercana.",
   "@ipTypeResidentialTooltipBody": {},
@@ -358,12 +358,30 @@
   "@linkExpires": {},
   "location": "Ubicación",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} ciudad} other{{count} ciudades}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} estado} other{{count} estados}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} ciudades} one{{count} ciudad} other{{count} ciudades}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} estados} one{{count} estado} other{{count} estados}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Ubicación",
   "@locationLbl": {},
   "locationsUpdated": "{location} actualizado",
@@ -648,7 +666,7 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Cómo funcionan las IP residenciales",
   "@residentialEducationTitle": {},
-  "residentialIpBadge": "",
+  "residentialIpBadge": "IP residencial",
   "@residentialIpBadge": {},
   "resumeBtn": "Reanudar",
   "@resumeBtn": {},
@@ -672,8 +690,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "semestral",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{Reenviar} other{Reenviar ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Reenviar} one{Reenviar} other{Reenviar ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Estamos teniendo problemas temporales de red. Inténtalo de nuevo más tarde..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Gestionar",
@@ -902,7 +926,7 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "No has iniciado sesión",
   "@unauthenticatedSettingTitle": {},
-  "undo": "",
+  "undo": "Deshacer",
   "@undo": {},
   "unprotectedLbl": "DESPROTEGIDO",
   "@unprotectedLbl": {},

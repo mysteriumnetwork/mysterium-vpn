@@ -52,12 +52,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "${location} içinde alternatif IP yok. Bir dahaki sefere farklı bir IP almak için başka bir ülke seç.";
 
   static String m14(count) =>
-      "${Intl.plural(count, one: '${count} Şehir', other: '${count} Şehir')}";
+      "${Intl.plural(count, zero: '${count} Şehir', one: '${count} Şehir', other: '${count} Şehir')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IP')}";
+  static String m15(count) =>
+      "${Intl.plural(count, zero: '${count} IP', one: '${count} IP', other: '${count} IP')}";
 
   static String m16(count) =>
-      "${Intl.plural(count, one: '${count} Eyalet', other: '${count} Eyalet')}";
+      "${Intl.plural(count, zero: '${count} Eyalet', one: '${count} Eyalet', other: '${count} Eyalet')}";
 
   static String m17(location) => "${location} kullanılamıyor";
 
@@ -79,7 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m25(date) => "${date} tarihinde yenilenir";
 
   static String m26(count) =>
-      "${Intl.plural(count, one: 'Tekrar gönder', other: 'Tekrar gönder (${count})')}";
+      "${Intl.plural(count, zero: 'Tekrar gönder', one: 'Tekrar gönder', other: 'Tekrar gönder (${count})')}";
 
   static String m27(percent) => "%${percent} tasarruf";
 
@@ -217,7 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Daha az gizli"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("VERİ MERKEZİ IP\'LERİ"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("Çoğu VPN"),
-    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage(""),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("Veri merkezi IP\'si"),
     "de": MessageLookupByLibrary.simpleMessage("Almanca"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Hesabı sil"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Hesap silinsin mi?"),
@@ -257,18 +258,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "Son abonelik satın alımını doğrulayamadık. Tekrar denemek için aşağıdaki düğmeye dokun.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Hızlı"),
-    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage(""),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP favorilere eklendi"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "Favori IP sınırına ulaşıldı. Yeni bir IP kaydetmek için birini kaldır.",
+    ),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP favorilerden kaldırıldı"),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "Bağlan ve hızlı erişim için bir IP kaydetmek üzere bağlantı kartındaki kalbe dokun.",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("Henüz favori IP yok"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("Favori IP\'ler"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Sana en uygun IP\'leri kaydetmek ve ihtiyacın olduğunda hızlıca erişmek için Plus ya da Pro\'ya yükselt.",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("Favori IP\'leri kaydet"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Kayıtlı IP\'ler mevcut planında kullanılamıyor.",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("Favoriler"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("Kullanılamayan IP\'ler"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("Planı yükselt"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "Uygulama sürümün güncel değil. Kullanmaya devam etmek için lütfen uygulamayı güncelle.",
     ),
@@ -312,12 +321,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Hız ve performans için optimize edilmiş veri merkezi IP\'leri.",
     ),
-    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage(""),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("Veri merkezi"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Konut IP\'leri"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Gerçek hanelerce sağlanır. Neredeyse tespit edilemez ama daha az kararlıdır.",
     ),
-    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage(""),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("Konut"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "Konut IP\'leri gerçek ev cihazlarınca sağlanır, bu yüzden kullanılabilirlik zamanla değişebilir.\n\nBir düğüm çevrimdışı olursa uygulama seni en yakın kullanılabilir konut IP\'sine yeniden bağlar.",
     ),
@@ -566,7 +575,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "Konut IP\'leri nasıl çalışır",
     ),
-    "residentialIpBadge": MessageLookupByLibrary.simpleMessage(""),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("Konut IP\'si"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Sürdür"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Aboneliğin hemen devam edecek.",
@@ -789,7 +798,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Hesabına erişmek ve tüm özelliklerin kilidini açmak için giriş yap",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("Giriş yapmadın"),
-    "undo": MessageLookupByLibrary.simpleMessage(""),
+    "undo": MessageLookupByLibrary.simpleMessage("Geri al"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("KORUMASIZ"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Kararsız hız"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Güncelle"),

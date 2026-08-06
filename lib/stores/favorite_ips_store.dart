@@ -33,6 +33,10 @@ abstract class _FavoriteIpsStore with Store {
       if (_future.value != null && listEquals(_future.value, saved)) {
         return;
       }
+      // The list changed, so cached availability no longer covers it. The
+      // mutators reset this eagerly to close the window before this stream
+      // catches up; this covers changes that did not originate there.
+      _availabilityCheckedAt = null;
       _future = _future.replaceOrReset(Future.value(saved));
     });
   }

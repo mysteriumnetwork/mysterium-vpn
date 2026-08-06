@@ -164,7 +164,7 @@
   "@couponCodeCopied": {},
   "dark": "Gelap",
   "@dark": {},
-  "datacenterIpBadge": "",
+  "datacenterIpBadge": "IP datacenter",
   "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Mudah dideteksi",
   "@dataCentreComparisonCardItem1": {},
@@ -234,29 +234,29 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Cepat",
   "@fastLabel": {},
-  "favoriteIpAddedToast": "",
+  "favoriteIpAddedToast": "IP ditambahkan ke favorit",
   "@favoriteIpAddedToast": {},
-  "favoriteIpLimitReached": "",
+  "favoriteIpLimitReached": "Batas IP favorit tercapai. Hapus satu IP untuk menyimpan yang baru.",
   "@favoriteIpLimitReached": {},
-  "favoriteIpRemovedToast": "",
+  "favoriteIpRemovedToast": "IP dihapus dari favorit",
   "@favoriteIpRemovedToast": {},
-  "favoriteIpsEmptyBody": "",
+  "favoriteIpsEmptyBody": "Hubungkan lalu ketuk ikon hati di kartu koneksi untuk menyimpan IP agar bisa diakses cepat.",
   "@favoriteIpsEmptyBody": {},
-  "favoriteIpsEmptyTitle": "",
+  "favoriteIpsEmptyTitle": "Belum ada IP favorit",
   "@favoriteIpsEmptyTitle": {},
-  "favoriteIpsLabel": "",
+  "favoriteIpsLabel": "IP favorit",
   "@favoriteIpsLabel": {},
-  "favoriteIpsLockedBody": "",
+  "favoriteIpsLockedBody": "Tingkatkan ke Plus atau Pro untuk menyimpan IP yang paling cocok untukmu dan mengaksesnya kapan saja.",
   "@favoriteIpsLockedBody": {},
-  "favoriteIpsLockedTitle": "",
+  "favoriteIpsLockedTitle": "Simpan IP favorit",
   "@favoriteIpsLockedTitle": {},
-  "favoriteIpsNotAvailableOnPlan": "",
+  "favoriteIpsNotAvailableOnPlan": "IP tersimpan tidak tersedia di paketmu saat ini.",
   "@favoriteIpsNotAvailableOnPlan": {},
-  "favoriteIpsTab": "",
+  "favoriteIpsTab": "Favorit",
   "@favoriteIpsTab": {},
-  "favoriteIpsUnavailableHeading": "",
+  "favoriteIpsUnavailableHeading": "IP tidak tersedia",
   "@favoriteIpsUnavailableHeading": {},
-  "favoriteIpsUpgradePlan": "",
+  "favoriteIpsUpgradePlan": "Tingkatkan paket",
   "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Versi aplikasimu sudah usang. Perbarui aplikasi untuk terus memakainya.",
   "@featureToggleMinVersionNotSatisfied": {},
@@ -324,13 +324,13 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "IP datacenter dioptimalkan untuk kecepatan dan performa.",
   "@ipTypeDataCenterDisclaimer": {},
-  "ipTypeDataCenterTab": "",
+  "ipTypeDataCenterTab": "Datacenter",
   "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "IP residensial",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Disediakan oleh rumah tangga asli. Nyaris tak terdeteksi tapi kurang stabil.",
   "@ipTypeResidentialDisclaimer": {},
-  "ipTypeResidentialTab": "",
+  "ipTypeResidentialTab": "Residensial",
   "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "IP residensial disediakan oleh perangkat rumah tangga asli, jadi ketersediaannya bisa berubah seiring waktu.\n\nJika sebuah node offline, aplikasi akan menyambungkanmu ke IP residensial terdekat yang tersedia.",
   "@ipTypeResidentialTooltipBody": {},
@@ -358,12 +358,30 @@
   "@linkExpires": {},
   "location": "Lokasi",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} Kota} other{{count} Kota}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} Negara Bagian} other{{count} Negara Bagian}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Kota} other{{count} Kota}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} Negara Bagian} other{{count} Negara Bagian}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Lokasi",
   "@locationLbl": {},
   "locationsUpdated": "{location} diperbarui",
@@ -648,7 +666,7 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Cara kerja IP residensial",
   "@residentialEducationTitle": {},
-  "residentialIpBadge": "",
+  "residentialIpBadge": "IP residensial",
   "@residentialIpBadge": {},
   "resumeBtn": "Lanjutkan",
   "@resumeBtn": {},
@@ -672,8 +690,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "per semester",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, zero{Kirim lagi} one{Kirim lagi} other{Kirim lagi ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Kirim lagi} other{Kirim lagi ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Kami sedang mengalami gangguan jaringan sementara. Coba lagi nanti..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Kelola",
@@ -902,7 +926,7 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Kamu belum masuk",
   "@unauthenticatedSettingTitle": {},
-  "undo": "",
+  "undo": "Urungkan",
   "@undo": {},
   "unprotectedLbl": "TAK TERLINDUNGI",
   "@unprotectedLbl": {},

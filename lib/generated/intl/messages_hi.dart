@@ -53,12 +53,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "${location} में कोई वैकल्पिक IP उपलब्ध नहीं है। अगली बार अलग IP पाने के लिए कोई दूसरा देश चुनें।";
 
   static String m14(count) =>
-      "${Intl.plural(count, one: '${count} City', other: '${count} Cities')}";
+      "${Intl.plural(count, zero: '${count} Cities', one: '${count} City', other: '${count} Cities')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) =>
+      "${Intl.plural(count, zero: '${count} IPs', one: '${count} IP', other: '${count} IPs')}";
 
   static String m16(count) =>
-      "${Intl.plural(count, one: '${count} State', other: '${count} States')}";
+      "${Intl.plural(count, zero: '${count} States', one: '${count} State', other: '${count} States')}";
 
   static String m17(location) => "${location} उपलब्ध नहीं है";
 
@@ -80,7 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m25(date) => "${date} को नवीनीकृत होगा";
 
   static String m26(count) =>
-      "${Intl.plural(count, one: 'फिर से भेजें', other: 'फिर से भेजें (${count})')}";
+      "${Intl.plural(count, zero: 'फिर से भेजें', one: 'फिर से भेजें', other: 'फिर से भेजें (${count})')}";
 
   static String m27(percent) => "${percent}% की बचत";
 
@@ -220,7 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("कम निजी"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("डेटा सेंटर IPs"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("अधिकांश VPN"),
-    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage(""),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("डेटासेंटर IP"),
     "de": MessageLookupByLibrary.simpleMessage("जर्मन"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("खाता हटाएँ"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("खाता हटाएँ?"),
@@ -260,18 +261,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "हम आपकी पिछली सदस्यता खरीद की पुष्टि नहीं कर सके। दोबारा कोशिश करने के लिए नीचे बटन दबाएँ।",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("तेज़"),
-    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage(""),
-    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage(""),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP पसंदीदा में जोड़ा गया"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "पसंदीदा IP की सीमा पूरी हो गई। नया सहेजने के लिए कोई IP हटाएँ।",
+    ),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP पसंदीदा से हटाया गया"),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "कनेक्ट करें और कनेक्शन कार्ड पर दिल के निशान पर टैप करके IP सहेजें, ताकि जल्दी पहुँच मिले।",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("अभी कोई पसंदीदा IP नहीं"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("पसंदीदा IPs"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Plus या Pro में अपग्रेड करें और जो IP आपके लिए बेहतर काम करते हैं उन्हें सहेजकर जब चाहें तुरंत इस्तेमाल करें।",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("पसंदीदा IP सहेजें"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "सहेजे गए IP आपके मौजूदा प्लान में उपलब्ध नहीं हैं।",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("अनुपलब्ध IP"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("प्लान अपग्रेड करें"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "आपके ऐप का वर्शन पुराना है। इसे इस्तेमाल जारी रखने के लिए कृपया ऐप अपडेट करें।",
     ),
@@ -315,12 +324,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "गति और प्रदर्शन के लिए अनुकूलित डेटासेंटर IPs।",
     ),
-    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage(""),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("डेटासेंटर"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("आवासीय IPs"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "असली घरों द्वारा प्रदान किए गए। लगभग पता न लगने योग्य लेकिन कम स्थिर।",
     ),
-    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage(""),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("आवासीय"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "आवासीय IPs असली घरेलू डिवाइस से प्रदान किए जाते हैं, इसलिए समय के साथ उपलब्धता बदल सकती है।\n\nयदि कोई नोड ऑफ़लाइन हो जाता है, तो ऐप आपको नज़दीकी उपलब्ध आवासीय IP से फिर से कनेक्ट कर देता है।",
     ),
@@ -559,7 +568,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage(
       "आवासीय IPs कैसे काम करते हैं",
     ),
-    "residentialIpBadge": MessageLookupByLibrary.simpleMessage(""),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("आवासीय IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("फिर शुरू करें"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "आपकी सदस्यता तुरंत फिर शुरू हो जाएगी।",
@@ -788,7 +797,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "अपने खाते तक पहुँचने और सभी फ़ीचर अनलॉक करने के लिए साइन इन करें",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("आप साइन इन नहीं हैं"),
-    "undo": MessageLookupByLibrary.simpleMessage(""),
+    "undo": MessageLookupByLibrary.simpleMessage("पूर्ववत करें"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("असुरक्षित"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("अस्थिर गति"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("अपडेट करें"),

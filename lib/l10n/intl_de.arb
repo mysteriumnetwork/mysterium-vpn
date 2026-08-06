@@ -164,7 +164,7 @@
   "@couponCodeCopied": {},
   "dark": "Dunkel",
   "@dark": {},
-  "datacenterIpBadge": "",
+  "datacenterIpBadge": "Datacenter-IP",
   "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Leicht erkennbar",
   "@dataCentreComparisonCardItem1": {},
@@ -234,29 +234,29 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Schnell",
   "@fastLabel": {},
-  "favoriteIpAddedToast": "",
+  "favoriteIpAddedToast": "IP zu Favoriten hinzugefügt",
   "@favoriteIpAddedToast": {},
-  "favoriteIpLimitReached": "",
+  "favoriteIpLimitReached": "Limit für Favoriten-IPs erreicht. Entferne eine IP, um eine neue zu speichern.",
   "@favoriteIpLimitReached": {},
-  "favoriteIpRemovedToast": "",
+  "favoriteIpRemovedToast": "IP aus Favoriten entfernt",
   "@favoriteIpRemovedToast": {},
-  "favoriteIpsEmptyBody": "",
+  "favoriteIpsEmptyBody": "Verbinde dich und tippe auf das Herz auf der Verbindungskarte, um eine IP für den schnellen Zugriff zu speichern.",
   "@favoriteIpsEmptyBody": {},
-  "favoriteIpsEmptyTitle": "",
+  "favoriteIpsEmptyTitle": "Noch keine Favoriten-IPs",
   "@favoriteIpsEmptyTitle": {},
-  "favoriteIpsLabel": "",
+  "favoriteIpsLabel": "Favoriten-IPs",
   "@favoriteIpsLabel": {},
-  "favoriteIpsLockedBody": "",
+  "favoriteIpsLockedBody": "Mach ein Upgrade auf Plus oder Pro, um IPs zu speichern, die gut für dich funktionieren, und sie jederzeit schnell aufzurufen.",
   "@favoriteIpsLockedBody": {},
-  "favoriteIpsLockedTitle": "",
+  "favoriteIpsLockedTitle": "Favoriten-IPs speichern",
   "@favoriteIpsLockedTitle": {},
-  "favoriteIpsNotAvailableOnPlan": "",
+  "favoriteIpsNotAvailableOnPlan": "Gespeicherte IPs sind in deinem aktuellen Plan nicht verfügbar.",
   "@favoriteIpsNotAvailableOnPlan": {},
-  "favoriteIpsTab": "",
+  "favoriteIpsTab": "Favoriten",
   "@favoriteIpsTab": {},
-  "favoriteIpsUnavailableHeading": "",
+  "favoriteIpsUnavailableHeading": "Nicht verfügbare IPs",
   "@favoriteIpsUnavailableHeading": {},
-  "favoriteIpsUpgradePlan": "",
+  "favoriteIpsUpgradePlan": "Plan upgraden",
   "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Deine App-Version ist veraltet. Bitte aktualisiere die App, um sie weiterhin zu nutzen.",
   "@featureToggleMinVersionNotSatisfied": {},
@@ -324,13 +324,13 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "Datacenter-IPs, optimiert für Geschwindigkeit und Leistung.",
   "@ipTypeDataCenterDisclaimer": {},
-  "ipTypeDataCenterTab": "",
+  "ipTypeDataCenterTab": "Datacenter",
   "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "Haushalts-IPs",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Bereitgestellt von echten Haushalten. Nahezu unerkennbar, aber weniger stabil.",
   "@ipTypeResidentialDisclaimer": {},
-  "ipTypeResidentialTab": "",
+  "ipTypeResidentialTab": "Haushalt",
   "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Haushalts-IPs stammen von echten Haushaltsgeräten, daher kann sich die Verfügbarkeit im Laufe der Zeit ändern.\n\nWenn ein Knoten offline geht, verbindet dich die App mit der nächstgelegenen verfügbaren Haushalts-IP.",
   "@ipTypeResidentialTooltipBody": {},
@@ -358,12 +358,30 @@
   "@linkExpires": {},
   "location": "Standort",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} Stadt} other{{count} Städte}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} Staat} other{{count} Staaten}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Städte} one{{count} Stadt} other{{count} Städte}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} Staaten} one{{count} Staat} other{{count} Staaten}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Standort",
   "@locationLbl": {},
   "locationsUpdated": "{location} aktualisiert",
@@ -648,7 +666,7 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Wie Haushalts-IPs funktionieren",
   "@residentialEducationTitle": {},
-  "residentialIpBadge": "",
+  "residentialIpBadge": "Haushalts-IP",
   "@residentialIpBadge": {},
   "resumeBtn": "Fortsetzen",
   "@resumeBtn": {},
@@ -672,8 +690,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "halbjährlich",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{Erneut senden} other{Erneut senden ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Erneut senden} one{Erneut senden} other{Erneut senden ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Vorübergehende Netzwerkprobleme. Bitte später erneut versuchen.",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Verwalten",
@@ -902,7 +926,7 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Du bist nicht angemeldet",
   "@unauthenticatedSettingTitle": {},
-  "undo": "",
+  "undo": "Rückgängig",
   "@undo": {},
   "unprotectedLbl": "UNGESCHÜTZT",
   "@unprotectedLbl": {},

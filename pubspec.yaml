@@ -60,7 +60,9 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: feat/favourite-ips
+      # Pinned to a commit, not the branch, so CI is reproducible. Re-point to
+      # a tag on main once the design-system PR merges.
+      ref: f77a0cf42f9a9517f247f42cd3f629fdcf5b0233
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:

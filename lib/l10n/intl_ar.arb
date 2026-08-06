@@ -164,7 +164,7 @@
   "@couponCodeCopied": {},
   "dark": "داكن",
   "@dark": {},
-  "datacenterIpBadge": "",
+  "datacenterIpBadge": "عنوان IP لمركز بيانات",
   "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "سهلة الاكتشاف",
   "@dataCentreComparisonCardItem1": {},
@@ -234,29 +234,29 @@
   "@failedToVerifySubs": {},
   "fastLabel": "سريع",
   "@fastLabel": {},
-  "favoriteIpAddedToast": "",
+  "favoriteIpAddedToast": "تمت إضافة عنوان IP إلى المفضلة",
   "@favoriteIpAddedToast": {},
-  "favoriteIpLimitReached": "",
+  "favoriteIpLimitReached": "تم بلوغ الحد الأقصى لعناوين IP المفضلة. احذف عنوانًا لحفظ عنوان جديد.",
   "@favoriteIpLimitReached": {},
-  "favoriteIpRemovedToast": "",
+  "favoriteIpRemovedToast": "تمت إزالة عنوان IP من المفضلة",
   "@favoriteIpRemovedToast": {},
-  "favoriteIpsEmptyBody": "",
+  "favoriteIpsEmptyBody": "اتصل ثم اضغط على القلب في بطاقة الاتصال لحفظ عنوان IP والوصول إليه بسرعة.",
   "@favoriteIpsEmptyBody": {},
-  "favoriteIpsEmptyTitle": "",
+  "favoriteIpsEmptyTitle": "لا توجد عناوين IP مفضلة بعد",
   "@favoriteIpsEmptyTitle": {},
-  "favoriteIpsLabel": "",
+  "favoriteIpsLabel": "عناوين IP المفضلة",
   "@favoriteIpsLabel": {},
-  "favoriteIpsLockedBody": "",
+  "favoriteIpsLockedBody": "قم بالترقية إلى Plus أو Pro لحفظ عناوين IP الأنسب لك والوصول إليها بسرعة وقتما تشاء.",
   "@favoriteIpsLockedBody": {},
-  "favoriteIpsLockedTitle": "",
+  "favoriteIpsLockedTitle": "احفظ عناوين IP المفضلة",
   "@favoriteIpsLockedTitle": {},
-  "favoriteIpsNotAvailableOnPlan": "",
+  "favoriteIpsNotAvailableOnPlan": "عناوين IP المحفوظة غير متاحة في خطتك الحالية.",
   "@favoriteIpsNotAvailableOnPlan": {},
-  "favoriteIpsTab": "",
+  "favoriteIpsTab": "المفضلة",
   "@favoriteIpsTab": {},
-  "favoriteIpsUnavailableHeading": "",
+  "favoriteIpsUnavailableHeading": "عناوين IP غير المتاحة",
   "@favoriteIpsUnavailableHeading": {},
-  "favoriteIpsUpgradePlan": "",
+  "favoriteIpsUpgradePlan": "ترقية الخطة",
   "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "إصدار تطبيقك قديم. يُرجى تحديث التطبيق لمواصلة استخدامه.",
   "@featureToggleMinVersionNotSatisfied": {},
@@ -324,13 +324,13 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "عناوين IP لمراكز البيانات مُحسّنة للسرعة والأداء.",
   "@ipTypeDataCenterDisclaimer": {},
-  "ipTypeDataCenterTab": "",
+  "ipTypeDataCenterTab": "مركز بيانات",
   "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "عناوين IP سكنية",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "مقدّمة من منازل حقيقية. يكاد يستحيل اكتشافها لكنها أقل استقرارًا.",
   "@ipTypeResidentialDisclaimer": {},
-  "ipTypeResidentialTab": "",
+  "ipTypeResidentialTab": "سكني",
   "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "تُقدَّم عناوين IP السكنية من أجهزة منزلية حقيقية، لذا قد يتغير توفرها بمرور الوقت.\n\nإذا انقطع اتصال أحد العُقد، يعيد التطبيق توصيلك بأقرب عنوان IP سكني متاح.",
   "@ipTypeResidentialTooltipBody": {},
@@ -359,11 +359,29 @@
   "location": "الموقع",
   "@location": {},
   "locationItemCityCount": "{count, plural, zero{{count} مدينة} one{مدينة واحدة} two{مدينتان} few{{count} مدن} many{{count} مدينة} other{{count} مدينة}}",
-  "@locationItemCityCount": {},
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationItemNodeCount": "{count, plural, zero{{count} IP} one{IP واحد} two{عنوانا IP} few{{count} عناوين IP} many{{count} عنوان IP} other{{count} IP}}",
-  "@locationItemNodeCount": {},
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationItemStatesCount": "{count, plural, zero{{count} ولاية} one{ولاية واحدة} two{ولايتان} few{{count} ولايات} many{{count} ولاية} other{{count} ولاية}}",
-  "@locationItemStatesCount": {},
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "الموقع",
   "@locationLbl": {},
   "locationsUpdated": "تم تحديث {location}",
@@ -648,7 +666,7 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "كيف تعمل عناوين IP السكنية",
   "@residentialEducationTitle": {},
-  "residentialIpBadge": "",
+  "residentialIpBadge": "عنوان IP سكني",
   "@residentialIpBadge": {},
   "resumeBtn": "استئناف",
   "@resumeBtn": {},
@@ -673,7 +691,13 @@
   "semiAnnual": "نصف سنوي",
   "@semiAnnual": {},
   "sendAgain": "{count, plural, zero{إعادة الإرسال} one{إعادة الإرسال} two{إعادة الإرسال} few{إعادة الإرسال ({count})} many{إعادة الإرسال ({count})} other{إعادة الإرسال ({count})}}",
-  "@sendAgain": {},
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "نواجه مشكلات مؤقتة في الشبكة. يُرجى المحاولة لاحقًا..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "إدارة",
@@ -902,7 +926,7 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "لم تسجّل الدخول",
   "@unauthenticatedSettingTitle": {},
-  "undo": "",
+  "undo": "تراجع",
   "@undo": {},
   "unprotectedLbl": "غير محمي",
   "@unprotectedLbl": {},

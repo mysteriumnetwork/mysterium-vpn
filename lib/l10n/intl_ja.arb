@@ -164,7 +164,7 @@
   "@couponCodeCopied": {},
   "dark": "ダーク",
   "@dark": {},
-  "datacenterIpBadge": "",
+  "datacenterIpBadge": "データセンター IP",
   "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "検出されやすい",
   "@dataCentreComparisonCardItem1": {},
@@ -234,29 +234,29 @@
   "@failedToVerifySubs": {},
   "fastLabel": "高速",
   "@fastLabel": {},
-  "favoriteIpAddedToast": "",
+  "favoriteIpAddedToast": "IP をお気に入りに追加しました",
   "@favoriteIpAddedToast": {},
-  "favoriteIpLimitReached": "",
+  "favoriteIpLimitReached": "お気に入り IP の上限に達しました。新しく保存するには IP を削除してください。",
   "@favoriteIpLimitReached": {},
-  "favoriteIpRemovedToast": "",
+  "favoriteIpRemovedToast": "IP をお気に入りから削除しました",
   "@favoriteIpRemovedToast": {},
-  "favoriteIpsEmptyBody": "",
+  "favoriteIpsEmptyBody": "接続して接続カードのハートをタップすると、IP を保存してすぐに使えます。",
   "@favoriteIpsEmptyBody": {},
-  "favoriteIpsEmptyTitle": "",
+  "favoriteIpsEmptyTitle": "お気に入り IP がありません",
   "@favoriteIpsEmptyTitle": {},
-  "favoriteIpsLabel": "",
+  "favoriteIpsLabel": "お気に入り IP",
   "@favoriteIpsLabel": {},
-  "favoriteIpsLockedBody": "",
+  "favoriteIpsLockedBody": "Plus または Pro にアップグレードすると、使いやすい IP を保存して、必要なときにすぐ利用できます。",
   "@favoriteIpsLockedBody": {},
-  "favoriteIpsLockedTitle": "",
+  "favoriteIpsLockedTitle": "お気に入り IP を保存",
   "@favoriteIpsLockedTitle": {},
-  "favoriteIpsNotAvailableOnPlan": "",
+  "favoriteIpsNotAvailableOnPlan": "保存した IP は現在のプランではご利用いただけません。",
   "@favoriteIpsNotAvailableOnPlan": {},
-  "favoriteIpsTab": "",
+  "favoriteIpsTab": "お気に入り",
   "@favoriteIpsTab": {},
-  "favoriteIpsUnavailableHeading": "",
+  "favoriteIpsUnavailableHeading": "利用できない IP",
   "@favoriteIpsUnavailableHeading": {},
-  "favoriteIpsUpgradePlan": "",
+  "favoriteIpsUpgradePlan": "プランをアップグレード",
   "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古くなっています。引き続き使用するにはアプリをアップデートしてください。",
   "@featureToggleMinVersionNotSatisfied": {},
@@ -324,13 +324,13 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "速度とパフォーマンスに最適化されたデータセンター IP。",
   "@ipTypeDataCenterDisclaimer": {},
-  "ipTypeDataCenterTab": "",
+  "ipTypeDataCenterTab": "データセンター",
   "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "レジデンシャル IP",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "実際の家庭から提供。ほぼ検出不可能ですが安定性は低めです。",
   "@ipTypeResidentialDisclaimer": {},
-  "ipTypeResidentialTab": "",
+  "ipTypeResidentialTab": "レジデンシャル",
   "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "レジデンシャル IP は実際の家庭用デバイスから提供されるため、利用可否は時間とともに変わることがあります。\n\nノードがオフラインになると、アプリは最寄りの利用可能な レジデンシャル IP に再接続します。",
   "@ipTypeResidentialTooltipBody": {},
@@ -358,12 +358,30 @@
   "@linkExpires": {},
   "location": "ロケーション",
   "@location": {},
-  "locationItemCityCount": "{count, plural, other{{count} 都市}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, other{{count} IP}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, other{{count} 州}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} 都市} other{{count} 都市}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IP} other{{count} IP}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} 州} other{{count} 州}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "ロケーション",
   "@locationLbl": {},
   "locationsUpdated": "{location} を更新しました",
@@ -648,7 +666,7 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "レジデンシャル IP の仕組み",
   "@residentialEducationTitle": {},
-  "residentialIpBadge": "",
+  "residentialIpBadge": "レジデンシャル IP",
   "@residentialIpBadge": {},
   "resumeBtn": "再開",
   "@resumeBtn": {},
@@ -672,8 +690,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "半年ごと",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, other{再送信 ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{再送信} other{再送信 ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "一時的なネットワークの問題が発生しています。後でもう一度お試しください。",
   "@serviceUnavailableError": {},
   "settingManageBtn": "管理",
@@ -902,7 +926,7 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "サインインしていません",
   "@unauthenticatedSettingTitle": {},
-  "undo": "",
+  "undo": "元に戻す",
   "@undo": {},
   "unprotectedLbl": "未保護",
   "@unprotectedLbl": {},

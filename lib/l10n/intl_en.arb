@@ -358,12 +358,30 @@
   "@linkExpires": {},
   "location": "Location",
   "@location": {},
-  "locationItemCityCount": "{one={count} City, other={count} Cities}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{one={count} IP, other={count} IPs}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{one={count} State, other={count} States}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Cities} one{{count} City} other{{count} Cities}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} States} one{{count} State} other{{count} States}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Location",
   "@locationLbl": {},
   "locationsUpdated": "{location} updated",
@@ -672,8 +690,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "semi-annually",
   "@semiAnnual": {},
-  "sendAgain": "{zero=Send again, one=Send again, other=Send again ({count})}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Send again} one{Send again} other{Send again ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "We’re experiencing temporary network issues. Please try again later.",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Manage",

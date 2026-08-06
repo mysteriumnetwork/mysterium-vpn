@@ -1744,30 +1744,39 @@ class S {
     return Intl.message('Location', name: 'location', desc: '', args: []);
   }
 
-  /// `{one={count} City, other={count} Cities}`
-  String locationItemCityCount(Object count) {
-    return Intl.message(
-      '{one=$count City, other=$count Cities}',
+  /// `{count, plural, zero{{count} Cities} one{{count} City} other{{count} Cities}}`
+  String locationItemCityCount(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count Cities',
+      one: '$count City',
+      other: '$count Cities',
       name: 'locationItemCityCount',
       desc: '',
       args: [count],
     );
   }
 
-  /// `{one={count} IP, other={count} IPs}`
-  String locationItemNodeCount(Object count) {
-    return Intl.message(
-      '{one=$count IP, other=$count IPs}',
+  /// `{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}`
+  String locationItemNodeCount(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count IPs',
+      one: '$count IP',
+      other: '$count IPs',
       name: 'locationItemNodeCount',
       desc: '',
       args: [count],
     );
   }
 
-  /// `{one={count} State, other={count} States}`
-  String locationItemStatesCount(Object count) {
-    return Intl.message(
-      '{one=$count State, other=$count States}',
+  /// `{count, plural, zero{{count} States} one{{count} State} other{{count} States}}`
+  String locationItemStatesCount(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count States',
+      one: '$count State',
+      other: '$count States',
       name: 'locationItemStatesCount',
       desc: '',
       args: [count],
@@ -2862,10 +2871,13 @@ class S {
     return Intl.message('semi-annually', name: 'semiAnnual', desc: '', args: []);
   }
 
-  /// `{zero=Send again, one=Send again, other=Send again ({count})}`
-  String sendAgain(Object count) {
-    return Intl.message(
-      '{zero=Send again, one=Send again, other=Send again ($count)}',
+  /// `{count, plural, zero{Send again} one{Send again} other{Send again ({count})}}`
+  String sendAgain(num count) {
+    return Intl.plural(
+      count,
+      zero: 'Send again',
+      one: 'Send again',
+      other: 'Send again ($count)',
       name: 'sendAgain',
       desc: '',
       args: [count],
