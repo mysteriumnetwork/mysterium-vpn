@@ -9,6 +9,7 @@ export 'grant_type.dart';
 export 'home_tab.dart';
 export 'ip_type.dart';
 export 'location_mode.dart';
+export 'locations_tab.dart';
 export 'marketing_analytics_event.dart';
 export 'news_filter.dart';
 export 'orientation_type.dart';
