@@ -4,6 +4,7 @@ Future<void> Function({
   VPNLocation? location,
   UserIntent? intent,
   AnalyticsEventSelector? selectEvent,
+  String? targetIp,
 })
 useHandleToggleConnection() {
   final context = useContext();
@@ -14,6 +15,7 @@ useHandleToggleConnection() {
     VPNLocation? location,
     UserIntent? intent,
     AnalyticsEventSelector? selectEvent,
+    String? targetIp,
   }) async {
     final ref = ProviderScope.containerOf(context, listen: false);
     final vpnStore = ref.read(vpnStorePOD);
@@ -25,7 +27,7 @@ useHandleToggleConnection() {
     logEvent(location, event: selectEvent?.call(vpnStore.isConnected), intent: intent);
 
     try {
-      await vpnStore.manageConnection(location: location, intent: intent);
+      await vpnStore.manageConnection(location: location, intent: intent, targetIp: targetIp);
     } on AuthenticationRequiredException catch (_) {
       if (context.mounted) {
         Beamer.of(context).beamToNamed(Routes.platformLogin.path);
@@ -35,7 +37,7 @@ useHandleToggleConnection() {
     } on TunnelSetupRequiredException catch (_) {
       final permissionsGiven = await handleSetupTunnel();
       if (permissionsGiven) {
-        await vpnStore.manageConnection(location: location, intent: intent);
+        await vpnStore.manageConnection(location: location, intent: intent, targetIp: targetIp);
       }
     }
   }, [handleSubscribe, handleSetupTunnel]);

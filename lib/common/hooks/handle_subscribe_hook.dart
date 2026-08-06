@@ -2,7 +2,6 @@ part of 'hooks.dart';
 
 FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
   final context = useContext();
-  final beamer = Beamer.of(context);
 
   return useCallback(({bool manageSubscription = false}) async {
     final ref = ProviderScope.containerOf(context, listen: false);
@@ -31,7 +30,7 @@ FutureOr<void> Function({bool manageSubscription}) useHandleSubscribe() {
     } on SubscriptionRequiredException catch (_) {
       // ignore and let the flow continue
     }
-  }, [beamer]);
+  }, const []);
 }
 
 FutureOr<void> _handleOnBillingPage({
