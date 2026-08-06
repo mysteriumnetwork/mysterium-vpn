@@ -23,7 +23,8 @@ class LocalDBService implements ResidentialEducationStorage {
       ..registerAdapter(const BannerTypeAdapter(typeId: 4))
       ..registerAdapter(const VpnLocationsAdapter(typeId: 5))
       ..registerAdapter(const LatLngAdapter(typeId: 6))
-      ..registerAdapter(const ProtocolTypeAdapter(typeId: 7));
+      ..registerAdapter(const ProtocolTypeAdapter(typeId: 7))
+      ..registerAdapter(const FavoriteIpAdapter(typeId: 8));
 
     await openBoxRecoverable<Box<UserData>>(
       name: 'user_data',
@@ -118,6 +119,17 @@ class LocalDBService implements ResidentialEducationStorage {
 
   Stream<List<VPNLocation>> watchRecentLocations() =>
       _watchUserData().map((it) => it.recentLocations);
+
+  Future<void> setFavoriteIps(List<FavoriteIp> favoriteIps) async {
+    final userData = await _loadUserData();
+    userData.favoriteIps = favoriteIps;
+
+    await _saveUserData(userData);
+  }
+
+  Future<List<FavoriteIp>> getFavoriteIps() async => (await _loadUserData()).favoriteIps;
+
+  Stream<List<FavoriteIp>> watchFavoriteIps() => _watchUserData().map((it) => it.favoriteIps);
 
   Future<void> setShownBanners(List<BannerType> banners) async {
     final userData = await _loadUserData();

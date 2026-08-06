@@ -138,6 +138,7 @@ class WireguardRepository extends BaseVpnRepository {
     required String? cluster,
     required bool? resetConnection,
     required String dnsAddress,
+    String? targetIp,
   }) async {
     try {
       final key = await _getWireguradKey();
@@ -153,6 +154,7 @@ class WireguardRepository extends BaseVpnRepository {
           userIntent: userIntent,
           cluster: cluster,
           dns: dnsAddress,
+          targetIp: targetIp,
         ),
       );
       return VpnConfig.fromWireguard(response);
