@@ -15,12 +15,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../support/test_localizations.dart';
 import 'locations_refresh_icon_button_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<LocationsStore>(), MockSpec<AnalyticsStore>()])
+@GenerateNiceMocks([
+  MockSpec<LocationsStore>(),
+  MockSpec<AnalyticsStore>(),
+  MockSpec<FavoriteIpsStore>(),
+])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockLocationsStore store;
   late MockAnalyticsStore analytics;
+  late MockFavoriteIpsStore favoriteIpsStore;
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues({});
@@ -29,21 +34,23 @@ void main() {
   setUp(() {
     store = MockLocationsStore();
     analytics = MockAnalyticsStore();
+    favoriteIpsStore = MockFavoriteIpsStore();
   });
 
-  Future<void> pumpButton(WidgetTester tester) async {
+  Future<void> pumpButton(WidgetTester tester, {LocationsTab tab = LocationsTab.datacenter}) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
           locationsStorePOD.overrideWithValue(store),
           analyticsStorePOD.overrideWithValue(analytics),
+          favoriteIpsStorePOD.overrideWithValue(favoriteIpsStore),
         ],
         child: MaterialApp(
           theme: DesignSystem.lightTheme,
           locale: testLocale,
           localizationsDelegates: testLocalizationsDelegates,
           supportedLocales: testSupportedLocales,
-          home: const Scaffold(body: LocationsRefreshIconButton(type: IPType.datacenter)),
+          home: Scaffold(body: LocationsRefreshIconButton(tab: tab)),
         ),
       ),
     );
@@ -60,7 +67,20 @@ void main() {
     await tester.pump();
 
     verify(store.refresh(IPType.datacenter)).called(1);
-    verify(analytics.logLocationsRefresh(type: IPType.datacenter, source: 'button')).called(1);
+    verify(analytics.logLocationsRefresh(tab: LocationsTab.datacenter, source: 'button')).called(1);
+  });
+
+  testWidgets('on the favourite tab it refreshes saved-IP availability', (tester) async {
+    when(favoriteIpsStore.refreshAvailability(force: true)).thenAnswer((_) async => true);
+
+    await pumpButton(tester, tab: LocationsTab.favorite);
+    await tester.tap(find.byType(IconButton));
+    await tester.pump();
+
+    // Explicit user refresh must bypass the store's freshness window.
+    verify(favoriteIpsStore.refreshAvailability(force: true)).called(1);
+    verify(analytics.logLocationsRefresh(tab: LocationsTab.favorite, source: 'button')).called(1);
+    verifyNever(store.refresh(any));
   });
 
   testWidgets('ignores taps while a refresh is already in flight', (tester) async {

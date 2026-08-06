@@ -68,4 +68,48 @@ void main() {
   test('dispose tears down debouncer + reaction', () async {
     newStore().dispose();
   });
+
+  group('favourite tab', () {
+    test('tab reflects ipType when favourites are not selected', () {
+      when(prefs.getIPType()).thenReturn(IPType.datacenter);
+      final store = newStore();
+
+      expect(store.tab, LocationsTab.datacenter);
+    });
+
+    test('selectTab(favorite) switches the tab without touching ipType', () {
+      final store = newStore()..selectTab(LocationsTab.favorite);
+
+      expect(store.tab, LocationsTab.favorite);
+      expect(store.ipType, IPType.residential);
+      verifyNever(prefs.setIPType(any));
+    });
+
+    test('selectTab of an IP-type tab deselects favourites', () async {
+      final store = newStore()..selectTab(LocationsTab.favorite);
+
+      await store.selectTab(LocationsTab.datacenter);
+
+      expect(store.tab, LocationsTab.datacenter);
+      expect(store.ipType, IPType.datacenter);
+    });
+
+    test('deselectFavoritesTab drops the selection (e.g. on logout)', () {
+      final store = newStore()
+        ..selectTab(LocationsTab.favorite)
+        ..deselectFavoritesTab();
+
+      expect(store.tab, LocationsTab.residential);
+    });
+
+    test('syncIPType updates the type without stealing the favourite selection', () async {
+      final store = newStore()..selectTab(LocationsTab.favorite);
+
+      await store.syncIPType(IPType.datacenter);
+
+      expect(store.tab, LocationsTab.favorite);
+      expect(store.ipType, IPType.datacenter);
+      verify(prefs.setIPType(IPType.datacenter)).called(1);
+    });
+  });
 }

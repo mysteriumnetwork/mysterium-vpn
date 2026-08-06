@@ -337,6 +337,51 @@ void main() {
         verifyFetchVpnConfig(country: 'fr', city: null);
       });
 
+      test('forwards targetIp to the repository', () async {
+        when(mockRealIPInfo.infoFuture).thenAnswer(
+          (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
+        );
+
+        when(mockLocationsService.closestRegion(any)).thenAnswer((_) async => null);
+
+        const vpnConfig = VpnConfig(id: 'config1', config: 'cfg', exitIp: '2.2.2.2', hash: 'hash');
+
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            resetConnection: anyNamed('resetConnection'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
+            targetIp: anyNamed('targetIp'),
+          ),
+        ).thenAnswer((_) async => vpnConfig);
+
+        await vpnStore.fetchVpnConfiguration(
+          location: location,
+          intent: null,
+          refreshIP: false,
+          targetIp: '5.5.5.5',
+        );
+
+        verify(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            resetConnection: anyNamed('resetConnection'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
+            targetIp: '5.5.5.5',
+          ),
+        ).called(1);
+      });
+
       test('uses OpenVPN repository when protocol is OpenVPN', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
 
@@ -449,6 +494,56 @@ void main() {
         },
       );
 
+      test('a targeted (favorite IP) 2332 failure does NOT disable the country', () async {
+        const location = VPNLocation(
+          id: 'US',
+          ipType: IPType.residential,
+          translations: {},
+          countryCode: 'US',
+        );
+
+        when(mockRealIPInfo.infoFuture).thenAnswer(
+          (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
+        );
+
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            resetConnection: anyNamed('resetConnection'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
+            targetIp: anyNamed('targetIp'),
+          ),
+        ).thenAnswer(
+          (_) async => throw ApiException(
+            RequestOptions(),
+            'Location unavailable',
+            code: 2332,
+            identifier: 'LocationUnavailable',
+            endpoint: '/config',
+            severity: ExceptionSeverity.low,
+          ),
+        );
+
+        await expectLater(
+          () async => vpnStore.fetchVpnConfiguration(
+            location: location,
+            intent: null,
+            refreshIP: false,
+            targetIp: '5.5.5.5',
+          ),
+          throwsA(isA<UnavailableLocationException>()),
+        );
+
+        verifyNever(
+          mockUnavailableLocations.toggleAvailability(any, availability: anyNamed('availability')),
+        );
+      });
+
       test('rethrows other ApiException', () async {
         when(mockRealIPInfo.infoFuture).thenAnswer(
           (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
@@ -499,6 +594,8 @@ void main() {
           requestedLocation: anyNamed('requestedLocation'),
           requestedIntent: anyNamed('requestedIntent'),
           isRefreshIP: anyNamed('isRefreshIP'),
+          requestedTargetIp: anyNamed('requestedTargetIp'),
+          currentIp: anyNamed('currentIp'),
         ),
       ).thenReturn(ConnectionAction.disconnect);
 
@@ -685,6 +782,8 @@ void main() {
             requestedLocation: anyNamed('requestedLocation'),
             requestedIntent: anyNamed('requestedIntent'),
             isRefreshIP: anyNamed('isRefreshIP'),
+            requestedTargetIp: anyNamed('requestedTargetIp'),
+            currentIp: anyNamed('currentIp'),
           ),
         ).thenReturn(action);
       }
