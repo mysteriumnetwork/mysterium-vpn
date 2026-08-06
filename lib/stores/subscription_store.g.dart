@@ -81,6 +81,20 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.malwareBlockingAllowed,
     name: '_SubscriptionStore.malwareBlockingAllowed',
   )).value;
+  Computed<bool>? _$favoriteIpsAllowedComputed;
+
+  @override
+  bool get favoriteIpsAllowed => (_$favoriteIpsAllowedComputed ??= Computed<bool>(
+    () => super.favoriteIpsAllowed,
+    name: '_SubscriptionStore.favoriteIpsAllowed',
+  )).value;
+  Computed<int>? _$favoriteIpsLimitComputed;
+
+  @override
+  int get favoriteIpsLimit => (_$favoriteIpsLimitComputed ??= Computed<int>(
+    () => super.favoriteIpsLimit,
+    name: '_SubscriptionStore.favoriteIpsLimit',
+  )).value;
   Computed<bool>? _$canRedeemCodeComputed;
 
   @override
@@ -223,6 +237,8 @@ isStoreSubOnForeignPlatform: ${isStoreSubOnForeignPlatform},
 isOnMaxPlan: ${isOnMaxPlan},
 productsScreenVariant: ${productsScreenVariant},
 malwareBlockingAllowed: ${malwareBlockingAllowed},
+favoriteIpsAllowed: ${favoriteIpsAllowed},
+favoriteIpsLimit: ${favoriteIpsLimit},
 canRedeemCode: ${canRedeemCode}
     ''';
   }

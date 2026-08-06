@@ -30,6 +30,15 @@ abstract class _LocationsQueryStore with Store, Disposeable {
   @readonly
   late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
 
+  /// View-level flag: the Favorite tab is selected instead of an IP-type tab.
+  /// Not persisted so the app always reopens on an IP-type list.
+  @readonly
+  bool _favoritesSelected = false;
+
+  @computed
+  LocationsTab get tab =>
+      _favoritesSelected ? LocationsTab.favorite : LocationsTab.fromIPType(_ipType);
+
   @computed
   String get searchTrimmed => _search.trim();
 
@@ -41,10 +50,38 @@ abstract class _LocationsQueryStore with Store, Disposeable {
     }, debounce);
   }
 
+  /// The user picked a tab. Favorite has no [IPType]; the other tabs both
+  /// select and persist theirs.
   @action
-  Future<void> setIPType(IPType value) async {
+  Future<void> selectTab(LocationsTab tab) async {
+    final ipType = tab.ipType;
+    if (ipType == null) {
+      _favoritesSelected = true;
+      return;
+    }
+    _favoritesSelected = false;
+    await syncIPType(ipType);
+  }
+
+  @action
+  Future<void> setIPType(IPType value) {
+    _favoritesSelected = false;
+    return syncIPType(value);
+  }
+
+  /// Keeps the underlying IP type in sync (e.g. from connection changes)
+  /// without stealing the selection away from the Favorite tab.
+  @action
+  Future<void> syncIPType(IPType value) async {
     _ipType = value;
     await _prefs.setIPType(value);
+  }
+
+  /// Drops a Favorite-tab selection when the tab goes away (logout, or the
+  /// feature turning off), so every reader of [tab] agrees with the UI.
+  @action
+  void deselectFavoritesTab() {
+    _favoritesSelected = false;
   }
 
   @override
