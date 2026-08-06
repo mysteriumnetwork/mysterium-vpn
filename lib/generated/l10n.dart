@@ -60,6 +60,7 @@ class S {
     'acceptOfferBtn': [],
     'accessAvailableUntilLbl': [],
     'accessBlockedSitesReason': [],
+    'accessUntil': ['date'],
     'account': [],
     'accountSuccessfullyDeleted': [],
     'activeSubsPaidVia': ['store'],
@@ -90,6 +91,7 @@ class S {
     'cancelError7040': [],
     'cancelLatency': [],
     'cancellationDateLbl': [],
+    'cancelled': [],
     'cancelMissingFeatures': [],
     'cancelSpeed': [],
     'cancelSubscriptionPromptDesc': [],
@@ -137,6 +139,7 @@ class S {
     'copyLink': [],
     'couponCodeCopied': ['couponCode'],
     'dark': [],
+    'datacenterIpBadge': [],
     'dataCentreComparisonCardItem1': [],
     'dataCentreComparisonCardItem2': [],
     'dataCentreComparisonCardItem3': [],
@@ -190,6 +193,7 @@ class S {
     'frequentDisconnectsReason': [],
     'fullPriceLabel': [],
     'germany': [],
+    'getAPlanBtn': [],
     'getNewIPAddress': [],
     'getSubscriptionModalDesc': [],
     'getSubscriptionModalTitle': ['plan'],
@@ -287,6 +291,8 @@ class S {
     'or': [],
     'orSelectCountryManually': [],
     'otherReason': [],
+    'paused': [],
+    'pausedUntil': ['date'],
     'pauseDurationRequiredError': [],
     'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
@@ -350,6 +356,7 @@ class S {
     'refreshIP': [],
     'refreshIPAddress': [],
     'refreshLocationsTooltip': ['location'],
+    'renewsOn': ['date'],
     'resetAppDesc': [],
     'resetAppDialogContent': [],
     'resetAppDialogTitle': [],
@@ -371,6 +378,10 @@ class S {
     'residentialEducationGotIt': [],
     'residentialEducationSubtitle': [],
     'residentialEducationTitle': [],
+    'residentialIpBadge': [],
+    'resumeBtn': [],
+    'resumeSubscriptionPromptDesc': [],
+    'resumeSubscriptionTitle': [],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -461,6 +472,7 @@ class S {
     'subscriptionPlanWireGuard': [],
     'subscriptionPlanWireGuardDesc': [],
     'subscriptionProcessCanceled': [],
+    'subscriptionResumed': [],
     'subscriptionUpgrade': [],
     'subscriptionUpgradeCTA': ['plan'],
     'subscriptionUpgradeModalDescription': [],
@@ -544,6 +556,16 @@ class S {
       name: 'accessBlockedSitesReason',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Access available until {date}`
+  String accessUntil(Object date) {
+    return Intl.message(
+      'Access available until $date',
+      name: 'accessUntil',
+      desc: '',
+      args: [date],
     );
   }
 
@@ -740,6 +762,11 @@ class S {
   /// `Cancellation date:`
   String get cancellationDateLbl {
     return Intl.message('Cancellation date:', name: 'cancellationDateLbl', desc: '', args: []);
+  }
+
+  /// `Cancelled`
+  String get cancelled {
+    return Intl.message('Cancelled', name: 'cancelled', desc: '', args: []);
   }
 
   /// `Missing features`
@@ -1070,6 +1097,11 @@ class S {
   /// `Dark`
   String get dark {
     return Intl.message('Dark', name: 'dark', desc: '', args: []);
+  }
+
+  /// `Datacenter IP`
+  String get datacenterIpBadge {
+    return Intl.message('Datacenter IP', name: 'datacenterIpBadge', desc: '', args: []);
   }
 
   /// `Easily detectable`
@@ -1442,6 +1474,11 @@ class S {
     return Intl.message('Germany', name: 'germany', desc: '', args: []);
   }
 
+  /// `Get a plan`
+  String get getAPlanBtn {
+    return Intl.message('Get a plan', name: 'getAPlanBtn', desc: '', args: []);
+  }
+
   /// `Get a new IP address on refresh`
   String get getNewIPAddress {
     return Intl.message(
@@ -1707,36 +1744,30 @@ class S {
     return Intl.message('Location', name: 'location', desc: '', args: []);
   }
 
-  /// `{count, plural, one{{count} City} other{{count} Cities}}`
-  String locationItemCityCount(num count) {
-    return Intl.plural(
-      count,
-      one: '$count City',
-      other: '$count Cities',
+  /// `{one={count} City, other={count} Cities}`
+  String locationItemCityCount(Object count) {
+    return Intl.message(
+      '{one=$count City, other=$count Cities}',
       name: 'locationItemCityCount',
       desc: '',
       args: [count],
     );
   }
 
-  /// `{count, plural, one{{count} IP} other{{count} IPs}}`
-  String locationItemNodeCount(num count) {
-    return Intl.plural(
-      count,
-      one: '$count IP',
-      other: '$count IPs',
+  /// `{one={count} IP, other={count} IPs}`
+  String locationItemNodeCount(Object count) {
+    return Intl.message(
+      '{one=$count IP, other=$count IPs}',
       name: 'locationItemNodeCount',
       desc: '',
       args: [count],
     );
   }
 
-  /// `{count, plural, one{{count} State} other{{count} States}}`
-  String locationItemStatesCount(num count) {
-    return Intl.plural(
-      count,
-      one: '$count State',
-      other: '$count States',
+  /// `{one={count} State, other={count} States}`
+  String locationItemStatesCount(Object count) {
+    return Intl.message(
+      '{one=$count State, other=$count States}',
       name: 'locationItemStatesCount',
       desc: '',
       args: [count],
@@ -2101,6 +2132,16 @@ class S {
   /// `Other...`
   String get otherReason {
     return Intl.message('Other...', name: 'otherReason', desc: '', args: []);
+  }
+
+  /// `Paused`
+  String get paused {
+    return Intl.message('Paused', name: 'paused', desc: '', args: []);
+  }
+
+  /// `Paused until {date}`
+  String pausedUntil(Object date) {
+    return Intl.message('Paused until $date', name: 'pausedUntil', desc: '', args: [date]);
   }
 
   /// `Please select one of the pause durations.`
@@ -2546,6 +2587,11 @@ class S {
     );
   }
 
+  /// `Renews on {date}`
+  String renewsOn(Object date) {
+    return Intl.message('Renews on $date', name: 'renewsOn', desc: '', args: [date]);
+  }
+
   /// `Reset when something isn't working`
   String get resetAppDesc {
     return Intl.message(
@@ -2736,6 +2782,36 @@ class S {
     );
   }
 
+  /// `Residential IP`
+  String get residentialIpBadge {
+    return Intl.message('Residential IP', name: 'residentialIpBadge', desc: '', args: []);
+  }
+
+  /// `Resume`
+  String get resumeBtn {
+    return Intl.message('Resume', name: 'resumeBtn', desc: '', args: []);
+  }
+
+  /// `Your subscription will resume immediately.`
+  String get resumeSubscriptionPromptDesc {
+    return Intl.message(
+      'Your subscription will resume immediately.',
+      name: 'resumeSubscriptionPromptDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resume Subscription?`
+  String get resumeSubscriptionTitle {
+    return Intl.message(
+      'Resume Subscription?',
+      name: 'resumeSubscriptionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Retry`
   String get retryBtn {
     return Intl.message('Retry', name: 'retryBtn', desc: '', args: []);
@@ -2786,13 +2862,10 @@ class S {
     return Intl.message('semi-annually', name: 'semiAnnual', desc: '', args: []);
   }
 
-  /// `{count, plural, zero{Send again} one{Send again} other{Send again ({count})}}`
-  String sendAgain(num count) {
-    return Intl.plural(
-      count,
-      zero: 'Send again',
-      one: 'Send again',
-      other: 'Send again ($count)',
+  /// `{zero=Send again, one=Send again, other=Send again ({count})}`
+  String sendAgain(Object count) {
+    return Intl.message(
+      '{zero=Send again, one=Send again, other=Send again ($count)}',
       name: 'sendAgain',
       desc: '',
       args: [count],
@@ -3459,6 +3532,16 @@ class S {
     return Intl.message(
       'You didn\'t complete the changes to your subscription.',
       name: 'subscriptionProcessCanceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your subscription is active again.`
+  String get subscriptionResumed {
+    return Intl.message(
+      'Your subscription is active again.',
+      name: 'subscriptionResumed',
       desc: '',
       args: [],
     );
