@@ -403,6 +403,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pause subscription"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "We could not pause your subscription. Please try again.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "You can pause your plan once per billing cycle.",
     ),
@@ -544,6 +547,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("How Residential IPs work"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Resume"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "We could not resume your subscription. Please try again.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Your subscription will resume immediately.",
     ),

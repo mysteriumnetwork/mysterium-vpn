@@ -282,6 +282,7 @@ class S {
     'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
     'pauseSubscriptionInfoDesc': [],
+    'pauseSubscriptionFailed': [],
     'pendingTransactionMessage': [],
     'perMonth': [],
     'pl': [],
@@ -366,6 +367,7 @@ class S {
     'resumeBtn': [],
     'resumeSubscriptionPromptDesc': [],
     'resumeSubscriptionTitle': [],
+    'resumeSubscriptionFailed': [],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -2066,6 +2068,16 @@ class S {
     );
   }
 
+  /// `We could not pause your subscription. Please try again.`
+  String get pauseSubscriptionFailed {
+    return Intl.message(
+      'We could not pause your subscription. Please try again.',
+      name: 'pauseSubscriptionFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You already have an ongoing payment transaction. Please complete it before starting a new one.`
   String get pendingTransactionMessage {
     return Intl.message(
@@ -2686,6 +2698,16 @@ class S {
     return Intl.message(
       'Resume Subscription?',
       name: 'resumeSubscriptionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We could not resume your subscription. Please try again.`
+  String get resumeSubscriptionFailed {
+    return Intl.message(
+      'We could not resume your subscription. Please try again.',
+      name: 'resumeSubscriptionFailed',
       desc: '',
       args: [],
     );

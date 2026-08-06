@@ -5,14 +5,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_action_footer.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_app_bar.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 /// Optional pause offer. "Continue to cancel" opens the web confirmation prompt.
 class SubscriptionPauseView extends HookConsumerWidget {
@@ -40,13 +39,17 @@ class SubscriptionPauseView extends HookConsumerWidget {
 
     Future<void> handleSubmit() async {
       final paused = await cancelSubscriptionStore.pauseSubscription(selectedPauseDuration.value!);
-      if (paused && context.mounted) {
-        handleDismiss();
+      if (!context.mounted) {
+        return;
       }
+      if (paused) {
+        handleDismiss();
+        return;
+      }
+      showSnackbar(S.current.pauseSubscriptionFailed);
     }
 
     Future<void> handleContinueOnWeb() async {
-      final link = cancelSubscriptionStore.linkToCancelSubscription;
       final navigator = Navigator.of(context, rootNavigator: true);
 
       if (isDesktop()) {
@@ -67,7 +70,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
         }
         await showContinueToWebPrompt(
           context: navigator.context,
-          onContinuePressed: () => launchUrlString(link),
+          onContinuePressed: () => openCancelSubscriptionLink(cancelSubscriptionStore),
         );
         cancelSubscriptionStore.reset();
       });

@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
@@ -17,7 +17,6 @@ import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_act
 import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_app_bar.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 part 'widgets/cancel_subscription_form.dart';
 part 'widgets/cancel_subscription_reasons_field.dart';
@@ -77,7 +76,6 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         return;
       }
 
-      final link = cancelSubscriptionStore.linkToCancelSubscription;
       final navigator = Navigator.of(context, rootNavigator: true);
       if (isDesktop()) {
         navigator.pop();
@@ -97,11 +95,11 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         }
 
         if (cancelSubscriptionStore.isStoreSubscription()) {
-          launchUrlString(link);
+          await openCancelSubscriptionLink(cancelSubscriptionStore);
         } else {
           await showContinueToWebPrompt(
             context: navigator.context,
-            onContinuePressed: () => launchUrlString(link),
+            onContinuePressed: () => openCancelSubscriptionLink(cancelSubscriptionStore),
           );
         }
         cancelSubscriptionStore.reset();

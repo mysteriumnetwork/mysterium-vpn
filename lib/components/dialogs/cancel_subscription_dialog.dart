@@ -2,9 +2,10 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn/views/subscription/cancel_subscription_survey_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -39,6 +40,13 @@ Future<void> showCancelSubscriptionDialog(BuildContext context) async {
   // Mobile: beam to the cancellation survey
   Beamer.of(context).beamToNamed(Routes.cancelSubscription.path);
 }
+
+/// Opens the store or web cancel destination for [store].
+Future<void> openCancelSubscriptionLink(SubscriptionCancellationStore store) =>
+    openUrlLink(
+      Uri.parse(store.linkToCancelSubscription),
+      source: RedirectSource.cancelSubscription,
+    );
 
 /// Shows the continue to web prompt.
 Future<void> showContinueToWebPrompt({

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'subscription_cancellation_store.g.dart';
@@ -75,7 +74,6 @@ abstract class _SubscriptionCancellationStore with Store {
       _isProcessing = false;
       return true;
     } on Exception catch (e) {
-      showSnackbar(e.toString());
       _error = e;
       _isProcessing = false;
       return false;

@@ -41,7 +41,7 @@ class _ResumeSubscriptionPrompt extends HookConsumerWidget {
         }
       } catch (_) {
         analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeFailed, parameters: {});
-        showSnackbar(S.current.somethingWentWrong);
+        showSnackbar(S.current.resumeSubscriptionFailed);
         if (context.mounted) {
           isLoading.value = false;
         }

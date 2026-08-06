@@ -13,6 +13,7 @@ enum RedirectSource {
   helpSupport,
   appUpdate,
   googlePlaySubscriptions,
+  cancelSubscription,
   external;
 
   String get formattedName => name.toSnakeCase;
