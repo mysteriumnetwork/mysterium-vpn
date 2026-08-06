@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/connection_details_dialog.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -16,8 +20,8 @@ class ConnectionTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final remoteConfig = ref.watch(remoteConfigStorePOD);
-    final favoriteLocationsEnabled = useComputedValue(() => remoteConfig.favoriteLocationsEnabled);
+    final favoriteIpsStore = ref.watch(favoriteIpsStorePOD);
+    final connectionDisplayStore = ref.watch(connectionDisplayStorePOD);
     final (
       :status,
       :connectLabel,
@@ -30,6 +34,64 @@ class ConnectionTile extends HookConsumerWidget {
     ) = useConnectionTileState(
       ref,
     );
+
+    // Keyed on the stores: they are recreated on logout, and the hook would
+    // otherwise keep observing the disposed instances.
+    final keys = [favoriteIpsStore, connectionDisplayStore];
+    final connectionIP = useComputedValue(() => connectionDisplayStore.connectionIP, keys);
+    final favoritesEnabled = useComputedValue(() => favoriteIpsStore.isEnabled, keys);
+    final isFavorite = useComputedValue(() {
+      final ip = connectionDisplayStore.connectionIP;
+      return ip != null && favoriteIpsStore.isFavorite(ip);
+    }, keys);
+
+    // Limit notice is emitted by the store; the view translates and shows it.
+    useReaction(() => favoriteIpsStore.notice, (FavoriteIpsNotice? notice) {
+      if (notice == null) {
+        return;
+      }
+      showSnackbar(S.current.favoriteIpLimitReached);
+      favoriteIpsStore.clearNotice();
+    });
+
+    Future<void> handleFavorite() async {
+      final ip = connectionDisplayStore.connectionIP;
+      final location = connectionDisplayStore.connectedOrDisplayLocation;
+      if (ip == null || location == null) {
+        return;
+      }
+
+      if (favoriteIpsStore.isFavorite(ip)) {
+        await removeFavoriteIpWithUndo(favoriteIpsStore, ip);
+        return;
+      }
+
+      // At the limit, add() emits FavoriteIpsNotice.limitReached — surfaced
+      // by the notice reaction above.
+      final (:country, :city) = locationDisplayNames(
+        context,
+        location: location,
+        parent: connectionDisplayStore.connectedParentLocation,
+      );
+      final added = await favoriteIpsStore.add(
+        FavoriteIp(
+          ip: ip,
+          countryCode: location.countryCode,
+          // A translations-less location resolves its name to the raw code —
+          // store '' instead so display falls back to the code translation.
+          countryName: country.toLowerCase() == location.countryCode.toLowerCase() ? '' : country,
+          city: city,
+          // Remember what was picked (city vs whole country) so a later
+          // connect targets the same scope.
+          locationId: location.id,
+          ipType: location.ipType,
+          savedAt: DateTime.now(),
+        ),
+      );
+      if (added) {
+        showSnackbar(S.current.favoriteIpAddedToast, type: SnackbarType.info);
+      }
+    }
 
     Widget buttonWrapper({required BuildContext context, required Widget child}) =>
         ArrowedProgressCard(
@@ -56,11 +118,8 @@ class ConnectionTile extends HookConsumerWidget {
           onConnect: onToggle,
           onDisconnect: onToggle,
           onDetails: () => showConnectionDetailsDialog(context),
-          // Favorites are not implemented yet — behind the favoriteLocationsEnabled
-          // flag the heart is an inert placeholder with an untranslated
-          // tester-facing tooltip until the feature ships.
-          onFavorite: favoriteLocationsEnabled ? () {} : null,
-          favoriteTooltip: 'Favorites coming soon',
+          onFavorite: favoritesEnabled && connectionIP != null ? handleFavorite : null,
+          isFavorite: isFavorite,
           onDismissPreview: onDismissPreview,
           onSwitchCountry: onToggle,
           buttonWrapper: buttonWrapper,

@@ -8,13 +8,18 @@ class LocationTypeSwitcher extends StatefulWidget {
     required this.value,
     required this.onChanged,
     required this.options,
+    this.favoriteLocked = false,
     this.activeTabTrailing,
     super.key,
   });
 
-  final IPType value;
-  final List<IPType> options;
-  final ValueChanged<IPType> onChanged;
+  final LocationsTab value;
+  final List<LocationsTab> options;
+  final ValueChanged<LocationsTab> onChanged;
+
+  /// Shows a lock next to the Favorite tab label (plan doesn't allow the
+  /// feature). The tab stays tappable so the locked state can explain itself.
+  final bool favoriteLocked;
 
   /// Optional widget rendered next to the label of the active tab — e.g. a
   /// refresh action that applies to the currently selected type.
@@ -55,8 +60,8 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
     }
   }
 
-  int _indexOfValue(IPType type) {
-    final index = widget.options.indexOf(type);
+  int _indexOfValue(LocationsTab tab) {
+    final index = widget.options.indexOf(tab);
     return index == -1 ? 0 : index;
   }
 
@@ -83,6 +88,8 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
             mainAxisSize: MainAxisSize.min,
             spacing: Theme.of(context).spacing.s,
             children: [
+              if (option == LocationsTab.favorite && widget.favoriteLocked)
+                const Icon(UntitledUI.lock_01, size: 16),
               Flexible(child: Text(_label(option), overflow: TextOverflow.ellipsis)),
               if (widget.activeTabTrailing != null && option == widget.value)
                 widget.activeTabTrailing!,
@@ -92,8 +99,14 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
     ],
   );
 
-  String _label(IPType option) => switch (option) {
-    IPType.datacenter => S.current.ipTypeDataCenter,
-    _ => widget.options.length > 1 ? S.current.ipTypeResidential : S.current.allLocations,
+  // Tab labels drop the "IPs" word to save space; full names stay everywhere
+  // else (tooltips, disclaimers, snackbars).
+  String _label(LocationsTab option) => switch (option) {
+    LocationsTab.datacenter => S.current.ipTypeDataCenterTab,
+    LocationsTab.favorite => S.current.favoriteIpsTab,
+    LocationsTab.residential =>
+      widget.options.contains(LocationsTab.datacenter)
+          ? S.current.ipTypeResidentialTab
+          : S.current.allLocations,
   };
 }
