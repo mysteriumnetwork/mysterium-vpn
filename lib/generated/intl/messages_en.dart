@@ -248,6 +248,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "We couldn\'t verify your last subscription purchase. Click the button below to retry verification.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Fast"),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP added to Favourite"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "Favourite IP limit reached. Remove an IP to save a new one.",
+    ),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP removed from Favourite"),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "Connect and tap the heart on the connection card to save an IP for quick access.",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("No Favourite IPs yet"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("Favourite IPs"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("Save Favourite IPs"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Saved IPs are not available on your current plan.",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("Favourite"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("Unavailable IPs"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("Upgrade plan"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "Your app version is outdated. Please update the app to continue using it.",
     ),
@@ -290,10 +310,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Datacenter IPs optimised for speed and performance.",
     ),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Provided by real households. Nearly undetectable but less stable.",
     ),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("Residential"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "Residential IPs are provided by real household devices, so availability can change over time.\n\nIf a node goes offline, the app reconnects you to the nearest available residential IP.",
     ),
@@ -745,6 +767,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sign in to access your account and unlock all features",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("You\'re not signed in"),
+    "undo": MessageLookupByLibrary.simpleMessage("Undo"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("UNPROTECTED"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Unstable speed"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Update"),

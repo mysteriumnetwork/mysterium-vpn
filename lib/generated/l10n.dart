@@ -171,6 +171,18 @@ class S {
     'failedToSubscribe': [],
     'failedToVerifySubs': [],
     'fastLabel': [],
+    'favoriteIpAddedToast': [],
+    'favoriteIpLimitReached': [],
+    'favoriteIpRemovedToast': [],
+    'favoriteIpsEmptyBody': [],
+    'favoriteIpsEmptyTitle': [],
+    'favoriteIpsLabel': [],
+    'favoriteIpsLockedBody': [],
+    'favoriteIpsLockedTitle': [],
+    'favoriteIpsNotAvailableOnPlan': [],
+    'favoriteIpsTab': [],
+    'favoriteIpsUnavailableHeading': [],
+    'favoriteIpsUpgradePlan': [],
     'featureToggleMinVersionNotSatisfied': [],
     'formValidationError': [],
     'fr': [],
@@ -203,8 +215,10 @@ class S {
     'ipType': [],
     'ipTypeDataCenter': [],
     'ipTypeDataCenterDisclaimer': [],
+    'ipTypeDataCenterTab': [],
     'ipTypeResidential': [],
     'ipTypeResidentialDisclaimer': [],
+    'ipTypeResidentialTab': [],
     'ipTypeResidentialTooltipBody': [],
     'ipTypeResidentialTooltipTitle': [],
     'it': [],
@@ -479,6 +493,7 @@ class S {
     'unauthenticatedBannerTitle': [],
     'unauthenticatedSettingSubtitle': [],
     'unauthenticatedSettingTitle': [],
+    'undo': [],
     'unprotectedLbl': [],
     'unstableSpeedReason': [],
     'updateBtn': [],
@@ -1287,6 +1302,96 @@ class S {
     return Intl.message('Fast', name: 'fastLabel', desc: '', args: []);
   }
 
+  /// `IP added to Favourite`
+  String get favoriteIpAddedToast {
+    return Intl.message('IP added to Favourite', name: 'favoriteIpAddedToast', desc: '', args: []);
+  }
+
+  /// `Favourite IP limit reached. Remove an IP to save a new one.`
+  String get favoriteIpLimitReached {
+    return Intl.message(
+      'Favourite IP limit reached. Remove an IP to save a new one.',
+      name: 'favoriteIpLimitReached',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IP removed from Favourite`
+  String get favoriteIpRemovedToast {
+    return Intl.message(
+      'IP removed from Favourite',
+      name: 'favoriteIpRemovedToast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect and tap the heart on the connection card to save an IP for quick access.`
+  String get favoriteIpsEmptyBody {
+    return Intl.message(
+      'Connect and tap the heart on the connection card to save an IP for quick access.',
+      name: 'favoriteIpsEmptyBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Favourite IPs yet`
+  String get favoriteIpsEmptyTitle {
+    return Intl.message('No Favourite IPs yet', name: 'favoriteIpsEmptyTitle', desc: '', args: []);
+  }
+
+  /// `Favourite IPs`
+  String get favoriteIpsLabel {
+    return Intl.message('Favourite IPs', name: 'favoriteIpsLabel', desc: '', args: []);
+  }
+
+  /// `Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.`
+  String get favoriteIpsLockedBody {
+    return Intl.message(
+      'Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.',
+      name: 'favoriteIpsLockedBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Favourite IPs`
+  String get favoriteIpsLockedTitle {
+    return Intl.message('Save Favourite IPs', name: 'favoriteIpsLockedTitle', desc: '', args: []);
+  }
+
+  /// `Saved IPs are not available on your current plan.`
+  String get favoriteIpsNotAvailableOnPlan {
+    return Intl.message(
+      'Saved IPs are not available on your current plan.',
+      name: 'favoriteIpsNotAvailableOnPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favourite`
+  String get favoriteIpsTab {
+    return Intl.message('Favourite', name: 'favoriteIpsTab', desc: '', args: []);
+  }
+
+  /// `Unavailable IPs`
+  String get favoriteIpsUnavailableHeading {
+    return Intl.message(
+      'Unavailable IPs',
+      name: 'favoriteIpsUnavailableHeading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upgrade plan`
+  String get favoriteIpsUpgradePlan {
+    return Intl.message('Upgrade plan', name: 'favoriteIpsUpgradePlan', desc: '', args: []);
+  }
+
   /// `Your app version is outdated. Please update the app to continue using it.`
   String get featureToggleMinVersionNotSatisfied {
     return Intl.message(
@@ -1492,6 +1597,11 @@ class S {
     );
   }
 
+  /// `Datacenter`
+  String get ipTypeDataCenterTab {
+    return Intl.message('Datacenter', name: 'ipTypeDataCenterTab', desc: '', args: []);
+  }
+
   /// `Residential IPs`
   String get ipTypeResidential {
     return Intl.message('Residential IPs', name: 'ipTypeResidential', desc: '', args: []);
@@ -1505,6 +1615,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Residential`
+  String get ipTypeResidentialTab {
+    return Intl.message('Residential', name: 'ipTypeResidentialTab', desc: '', args: []);
   }
 
   /// `Residential IPs are provided by real household devices, so availability can change over time.\n\nIf a node goes offline, the app reconnects you to the nearest available residential IP.`
@@ -3607,6 +3722,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Undo`
+  String get undo {
+    return Intl.message('Undo', name: 'undo', desc: '', args: []);
   }
 
   /// `UNPROTECTED`
