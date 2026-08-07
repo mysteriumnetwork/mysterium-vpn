@@ -199,8 +199,8 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   );
 
   @override
-  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period) {
-    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(period));
+  Future<void> pauseSubscription(String periodCode) {
+    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(periodCode));
   }
 
   late final _$_SubscriptionStoreActionController = ActionController(

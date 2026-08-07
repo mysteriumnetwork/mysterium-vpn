@@ -383,7 +383,13 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period) async {
+  Future<void> pauseSubscription(String periodCode) async {
+    final period = api.PauseSubscriptionRequestPeriodEnum.values.firstWhereOrNull(
+      (it) => it.value == periodCode,
+    );
+    if (period == null) {
+      throw Exception('Unsupported pause period: $periodCode');
+    }
     await _apiSubscription.pause(
       pauseSubscriptionRequest: api.PauseSubscriptionRequest(period: period),
     );

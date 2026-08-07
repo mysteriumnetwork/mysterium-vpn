@@ -346,8 +346,8 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period) async {
-    await _subscriptionService.pauseSubscription(period);
+  Future<void> pauseSubscription(String periodCode) async {
+    await _subscriptionService.pauseSubscription(periodCode);
     await refreshSubscription(force: true);
   }
 

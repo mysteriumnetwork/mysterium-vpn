@@ -26,7 +26,7 @@ abstract class SubscriptionService {
 
   Future<api.SubscriptionConfigResponse> fetchSubscriptionConfig();
 
-  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period);
+  Future<void> pauseSubscription(String periodCode);
 
   Future<void> resumeSubscription();
 

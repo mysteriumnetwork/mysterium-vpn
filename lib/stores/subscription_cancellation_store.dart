@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:vpn_api/vpn_api.dart' as api;
 
 part 'subscription_cancellation_store.g.dart';
 
@@ -83,17 +81,14 @@ abstract class _SubscriptionCancellationStore with Store {
   @action
   Future<bool> pauseSubscription(SubscriptionPauseDuration duration) async {
     final periodCode = _remoteConfigStore.subscriptionPauseDurations[duration.value];
-    final period = api.PauseSubscriptionRequestPeriodEnum.values.firstWhereOrNull(
-      (it) => it.value == periodCode,
-    );
-    if (period == null) {
+    if (periodCode == null || periodCode.isEmpty) {
       return false;
     }
 
     _isProcessing = true;
 
     try {
-      await _subscriptionStore.pauseSubscription(period);
+      await _subscriptionStore.pauseSubscription(periodCode);
       await Future.wait([
         _analyticsStore.logCancellationPauseAccepted(),
         _analyticsStore.logSubscriptionCancellationPauseDuration(months: duration.value),
