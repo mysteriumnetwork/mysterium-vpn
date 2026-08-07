@@ -259,6 +259,7 @@ class S {
     'lowLatencyReason': [],
     'madridLbl': [],
     'malwareLbl': [],
+    'manageFavoriteIpsBtn': [],
     'manageOnWebBtn': [],
     'marketingConsentPopupDesc': [],
     'marketingConsentPopupTitle': [],
@@ -1930,6 +1931,11 @@ class S {
   /// `Malware`
   String get malwareLbl {
     return Intl.message('Malware', name: 'malwareLbl', desc: '', args: []);
+  }
+
+  /// `Manage`
+  String get manageFavoriteIpsBtn {
+    return Intl.message('Manage', name: 'manageFavoriteIpsBtn', desc: '', args: []);
   }
 
   /// `Manage on the web`

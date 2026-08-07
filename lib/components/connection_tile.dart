@@ -50,7 +50,7 @@ class ConnectionTile extends HookConsumerWidget {
       if (notice == null) {
         return;
       }
-      showSnackbar(S.current.favoriteIpLimitReached);
+      showFavoriteIpLimitSnackbar(onManage: ref.read(homeTabsStorePOD).openFavoriteLocations);
       favoriteIpsStore.clearNotice();
     }, keys: keys);
 

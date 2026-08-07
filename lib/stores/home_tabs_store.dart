@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -134,6 +136,15 @@ abstract class _HomeTabsStore with Store {
     );
     selected = HomeTab.locations;
     pendingLocationsSearchFocus = true;
+  }
+
+  /// Shows the saved-IP list. On desktop, Locations is folded into Map and the
+  /// scaffold normalises the tab back — selecting it here is still correct
+  /// because the list itself lives there.
+  @action
+  void openFavoriteLocations() {
+    selected = HomeTab.locations;
+    unawaited(_locationsQueryStore.selectTab(LocationsTab.favorite));
   }
 
   @action

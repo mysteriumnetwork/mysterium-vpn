@@ -422,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Malware",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Gérer",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Gérer sur le web",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Souhaites-tu recevoir par e-mail des mises à jour, des conseils confidentialité et des offres spéciales de Mysterium Network ?",

@@ -379,6 +379,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("زمن استجابة منخفض"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("مدريد، إسبانيا 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("برامج ضارة"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("إدارة"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("الإدارة عبر الويب"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "هل ترغب في تلقي تحديثات بريدية ونصائح خصوصية وعروض خاصة من Mysterium Network؟",

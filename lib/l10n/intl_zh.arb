@@ -422,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "恶意软件",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "管理",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "在网页上管理",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "你是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私技巧和特别优惠？",

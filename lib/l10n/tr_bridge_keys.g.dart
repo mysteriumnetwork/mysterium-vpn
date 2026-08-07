@@ -185,6 +185,7 @@ final Map<String, String Function(S)> kTrBridge = {
   'lowLatencyReason': (s) => s.lowLatencyReason,
   'madridLbl': (s) => s.madridLbl,
   'malwareLbl': (s) => s.malwareLbl,
+  'manageFavoriteIpsBtn': (s) => s.manageFavoriteIpsBtn,
   'manageOnWebBtn': (s) => s.manageOnWebBtn,
   'marketingConsentPopupDesc': (s) => s.marketingConsentPopupDesc,
   'marketingConsentPopupTitle': (s) => s.marketingConsentPopupTitle,

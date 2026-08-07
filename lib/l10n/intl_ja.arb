@@ -422,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "マルウェア",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "管理",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "ウェブで管理",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Mysterium Network からのメール更新、プライバシーのヒント、特別オファーを受け取りますか？",

@@ -307,6 +307,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("延迟低"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("西班牙马德里 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("恶意软件"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("管理"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("在网页上管理"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "你是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私技巧和特别优惠？",
