@@ -263,6 +263,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Favori IP sınırına ulaşıldı. Yeni bir IP kaydetmek için birini kaldır.",
     ),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP favorilerden kaldırıldı"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "Kayıtlı IP\'lerin kullanılabilirliği zamanla değişebilir. Favori IP\'n kullanılamaz hale geldi, bu yüzden seni en yakın kullanılabilir konuma bağladık.",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Bağlan ve hızlı erişim için bir IP kaydetmek üzere bağlantı kartındaki kalbe dokun.",
     ),

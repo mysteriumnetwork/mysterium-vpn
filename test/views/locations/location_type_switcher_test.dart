@@ -113,7 +113,7 @@ void main() {
     expect(changedTo, LocationsTab.favorite);
   });
 
-  testWidgets('single residential option shows the all-locations label', (tester) async {
+  testWidgets('residential keeps its own label when it is the only IP type', (tester) async {
     await pumpSwitcher(
       tester,
       onChanged: (_) {},
@@ -121,6 +121,8 @@ void main() {
       value: LocationsTab.residential,
     );
 
-    expect(find.text(S.current.allLocations), findsOneWidget);
+    // The tab names what it lists — residential IPs — not "all locations".
+    expect(find.text(S.current.ipTypeResidentialTab), findsOneWidget);
+    expect(find.text(S.current.allLocations), findsNothing);
   });
 }

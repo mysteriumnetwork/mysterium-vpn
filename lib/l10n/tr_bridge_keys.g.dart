@@ -115,6 +115,7 @@ final Map<String, String Function(S)> kTrBridge = {
   'favoriteIpAddedToast': (s) => s.favoriteIpAddedToast,
   'favoriteIpLimitReached': (s) => s.favoriteIpLimitReached,
   'favoriteIpRemovedToast': (s) => s.favoriteIpRemovedToast,
+  'favoriteIpsDisclaimer': (s) => s.favoriteIpsDisclaimer,
   'favoriteIpsEmptyBody': (s) => s.favoriteIpsEmptyBody,
   'favoriteIpsEmptyTitle': (s) => s.favoriteIpsEmptyTitle,
   'favoriteIpsLabel': (s) => s.favoriteIpsLabel,

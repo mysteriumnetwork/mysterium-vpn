@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "IP favorilerden kaldırıldı",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Kayıtlı IP'lerin kullanılabilirliği zamanla değişebilir. Favori IP'n kullanılamaz hale geldi, bu yüzden seni en yakın kullanılabilir konuma bağladık.",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "Bağlan ve hızlı erişim için bir IP kaydetmek üzere bağlantı kartındaki kalbe dokun.",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "Henüz favori IP yok",

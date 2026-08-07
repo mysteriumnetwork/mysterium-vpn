@@ -52,13 +52,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tidak ada IP alternatif tersedia di ${location}. Pilih negara lain untuk mendapat IP berbeda lain kali.";
 
   static String m14(count) =>
-      "${Intl.plural(count, zero: '${count} Kota', one: '${count} Kota', other: '${count} Kota')}";
+      "${Intl.plural(count, zero: '${count} Kota', other: '${count} Kota')}";
 
-  static String m15(count) =>
-      "${Intl.plural(count, zero: '${count} IPs', one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) => "${Intl.plural(count, zero: '${count} IPs', other: '${count} IPs')}";
 
   static String m16(count) =>
-      "${Intl.plural(count, zero: '${count} Negara Bagian', one: '${count} Negara Bagian', other: '${count} Negara Bagian')}";
+      "${Intl.plural(count, zero: '${count} Negara Bagian', other: '${count} Negara Bagian')}";
 
   static String m17(location) => "${location} tidak tersedia";
 
@@ -80,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m25(date) => "Diperpanjang pada ${date}";
 
   static String m26(count) =>
-      "${Intl.plural(count, zero: 'Kirim lagi', one: 'Kirim lagi', other: 'Kirim lagi (${count})')}";
+      "${Intl.plural(count, zero: 'Kirim lagi', other: 'Kirim lagi (${count})')}";
 
   static String m27(percent) => "Hemat ${percent}%";
 
@@ -259,6 +258,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Batas IP favorit tercapai. Hapus satu IP untuk menyimpan yang baru.",
     ),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP dihapus dari favorit"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "Ketersediaan IP tersimpan bisa berubah seiring waktu. IP favoritmu menjadi tidak tersedia, jadi kami menghubungkanmu ke lokasi tersedia terdekat.",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Hubungkan lalu ketuk ikon hati di kartu koneksi untuk menyimpan IP agar bisa diakses cepat.",
     ),

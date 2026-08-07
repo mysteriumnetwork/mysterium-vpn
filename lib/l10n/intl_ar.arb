@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "تمت إزالة عنوان IP من المفضلة",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "قد تتغير إمكانية توفّر عناوين IP المحفوظة مع الوقت. أصبح عنوان IP المفضّل لديك غير متاح، لذا وصّلناك بأقرب موقع متاح.",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "اتصل ثم اضغط على القلب في بطاقة الاتصال لحفظ عنوان IP والوصول إليه بسرعة.",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "لا توجد عناوين IP مفضلة بعد",

@@ -15,6 +15,7 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/locations/components/favorite_ip_item_loading.dart';
+import 'package:mysterium_vpn/views/locations/components/locations_disclaimer.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Content of the Favorite tab in Locations: saved-IP cards with an
@@ -37,11 +38,11 @@ class FavoriteIpsSliver extends HookConsumerWidget {
       return null;
     }, [store]);
 
-    Future<void> handleConnect(FavoriteIp favorite) async {
+    Future<void> handleConnect(FavoriteIp favorite, VPNLocation location) async {
       // A tap on the connected favorite is a disconnect toggle, so it gets no
       // connect-attempt analytics.
       if (vpnStore.isConnected && displayStore.connectionIP == favorite.ip) {
-        await handleToggleConnection(location: favorite.location, targetIp: favorite.ip);
+        await handleToggleConnection(location: location, targetIp: favorite.ip);
         return;
       }
 
@@ -50,7 +51,7 @@ class FavoriteIpsSliver extends HookConsumerWidget {
         ..recordConnectClicked(favorite)
         ..setConnectingIp(favorite.ip);
       try {
-        await handleToggleConnection(location: favorite.location, targetIp: favorite.ip);
+        await handleToggleConnection(location: location, targetIp: favorite.ip);
       } finally {
         store.setConnectingIp(null);
       }
@@ -127,15 +128,32 @@ class _FavoriteIpNames {
       location.countryCode.toLowerCase(): location,
   };
 
-  /// Country name plus the city / IP-type line, resolved together so the
-  /// country lookup happens once per card.
-  ({String name, String place}) labelsOf(BuildContext context, FavoriteIp favorite) {
+  /// The country and — for city picks — the picked city, from the loaded
+  /// lists. Either is null while its list loads or if the location is gone.
+  ({VPNLocation? country, VPNLocation? city}) _lookup(FavoriteIp favorite) {
     final country = (favorite.ipType == IPType.datacenter
         ? _datacenter
         : _residential)[favorite.countryCode.toLowerCase()];
-    final city = favorite.isCountryPick
-        ? null
-        : country?.children?.firstWhereOrNull((it) => it.id == favorite.locationId);
+    return (
+      country: country,
+      city: favorite.isCountryPick
+          ? null
+          : country?.children?.firstWhereOrNull((it) => it.id == favorite.locationId),
+    );
+  }
+
+  /// The location a connect targets. The live one carries the server
+  /// translations every surface downstream renders from — the saved fallback
+  /// has none, so the main card would show the raw id ("Frankfurt_am_main").
+  VPNLocation connectTargetOf(FavoriteIp favorite) {
+    final (:country, :city) = _lookup(favorite);
+    return (favorite.isCountryPick ? country : city) ?? favorite.location;
+  }
+
+  /// Country name plus the city / IP-type line, resolved together so the
+  /// country lookup happens once per card.
+  ({String name, String place}) labelsOf(BuildContext context, FavoriteIp favorite) {
+    final (:country, :city) = _lookup(favorite);
     return (
       name: country?.getName(context) ?? favorite.displayName(context),
       place:
@@ -192,7 +210,7 @@ class _FavoritesList extends StatelessWidget {
   final String? connectedIp;
   final String? connectingIp;
   final _FavoriteIpNames names;
-  final void Function(FavoriteIp) onConnect;
+  final void Function(FavoriteIp, VPNLocation) onConnect;
   final void Function(FavoriteIp) onRemove;
 
   @override
@@ -200,6 +218,9 @@ class _FavoritesList extends StatelessWidget {
     final theme = Theme.of(context);
     return _CardsColumn(
       children: [
+        // Sets expectations before the user hits a fallback: saved IPs are
+        // shared and can rotate, so a card may go unavailable on its own.
+        LocationsDisclaimer.favorites(),
         for (final favorite in available)
           _FavoriteCard(
             favorite: favorite,
@@ -209,7 +230,7 @@ class _FavoritesList extends StatelessWidget {
                 : favorite.ip == connectedIp
                 ? _CardState.connected
                 : _CardState.idle,
-            onTap: () => onConnect(favorite),
+            onTap: () => onConnect(favorite, names.connectTargetOf(favorite)),
             onFavoriteTap: () => onRemove(favorite),
           ),
         if (unavailable.isNotEmpty) ...[

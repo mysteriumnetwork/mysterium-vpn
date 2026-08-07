@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "IP eliminada de Favoritas",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "La disponibilidad de las IP guardadas puede cambiar con el tiempo. Tu IP favorita dejó de estar disponible, así que te conectamos a la ubicación disponible más cercana.",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "Conéctate y toca el corazón en la tarjeta de conexión para guardar una IP y acceder a ella rápido.",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "Aún no tienes IP favoritas",

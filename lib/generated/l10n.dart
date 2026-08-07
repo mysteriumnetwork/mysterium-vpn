@@ -177,6 +177,7 @@ class S {
     'favoriteIpAddedToast': [],
     'favoriteIpLimitReached': [],
     'favoriteIpRemovedToast': [],
+    'favoriteIpsDisclaimer': [],
     'favoriteIpsEmptyBody': [],
     'favoriteIpsEmptyTitle': [],
     'favoriteIpsLabel': [],
@@ -1354,6 +1355,16 @@ class S {
     return Intl.message(
       'IP removed from Favourite',
       name: 'favoriteIpRemovedToast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.`
+  String get favoriteIpsDisclaimer {
+    return Intl.message(
+      'Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.',
+      name: 'favoriteIpsDisclaimer',
       desc: '',
       args: [],
     );

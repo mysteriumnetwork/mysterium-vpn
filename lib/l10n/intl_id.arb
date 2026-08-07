@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "IP dihapus dari favorit",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Ketersediaan IP tersimpan bisa berubah seiring waktu. IP favoritmu menjadi tidak tersedia, jadi kami menghubungkanmu ke lokasi tersedia terdekat.",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "Hubungkan lalu ketuk ikon hati di kartu koneksi untuk menyimpan IP agar bisa diakses cepat.",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "Belum ada IP favorit",

@@ -216,6 +216,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("已将 IP 加入收藏"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage("收藏 IP 已达上限。请移除一个 IP 后再保存新的。"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("已将 IP 从收藏中移除"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "已保存 IP 的可用性可能会随时间变化。你的收藏 IP 已不可用，因此我们为你连接了最近的可用位置。",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage("连接后点按连接卡片上的爱心，即可保存 IP 以便快速访问。"),
     "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("暂无收藏的 IP"),
     "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("收藏的 IP"),

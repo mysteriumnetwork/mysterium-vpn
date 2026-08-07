@@ -6,6 +6,7 @@ enum BannerType {
   datacenter,
   highSpeedIPs(mainBanner: false),
   residentialIPs(mainBanner: false),
+  favoriteIPs(mainBanner: false),
   tooManyConnections;
 
   const BannerType({this.isDismissable = true, this.mainBanner = true, this.shouldPersist = true});

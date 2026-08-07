@@ -262,6 +262,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم بلوغ الحد الأقصى لعناوين IP المفضلة. احذف عنوانًا لحفظ عنوان جديد.",
     ),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("تمت إزالة عنوان IP من المفضلة"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "قد تتغير إمكانية توفّر عناوين IP المحفوظة مع الوقت. أصبح عنوان IP المفضّل لديك غير متاح، لذا وصّلناك بأقرب موقع متاح.",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
       "اتصل ثم اضغط على القلب في بطاقة الاتصال لحفظ عنوان IP والوصول إليه بسرعة.",
     ),

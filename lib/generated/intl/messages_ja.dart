@@ -229,6 +229,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "お気に入り IP の上限に達しました。新しく保存するには IP を削除してください。",
     ),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP をお気に入りから削除しました"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "保存した IP の利用可否は時間とともに変わることがあります。お気に入りの IP が利用できなくなったため、最も近い利用可能なロケーションに接続しました。",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
       "接続して接続カードのハートをタップすると、IP を保存してすぐに使えます。",
     ),

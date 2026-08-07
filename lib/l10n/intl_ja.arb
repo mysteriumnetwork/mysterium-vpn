@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "IP をお気に入りから削除しました",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "保存した IP の利用可否は時間とともに変わることがあります。お気に入りの IP が利用できなくなったため、最も近い利用可能なロケーションに接続しました。",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "接続して接続カードのハートをタップすると、IP を保存してすぐに使えます。",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "お気に入り IP がありません",

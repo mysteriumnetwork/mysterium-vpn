@@ -266,6 +266,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "पसंदीदा IP की सीमा पूरी हो गई। नया सहेजने के लिए कोई IP हटाएँ।",
     ),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP पसंदीदा से हटाया गया"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "सहेजे गए IP की उपलब्धता समय के साथ बदल सकती है। आपका पसंदीदा IP अनुपलब्ध हो गया, इसलिए हमने आपको निकटतम उपलब्ध लोकेशन से जोड़ दिया।",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
       "कनेक्ट करें और कनेक्शन कार्ड पर दिल के निशान पर टैप करके IP सहेजें, ताकि जल्दी पहुँच मिले।",
     ),

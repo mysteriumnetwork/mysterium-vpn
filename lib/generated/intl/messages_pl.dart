@@ -263,6 +263,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Osiągnięto limit ulubionych IP. Usuń jedno, aby zapisać nowe.",
     ),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("Usunięto IP z ulubionych"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "Dostępność zapisanych IP może się z czasem zmieniać. Twoje ulubione IP stało się niedostępne, więc połączyliśmy Cię z najbliższą dostępną lokalizacją.",
+    ),
     "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Połącz się i dotknij serca na karcie połączenia, aby zapisać IP i mieć do niego szybki dostęp.",
     ),

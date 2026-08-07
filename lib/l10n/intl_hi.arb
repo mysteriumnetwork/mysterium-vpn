@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "IP पसंदीदा से हटाया गया",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "सहेजे गए IP की उपलब्धता समय के साथ बदल सकती है। आपका पसंदीदा IP अनुपलब्ध हो गया, इसलिए हमने आपको निकटतम उपलब्ध लोकेशन से जोड़ दिया।",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "कनेक्ट करें और कनेक्शन कार्ड पर दिल के निशान पर टैप करके IP सहेजें, ताकि जल्दी पहुँच मिले।",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "अभी कोई पसंदीदा IP नहीं",

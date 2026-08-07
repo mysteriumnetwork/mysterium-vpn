@@ -25,6 +25,7 @@ import 'favorite_ips_sliver_test.mocks.dart';
   MockSpec<VpnStore>(),
   MockSpec<ConnectionDisplayStore>(),
   MockSpec<LocationsStore>(),
+  MockSpec<BannersStore>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ void main() {
   late MockVpnStore vpnStore;
   late MockConnectionDisplayStore displayStore;
   late MockLocationsStore locationsStore;
+  late MockBannersStore bannersStore;
 
   FavoriteIp fav(String ip, {IPType ipType = IPType.residential}) => FavoriteIp(
     ip: ip,
@@ -53,6 +55,8 @@ void main() {
     vpnStore = MockVpnStore();
     displayStore = MockConnectionDisplayStore();
     locationsStore = MockLocationsStore();
+    bannersStore = MockBannersStore();
+    when(bannersStore.canShow(any)).thenReturn(true);
 
     // No live locations by default — cards fall back to the stored names.
     when(
@@ -83,6 +87,7 @@ void main() {
           vpnStorePOD.overrideWithValue(vpnStore),
           connectionDisplayStorePOD.overrideWithValue(displayStore),
           locationsStorePOD.overrideWithValue(locationsStore),
+          bannersStorePOD.overrideWithValue(bannersStore),
         ],
         child: MaterialApp(
           theme: DesignSystem.lightTheme,
@@ -123,6 +128,37 @@ void main() {
     expect(find.text(S.current.residential), findsOneWidget);
     expect(find.text(S.current.highSpeed), findsOneWidget);
     expect(find.text(S.current.favoriteIpsUnavailableHeading), findsNothing);
+  });
+
+  testWidgets('shows the fallback disclaimer above the saved cards', (tester) async {
+    final favs = [fav('1.1.1.1')];
+    when(store.favorites).thenReturn(favs);
+    when(store.availableFavorites).thenReturn(favs);
+
+    await pumpSliver(tester);
+
+    expect(find.text(S.current.favoriteIpsDisclaimer), findsOneWidget);
+  });
+
+  testWidgets('hides the disclaimer once dismissed', (tester) async {
+    final favs = [fav('1.1.1.1')];
+    when(store.favorites).thenReturn(favs);
+    when(store.availableFavorites).thenReturn(favs);
+    when(bannersStore.canShow(BannerType.favoriteIPs)).thenReturn(false);
+
+    await pumpSliver(tester);
+
+    expect(find.text(S.current.favoriteIpsDisclaimer), findsNothing);
+    expect(find.byType(SavedIpCard), findsOneWidget);
+  });
+
+  testWidgets('no disclaimer on the empty or locked states', (tester) async {
+    await pumpSliver(tester);
+    expect(find.text(S.current.favoriteIpsDisclaimer), findsNothing);
+
+    when(store.isEnabled).thenReturn(false);
+    await pumpSliver(tester);
+    expect(find.text(S.current.favoriteIpsDisclaimer), findsNothing);
   });
 
   testWidgets('unavailable favorites render greyed under the unavailable heading', (tester) async {
@@ -233,6 +269,58 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Germany'), findsOneWidget);
+  });
+
+  testWidgets('connects with the live location, not the synthetic saved one', (tester) async {
+    final favorite = FavoriteIp(
+      ip: '1.1.1.1',
+      countryCode: 'de',
+      city: 'Frankfurt am Main',
+      ipType: IPType.residential,
+      savedAt: DateTime.utc(2026, 8, 5),
+      locationId: 'frankfurt_am_main',
+    );
+    when(store.favorites).thenReturn([favorite]);
+    when(store.availableFavorites).thenReturn([favorite]);
+    when(locationsStore.residentialLocationsFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        VPNLocations(
+          locations: [
+            const VPNLocation(
+              id: 'de',
+              ipType: IPType.residential,
+              countryCode: 'de',
+              translations: {'en': 'Germany'},
+              children: [
+                VPNLocation(
+                  id: 'frankfurt_am_main',
+                  ipType: IPType.residential,
+                  countryCode: 'de',
+                  translations: {'en': 'Frankfurt am Main'},
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+
+    await pumpSliver(tester);
+    await tester.tap(find.text('1.1.1.1'));
+    await tester.pumpAndSettle();
+
+    final connectedTo =
+        verify(
+              vpnStore.manageConnection(
+                location: captureAnyNamed('location'),
+                intent: anyNamed('intent'),
+                targetIp: anyNamed('targetIp'),
+              ),
+            ).captured.single
+            as VPNLocation?;
+    // A translation-less location makes every surface downstream (the main
+    // card) fall back to the raw id — "Frankfurt_am_main".
+    expect(connectedTo?.translations['en'], 'Frankfurt am Main');
   });
 
   testWidgets('tapping an available favorite logs a connect click', (tester) async {

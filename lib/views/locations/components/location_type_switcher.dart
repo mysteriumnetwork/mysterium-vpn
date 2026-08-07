@@ -99,14 +99,9 @@ class _LocationTypeSwitcherState extends State<LocationTypeSwitcher> with Ticker
     ],
   );
 
-  // Tab labels drop the "IPs" word to save space; full names stay everywhere
-  // else (tooltips, disclaimers, snackbars).
   String _label(LocationsTab option) => switch (option) {
     LocationsTab.datacenter => S.current.ipTypeDataCenterTab,
     LocationsTab.favorite => S.current.favoriteIpsTab,
-    LocationsTab.residential =>
-      widget.options.contains(LocationsTab.datacenter)
-          ? S.current.ipTypeResidentialTab
-          : S.current.allLocations,
+    LocationsTab.residential => S.current.ipTypeResidentialTab,
   };
 }

@@ -240,6 +240,8 @@
   "@favoriteIpLimitReached": {},
   "favoriteIpRemovedToast": "已将 IP 从收藏中移除",
   "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "已保存 IP 的可用性可能会随时间变化。你的收藏 IP 已不可用，因此我们为你连接了最近的可用位置。",
+  "@favoriteIpsDisclaimer": {},
   "favoriteIpsEmptyBody": "连接后点按连接卡片上的爱心，即可保存 IP 以便快速访问。",
   "@favoriteIpsEmptyBody": {},
   "favoriteIpsEmptyTitle": "暂无收藏的 IP",
