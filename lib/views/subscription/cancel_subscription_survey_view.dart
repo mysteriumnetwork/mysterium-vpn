@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,7 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
 
     final reasons = useComputedValue(() {
       final keys = remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled();
@@ -95,11 +98,12 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         }
 
         if (cancelSubscriptionStore.isStoreSubscription()) {
-          await openCancelSubscriptionLink(cancelSubscriptionStore);
+          await openCancelSubscriptionLink(cancelSubscriptionStore, analyticsStore: analyticsStore);
         } else {
           await showContinueToWebPrompt(
             context: navigator.context,
-            onContinuePressed: () => openCancelSubscriptionLink(cancelSubscriptionStore),
+            onContinuePressed: () =>
+                openCancelSubscriptionLink(cancelSubscriptionStore, analyticsStore: analyticsStore),
           );
         }
         cancelSubscriptionStore.reset();
@@ -107,14 +111,18 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
     }
 
     Future<void> handleSkip() async {
+      analyticsStore.logCancellationReasonSkipped().ignore();
       await proceed();
     }
 
     Future<void> handleSubmit() async {
-      await cancelSubscriptionStore.setSurvey(
+      final submitted = await cancelSubscriptionStore.setSurvey(
         reasons: form.reasons.value ?? {},
         feedback: form.feedback.value?.trim(),
       );
+      if (!submitted) {
+        analyticsStore.logCancellationReasonSkipped().ignore();
+      }
       if (!context.mounted) {
         return;
       }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,16 +7,17 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn/views/subscription/cancel_subscription_survey_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-/// Shows the cancel confirmation prompt, then opens the survey.
+/// Shows the cancel confirmation prompt, then the survey (web) or store handoff.
 Future<void> showCancelSubscriptionDialog(BuildContext context) async {
-  final store = ProviderScope.containerOf(
-    context,
-    listen: false,
-  ).read(subscriptionCancellationStorePOD)..reset();
+  final container = ProviderScope.containerOf(context, listen: false);
+  final store = container.read(subscriptionCancellationStorePOD)..reset();
+  final analyticsStore = container.read(analyticsStorePOD);
+  analyticsStore.logCancellationConfirmViewed().ignore();
 
   final didProceed = await showModal<bool>(
     context,
@@ -29,7 +32,14 @@ Future<void> showCancelSubscriptionDialog(BuildContext context) async {
     return;
   }
 
-  store.onCancellationConfirmed();
+  analyticsStore.logCancellationStarted().ignore();
+
+  // Store-managed: skip survey/pause and open Play / App Store subscriptions.
+  if (store.isStoreSubscription()) {
+    await openCancelSubscriptionLink(store, analyticsStore: analyticsStore);
+    store.reset();
+    return;
+  }
 
   // Desktop: display survey for cancellation
   if (isDesktop()) {
@@ -42,11 +52,18 @@ Future<void> showCancelSubscriptionDialog(BuildContext context) async {
 }
 
 /// Opens the store or web cancel destination for [store].
-Future<void> openCancelSubscriptionLink(SubscriptionCancellationStore store) =>
-    openUrlLink(
-      Uri.parse(store.linkToCancelSubscription),
-      source: RedirectSource.cancelSubscription,
-    );
+Future<void> openCancelSubscriptionLink(
+  SubscriptionCancellationStore store, {
+  required AnalyticsStore analyticsStore,
+}) {
+  if (!store.isStoreSubscription()) {
+    analyticsStore.logCancellationDashboardOpened().ignore();
+  }
+  return openUrlLink(
+    Uri.parse(store.linkToCancelSubscription),
+    source: RedirectSource.cancelSubscription,
+  );
+}
 
 /// Shows the continue to web prompt.
 Future<void> showContinueToWebPrompt({

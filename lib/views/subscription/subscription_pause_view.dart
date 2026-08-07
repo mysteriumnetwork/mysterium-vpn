@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,7 +23,13 @@ class SubscriptionPauseView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
+    final analyticsStore = ref.read(analyticsStorePOD);
     final selectedPauseDuration = useState<SubscriptionPauseDuration?>(null);
+
+    useEffect(() {
+      analyticsStore.logCancellationPauseOfferViewed().ignore();
+      return null;
+    }, const []);
 
     void handleDismiss() {
       cancelSubscriptionStore.reset();
@@ -50,6 +58,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
     }
 
     Future<void> handleContinueOnWeb() async {
+      analyticsStore.logCancellationPauseDeclined().ignore();
       final navigator = Navigator.of(context, rootNavigator: true);
 
       if (isDesktop()) {
@@ -70,7 +79,8 @@ class SubscriptionPauseView extends HookConsumerWidget {
         }
         await showContinueToWebPrompt(
           context: navigator.context,
-          onContinuePressed: () => openCancelSubscriptionLink(cancelSubscriptionStore),
+          onContinuePressed: () =>
+              openCancelSubscriptionLink(cancelSubscriptionStore, analyticsStore: analyticsStore),
         );
         cancelSubscriptionStore.reset();
       });

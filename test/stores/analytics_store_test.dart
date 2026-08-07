@@ -318,6 +318,29 @@ void main() {
     });
   });
 
+  group('cancellation flow analytics', () {
+    test('logCancellationReasonSubmitted joins reasons and includes feedback', () async {
+      final entry = nextLog();
+      await store.logCancellationReasonSubmitted(
+        reasons: {'price', 'speed'},
+        feedback: 'too pricey',
+      );
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.cancellationReasonSubmitted.formattedName);
+      expect((log.params!['reasons']! as String).split(',').toSet(), {'price', 'speed'});
+      expect(log.params!['feedback'], 'too pricey');
+    });
+
+    test('logCancellationReasonSkipped emits event with no params', () async {
+      final entry = nextLog();
+      await store.logCancellationReasonSkipped();
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.cancellationReasonSkipped.formattedName);
+    });
+  });
+
   group('logPushNotificationsPermissionsChanged', () {
     test('granted → granted event + property', () async {
       final logFuture = nextLog();

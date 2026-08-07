@@ -44,23 +44,23 @@ abstract class _SubscriptionCancellationStore with Store {
     }
   }
 
-  /// Called when the user confirms the pre-flow cancellation prompt.
-  void onCancellationConfirmed() {
-    _analyticsStore.logCancellationStarted().ignore();
-  }
-
+  /// Returns `true` when survey data was logged.
   @action
-  Future<void> setSurvey({required Set<String> reasons, String? feedback}) async {
+  Future<bool> setSurvey({required Set<String> reasons, String? feedback}) async {
     final trimmedFeedback = feedback?.trim();
     if (reasons.isEmpty && (trimmedFeedback == null || trimmedFeedback.isEmpty)) {
-      return;
+      return false;
     }
     _isProcessing = true;
-    await _analyticsStore.logSubscriptionCancellationSurvey(
-      reasons: reasons,
-      feedback: trimmedFeedback,
-    );
+    await Future.wait([
+      _analyticsStore.logSubscriptionCancellationSurvey(
+        reasons: reasons,
+        feedback: trimmedFeedback,
+      ),
+      _analyticsStore.logCancellationReasonSubmitted(reasons: reasons, feedback: trimmedFeedback),
+    ]);
     _isProcessing = false;
+    return true;
   }
 
   /// Returns `true` when the pause succeeded.
@@ -70,7 +70,10 @@ abstract class _SubscriptionCancellationStore with Store {
 
     try {
       await _subscriptionStore.pauseSubscription(duration);
-      await _analyticsStore.logSubscriptionCancellationPauseDuration(months: duration.value);
+      await Future.wait([
+        _analyticsStore.logCancellationPauseAccepted(),
+        _analyticsStore.logSubscriptionCancellationPauseDuration(months: duration.value),
+      ]);
       _isProcessing = false;
       return true;
     } on Exception catch (e) {

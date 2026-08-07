@@ -391,12 +391,46 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logCancellationConfirmViewed() async {
+    await logEvent(AnalyticsEvent.cancellationConfirmViewed);
+  }
+
   Future<void> logCancellationStarted() async {
     await logEvent(AnalyticsEvent.cancellationStarted);
   }
 
+  Future<void> logCancellationReasonSubmitted({
+    required Set<String> reasons,
+    String? feedback,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.cancellationReasonSubmitted,
+      parameters: {'reasons': reasons.join(','), 'feedback': ?feedback},
+    );
+  }
+
+  Future<void> logCancellationReasonSkipped() async {
+    await logEvent(AnalyticsEvent.cancellationReasonSkipped);
+  }
+
+  Future<void> logCancellationPauseOfferViewed() async {
+    await logEvent(AnalyticsEvent.cancellationPauseOfferViewed);
+  }
+
+  Future<void> logCancellationPauseAccepted() async {
+    await logEvent(AnalyticsEvent.cancellationPauseAccepted);
+  }
+
+  Future<void> logCancellationPauseDeclined() async {
+    await logEvent(AnalyticsEvent.cancellationPauseDeclined);
+  }
+
   Future<void> logSubscriptionCancellationPauseDuration({required int months}) async {
     await logEvent(AnalyticsEvent.cancellationPausePeriod, parameters: {'months': months});
+  }
+
+  Future<void> logCancellationDashboardOpened() async {
+    await logEvent(AnalyticsEvent.cancellationDashboardOpened);
   }
 
   Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;

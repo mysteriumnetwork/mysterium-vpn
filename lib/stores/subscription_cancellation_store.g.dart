@@ -63,7 +63,7 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   );
 
   @override
-  Future<void> setSurvey({required Set<String> reasons, String? feedback}) {
+  Future<bool> setSurvey({required Set<String> reasons, String? feedback}) {
     return _$setSurveyAsyncAction.run(() => super.setSurvey(reasons: reasons, feedback: feedback));
   }
 
