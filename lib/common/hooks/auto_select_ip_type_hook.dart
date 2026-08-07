@@ -27,7 +27,9 @@ void useAutoSelectIPType() {
           return;
         }
 
-        ref.read(locationsQueryStorePOD).setIPType(selected);
+        // sync (not set): must not yank the user off the Favorite tab, e.g.
+        // right after connecting to a favorite from it.
+        ref.read(locationsQueryStorePOD).syncIPType(selected);
       },
       fireImmediately: true,
       // Compare by contents: locationTypes is a fresh list on every refresh.

@@ -47,6 +47,8 @@ abstract class _ConnectionDecisionStore with Store {
     required bool isRefreshIP,
     VPNLocation? requestedLocation,
     UserIntent? requestedIntent,
+    String? requestedTargetIp,
+    String? currentIp,
   }) {
     // If not connected, always connect
     if (currentStatus != VpnConnectionStatus.connected) {
@@ -55,6 +57,15 @@ abstract class _ConnectionDecisionStore with Store {
 
     if (isRefreshIP) {
       return ConnectionAction.refreshIP;
+    }
+
+    // A targeted (favorite IP) request is decided by the IP, not the
+    // location — two favorites can share a city: tapping the connected one
+    // toggles a disconnect, any other target switches.
+    if (requestedTargetIp != null) {
+      return requestedTargetIp == currentIp
+          ? ConnectionAction.disconnect
+          : ConnectionAction.reconnect;
     }
 
     // If connected and no location/intent specified, disconnect

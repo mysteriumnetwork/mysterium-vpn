@@ -115,6 +115,64 @@ void main() {
     clearInteractions(mockAnalyticsStore);
   });
 
+  group('favorite IPs gating', () {
+    Future<void> primeWithMetadata(
+      vpn_api.SubscriptionConfigResponsePlansInnerMetadata metadata,
+    ) async {
+      final configWithPlan = vpn_api.SubscriptionConfigResponse(
+        gateways: const [],
+        plans: [
+          vpn_api.SubscriptionConfigResponsePlansInner(
+            id: 'plan_fav',
+            interval: vpn_api.SubscriptionConfigResponsePlansInnerInterval(
+              unit: vpn_api.SubscriptionConfigResponsePlansInnerIntervalUnitEnum.values.firstWhere(
+                (u) => u.value == 'month',
+              ),
+              amount: 1,
+            ),
+            price: vpn_api.SubscriptionConfigResponsePlansInnerPrice(USD: 0),
+            prices: const [],
+            supportedGateways: const ['stripe'],
+            metadata: metadata,
+          ),
+        ],
+        countries: const [],
+        stripePublishableKey: '',
+        stripeReturnUrl: '',
+      );
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlan));
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(
+        mockSubscriptionService.fetchSubscriptionDetails(),
+      ).thenAnswer((_) async => Subscription(active: true, planId: 'plan_fav'));
+      await subscriptionStore.refreshSubscription();
+    }
+
+    test('defaults to disallowed with a limit of 5 without plan metadata', () {
+      expect(subscriptionStore.favoriteIpsAllowed, isFalse);
+      expect(subscriptionStore.favoriteIpsLimit, 5);
+    });
+
+    test('reads favorite_ips_allowed and favorite_ips_limit from plan metadata', () async {
+      await primeWithMetadata(
+        vpn_api.SubscriptionConfigResponsePlansInnerMetadata(
+          favoriteIpsAllowed: true,
+          favoriteIpsLimit: 10,
+        ),
+      );
+
+      expect(subscriptionStore.favoriteIpsAllowed, isTrue);
+      expect(subscriptionStore.favoriteIpsLimit, 10);
+    });
+
+    test('active plan with empty metadata falls back to the defaults', () async {
+      await primeWithMetadata(vpn_api.SubscriptionConfigResponsePlansInnerMetadata());
+
+      expect(subscriptionStore.favoriteIpsAllowed, isFalse);
+      expect(subscriptionStore.favoriteIpsLimit, 5);
+    });
+  });
+
   group('SubscriptionStore', () {
     test('fetches subscription config successfully', () async {
       when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());

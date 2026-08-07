@@ -17,8 +17,15 @@ void main() {
 
   Future<void> pumpSwitcher(
     WidgetTester tester, {
-    required ValueChanged<IPType> onChanged,
-    required VoidCallback onTrailingPressed,
+    required ValueChanged<LocationsTab> onChanged,
+    VoidCallback? onTrailingPressed,
+    List<LocationsTab> options = const [
+      LocationsTab.datacenter,
+      LocationsTab.residential,
+      LocationsTab.favorite,
+    ],
+    LocationsTab value = LocationsTab.datacenter,
+    bool favoriteLocked = false,
   }) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -28,14 +35,17 @@ void main() {
         supportedLocales: testSupportedLocales,
         home: Scaffold(
           body: LocationTypeSwitcher(
-            value: IPType.datacenter,
-            options: const [IPType.datacenter, IPType.residential],
+            value: value,
+            options: options,
             onChanged: onChanged,
-            activeTabTrailing: IconButton(
-              key: const Key('trailing'),
-              icon: const Icon(Icons.refresh),
-              onPressed: onTrailingPressed,
-            ),
+            favoriteLocked: favoriteLocked,
+            activeTabTrailing: onTrailingPressed == null
+                ? null
+                : IconButton(
+                    key: const Key('trailing'),
+                    icon: const Icon(Icons.refresh),
+                    onPressed: onTrailingPressed,
+                  ),
           ),
         ),
       ),
@@ -44,7 +54,7 @@ void main() {
   }
 
   testWidgets('trailing action fires without switching tabs', (tester) async {
-    IPType? changedTo;
+    LocationsTab? changedTo;
     var trailingTapped = false;
 
     await pumpSwitcher(
@@ -63,14 +73,56 @@ void main() {
     expect(changedTo, isNull);
   });
 
-  testWidgets('tapping the other tab switches type', (tester) async {
-    IPType? changedTo;
+  testWidgets('tapping the residential tab switches type', (tester) async {
+    LocationsTab? changedTo;
 
-    await pumpSwitcher(tester, onChanged: (v) => changedTo = v, onTrailingPressed: () {});
+    await pumpSwitcher(tester, onChanged: (v) => changedTo = v);
 
-    await tester.tap(find.text(S.current.ipTypeResidential));
+    // Tab labels drop the "IPs" word.
+    expect(find.text(S.current.ipTypeDataCenterTab), findsOneWidget);
+    await tester.tap(find.text(S.current.ipTypeResidentialTab));
     await tester.pump();
 
-    expect(changedTo, IPType.residential);
+    expect(changedTo, LocationsTab.residential);
+  });
+
+  testWidgets('favourite tab renders and is selectable', (tester) async {
+    LocationsTab? changedTo;
+
+    await pumpSwitcher(tester, onChanged: (v) => changedTo = v);
+
+    expect(find.text(S.current.favoriteIpsTab), findsOneWidget);
+    expect(find.byIcon(UntitledUI.lock_01), findsNothing);
+
+    await tester.tap(find.text(S.current.favoriteIpsTab));
+    await tester.pump();
+
+    expect(changedTo, LocationsTab.favorite);
+  });
+
+  testWidgets('locked favourite tab shows a lock icon but stays tappable', (tester) async {
+    LocationsTab? changedTo;
+
+    await pumpSwitcher(tester, onChanged: (v) => changedTo = v, favoriteLocked: true);
+
+    expect(find.byIcon(UntitledUI.lock_01), findsOneWidget);
+
+    await tester.tap(find.text(S.current.favoriteIpsTab));
+    await tester.pump();
+
+    expect(changedTo, LocationsTab.favorite);
+  });
+
+  testWidgets('residential keeps its own label when it is the only IP type', (tester) async {
+    await pumpSwitcher(
+      tester,
+      onChanged: (_) {},
+      options: const [LocationsTab.residential, LocationsTab.favorite],
+      value: LocationsTab.residential,
+    );
+
+    // The tab names what it lists — residential IPs — not "all locations".
+    expect(find.text(S.current.ipTypeResidentialTab), findsOneWidget);
+    expect(find.text(S.current.allLocations), findsNothing);
   });
 }

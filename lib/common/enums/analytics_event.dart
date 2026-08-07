@@ -175,7 +175,14 @@ enum AnalyticsEvent {
   newsCenterRefreshed,
   newsCenterRetryClicked,
   newsCenterBackClicked,
-  webRedirect;
+  webRedirect,
+  favoriteIpAddClicked,
+  favoriteIpRemoved,
+  favoriteIpConnectClicked,
+  favoriteIpConnectionSucceeded,
+  favoriteIpUnavailableStateShown,
+  favoriteIpUpgradePlanClicked,
+  favoriteIpUndoRemove;
 
   String get formattedName => name.toSnakeCase;
 }

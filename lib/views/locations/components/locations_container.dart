@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class LocationsContainer extends StatelessWidget {
-  const LocationsContainer({required this.locationType, this.child, this.padding, super.key});
+  const LocationsContainer({
+    required this.flattenTopLeft,
+    required this.flattenTopRight,
+    this.child,
+    this.padding,
+    super.key,
+  });
 
   final EdgeInsets? padding;
   final Widget? child;
-  final IPType locationType;
+
+  /// Flatten the corner under the active tab when it sits at that edge.
+  final bool flattenTopLeft;
+  final bool flattenTopRight;
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +23,8 @@ class LocationsContainer extends StatelessWidget {
     return Material(
       color: theme.palette.bgSidePanel,
       borderRadius: BorderRadius.only(
-        topLeft: locationType == IPType.datacenter ? Radius.kNone : Radius.kS,
-        topRight: locationType == IPType.residential ? Radius.kNone : Radius.kS,
+        topLeft: flattenTopLeft ? Radius.kNone : Radius.kS,
+        topRight: flattenTopRight ? Radius.kNone : Radius.kS,
         bottomLeft: Radius.kM,
         bottomRight: Radius.kM,
       ),

@@ -106,6 +106,15 @@ void main() {
     });
   });
 
+  group('HomeTabsStore.openFavoriteLocations', () {
+    test('shows the Locations tab with Favourites selected', () {
+      store.openFavoriteLocations();
+
+      expect(store.selected, HomeTab.locations);
+      verify(locationsQueryStore.selectTab(LocationsTab.favorite)).called(1);
+    });
+  });
+
   group('HomeTabsStore.settingsSubPage', () {
     test('starts null', () {
       expect(store.settingsSubPage, isNull);

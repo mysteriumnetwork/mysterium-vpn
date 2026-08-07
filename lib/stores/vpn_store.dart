@@ -413,6 +413,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     UserIntent? intent,
     bool isRetrying = false,
     bool refreshIP = false,
+    String? targetIp,
   }) async {
     final action = _connectionDecisionStore.determineToggleAction(
       currentStatus: _connectionStatus,
@@ -420,6 +421,8 @@ abstract class _VpnStore extends VpnGuard with Store {
       requestedLocation: location,
       requestedIntent: intent,
       isRefreshIP: refreshIP,
+      requestedTargetIp: targetIp,
+      currentIp: _vpnConnection?.connectionIP,
     );
 
     switch (action) {
@@ -434,6 +437,7 @@ abstract class _VpnStore extends VpnGuard with Store {
           intent: intent,
           isRetrying: isRetrying,
           refreshIP: refreshIP,
+          targetIp: targetIp,
         );
         break;
 
@@ -452,6 +456,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     bool refreshIP = false,
     bool isRetrying = false,
     UserIntent? intent,
+    String? targetIp,
   }) async {
     await _validateConnectionPrerequisites();
     await _prepareConnection(location, intent, refreshIP);
@@ -462,7 +467,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
     try {
       await _ensureDisconnected();
-      await _executeConnection(refreshIP);
+      await _executeConnection(refreshIP, targetIp: targetIp);
       _logConnectionSuccess(refreshIP);
     } on TimeoutException catch (e, stackTrace) {
       _handleConnectionTimeout(e, stackTrace);
@@ -531,12 +536,17 @@ abstract class _VpnStore extends VpnGuard with Store {
     });
   }
 
-  Future<void> _executeConnection(bool refreshIP) async {
+  Future<void> _executeConnection(bool refreshIP, {String? targetIp}) async {
     _stopwatch
       ..reset()
       ..start();
 
-    await _completeConnection(_connectingLocation, _userIntentsStore.userIntent, refreshIP);
+    await _completeConnection(
+      _connectingLocation,
+      _userIntentsStore.userIntent,
+      refreshIP,
+      targetIp: targetIp,
+    );
   }
 
   void _logConnectionSuccess(bool refreshIP) {
@@ -656,13 +666,15 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<void> _completeConnection(
     VPNLocation? location,
     UserIntent? intent,
-    bool refreshIP,
-  ) async {
+    bool refreshIP, {
+    String? targetIp,
+  }) async {
     try {
       _vpnConfig = await fetchVpnConfiguration(
         location: location,
         intent: intent,
         refreshIP: refreshIP,
+        targetIp: targetIp,
       );
       await _recentLocationsStore.future;
 
@@ -683,6 +695,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     required VPNLocation? location,
     required UserIntent? intent,
     required bool refreshIP,
+    String? targetIp,
   }) async {
     final request = ConnectionRequest(location: location, intent: intent);
 
@@ -706,6 +719,7 @@ abstract class _VpnStore extends VpnGuard with Store {
         userIntent: intent?.key,
         cluster: closestRegion?.id,
         dnsAddress: _dnsStore.dnsAddress,
+        targetIp: targetIp,
       ),
     );
 
@@ -713,16 +727,20 @@ abstract class _VpnStore extends VpnGuard with Store {
       return await _fetchConfigFuture!;
     } on ApiException catch (e) {
       if (e.code == 2332 && location != null) {
-        _unavailableLocationsStore.toggleAvailability(
-          VPNLocation(
-            id: location.id,
-            ipType: location.ipType,
-            translations: location.translations,
-            countryCode: location.countryCode,
-            isAvailable: location.isAvailable,
-          ),
-          availability: false,
-        );
+        // A targeted (favorite IP) failure means that IP is gone, not the
+        // whole country — leave the country lists untouched.
+        if (targetIp == null) {
+          _unavailableLocationsStore.toggleAvailability(
+            VPNLocation(
+              id: location.id,
+              ipType: location.ipType,
+              translations: location.translations,
+              countryCode: location.countryCode,
+              isAvailable: location.isAvailable,
+            ),
+            availability: false,
+          );
+        }
         throw UnavailableLocationException(location);
       }
       rethrow;

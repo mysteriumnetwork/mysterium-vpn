@@ -197,6 +197,33 @@ void main() {
       expect(config.config, 'cfg');
     });
 
+    test('fetchVpnConfig passes targetIp into the request', () async {
+      final response = WireguardConnectResponse(wgConfig: 'cfg', hash: 'hash', id: 'id');
+      await repository.init();
+
+      WireguardConnectRequest? captured;
+      when(mockApiService.fetchVpnConfig(request: anyNamed('request'))).thenAnswer((
+        invocation,
+      ) async {
+        captured = invocation.namedArguments[#request] as WireguardConnectRequest;
+        return response;
+      });
+
+      await repository.fetchVpnConfig(
+        countryOriginate: 'US',
+        country: 'US',
+        city: 'NY',
+        ipType: 'residential',
+        userIntent: null,
+        cluster: null,
+        resetConnection: false,
+        dnsAddress: '1.1.1.1',
+        targetIp: '5.5.5.5',
+      );
+
+      expect(captured?.targetIp, '5.5.5.5');
+    });
+
     test('rateConnection calls apiService.rateConnection', () async {
       await repository.init();
       when(mockApiService.rateConnection(request: anyNamed('request'))).thenAnswer((_) async {});

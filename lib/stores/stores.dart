@@ -9,6 +9,7 @@ export 'connection_display_store.dart';
 export 'connections_limit_store.dart';
 export 'device_id_store.dart';
 export 'dns_store.dart';
+export 'favorite_ips_store.dart';
 export 'home_tabs_store.dart';
 export 'ip_refresh_exhaustion_store.dart';
 export 'latlng_store.dart';

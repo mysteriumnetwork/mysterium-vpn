@@ -60,6 +60,7 @@ class S {
     'acceptOfferBtn': [],
     'accessAvailableUntilLbl': [],
     'accessBlockedSitesReason': [],
+    'accessUntil': ['date'],
     'account': [],
     'accountSuccessfullyDeleted': [],
     'activeSubsPaidVia': ['store'],
@@ -90,6 +91,7 @@ class S {
     'cancelError7040': [],
     'cancelLatency': [],
     'cancellationDateLbl': [],
+    'cancelled': [],
     'cancelMissingFeatures': [],
     'cancelSpeed': [],
     'cancelSubscriptionPromptDesc': [],
@@ -137,6 +139,7 @@ class S {
     'copyLink': [],
     'couponCodeCopied': ['couponCode'],
     'dark': [],
+    'datacenterIpBadge': [],
     'dataCentreComparisonCardItem1': [],
     'dataCentreComparisonCardItem2': [],
     'dataCentreComparisonCardItem3': [],
@@ -153,6 +156,7 @@ class S {
     'disconnected': [],
     'disconnecting': [],
     'discountedPriceLabel': [],
+    'dismissNewIpPreview': [],
     'dns': [],
     'dnsDesc': [],
     'doneBtn': [],
@@ -171,6 +175,21 @@ class S {
     'failedToSubscribe': [],
     'failedToVerifySubs': [],
     'fastLabel': [],
+    'favoriteIpAddAction': [],
+    'favoriteIpAddedToast': [],
+    'favoriteIpLimitReached': [],
+    'favoriteIpRemoveAction': [],
+    'favoriteIpRemovedToast': [],
+    'favoriteIpsDisclaimer': [],
+    'favoriteIpsEmptyBody': [],
+    'favoriteIpsEmptyTitle': [],
+    'favoriteIpsLabel': [],
+    'favoriteIpsLockedBody': [],
+    'favoriteIpsLockedTitle': [],
+    'favoriteIpsNotAvailableOnPlan': [],
+    'favoriteIpsTab': [],
+    'favoriteIpsUnavailableHeading': [],
+    'favoriteIpsUpgradePlan': [],
     'featureToggleMinVersionNotSatisfied': [],
     'formValidationError': [],
     'fr': [],
@@ -178,6 +197,7 @@ class S {
     'frequentDisconnectsReason': [],
     'fullPriceLabel': [],
     'germany': [],
+    'getAPlanBtn': [],
     'getNewIPAddress': [],
     'getSubscriptionModalDesc': [],
     'getSubscriptionModalTitle': ['plan'],
@@ -203,8 +223,10 @@ class S {
     'ipType': [],
     'ipTypeDataCenter': [],
     'ipTypeDataCenterDisclaimer': [],
+    'ipTypeDataCenterTab': [],
     'ipTypeResidential': [],
     'ipTypeResidentialDisclaimer': [],
+    'ipTypeResidentialTab': [],
     'ipTypeResidentialTooltipBody': [],
     'ipTypeResidentialTooltipTitle': [],
     'it': [],
@@ -237,6 +259,7 @@ class S {
     'lowLatencyReason': [],
     'madridLbl': [],
     'malwareLbl': [],
+    'manageFavoriteIpsBtn': [],
     'manageOnWebBtn': [],
     'marketingConsentPopupDesc': [],
     'marketingConsentPopupTitle': [],
@@ -273,6 +296,8 @@ class S {
     'or': [],
     'orSelectCountryManually': [],
     'otherReason': [],
+    'paused': [],
+    'pausedUntil': ['date'],
     'pauseDurationRequiredError': [],
     'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
@@ -336,6 +361,7 @@ class S {
     'refreshIP': [],
     'refreshIPAddress': [],
     'refreshLocationsTooltip': ['location'],
+    'renewsOn': ['date'],
     'resetAppDesc': [],
     'resetAppDialogContent': [],
     'resetAppDialogTitle': [],
@@ -357,6 +383,10 @@ class S {
     'residentialEducationGotIt': [],
     'residentialEducationSubtitle': [],
     'residentialEducationTitle': [],
+    'residentialIpBadge': [],
+    'resumeBtn': [],
+    'resumeSubscriptionPromptDesc': [],
+    'resumeSubscriptionTitle': [],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -447,6 +477,7 @@ class S {
     'subscriptionPlanWireGuard': [],
     'subscriptionPlanWireGuardDesc': [],
     'subscriptionProcessCanceled': [],
+    'subscriptionResumed': [],
     'subscriptionUpgrade': [],
     'subscriptionUpgradeCTA': ['plan'],
     'subscriptionUpgradeModalDescription': [],
@@ -479,6 +510,7 @@ class S {
     'unauthenticatedBannerTitle': [],
     'unauthenticatedSettingSubtitle': [],
     'unauthenticatedSettingTitle': [],
+    'undo': [],
     'unprotectedLbl': [],
     'unstableSpeedReason': [],
     'updateBtn': [],
@@ -529,6 +561,16 @@ class S {
       name: 'accessBlockedSitesReason',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Access available until {date}`
+  String accessUntil(Object date) {
+    return Intl.message(
+      'Access available until $date',
+      name: 'accessUntil',
+      desc: '',
+      args: [date],
     );
   }
 
@@ -725,6 +767,11 @@ class S {
   /// `Cancellation date:`
   String get cancellationDateLbl {
     return Intl.message('Cancellation date:', name: 'cancellationDateLbl', desc: '', args: []);
+  }
+
+  /// `Cancelled`
+  String get cancelled {
+    return Intl.message('Cancelled', name: 'cancelled', desc: '', args: []);
   }
 
   /// `Missing features`
@@ -1057,6 +1104,11 @@ class S {
     return Intl.message('Dark', name: 'dark', desc: '', args: []);
   }
 
+  /// `Datacenter IP`
+  String get datacenterIpBadge {
+    return Intl.message('Datacenter IP', name: 'datacenterIpBadge', desc: '', args: []);
+  }
+
   /// `Easily detectable`
   String get dataCentreComparisonCardItem1 {
     return Intl.message(
@@ -1160,6 +1212,11 @@ class S {
   /// `Only`
   String get discountedPriceLabel {
     return Intl.message('Only', name: 'discountedPriceLabel', desc: '', args: []);
+  }
+
+  /// `Dismiss new IP preview`
+  String get dismissNewIpPreview {
+    return Intl.message('Dismiss new IP preview', name: 'dismissNewIpPreview', desc: '', args: []);
   }
 
   /// `DNS protection`
@@ -1287,6 +1344,121 @@ class S {
     return Intl.message('Fast', name: 'fastLabel', desc: '', args: []);
   }
 
+  /// `Add to Favourite IPs`
+  String get favoriteIpAddAction {
+    return Intl.message('Add to Favourite IPs', name: 'favoriteIpAddAction', desc: '', args: []);
+  }
+
+  /// `IP added to Favourite`
+  String get favoriteIpAddedToast {
+    return Intl.message('IP added to Favourite', name: 'favoriteIpAddedToast', desc: '', args: []);
+  }
+
+  /// `Favourite IP limit reached. Remove an IP to save a new one.`
+  String get favoriteIpLimitReached {
+    return Intl.message(
+      'Favourite IP limit reached. Remove an IP to save a new one.',
+      name: 'favoriteIpLimitReached',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove from Favourite IPs`
+  String get favoriteIpRemoveAction {
+    return Intl.message(
+      'Remove from Favourite IPs',
+      name: 'favoriteIpRemoveAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IP removed from Favourite`
+  String get favoriteIpRemovedToast {
+    return Intl.message(
+      'IP removed from Favourite',
+      name: 'favoriteIpRemovedToast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.`
+  String get favoriteIpsDisclaimer {
+    return Intl.message(
+      'Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.',
+      name: 'favoriteIpsDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect and tap the heart on the connection card to save an IP for quick access.`
+  String get favoriteIpsEmptyBody {
+    return Intl.message(
+      'Connect and tap the heart on the connection card to save an IP for quick access.',
+      name: 'favoriteIpsEmptyBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Favourite IPs yet`
+  String get favoriteIpsEmptyTitle {
+    return Intl.message('No Favourite IPs yet', name: 'favoriteIpsEmptyTitle', desc: '', args: []);
+  }
+
+  /// `Favourite IPs`
+  String get favoriteIpsLabel {
+    return Intl.message('Favourite IPs', name: 'favoriteIpsLabel', desc: '', args: []);
+  }
+
+  /// `Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.`
+  String get favoriteIpsLockedBody {
+    return Intl.message(
+      'Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.',
+      name: 'favoriteIpsLockedBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Favourite IPs`
+  String get favoriteIpsLockedTitle {
+    return Intl.message('Save Favourite IPs', name: 'favoriteIpsLockedTitle', desc: '', args: []);
+  }
+
+  /// `Saved IPs are not available on your current plan.`
+  String get favoriteIpsNotAvailableOnPlan {
+    return Intl.message(
+      'Saved IPs are not available on your current plan.',
+      name: 'favoriteIpsNotAvailableOnPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favourite`
+  String get favoriteIpsTab {
+    return Intl.message('Favourite', name: 'favoriteIpsTab', desc: '', args: []);
+  }
+
+  /// `Unavailable IPs`
+  String get favoriteIpsUnavailableHeading {
+    return Intl.message(
+      'Unavailable IPs',
+      name: 'favoriteIpsUnavailableHeading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upgrade plan`
+  String get favoriteIpsUpgradePlan {
+    return Intl.message('Upgrade plan', name: 'favoriteIpsUpgradePlan', desc: '', args: []);
+  }
+
   /// `Your app version is outdated. Please update the app to continue using it.`
   String get featureToggleMinVersionNotSatisfied {
     return Intl.message(
@@ -1335,6 +1507,11 @@ class S {
   /// `Germany`
   String get germany {
     return Intl.message('Germany', name: 'germany', desc: '', args: []);
+  }
+
+  /// `Get a plan`
+  String get getAPlanBtn {
+    return Intl.message('Get a plan', name: 'getAPlanBtn', desc: '', args: []);
   }
 
   /// `Get a new IP address on refresh`
@@ -1492,6 +1669,11 @@ class S {
     );
   }
 
+  /// `Datacenter`
+  String get ipTypeDataCenterTab {
+    return Intl.message('Datacenter', name: 'ipTypeDataCenterTab', desc: '', args: []);
+  }
+
   /// `Residential IPs`
   String get ipTypeResidential {
     return Intl.message('Residential IPs', name: 'ipTypeResidential', desc: '', args: []);
@@ -1505,6 +1687,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Residential`
+  String get ipTypeResidentialTab {
+    return Intl.message('Residential', name: 'ipTypeResidentialTab', desc: '', args: []);
   }
 
   /// `Residential IPs are provided by real household devices, so availability can change over time.\n\nIf a node goes offline, the app reconnects you to the nearest available residential IP.`
@@ -1592,10 +1779,11 @@ class S {
     return Intl.message('Location', name: 'location', desc: '', args: []);
   }
 
-  /// `{count, plural, one{{count} City} other{{count} Cities}}`
+  /// `{count, plural, zero{{count} Cities} one{{count} City} other{{count} Cities}}`
   String locationItemCityCount(num count) {
     return Intl.plural(
       count,
+      zero: '$count Cities',
       one: '$count City',
       other: '$count Cities',
       name: 'locationItemCityCount',
@@ -1604,10 +1792,11 @@ class S {
     );
   }
 
-  /// `{count, plural, one{{count} IP} other{{count} IPs}}`
+  /// `{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}`
   String locationItemNodeCount(num count) {
     return Intl.plural(
       count,
+      zero: '$count IPs',
       one: '$count IP',
       other: '$count IPs',
       name: 'locationItemNodeCount',
@@ -1616,10 +1805,11 @@ class S {
     );
   }
 
-  /// `{count, plural, one{{count} State} other{{count} States}}`
+  /// `{count, plural, zero{{count} States} one{{count} State} other{{count} States}}`
   String locationItemStatesCount(num count) {
     return Intl.plural(
       count,
+      zero: '$count States',
       one: '$count State',
       other: '$count States',
       name: 'locationItemStatesCount',
@@ -1741,6 +1931,11 @@ class S {
   /// `Malware`
   String get malwareLbl {
     return Intl.message('Malware', name: 'malwareLbl', desc: '', args: []);
+  }
+
+  /// `Manage`
+  String get manageFavoriteIpsBtn {
+    return Intl.message('Manage', name: 'manageFavoriteIpsBtn', desc: '', args: []);
   }
 
   /// `Manage on the web`
@@ -1986,6 +2181,16 @@ class S {
   /// `Other...`
   String get otherReason {
     return Intl.message('Other...', name: 'otherReason', desc: '', args: []);
+  }
+
+  /// `Paused`
+  String get paused {
+    return Intl.message('Paused', name: 'paused', desc: '', args: []);
+  }
+
+  /// `Paused until {date}`
+  String pausedUntil(Object date) {
+    return Intl.message('Paused until $date', name: 'pausedUntil', desc: '', args: [date]);
   }
 
   /// `Please select one of the pause durations.`
@@ -2431,6 +2636,11 @@ class S {
     );
   }
 
+  /// `Renews on {date}`
+  String renewsOn(Object date) {
+    return Intl.message('Renews on $date', name: 'renewsOn', desc: '', args: [date]);
+  }
+
   /// `Reset when something isn't working`
   String get resetAppDesc {
     return Intl.message(
@@ -2616,6 +2826,36 @@ class S {
     return Intl.message(
       'How Residential IPs work',
       name: 'residentialEducationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Residential IP`
+  String get residentialIpBadge {
+    return Intl.message('Residential IP', name: 'residentialIpBadge', desc: '', args: []);
+  }
+
+  /// `Resume`
+  String get resumeBtn {
+    return Intl.message('Resume', name: 'resumeBtn', desc: '', args: []);
+  }
+
+  /// `Your subscription will resume immediately.`
+  String get resumeSubscriptionPromptDesc {
+    return Intl.message(
+      'Your subscription will resume immediately.',
+      name: 'resumeSubscriptionPromptDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resume Subscription?`
+  String get resumeSubscriptionTitle {
+    return Intl.message(
+      'Resume Subscription?',
+      name: 'resumeSubscriptionTitle',
       desc: '',
       args: [],
     );
@@ -3349,6 +3589,16 @@ class S {
     );
   }
 
+  /// `Your subscription is active again.`
+  String get subscriptionResumed {
+    return Intl.message(
+      'Your subscription is active again.',
+      name: 'subscriptionResumed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Upgrade`
   String get subscriptionUpgrade {
     return Intl.message('Upgrade', name: 'subscriptionUpgrade', desc: '', args: []);
@@ -3607,6 +3857,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Undo`
+  String get undo {
+    return Intl.message('Undo', name: 'undo', desc: '', args: []);
   }
 
   /// `UNPROTECTED`

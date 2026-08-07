@@ -39,13 +39,14 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       residentialReminderShownAt: fields[20] as DateTime?,
       residentialConnectCount: fields[21] == null ? 0 : (fields[21] as num).toInt(),
       subscriptionOnboardingShown: fields[22] == null ? false : fields[22] as bool,
+      favoriteIps: fields[23] == null ? [] : (fields[23] as List).cast<FavoriteIp>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(22)
+      ..writeByte(23)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -89,7 +90,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(21)
       ..write(obj.residentialConnectCount)
       ..writeByte(22)
-      ..write(obj.subscriptionOnboardingShown);
+      ..write(obj.subscriptionOnboardingShown)
+      ..writeByte(23)
+      ..write(obj.favoriteIps);
   }
 
   @override

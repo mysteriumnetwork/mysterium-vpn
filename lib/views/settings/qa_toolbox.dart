@@ -11,6 +11,7 @@ import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -33,6 +34,7 @@ class QAToolbox extends HookConsumerWidget {
           children: [
             _buildResetActions(context, ref),
             _buildClearLocationsAction(context, ref),
+            _buildFavoriteIpsActions(context, ref),
             _buildRefreshLocationsAction(context, ref),
             _buildGetMarketingConsent(context, ref),
           ],
@@ -166,6 +168,44 @@ class QAToolbox extends HookConsumerWidget {
         onPressed: () async {
           await ref.read(locationsStorePOD).clear();
           showSnackbar('Locations cleared');
+        },
+      ),
+    ],
+  );
+
+  Widget _buildFavoriteIpsActions(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.favorite_border,
+    title: 'Favourite IPs',
+    subtitle: 'Clear the saved list, or add an unroutable IP to test the unavailable state',
+    actions: [
+      _QAActionButton(
+        label: 'Clear all',
+        onPressed: () async {
+          await ref.read(favoriteIpsStorePOD).clear();
+          showSnackbar('Favourite IPs cleared');
+        },
+      ),
+      _QAActionButton(
+        label: 'Add invalid',
+        onPressed: () async {
+          final added = await ref
+              .read(favoriteIpsStorePOD)
+              .add(
+                FavoriteIp(
+                  // TEST-NET-1 (RFC 5737): never routable, so connects must fail.
+                  ip: '192.0.2.123',
+                  countryCode: 'de',
+                  countryName: 'Germany',
+                  city: 'QA Invalid',
+                  ipType: IPType.residential,
+                  savedAt: DateTime.now(),
+                ),
+              );
+          showSnackbar(
+            added
+                ? 'Invalid favourite IP added (192.0.2.123)'
+                : 'Not added — already saved or limit reached',
+          );
         },
       ),
     ],

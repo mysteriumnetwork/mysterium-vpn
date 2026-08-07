@@ -1,6 +1,7 @@
 export 'comparator_utils.dart';
 export 'debouncer.dart';
 export 'disposeable.dart';
+export 'favorite_ip_snackbars.dart';
 export 'ip_refresh_exhausted_message.dart';
 export 'keys.dart';
 export 'media_query.dart';
