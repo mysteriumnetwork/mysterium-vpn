@@ -5,8 +5,6 @@ enum Routes {
   main('/main'),
   // Nested under /main so Beamer stacks it on top of home.
   newsCenter('/main/news-center'),
-  cancelSubscription('/main/cancel-subscription'),
-  cancelSubscriptionPause('/main/cancel-subscription/pause'),
   login('/login'),
   checkYourEmail('/login/check-your-email'),
   splash('/splash'),

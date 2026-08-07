@@ -1,22 +1,17 @@
 import 'dart:async';
 
-import 'package:beamer/beamer.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/views/subscription/subscription_pause_view.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_action_footer.dart';
-import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_app_bar.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -45,16 +40,7 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
 
     void handleDismiss() {
       cancelSubscriptionStore.reset();
-      if (isDesktop()) {
-        Navigator.of(context).pop();
-        return;
-      }
-      final beamer = Beamer.of(context);
-      if (beamer.canBeamBack) {
-        beamer.beamBack();
-      } else {
-        beamer.beamToNamed(Routes.main.path);
-      }
+      Navigator.of(context).pop();
     }
 
     Future<void> proceed() async {
@@ -63,37 +49,16 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         return;
       }
 
-      if (canPause) {
-        if (isDesktop()) {
-          final navigator = Navigator.of(context, rootNavigator: true)..pop();
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            if (!navigator.mounted) {
-              cancelSubscriptionStore.reset();
-              return;
-            }
-            await showModal(navigator.context, builder: (_) => const SubscriptionPauseView());
-          });
-          return;
-        }
-        Beamer.of(context).beamToReplacementNamed(Routes.cancelSubscriptionPause.path);
-        return;
-      }
-
-      final navigator = Navigator.of(context, rootNavigator: true);
-      if (isDesktop()) {
-        navigator.pop();
-      } else {
-        final beamer = Beamer.of(context);
-        if (beamer.canBeamBack) {
-          beamer.beamBack();
-        } else {
-          beamer.beamToNamed(Routes.main.path);
-        }
-      }
+      final navigator = Navigator.of(context, rootNavigator: true)..pop();
 
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!navigator.mounted) {
           cancelSubscriptionStore.reset();
+          return;
+        }
+
+        if (canPause) {
+          await showSubscriptionPauseDialog(navigator.context);
           return;
         }
 
@@ -129,67 +94,21 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
       await proceed();
     }
 
-    return Scaffold(
-      appBar: isDesktop()
-          ? CancelSubscriptionAppBar(
-              title: '${S.current.cancelSurveyTitle} (${S.current.optional})',
-              onClose: handleDismiss,
-            )
-          : null,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            if (!isDesktop())
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Header(
-                      showBackButton: true,
-                      backgroundColor: theme.palette.bgPopover,
-                      backLabel: S.current.back,
-                      onBackPressed: handleDismiss,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: S.current.cancelSurveyTitle,
-                              style: theme.textStyles.textLg.semibold.copyWith(fontSize: 24),
-                            ),
-                            TextSpan(
-                              text: ' (${S.current.optional})',
-                              style: theme.textStyles.textMd.medium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(theme.spacing.xl2),
-                child: _Form(form: form, items: reasons),
-              ),
-            ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: CancelSubscriptionActionFooter(
-                  primaryButtonLabel: S.current.continueBtn,
-                  onPrimaryButtonPressed: handleSubmit,
-                  secondaryButtonLabel: S.current.skipBtn,
-                  onSecondaryButtonPressed: handleSkip,
-                ),
-              ),
-            ),
-          ],
-        ),
+    final title = '${S.current.cancelSurveyTitle} (${S.current.optional})';
+
+    return ModalScaffold(
+      showGradient: false,
+      onModalClose: handleDismiss,
+      appbar: ModalAppbar(title: title, onModalClose: handleDismiss),
+      footer: CancelSubscriptionActionFooter(
+        primaryButtonLabel: S.current.continueBtn,
+        onPrimaryButtonPressed: handleSubmit,
+        secondaryButtonLabel: S.current.skipBtn,
+        onSecondaryButtonPressed: handleSkip,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(theme.spacing.xl2),
+        child: _Form(form: form, items: reasons),
       ),
     );
   }

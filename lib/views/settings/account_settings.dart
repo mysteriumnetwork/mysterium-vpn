@@ -14,7 +14,6 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -115,7 +114,6 @@ class _Authenticated extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscriptionStore = ref.read(subscriptionStorePOD);
-    final subscriptionCancellationStore = ref.read(subscriptionCancellationStorePOD);
     final authStore = ref.watch(authStorePOD);
     final authSessionStore = ref.watch(authSessionStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
@@ -194,7 +192,6 @@ class _Authenticated extends HookConsumerWidget {
         _SubscriptionCard(
           subscriptionStore: subscriptionStore,
           analyticsStore: analyticsStore,
-          subscriptionCancellationStore: subscriptionCancellationStore,
           position: showDeleteAccount ? SettingsCardPosition.middle : SettingsCardPosition.bottom,
           isSubscribing: subscribeStatus.isLoading,
           isDesktop: isDesktop,
@@ -258,7 +255,6 @@ class _Authenticated extends HookConsumerWidget {
 class _SubscriptionCard extends StatelessWidget {
   const _SubscriptionCard({
     required this.subscriptionStore,
-    required this.subscriptionCancellationStore,
     required this.analyticsStore,
     required this.position,
     required this.isSubscribing,
@@ -268,7 +264,6 @@ class _SubscriptionCard extends StatelessWidget {
   });
 
   final SubscriptionStore subscriptionStore;
-  final SubscriptionCancellationStore subscriptionCancellationStore;
   final AnalyticsStore analyticsStore;
   final SettingsCardPosition position;
   final bool isSubscribing;

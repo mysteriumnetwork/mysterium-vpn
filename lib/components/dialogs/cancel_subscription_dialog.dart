@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -41,15 +40,13 @@ Future<void> showCancelSubscriptionDialog(BuildContext context) async {
     return;
   }
 
-  // Desktop: display survey for cancellation
-  if (isDesktop()) {
-    await showModal(context, builder: (_) => const CancelSubscriptionSurveyView());
-    return;
-  }
-
-  // Mobile: beam to the cancellation survey
-  Beamer.of(context).beamToNamed(Routes.cancelSubscription.path);
+  await showCancelSubscriptionSurveyDialog(context);
 }
+
+Future<void> showCancelSubscriptionSurveyDialog(BuildContext context) async => showModal(
+  context,
+  builder: (ctx) => const ModalMessengerScope(child: CancelSubscriptionSurveyView()),
+);
 
 /// Opens the store or web cancel destination for [store].
 Future<void> openCancelSubscriptionLink(

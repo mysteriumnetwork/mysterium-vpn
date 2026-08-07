@@ -66,15 +66,21 @@ abstract class _SubscriptionCancellationStore with Store {
       return false;
     }
     _isProcessing = true;
-    await Future.wait([
-      _analyticsStore.logSubscriptionCancellationSurvey(
-        reasons: reasons,
-        feedback: trimmedFeedback,
-      ),
-      _analyticsStore.logCancellationReasonSubmitted(reasons: reasons, feedback: trimmedFeedback),
-    ]);
-    _isProcessing = false;
-    return true;
+    try {
+      await Future.wait([
+        _analyticsStore.logSubscriptionCancellationSurvey(
+          reasons: reasons,
+          feedback: trimmedFeedback,
+        ),
+        _analyticsStore.logCancellationReasonSubmitted(reasons: reasons, feedback: trimmedFeedback),
+      ]);
+      _isProcessing = false;
+      return true;
+    } on Exception catch (e) {
+      _error = e;
+      _isProcessing = false;
+      return false;
+    }
   }
 
   /// Returns `true` when the pause succeeded.

@@ -14,3 +14,4 @@ export 'request_tunnel_permissions_dialog.dart';
 export 'resume_subscription_dialog.dart';
 export 'review_prompt_dialog.dart';
 export 'subscription_onboarding_dialog.dart';
+export 'subscription_pause_dialog.dart';
