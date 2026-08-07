@@ -27,7 +27,7 @@ abstract class VpnGuard {
         throw const SubscriptionPausedException();
       }
     } catch (e) {
-      if (e is! SubscriptionRequiredException) {
+      if (e is! SubscriptionRequiredException && e is! SubscriptionPausedException) {
         _subscriptionStore.refreshSubscription();
       }
       rethrow;
