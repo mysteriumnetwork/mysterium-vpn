@@ -63,7 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(date) => "下次计费：${date}";
 
-  static String m21(count) => "${Intl.plural(count, zero: '', other: '暂停 ${count} 个月')}";
+  static String m21(count) =>
+      "${Intl.plural(count, zero: '暂停 ${count} 个月', other: '暂停 ${count} 个月')}";
 
   static String m22(date) => "已暂停至 ${date}";
 
@@ -353,6 +354,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage("请选择一个暂停时长。"),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("暂停订阅"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage("无法暂停订阅。请重试。"),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage("每个账单周期只能暂停计划一次。"),
     "paused": MessageLookupByLibrary.simpleMessage("已暂停"),
     "pausedUntil": m22,
@@ -453,6 +455,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("住宅 IP 的工作原理"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("住宅 IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("恢复"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage("无法恢复订阅。请重试。"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("你的订阅将立即恢复。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("恢复订阅？"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("重试"),

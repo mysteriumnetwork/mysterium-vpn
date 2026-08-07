@@ -70,7 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "अगला बिलिंग: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: '${count} महीने के लिए रोकें', other: '${count} महीनों के लिए रोकें')}";
+      "${Intl.plural(count, zero: '${count} महीनों के लिए रोकें', one: '${count} महीने के लिए रोकें', other: '${count} महीनों के लिए रोकें')}";
 
   static String m22(date) => "${date} तक रोका गया";
 
@@ -441,6 +441,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("सदस्यता रोकें"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता रोक नहीं सके। कृपया फिर से प्रयास करें।",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "आप प्रति बिलिंग चक्र में एक बार अपना प्लान रोक सकते हैं।",
     ),
@@ -577,6 +580,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("आवासीय IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("फिर शुरू करें"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता फिर से शुरू नहीं हो सकी। कृपया फिर से प्रयास करें।",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "आपकी सदस्यता तुरंत फिर शुरू हो जाएगी।",
     ),

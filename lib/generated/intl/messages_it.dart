@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Prossima fatturazione: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: 'Pausa di ${count} mese', other: 'Pausa di ${count} mesi')}";
+      "${Intl.plural(count, zero: 'Pausa di ${count} mesi', one: 'Pausa di ${count} mese', other: 'Pausa di ${count} mesi')}";
 
   static String m22(date) => "In pausa fino al ${date}";
 
@@ -446,6 +446,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Metti in pausa"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Impossibile mettere in pausa l\'abbonamento. Riprova.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Puoi mettere in pausa il tuo piano una volta per ciclo di fatturazione.",
     ),
@@ -594,6 +597,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residenziale"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Riprendi"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Impossibile riprendere l\'abbonamento. Riprova.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Il tuo abbonamento riprenderà subito.",
     ),

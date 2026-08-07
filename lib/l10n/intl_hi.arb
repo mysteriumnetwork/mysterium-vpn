@@ -502,7 +502,7 @@
   "@pausedUntil": {},
   "pauseDurationRequiredError": "कृपया एक रोकने की अवधि चुनें।",
   "@pauseDurationRequiredError": {},
-  "pauseForMonths": "{count, plural, zero{} one{{count} महीने के लिए रोकें} other{{count} महीनों के लिए रोकें}}",
+  "pauseForMonths": "{count, plural, zero{{count} महीनों के लिए रोकें} one{{count} महीने के लिए रोकें} other{{count} महीनों के लिए रोकें}}",
   "@pauseForMonths": {
     "placeholders": {
       "count": {
@@ -514,6 +514,8 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "आप प्रति बिलिंग चक्र में एक बार अपना प्लान रोक सकते हैं।",
   "@pauseSubscriptionInfoDesc": {},
+  "pauseSubscriptionFailed": "आपकी सदस्यता रोक नहीं सके। कृपया फिर से प्रयास करें।",
+  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "आपका पहले से एक भुगतान लेनदेन चल रहा है। कृपया नया शुरू करने से पहले उसे पूरा करें।",
   "@pendingTransactionMessage": {},
   "perMonth": "माह",
@@ -684,6 +686,8 @@
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "सदस्यता फिर शुरू करें?",
   "@resumeSubscriptionTitle": {},
+  "resumeSubscriptionFailed": "आपकी सदस्यता फिर से शुरू नहीं हो सकी। कृपया फिर से प्रयास करें।",
+  "@resumeSubscriptionFailed": {},
   "retryBtn": "फिर से प्रयास करें",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "समीक्षा दें",

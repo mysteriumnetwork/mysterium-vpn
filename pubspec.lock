@@ -1256,7 +1256,7 @@ packages:
     description:
       path: "."
       ref: "features/setting_card_chip"
-      resolved-ref: "59ecf9835e726eef3af41f3922326fd9ed215860"
+      resolved-ref: efed46c5c649d4747d5934776e06940f7df00203
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"

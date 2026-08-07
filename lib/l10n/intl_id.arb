@@ -502,7 +502,7 @@
   "@pausedUntil": {},
   "pauseDurationRequiredError": "Pilih salah satu durasi jeda.",
   "@pauseDurationRequiredError": {},
-  "pauseForMonths": "{count, plural, zero{} other{Jeda selama {count} bulan}}",
+  "pauseForMonths": "{count, plural, zero{Jeda selama {count} bulan} other{Jeda selama {count} bulan}}",
   "@pauseForMonths": {
     "placeholders": {
       "count": {
@@ -514,6 +514,8 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
   "@pauseSubscriptionInfoDesc": {},
+  "pauseSubscriptionFailed": "Langganan tidak bisa dijeda. Coba lagi.",
+  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "Kamu sudah punya transaksi pembayaran yang berjalan. Selesaikan dulu sebelum memulai yang baru.",
   "@pendingTransactionMessage": {},
   "perMonth": "bln",
@@ -684,6 +686,8 @@
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "Lanjutkan langganan?",
   "@resumeSubscriptionTitle": {},
+  "resumeSubscriptionFailed": "Langganan tidak bisa dilanjutkan. Coba lagi.",
+  "@resumeSubscriptionFailed": {},
   "retryBtn": "Coba lagi",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Beri ulasan",

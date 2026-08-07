@@ -62,7 +62,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(date) => "次回の請求: ${date}";
 
-  static String m21(count) => "${Intl.plural(count, zero: '', other: '${count}か月一時停止')}";
+  static String m21(count) =>
+      "${Intl.plural(count, zero: '${count}か月一時停止', other: '${count}か月一時停止')}";
 
   static String m22(date) => "${date} まで一時停止中";
 
@@ -386,6 +387,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage("一時停止の期間を選択"),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("一時停止する"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "サブスクリプションを一時停止できませんでした。もう一度お試しください。",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage("プランは請求サイクルごとに1回まで一時停止できます。"),
     "paused": MessageLookupByLibrary.simpleMessage("一時停止中"),
     "pausedUntil": m22,
@@ -496,6 +500,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("レジデンシャル IP の仕組み"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("再開"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "サブスクリプションを再開できませんでした。もう一度お試しください。",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("サブスクリプションはすぐに再開されます。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("サブスクリプションを再開しますか？"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("再試行"),

@@ -502,7 +502,7 @@
   "@pausedUntil": {},
   "pauseDurationRequiredError": "Selecciona una duración de la pausa.",
   "@pauseDurationRequiredError": {},
-  "pauseForMonths": "{count, plural, zero{} one{Pausar {count} mes} other{Pausar {count} meses}}",
+  "pauseForMonths": "{count, plural, zero{Pausar {count} meses} one{Pausar {count} mes} other{Pausar {count} meses}}",
   "@pauseForMonths": {
     "placeholders": {
       "count": {
@@ -514,6 +514,8 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "Puedes pausar tu plan una vez por ciclo de facturación.",
   "@pauseSubscriptionInfoDesc": {},
+  "pauseSubscriptionFailed": "No se pudo pausar tu suscripción. Inténtalo de nuevo.",
+  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "Ya tienes una transacción de pago en curso. Complétala antes de iniciar una nueva.",
   "@pendingTransactionMessage": {},
   "perMonth": "mes",
@@ -684,6 +686,8 @@
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "¿Reanudar suscripción?",
   "@resumeSubscriptionTitle": {},
+  "resumeSubscriptionFailed": "No se pudo reanudar tu suscripción. Inténtalo de nuevo.",
+  "@resumeSubscriptionFailed": {},
   "retryBtn": "Reintentar",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Dejar una reseña",

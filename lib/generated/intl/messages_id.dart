@@ -68,7 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Tagihan Berikutnya: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', other: 'Jeda selama ${count} bulan')}";
+      "${Intl.plural(count, zero: 'Jeda selama ${count} bulan', other: 'Jeda selama ${count} bulan')}";
 
   static String m22(date) => "Dijeda hingga ${date}";
 
@@ -429,6 +429,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Jeda langganan"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Langganan tidak bisa dijeda. Coba lagi.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
     ),
@@ -571,6 +574,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residensial"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Lanjutkan"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Langganan tidak bisa dilanjutkan. Coba lagi.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Langgananmu akan langsung dilanjutkan.",
     ),

@@ -435,6 +435,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("إيقاف الاشتراك مؤقتًا"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر إيقاف اشتراكك مؤقتًا. يُرجى المحاولة مرة أخرى.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "يمكنك إيقاف خطتك مؤقتًا مرة واحدة لكل دورة فوترة.",
     ),
@@ -565,6 +568,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("كيف تعمل عناوين IP السكنية"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("عنوان IP سكني"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("استئناف"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر استئناف اشتراكك. يُرجى المحاولة مرة أخرى.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "سيتم استئناف اشتراكك فورًا.",
     ),

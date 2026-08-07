@@ -46,7 +46,6 @@ void main() {
         subscriptionId: 'sub-1',
         planId: 'plan_monthly',
         gateway: 'stripe',
-        paused: false,
       );
       when(
         apiSubscription.subscriptionStatus(),

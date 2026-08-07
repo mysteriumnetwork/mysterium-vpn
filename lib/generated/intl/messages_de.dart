@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Nächste Abrechnung: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: 'Für ${count} Monat pausieren', other: 'Für ${count} Monate pausieren')}";
+      "${Intl.plural(count, zero: 'Für ${count} Monate pausieren', one: 'Für ${count} Monat pausieren', other: 'Für ${count} Monate pausieren')}";
 
   static String m22(date) => "Pausiert bis ${date}";
 
@@ -456,6 +456,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Abo pausieren"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Dein Abo konnte nicht pausiert werden. Bitte versuche es erneut.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Du kannst dein Abo einmal pro Abrechnungszyklus pausieren.",
     ),
@@ -606,6 +609,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("Haushalts-IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Fortsetzen"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Dein Abo konnte nicht fortgesetzt werden. Bitte versuche es erneut.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Dein Abo wird sofort fortgesetzt.",
     ),

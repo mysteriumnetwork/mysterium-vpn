@@ -302,6 +302,7 @@ class S {
     'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
     'pauseSubscriptionInfoDesc': [],
+    'pauseSubscriptionFailed': [],
     'pendingTransactionMessage': [],
     'perMonth': [],
     'pl': [],
@@ -387,6 +388,7 @@ class S {
     'resumeBtn': [],
     'resumeSubscriptionPromptDesc': [],
     'resumeSubscriptionTitle': [],
+    'resumeSubscriptionFailed': [],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -2203,11 +2205,11 @@ class S {
     );
   }
 
-  /// `{count, plural, zero{} one{Pause for {count} month} other{Pause for {count} months}}`
+  /// `{count, plural, zero{Pause for {count} months} one{Pause for {count} month} other{Pause for {count} months}}`
   String pauseForMonths(num count) {
     return Intl.plural(
       count,
-      zero: '',
+      zero: 'Pause for $count months',
       one: 'Pause for $count month',
       other: 'Pause for $count months',
       name: 'pauseForMonths',
@@ -2226,6 +2228,16 @@ class S {
     return Intl.message(
       'You can pause your plan once per billing cycle.',
       name: 'pauseSubscriptionInfoDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We could not pause your subscription. Please try again.`
+  String get pauseSubscriptionFailed {
+    return Intl.message(
+      'We could not pause your subscription. Please try again.',
+      name: 'pauseSubscriptionFailed',
       desc: '',
       args: [],
     );
@@ -2856,6 +2868,16 @@ class S {
     return Intl.message(
       'Resume Subscription?',
       name: 'resumeSubscriptionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We could not resume your subscription. Please try again.`
+  String get resumeSubscriptionFailed {
+    return Intl.message(
+      'We could not resume your subscription. Please try again.',
+      name: 'resumeSubscriptionFailed',
       desc: '',
       args: [],
     );

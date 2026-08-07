@@ -502,7 +502,7 @@
   "@pausedUntil": {},
   "pauseDurationRequiredError": "一時停止の期間を選択",
   "@pauseDurationRequiredError": {},
-  "pauseForMonths": "{count, plural, zero{} other{{count}か月一時停止}}",
+  "pauseForMonths": "{count, plural, zero{{count}か月一時停止} other{{count}か月一時停止}}",
   "@pauseForMonths": {
     "placeholders": {
       "count": {
@@ -514,6 +514,8 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "プランは請求サイクルごとに1回まで一時停止できます。",
   "@pauseSubscriptionInfoDesc": {},
+  "pauseSubscriptionFailed": "サブスクリプションを一時停止できませんでした。もう一度お試しください。",
+  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "進行中の決済がすでにあります。新しい決済を開始する前に完了してください。",
   "@pendingTransactionMessage": {},
   "perMonth": "月",
@@ -684,6 +686,8 @@
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "サブスクリプションを再開しますか？",
   "@resumeSubscriptionTitle": {},
+  "resumeSubscriptionFailed": "サブスクリプションを再開できませんでした。もう一度お試しください。",
+  "@resumeSubscriptionFailed": {},
   "retryBtn": "再試行",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "レビューを書く",

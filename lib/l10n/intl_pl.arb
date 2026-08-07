@@ -502,7 +502,7 @@
   "@pausedUntil": {},
   "pauseDurationRequiredError": "Wybierz okres wstrzymania.",
   "@pauseDurationRequiredError": {},
-  "pauseForMonths": "{count, plural, zero{} one{Wstrzymaj na {count} miesiąc} few{Wstrzymaj na {count} miesiące} many{Wstrzymaj na {count} miesięcy} other{Wstrzymaj na {count} miesiąca}}",
+  "pauseForMonths": "{count, plural, zero{Wstrzymaj na {count} miesiąca} one{Wstrzymaj na {count} miesiąc} few{Wstrzymaj na {count} miesiące} many{Wstrzymaj na {count} miesięcy} other{Wstrzymaj na {count} miesiąca}}",
   "@pauseForMonths": {
     "placeholders": {
       "count": {
@@ -514,6 +514,8 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "Możesz wstrzymać swój plan raz na cykl rozliczeniowy.",
   "@pauseSubscriptionInfoDesc": {},
+  "pauseSubscriptionFailed": "Nie udało się wstrzymać subskrypcji. Spróbuj ponownie.",
+  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "Masz już trwającą transakcję płatniczą. Dokończ ją przed rozpoczęciem nowej.",
   "@pendingTransactionMessage": {},
   "perMonth": "mies.",
@@ -684,6 +686,8 @@
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "Wznowić subskrypcję?",
   "@resumeSubscriptionTitle": {},
+  "resumeSubscriptionFailed": "Nie udało się wznowić subskrypcji. Spróbuj ponownie.",
+  "@resumeSubscriptionFailed": {},
   "retryBtn": "Ponów",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Napisz recenzję",

@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Sonraki Faturalandırma: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: '${count} ay duraklat', other: '${count} ay duraklat')}";
+      "${Intl.plural(count, zero: '${count} ay duraklat', one: '${count} ay duraklat', other: '${count} ay duraklat')}";
 
   static String m22(date) => "${date} tarihine kadar duraklatıldı";
 
@@ -438,6 +438,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Aboneliği duraklat"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Aboneliğin duraklatılamadı. Lütfen tekrar dene.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Aboneliğini faturalandırma döngüsü başına bir kez duraklatabilirsin.",
     ),
@@ -584,6 +587,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("Konut IP\'si"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Sürdür"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Aboneliğin sürdürilemedi. Lütfen tekrar dene.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Aboneliğin hemen devam edecek.",
     ),

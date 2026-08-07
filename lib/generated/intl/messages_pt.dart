@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Próxima cobrança: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: 'Pausar por ${count} mês', other: 'Pausar por ${count} meses')}";
+      "${Intl.plural(count, zero: 'Pausar por ${count} meses', one: 'Pausar por ${count} mês', other: 'Pausar por ${count} meses')}";
 
   static String m22(date) => "Em pausa até ${date}";
 
@@ -446,6 +446,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pausar subscrição"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível pausar a tua subscrição. Tente novamente.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Podes pausar o teu plano uma vez por ciclo de faturação.",
     ),
@@ -592,6 +595,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residencial"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Retomar"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível retomar a tua subscrição. Tente novamente.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "A tua subscrição será retomada de imediato.",
     ),

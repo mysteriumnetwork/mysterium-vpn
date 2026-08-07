@@ -502,7 +502,7 @@
   "@pausedUntil": {},
   "pauseDurationRequiredError": "Lütfen bir duraklatma süresi seç.",
   "@pauseDurationRequiredError": {},
-  "pauseForMonths": "{count, plural, zero{} one{{count} ay duraklat} other{{count} ay duraklat}}",
+  "pauseForMonths": "{count, plural, zero{{count} ay duraklat} one{{count} ay duraklat} other{{count} ay duraklat}}",
   "@pauseForMonths": {
     "placeholders": {
       "count": {
@@ -514,6 +514,8 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "Aboneliğini faturalandırma döngüsü başına bir kez duraklatabilirsin.",
   "@pauseSubscriptionInfoDesc": {},
+  "pauseSubscriptionFailed": "Aboneliğin duraklatılamadı. Lütfen tekrar dene.",
+  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "Devam eden bir ödeme işlemin zaten var. Yeni bir işlem başlatmadan önce lütfen bunu tamamla.",
   "@pendingTransactionMessage": {},
   "perMonth": "ay",
@@ -684,6 +686,8 @@
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "Aboneliği sürdür?",
   "@resumeSubscriptionTitle": {},
+  "resumeSubscriptionFailed": "Aboneliğin sürdürilemedi. Lütfen tekrar dene.",
+  "@resumeSubscriptionFailed": {},
   "retryBtn": "Yeniden dene",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Yorum bırak",

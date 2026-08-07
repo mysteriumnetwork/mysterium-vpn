@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Następne rozliczenie: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: 'Wstrzymaj na ${count} miesiąc', few: 'Wstrzymaj na ${count} miesiące', many: 'Wstrzymaj na ${count} miesięcy', other: 'Wstrzymaj na ${count} miesiąca')}";
+      "${Intl.plural(count, zero: 'Wstrzymaj na ${count} miesiąca', one: 'Wstrzymaj na ${count} miesiąc', few: 'Wstrzymaj na ${count} miesiące', many: 'Wstrzymaj na ${count} miesięcy', other: 'Wstrzymaj na ${count} miesiąca')}";
 
   static String m22(date) => "Wstrzymano do ${date}";
 
@@ -446,6 +446,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Wstrzymaj subskrypcję"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Nie udało się wstrzymać subskrypcji. Spróbuj ponownie.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Możesz wstrzymać swój plan raz na cykl rozliczeniowy.",
     ),
@@ -594,6 +597,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP mieszkaniowe"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Wznów"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Nie udało się wznowić subskrypcji. Spróbuj ponownie.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Twoja subskrypcja zostanie wznowiona od razu.",
     ),
