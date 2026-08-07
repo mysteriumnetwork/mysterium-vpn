@@ -323,6 +323,19 @@ void main() {
     expect(connectedTo?.translations['en'], 'Frankfurt am Main');
   });
 
+  testWidgets('the heart is a labelled button for screen readers', (tester) async {
+    final favs = [fav('1.1.1.1')];
+    when(store.favorites).thenReturn(favs);
+    when(store.availableFavorites).thenReturn(favs);
+    final semantics = tester.ensureSemantics();
+
+    await pumpSliver(tester);
+
+    // A saved IP's heart removes it — the label must say so, not "favorite".
+    expect(find.bySemanticsLabel(S.current.favoriteIpRemoveAction), findsOneWidget);
+    semantics.dispose();
+  });
+
   testWidgets('tapping an available favorite logs a connect click', (tester) async {
     final favs = [fav('1.1.1.1')];
     when(store.favorites).thenReturn(favs);

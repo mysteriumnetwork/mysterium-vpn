@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("Disconnected"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Disconnecting"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Only"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("Dismiss new IP preview"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS protection"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Prevents DNS leaks"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("Done"),
@@ -258,10 +259,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "We couldn\'t verify your last subscription purchase. Click the button below to retry verification.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Fast"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Add to Favourite IPs"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP added to Favourite"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "Favourite IP limit reached. Remove an IP to save a new one.",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("Remove from Favourite IPs"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP removed from Favourite"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.",

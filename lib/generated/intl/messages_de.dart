@@ -240,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("Getrennt"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Wird getrennt"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Nur"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("Vorschau der neuen IP schließen"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS-Schutz"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Verhindert DNS-Leaks"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("Fertig"),
@@ -266,10 +267,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Wir konnten deinen letzten Abo-Kauf nicht prüfen. Tippe unten, um es erneut zu versuchen.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Schnell"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Zu Favoriten-IPs hinzufügen"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP zu Favoriten hinzugefügt"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "Limit für Favoriten-IPs erreicht. Entferne eine IP, um eine neue zu speichern.",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("Aus Favoriten-IPs entfernen"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP aus Favoriten entfernt"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Die Verfügbarkeit gespeicherter IPs kann sich mit der Zeit ändern. Deine Favoriten-IP war nicht mehr verfügbar, daher haben wir dich mit dem nächstgelegenen verfügbaren Standort verbunden.",

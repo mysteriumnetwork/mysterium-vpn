@@ -235,6 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("डिस्कनेक्टेड"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("डिस्कनेक्ट हो रहा है…"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("केवल"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("नए IP का प्रीव्यू बंद करें"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS सुरक्षा"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("DNS लीक रोकता है"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("हो गया"),
@@ -261,10 +262,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "हम आपकी पिछली सदस्यता खरीद की पुष्टि नहीं कर सके। दोबारा कोशिश करने के लिए नीचे बटन दबाएँ।",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("तेज़"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("पसंदीदा IPs में जोड़ें"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP पसंदीदा में जोड़ा गया"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "पसंदीदा IP की सीमा पूरी हो गई। नया सहेजने के लिए कोई IP हटाएँ।",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("पसंदीदा IPs से हटाएँ"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP पसंदीदा से हटाया गया"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "सहेजे गए IP की उपलब्धता समय के साथ बदल सकती है। आपका पसंदीदा IP अनुपलब्ध हो गया, इसलिए हमने आपको निकटतम उपलब्ध लोकेशन से जोड़ दिया।",

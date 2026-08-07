@@ -227,6 +227,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("Terputus"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Memutuskan"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Cuma"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("Tutup pratinjau IP baru"),
     "dns": MessageLookupByLibrary.simpleMessage("Perlindungan DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Mencegah kebocoran DNS"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("Selesai"),
@@ -253,10 +254,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kami tidak dapat memverifikasi pembelian langganan terakhirmu. Ketuk tombol di bawah untuk mencoba lagi.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Cepat"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Tambahkan ke IP favorit"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP ditambahkan ke favorit"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "Batas IP favorit tercapai. Hapus satu IP untuk menyimpan yang baru.",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("Hapus dari IP favorit"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP dihapus dari favorit"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Ketersediaan IP tersimpan bisa berubah seiring waktu. IP favoritmu menjadi tidak tersedia, jadi kami menghubungkanmu ke lokasi tersedia terdekat.",

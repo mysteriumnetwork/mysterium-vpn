@@ -195,6 +195,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("已断开连接"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("正在断开连接"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("仅需"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("关闭新 IP 预览"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS 保护"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("防止 DNS 泄漏"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("完成"),
@@ -213,8 +214,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToSubscribe": MessageLookupByLibrary.simpleMessage("你的订阅出现问题。请重试！"),
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage("我们无法验证你上次的订阅购买。请点击下方按钮重试。"),
     "fastLabel": MessageLookupByLibrary.simpleMessage("快速"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("加入收藏的 IP"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("已将 IP 加入收藏"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage("收藏 IP 已达上限。请移除一个 IP 后再保存新的。"),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("从收藏的 IP 中移除"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("已将 IP 从收藏中移除"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "已保存 IP 的可用性可能会随时间变化。你的收藏 IP 已不可用，因此我们为你连接了最近的可用位置。",

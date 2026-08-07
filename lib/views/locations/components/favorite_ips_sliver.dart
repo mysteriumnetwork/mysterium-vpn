@@ -315,6 +315,8 @@ class _FavoriteCard extends StatelessWidget {
       },
       ipAddress: favorite.ip,
       badgeLabel: favorite.badgeLabel,
+      // Every card here is already saved, so its heart only ever removes.
+      favoriteSemanticLabel: S.current.favoriteIpRemoveAction,
       type: type,
       status: switch (state) {
         _CardState.connected => SavedIpCardStatus.connected,

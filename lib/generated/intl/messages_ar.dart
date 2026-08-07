@@ -231,6 +231,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("غير متصل"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("جارٍ قطع الاتصال"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("فقط"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("إغلاق معاينة عنوان IP الجديد"),
     "dns": MessageLookupByLibrary.simpleMessage("حماية DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("يمنع تسريبات DNS"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("تم"),
@@ -257,10 +258,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعذّر التحقق من آخر عملية شراء لاشتراكك. اضغط الزر أدناه لإعادة المحاولة.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("سريع"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("إضافة إلى عناوين IP المفضلة"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("تمت إضافة عنوان IP إلى المفضلة"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "تم بلوغ الحد الأقصى لعناوين IP المفضلة. احذف عنوانًا لحفظ عنوان جديد.",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("إزالة من عناوين IP المفضلة"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("تمت إزالة عنوان IP من المفضلة"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "قد تتغير إمكانية توفّر عناوين IP المحفوظة مع الوقت. أصبح عنوان IP المفضّل لديك غير متاح، لذا وصّلناك بأقرب موقع متاح.",

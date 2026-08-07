@@ -62,7 +62,7 @@ dependencies:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
       # Pinned to a commit, not the branch, so CI is reproducible. Re-point to
       # a tag on main once the design-system PR merges.
-      ref: f77a0cf42f9a9517f247f42cd3f629fdcf5b0233
+      ref: dde08284758c9be03877a7cbad3ddb047495dadd
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:

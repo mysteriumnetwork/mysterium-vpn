@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("Bağlantı kesildi"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Bağlantı kesiliyor"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Yalnızca"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("Yeni IP önizlemesini kapat"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS koruması"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("DNS sızıntılarını önler"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("Tamam"),
@@ -258,10 +259,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Son abonelik satın alımını doğrulayamadık. Tekrar denemek için aşağıdaki düğmeye dokun.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Hızlı"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Favori IP\'lere ekle"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP favorilere eklendi"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "Favori IP sınırına ulaşıldı. Yeni bir IP kaydetmek için birini kaldır.",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("Favori IP\'lerden çıkar"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP favorilerden kaldırıldı"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Kayıtlı IP\'lerin kullanılabilirliği zamanla değişebilir. Favori IP\'n kullanılamaz hale geldi, bu yüzden seni en yakın kullanılabilir konuma bağladık.",

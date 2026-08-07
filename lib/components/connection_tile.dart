@@ -120,6 +120,12 @@ class ConnectionTile extends HookConsumerWidget {
           onDetails: () => showConnectionDetailsDialog(context),
           onFavorite: favoritesEnabled && connectionIP != null ? handleFavorite : null,
           isFavorite: isFavorite,
+          // Icon-only buttons: the label has to carry the whole action.
+          favoriteSemanticLabel: isFavorite
+              ? S.current.favoriteIpRemoveAction
+              : S.current.favoriteIpAddAction,
+          detailsSemanticLabel: S.current.connectionDetails,
+          dismissPreviewSemanticLabel: S.current.dismissNewIpPreview,
           onDismissPreview: onDismissPreview,
           onSwitchCountry: onToggle,
           buttonWrapper: buttonWrapper,

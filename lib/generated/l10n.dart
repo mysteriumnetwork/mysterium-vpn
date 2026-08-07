@@ -156,6 +156,7 @@ class S {
     'disconnected': [],
     'disconnecting': [],
     'discountedPriceLabel': [],
+    'dismissNewIpPreview': [],
     'dns': [],
     'dnsDesc': [],
     'doneBtn': [],
@@ -174,8 +175,10 @@ class S {
     'failedToSubscribe': [],
     'failedToVerifySubs': [],
     'fastLabel': [],
+    'favoriteIpAddAction': [],
     'favoriteIpAddedToast': [],
     'favoriteIpLimitReached': [],
+    'favoriteIpRemoveAction': [],
     'favoriteIpRemovedToast': [],
     'favoriteIpsDisclaimer': [],
     'favoriteIpsEmptyBody': [],
@@ -1210,6 +1213,11 @@ class S {
     return Intl.message('Only', name: 'discountedPriceLabel', desc: '', args: []);
   }
 
+  /// `Dismiss new IP preview`
+  String get dismissNewIpPreview {
+    return Intl.message('Dismiss new IP preview', name: 'dismissNewIpPreview', desc: '', args: []);
+  }
+
   /// `DNS protection`
   String get dns {
     return Intl.message('DNS protection', name: 'dns', desc: '', args: []);
@@ -1335,6 +1343,11 @@ class S {
     return Intl.message('Fast', name: 'fastLabel', desc: '', args: []);
   }
 
+  /// `Add to Favourite IPs`
+  String get favoriteIpAddAction {
+    return Intl.message('Add to Favourite IPs', name: 'favoriteIpAddAction', desc: '', args: []);
+  }
+
   /// `IP added to Favourite`
   String get favoriteIpAddedToast {
     return Intl.message('IP added to Favourite', name: 'favoriteIpAddedToast', desc: '', args: []);
@@ -1345,6 +1358,16 @@ class S {
     return Intl.message(
       'Favourite IP limit reached. Remove an IP to save a new one.',
       name: 'favoriteIpLimitReached',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove from Favourite IPs`
+  String get favoriteIpRemoveAction {
+    return Intl.message(
+      'Remove from Favourite IPs',
+      name: 'favoriteIpRemoveAction',
       desc: '',
       args: [],
     );

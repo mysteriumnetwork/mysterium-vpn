@@ -202,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("切断済み"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("切断中…"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("特価"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("新しい IP のプレビューを閉じる"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS 保護"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("DNS リークを防止します"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("完了"),
@@ -224,10 +225,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "前回のサブスクリプション購入を確認できませんでした。下のボタンを押して再試行してください。",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("高速"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("お気に入り IP に追加"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP をお気に入りに追加しました"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
       "お気に入り IP の上限に達しました。新しく保存するには IP を削除してください。",
     ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("お気に入り IP から削除"),
     "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP をお気に入りから削除しました"),
     "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
       "保存した IP の利用可否は時間とともに変わることがあります。お気に入りの IP が利用できなくなったため、最も近い利用可能なロケーションに接続しました。",
