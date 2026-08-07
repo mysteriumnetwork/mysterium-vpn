@@ -1,6 +1,7 @@
 export '../stores/mqtt_store.dart';
 export 'api/api_service.dart';
 export 'api/external_api_service.dart';
+export 'api/favorite_ips_availability_service.dart';
 export 'api/rest_api_service.dart';
 export 'api/rest_external_api_service.dart';
 export 'auth/auth_service.dart';

@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "داكن",
   "@dark": {},
+  "datacenterIpBadge": "عنوان IP لمركز بيانات",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "سهلة الاكتشاف",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "كثيرًا ما تحجبها المواقع",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "فقط",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "إغلاق معاينة عنوان IP الجديد",
+  "@dismissNewIpPreview": {},
   "dns": "حماية DNS",
   "@dns": {},
   "dnsDesc": "يمنع تسريبات DNS",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "سريع",
   "@fastLabel": {},
+  "favoriteIpAddAction": "إضافة إلى عناوين IP المفضلة",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "تمت إضافة عنوان IP إلى المفضلة",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "تم بلوغ الحد الأقصى لعناوين IP المفضلة. احذف عنوانًا لحفظ عنوان جديد.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "إزالة من عناوين IP المفضلة",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "تمت إزالة عنوان IP من المفضلة",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "قد تتغير إمكانية توفّر عناوين IP المحفوظة مع الوقت. أصبح عنوان IP المفضّل لديك غير متاح، لذا وصّلناك بأقرب موقع متاح.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "اتصل ثم اضغط على القلب في بطاقة الاتصال لحفظ عنوان IP والوصول إليه بسرعة.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "لا توجد عناوين IP مفضلة بعد",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "عناوين IP المفضلة",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "قم بالترقية إلى Plus أو Pro لحفظ عناوين IP الأنسب لك والوصول إليها بسرعة وقتما تشاء.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "احفظ عناوين IP المفضلة",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "عناوين IP المحفوظة غير متاحة في خطتك الحالية.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "المفضلة",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "عناوين IP غير المتاحة",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "ترقية الخطة",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "إصدار تطبيقك قديم. يُرجى تحديث التطبيق لمواصلة استخدامه.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "بيانات النموذج غير صالحة. يُرجى التحقق من الحقول والمحاولة مرة أخرى.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "عناوين IP لمراكز البيانات مُحسّنة للسرعة والأداء.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "مركز بيانات",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "عناوين IP سكنية",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "مقدّمة من منازل حقيقية. يكاد يستحيل اكتشافها لكنها أقل استقرارًا.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "سكني",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "تُقدَّم عناوين IP السكنية من أجهزة منزلية حقيقية، لذا قد يتغير توفرها بمرور الوقت.\n\nإذا انقطع اتصال أحد العُقد، يعيد التطبيق توصيلك بأقرب عنوان IP سكني متاح.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "لماذا قد يتغير عنوان IP الخاص بي؟",
@@ -329,11 +367,29 @@
   "location": "الموقع",
   "@location": {},
   "locationItemCityCount": "{count, plural, zero{{count} مدينة} one{مدينة واحدة} two{مدينتان} few{{count} مدن} many{{count} مدينة} other{{count} مدينة}}",
-  "@locationItemCityCount": {},
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationItemNodeCount": "{count, plural, zero{{count} IP} one{IP واحد} two{عنوانا IP} few{{count} عناوين IP} many{{count} عنوان IP} other{{count} IP}}",
-  "@locationItemNodeCount": {},
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationItemStatesCount": "{count, plural, zero{{count} ولاية} one{ولاية واحدة} two{ولايتان} few{{count} ولايات} many{{count} ولاية} other{{count} ولاية}}",
-  "@locationItemStatesCount": {},
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "الموقع",
   "@locationLbl": {},
   "locationsUpdated": "تم تحديث {location}",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "برامج ضارة",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "إدارة",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "الإدارة عبر الويب",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "هل ترغب في تلقي تحديثات بريدية ونصائح خصوصية وعروض خاصة من Mysterium Network؟",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "كيف تعمل عناوين IP السكنية",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "عنوان IP سكني",
+  "@residentialIpBadge": {},
   "resumeBtn": "استئناف",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "سيتم استئناف اشتراكك فورًا.",
@@ -641,7 +701,13 @@
   "semiAnnual": "نصف سنوي",
   "@semiAnnual": {},
   "sendAgain": "{count, plural, zero{إعادة الإرسال} one{إعادة الإرسال} two{إعادة الإرسال} few{إعادة الإرسال ({count})} many{إعادة الإرسال ({count})} other{إعادة الإرسال ({count})}}",
-  "@sendAgain": {},
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "نواجه مشكلات مؤقتة في الشبكة. يُرجى المحاولة لاحقًا..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "إدارة",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "لم تسجّل الدخول",
   "@unauthenticatedSettingTitle": {},
+  "undo": "تراجع",
+  "@undo": {},
   "unprotectedLbl": "غير محمي",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "سرعة غير مستقرة",

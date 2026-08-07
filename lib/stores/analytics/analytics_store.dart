@@ -265,20 +265,80 @@ mixin AnalyticsStore {
 
   Future<void> logNewsCenterBack() => logEvent(AnalyticsEvent.newsCenterBackClicked);
 
+  Map<String, dynamic> _favoriteIpParams(FavoriteIp favorite, int favoriteIpCount) => {
+    'ip_type': favorite.ipType.analyticsName,
+    'country': favorite.countryCode,
+    'city': favorite.city,
+    'favorite_ip_count': favoriteIpCount,
+  };
+
+  Future<void> logFavoriteIpAdd(FavoriteIp favorite, {required int favoriteIpCount}) => logEvent(
+    AnalyticsEvent.favoriteIpAddClicked,
+    parameters: _favoriteIpParams(favorite, favoriteIpCount),
+  );
+
+  Future<void> logFavoriteIpRemoved(
+    FavoriteIp favorite, {
+    required int favoriteIpCount,
+    required String availabilityState,
+  }) => logEvent(
+    AnalyticsEvent.favoriteIpRemoved,
+    parameters: {
+      ..._favoriteIpParams(favorite, favoriteIpCount),
+      'availability_state': availabilityState,
+    },
+  );
+
+  Future<void> logFavoriteIpConnectClicked(
+    FavoriteIp favorite, {
+    required int favoriteIpCount,
+    required String availabilityState,
+  }) => logEvent(
+    AnalyticsEvent.favoriteIpConnectClicked,
+    parameters: {
+      ..._favoriteIpParams(favorite, favoriteIpCount),
+      'availability_state': availabilityState,
+    },
+  );
+
+  Future<void> logFavoriteIpConnectionSucceeded(
+    FavoriteIp favorite, {
+    required int favoriteIpCount,
+  }) => logEvent(
+    AnalyticsEvent.favoriteIpConnectionSucceeded,
+    parameters: _favoriteIpParams(favorite, favoriteIpCount),
+  );
+
+  /// The connect attempt failed, so the availability is reported as `unknown`
+  /// (the backend does not tell us why).
+  Future<void> logFavoriteIpUnavailableShown(FavoriteIp favorite, {required int favoriteIpCount}) =>
+      logEvent(
+        AnalyticsEvent.favoriteIpUnavailableStateShown,
+        parameters: {
+          ..._favoriteIpParams(favorite, favoriteIpCount),
+          'availability_state': 'unknown',
+        },
+      );
+
+  Future<void> logFavoriteIpUpgradePlanClicked() =>
+      logEvent(AnalyticsEvent.favoriteIpUpgradePlanClicked);
+
+  Future<void> logFavoriteIpUndoRemove() => logEvent(AnalyticsEvent.favoriteIpUndoRemove);
+
   void dispose() {
     _debouncer.dispose();
     _logStreamController.close();
     _userPropertiesStreamController.close();
   }
 
-  Future<void> logTabChange(IPType type) async {
-    await logEvent(AnalyticsEvent.locationsTabClick, parameters: {'tab': type.name});
+  Future<void> logTabChange(LocationsTab tab) async {
+    await logEvent(AnalyticsEvent.locationsTabClick, parameters: {'tab': tab.name});
   }
 
-  Future<void> logLocationsRefresh({required IPType type, required String source}) async {
+  Future<void> logLocationsRefresh({required LocationsTab tab, required String source}) async {
     await logEvent(
       AnalyticsEvent.locationsRefreshed,
-      parameters: {'ip_type': type.name, 'source': source},
+      parameters: {'ip_type': tab.name, 'source': source},
     );
   }
 

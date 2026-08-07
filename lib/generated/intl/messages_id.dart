@@ -51,12 +51,13 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m13(location) =>
       "Tidak ada IP alternatif tersedia di ${location}. Pilih negara lain untuk mendapat IP berbeda lain kali.";
 
-  static String m14(count) => "${Intl.plural(count, one: '${count} Kota', other: '${count} Kota')}";
+  static String m14(count) =>
+      "${Intl.plural(count, zero: '${count} Kota', other: '${count} Kota')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) => "${Intl.plural(count, zero: '${count} IPs', other: '${count} IPs')}";
 
   static String m16(count) =>
-      "${Intl.plural(count, one: '${count} Negara Bagian', other: '${count} Negara Bagian')}";
+      "${Intl.plural(count, zero: '${count} Negara Bagian', other: '${count} Negara Bagian')}";
 
   static String m17(location) => "${location} tidak tersedia";
 
@@ -78,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m25(date) => "Diperpanjang pada ${date}";
 
   static String m26(count) =>
-      "${Intl.plural(count, zero: 'Kirim lagi', one: 'Kirim lagi', other: 'Kirim lagi (${count})')}";
+      "${Intl.plural(count, zero: 'Kirim lagi', other: 'Kirim lagi (${count})')}";
 
   static String m27(percent) => "Hemat ${percent}%";
 
@@ -212,6 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Kurang privat"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("IP PUSAT DATA"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("Kebanyakan VPN"),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("IP datacenter"),
     "de": MessageLookupByLibrary.simpleMessage("Jerman"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Hapus akun"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Hapus Akun?"),
@@ -225,6 +227,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("Terputus"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Memutuskan"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Cuma"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("Tutup pratinjau IP baru"),
     "dns": MessageLookupByLibrary.simpleMessage("Perlindungan DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Mencegah kebocoran DNS"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("Selesai"),
@@ -251,6 +254,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kami tidak dapat memverifikasi pembelian langganan terakhirmu. Ketuk tombol di bawah untuk mencoba lagi.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Cepat"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Tambahkan ke IP favorit"),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP ditambahkan ke favorit"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "Batas IP favorit tercapai. Hapus satu IP untuk menyimpan yang baru.",
+    ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("Hapus dari IP favorit"),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP dihapus dari favorit"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "Ketersediaan IP tersimpan bisa berubah seiring waktu. IP favoritmu menjadi tidak tersedia, jadi kami menghubungkanmu ke lokasi tersedia terdekat.",
+    ),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "Hubungkan lalu ketuk ikon hati di kartu koneksi untuk menyimpan IP agar bisa diakses cepat.",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("Belum ada IP favorit"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("IP favorit"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Tingkatkan ke Plus atau Pro untuk menyimpan IP yang paling cocok untukmu dan mengaksesnya kapan saja.",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("Simpan IP favorit"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP tersimpan tidak tersedia di paketmu saat ini.",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("Favorit"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("IP tidak tersedia"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("Tingkatkan paket"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "Versi aplikasimu sudah usang. Perbarui aplikasi untuk terus memakainya.",
     ),
@@ -294,10 +322,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "IP datacenter dioptimalkan untuk kecepatan dan performa.",
     ),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("IP residensial"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Disediakan oleh rumah tangga asli. Nyaris tak terdeteksi tapi kurang stabil.",
     ),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("Residensial"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "IP residensial disediakan oleh perangkat rumah tangga asli, jadi ketersediaannya bisa berubah seiring waktu.\n\nJika sebuah node offline, aplikasi akan menyambungkanmu ke IP residensial terdekat yang tersedia.",
     ),
@@ -343,6 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("Latensi rendah"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("Madrid, Spanyol 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("Malware"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("Kelola"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("Kelola di web"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "Mau menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
@@ -538,6 +569,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "IP residensial berbeda dari IP datacenter. Berikut yang bisa kamu harapkan.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residensial"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Lanjutkan"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Langgananmu akan langsung dilanjutkan.",
@@ -752,6 +784,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Masuk untuk mengakses akunmu dan membuka semua fitur",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("Kamu belum masuk"),
+    "undo": MessageLookupByLibrary.simpleMessage("Urungkan"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("TAK TERLINDUNGI"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Kecepatan tidak stabil"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Perbarui"),

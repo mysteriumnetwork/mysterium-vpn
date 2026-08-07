@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "Ciemny",
   "@dark": {},
+  "datacenterIpBadge": "IP z centrum danych",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Łatwe do wykrycia",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "Często blokowane przez strony",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "Tylko",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "Zamknij podgląd nowego IP",
+  "@dismissNewIpPreview": {},
   "dns": "Ochrona DNS",
   "@dns": {},
   "dnsDesc": "Zapobiega wyciekom DNS",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Szybki",
   "@fastLabel": {},
+  "favoriteIpAddAction": "Dodaj do ulubionych IP",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "Dodano IP do ulubionych",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "Osiągnięto limit ulubionych IP. Usuń jedno, aby zapisać nowe.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "Usuń z ulubionych IP",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "Usunięto IP z ulubionych",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Dostępność zapisanych IP może się z czasem zmieniać. Twoje ulubione IP stało się niedostępne, więc połączyliśmy Cię z najbliższą dostępną lokalizacją.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "Połącz się i dotknij serca na karcie połączenia, aby zapisać IP i mieć do niego szybki dostęp.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "Brak ulubionych IP",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "Ulubione IP",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Przejdź na Plus lub Pro, aby zapisywać IP, które działają najlepiej, i szybko z nich korzystać.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "Zapisuj ulubione IP",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "Zapisane IP nie są dostępne w Twoim obecnym planie.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "Ulubione",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "Niedostępne IP",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "Ulepsz plan",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Twoja wersja aplikacji jest nieaktualna. Zaktualizuj aplikację, aby dalej z niej korzystać.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "Nieprawidłowe dane formularza. Sprawdź pola i spróbuj ponownie.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "IP z centrów danych zoptymalizowane pod kątem prędkości i wydajności.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "Centrum danych",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "IP mieszkaniowe",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Dostarczane przez prawdziwe gospodarstwa domowe. Prawie niewykrywalne, ale mniej stabilne.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "Mieszkaniowe",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "IP mieszkaniowe są dostarczane przez prawdziwe urządzenia domowe, więc ich dostępność może się zmieniać w czasie.\n\nGdy węzeł przejdzie w tryb offline, aplikacja ponownie połączy Cię z najbliższym dostępnym mieszkaniowym IP.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "Dlaczego mój adres IP może się zmieniać?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "Lokalizacja",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} miasto} few{{count} miasta} many{{count} miast} other{{count} miasta}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} few{{count} IP} many{{count} IP} other{{count} IP}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} region} few{{count} regiony} many{{count} regionów} other{{count} regionu}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} miasta} one{{count} miasto} few{{count} miasta} many{{count} miast} other{{count} miasta}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IP} one{{count} IP} few{{count} IP} many{{count} IP} other{{count} IP}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} regionu} one{{count} region} few{{count} regiony} many{{count} regionów} other{{count} regionu}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Lokalizacja",
   "@locationLbl": {},
   "locationsUpdated": "Zaktualizowano {location}",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Złośliwe oprogramowanie",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Zarządzaj",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Zarządzaj w sieci",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Czy chcesz otrzymywać aktualizacje e-mail, wskazówki dotyczące prywatności i oferty specjalne od Mysterium Network?",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Jak działają IP mieszkaniowe",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "IP mieszkaniowe",
+  "@residentialIpBadge": {},
   "resumeBtn": "Wznów",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "Twoja subskrypcja zostanie wznowiona od razu.",
@@ -641,7 +701,13 @@
   "semiAnnual": "co pół roku",
   "@semiAnnual": {},
   "sendAgain": "{count, plural, zero{Wyślij ponownie} one{Wyślij ponownie} few{Wyślij ponownie ({count})} many{Wyślij ponownie ({count})} other{Wyślij ponownie ({count})}}",
-  "@sendAgain": {},
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Występują tymczasowe problemy z siecią. Spróbuj ponownie później.",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Zarządzaj",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Nie zalogowano",
   "@unauthenticatedSettingTitle": {},
+  "undo": "Cofnij",
+  "@undo": {},
   "unprotectedLbl": "NIECHRONIONY",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "Niestabilna prędkość",

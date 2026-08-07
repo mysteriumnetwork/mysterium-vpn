@@ -3,6 +3,7 @@ export 'date.dart';
 export 'debug_logger.dart';
 export 'enum.dart';
 export 'error.dart';
+export 'favorite_ip.dart';
 export 'ip_type.dart';
 export 'list.dart';
 export 'location_data.dart';

@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "Koyu",
   "@dark": {},
+  "datacenterIpBadge": "Veri merkezi IP'si",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Kolayca tespit edilir",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "Sık sık engellenir",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "Yalnızca",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "Yeni IP önizlemesini kapat",
+  "@dismissNewIpPreview": {},
   "dns": "DNS koruması",
   "@dns": {},
   "dnsDesc": "DNS sızıntılarını önler",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Hızlı",
   "@fastLabel": {},
+  "favoriteIpAddAction": "Favori IP'lere ekle",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP favorilere eklendi",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "Favori IP sınırına ulaşıldı. Yeni bir IP kaydetmek için birini kaldır.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "Favori IP'lerden çıkar",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP favorilerden kaldırıldı",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Kayıtlı IP'lerin kullanılabilirliği zamanla değişebilir. Favori IP'n kullanılamaz hale geldi, bu yüzden seni en yakın kullanılabilir konuma bağladık.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "Bağlan ve hızlı erişim için bir IP kaydetmek üzere bağlantı kartındaki kalbe dokun.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "Henüz favori IP yok",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "Favori IP'ler",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Sana en uygun IP'leri kaydetmek ve ihtiyacın olduğunda hızlıca erişmek için Plus ya da Pro'ya yükselt.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "Favori IP'leri kaydet",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "Kayıtlı IP'ler mevcut planında kullanılamıyor.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "Favoriler",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "Kullanılamayan IP'ler",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "Planı yükselt",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Uygulama sürümün güncel değil. Kullanmaya devam etmek için lütfen uygulamayı güncelle.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "Geçersiz form verisi. Lütfen alanları kontrol edip tekrar dene.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "Hız ve performans için optimize edilmiş veri merkezi IP'leri.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "Veri merkezi",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "Konut IP'leri",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Gerçek hanelerce sağlanır. Neredeyse tespit edilemez ama daha az kararlıdır.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "Konut",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Konut IP'leri gerçek ev cihazlarınca sağlanır, bu yüzden kullanılabilirlik zamanla değişebilir.\n\nBir düğüm çevrimdışı olursa uygulama seni en yakın kullanılabilir konut IP'sine yeniden bağlar.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "IP'm neden değişebilir?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "Konum",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} Şehir} other{{count} Şehir}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IP}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} Eyalet} other{{count} Eyalet}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Şehir} one{{count} Şehir} other{{count} Şehir}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IP} one{{count} IP} other{{count} IP}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} Eyalet} one{{count} Eyalet} other{{count} Eyalet}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Konum",
   "@locationLbl": {},
   "locationsUpdated": "{location} güncellendi",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Kötü amaçlı yazılım",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Yönet",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Web'de yönet",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Mysterium Network'ten e-posta güncellemeleri, gizlilik ipuçları ve özel teklifler almak ister misin?",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Konut IP'leri nasıl çalışır",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "Konut IP'si",
+  "@residentialIpBadge": {},
   "resumeBtn": "Sürdür",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "Aboneliğin hemen devam edecek.",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "altı ayda bir",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{Tekrar gönder} other{Tekrar gönder ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Tekrar gönder} one{Tekrar gönder} other{Tekrar gönder ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar dene..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Yönet",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Giriş yapmadın",
   "@unauthenticatedSettingTitle": {},
+  "undo": "Geri al",
+  "@undo": {},
   "unprotectedLbl": "KORUMASIZ",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "Kararsız hız",

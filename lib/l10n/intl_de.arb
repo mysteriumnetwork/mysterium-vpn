@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "Dunkel",
   "@dark": {},
+  "datacenterIpBadge": "Datacenter-IP",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Leicht erkennbar",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "Oft von Websites blockiert",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "Nur",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "Vorschau der neuen IP schließen",
+  "@dismissNewIpPreview": {},
   "dns": "DNS-Schutz",
   "@dns": {},
   "dnsDesc": "Verhindert DNS-Leaks",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Schnell",
   "@fastLabel": {},
+  "favoriteIpAddAction": "Zu Favoriten-IPs hinzufügen",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP zu Favoriten hinzugefügt",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "Limit für Favoriten-IPs erreicht. Entferne eine IP, um eine neue zu speichern.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "Aus Favoriten-IPs entfernen",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP aus Favoriten entfernt",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Die Verfügbarkeit gespeicherter IPs kann sich mit der Zeit ändern. Deine Favoriten-IP war nicht mehr verfügbar, daher haben wir dich mit dem nächstgelegenen verfügbaren Standort verbunden.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "Verbinde dich und tippe auf das Herz auf der Verbindungskarte, um eine IP für den schnellen Zugriff zu speichern.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "Noch keine Favoriten-IPs",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "Favoriten-IPs",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Mach ein Upgrade auf Plus oder Pro, um IPs zu speichern, die gut für dich funktionieren, und sie jederzeit schnell aufzurufen.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "Favoriten-IPs speichern",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "Gespeicherte IPs sind in deinem aktuellen Plan nicht verfügbar.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "Favoriten",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "Nicht verfügbare IPs",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "Plan upgraden",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Deine App-Version ist veraltet. Bitte aktualisiere die App, um sie weiterhin zu nutzen.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "Ungültige Formulardaten. Bitte überprüfe die Felder und versuche es erneut.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "Datacenter-IPs, optimiert für Geschwindigkeit und Leistung.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "Datacenter",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "Haushalts-IPs",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Bereitgestellt von echten Haushalten. Nahezu unerkennbar, aber weniger stabil.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "Haushalt",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Haushalts-IPs stammen von echten Haushaltsgeräten, daher kann sich die Verfügbarkeit im Laufe der Zeit ändern.\n\nWenn ein Knoten offline geht, verbindet dich die App mit der nächstgelegenen verfügbaren Haushalts-IP.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "Warum kann sich meine IP ändern?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "Standort",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} Stadt} other{{count} Städte}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} Staat} other{{count} Staaten}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Städte} one{{count} Stadt} other{{count} Städte}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} Staaten} one{{count} Staat} other{{count} Staaten}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Standort",
   "@locationLbl": {},
   "locationsUpdated": "{location} aktualisiert",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Malware",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Verwalten",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Im Web verwalten",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Möchtest du E-Mail-Updates, Datenschutztipps und Sonderangebote von Mysterium Network erhalten?",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Wie Haushalts-IPs funktionieren",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "Haushalts-IP",
+  "@residentialIpBadge": {},
   "resumeBtn": "Fortsetzen",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "Dein Abo wird sofort fortgesetzt.",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "halbjährlich",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{Erneut senden} other{Erneut senden ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Erneut senden} one{Erneut senden} other{Erneut senden ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Vorübergehende Netzwerkprobleme. Bitte später erneut versuchen.",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Verwalten",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Du bist nicht angemeldet",
   "@unauthenticatedSettingTitle": {},
+  "undo": "Rückgängig",
+  "@undo": {},
   "unprotectedLbl": "UNGESCHÜTZT",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "Instabile Geschwindigkeit",

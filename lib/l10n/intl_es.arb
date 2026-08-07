@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "Oscuro",
   "@dark": {},
+  "datacenterIpBadge": "IP de centro de datos",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Fáciles de detectar",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "Suelen bloquearlas los sitios web",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "Solo",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "Cerrar vista previa de la nueva IP",
+  "@dismissNewIpPreview": {},
   "dns": "Protección DNS",
   "@dns": {},
   "dnsDesc": "Evita fugas de DNS",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Rápido",
   "@fastLabel": {},
+  "favoriteIpAddAction": "Añadir a IP favoritas",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP añadida a Favoritas",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "Límite de IP favoritas alcanzado. Elimina una IP para guardar otra.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "Quitar de IP favoritas",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP eliminada de Favoritas",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "La disponibilidad de las IP guardadas puede cambiar con el tiempo. Tu IP favorita dejó de estar disponible, así que te conectamos a la ubicación disponible más cercana.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "Conéctate y toca el corazón en la tarjeta de conexión para guardar una IP y acceder a ella rápido.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "Aún no tienes IP favoritas",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "IP favoritas",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Mejora a Plus o Pro para guardar las IP que mejor te funcionan y acceder a ellas al instante.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "Guarda tus IP favoritas",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "Las IP guardadas no están disponibles en tu plan actual.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "Favoritas",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "IP no disponibles",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "Mejorar plan",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Tu versión de la app está desactualizada. Actualízala para seguir usándola.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "Datos del formulario no válidos. Revisa los campos e inténtalo de nuevo.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "IP de centro de datos optimizadas para velocidad y rendimiento.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "Centro de datos",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "IP residenciales",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Proporcionadas por hogares reales. Casi indetectables, pero menos estables.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "Residencial",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Las IP residenciales las proporcionan dispositivos domésticos reales, por lo que la disponibilidad puede cambiar con el tiempo.\n\nSi un nodo se desconecta, la app te reconecta a la IP residencial disponible más cercana.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "¿Por qué puede cambiar mi IP?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "Ubicación",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} ciudad} other{{count} ciudades}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} estado} other{{count} estados}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} ciudades} one{{count} ciudad} other{{count} ciudades}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} estados} one{{count} estado} other{{count} estados}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Ubicación",
   "@locationLbl": {},
   "locationsUpdated": "{location} actualizado",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Malware",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Gestionar",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Gestionar en la web",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "¿Quieres recibir novedades por correo, consejos de privacidad y ofertas especiales de Mysterium Network?",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Cómo funcionan las IP residenciales",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "IP residencial",
+  "@residentialIpBadge": {},
   "resumeBtn": "Reanudar",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "Tu suscripción se reanudará de inmediato.",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "semestral",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{Reenviar} other{Reenviar ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Reenviar} one{Reenviar} other{Reenviar ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Estamos teniendo problemas temporales de red. Inténtalo de nuevo más tarde..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Gestionar",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "No has iniciado sesión",
   "@unauthenticatedSettingTitle": {},
+  "undo": "Deshacer",
+  "@undo": {},
   "unprotectedLbl": "DESPROTEGIDO",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "Velocidad inestable",

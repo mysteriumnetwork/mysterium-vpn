@@ -160,6 +160,30 @@ void main() {
         expect(result, ConnectionAction.disconnect);
       });
 
+      test('targeted request to a different IP reconnects even on the same location', () {
+        final result = store.determineToggleAction(
+          currentStatus: VpnConnectionStatus.connected,
+          currentLocation: currentLocation,
+          isRefreshIP: false,
+          requestedLocation: currentLocation,
+          requestedTargetIp: '2.2.2.2',
+          currentIp: '1.1.1.1',
+        );
+        expect(result, ConnectionAction.reconnect);
+      });
+
+      test('targeted request to the current IP disconnects (toggle)', () {
+        final result = store.determineToggleAction(
+          currentStatus: VpnConnectionStatus.connected,
+          currentLocation: currentLocation,
+          isRefreshIP: false,
+          requestedLocation: currentLocation,
+          requestedTargetIp: '1.1.1.1',
+          currentIp: '1.1.1.1',
+        );
+        expect(result, ConnectionAction.disconnect);
+      });
+
       test('returns reconnect when different location requested', () {
         final result = store.determineToggleAction(
           currentStatus: VpnConnectionStatus.connected,

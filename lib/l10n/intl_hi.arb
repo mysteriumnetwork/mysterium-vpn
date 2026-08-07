@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "डार्क",
   "@dark": {},
+  "datacenterIpBadge": "डेटासेंटर IP",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "आसानी से पता लगने योग्य",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "अक्सर वेबसाइटों द्वारा ब्लॉक",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "केवल",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "नए IP का प्रीव्यू बंद करें",
+  "@dismissNewIpPreview": {},
   "dns": "DNS सुरक्षा",
   "@dns": {},
   "dnsDesc": "DNS लीक रोकता है",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "तेज़",
   "@fastLabel": {},
+  "favoriteIpAddAction": "पसंदीदा IPs में जोड़ें",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP पसंदीदा में जोड़ा गया",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "पसंदीदा IP की सीमा पूरी हो गई। नया सहेजने के लिए कोई IP हटाएँ।",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "पसंदीदा IPs से हटाएँ",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP पसंदीदा से हटाया गया",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "सहेजे गए IP की उपलब्धता समय के साथ बदल सकती है। आपका पसंदीदा IP अनुपलब्ध हो गया, इसलिए हमने आपको निकटतम उपलब्ध लोकेशन से जोड़ दिया।",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "कनेक्ट करें और कनेक्शन कार्ड पर दिल के निशान पर टैप करके IP सहेजें, ताकि जल्दी पहुँच मिले।",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "अभी कोई पसंदीदा IP नहीं",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "पसंदीदा IPs",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Plus या Pro में अपग्रेड करें और जो IP आपके लिए बेहतर काम करते हैं उन्हें सहेजकर जब चाहें तुरंत इस्तेमाल करें।",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "पसंदीदा IP सहेजें",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "सहेजे गए IP आपके मौजूदा प्लान में उपलब्ध नहीं हैं।",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "पसंदीदा",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "अनुपलब्ध IP",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "प्लान अपग्रेड करें",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "आपके ऐप का वर्शन पुराना है। इसे इस्तेमाल जारी रखने के लिए कृपया ऐप अपडेट करें।",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "अमान्य फ़ॉर्म डेटा। कृपया फ़ील्ड जाँचें और फिर से प्रयास करें।",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "गति और प्रदर्शन के लिए अनुकूलित डेटासेंटर IPs।",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "डेटासेंटर",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "आवासीय IPs",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "असली घरों द्वारा प्रदान किए गए। लगभग पता न लगने योग्य लेकिन कम स्थिर।",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "आवासीय",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "आवासीय IPs असली घरेलू डिवाइस से प्रदान किए जाते हैं, इसलिए समय के साथ उपलब्धता बदल सकती है।\n\nयदि कोई नोड ऑफ़लाइन हो जाता है, तो ऐप आपको नज़दीकी उपलब्ध आवासीय IP से फिर से कनेक्ट कर देता है।",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "मेरा IP क्यों बदल सकता है?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "लोकेशन",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} City} other{{count} Cities}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} State} other{{count} States}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Cities} one{{count} City} other{{count} Cities}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} States} one{{count} State} other{{count} States}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "लोकेशन",
   "@locationLbl": {},
   "locationsUpdated": "{location} अपडेट हुआ",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "मैलवेयर",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "प्रबंधित करें",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "वेब पर प्रबंधित करें",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "क्या आप Mysterium Network से ईमेल अपडेट, गोपनीयता टिप्स और खास ऑफ़र पाना चाहेंगे?",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "आवासीय IPs कैसे काम करते हैं",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "आवासीय IP",
+  "@residentialIpBadge": {},
   "resumeBtn": "फिर शुरू करें",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "आपकी सदस्यता तुरंत फिर शुरू हो जाएगी।",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "अर्ध-वार्षिक",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, one{फिर से भेजें} other{फिर से भेजें ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{फिर से भेजें} one{फिर से भेजें} other{फिर से भेजें ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "हमें अस्थायी नेटवर्क समस्याएँ आ रही हैं। कृपया बाद में फिर से प्रयास करें।",
   "@serviceUnavailableError": {},
   "settingManageBtn": "प्रबंधित करें",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "आप साइन इन नहीं हैं",
   "@unauthenticatedSettingTitle": {},
+  "undo": "पूर्ववत करें",
+  "@undo": {},
   "unprotectedLbl": "असुरक्षित",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "अस्थिर गति",

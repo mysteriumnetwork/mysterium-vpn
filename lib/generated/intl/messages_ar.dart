@@ -217,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "عناوين IP لمراكز البيانات",
     ),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("معظم شبكات VPN"),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("عنوان IP لمركز بيانات"),
     "de": MessageLookupByLibrary.simpleMessage("الألمانية"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("حذف الحساب"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("حذف الحساب؟"),
@@ -230,6 +231,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("غير متصل"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("جارٍ قطع الاتصال"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("فقط"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("إغلاق معاينة عنوان IP الجديد"),
     "dns": MessageLookupByLibrary.simpleMessage("حماية DNS"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("يمنع تسريبات DNS"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("تم"),
@@ -256,6 +258,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعذّر التحقق من آخر عملية شراء لاشتراكك. اضغط الزر أدناه لإعادة المحاولة.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("سريع"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("إضافة إلى عناوين IP المفضلة"),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("تمت إضافة عنوان IP إلى المفضلة"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "تم بلوغ الحد الأقصى لعناوين IP المفضلة. احذف عنوانًا لحفظ عنوان جديد.",
+    ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("إزالة من عناوين IP المفضلة"),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("تمت إزالة عنوان IP من المفضلة"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "قد تتغير إمكانية توفّر عناوين IP المحفوظة مع الوقت. أصبح عنوان IP المفضّل لديك غير متاح، لذا وصّلناك بأقرب موقع متاح.",
+    ),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "اتصل ثم اضغط على القلب في بطاقة الاتصال لحفظ عنوان IP والوصول إليه بسرعة.",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("لا توجد عناوين IP مفضلة بعد"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("عناوين IP المفضلة"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "قم بالترقية إلى Plus أو Pro لحفظ عناوين IP الأنسب لك والوصول إليها بسرعة وقتما تشاء.",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("احفظ عناوين IP المفضلة"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "عناوين IP المحفوظة غير متاحة في خطتك الحالية.",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("المفضلة"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("عناوين IP غير المتاحة"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("ترقية الخطة"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "إصدار تطبيقك قديم. يُرجى تحديث التطبيق لمواصلة استخدامه.",
     ),
@@ -299,10 +326,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "عناوين IP لمراكز البيانات مُحسّنة للسرعة والأداء.",
     ),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("مركز بيانات"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("عناوين IP سكنية"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "مقدّمة من منازل حقيقية. يكاد يستحيل اكتشافها لكنها أقل استقرارًا.",
     ),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("سكني"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "تُقدَّم عناوين IP السكنية من أجهزة منزلية حقيقية، لذا قد يتغير توفرها بمرور الوقت.\n\nإذا انقطع اتصال أحد العُقد، يعيد التطبيق توصيلك بأقرب عنوان IP سكني متاح.",
     ),
@@ -350,6 +379,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("زمن استجابة منخفض"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("مدريد، إسبانيا 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("برامج ضارة"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("إدارة"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("الإدارة عبر الويب"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "هل ترغب في تلقي تحديثات بريدية ونصائح خصوصية وعروض خاصة من Mysterium Network؟",
@@ -533,6 +563,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تختلف عناوين IP السكنية عن عناوين IP لمراكز البيانات. إليك ما يمكن توقعه.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("كيف تعمل عناوين IP السكنية"),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("عنوان IP سكني"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("استئناف"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "سيتم استئناف اشتراكك فورًا.",
@@ -735,6 +766,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "سجّل الدخول للوصول إلى حسابك وفتح جميع الميزات",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("لم تسجّل الدخول"),
+    "undo": MessageLookupByLibrary.simpleMessage("تراجع"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("غير محمي"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("سرعة غير مستقرة"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("تحديث"),

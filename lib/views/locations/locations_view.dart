@@ -28,9 +28,9 @@ class LocationsSliverView extends HookConsumerWidget {
 
     final handleToggleConnection = useHandleToggleConnection();
 
-    void handleSetLocationType(IPType value) {
-      analyticsStore.logTabChange(value);
-      locationsQueryStore.setIPType(value);
+    void handleTabChanged(LocationsTab tab) {
+      analyticsStore.logTabChange(tab);
+      locationsQueryStore.selectTab(tab);
     }
 
     void handleLocationTapped(VPNLocation location) {
@@ -48,6 +48,7 @@ class LocationsSliverView extends HookConsumerWidget {
     return Observer(
       builder: (context) {
         final locationType = locationsQueryStore.ipType;
+        final tab = locationsQueryStore.tab;
         final future = locationsStore.locationsFuture;
         final locations = locationsStore.locations;
         final topLocations = locationsStore.topLocations;
@@ -59,10 +60,11 @@ class LocationsSliverView extends HookConsumerWidget {
           hasNoServers: hasNoServers,
           recentLocations: recentLocations,
           locationType: locationType,
+          tab: tab,
           locations: locations,
           topLocations: topLocations,
           onRecentLocationTapped: handleRecentLocationTapped,
-          onLocationTypeChanged: handleSetLocationType,
+          onTabChanged: handleTabChanged,
           onLocationTapped: handleLocationTapped,
         );
       },
@@ -76,10 +78,11 @@ class _Body extends HookConsumerWidget {
     required this.hasNoServers,
     required this.recentLocations,
     required this.locationType,
+    required this.tab,
     required this.locations,
     required this.topLocations,
     required this.onRecentLocationTapped,
-    required this.onLocationTypeChanged,
+    required this.onTabChanged,
     required this.onLocationTapped,
   });
 
@@ -87,10 +90,11 @@ class _Body extends HookConsumerWidget {
   final bool hasNoServers;
   final List<VPNLocation> recentLocations;
   final IPType locationType;
+  final LocationsTab tab;
   final List<VPNLocation> locations;
   final List<VPNLocation> topLocations;
   final void Function(VPNLocation) onRecentLocationTapped;
-  final void Function(IPType) onLocationTypeChanged;
+  final void Function(LocationsTab) onTabChanged;
   final void Function(VPNLocation) onLocationTapped;
 
   @override
@@ -162,18 +166,27 @@ class _Body extends HookConsumerWidget {
             locations: locations,
             topLocations: topLocations,
             locationType: locationType,
-            onLocationTypeChanged: onLocationTypeChanged,
+            tab: tab,
+            onTabChanged: onTabChanged,
             onLocationTapped: onLocationTapped,
           ),
         ],
       );
     }
     if (future.status == FutureStatus.pending) {
+      // Mirror the loaded content's horizontal insets so skeletons don't
+      // span wider than the items they stand in for.
       return MultiSliver(
         children: [
-          const RecentLocationsLoading(),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            sliver: const RecentLocationsLoading(),
+          ),
           SizedBox(height: theme.spacing.xl2),
-          const LocationsSliverLoading(),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            sliver: const LocationsSliverLoading(),
+          ),
         ],
       );
     }
@@ -267,27 +280,38 @@ class _Locations extends HookConsumerWidget {
     required this.locations,
     required this.topLocations,
     required this.locationType,
-    required this.onLocationTypeChanged,
+    required this.tab,
+    required this.onTabChanged,
     required this.onLocationTapped,
   });
 
   final List<VPNLocation> locations;
   final List<VPNLocation> topLocations;
   final IPType locationType;
-  final void Function(IPType) onLocationTypeChanged;
+  final LocationsTab tab;
+  final void Function(LocationsTab) onTabChanged;
   final void Function(VPNLocation) onLocationTapped;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationsQueryStore = ref.watch(locationsQueryStorePOD);
     final locationsStore = ref.watch(locationsStorePOD);
-    final showRefreshButton = ref.watch(remoteConfigStorePOD).locationsRefreshButtonEnabled;
+    final remoteConfigStore = ref.watch(remoteConfigStorePOD);
+    final favoriteIpsStore = ref.watch(favoriteIpsStorePOD);
+    final showRefreshButton = remoteConfigStore.locationsRefreshButtonEnabled;
     final theme = Theme.of(context);
 
     final typeSwitcherKey = ref.watch(homeStateProvider.select((it) => it.typeSwitcherKey));
     final locationsKey = ref.watch(homeStateProvider.select((it) => it.locationsKey));
     final searchKeyword = useComputedValue(() => locationsQueryStore.searchTrimmed);
     final isEmpty = useComputedValue(() => locationsStore.isEmpty);
+    final isAuthenticated = useIsAuthenticated();
+    final showFavoritesTab =
+        useComputedValue(() => remoteConfigStore.favoriteLocationsEnabled) && isAuthenticated;
+    // locationsStore.locationTypes / favoriteIpsStore.isEnabled are read inside
+    // the Observer below, not via useComputedValue: locationTypes returns a
+    // fresh list each recomputation, so a widget-level computed would rebuild
+    // this whole sliver (including the full country list) on every refresh.
     final innerHorizontalPadding = ScreenType.of(context) >= ScreenType.tablet
         ? theme.spacing.xl3
         : 0.0;
@@ -298,21 +322,36 @@ class _Locations extends HookConsumerWidget {
     // pinned header so the selected item isn't hidden behind it.
     final stickyKey = useMemoized(GlobalKey.new);
 
+    // When the tab is hidden (e.g. after logout while it was selected), fall
+    // back to the underlying IP-type tab so switcher and content agree.
+    final effectiveTab = showFavoritesTab ? tab : LocationsTab.fromIPType(locationType);
+    final onFavoritesTab = effectiveTab == LocationsTab.favorite;
+
+    List<LocationsTab> tabsFor(List<IPType> types) => [
+      for (final type in types) LocationsTab.fromIPType(type),
+      if (showFavoritesTab) LocationsTab.favorite,
+    ];
+
     return MultiSliver(
       children: [
         SliverPinnedHeader(
           child: SizedBox(
             key: stickyKey,
             child: Observer(
-              builder: (context) => LocationTypeSwitcher(
-                key: typeSwitcherKey,
-                value: locationType,
-                options: locationsStore.locationTypes,
-                onChanged: onLocationTypeChanged,
-                activeTabTrailing: showRefreshButton
-                    ? LocationsRefreshIconButton(type: locationType)
-                    : null,
-              ),
+              builder: (context) {
+                final tabs = tabsFor(locationsStore.locationTypes);
+                final favoritesLocked = !favoriteIpsStore.isEnabled;
+                return LocationTypeSwitcher(
+                  key: typeSwitcherKey,
+                  value: effectiveTab,
+                  options: tabs,
+                  favoriteLocked: favoritesLocked,
+                  onChanged: onTabChanged,
+                  activeTabTrailing: showRefreshButton && (!favoritesLocked || !onFavoritesTab)
+                      ? LocationsRefreshIconButton(tab: effectiveTab)
+                      : null,
+                );
+              },
             ),
           ),
         ),
@@ -320,7 +359,20 @@ class _Locations extends HookConsumerWidget {
           child: SliverStack(
             children: [
               SliverPositioned.fill(
-                child: LocationsContainer(key: locationsKey, locationType: locationType),
+                // Own Observer: the corners depend on the tab list, and only
+                // this box should rebuild when the available types change.
+                child: Observer(
+                  builder: (context) {
+                    final tabs = tabsFor(locationsStore.locationTypes);
+                    return LocationsContainer(
+                      key: locationsKey,
+                      // The corner under the active tab flattens when that tab
+                      // sits at the row's edge.
+                      flattenTopLeft: tabs.firstOrNull == effectiveTab,
+                      flattenTopRight: tabs.lastOrNull == effectiveTab,
+                    );
+                  },
+                ),
               ),
               SliverPadding(
                 padding: EdgeInsets.symmetric(
@@ -329,27 +381,31 @@ class _Locations extends HookConsumerWidget {
                 ),
                 sliver: MultiSliver(
                   children: [
-                    if (searchKeyword.isEmpty)
-                      switch (locationType) {
-                        IPType.datacenter => LocationsDisclaimer.dataCenter(),
-                        _ => LocationsDisclaimer.residential(),
-                      },
-                    ScrollableLocationsSliverList(
-                      items: locations,
-                      onItemPressed: onLocationTapped,
-                      stickyHeaderKey: stickyKey,
-                    ),
-                    if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
-                      SliverLayoutBuilder(
-                        builder: (context, sliverConstraints) => SliverToBoxAdapter(
-                          child: LocationsEmptySearchResult(
-                            availableHeight: sliverConstraints.remainingPaintExtent,
-                            onClear: () =>
-                                locationsQueryStore.setSearch('', debounce: Duration.zero),
+                    if (onFavoritesTab)
+                      const FavoriteIpsSliver()
+                    else ...[
+                      if (searchKeyword.isEmpty)
+                        switch (locationType) {
+                          IPType.datacenter => LocationsDisclaimer.dataCenter(),
+                          _ => LocationsDisclaimer.residential(),
+                        },
+                      ScrollableLocationsSliverList(
+                        items: locations,
+                        onItemPressed: onLocationTapped,
+                        stickyHeaderKey: stickyKey,
+                      ),
+                      if ((isEmpty ?? false) && searchKeyword.isNotEmpty)
+                        SliverLayoutBuilder(
+                          builder: (context, sliverConstraints) => SliverToBoxAdapter(
+                            child: LocationsEmptySearchResult(
+                              availableHeight: sliverConstraints.remainingPaintExtent,
+                              onClear: () =>
+                                  locationsQueryStore.setSearch('', debounce: Duration.zero),
+                            ),
                           ),
                         ),
-                      ),
-                    if ((isEmpty ?? false) && searchKeyword.isEmpty) const LocationItemEmpty(),
+                      if ((isEmpty ?? false) && searchKeyword.isEmpty) const LocationItemEmpty(),
+                    ],
                   ],
                 ),
               ),

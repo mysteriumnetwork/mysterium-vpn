@@ -58,10 +58,11 @@ localizely-fetch:
 	fvm dart run intl_utils:localizely_download --api-token "$$token"
 
 # Upload the source (en) ARB to Localizely — adds new keys without overwriting
-# existing translations.
+# existing translations. Pass `flags=--upload-overwrite` when an existing en
+# string was corrected, otherwise the fix is dropped and the next fetch reverts it.
 localizely-upload:
 	@$(resolve_localizely_token); \
-	fvm dart run intl_utils:localizely_upload_main --api-token "$$token"
+	fvm dart run intl_utils:localizely_upload_main --api-token "$$token" $(flags)
 
 # Regenerate the S localization class (intl_utils) + the Tr.byKey bridge, then
 # format. Uses the standalone bridge generator (fast) rather than build_runner;

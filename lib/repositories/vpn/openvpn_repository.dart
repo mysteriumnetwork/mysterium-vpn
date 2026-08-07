@@ -121,6 +121,7 @@ class OpenVpnRepository extends BaseVpnRepository {
     required String? cluster,
     required bool? resetConnection,
     required String dnsAddress,
+    String? targetIp,
   }) async {
     try {
       final response = await apiService.fetchOpenVpnConfig(
@@ -134,6 +135,7 @@ class OpenVpnRepository extends BaseVpnRepository {
           userIntent: userIntent,
           cluster: cluster,
           dns: dnsAddress,
+          targetIp: targetIp,
         ),
       );
       return VpnConfig.fromOpenVpn(response);

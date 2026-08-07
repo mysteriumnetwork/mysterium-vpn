@@ -28,6 +28,7 @@ abstract class VpnRepository {
     required String? cluster,
     required bool? resetConnection,
     required String dnsAddress,
+    String? targetIp,
   });
   Future<void> resetApp();
   Future<void> disconnectAllDevices();

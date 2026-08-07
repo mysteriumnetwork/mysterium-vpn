@@ -2,7 +2,7 @@ name: mysterium_vpn
 description: Next-gen Mysterium VPN client for mobile (iOS/Android) and desktop (Windows/MacOS/Linux).
 
 publish_to: "none"
-version: 2.4.8-dev
+version: 2.4.9-dev
 
 environment:
   sdk: ">=3.12.0 <4.0.0"
@@ -59,7 +59,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      # ref: 0.0.30
+      # ref: 0.0.33
       ref: features/setting_card_chip
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
@@ -90,7 +90,7 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.79
+      ref: 1.0.81
   webview_flutter: 4.14.1
   window_manager: 0.5.2
   wireguard_dart:

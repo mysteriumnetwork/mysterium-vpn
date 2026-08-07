@@ -48,11 +48,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m13(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国を選んでください。";
 
-  static String m14(count) => "${Intl.plural(count, other: '${count} 都市')}";
+  static String m14(count) => "${Intl.plural(count, zero: '${count} 都市', other: '${count} 都市')}";
 
-  static String m15(count) => "${Intl.plural(count, other: '${count} IP')}";
+  static String m15(count) => "${Intl.plural(count, zero: '${count} IP', other: '${count} IP')}";
 
-  static String m16(count) => "${Intl.plural(count, other: '${count} 州')}";
+  static String m16(count) => "${Intl.plural(count, zero: '${count} 州', other: '${count} 州')}";
 
   static String m17(location) => "${location} は利用できません";
 
@@ -72,7 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m25(date) => "${date} に更新";
 
-  static String m26(count) => "${Intl.plural(count, other: '再送信 (${count})')}";
+  static String m26(count) => "${Intl.plural(count, zero: '再送信', other: '再送信 (${count})')}";
 
   static String m27(percent) => "${percent}% お得";
 
@@ -188,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("プライバシーが低い"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("データセンター IP"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("多くの VPN"),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("データセンター IP"),
     "de": MessageLookupByLibrary.simpleMessage("ドイツ語"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("アカウントを削除"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("アカウントを削除しますか？"),
@@ -201,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("切断済み"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("切断中…"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("特価"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("新しい IP のプレビューを閉じる"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS 保護"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("DNS リークを防止します"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("完了"),
@@ -223,6 +225,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "前回のサブスクリプション購入を確認できませんでした。下のボタンを押して再試行してください。",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("高速"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("お気に入り IP に追加"),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP をお気に入りに追加しました"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "お気に入り IP の上限に達しました。新しく保存するには IP を削除してください。",
+    ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("お気に入り IP から削除"),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP をお気に入りから削除しました"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "保存した IP の利用可否は時間とともに変わることがあります。お気に入りの IP が利用できなくなったため、最も近い利用可能なロケーションに接続しました。",
+    ),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "接続して接続カードのハートをタップすると、IP を保存してすぐに使えます。",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("お気に入り IP がありません"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("お気に入り IP"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Plus または Pro にアップグレードすると、使いやすい IP を保存して、必要なときにすぐ利用できます。",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("お気に入り IP を保存"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "保存した IP は現在のプランではご利用いただけません。",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("お気に入り"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("利用できない IP"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("プランをアップグレード"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "アプリのバージョンが古くなっています。引き続き使用するにはアプリをアップデートしてください。",
     ),
@@ -264,10 +291,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "速度とパフォーマンスに最適化されたデータセンター IP。",
     ),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("データセンター"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "実際の家庭から提供。ほぼ検出不可能ですが安定性は低めです。",
     ),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("レジデンシャル"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "レジデンシャル IP は実際の家庭用デバイスから提供されるため、利用可否は時間とともに変わることがあります。\n\nノードがオフラインになると、アプリは最寄りの利用可能な レジデンシャル IP に再接続します。",
     ),
@@ -305,6 +334,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("低遅延"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("マドリード（スペイン） 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("マルウェア"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("管理"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("ウェブで管理"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "Mysterium Network からのメール更新、プライバシーのヒント、特別オファーを受け取りますか？",
@@ -464,6 +494,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "レジデンシャル IP はデータセンター IP とは異なります。知っておきたいポイントをご紹介します。",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("レジデンシャル IP の仕組み"),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("再開"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("サブスクリプションはすぐに再開されます。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("サブスクリプションを再開しますか？"),
@@ -642,6 +673,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "サインインしてアカウントにアクセスし、すべての機能を利用しましょう",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("サインインしていません"),
+    "undo": MessageLookupByLibrary.simpleMessage("元に戻す"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("未保護"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("不安定な速度"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("アップデート"),

@@ -189,6 +189,10 @@ final locationsServicePOD = Provider<LocationsService>((ref) {
 
 final assetsServicePOD = Provider((_) => const AssetsService());
 
+final favoriteIpsAvailabilityServicePOD = Provider<FavoriteIpsAvailabilityService>(
+  (ref) => RestFavoriteIpsAvailabilityService(ref.watch(vpnApiDioPOD)),
+);
+
 final newsCenterServicePOD = Provider<NewsCenterService>(
   (ref) => RestNewsCenterService(
     api: ref.watch(vpnApiPOD).getNewscenter(),

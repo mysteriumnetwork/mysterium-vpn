@@ -192,6 +192,20 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
   return store;
 });
 
+final favoriteIpsStorePOD = Provider<FavoriteIpsStore>((ref) {
+  final store = FavoriteIpsStore(
+    LocalDBService.instance,
+    ref.watch(favoriteIpsAvailabilityServicePOD),
+    ref.watch(subscriptionStorePOD),
+    ref.watch(remoteConfigStorePOD),
+    ref.watch(analyticsStorePOD),
+  );
+
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
 final unavailableLocationsStorePOD = Provider<UnavailableLocationsStore>((ref) {
   final store = UnavailableLocationsStore(ref.watch(locationsStorePOD));
   ref.onDispose(store.dispose);

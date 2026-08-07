@@ -34,6 +34,7 @@ class UserData {
     this.residentialReminderShownAt,
     this.residentialConnectCount = 0,
     this.subscriptionOnboardingShown = false,
+    this.favoriteIps = const [],
   });
 
   @HiveField(0)
@@ -115,6 +116,9 @@ class UserData {
 
   @HiveField(22, defaultValue: false)
   bool subscriptionOnboardingShown;
+
+  @HiveField(23, defaultValue: <FavoriteIp>[])
+  List<FavoriteIp> favoriteIps;
 
   set recentLocations(List<VPNLocation> locations) {
     recentVPNLocations = [

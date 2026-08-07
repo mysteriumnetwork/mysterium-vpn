@@ -164,6 +164,12 @@ class MyApp extends HookConsumerWidget {
     _invalidateIfExists(ref, locationsStorePOD);
     _invalidateIfExists(ref, subscriptionStorePOD);
     _invalidateIfExists(ref, recentLocationsStorePOD);
+    _invalidateIfExists(ref, favoriteIpsStorePOD);
+    // The Favorite tab is hidden when signed out; drop the selection so the
+    // query store's `tab` keeps matching what the UI shows.
+    if (ref.exists(locationsQueryStorePOD)) {
+      ref.read(locationsQueryStorePOD).deselectFavoritesTab();
+    }
 
     if (ref.exists(refreshIPStorePOD)) {
       ref.read(refreshIPStorePOD).disposeStore();

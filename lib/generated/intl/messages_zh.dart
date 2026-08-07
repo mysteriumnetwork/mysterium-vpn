@@ -48,11 +48,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m13(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区，下次即可获得不同的 IP。";
 
-  static String m14(count) => "${Intl.plural(count, other: '${count} 个城市')}";
+  static String m14(count) => "${Intl.plural(count, zero: '${count} 个城市', other: '${count} 个城市')}";
 
-  static String m15(count) => "${Intl.plural(count, other: '${count} 个 IP')}";
+  static String m15(count) =>
+      "${Intl.plural(count, zero: '${count} 个 IP', other: '${count} 个 IP')}";
 
-  static String m16(count) => "${Intl.plural(count, other: '${count} 个州')}";
+  static String m16(count) => "${Intl.plural(count, zero: '${count} 个州', other: '${count} 个州')}";
 
   static String m17(location) => "${location} 当前不可用";
 
@@ -72,7 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m25(date) => "${date} 续订";
 
-  static String m26(count) => "${Intl.plural(count, other: '重新发送 (${count})')}";
+  static String m26(count) => "${Intl.plural(count, zero: '重新发送', other: '重新发送 (${count})')}";
 
   static String m27(percent) => "节省 ${percent}%";
 
@@ -180,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("隐私性较低"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("数据中心 IP"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("大多数 VPN"),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("数据中心 IP"),
     "de": MessageLookupByLibrary.simpleMessage("德语"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("删除账户"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("删除账户？"),
@@ -193,6 +195,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("已断开连接"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("正在断开连接"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("仅需"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("关闭新 IP 预览"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS 保护"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("防止 DNS 泄漏"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("完成"),
@@ -211,6 +214,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToSubscribe": MessageLookupByLibrary.simpleMessage("你的订阅出现问题。请重试！"),
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage("我们无法验证你上次的订阅购买。请点击下方按钮重试。"),
     "fastLabel": MessageLookupByLibrary.simpleMessage("快速"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("加入收藏的 IP"),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("已将 IP 加入收藏"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage("收藏 IP 已达上限。请移除一个 IP 后再保存新的。"),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("从收藏的 IP 中移除"),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("已将 IP 从收藏中移除"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "已保存 IP 的可用性可能会随时间变化。你的收藏 IP 已不可用，因此我们为你连接了最近的可用位置。",
+    ),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage("连接后点按连接卡片上的爱心，即可保存 IP 以便快速访问。"),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("暂无收藏的 IP"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("收藏的 IP"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "升级到 Plus 或 Pro，即可保存适合你的 IP，随时快速使用。",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("收藏常用 IP"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage("当前套餐不支持已保存的 IP。"),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("收藏"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("不可用的 IP"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("升级套餐"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "你的应用版本过旧。请更新应用后继续使用。",
     ),
@@ -246,8 +268,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipType": MessageLookupByLibrary.simpleMessage("IP 类型"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("数据中心 IP"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage("数据中心 IP，针对速度和性能进行了优化。"),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("数据中心"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("住宅 IP"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage("由真实家庭提供。几乎无法被检测，但稳定性较差。"),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("住宅"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "住宅 IP 由真实家用设备提供，因此可用性可能随时间变化。\n\n若某个节点离线，应用会将你重新连接到最近的可用住宅 IP。",
     ),
@@ -283,6 +307,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("延迟低"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("西班牙马德里 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("恶意软件"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("管理"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("在网页上管理"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "你是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私技巧和特别优惠？",
@@ -426,6 +451,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "住宅 IP 与数据中心 IP 不同。以下是你需要了解的内容。",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("住宅 IP 的工作原理"),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("住宅 IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("恢复"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("你的订阅将立即恢复。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("恢复订阅？"),
@@ -594,6 +620,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unauthenticatedBannerTitle": MessageLookupByLibrary.simpleMessage("你尚未登录"),
     "unauthenticatedSettingSubtitle": MessageLookupByLibrary.simpleMessage("登录以访问账户并解锁所有功能"),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("你尚未登录"),
+    "undo": MessageLookupByLibrary.simpleMessage("撤销"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("未受保护"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("速度不稳定"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("更新"),

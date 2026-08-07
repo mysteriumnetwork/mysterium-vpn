@@ -99,6 +99,18 @@ mixin _$HomeTabsStore on _HomeTabsStore, Store {
   }
 
   @override
+  void openFavoriteLocations() {
+    final _$actionInfo = _$_HomeTabsStoreActionController.startAction(
+      name: '_HomeTabsStore.openFavoriteLocations',
+    );
+    try {
+      return super.openFavoriteLocations();
+    } finally {
+      _$_HomeTabsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void consumePendingLocationsSearchFocus() {
     final _$actionInfo = _$_HomeTabsStoreActionController.startAction(
       name: '_HomeTabsStore.consumePendingLocationsSearchFocus',

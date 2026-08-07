@@ -52,12 +52,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "No alternative IPs are available in ${location}. Choose another country to get a different IP next time.";
 
   static String m14(count) =>
-      "${Intl.plural(count, one: '${count} City', other: '${count} Cities')}";
+      "${Intl.plural(count, zero: '${count} Cities', one: '${count} City', other: '${count} Cities')}";
 
-  static String m15(count) => "${Intl.plural(count, one: '${count} IP', other: '${count} IPs')}";
+  static String m15(count) =>
+      "${Intl.plural(count, zero: '${count} IPs', one: '${count} IP', other: '${count} IPs')}";
 
   static String m16(count) =>
-      "${Intl.plural(count, one: '${count} State', other: '${count} States')}";
+      "${Intl.plural(count, zero: '${count} States', one: '${count} State', other: '${count} States')}";
 
   static String m17(location) => "${location} is not available";
 
@@ -217,6 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCentreComparisonCardItem3": MessageLookupByLibrary.simpleMessage("Less private"),
     "dataCentreComparisonCardLbl": MessageLookupByLibrary.simpleMessage("DATA CENTRE IPS"),
     "dataCentreComparisonCardTitle": MessageLookupByLibrary.simpleMessage("Most VPNs"),
+    "datacenterIpBadge": MessageLookupByLibrary.simpleMessage("Datacenter IP"),
     "de": MessageLookupByLibrary.simpleMessage("German"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Delete account"),
     "deleteAccountQuestion": MessageLookupByLibrary.simpleMessage("Delete Account?"),
@@ -230,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnected": MessageLookupByLibrary.simpleMessage("Disconnected"),
     "disconnecting": MessageLookupByLibrary.simpleMessage("Disconnecting"),
     "discountedPriceLabel": MessageLookupByLibrary.simpleMessage("Only"),
+    "dismissNewIpPreview": MessageLookupByLibrary.simpleMessage("Dismiss new IP preview"),
     "dns": MessageLookupByLibrary.simpleMessage("DNS protection"),
     "dnsDesc": MessageLookupByLibrary.simpleMessage("Prevents DNS leaks"),
     "doneBtn": MessageLookupByLibrary.simpleMessage("Done"),
@@ -256,6 +259,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "We couldn\'t verify your last subscription purchase. Click the button below to retry verification.",
     ),
     "fastLabel": MessageLookupByLibrary.simpleMessage("Fast"),
+    "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Add to Favourite IPs"),
+    "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP added to Favourite"),
+    "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
+      "Favourite IP limit reached. Remove an IP to save a new one.",
+    ),
+    "favoriteIpRemoveAction": MessageLookupByLibrary.simpleMessage("Remove from Favourite IPs"),
+    "favoriteIpRemovedToast": MessageLookupByLibrary.simpleMessage("IP removed from Favourite"),
+    "favoriteIpsDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.",
+    ),
+    "favoriteIpsEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "Connect and tap the heart on the connection card to save an IP for quick access.",
+    ),
+    "favoriteIpsEmptyTitle": MessageLookupByLibrary.simpleMessage("No Favourite IPs yet"),
+    "favoriteIpsLabel": MessageLookupByLibrary.simpleMessage("Favourite IPs"),
+    "favoriteIpsLockedBody": MessageLookupByLibrary.simpleMessage(
+      "Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.",
+    ),
+    "favoriteIpsLockedTitle": MessageLookupByLibrary.simpleMessage("Save Favourite IPs"),
+    "favoriteIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Saved IPs are not available on your current plan.",
+    ),
+    "favoriteIpsTab": MessageLookupByLibrary.simpleMessage("Favourite"),
+    "favoriteIpsUnavailableHeading": MessageLookupByLibrary.simpleMessage("Unavailable IPs"),
+    "favoriteIpsUpgradePlan": MessageLookupByLibrary.simpleMessage("Upgrade plan"),
     "featureToggleMinVersionNotSatisfied": MessageLookupByLibrary.simpleMessage(
       "Your app version is outdated. Please update the app to continue using it.",
     ),
@@ -299,10 +327,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Datacenter IPs optimised for speed and performance.",
     ),
+    "ipTypeDataCenterTab": MessageLookupByLibrary.simpleMessage("Datacenter"),
     "ipTypeResidential": MessageLookupByLibrary.simpleMessage("Residential IPs"),
     "ipTypeResidentialDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Provided by real households. Nearly undetectable but less stable.",
     ),
+    "ipTypeResidentialTab": MessageLookupByLibrary.simpleMessage("Residential"),
     "ipTypeResidentialTooltipBody": MessageLookupByLibrary.simpleMessage(
       "Residential IPs are provided by real household devices, so availability can change over time.\n\nIf a node goes offline, the app reconnects you to the nearest available residential IP.",
     ),
@@ -348,6 +378,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowLatencyReason": MessageLookupByLibrary.simpleMessage("Low latency"),
     "madridLbl": MessageLookupByLibrary.simpleMessage("Madrid, Spain 🇪🇸"),
     "malwareLbl": MessageLookupByLibrary.simpleMessage("Malware"),
+    "manageFavoriteIpsBtn": MessageLookupByLibrary.simpleMessage("Manage"),
     "manageOnWebBtn": MessageLookupByLibrary.simpleMessage("Manage on the web"),
     "marketingConsentPopupDesc": MessageLookupByLibrary.simpleMessage(
       "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
@@ -403,9 +434,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pause subscription"),
-    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
-      "We could not pause your subscription. Please try again.",
-    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "You can pause your plan once per billing cycle.",
     ),
@@ -546,10 +574,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Residential IPs are different from datacenter IPs. Here’s what to expect.",
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("How Residential IPs work"),
+    "residentialIpBadge": MessageLookupByLibrary.simpleMessage("Residential IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Resume"),
-    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
-      "We could not resume your subscription. Please try again.",
-    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Your subscription will resume immediately.",
     ),
@@ -771,6 +797,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sign in to access your account and unlock all features",
     ),
     "unauthenticatedSettingTitle": MessageLookupByLibrary.simpleMessage("You\'re not signed in"),
+    "undo": MessageLookupByLibrary.simpleMessage("Undo"),
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("UNPROTECTED"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Unstable speed"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Update"),

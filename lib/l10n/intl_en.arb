@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "Dark",
   "@dark": {},
+  "datacenterIpBadge": "Datacenter IP",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Easily detectable",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "Often blocked by websites",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "Only",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "Dismiss new IP preview",
+  "@dismissNewIpPreview": {},
   "dns": "DNS protection",
   "@dns": {},
   "dnsDesc": "Prevents DNS leaks",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Fast",
   "@fastLabel": {},
+  "favoriteIpAddAction": "Add to Favourite IPs",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP added to Favourite",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "Favourite IP limit reached. Remove an IP to save a new one.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "Remove from Favourite IPs",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP removed from Favourite",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Saved IPs availability can change over time. Your Favorite IP became unavailable, so we connected you to the closest available location.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "Connect and tap the heart on the connection card to save an IP for quick access.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "No Favourite IPs yet",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "Favourite IPs",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Upgrade to Plus or Pro to save IPs that work well for you and access them quickly whenever you need them.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "Save Favourite IPs",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "Saved IPs are not available on your current plan.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "Favourite",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "Unavailable IPs",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "Upgrade plan",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Your app version is outdated. Please update the app to continue using it.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "Invalid form data. Please check the fields and try again.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "Datacenter IPs optimised for speed and performance.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "Datacenter",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "Residential IPs",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Provided by real households. Nearly undetectable but less stable.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "Residential",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "Residential IPs are provided by real household devices, so availability can change over time.\n\nIf a node goes offline, the app reconnects you to the nearest available residential IP.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "Why can my IP change?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "Location",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} City} other{{count} Cities}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} State} other{{count} States}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Cities} one{{count} City} other{{count} Cities}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} one{{count} IP} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} States} one{{count} State} other{{count} States}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Location",
   "@locationLbl": {},
   "locationsUpdated": "{location} updated",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Malware",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Manage",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Manage on the web",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Would you like to receive email updates, privacy tips, and special offers from Mysterium Network?",
@@ -456,8 +514,6 @@
   "@pauseSubscriptionBtn": {},
   "pauseSubscriptionInfoDesc": "You can pause your plan once per billing cycle.",
   "@pauseSubscriptionInfoDesc": {},
-  "pauseSubscriptionFailed": "We could not pause your subscription. Please try again.",
-  "@pauseSubscriptionFailed": {},
   "pendingTransactionMessage": "You already have an ongoing payment transaction. Please complete it before starting a new one.",
   "@pendingTransactionMessage": {},
   "perMonth": "mo",
@@ -620,14 +676,14 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "How Residential IPs work",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "Residential IP",
+  "@residentialIpBadge": {},
   "resumeBtn": "Resume",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "Your subscription will resume immediately.",
   "@resumeSubscriptionPromptDesc": {},
   "resumeSubscriptionTitle": "Resume Subscription?",
   "@resumeSubscriptionTitle": {},
-  "resumeSubscriptionFailed": "We could not resume your subscription. Please try again.",
-  "@resumeSubscriptionFailed": {},
   "retryBtn": "Retry",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Leave a review",
@@ -645,7 +701,13 @@
   "semiAnnual": "semi-annually",
   "@semiAnnual": {},
   "sendAgain": "{count, plural, zero{Send again} one{Send again} other{Send again ({count})}}",
-  "@sendAgain": {},
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "We’re experiencing temporary network issues. Please try again later.",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Manage",
@@ -874,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "You're not signed in",
   "@unauthenticatedSettingTitle": {},
+  "undo": "Undo",
+  "@undo": {},
   "unprotectedLbl": "UNPROTECTED",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "Unstable speed",

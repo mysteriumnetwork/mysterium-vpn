@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "深色",
   "@dark": {},
+  "datacenterIpBadge": "数据中心 IP",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "易被检测",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "常被网站屏蔽",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "仅需",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "关闭新 IP 预览",
+  "@dismissNewIpPreview": {},
   "dns": "DNS 保护",
   "@dns": {},
   "dnsDesc": "防止 DNS 泄漏",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "快速",
   "@fastLabel": {},
+  "favoriteIpAddAction": "加入收藏的 IP",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "已将 IP 加入收藏",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "收藏 IP 已达上限。请移除一个 IP 后再保存新的。",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "从收藏的 IP 中移除",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "已将 IP 从收藏中移除",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "已保存 IP 的可用性可能会随时间变化。你的收藏 IP 已不可用，因此我们为你连接了最近的可用位置。",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "连接后点按连接卡片上的爱心，即可保存 IP 以便快速访问。",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "暂无收藏的 IP",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "收藏的 IP",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "升级到 Plus 或 Pro，即可保存适合你的 IP，随时快速使用。",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "收藏常用 IP",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "当前套餐不支持已保存的 IP。",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "收藏",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "不可用的 IP",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "升级套餐",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "你的应用版本过旧。请更新应用后继续使用。",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "表单数据无效。请检查各字段后重试。",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "数据中心 IP，针对速度和性能进行了优化。",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "数据中心",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "住宅 IP",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "由真实家庭提供。几乎无法被检测，但稳定性较差。",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "住宅",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "住宅 IP 由真实家用设备提供，因此可用性可能随时间变化。\n\n若某个节点离线，应用会将你重新连接到最近的可用住宅 IP。",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "为什么我的 IP 会变化？",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "地点",
   "@location": {},
-  "locationItemCityCount": "{count, plural, other{{count} 个城市}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, other{{count} 个 IP}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, other{{count} 个州}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} 个城市} other{{count} 个城市}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} 个 IP} other{{count} 个 IP}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} 个州} other{{count} 个州}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "地点",
   "@locationLbl": {},
   "locationsUpdated": "{location} 已更新",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "恶意软件",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "管理",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "在网页上管理",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "你是否愿意接收来自 Mysterium Network 的电子邮件更新、隐私技巧和特别优惠？",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "住宅 IP 的工作原理",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "住宅 IP",
+  "@residentialIpBadge": {},
   "resumeBtn": "恢复",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "你的订阅将立即恢复。",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "每半年",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, other{重新发送 ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{重新发送} other{重新发送 ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "我们遇到临时网络问题。请稍后重试。",
   "@serviceUnavailableError": {},
   "settingManageBtn": "管理",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "你尚未登录",
   "@unauthenticatedSettingTitle": {},
+  "undo": "撤销",
+  "@undo": {},
   "unprotectedLbl": "未受保护",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "速度不稳定",

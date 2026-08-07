@@ -218,6 +218,15 @@ abstract class _SubscriptionStore with Store {
   @computed
   bool get malwareBlockingAllowed => planMetadata?.malwareBlockingAllowed ?? false;
 
+  /// Used until plan metadata provides `favorite_ips_limit`.
+  static const defaultFavoriteIpsLimit = 5;
+
+  @computed
+  bool get favoriteIpsAllowed => planMetadata?.favoriteIpsAllowed ?? false;
+
+  @computed
+  int get favoriteIpsLimit => planMetadata?.favoriteIpsLimit?.toInt() ?? defaultFavoriteIpsLimit;
+
   @computed
   bool get canRedeemCode {
     if (_remoteConfigStore.hideReedemCode) {

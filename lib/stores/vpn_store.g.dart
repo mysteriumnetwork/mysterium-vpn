@@ -413,6 +413,7 @@ mixin _$VpnStore on _VpnStore, Store {
     UserIntent? intent,
     bool isRetrying = false,
     bool refreshIP = false,
+    String? targetIp,
   }) {
     return _$manageConnectionAsyncAction.run(
       () => super.manageConnection(
@@ -420,6 +421,7 @@ mixin _$VpnStore on _VpnStore, Store {
         intent: intent,
         isRetrying: isRetrying,
         refreshIP: refreshIP,
+        targetIp: targetIp,
       ),
     );
   }
@@ -435,6 +437,7 @@ mixin _$VpnStore on _VpnStore, Store {
     bool refreshIP = false,
     bool isRetrying = false,
     UserIntent? intent,
+    String? targetIp,
   }) {
     return _$_startConnectionAsyncAction.run(
       () => super._startConnection(
@@ -442,6 +445,7 @@ mixin _$VpnStore on _VpnStore, Store {
         refreshIP: refreshIP,
         isRetrying: isRetrying,
         intent: intent,
+        targetIp: targetIp,
       ),
     );
   }
@@ -464,9 +468,14 @@ mixin _$VpnStore on _VpnStore, Store {
   );
 
   @override
-  Future<void> _completeConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) {
+  Future<void> _completeConnection(
+    VPNLocation? location,
+    UserIntent? intent,
+    bool refreshIP, {
+    String? targetIp,
+  }) {
     return _$_completeConnectionAsyncAction.run(
-      () => super._completeConnection(location, intent, refreshIP),
+      () => super._completeConnection(location, intent, refreshIP, targetIp: targetIp),
     );
   }
 

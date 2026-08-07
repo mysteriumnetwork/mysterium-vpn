@@ -147,9 +147,9 @@ void main() {
 
     test('logTabChange embeds tab name', () async {
       final entry = nextLog();
-      await store.logTabChange(IPType.residential);
+      await store.logTabChange(LocationsTab.favorite);
 
-      expect((await entry).params, {'tab': IPType.residential.name});
+      expect((await entry).params, {'tab': 'favorite'});
     });
 
     test('logRefreshIP embeds ip when provided', () async {

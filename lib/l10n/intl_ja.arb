@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "ダーク",
   "@dark": {},
+  "datacenterIpBadge": "データセンター IP",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "検出されやすい",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "サイトでブロックされがち",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "特価",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "新しい IP のプレビューを閉じる",
+  "@dismissNewIpPreview": {},
   "dns": "DNS 保護",
   "@dns": {},
   "dnsDesc": "DNS リークを防止します",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "高速",
   "@fastLabel": {},
+  "favoriteIpAddAction": "お気に入り IP に追加",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP をお気に入りに追加しました",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "お気に入り IP の上限に達しました。新しく保存するには IP を削除してください。",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "お気に入り IP から削除",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP をお気に入りから削除しました",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "保存した IP の利用可否は時間とともに変わることがあります。お気に入りの IP が利用できなくなったため、最も近い利用可能なロケーションに接続しました。",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "接続して接続カードのハートをタップすると、IP を保存してすぐに使えます。",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "お気に入り IP がありません",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "お気に入り IP",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Plus または Pro にアップグレードすると、使いやすい IP を保存して、必要なときにすぐ利用できます。",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "お気に入り IP を保存",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "保存した IP は現在のプランではご利用いただけません。",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "お気に入り",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "利用できない IP",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "プランをアップグレード",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "アプリのバージョンが古くなっています。引き続き使用するにはアプリをアップデートしてください。",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "フォームのデータが無効です。項目を確認してもう一度お試しください。",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "速度とパフォーマンスに最適化されたデータセンター IP。",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "データセンター",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "レジデンシャル IP",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "実際の家庭から提供。ほぼ検出不可能ですが安定性は低めです。",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "レジデンシャル",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "レジデンシャル IP は実際の家庭用デバイスから提供されるため、利用可否は時間とともに変わることがあります。\n\nノードがオフラインになると、アプリは最寄りの利用可能な レジデンシャル IP に再接続します。",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "IP はなぜ変わるのですか？",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "ロケーション",
   "@location": {},
-  "locationItemCityCount": "{count, plural, other{{count} 都市}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, other{{count} IP}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, other{{count} 州}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} 都市} other{{count} 都市}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IP} other{{count} IP}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} 州} other{{count} 州}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "ロケーション",
   "@locationLbl": {},
   "locationsUpdated": "{location} を更新しました",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "マルウェア",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "管理",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "ウェブで管理",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Mysterium Network からのメール更新、プライバシーのヒント、特別オファーを受け取りますか？",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "レジデンシャル IP の仕組み",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "レジデンシャル IP",
+  "@residentialIpBadge": {},
   "resumeBtn": "再開",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "サブスクリプションはすぐに再開されます。",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "半年ごと",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, other{再送信 ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{再送信} other{再送信 ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "一時的なネットワークの問題が発生しています。後でもう一度お試しください。",
   "@serviceUnavailableError": {},
   "settingManageBtn": "管理",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "サインインしていません",
   "@unauthenticatedSettingTitle": {},
+  "undo": "元に戻す",
+  "@undo": {},
   "unprotectedLbl": "未保護",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "不安定な速度",

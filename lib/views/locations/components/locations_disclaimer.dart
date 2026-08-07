@@ -33,6 +33,13 @@ class LocationsDisclaimer extends ConsumerWidget {
     leadingIcon: UntitledUI.zap_fast,
   );
 
+  factory LocationsDisclaimer.favorites() => LocationsDisclaimer(
+    title: S.current.favoriteIpsLabel,
+    text: S.current.favoriteIpsDisclaimer,
+    bannerType: BannerType.favoriteIPs,
+    leadingIcon: UntitledUI.heart,
+  );
+
   final String text;
   final String title;
   final IconData leadingIcon;
@@ -45,13 +52,8 @@ class LocationsDisclaimer extends ConsumerWidget {
     final bannersStore = ref.watch(bannersStorePOD);
     final analyticsStore = ref.watch(analyticsStorePOD);
     void handleDismiss() {
-      if (bannerType == BannerType.residentialIPs) {
-        bannersStore.setShown(BannerType.residentialIPs);
-        analyticsStore.logBannerClose(BannerType.residentialIPs);
-      } else if (bannerType == BannerType.highSpeedIPs) {
-        bannersStore.setShown(BannerType.highSpeedIPs);
-        analyticsStore.logBannerClose(BannerType.highSpeedIPs);
-      }
+      bannersStore.setShown(bannerType);
+      analyticsStore.logBannerClose(bannerType);
     }
 
     final theme = Theme.of(context);

@@ -164,6 +164,8 @@
   "@couponCodeCopied": {},
   "dark": "Gelap",
   "@dark": {},
+  "datacenterIpBadge": "IP datacenter",
+  "@datacenterIpBadge": {},
   "dataCentreComparisonCardItem1": "Mudah dideteksi",
   "@dataCentreComparisonCardItem1": {},
   "dataCentreComparisonCardItem2": "Sering diblokir situs",
@@ -196,6 +198,8 @@
   "@disconnecting": {},
   "discountedPriceLabel": "Cuma",
   "@discountedPriceLabel": {},
+  "dismissNewIpPreview": "Tutup pratinjau IP baru",
+  "@dismissNewIpPreview": {},
   "dns": "Perlindungan DNS",
   "@dns": {},
   "dnsDesc": "Mencegah kebocoran DNS",
@@ -232,6 +236,36 @@
   "@failedToVerifySubs": {},
   "fastLabel": "Cepat",
   "@fastLabel": {},
+  "favoriteIpAddAction": "Tambahkan ke IP favorit",
+  "@favoriteIpAddAction": {},
+  "favoriteIpAddedToast": "IP ditambahkan ke favorit",
+  "@favoriteIpAddedToast": {},
+  "favoriteIpLimitReached": "Batas IP favorit tercapai. Hapus satu IP untuk menyimpan yang baru.",
+  "@favoriteIpLimitReached": {},
+  "favoriteIpRemoveAction": "Hapus dari IP favorit",
+  "@favoriteIpRemoveAction": {},
+  "favoriteIpRemovedToast": "IP dihapus dari favorit",
+  "@favoriteIpRemovedToast": {},
+  "favoriteIpsDisclaimer": "Ketersediaan IP tersimpan bisa berubah seiring waktu. IP favoritmu menjadi tidak tersedia, jadi kami menghubungkanmu ke lokasi tersedia terdekat.",
+  "@favoriteIpsDisclaimer": {},
+  "favoriteIpsEmptyBody": "Hubungkan lalu ketuk ikon hati di kartu koneksi untuk menyimpan IP agar bisa diakses cepat.",
+  "@favoriteIpsEmptyBody": {},
+  "favoriteIpsEmptyTitle": "Belum ada IP favorit",
+  "@favoriteIpsEmptyTitle": {},
+  "favoriteIpsLabel": "IP favorit",
+  "@favoriteIpsLabel": {},
+  "favoriteIpsLockedBody": "Tingkatkan ke Plus atau Pro untuk menyimpan IP yang paling cocok untukmu dan mengaksesnya kapan saja.",
+  "@favoriteIpsLockedBody": {},
+  "favoriteIpsLockedTitle": "Simpan IP favorit",
+  "@favoriteIpsLockedTitle": {},
+  "favoriteIpsNotAvailableOnPlan": "IP tersimpan tidak tersedia di paketmu saat ini.",
+  "@favoriteIpsNotAvailableOnPlan": {},
+  "favoriteIpsTab": "Favorit",
+  "@favoriteIpsTab": {},
+  "favoriteIpsUnavailableHeading": "IP tidak tersedia",
+  "@favoriteIpsUnavailableHeading": {},
+  "favoriteIpsUpgradePlan": "Tingkatkan paket",
+  "@favoriteIpsUpgradePlan": {},
   "featureToggleMinVersionNotSatisfied": "Versi aplikasimu sudah usang. Perbarui aplikasi untuk terus memakainya.",
   "@featureToggleMinVersionNotSatisfied": {},
   "formValidationError": "Data formulir tidak valid. Periksa kolomnya dan coba lagi.",
@@ -298,10 +332,14 @@
   "@ipTypeDataCenter": {},
   "ipTypeDataCenterDisclaimer": "IP datacenter dioptimalkan untuk kecepatan dan performa.",
   "@ipTypeDataCenterDisclaimer": {},
+  "ipTypeDataCenterTab": "Datacenter",
+  "@ipTypeDataCenterTab": {},
   "ipTypeResidential": "IP residensial",
   "@ipTypeResidential": {},
   "ipTypeResidentialDisclaimer": "Disediakan oleh rumah tangga asli. Nyaris tak terdeteksi tapi kurang stabil.",
   "@ipTypeResidentialDisclaimer": {},
+  "ipTypeResidentialTab": "Residensial",
+  "@ipTypeResidentialTab": {},
   "ipTypeResidentialTooltipBody": "IP residensial disediakan oleh perangkat rumah tangga asli, jadi ketersediaannya bisa berubah seiring waktu.\n\nJika sebuah node offline, aplikasi akan menyambungkanmu ke IP residensial terdekat yang tersedia.",
   "@ipTypeResidentialTooltipBody": {},
   "ipTypeResidentialTooltipTitle": "Kenapa IP-ku bisa berubah?",
@@ -328,12 +366,30 @@
   "@linkExpires": {},
   "location": "Lokasi",
   "@location": {},
-  "locationItemCityCount": "{count, plural, one{{count} Kota} other{{count} Kota}}",
-  "@locationItemCityCount": {},
-  "locationItemNodeCount": "{count, plural, one{{count} IP} other{{count} IPs}}",
-  "@locationItemNodeCount": {},
-  "locationItemStatesCount": "{count, plural, one{{count} Negara Bagian} other{{count} Negara Bagian}}",
-  "@locationItemStatesCount": {},
+  "locationItemCityCount": "{count, plural, zero{{count} Kota} other{{count} Kota}}",
+  "@locationItemCityCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemNodeCount": "{count, plural, zero{{count} IPs} other{{count} IPs}}",
+  "@locationItemNodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "locationItemStatesCount": "{count, plural, zero{{count} Negara Bagian} other{{count} Negara Bagian}}",
+  "@locationItemStatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "locationLbl": "Lokasi",
   "@locationLbl": {},
   "locationsUpdated": "{location} diperbarui",
@@ -366,6 +422,8 @@
   "@madridLbl": {},
   "malwareLbl": "Malware",
   "@malwareLbl": {},
+  "manageFavoriteIpsBtn": "Kelola",
+  "@manageFavoriteIpsBtn": {},
   "manageOnWebBtn": "Kelola di web",
   "@manageOnWebBtn": {},
   "marketingConsentPopupDesc": "Mau menerima pembaruan email, tips privasi, dan penawaran khusus dari Mysterium Network?",
@@ -618,6 +676,8 @@
   "@residentialEducationSubtitle": {},
   "residentialEducationTitle": "Cara kerja IP residensial",
   "@residentialEducationTitle": {},
+  "residentialIpBadge": "IP residensial",
+  "@residentialIpBadge": {},
   "resumeBtn": "Lanjutkan",
   "@resumeBtn": {},
   "resumeSubscriptionPromptDesc": "Langgananmu akan langsung dilanjutkan.",
@@ -640,8 +700,14 @@
   "@selectEmailApp": {},
   "semiAnnual": "per semester",
   "@semiAnnual": {},
-  "sendAgain": "{count, plural, zero{Kirim lagi} one{Kirim lagi} other{Kirim lagi ({count})}}",
-  "@sendAgain": {},
+  "sendAgain": "{count, plural, zero{Kirim lagi} other{Kirim lagi ({count})}}",
+  "@sendAgain": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "serviceUnavailableError": "Kami sedang mengalami gangguan jaringan sementara. Coba lagi nanti..",
   "@serviceUnavailableError": {},
   "settingManageBtn": "Kelola",
@@ -870,6 +936,8 @@
   "@unauthenticatedSettingSubtitle": {},
   "unauthenticatedSettingTitle": "Kamu belum masuk",
   "@unauthenticatedSettingTitle": {},
+  "undo": "Urungkan",
+  "@undo": {},
   "unprotectedLbl": "TAK TERLINDUNGI",
   "@unprotectedLbl": {},
   "unstableSpeedReason": "Kecepatan tidak stabil",
