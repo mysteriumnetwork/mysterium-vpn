@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:vpn_api/vpn_api.dart' as api;
 
 part 'subscription_cancellation_store.g.dart';
 
@@ -12,11 +14,16 @@ class SubscriptionCancellationStore = _SubscriptionCancellationStore
     with _$SubscriptionCancellationStore;
 
 abstract class _SubscriptionCancellationStore with Store {
-  _SubscriptionCancellationStore({required this._analyticsStore, required this._subscriptionStore});
+  _SubscriptionCancellationStore({
+    required this._analyticsStore,
+    required this._subscriptionStore,
+    required this._remoteConfigStore,
+  });
 
   late final List<ReactionDisposer> _reactions = [];
   late final SubscriptionStore _subscriptionStore;
   late final AnalyticsStore _analyticsStore;
+  late final RemoteConfigStore _remoteConfigStore;
 
   @observable
   bool _isProcessing = false;
@@ -44,6 +51,15 @@ abstract class _SubscriptionCancellationStore with Store {
     }
   }
 
+  /// Pause options from ConfigCat. Empty when pause offer is disabled.
+  @computed
+  List<SubscriptionPauseDuration> get availablePauseDurations {
+    final periods = _remoteConfigStore.subscriptionPauseDurations;
+    return SubscriptionPauseDuration.values
+        .where((duration) => periods.containsKey(duration.value))
+        .toList();
+  }
+
   /// Returns `true` when survey data was logged.
   @action
   Future<bool> setSurvey({required Set<String> reasons, String? feedback}) async {
@@ -66,10 +82,18 @@ abstract class _SubscriptionCancellationStore with Store {
   /// Returns `true` when the pause succeeded.
   @action
   Future<bool> pauseSubscription(SubscriptionPauseDuration duration) async {
+    final periodCode = _remoteConfigStore.subscriptionPauseDurations[duration.value];
+    final period = api.PauseSubscriptionRequestPeriodEnum.values.firstWhereOrNull(
+      (it) => it.value == periodCode,
+    );
+    if (period == null) {
+      return false;
+    }
+
     _isProcessing = true;
 
     try {
-      await _subscriptionStore.pauseSubscription(duration);
+      await _subscriptionStore.pauseSubscription(period);
       await Future.wait([
         _analyticsStore.logCancellationPauseAccepted(),
         _analyticsStore.logSubscriptionCancellationPauseDuration(months: duration.value),
@@ -86,10 +110,10 @@ abstract class _SubscriptionCancellationStore with Store {
   bool isStoreSubscription() => !_subscriptionStore.useWebFlow;
 
   Future<bool> canPauseSubscription() async {
-    final subscription = await _subscriptionStore.subscriptionFuture;
-    if (isStoreSubscription()) {
+    if (isStoreSubscription() || availablePauseDurations.isEmpty) {
       return false;
     }
+    final subscription = await _subscriptionStore.subscriptionFuture;
     return !(subscription.paused ?? false);
   }
 

@@ -123,7 +123,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
                     groupValue: selectedPauseDuration.value,
                     onChanged: (value) => {selectedPauseDuration.value = value},
                     child: Column(
-                      children: SubscriptionPauseDuration.values
+                      children: cancelSubscriptionStore.availablePauseDurations
                           .map(
                             (duration) => RadioListTile(
                               value: duration,

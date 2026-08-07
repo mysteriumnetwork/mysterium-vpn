@@ -7,7 +7,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
@@ -248,7 +247,6 @@ abstract class _SubscriptionStore with Store {
       return Subscription.empty();
     }
     final subscription = await _subscriptionService.fetchSubscriptionDetails();
-    debugPrint('MAZLOG fetchSubscription: $subscription');
     _setSubscriptionAnalyticsProps(subscription).ignore();
     return subscription;
   }
@@ -348,13 +346,7 @@ abstract class _SubscriptionStore with Store {
   }
 
   @action
-  Future<void> pauseSubscription(SubscriptionPauseDuration pauseDuration) async {
-    final period = switch (pauseDuration) {
-      SubscriptionPauseDuration.oneMonth => api.PauseSubscriptionRequestPeriodEnum.n1m,
-      SubscriptionPauseDuration.threeMonths => api.PauseSubscriptionRequestPeriodEnum.n3m,
-      SubscriptionPauseDuration.sixMonths => api.PauseSubscriptionRequestPeriodEnum.n6m,
-    };
-
+  Future<void> pauseSubscription(api.PauseSubscriptionRequestPeriodEnum period) async {
     await _subscriptionService.pauseSubscription(period);
     await refreshSubscription(force: true);
   }

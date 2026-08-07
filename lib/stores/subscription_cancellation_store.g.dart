@@ -23,6 +23,14 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     () => super.error,
     name: '_SubscriptionCancellationStore.error',
   )).value;
+  Computed<List<SubscriptionPauseDuration>>? _$availablePauseDurationsComputed;
+
+  @override
+  List<SubscriptionPauseDuration> get availablePauseDurations =>
+      (_$availablePauseDurationsComputed ??= Computed<List<SubscriptionPauseDuration>>(
+        () => super.availablePauseDurations,
+        name: '_SubscriptionCancellationStore.availablePauseDurations',
+      )).value;
 
   late final _$_isProcessingAtom = Atom(
     name: '_SubscriptionCancellationStore._isProcessing',
@@ -98,7 +106,8 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   String toString() {
     return '''
 isProcessing: ${isProcessing},
-error: ${error}
+error: ${error},
+availablePauseDurations: ${availablePauseDurations}
     ''';
   }
 }

@@ -31,6 +31,7 @@ enum _FeatureToggleKey {
   shouldCheckUdp,
   latestStableAppVersion,
   cancelSurveyOptions,
+  subscriptionPauseDurations,
   useStoreVersionChecker,
   enableQaHelpers,
   showCitiesAndStates,
@@ -239,6 +240,34 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return null;
+  }
+
+  /// Months → API period codes (`1m` / `3m` / `6m`). Empty map disables pause offer.
+  @computed
+  Map<int, String> get subscriptionPauseDurations {
+    try {
+      if (!config.containsKey(_FeatureToggleKey.subscriptionPauseDurations.name)) {
+        return const {};
+      }
+      final raw = config[_FeatureToggleKey.subscriptionPauseDurations.name].toString();
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map) {
+        return const {};
+      }
+      final periods = <int, String>{};
+      for (final entry in decoded.entries) {
+        final months = int.tryParse(entry.key.toString());
+        final period = entry.value?.toString();
+        if (months == null || period == null || period.isEmpty) {
+          continue;
+        }
+        periods[months] = period;
+      }
+      return periods;
+    } catch (e, stack) {
+      logger.handle(e, stack);
+      return const {};
+    }
   }
 
   @computed

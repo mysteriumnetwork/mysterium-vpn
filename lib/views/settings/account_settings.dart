@@ -435,41 +435,4 @@ class _SubscriptionCard extends StatelessWidget {
       );
     },
   );
-
-  /* Future<void> _handleCancelSubscription(BuildContext context) async {
-    final shouldProceed = await showModal<bool>(
-      context,
-      // ignore: prefer_expression_function_bodies
-      builder: (context) {
-        return ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 343),
-          child: AlertModal(
-            title: 'Cancel subscription',
-            supportingText: 'Are you sure you want to cancel your subscription?',
-            type: AlertModalType.warning,
-            screenType: ScreenType.mobile,
-            primaryButton: ButtonPrimary(
-              onPressed: () async => Navigator.pop(context, true),
-              child: const Text('Continue'),
-            ),
-            secondaryButton: ButtonSecondary(
-              onPressed: () async => Navigator.pop(context, false),
-              child: const Text('Keep subscription'),
-            ),
-          ),
-        );
-      },
-    );
-
-    debugPrint('shouldProceed: $shouldProceed');
-
-    if (!(shouldProceed ?? false)) {
-      return;
-    }
-
-    /* final shouldProceed = await showCancelSubscriptionSurveyDialog(context);
-    if (shouldProceed ?? false) {
-      await onSubscribePress(manageSubscription: true);
-    } */
-  } */
 }
