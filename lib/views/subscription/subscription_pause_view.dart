@@ -57,8 +57,11 @@ class SubscriptionPauseView extends HookConsumerWidget {
         }
         await showContinueToWebPrompt(
           context: navigator.context,
-          onContinuePressed: () =>
-              openCancelSubscriptionLink(cancelSubscriptionStore, analyticsStore: analyticsStore),
+          onContinuePressed: () => openCancelSubscriptionLink(
+            navigator.context,
+            store: cancelSubscriptionStore,
+            analyticsStore: analyticsStore,
+          ),
         );
         cancelSubscriptionStore.reset();
       });

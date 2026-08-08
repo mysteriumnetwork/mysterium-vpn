@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
@@ -34,20 +33,6 @@ abstract class _SubscriptionCancellationStore with Store {
 
   @computed
   Exception? get error => _error;
-
-  String get linkToCancelSubscription {
-    if (_subscriptionStore.useWebFlow) {
-      return 'https://www.google.com';
-    } else {
-      if (Platform.isAndroid) {
-        return 'https://play.google.com/store/account/subscriptions';
-      } else if (Platform.isIOS || Platform.isMacOS) {
-        return 'https://account.apple.com/account/manage/section/subscriptions';
-      } else {
-        return 'https://www.google.com';
-      }
-    }
-  }
 
   /// Pause options from ConfigCat. Empty when pause offer is disabled.
   @computed

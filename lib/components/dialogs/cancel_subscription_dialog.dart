@@ -33,9 +33,10 @@ Future<void> showCancelSubscriptionDialog(BuildContext context) async {
 
   analyticsStore.logCancellationStarted().ignore();
 
-  // Store-managed: skip survey/pause and open Play / App Store subscriptions.
+  // Store-managed: skip survey/pause and open the same manage-subscription flow
+  // used by Settings (Play sku deep-link / StoreKit re-purchase of current plan).
   if (store.isStoreSubscription()) {
-    await openCancelSubscriptionLink(store, analyticsStore: analyticsStore);
+    await openCancelSubscriptionLink(context, store: store, analyticsStore: analyticsStore);
     store.reset();
     return;
   }
@@ -48,18 +49,37 @@ Future<void> showCancelSubscriptionSurveyDialog(BuildContext context) async => s
   builder: (ctx) => const ModalMessengerScope(child: CancelSubscriptionSurveyView()),
 );
 
-/// Opens the store or web cancel destination for [store].
+/// Hands the user off to cancel/manage: store subs use the existing manage-subscription
+/// purchase flow; web subs open the billing manage page (same URL as Settings → Manage).
 Future<void> openCancelSubscriptionLink(
-  SubscriptionCancellationStore store, {
+  BuildContext context, {
+  required SubscriptionCancellationStore store,
   required AnalyticsStore analyticsStore,
-}) {
-  if (!store.isStoreSubscription()) {
-    analyticsStore.logCancellationDashboardOpened().ignore();
+}) async {
+  final container = ProviderScope.containerOf(context, listen: false);
+
+  if (store.isStoreSubscription()) {
+    try {
+      await container.read(subscriptionPurchaseStorePOD).manageSubscription();
+    } catch (_) {
+      if (context.mounted) {
+        showSnackbar(S.current.somethingWentWrong);
+      }
+    }
+    return;
   }
-  return openUrlLink(
-    Uri.parse(store.linkToCancelSubscription),
-    source: RedirectSource.cancelSubscription,
+
+  analyticsStore.logCancellationDashboardOpened().ignore();
+  final managePage = container.read(remoteConfigStorePOD).manageSubscriptionPage;
+  final accessToken = container.read(authSessionStorePOD).accessToken;
+  final uri = Uri.parse(managePage);
+  final httpsUri = Uri(
+    scheme: uri.scheme,
+    host: uri.host,
+    path: uri.path,
+    queryParameters: {'access_token': accessToken ?? ''},
   );
+  await openUrlLink(httpsUri, source: RedirectSource.cancelSubscription);
 }
 
 /// Shows the continue to web prompt.
