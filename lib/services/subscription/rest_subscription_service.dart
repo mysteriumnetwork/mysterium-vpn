@@ -22,6 +22,8 @@ import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 const kFetchSubscriptionConfig = '/subscription/config';
+const kFetchPauseDurations = '/subscription/pause-durations';
+const kPauseSubscription = '/subscription/pause';
 
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
@@ -29,10 +31,12 @@ class RestSubscriptionService extends SubscriptionService {
     required InAppPurchase inAppPurchase,
     required Talker logger,
   }) : _apiSubscription = api.getSubscription(),
+       _dio = api.dio,
        _inAppPurchase = inAppPurchase,
        _logger = logger;
 
   final api.Subscription _apiSubscription;
+  final Dio _dio;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
 
@@ -358,6 +362,23 @@ class RestSubscriptionService extends SubscriptionService {
     await _apiSubscription.pause(
       pauseSubscriptionRequest: api.PauseSubscriptionRequest(period: period),
     );
+  }
+
+  @override
+  Future<List<String>> fetchPauseDurations() async {
+    try {
+      final res = await _dio.get<List<dynamic>>(kFetchPauseDurations);
+      final data = res.data;
+      if (data == null) {
+        throw Exception('No pause durations found');
+      }
+      return data.map((e) => e.toString()).toList(growable: false);
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
   }
 
   @override

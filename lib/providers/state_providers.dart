@@ -237,6 +237,7 @@ final subscriptionCancellationStorePOD = Provider<SubscriptionCancellationStore>
   final store = SubscriptionCancellationStore(
     analyticsStore: ref.watch(analyticsStorePOD),
     subscriptionStore: ref.watch(subscriptionStorePOD),
+    subscriptionService: ref.watch(subscriptionServicePOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
   );
   ref.onDispose(store.dispose);

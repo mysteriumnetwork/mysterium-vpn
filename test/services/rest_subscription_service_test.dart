@@ -20,6 +20,7 @@ void main() {
   late MockSubscription apiSubscription;
   late MockInAppPurchase inAppPurchase;
   late MockTalker logger;
+  late Dio dio;
   late RestSubscriptionService service;
 
   setUp(() {
@@ -27,8 +28,10 @@ void main() {
     apiSubscription = MockSubscription();
     inAppPurchase = MockInAppPurchase();
     logger = MockTalker();
+    dio = Dio();
 
     when(vpnApi.getSubscription()).thenReturn(apiSubscription);
+    when(vpnApi.dio).thenReturn(dio);
 
     service = RestSubscriptionService(api: vpnApi, inAppPurchase: inAppPurchase, logger: logger);
   });
@@ -87,6 +90,39 @@ void main() {
       when(apiSubscription.subscriptionConfig()).thenAnswer((_) async => response(200, config));
 
       expect(await service.fetchSubscriptionConfig(), config);
+    });
+  });
+
+  group('fetchPauseDurations', () {
+    test('returns period codes from the JSON array payload', () async {
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            handler.resolve(
+              Response<List<dynamic>>(
+                requestOptions: options,
+                statusCode: 200,
+                data: const ['1m', '3m', '6m'],
+              ),
+            );
+          },
+        ),
+      );
+
+      expect(await service.fetchPauseDurations(), ['1m', '3m', '6m']);
+    });
+
+    test('rethrows arbitrary errors after logging', () async {
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            handler.reject(DioException(requestOptions: options, error: Exception('boom')));
+          },
+        ),
+      );
+
+      await expectLater(service.fetchPauseDurations(), throwsA(isA<DioException>()));
+      verify(logger.handle(any, any)).called(1);
     });
   });
 }

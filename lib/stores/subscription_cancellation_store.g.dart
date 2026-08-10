@@ -23,14 +23,6 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     () => super.error,
     name: '_SubscriptionCancellationStore.error',
   )).value;
-  Computed<List<SubscriptionPauseDuration>>? _$availablePauseDurationsComputed;
-
-  @override
-  List<SubscriptionPauseDuration> get availablePauseDurations =>
-      (_$availablePauseDurationsComputed ??= Computed<List<SubscriptionPauseDuration>>(
-        () => super.availablePauseDurations,
-        name: '_SubscriptionCancellationStore.availablePauseDurations',
-      )).value;
 
   late final _$_isProcessingAtom = Atom(
     name: '_SubscriptionCancellationStore._isProcessing',
@@ -65,6 +57,26 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     });
   }
 
+  late final _$_availablePauseDurationsAtom = Atom(
+    name: '_SubscriptionCancellationStore._availablePauseDurations',
+    context: context,
+  );
+
+  ObservableList<String> get availablePauseDurations {
+    _$_availablePauseDurationsAtom.reportRead();
+    return super._availablePauseDurations;
+  }
+
+  @override
+  ObservableList<String> get _availablePauseDurations => availablePauseDurations;
+
+  @override
+  set _availablePauseDurations(ObservableList<String> value) {
+    _$_availablePauseDurationsAtom.reportWrite(value, super._availablePauseDurations, () {
+      super._availablePauseDurations = value;
+    });
+  }
+
   late final _$setSurveyAsyncAction = AsyncAction(
     '_SubscriptionCancellationStore.setSurvey',
     context: context,
@@ -81,8 +93,18 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   );
 
   @override
-  Future<bool> pauseSubscription(SubscriptionPauseDuration duration) {
-    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(duration));
+  Future<bool> pauseSubscription(String periodCode) {
+    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(periodCode));
+  }
+
+  late final _$_loadPauseDurationsAsyncAction = AsyncAction(
+    '_SubscriptionCancellationStore._loadPauseDurations',
+    context: context,
+  );
+
+  @override
+  Future<void> _loadPauseDurations() {
+    return _$_loadPauseDurationsAsyncAction.run(() => super._loadPauseDurations());
   }
 
   late final _$_SubscriptionCancellationStoreActionController = ActionController(
@@ -106,8 +128,7 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   String toString() {
     return '''
 isProcessing: ${isProcessing},
-error: ${error},
-availablePauseDurations: ${availablePauseDurations}
+error: ${error}
     ''';
   }
 }
