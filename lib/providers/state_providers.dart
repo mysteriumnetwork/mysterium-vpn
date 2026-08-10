@@ -503,7 +503,6 @@ final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
     authSessionStore,
     subscriptionStore,
     subscriptionPlansStore,
-    SharedPreferenceService.instance,
   );
 
   ref.onDispose(store.dispose);
@@ -515,17 +514,9 @@ final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  final subscriptionService = ref.watch(subscriptionServicePOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = SmartRefreshStore(
-    locationsStore,
-    subscriptionStore,
-    authSessionStore,
-    subscriptionService,
-    SharedPreferenceService.instance,
-    logger,
-  );
+  final store = SmartRefreshStore(locationsStore, subscriptionStore, authSessionStore, logger);
 
   ref.onDispose(store.dispose);
 

@@ -255,41 +255,6 @@ class RestSubscriptionService extends SubscriptionService {
   }
 
   @override
-  Future<void> resyncStorePurchase() async {
-    if (Platform.isAndroid) {
-      final androidAddition = _inAppPurchase
-          .getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
-      final purchase = (await androidAddition.queryPastPurchases()).pastPurchases
-          .where((it) => it.transactionDate != null)
-          .sortedBy((it) => it.transactionDate!)
-          .lastOrNull;
-      if (purchase == null) {
-        return;
-      }
-      await _apiSubscription.subscriptionUserCallback(
-        userCallbackRequest: api.UserCallbackRequest(
-          gatewayId: api.UserCallbackRequestGatewayIdEnum.google,
-          payload: purchase.verificationData.serverVerificationData,
-        ),
-      );
-      return;
-    }
-
-    if (Platform.isIOS || Platform.isMacOS) {
-      final transaction = (await SK2Transaction.transactions()).lastOrNull;
-      if (transaction == null) {
-        return;
-      }
-      await _apiSubscription.subscriptionUserCallback(
-        userCallbackRequest: api.UserCallbackRequest(
-          gatewayId: api.UserCallbackRequestGatewayIdEnum.apple,
-          transactionId: transaction.id,
-        ),
-      );
-    }
-  }
-
-  @override
   Future<Subscription> fetchSubscriptionDetails() async {
     try {
       final res = await _apiSubscription.subscriptionStatus();
