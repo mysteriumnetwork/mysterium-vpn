@@ -64,6 +64,14 @@ extension StringExtensions on String {
     }
     return sb.toString();
   }
+
+  int? get numeric {
+    final match = RegExp(r'^(\d+)m$').firstMatch(trim());
+    if (match == null) {
+      return null;
+    }
+    return int.tryParse(match.group(1)!);
+  }
 }
 
 extension NullableStringExtensions on String? {

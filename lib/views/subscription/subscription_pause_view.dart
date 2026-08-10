@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/subscription_pause_duration.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
@@ -21,7 +21,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
     final theme = Theme.of(context);
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
-    final selectedPauseDuration = useState<SubscriptionPauseDuration?>(null);
+    final selectedPauseDuration = useState<String?>(null);
 
     useEffect(() {
       analyticsStore.logCancellationPauseOfferViewed().ignore();
@@ -86,18 +86,22 @@ class SubscriptionPauseView extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: theme.spacing.xl2),
-            RadioGroup(
-              groupValue: selectedPauseDuration.value,
-              onChanged: (value) => selectedPauseDuration.value = value,
-              child: Column(
-                children: cancelSubscriptionStore.availablePauseDurations
-                    .map(
-                      (duration) => RadioListTile(
-                        value: duration,
-                        title: Text(S.current.pauseForMonths(duration.value)),
-                      ),
-                    )
-                    .toList(),
+            Observer(
+              builder: (context) => RadioGroup(
+                groupValue: selectedPauseDuration.value,
+                onChanged: (value) => selectedPauseDuration.value = value,
+                child: Column(
+                  // converts 1m, 3m, 6m to 1, 3, 6 for display
+                  children: cancelSubscriptionStore.availablePauseDurations
+                      .where((it) => it.numeric != null)
+                      .map(
+                        (periodCode) => RadioListTile(
+                          value: periodCode,
+                          title: Text(periodCode.numeric!.toString()),
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ),
             Padding(

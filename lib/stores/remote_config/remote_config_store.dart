@@ -32,6 +32,7 @@ enum _FeatureToggleKey {
   latestStableAppVersion,
   cancelSurveyOptions,
   subscriptionPauseDurations,
+  pauseSubscriptionEnabled,
   useStoreVersionChecker,
   enableQaHelpers,
   showCitiesAndStates,
@@ -48,6 +49,7 @@ enum _FeatureToggleKey {
   plansBestValue,
   upgradeSubscriptionPage,
   manageSubscriptionPage,
+  cancelSubscriptionPage,
   promotionalBannerContent,
   pushNotifPermissionPromptCooldown,
   checkoutWebRedirectUrl,
@@ -268,6 +270,15 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       logger.handle(e, stack);
       return const {};
     }
+  }
+
+  @computed
+  bool get pauseSubscriptionEnabled {
+    final value = config[_FeatureToggleKey.pauseSubscriptionEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return false;
   }
 
   @computed
@@ -547,6 +558,12 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   String get manageSubscriptionPage {
     final value = config[_FeatureToggleKey.manageSubscriptionPage.name] as String?;
     return (value?.isNotEmpty ?? false ? value! : Env.manageSubscriptionPage).trim();
+  }
+
+  @computed
+  String get cancelSubscriptionPage {
+    final value = config[_FeatureToggleKey.cancelSubscriptionPage.name] as String?;
+    return (value ?? '').trim();
   }
 
   @computed

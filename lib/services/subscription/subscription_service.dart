@@ -28,6 +28,8 @@ abstract class SubscriptionService {
 
   Future<void> pauseSubscription(String periodCode);
 
+  Future<List<String>> fetchPauseDurations();
+
   Future<void> resumeSubscription();
 
   Future<void> clearPendingTransactions();

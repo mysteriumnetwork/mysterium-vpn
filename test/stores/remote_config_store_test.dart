@@ -134,6 +134,29 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.pauseSubscriptionEnabled', () {
+    test('returns the config value when present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pauseSubscriptionEnabled': true});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pauseSubscriptionEnabled, isTrue);
+    });
+
+    test('defaults to false when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pauseSubscriptionEnabled, isFalse);
+    });
+
+    test('defaults to false when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pauseSubscriptionEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pauseSubscriptionEnabled, isFalse);
+    });
+  });
+
   group('RemoteConfigStore.enableQaHelpers', () {
     test('returns value from config if present', () async {
       store = createStore();

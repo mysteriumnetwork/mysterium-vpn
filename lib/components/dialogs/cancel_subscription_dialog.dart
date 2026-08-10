@@ -70,7 +70,7 @@ Future<void> openCancelSubscriptionLink(
   }
 
   analyticsStore.logCancellationDashboardOpened().ignore();
-  final managePage = container.read(remoteConfigStorePOD).manageSubscriptionPage;
+  final managePage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
   final accessToken = container.read(authSessionStorePOD).accessToken;
   final uri = Uri.parse(managePage);
   final httpsUri = Uri(

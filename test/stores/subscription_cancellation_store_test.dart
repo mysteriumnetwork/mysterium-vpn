@@ -1,0 +1,124 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
+
+import 'subscription_cancellation_store_test.mocks.dart';
+
+@GenerateNiceMocks([
+  MockSpec<AnalyticsStore>(),
+  MockSpec<SubscriptionStore>(),
+  MockSpec<SubscriptionService>(),
+  MockSpec<RemoteConfigStore>(),
+])
+void main() {
+  late MockAnalyticsStore analyticsStore;
+  late MockSubscriptionStore subscriptionStore;
+  late MockSubscriptionService subscriptionService;
+  late MockRemoteConfigStore remoteConfigStore;
+  late SubscriptionCancellationStore store;
+
+  setUp(() {
+    analyticsStore = MockAnalyticsStore();
+    subscriptionStore = MockSubscriptionStore();
+    subscriptionService = MockSubscriptionService();
+    remoteConfigStore = MockRemoteConfigStore();
+
+    when(remoteConfigStore.pauseSubscriptionEnabled).thenReturn(true);
+    when(subscriptionStore.useWebFlow).thenReturn(true);
+    when(
+      subscriptionStore.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: false)));
+    when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m', '3m', '6m']);
+    when(subscriptionStore.pauseSubscription(any)).thenAnswer((_) async {});
+    when(analyticsStore.logCancellationPauseAccepted()).thenAnswer((_) async {});
+    when(
+      analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
+    ).thenAnswer((_) async {});
+
+    store = SubscriptionCancellationStore(
+      analyticsStore: analyticsStore,
+      subscriptionStore: subscriptionStore,
+      subscriptionService: subscriptionService,
+      remoteConfigStore: remoteConfigStore,
+    );
+  });
+
+  group('canPauseSubscription', () {
+    test('returns false when the remote config flag is off', () async {
+      when(remoteConfigStore.pauseSubscriptionEnabled).thenReturn(false);
+
+      expect(await store.canPauseSubscription(), isFalse);
+      verifyNever(subscriptionService.fetchPauseDurations());
+    });
+
+    test('returns false for store (Apple/Google) subscriptions', () async {
+      when(subscriptionStore.useWebFlow).thenReturn(false);
+
+      expect(await store.canPauseSubscription(), isFalse);
+      verifyNever(subscriptionService.fetchPauseDurations());
+    });
+
+    test('loads durations and returns true when pause is available', () async {
+      expect(await store.canPauseSubscription(), isTrue);
+      expect(store.availablePauseDurations, ['1m', '3m', '6m']);
+      verify(subscriptionService.fetchPauseDurations()).called(1);
+    });
+
+    test('returns false when API returns no durations', () async {
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => []);
+
+      expect(await store.canPauseSubscription(), isFalse);
+      expect(store.availablePauseDurations, isEmpty);
+    });
+
+    test('keeps unknown period codes from the API', () async {
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['12m', '1m']);
+
+      expect(await store.canPauseSubscription(), isTrue);
+      expect(store.availablePauseDurations, ['12m', '1m']);
+    });
+
+    test('returns false when the subscription is already paused', () async {
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+
+      expect(await store.canPauseSubscription(), isFalse);
+    });
+
+    test('returns false when fetch fails', () async {
+      when(subscriptionService.fetchPauseDurations()).thenThrow(Exception('network'));
+
+      expect(await store.canPauseSubscription(), isFalse);
+      expect(store.availablePauseDurations, isEmpty);
+    });
+  });
+
+  group('pauseSubscription', () {
+    test('sends the period code and logs analytics', () async {
+      await store.canPauseSubscription();
+
+      final ok = await store.pauseSubscription('3m');
+
+      expect(ok, isTrue);
+      verify(subscriptionStore.pauseSubscription('3m')).called(1);
+      verify(analyticsStore.logCancellationPauseAccepted()).called(1);
+      verify(analyticsStore.logSubscriptionCancellationPauseDuration(months: 3)).called(1);
+    });
+
+    test('returns false when the duration was not offered by the API', () async {
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m']);
+      await store.canPauseSubscription();
+
+      final ok = await store.pauseSubscription('6m');
+
+      expect(ok, isFalse);
+      verifyNever(subscriptionStore.pauseSubscription(any));
+    });
+  });
+}
