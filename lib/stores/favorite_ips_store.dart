@@ -187,9 +187,7 @@ abstract class _FavoriteIpsStore with Store {
       );
     } else {
       markUnavailable(favorite.ip);
-      unawaited(
-        _analytics.logFavoriteIpUnavailableShown(favorite, favoriteIpCount: favorites.length),
-      );
+      unawaited(_analytics.logFavoriteIpUnknownShown(favorite, favoriteIpCount: favorites.length));
     }
   }
 
@@ -236,10 +234,20 @@ abstract class _FavoriteIpsStore with Store {
         _availability = ObservableMap.of(result);
       }
       _availabilityCheckedAt = DateTime.now();
+      _logUnavailableShown(result);
       return true;
     } catch (_) {
       // keep previous availability
       return false;
+    }
+  }
+
+  void _logUnavailableShown(Map<String, bool> availability) {
+    final count = favorites.length;
+    for (final favorite in favorites) {
+      if (availability[favorite.ip] == false) {
+        unawaited(_analytics.logFavoriteIpUnavailableShown(favorite, favoriteIpCount: count));
+      }
     }
   }
 
