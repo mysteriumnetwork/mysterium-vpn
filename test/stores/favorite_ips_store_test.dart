@@ -236,6 +236,22 @@ void main() {
       verify(mockAnalytics.logFavoriteIpUnavailableShown(any, favoriteIpCount: 1)).called(1);
     });
 
+    test('unavailable analytics use the favorites snapshot from before the request', () async {
+      saved = [fav('1.1.1.1')];
+      final completer = Completer<Map<String, bool>>();
+      when(mockAvailability.checkAvailability(any)).thenAnswer((_) => completer.future);
+      final store = buildStore();
+      await store.future;
+
+      final refresh = store.refreshAvailability();
+      await store.add(fav('2.2.2.2'));
+      completer.complete({'1.1.1.1': false});
+      await refresh;
+
+      // Count/IPs must match the pre-await snapshot, not the list after add.
+      verify(mockAnalytics.logFavoriteIpUnavailableShown(any, favoriteIpCount: 1)).called(1);
+    });
+
     test('favorites are available by default before any check', () async {
       saved = [fav('1.1.1.1')];
       final store = buildStore();
