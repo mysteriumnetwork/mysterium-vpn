@@ -1,8 +1,29 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 
 class ConnectionErrorsInterceptor extends Interceptor {
+  @override
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final connectivityStatus = await Connectivity().checkConnectivity();
+    if (!connectivityStatus.hasConnectivity) {
+      final endpoint = options.path;
+      return handler.reject(
+        ApiException(
+          options,
+          'Internet connection unavailable. Please verify your network settings and retry.',
+          code: 0,
+          identifier: 'No internet connection \nat  $endpoint',
+          endpoint: endpoint,
+          severity: ExceptionSeverity.low,
+        ),
+      );
+    }
+
+    handler.next(options);
+  }
+
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.type == DioExceptionType.connectionError) {

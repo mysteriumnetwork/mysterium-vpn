@@ -60,7 +60,14 @@ Future<void> openCancelSubscriptionLink(
 
   if (store.isStoreSubscription()) {
     try {
+      final navigator = Navigator.of(context);
       await container.read(subscriptionPurchaseStorePOD).manageSubscription();
+      // on iOS, the subscription page opens in the app which doesnt refresh the subscription after closing the page.
+      Future.delayed(const Duration(seconds: 2), () async {
+        if (navigator.mounted) {
+          await container.read(subscriptionStorePOD).refreshSubscription(force: true);
+        }
+      });
     } catch (_) {
       if (context.mounted) {
         showSnackbar(S.current.somethingWentWrong);
