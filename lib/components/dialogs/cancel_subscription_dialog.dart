@@ -62,13 +62,17 @@ Future<void> openCancelSubscriptionLink(
     try {
       final navigator = Navigator.of(context);
       await container.read(subscriptionPurchaseStorePOD).manageSubscription();
-      // on iOS, the subscription page opens in the app which doesnt refresh the subscription
-      // after closing the page. In android, if the user returns directly to the app will face
-      // the same issue.
+      // On iOS, the subscription page opens in-app and doesn't refresh the subscription after closing.
+      // On Android, the same issue can happen if the user returns directly to the app.
       if (store.isStoreSubscription()) {
         Future.delayed(const Duration(seconds: 2), () async {
-          if (navigator.mounted) {
+          if (!navigator.mounted) {
+            return;
+          }
+          try {
             await container.read(subscriptionStorePOD).refreshSubscription(force: true);
+          } catch (_) {
+            // Best-effort refresh after store handoff; resume refresh is the fallback.
           }
         });
       }

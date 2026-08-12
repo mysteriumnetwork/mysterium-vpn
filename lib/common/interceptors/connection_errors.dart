@@ -7,7 +7,7 @@ class ConnectionErrorsInterceptor extends Interceptor {
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final connectivityStatus = await Connectivity().checkConnectivity();
-    if (connectivityStatus.lastOrNull == ConnectivityResult.none) {
+    if (!connectivityStatus.hasConnectivity) {
       final endpoint = options.path;
       return handler.reject(
         ApiException(
