@@ -16,6 +16,7 @@ dependencies:
   circle_flags: 5.0.1
   collection: 1.19.1
   configcat_client: 4.1.1
+  connectivity_plus: 7.3.1
   crypto: 3.0.7
   device_info_plus: 13.2.0
   dio: 5.9.2
@@ -90,7 +91,7 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.82
+      ref: 1.0.84
   webview_flutter: 4.14.1
   window_manager: 0.5.2
   wireguard_dart:

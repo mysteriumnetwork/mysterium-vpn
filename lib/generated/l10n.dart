@@ -308,6 +308,7 @@ class S {
     'pl': [],
     'plan_2_years': [],
     'plan_2_years_basic': [],
+    'plan_2_years_plus': [],
     'plan_2_years_pro': [],
     'plan_6_months': [],
     'planAlreadyPurchasedMsg': [],
@@ -2271,6 +2272,11 @@ class S {
   /// `Basic 2-Year`
   String get plan_2_years_basic {
     return Intl.message('Basic 2-Year', name: 'plan_2_years_basic', desc: '', args: []);
+  }
+
+  /// `2 Years Plus`
+  String get plan_2_years_plus {
+    return Intl.message('2 Years Plus', name: 'plan_2_years_plus', desc: '', args: []);
   }
 
   /// `Pro 2-Year`

@@ -33,5 +33,4 @@ enum StorageKeys {
   reviewNativeReviewOpenedAt,
   newsCenterReadIds,
   connectedAt,
-  shouldVerifyPurchase,
 }

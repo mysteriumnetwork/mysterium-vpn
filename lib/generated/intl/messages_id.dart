@@ -447,6 +447,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("Paket 2 Tahun"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2 tahun"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2 tahun"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2 tahun"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("Paket 6 Bulan"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("Paket Bulanan"),

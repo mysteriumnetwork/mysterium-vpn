@@ -364,6 +364,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "planAlreadyPurchasedMsg": MessageLookupByLibrary.simpleMessage("一切就绪！你已激活此套餐。"),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("2 年套餐"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2 年"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2 年"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2 年"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("6 个月套餐"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("月度套餐"),
