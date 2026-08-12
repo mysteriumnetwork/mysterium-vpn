@@ -187,9 +187,7 @@ abstract class _FavoriteIpsStore with Store {
       );
     } else {
       markUnavailable(favorite.ip);
-      unawaited(
-        _analytics.logFavoriteIpUnavailableShown(favorite, favoriteIpCount: favorites.length),
-      );
+      unawaited(_analytics.logFavoriteIpUnknownShown(favorite, favoriteIpCount: favorites.length));
     }
   }
 
@@ -220,7 +218,8 @@ abstract class _FavoriteIpsStore with Store {
 
   @action
   Future<bool> _refreshAvailability({required bool force}) async {
-    final ips = favorites.map((it) => it.ip).toList();
+    final checkedFavorites = List<FavoriteIp>.of(favorites);
+    final ips = checkedFavorites.map((it) => it.ip).toList();
     if (!isEnabled || ips.isEmpty) {
       return true;
     }
@@ -236,10 +235,20 @@ abstract class _FavoriteIpsStore with Store {
         _availability = ObservableMap.of(result);
       }
       _availabilityCheckedAt = DateTime.now();
+      _logUnavailableShown(result, checkedFavorites);
       return true;
     } catch (_) {
       // keep previous availability
       return false;
+    }
+  }
+
+  void _logUnavailableShown(Map<String, bool> availability, List<FavoriteIp> checkedFavorites) {
+    final count = checkedFavorites.length;
+    for (final favorite in checkedFavorites) {
+      if (availability[favorite.ip] == false) {
+        unawaited(_analytics.logFavoriteIpUnavailableShown(favorite, favoriteIpCount: count));
+      }
     }
   }
 
