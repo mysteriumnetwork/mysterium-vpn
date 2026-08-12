@@ -122,7 +122,7 @@ class AppInitializer {
       // S.current is not observable; bump the revision so the tree repaints.
       localizationRevision.value++;
     } catch (e, stack) {
-      logger.handle(e, stack);
+      logger.warning(e, stack);
     }
   }
 

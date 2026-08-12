@@ -311,12 +311,21 @@ mixin AnalyticsStore {
 
   /// The connect attempt failed, so the availability is reported as `unknown`
   /// (the backend does not tell us why).
-  Future<void> logFavoriteIpUnavailableShown(FavoriteIp favorite, {required int favoriteIpCount}) =>
+  Future<void> logFavoriteIpUnknownShown(FavoriteIp favorite, {required int favoriteIpCount}) =>
       logEvent(
         AnalyticsEvent.favoriteIpUnavailableStateShown,
         parameters: {
           ..._favoriteIpParams(favorite, favoriteIpCount),
           'availability_state': 'unknown',
+        },
+      );
+
+  Future<void> logFavoriteIpUnavailableShown(FavoriteIp favorite, {required int favoriteIpCount}) =>
+      logEvent(
+        AnalyticsEvent.favoriteIpUnavailableStateShown,
+        parameters: {
+          ..._favoriteIpParams(favorite, favoriteIpCount),
+          'availability_state': 'unavailable',
         },
       );
 

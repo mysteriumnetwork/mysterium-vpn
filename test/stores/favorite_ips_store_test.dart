@@ -221,6 +221,35 @@ void main() {
 
       expect(store.availableFavorites.map((it) => it.ip), ['1.1.1.1']);
       expect(store.unavailableFavorites.map((it) => it.ip), ['2.2.2.2']);
+      verify(mockAnalytics.logFavoriteIpUnavailableShown(any, favoriteIpCount: 2)).called(1);
+    });
+
+    test('refreshAvailability does not re-log unavailable on a TTL cache hit', () async {
+      saved = [fav('1.1.1.1')];
+      when(mockAvailability.checkAvailability(any)).thenAnswer((_) async => {'1.1.1.1': false});
+      final store = buildStore();
+      await store.future;
+
+      await store.refreshAvailability();
+      await store.refreshAvailability();
+
+      verify(mockAnalytics.logFavoriteIpUnavailableShown(any, favoriteIpCount: 1)).called(1);
+    });
+
+    test('unavailable analytics use the favorites snapshot from before the request', () async {
+      saved = [fav('1.1.1.1')];
+      final completer = Completer<Map<String, bool>>();
+      when(mockAvailability.checkAvailability(any)).thenAnswer((_) => completer.future);
+      final store = buildStore();
+      await store.future;
+
+      final refresh = store.refreshAvailability();
+      await store.add(fav('2.2.2.2'));
+      completer.complete({'1.1.1.1': false});
+      await refresh;
+
+      // Count/IPs must match the pre-await snapshot, not the list after add.
+      verify(mockAnalytics.logFavoriteIpUnavailableShown(any, favoriteIpCount: 1)).called(1);
     });
 
     test('favorites are available by default before any check', () async {
@@ -336,7 +365,13 @@ void main() {
       store.recordConnectOutcome(fav('1.1.1.1'), connectedIp: null);
 
       expect(store.unavailableFavorites.map((it) => it.ip), ['1.1.1.1']);
-      verify(mockAnalytics.logFavoriteIpUnavailableShown(any, favoriteIpCount: 1)).called(1);
+      verify(mockAnalytics.logFavoriteIpUnknownShown(any, favoriteIpCount: 1)).called(1);
+      verifyNever(
+        mockAnalytics.logFavoriteIpUnavailableShown(
+          any,
+          favoriteIpCount: anyNamed('favoriteIpCount'),
+        ),
+      );
     });
 
     test('markUnavailable moves a favorite to the unavailable list', () async {
