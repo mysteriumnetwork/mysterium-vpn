@@ -91,13 +91,12 @@ class SubscriptionPauseView extends HookConsumerWidget {
                 groupValue: selectedPauseDuration.value,
                 onChanged: (value) => selectedPauseDuration.value = value,
                 child: Column(
-                  // converts 1m, 3m, 6m to 1, 3, 6 for display
                   children: cancelSubscriptionStore.availablePauseDurations
                       .where((it) => it.numeric != null)
                       .map(
                         (periodCode) => RadioListTile(
                           value: periodCode,
-                          title: Text(periodCode.numeric!.toString()),
+                          title: Text(S.current.pauseForMonths(periodCode.numeric!)),
                         ),
                       )
                       .toList(),

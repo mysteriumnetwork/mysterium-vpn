@@ -232,6 +232,7 @@ final Map<String, String Function(S)> kTrBridge = {
   'planAlreadyPurchasedMsg': (s) => s.planAlreadyPurchasedMsg,
   'plan_2_years': (s) => s.plan_2_years,
   'plan_2_years_basic': (s) => s.plan_2_years_basic,
+  'plan_2_years_plus': (s) => s.plan_2_years_plus,
   'plan_2_years_pro': (s) => s.plan_2_years_pro,
   'plan_6_months': (s) => s.plan_6_months,
   'plan_monthly': (s) => s.plan_monthly,

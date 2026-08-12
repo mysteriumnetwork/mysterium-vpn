@@ -32,7 +32,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     this._subscriptionStore,
     this._plansStore,
   ) {
-    debugPrint('MAZLOG SubscriptionPurchaseStore constructed storeHash=${identityHashCode(this)}');
     _future.ignore();
   }
 
@@ -190,14 +189,9 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
   }
 
   Future<void> _refresh() async {
-    debugPrint(
-      'MAZLOG _refresh called, existing _purchaseStream=${_purchaseStream != null} '
-      'storeHash=${identityHashCode(this)}',
-    );
     _purchaseStream ??= _inAppPurchase.purchaseStream.listen(
       _onPurchaseUpdate,
       onDone: () async {
-        debugPrint('MAZLOG purchaseStream onDone storeHash=${identityHashCode(this)}');
         await _purchaseStream?.cancel();
         _purchaseStream = null;
       },
@@ -208,26 +202,11 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         }
       },
     );
-    debugPrint(
-      'MAZLOG _refresh listener attached storeHash=${identityHashCode(this)} '
-      'streamSubHash=${identityHashCode(_purchaseStream)}',
-    );
   }
 
   @action
   Future<void> _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) async {
-    debugPrint(
-      'MAZLOG _onPurchaseUpdate batch size=${purchaseDetailsList.length} '
-      'storeHash=${identityHashCode(this)} '
-      'ids=${purchaseDetailsList.map((p) => p.purchaseID).toList()} '
-      'objHashes=${purchaseDetailsList.map(identityHashCode).toList()}',
-    );
     for (final purchase in purchaseDetailsList) {
-      debugPrint(
-        'MAZLOG _onPurchaseUpdate item id=${purchase.purchaseID} '
-        'product=${purchase.productID} status=${purchase.status} '
-        'objHash=${identityHashCode(purchase)}',
-      );
       try {
         await _handlePurchase(purchase);
       } catch (e, stack) {
@@ -242,30 +221,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     final products = await _plansStore.future;
     final product = products.firstWhereOrNull(
       (it) => it.productDetails.id == purchaseDetails.productID,
-    );
-    final currentSub = _subscriptionStore.subscriptionFuture.value;
-    final currentPlanProductId = products
-        .firstWhereOrNull((it) => it.id == currentSub?.planId)
-        ?.productDetails
-        .id;
-    final matchesStorePlanId =
-        currentSub?.storePlanId != null && currentSub!.storePlanId == purchaseDetails.productID;
-    final matchesCurrentPlanProduct =
-        currentPlanProductId != null && currentPlanProductId == purchaseDetails.productID;
-    debugPrint(
-      'MAZLOG _handlePurchase compare '
-      'purchaseProduct=${purchaseDetails.productID} '
-      'purchaseId=${purchaseDetails.purchaseID} '
-      'status=${purchaseDetails.status} '
-      'pendingComplete=${purchaseDetails.pendingCompletePurchase} '
-      'subActive=${currentSub?.active} '
-      'subRecurring=${currentSub?.recurring} '
-      'subPlanId=${currentSub?.planId} '
-      'subStorePlanId=${currentSub?.storePlanId} '
-      'currentPlanProductId=$currentPlanProductId '
-      'matchesStorePlanId=$matchesStorePlanId '
-      'matchesCurrentPlanProduct=$matchesCurrentPlanProduct '
-      'sameAsSubscribedProduct=${matchesStorePlanId || matchesCurrentPlanProduct}',
     );
 
     if ([PurchaseStatus.error, PurchaseStatus.canceled].contains(purchaseDetails.status)) {
@@ -303,27 +258,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     }
 
     if (purchaseDetails.pendingCompletePurchase) {
-      try {
-        debugPrint(
-          'MAZLOG completePurchase start '
-          'id=${purchaseDetails.purchaseID} '
-          'product=${purchaseDetails.productID} '
-          'status=${purchaseDetails.status}',
-        );
-        await _inAppPurchase.completePurchase(purchaseDetails);
-        debugPrint(
-          'MAZLOG completePurchase success '
-          'id=${purchaseDetails.purchaseID}',
-        );
-      } catch (e, stack) {
-        debugPrint(
-          'MAZLOG completePurchase FAILED '
-          'id=${purchaseDetails.purchaseID} '
-          'error=$e',
-        );
-        debugPrint('MAZLOG completePurchase stack: $stack');
-        _logger.handle(e, stack);
-      }
+      await _inAppPurchase.completePurchase(purchaseDetails);
     }
 
     try {
@@ -380,12 +315,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     if (_subscriptionStatus == SubscriptionStatus.pending) {
       _subscriptionStatus = SubscriptionStatus.verifying;
     }
-    debugPrint(
-      'MAZLOG verifyPurchase start '
-      'transactionId=${purchaseDetails.purchaseID} '
-      'storeProduct=${purchaseDetails.productID} '
-      'planId=$productId',
-    );
     try {
       await _subscriptionStore.updateSubscription(
         () => _subscriptionService.verifyPurchase(
@@ -394,13 +323,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
           transactionId: purchaseDetails.purchaseID ?? '',
         ),
       );
-      final after = _subscriptionStore.subscriptionFuture.value;
-      debugPrint(
-        'MAZLOG verifyPurchase SUCCESS '
-        'transactionId=${purchaseDetails.purchaseID} '
-        'active=${after?.active} recurring=${after?.recurring} '
-        'planId=${after?.planId} storePlanId=${after?.storePlanId}',
-      );
       _analyticsStore.logPaymentSuccess(
         productId: productId,
         price: price,
@@ -408,12 +330,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         currency: currency,
       );
     } catch (e) {
-      debugPrint(
-        'MAZLOG verifyPurchase FAILED '
-        'transactionId=${purchaseDetails.purchaseID} '
-        'storeProduct=${purchaseDetails.productID} '
-        'error=$e',
-      );
       _subscriptionStatus = SubscriptionStatus.verifyingError;
       _subscriptionError = e;
       _analyticsStore.logEvent(
@@ -426,7 +342,6 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
 
   @override
   FutureOr<void> dispose() async {
-    debugPrint('MAZLOG SubscriptionPurchaseStore dispose storeHash=${identityHashCode(this)}');
     await _purchaseStream?.cancel();
     _purchaseStream = null;
   }

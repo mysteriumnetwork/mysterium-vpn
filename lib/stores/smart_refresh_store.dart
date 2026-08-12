@@ -77,25 +77,8 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   Future<void> _onResume() async {
     _subscriptionDebouncer.debounce(() {
       // Post-frame so the warm-start frame paints before the network refresh.
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final before = _subscriptionStore.subscriptionFuture.value;
-        debugPrint(
-          'MAZLOG resume refreshSubscription START '
-          'active=${before?.active} recurring=${before?.recurring} '
-          'planId=${before?.planId} storePlanId=${before?.storePlanId}',
-        );
-        try {
-          final after = await _subscriptionStore.refreshSubscription(force: true);
-          debugPrint(
-            'MAZLOG resume refreshSubscription DONE '
-            'active=${after.active} recurring=${after.recurring} '
-            'planId=${after.planId} storePlanId=${after.storePlanId} '
-            'activeUntil=${after.activeUntil}',
-          );
-        } on Object catch (e, stack) {
-          debugPrint('MAZLOG resume refreshSubscription FAILED error=$e');
-          _logger.handle(e, stack);
-        }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _subscriptionStore.refreshSubscription(force: true);
       });
     });
   }

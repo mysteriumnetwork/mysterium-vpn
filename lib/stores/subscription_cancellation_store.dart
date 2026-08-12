@@ -103,7 +103,15 @@ abstract class _SubscriptionCancellationStore with Store {
       return false;
     }
     final subscription = await _subscriptionStore.subscriptionFuture;
-    return !(subscription.paused ?? false);
+    if (subscription.paused == true) {
+      return false;
+    }
+
+    if (subscription.pausedFrom != null || subscription.pausedUntil != null) {
+      return false;
+    }
+
+    return true;
   }
 
   @action

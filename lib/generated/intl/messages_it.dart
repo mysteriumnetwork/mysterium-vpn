@@ -464,6 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("Piano biennale"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic biennale"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus biennale"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro biennale"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("Piano semestrale"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("Piano mensile"),

@@ -401,6 +401,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "planAlreadyPurchasedMsg": MessageLookupByLibrary.simpleMessage("準備完了です。このプランはすでに有効になっています。"),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("2 年プラン"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2 年"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2 年"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2 年"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("6 か月プラン"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("月額プラン"),
