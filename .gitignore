@@ -69,8 +69,9 @@ devtools_options.yaml
 **/xcuserdata/
 **/macos/build/
 
-# iOS
+# iOS / Android
 **/ios/build/
+**/android/build/
 
 # FVM Version Cache
 .fvm/

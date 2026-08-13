@@ -144,12 +144,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aboneliğini iptal etmek istediğinden emin misin?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Aboneliği iptal et"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Aboneliğin iptal edilecek. Erişimin bitene kadar Mysterium VPN’i kullanmaya devam edebilirsin.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "Lütfen daha fazla ayrıntı gir...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Daha fazla anlat (isteğe bağlı)",
     ),
@@ -178,7 +172,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("İLETİŞİM"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Tamamla"),
     "confirm": MessageLookupByLibrary.simpleMessage("Onayla"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("İptali onayla"),
     "connect": MessageLookupByLibrary.simpleMessage("Bağlan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("En iyi sunucu"),
     "connectToLocationBtn": m4,
@@ -530,9 +523,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bağlantın nasıl?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Neyi beğenmedin?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Neyi beğendin?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "Erişimin bitmeden aboneliğini istediğin zaman yeniden etkinleştirebilirsin.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Son konumlar"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("İndirim kodunu kullan"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -654,7 +644,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 Yıl"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Tüm planlar"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Planını yükselt"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Abonelik iptal edildi"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "VPN protokolleri ve kötü amaçlı yazılım engelleme gibi gelişmiş özellikleri keşfet.",
     ),

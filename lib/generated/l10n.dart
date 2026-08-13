@@ -96,8 +96,6 @@ class S {
     'cancelSpeed': [],
     'cancelSubscriptionPromptDesc': [],
     'cancelSubscriptionTitle': [],
-    'cancelSubscriptionWarningDesc': [],
-    'cancelSurveyFeedbackHint': [],
     'cancelSurveyTellUsMoreHint': [],
     'cancelSurveyTitle': [],
     'cancelTooExpensive': [],
@@ -114,7 +112,6 @@ class S {
     'communicationLblDesktop': [],
     'completeBtn': [],
     'confirm': [],
-    'confirmCancellationTitle': [],
     'connect': [],
     'connectBestServer': [],
     'connected': [],
@@ -355,7 +352,6 @@ class S {
     'rateConnection': [],
     'rateConnectionDislike': [],
     'rateConnectionLike': [],
-    'reactivateSubscriptionAnytimeDesc': [],
     'recentLocations': [],
     'redeemDiscountCode': [],
     'redirectToLoginPage': [],
@@ -427,7 +423,6 @@ class S {
     'subscriptionAllPlansTabYear': [],
     'subscriptionAllPlansTitle': [],
     'subscriptionAllPlansUpgrade': [],
-    'subscriptionCancelledTitle': [],
     'subscriptionOnboardingBoostProtectionDescription': [],
     'subscriptionOnboardingBoostProtectionTitle': [],
     'subscriptionOnboardingCancelTourLabel': [],
@@ -802,26 +797,6 @@ class S {
     return Intl.message('Cancel subscription', name: 'cancelSubscriptionTitle', desc: '', args: []);
   }
 
-  /// `Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.`
-  String get cancelSubscriptionWarningDesc {
-    return Intl.message(
-      'Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.',
-      name: 'cancelSubscriptionWarningDesc',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please enter more details...`
-  String get cancelSurveyFeedbackHint {
-    return Intl.message(
-      'Please enter more details...',
-      name: 'cancelSurveyFeedbackHint',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Tell us more (optional)`
   String get cancelSurveyTellUsMoreHint {
     return Intl.message(
@@ -930,16 +905,6 @@ class S {
   /// `Confirm`
   String get confirm {
     return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
-  }
-
-  /// `Confirm cancellation`
-  String get confirmCancellationTitle {
-    return Intl.message(
-      'Confirm cancellation',
-      name: 'confirmCancellationTitle',
-      desc: '',
-      args: [],
-    );
   }
 
   /// `Connect`
@@ -2599,16 +2564,6 @@ class S {
     return Intl.message('What did you like?', name: 'rateConnectionLike', desc: '', args: []);
   }
 
-  /// `You can reactivate your subscription anytime before your access ends.`
-  String get reactivateSubscriptionAnytimeDesc {
-    return Intl.message(
-      'You can reactivate your subscription anytime before your access ends.',
-      name: 'reactivateSubscriptionAnytimeDesc',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Recent locations`
   String get recentLocations {
     return Intl.message('Recent locations', name: 'recentLocations', desc: '', args: []);
@@ -3142,16 +3097,6 @@ class S {
     return Intl.message(
       'Upgrade your plan',
       name: 'subscriptionAllPlansUpgrade',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Subscription cancelled`
-  String get subscriptionCancelledTitle {
-    return Intl.message(
-      'Subscription cancelled',
-      name: 'subscriptionCancelledTitle',
       desc: '',
       args: [],
     );

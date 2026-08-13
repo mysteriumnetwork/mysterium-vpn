@@ -153,14 +153,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.cancelSubscriptionReasonKeys,
         name: 'RemoteConfigStoreBase.cancelSubscriptionReasonKeys',
       )).value;
-  Computed<Map<int, String>>? _$subscriptionPauseDurationsComputed;
-
-  @override
-  Map<int, String> get subscriptionPauseDurations =>
-      (_$subscriptionPauseDurationsComputed ??= Computed<Map<int, String>>(
-        () => super.subscriptionPauseDurations,
-        name: 'RemoteConfigStoreBase.subscriptionPauseDurations',
-      )).value;
   Computed<bool>? _$pauseSubscriptionEnabledComputed;
 
   @override
@@ -452,7 +444,6 @@ browseUnauthenticated: ${browseUnauthenticated},
 shouldCheckUdp: ${shouldCheckUdp},
 latestStableAppVersion: ${latestStableAppVersion},
 cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
-subscriptionPauseDurations: ${subscriptionPauseDurations},
 pauseSubscriptionEnabled: ${pauseSubscriptionEnabled},
 useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},

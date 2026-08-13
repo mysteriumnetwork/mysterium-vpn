@@ -142,12 +142,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Are you sure you want to cancel your subscription?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Cancel subscription"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "Please enter more details...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("Tell us more (optional)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Reasons for cancelling"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Too expensive"),
@@ -174,7 +168,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("COMMUNICATIONS"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Complete"),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Confirm cancellation"),
     "connect": MessageLookupByLibrary.simpleMessage("Connect"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Best server"),
     "connectToLocationBtn": m4,
@@ -520,9 +513,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("How is your connection?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("What didn’t you like?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("What did you like?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "You can reactivate your subscription anytime before your access ends.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Recent locations"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Redeem discount code"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -642,7 +632,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1-Year"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("All plans"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Upgrade your plan"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Subscription cancelled"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Explore advanced features like VPN protocols and malware blocking.",
     ),

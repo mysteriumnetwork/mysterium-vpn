@@ -140,12 +140,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sei sicuro di voler annullare l’abbonamento?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Annulla abbonamento"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Il tuo abbonamento verrà annullato. Potrai continuare a usare Mysterium VPN fino alla fine dell’accesso.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "Inserisci maggiori dettagli...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Raccontaci di più (facoltativo)",
     ),
@@ -176,7 +170,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("COMUNICAZIONI"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Completa"),
     "confirm": MessageLookupByLibrary.simpleMessage("Conferma"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Conferma annullamento"),
     "connect": MessageLookupByLibrary.simpleMessage("Connetti"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Miglior server"),
     "connectToLocationBtn": m4,
@@ -534,9 +527,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Com\'è la tua connessione?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Cosa non ti è piaciuto?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Cosa ti è piaciuto?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "Puoi riattivare l’abbonamento in qualsiasi momento prima della fine dell’accesso.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Posizioni recenti"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Riscatta codice sconto"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -664,7 +654,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("Annuale"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Tutti i piani"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Aggiorna il tuo piano"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Abbonamento annullato"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Esplora funzionalità avanzate come i protocolli VPN e il blocco malware.",
     ),

@@ -144,10 +144,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Czy na pewno chcesz anulować subskrypcję?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Anuluj subskrypcję"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Twoja subskrypcja zostanie anulowana. Możesz nadal korzystać z Mysterium VPN do końca dostępu.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("Podaj więcej szczegółów…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Powiedz nam więcej (opcjonalnie)",
     ),
@@ -176,7 +172,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("KOMUNIKACJA"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Zakończ"),
     "confirm": MessageLookupByLibrary.simpleMessage("Potwierdź"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Potwierdź anulowanie"),
     "connect": MessageLookupByLibrary.simpleMessage("Połącz"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Najlepszy serwer"),
     "connectToLocationBtn": m4,
@@ -534,9 +529,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Jak działa Twoje połączenie?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Co Ci się nie podobało?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Co Ci się podobało?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "Możesz ponownie aktywować subskrypcję w dowolnym momencie przed końcem dostępu.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Ostatnie lokalizacje"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Wykorzystaj kod rabatowy"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -664,7 +656,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 rok"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Wszystkie plany"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Ulepsz swój plan"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Subskrypcja anulowana"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Odkryj zaawansowane funkcje, takie jak protokoły VPN i blokowanie złośliwego oprogramowania.",
     ),

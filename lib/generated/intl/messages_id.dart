@@ -141,12 +141,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Yakin ingin membatalkan langgananmu?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Batalkan langganan"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Langgananmu akan dibatalkan. Kamu tetap bisa memakai Mysterium VPN hingga aksesmu berakhir.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "Masukkan detail selengkapnya...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Ceritakan lebih lanjut (opsional)",
     ),
@@ -173,7 +167,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("KOMUNIKASI"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Selesai"),
     "confirm": MessageLookupByLibrary.simpleMessage("Konfirmasi"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Konfirmasi pembatalan"),
     "connect": MessageLookupByLibrary.simpleMessage("Hubungkan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Server terbaik"),
     "connectToLocationBtn": m4,
@@ -517,9 +510,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bagaimana koneksimu?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Apa yang kurang kamu suka?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Apa yang kamu suka?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "Kamu bisa mengaktifkan ulang langgananmu kapan saja sebelum aksesmu berakhir.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Lokasi terkini"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Tukarkan kode diskon"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -635,7 +625,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 Tahun"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Semua paket"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan paketmu"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Langganan dibatalkan"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Jelajahi fitur canggih seperti protokol VPN dan pemblokiran malware.",
     ),

@@ -129,10 +129,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("速度"),
     "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("サブスクリプションを解約しますか？"),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("サブスクリプションを解約"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "サブスクリプションは解約されます。アクセス終了まで Mysterium VPN を引き続き利用できます。",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("詳細を入力してください…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("詳しく教えて（任意）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("キャンセルの理由"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("高すぎる"),
@@ -153,7 +149,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("お知らせ"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("完了"),
     "confirm": MessageLookupByLibrary.simpleMessage("確認"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("解約の確認"),
     "connect": MessageLookupByLibrary.simpleMessage("接続"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("最適なサーバー"),
     "connectToLocationBtn": m4,
@@ -455,9 +450,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("接続の調子はいかがですか？"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("どこが気に入りませんでしたか？"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("どこが良かったですか？"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "アクセスが終了する前なら、いつでも再有効化できます。",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("最近のロケーション"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("割引コードを利用"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -551,7 +543,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 年"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("すべてのプラン"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("プランをアップグレード"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("解約が完了しました"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "VPN プロトコルやマルウェアブロックなどの高度な機能を活用しましょう。",
     ),

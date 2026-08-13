@@ -83,57 +83,6 @@ void main() {
     });
   });
 
-  group('RemoteConfigStore.subscriptionPauseDurations', () {
-    test('returns empty map when key is missing', () async {
-      store = createStore();
-      await store.configFuture;
-      expect(store.subscriptionPauseDurations, isEmpty);
-    });
-
-    test('returns empty map for empty JSON object', () async {
-      store = createStore();
-      when(client.getAllValues()).thenAnswer((_) async => {'subscriptionPauseDurations': '{}'});
-      await store.configFuture;
-      expect(store.subscriptionPauseDurations, isEmpty);
-    });
-
-    test('parses months to API period codes', () async {
-      store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'subscriptionPauseDurations': '{"1":"1m","3":"3m","6":"6m"}'});
-      await store.configFuture;
-      expect(store.subscriptionPauseDurations, equals({1: '1m', 3: '3m', 6: '6m'}));
-    });
-
-    test('skips invalid month keys and empty period codes', () async {
-      store = createStore();
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'subscriptionPauseDurations': '{"1":"1m","x":"3m","3":"","6":"6m"}'},
-      );
-      await store.configFuture;
-      expect(store.subscriptionPauseDurations, equals({1: '1m', 6: '6m'}));
-    });
-
-    test('returns empty map for invalid JSON', () async {
-      store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'subscriptionPauseDurations': '{not valid json'});
-      await store.configFuture;
-      expect(store.subscriptionPauseDurations, isEmpty);
-    });
-
-    test('returns empty map for non-map JSON', () async {
-      store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'subscriptionPauseDurations': '["1m","3m"]'});
-      await store.configFuture;
-      expect(store.subscriptionPauseDurations, isEmpty);
-    });
-  });
-
   group('RemoteConfigStore.pauseSubscriptionEnabled', () {
     test('returns the config value when present', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'pauseSubscriptionEnabled': true});

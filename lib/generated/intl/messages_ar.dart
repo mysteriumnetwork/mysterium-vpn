@@ -141,12 +141,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("إلغاء الاشتراك"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "سيتم إلغاء اشتراكك. يمكنك مواصلة استخدام Mysterium VPN حتى ينتهي وصولك.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "يُرجى إدخال المزيد من التفاصيل...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("أخبرنا بالمزيد (اختياري)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
@@ -173,7 +167,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("الاتصالات"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("إكمال"),
     "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("تأكيد الإلغاء"),
     "connect": MessageLookupByLibrary.simpleMessage("اتصال"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("أفضل خادم"),
     "connectToLocationBtn": m4,
@@ -517,9 +510,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("كيف هو اتصالك؟"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("ما الذي لم يعجبك؟"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("ما الذي أعجبك؟"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "يمكنك إعادة تفعيل اشتراكك في أي وقت قبل انتهاء وصولك.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("المواقع الأخيرة"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("استخدام رمز الخصم"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -625,7 +615,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("سنة واحدة"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("جميع الخطط"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("ترقية خطتك"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("تم إلغاء الاشتراك"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "استكشف ميزات متقدمة مثل بروتوكولات VPN وحظر البرامج الضارة.",
     ),
