@@ -42,7 +42,10 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
     });
   }
 
-  late final _$_errorAtom = Atom(name: '_SubscriptionCancellationStore._error', context: context);
+  late final _$_errorAtom = Atom(
+    name: '_SubscriptionCancellationStore._error',
+    context: context,
+  );
 
   @override
   Exception? get _error {
@@ -68,12 +71,37 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   }
 
   @override
-  ObservableList<String> get _availablePauseDurations => availablePauseDurations;
+  ObservableList<String> get _availablePauseDurations =>
+      availablePauseDurations;
 
   @override
   set _availablePauseDurations(ObservableList<String> value) {
-    _$_availablePauseDurationsAtom.reportWrite(value, super._availablePauseDurations, () {
-      super._availablePauseDurations = value;
+    _$_availablePauseDurationsAtom.reportWrite(
+      value,
+      super._availablePauseDurations,
+      () {
+        super._availablePauseDurations = value;
+      },
+    );
+  }
+
+  late final _$_pauseOfferShownAtom = Atom(
+    name: '_SubscriptionCancellationStore._pauseOfferShown',
+    context: context,
+  );
+
+  bool get pauseOfferShown {
+    _$_pauseOfferShownAtom.reportRead();
+    return super._pauseOfferShown;
+  }
+
+  @override
+  bool get _pauseOfferShown => pauseOfferShown;
+
+  @override
+  set _pauseOfferShown(bool value) {
+    _$_pauseOfferShownAtom.reportWrite(value, super._pauseOfferShown, () {
+      super._pauseOfferShown = value;
     });
   }
 
@@ -84,7 +112,9 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
 
   @override
   Future<bool> setSurvey({required Set<String> reasons, String? feedback}) {
-    return _$setSurveyAsyncAction.run(() => super.setSurvey(reasons: reasons, feedback: feedback));
+    return _$setSurveyAsyncAction.run(
+      () => super.setSurvey(reasons: reasons, feedback: feedback),
+    );
   }
 
   late final _$pauseSubscriptionAsyncAction = AsyncAction(
@@ -94,7 +124,9 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
 
   @override
   Future<bool> pauseSubscription(String periodCode) {
-    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(periodCode));
+    return _$pauseSubscriptionAsyncAction.run(
+      () => super.pauseSubscription(periodCode),
+    );
   }
 
   late final _$_loadPauseDurationsAsyncAction = AsyncAction(
@@ -104,19 +136,34 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
 
   @override
   Future<void> _loadPauseDurations() {
-    return _$_loadPauseDurationsAsyncAction.run(() => super._loadPauseDurations());
+    return _$_loadPauseDurationsAsyncAction.run(
+      () => super._loadPauseDurations(),
+    );
   }
 
-  late final _$_SubscriptionCancellationStoreActionController = ActionController(
-    name: '_SubscriptionCancellationStore',
-    context: context,
-  );
+  late final _$_SubscriptionCancellationStoreActionController =
+      ActionController(
+        name: '_SubscriptionCancellationStore',
+        context: context,
+      );
+
+  @override
+  void markPauseOfferShown() {
+    final _$actionInfo = _$_SubscriptionCancellationStoreActionController
+        .startAction(
+          name: '_SubscriptionCancellationStore.markPauseOfferShown',
+        );
+    try {
+      return super.markPauseOfferShown();
+    } finally {
+      _$_SubscriptionCancellationStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void reset() {
-    final _$actionInfo = _$_SubscriptionCancellationStoreActionController.startAction(
-      name: '_SubscriptionCancellationStore.reset',
-    );
+    final _$actionInfo = _$_SubscriptionCancellationStoreActionController
+        .startAction(name: '_SubscriptionCancellationStore.reset');
     try {
       return super.reset();
     } finally {

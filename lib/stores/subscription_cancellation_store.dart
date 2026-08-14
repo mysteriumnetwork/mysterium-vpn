@@ -41,6 +41,10 @@ abstract class _SubscriptionCancellationStore with Store {
   @readonly
   ObservableList<String> _availablePauseDurations = ObservableList<String>();
 
+  /// Whether the pause offer screen was shown in this cancellation session.
+  @readonly
+  bool _pauseOfferShown = false;
+
   /// Returns `true` when survey data was logged.
   @action
   Future<bool> setSurvey({required Set<String> reasons, String? feedback}) async {
@@ -74,10 +78,20 @@ abstract class _SubscriptionCancellationStore with Store {
     }
 
     _isProcessing = true;
+    final subscriptionId = _subscriptionStore.subscriptionFuture.value?.id ?? '';
 
     try {
       await _subscriptionStore.pauseSubscription(periodCode);
-      final analytics = <Future<void>>[_analyticsStore.logCancellationPauseAccepted()];
+      final paused = _subscriptionStore.subscriptionFuture.value;
+      final pauseEnd = paused?.pausedUntil?.toIso8601String();
+      final analytics = <Future<void>>[
+        _analyticsStore.logCancellationPauseAccepted(
+          pauseDuration: periodCode,
+          subscriptionId: paused?.id ?? subscriptionId,
+          pauseEndDate: pauseEnd,
+          billingResumeDate: pauseEnd,
+        ),
+      ];
       final months = periodCode.numeric;
       if (months != null) {
         analytics.add(_analyticsStore.logSubscriptionCancellationPauseDuration(months: months));
@@ -88,11 +102,23 @@ abstract class _SubscriptionCancellationStore with Store {
     } on Exception catch (e) {
       _error = e;
       _isProcessing = false;
+      await _analyticsStore.logCancellationPauseFailed(
+        subscriptionId: subscriptionId,
+        pauseDuration: periodCode,
+        failureReason: e.toString(),
+      );
       return false;
     }
   }
 
   bool isStoreSubscription() => !_subscriptionStore.useWebFlow;
+
+  String? currentSubscriptionId() => _subscriptionStore.subscriptionFuture.value?.id;
+
+  @action
+  void markPauseOfferShown() {
+    _pauseOfferShown = true;
+  }
 
   Future<bool> canPauseSubscription() async {
     if (!_remoteConfigStore.pauseSubscriptionEnabled || isStoreSubscription()) {
@@ -131,6 +157,7 @@ abstract class _SubscriptionCancellationStore with Store {
   void reset() {
     _isProcessing = false;
     _error = null;
+    _pauseOfferShown = false;
   }
 
   FutureOr<void> dispose() async {

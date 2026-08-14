@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
@@ -62,8 +63,34 @@ void main() {
     remoteConfigStore = MockRemoteConfigStore();
     authSessionStore = MockAuthSessionStore();
     when(analyticsStore.logCancellationConfirmViewed()).thenAnswer((_) async {});
-    when(analyticsStore.logCancellationStarted()).thenAnswer((_) async {});
-    when(analyticsStore.logCancellationDashboardOpened()).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationStarted(entrypoint: anyNamed('entrypoint')),
+    ).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationDashboardOpened(
+        source: anyNamed('source'),
+        subscriptionId: anyNamed('subscriptionId'),
+        pauseOfferShown: anyNamed('pauseOfferShown'),
+      ),
+    ).thenAnswer((_) async {});
+    when(
+      analyticsStore.logStoreSubscriptionManageClicked(
+        store: anyNamed('store'),
+        subscriptionId: anyNamed('subscriptionId'),
+      ),
+    ).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationRedirectFailed(
+        subscriptionId: anyNamed('subscriptionId'),
+        failureReason: anyNamed('failureReason'),
+      ),
+    ).thenAnswer((_) async {});
+    when(cancelStore.pauseOfferShown).thenReturn(false);
+    when(subscriptionStore.subscriptionFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        Subscription(active: true, id: 'sub-1', gateway: 'google', paused: false),
+      ),
+    );
   });
 
   /// Opens the confirm dialog via [showCancelSubscriptionDialog].
@@ -101,16 +128,17 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows the confirm dialog and logs confirm viewed', (tester) async {
+  testWidgets('shows the confirm dialog and logs started + confirm viewed', (tester) async {
     await openConfirmDialog(tester);
 
     expect(find.text(S.current.cancelSubscriptionTitle), findsOneWidget);
     expect(find.text(S.current.continueBtn), findsOneWidget);
     expect(find.text(S.current.keepSubscriptionBtn), findsOneWidget);
+    verify(analyticsStore.logCancellationStarted(entrypoint: 'account')).called(1);
     verify(analyticsStore.logCancellationConfirmViewed()).called(1);
   });
 
-  testWidgets('keep subscription dismisses without starting cancellation', (tester) async {
+  testWidgets('keep subscription dismisses without continuing the flow', (tester) async {
     // arrange
     await openConfirmDialog(tester);
 
@@ -119,11 +147,12 @@ void main() {
     await tester.pump();
 
     // assert
-    verifyNever(analyticsStore.logCancellationStarted());
+    verify(analyticsStore.logCancellationStarted(entrypoint: 'account')).called(1);
+    verifyNever(subscriptionPurchaseStore.manageSubscription());
     verify(cancelStore.reset()).called(2);
   });
 
-  testWidgets('close dismisses without starting cancellation', (tester) async {
+  testWidgets('close dismisses without continuing the flow', (tester) async {
     // arrange
     await openConfirmDialog(tester);
 
@@ -133,7 +162,8 @@ void main() {
 
     // assert
     expect(find.text(S.current.cancelSubscriptionTitle), findsNothing);
-    verifyNever(analyticsStore.logCancellationStarted());
+    verify(analyticsStore.logCancellationStarted(entrypoint: 'account')).called(1);
+    verifyNever(subscriptionPurchaseStore.manageSubscription());
     verify(cancelStore.reset()).called(2);
   });
 
@@ -150,7 +180,13 @@ void main() {
 
     // assert
     verify(cancelStore.reset()).called(2);
-    verify(analyticsStore.logCancellationStarted()).called(1);
+    verify(analyticsStore.logCancellationStarted(entrypoint: 'account')).called(1);
+    verify(
+      analyticsStore.logStoreSubscriptionManageClicked(
+        store: anyNamed('store'),
+        subscriptionId: anyNamed('subscriptionId'),
+      ),
+    ).called(1);
     verify(subscriptionPurchaseStore.manageSubscription()).called(1);
   });
 
@@ -273,6 +309,7 @@ void main() {
             analyticsStorePOD.overrideWithValue(analyticsStore),
             remoteConfigStorePOD.overrideWithValue(remoteConfigStore),
             authSessionStorePOD.overrideWithValue(authSessionStore),
+            subscriptionStorePOD.overrideWithValue(subscriptionStore),
           ],
           child: MaterialApp(
             theme: DesignSystem.lightTheme,
@@ -307,7 +344,13 @@ void main() {
     ) async {
       await openWebLink(tester);
 
-      verify(analyticsStore.logCancellationDashboardOpened()).called(1);
+      verify(
+        analyticsStore.logCancellationDashboardOpened(
+          source: anyNamed('source'),
+          subscriptionId: anyNamed('subscriptionId'),
+          pauseOfferShown: anyNamed('pauseOfferShown'),
+        ),
+      ).called(1);
       expect(urlLauncher.launchedUrls, [
         'https://billing.example.com/manage?access_token=token-123',
       ]);

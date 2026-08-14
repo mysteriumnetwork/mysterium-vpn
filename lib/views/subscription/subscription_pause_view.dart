@@ -24,6 +24,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
     final selectedPauseDuration = useState<String?>(null);
 
     useEffect(() {
+      cancelSubscriptionStore.markPauseOfferShown();
       analyticsStore.logCancellationPauseOfferViewed().ignore();
       return null;
     }, const []);
@@ -46,7 +47,8 @@ class SubscriptionPauseView extends HookConsumerWidget {
     }
 
     Future<void> handleContinueOnWeb() async {
-      analyticsStore.logCancellationPauseDeclined().ignore();
+      final subscriptionId = cancelSubscriptionStore.currentSubscriptionId() ?? '';
+      analyticsStore.logCancellationPauseDeclined(subscriptionId: subscriptionId).ignore();
       final navigator = Navigator.of(context, rootNavigator: true);
       Navigator.of(context).pop();
 

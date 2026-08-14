@@ -319,7 +319,7 @@ void main() {
   });
 
   group('cancellation flow analytics', () {
-    test('logCancellationReasonSubmitted joins reasons and includes feedback', () async {
+    test('logCancellationReasonSubmitted sends reason and has_free_text', () async {
       final entry = nextLog();
       await store.logCancellationReasonSubmitted(
         reasons: {'price', 'speed'},
@@ -328,8 +328,25 @@ void main() {
 
       final log = await entry;
       expect(log.message, AnalyticsEvent.cancellationReasonSubmitted.formattedName);
-      expect((log.params!['reasons']! as String).split(',').toSet(), {'price', 'speed'});
-      expect(log.params!['feedback'], 'too pricey');
+      expect((log.params!['reason']! as String).split(',').toSet(), {'price', 'speed'});
+      expect(log.params!['has_free_text'], isTrue);
+    });
+
+    test('logCancellationReasonSubmitted sets has_free_text false when empty', () async {
+      final entry = nextLog();
+      await store.logCancellationReasonSubmitted(reasons: {'price'});
+
+      final log = await entry;
+      expect(log.params!['has_free_text'], isFalse);
+    });
+
+    test('logCancellationStarted includes entrypoint', () async {
+      final entry = nextLog();
+      await store.logCancellationStarted(entrypoint: 'account');
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.cancellationStarted.formattedName);
+      expect(log.params!['entrypoint'], 'account');
     });
 
     test('logCancellationReasonSkipped emits event with no params', () async {

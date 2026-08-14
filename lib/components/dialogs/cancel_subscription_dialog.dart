@@ -12,10 +12,14 @@ import 'package:mysterium_vpn/views/subscription/cancel_subscription_survey_view
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Shows the cancel confirmation prompt, then the survey (web) or store handoff.
-Future<void> showCancelSubscriptionDialog(BuildContext context) async {
+Future<void> showCancelSubscriptionDialog(
+  BuildContext context, {
+  String entrypoint = 'account',
+}) async {
   final container = ProviderScope.containerOf(context, listen: false);
   final store = container.read(subscriptionCancellationStorePOD)..reset();
   final analyticsStore = container.read(analyticsStorePOD);
+  analyticsStore.logCancellationStarted(entrypoint: entrypoint).ignore();
   analyticsStore.logCancellationConfirmViewed().ignore();
 
   final didProceed = await showModal<bool>(
@@ -30,8 +34,6 @@ Future<void> showCancelSubscriptionDialog(BuildContext context) async {
     store.reset();
     return;
   }
-
-  analyticsStore.logCancellationStarted().ignore();
 
   // Store-managed: skip survey/pause and open the same manage-subscription flow
   // used by Settings (Play sku deep-link / StoreKit re-purchase of current plan).
@@ -57,10 +59,18 @@ Future<void> openCancelSubscriptionLink(
   required AnalyticsStore analyticsStore,
 }) async {
   final container = ProviderScope.containerOf(context, listen: false);
+  final subscription = container.read(subscriptionStorePOD).subscriptionFuture.value;
+  final subscriptionId = subscription?.id ?? '';
 
   if (store.isStoreSubscription()) {
     try {
       final navigator = Navigator.of(context);
+      analyticsStore
+          .logStoreSubscriptionManageClicked(
+            store: subscription?.gateway?.toLowerCase() ?? 'store',
+            subscriptionId: subscriptionId,
+          )
+          .ignore();
       await container.read(subscriptionPurchaseStorePOD).manageSubscription();
       // On iOS, the subscription page opens in-app and doesn't refresh the subscription after closing.
       // On Android, the same issue can happen if the user returns directly to the app.
@@ -76,7 +86,13 @@ Future<void> openCancelSubscriptionLink(
           }
         });
       }
-    } catch (_) {
+    } catch (e) {
+      analyticsStore
+          .logCancellationRedirectFailed(
+            subscriptionId: subscriptionId,
+            failureReason: e.toString(),
+          )
+          .ignore();
       if (context.mounted) {
         showSnackbar(S.current.somethingWentWrong);
       }
@@ -84,7 +100,13 @@ Future<void> openCancelSubscriptionLink(
     return;
   }
 
-  analyticsStore.logCancellationDashboardOpened().ignore();
+  analyticsStore
+      .logCancellationDashboardOpened(
+        source: RedirectSource.cancelSubscription.formattedName,
+        subscriptionId: subscriptionId,
+        pauseOfferShown: store.pauseOfferShown,
+      )
+      .ignore();
   final managePage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
   final accessToken = container.read(authSessionStorePOD).accessToken;
   final uri = Uri.parse(managePage);
@@ -94,7 +116,15 @@ Future<void> openCancelSubscriptionLink(
     path: uri.path,
     queryParameters: {'access_token': accessToken ?? ''},
   );
-  await openUrlLink(httpsUri, source: RedirectSource.cancelSubscription);
+  final opened = await openUrlLink(httpsUri, source: RedirectSource.cancelSubscription);
+  if (!opened) {
+    analyticsStore
+        .logCancellationRedirectFailed(
+          subscriptionId: subscriptionId,
+          failureReason: 'could_not_launch_url',
+        )
+        .ignore();
+  }
 }
 
 /// Shows the continue to web prompt.

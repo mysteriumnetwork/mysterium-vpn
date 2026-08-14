@@ -29,8 +29,11 @@ void main() {
     when(cancelStore.availablePauseDurations).thenReturn(ObservableList.of(['1m', '3m', '6m']));
     when(cancelStore.isStoreSubscription()).thenReturn(false);
     when(cancelStore.pauseSubscription(any)).thenAnswer((_) async => true);
+    when(cancelStore.currentSubscriptionId()).thenReturn('sub-1');
     when(analyticsStore.logCancellationPauseOfferViewed()).thenAnswer((_) async {});
-    when(analyticsStore.logCancellationPauseDeclined()).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationPauseDeclined(subscriptionId: anyNamed('subscriptionId')),
+    ).thenAnswer((_) async {});
   });
 
   /// Opens the pause offer as a modal so Back / × can dismiss it.
@@ -78,6 +81,7 @@ void main() {
     expect(find.text(S.current.pauseForMonths(3)), findsOneWidget);
     expect(find.text(S.current.pauseForMonths(6)), findsOneWidget);
     verify(analyticsStore.logCancellationPauseOfferViewed()).called(1);
+    verify(cancelStore.markPauseOfferShown()).called(1);
   });
 
   testWidgets('disables pause until a duration is selected', (tester) async {
@@ -159,7 +163,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // assert
-    verify(analyticsStore.logCancellationPauseDeclined()).called(1);
+    verify(analyticsStore.logCancellationPauseDeclined(subscriptionId: 'sub-1')).called(1);
     expect(find.byType(SubscriptionPauseView), findsNothing);
     expect(find.text(S.current.continueCancellationOnWebTitle), findsOneWidget);
   });

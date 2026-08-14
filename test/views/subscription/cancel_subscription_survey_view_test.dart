@@ -69,39 +69,58 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows title, continue, skip, and other reason', (tester) async {
+  testWidgets('shows title, continue, skip, other reason, and feedback field', (tester) async {
     await pumpSurvey(tester);
 
     expect(find.text('${S.current.cancelSurveyTitle} (${S.current.optional})'), findsOneWidget);
     expect(find.text(S.current.continueBtn), findsOneWidget);
     expect(find.text(S.current.skipBtn), findsOneWidget);
     expect(find.text(S.current.otherReason), findsOneWidget);
-  });
-
-  testWidgets('tap other shows feedback field', (tester) async {
-    // arrange
-    await pumpSurvey(tester);
-
-    // act
-    await tester.tap(find.text(S.current.otherReason));
-    await tester.pump();
-
-    // assert
     expect(find.byType(TextField), findsOneWidget);
   });
 
-  testWidgets('uncheck other hides feedback field', (tester) async {
+  testWidgets('typing feedback selects other; clearing keeps other selected', (tester) async {
     // arrange
     await pumpSurvey(tester);
+    final otherCheckbox = find.descendant(
+      of: find.widgetWithText(CheckboxItem, S.current.otherReason),
+      matching: find.byType(Checkbox),
+    );
+
+    // act / assert — type selects Other
+    await tester.enterText(find.byType(TextField), 'too expensive');
+    await tester.pump();
+    expect(tester.widget<Checkbox>(otherCheckbox).value, isTrue);
+
+    // act / assert — clear keeps Other selected
+    await tester.enterText(find.byType(TextField), '');
+    await tester.pump();
+    expect(tester.widget<Checkbox>(otherCheckbox).value, isTrue);
+  });
+
+  testWidgets('unchecking other clears feedback text', (tester) async {
+    // arrange
+    await pumpSurvey(tester);
+    await tester.enterText(find.byType(TextField), 'too expensive');
+    await tester.pump();
 
     // act
     await tester.tap(find.text(S.current.otherReason));
     await tester.pump();
-    await tester.tap(find.text(S.current.otherReason));
-    await tester.pump();
 
     // assert
-    expect(find.byType(TextField), findsNothing);
+    expect(tester.widget<TextField>(find.byType(TextField)).controller?.text, isEmpty);
+    expect(
+      tester
+          .widget<Checkbox>(
+            find.descendant(
+              of: find.widgetWithText(CheckboxItem, S.current.otherReason),
+              matching: find.byType(Checkbox),
+            ),
+          )
+          .value,
+      isFalse,
+    );
   });
 
   testWidgets('close resets and pops', (tester) async {
@@ -133,7 +152,7 @@ void main() {
     );
   });
 
-  testWidgets('continue with a reason submits those reasons', (tester) async {
+  testWidgets('continue with typed feedback submits other and feedback', (tester) async {
     // arrange
     when(
       cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
@@ -141,13 +160,15 @@ void main() {
     await pumpSurvey(tester);
 
     // act
-    await tester.tap(find.text(S.current.otherReason));
+    await tester.enterText(find.byType(TextField), 'too expensive');
     await tester.pump();
     await tester.tap(find.byType(ButtonPrimary));
     await tester.pumpAndSettle();
 
     // assert
-    verify(cancelStore.setSurvey(reasons: {kCancelReasonOther}, feedback: '')).called(1);
+    verify(
+      cancelStore.setSurvey(reasons: {kCancelReasonOther}, feedback: 'too expensive'),
+    ).called(1);
     verifyNever(analyticsStore.logCancellationReasonSkipped());
     verify(cancelStore.canPauseSubscription()).called(1);
   });

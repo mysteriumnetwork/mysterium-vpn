@@ -333,7 +333,9 @@ class _SubscriptionCard extends StatelessWidget {
           child: Text(S.current.resumeBtn),
         );
         final cancelButton = SettingsActionButton(
-          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
+          onPressed: isSubscribing
+              ? null
+              : () async => showCancelSubscriptionDialog(context, entrypoint: 'account_paused'),
           child: Text(S.of(context).cancelBtn),
         );
         trailing = isDesktop
@@ -392,7 +394,9 @@ class _SubscriptionCard extends StatelessWidget {
           child: Text(S.current.settingManageBtn),
         );
         final cancelButton = SettingsActionButton(
-          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
+          onPressed: isSubscribing
+              ? null
+              : () async => showCancelSubscriptionDialog(context, entrypoint: 'account'),
           child: Text(S.of(context).cancelBtn),
         );
         final isRecurring = subscription?.recurring ?? false;

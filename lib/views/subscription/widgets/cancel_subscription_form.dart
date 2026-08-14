@@ -9,15 +9,30 @@ class _Form extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    useStream(form.reasons.valueChanges);
-    final showFeedback = form.reasons.value?.contains(kCancelReasonOther) ?? false;
+    final feedbackKey = useMemoized(GlobalKey.new);
+    final feedbackFocusNode = useFocusNode();
 
     useEffect(() {
-      if (!showFeedback) {
-        form.feedback.value = '';
+      void onFocusChange() {
+        if (!feedbackFocusNode.hasFocus) {
+          return;
+        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final ctx = feedbackKey.currentContext;
+          if (ctx != null && ctx.mounted) {
+            Scrollable.ensureVisible(
+              ctx,
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeOut,
+              alignment: 0.1,
+            );
+          }
+        });
       }
-      return null;
-    }, [showFeedback]);
+
+      feedbackFocusNode.addListener(onFocusChange);
+      return () => feedbackFocusNode.removeListener(onFocusChange);
+    }, [feedbackFocusNode]);
 
     return ReactiveForm(
       formGroup: form,
@@ -26,33 +41,35 @@ class _Form extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _ReactiveReasonsField(formControlName: 'reasons', items: items),
-          if (showFeedback)
-            Padding(
-              padding: EdgeInsets.only(top: theme.spacing.xl2),
-              child: ReactiveTextField(
-                formControlName: 'feedback',
-                maxLines: 5,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: theme.palette.bgPrimary,
-                  contentPadding: const EdgeInsets.all(14),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: theme.palette.borderPrimary),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: theme.palette.borderBrand),
-                  ),
-                  hintText: S.current.cancelSurveyTellUsMoreHint,
-                  hintMaxLines: 3,
-                  hintStyle: theme.textStyles.textMd.regular.copyWith(
-                    color: theme.palette.textTertiary,
-                  ),
+          Padding(
+            key: feedbackKey,
+            padding: EdgeInsets.only(top: theme.spacing.xl2),
+            child: ReactiveTextField(
+              formControlName: 'feedback',
+              focusNode: feedbackFocusNode,
+              maxLines: 5,
+              textInputAction: TextInputAction.done,
+              onTapOutside: (_) => feedbackFocusNode.unfocus(),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: theme.palette.bgPrimary,
+                contentPadding: const EdgeInsets.all(14),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: theme.palette.borderPrimary),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: theme.palette.borderBrand),
+                ),
+                hintText: S.current.cancelSurveyTellUsMoreHint,
+                hintMaxLines: 3,
+                hintStyle: theme.textStyles.textMd.regular.copyWith(
+                  color: theme.palette.textTertiary,
                 ),
               ),
             ),
+          ),
         ],
       ),
     );
@@ -99,5 +116,30 @@ class _FeedbackLengthValidator extends Validator<dynamic> {
 _FormGroup _useForm() {
   final form = useMemoized(_FormGroup._);
   useStream(form.valueChanges);
+
+  useEffect(() {
+    final feedbackSub = form.feedback.valueChanges.listen((value) {
+      final hasText = (value ?? '').trim().isNotEmpty;
+      if (!hasText) {
+        return;
+      }
+      final current = {...?form.reasons.value};
+      if (!current.contains(kCancelReasonOther)) {
+        form.reasons.value = {...current, kCancelReasonOther};
+      }
+    });
+    final reasonsSub = form.reasons.valueChanges.listen((value) {
+      final hasOther = (value ?? {}).contains(kCancelReasonOther);
+      final text = form.feedback.value ?? '';
+      if (!hasOther && text.isNotEmpty) {
+        form.feedback.value = '';
+      }
+    });
+    return () {
+      feedbackSub.cancel();
+      reasonsSub.cancel();
+    };
+  }, [form]);
+
   return form;
 }

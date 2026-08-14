@@ -51,6 +51,20 @@ abstract class Subscription with _$Subscription {
 
   bool get isAppleGateway => gateway?.toLowerCase() == 'apple';
 
+  /// Analytics-friendly status: paused / active / expired / inactive.
+  String get analyticsStatus {
+    if (paused == true) {
+      return 'paused';
+    }
+    if (active) {
+      return 'active';
+    }
+    if (expired == true || isExpired) {
+      return 'expired';
+    }
+    return 'inactive';
+  }
+
   String? get durationInMonthsBasedOnPlanId {
     final id = planId;
     if (id == null || id.isEmpty) {

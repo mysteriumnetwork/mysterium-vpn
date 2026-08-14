@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -31,17 +30,39 @@ class _ResumeSubscriptionPrompt extends HookConsumerWidget {
         return;
       }
       isLoading.value = true;
-      final analyticsStore = ref.read(analyticsStorePOD)
-        ..logEvent(AnalyticsEvent.subscriptionResumeStarted, parameters: {});
+      final analyticsStore = ref.read(analyticsStorePOD);
+      final subscriptionStore = ref.read(subscriptionStorePOD);
+      final before = subscriptionStore.subscriptionFuture.value;
+      final subscriptionId = before?.id ?? '';
+      final statusBefore = before?.analyticsStatus ?? 'paused';
+      analyticsStore
+          .logSubscriptionResumeStarted(
+            subscriptionId: subscriptionId,
+            pauseEndDate: before?.pausedUntil?.toIso8601String(),
+          )
+          .ignore();
       try {
-        await ref.read(subscriptionStorePOD).resumeSubscription();
-        analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeCompleted, parameters: {});
+        await subscriptionStore.resumeSubscription();
+        final after = subscriptionStore.subscriptionFuture.value;
+        analyticsStore
+            .logSubscriptionResumeCompleted(
+              subscriptionId: after?.id ?? subscriptionId,
+              subscriptionStatusBefore: statusBefore,
+              subscriptionStatusAfter: after?.analyticsStatus ?? 'active',
+              billingResumeDate: after?.activeUntil?.toIso8601String(),
+            )
+            .ignore();
         showSnackbar(S.current.subscriptionResumed, type: SnackbarType.success);
         if (context.mounted) {
           Navigator.pop(context, true);
         }
-      } catch (_) {
-        analyticsStore.logEvent(AnalyticsEvent.subscriptionResumeFailed, parameters: {});
+      } catch (e) {
+        analyticsStore
+            .logSubscriptionResumeFailed(
+              subscriptionId: subscriptionId,
+              failureReason: e.toString(),
+            )
+            .ignore();
         showSnackbar(S.current.resumeSubscriptionFailed);
         if (context.mounted) {
           isLoading.value = false;

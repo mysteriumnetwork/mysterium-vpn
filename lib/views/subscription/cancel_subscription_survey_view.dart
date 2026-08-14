@@ -104,54 +104,59 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
 
     final title = '${S.current.cancelSurveyTitle} (${S.current.optional})';
 
-    return ModalScaffold(
-      showGradient: false,
-      onModalClose: handleDismiss,
-      appbar: isDesktop()
-          ? ModalAppbar(title: title, onModalClose: handleDismiss)
-          : Header(
-              backgroundColor: theme.palette.bgPopover,
-              backLabel: S.current.back,
-              showBackButton: true,
-              onBackPressed: handleDismiss,
-            ),
-      footer: CancelSubscriptionActionFooter(
-        primaryButtonLabel: S.current.continueBtn,
-        onPrimaryButtonPressed: handleSubmit,
-        secondaryButtonLabel: S.current.skipBtn,
-        onSecondaryButtonPressed: handleSkip,
-      ),
-      body: SingleChildScrollView(
-        padding: isDesktop()
-            ? EdgeInsets.all(theme.spacing.xl2)
-            : EdgeInsets.symmetric(horizontal: theme.spacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!isDesktop()) ...[
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: S.current.cancelSurveyTitle,
-                      style: theme.textStyles.textLg.semibold.copyWith(
-                        fontSize: 24,
-                        color: theme.palette.textPrimary,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' (${S.current.optional})',
-                      style: theme.textStyles.textMd.medium.copyWith(
-                        color: theme.palette.textPrimary,
-                      ),
-                    ),
-                  ],
-                ),
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: keyboardInset),
+      child: ModalScaffold(
+        showGradient: false,
+        onModalClose: handleDismiss,
+        appbar: isDesktop()
+            ? ModalAppbar(title: title, onModalClose: handleDismiss)
+            : Header(
+                backgroundColor: theme.palette.bgPopover,
+                backLabel: S.current.back,
+                showBackButton: true,
+                onBackPressed: handleDismiss,
               ),
-              SizedBox(height: theme.spacing.xl2),
+        footer: CancelSubscriptionActionFooter(
+          primaryButtonLabel: S.current.continueBtn,
+          onPrimaryButtonPressed: handleSubmit,
+          secondaryButtonLabel: S.current.skipBtn,
+          onSecondaryButtonPressed: handleSkip,
+        ),
+        body: SingleChildScrollView(
+          padding: isDesktop()
+              ? EdgeInsets.all(theme.spacing.xl2)
+              : EdgeInsets.symmetric(horizontal: theme.spacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!isDesktop()) ...[
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: S.current.cancelSurveyTitle,
+                        style: theme.textStyles.textLg.semibold.copyWith(
+                          fontSize: 24,
+                          color: theme.palette.textPrimary,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' (${S.current.optional})',
+                        style: theme.textStyles.textMd.medium.copyWith(
+                          color: theme.palette.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: theme.spacing.xl2),
+              ],
+              _Form(form: form, items: reasons),
             ],
-            _Form(form: form, items: reasons),
-          ],
+          ),
         ),
       ),
     );

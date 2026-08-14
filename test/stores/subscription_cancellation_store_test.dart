@@ -32,10 +32,26 @@ void main() {
     when(subscriptionStore.useWebFlow).thenReturn(true);
     when(
       subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: false)));
+    ).thenAnswer(
+      (_) => ObservableFuture.value(Subscription(active: true, paused: false, id: 'sub-1')),
+    );
     when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m', '3m', '6m']);
     when(subscriptionStore.pauseSubscription(any)).thenAnswer((_) async {});
-    when(analyticsStore.logCancellationPauseAccepted()).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationPauseAccepted(
+        pauseDuration: anyNamed('pauseDuration'),
+        subscriptionId: anyNamed('subscriptionId'),
+        pauseEndDate: anyNamed('pauseEndDate'),
+        billingResumeDate: anyNamed('billingResumeDate'),
+      ),
+    ).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationPauseFailed(
+        subscriptionId: anyNamed('subscriptionId'),
+        pauseDuration: anyNamed('pauseDuration'),
+        failureReason: anyNamed('failureReason'),
+      ),
+    ).thenAnswer((_) async {});
     when(
       analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
     ).thenAnswer((_) async {});
@@ -160,7 +176,14 @@ void main() {
       expect(ok, isTrue);
       expect(store.isProcessing, isFalse);
       verify(subscriptionStore.pauseSubscription('3m')).called(1);
-      verify(analyticsStore.logCancellationPauseAccepted()).called(1);
+      verify(
+        analyticsStore.logCancellationPauseAccepted(
+          pauseDuration: '3m',
+          subscriptionId: 'sub-1',
+          pauseEndDate: anyNamed('pauseEndDate'),
+          billingResumeDate: anyNamed('billingResumeDate'),
+        ),
+      ).called(1);
       verify(analyticsStore.logSubscriptionCancellationPauseDuration(months: 3)).called(1);
     });
 
@@ -182,7 +205,14 @@ void main() {
 
       expect(ok, isTrue);
       verify(subscriptionStore.pauseSubscription('foo')).called(1);
-      verify(analyticsStore.logCancellationPauseAccepted()).called(1);
+      verify(
+        analyticsStore.logCancellationPauseAccepted(
+          pauseDuration: 'foo',
+          subscriptionId: 'sub-1',
+          pauseEndDate: anyNamed('pauseEndDate'),
+          billingResumeDate: anyNamed('billingResumeDate'),
+        ),
+      ).called(1);
       verifyNever(
         analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
       );
@@ -197,7 +227,21 @@ void main() {
       expect(ok, isFalse);
       expect(store.isProcessing, isFalse);
       expect(store.error, isA<Exception>());
-      verifyNever(analyticsStore.logCancellationPauseAccepted());
+      verifyNever(
+        analyticsStore.logCancellationPauseAccepted(
+          pauseDuration: anyNamed('pauseDuration'),
+          subscriptionId: anyNamed('subscriptionId'),
+          pauseEndDate: anyNamed('pauseEndDate'),
+          billingResumeDate: anyNamed('billingResumeDate'),
+        ),
+      );
+      verify(
+        analyticsStore.logCancellationPauseFailed(
+          subscriptionId: 'sub-1',
+          pauseDuration: '3m',
+          failureReason: anyNamed('failureReason'),
+        ),
+      ).called(1);
     });
   });
 
