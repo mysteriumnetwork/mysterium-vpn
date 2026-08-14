@@ -67,10 +67,19 @@ class SubscriptionPauseView extends HookConsumerWidget {
       });
     }
 
+    final title = S.current.notReadyToCancelTitle;
+
     return ModalScaffold(
       showGradient: false,
       onModalClose: handleDismiss,
-      appbar: ModalAppbar(title: S.current.notReadyToCancelTitle, onModalClose: handleDismiss),
+      appbar: isDesktop()
+          ? ModalAppbar(title: title, onModalClose: handleDismiss)
+          : Header(
+              backgroundColor: theme.palette.bgPopover,
+              backLabel: S.current.back,
+              showBackButton: true,
+              onBackPressed: handleDismiss,
+            ),
       footer: Observer(
         builder: (context) => CancelSubscriptionActionFooter(
           primaryButtonLabel: S.current.pauseSubscriptionBtn,
@@ -82,10 +91,22 @@ class SubscriptionPauseView extends HookConsumerWidget {
         ),
       ),
       body: SingleChildScrollView(
+        padding: isDesktop()
+            ? EdgeInsets.all(theme.spacing.xl2)
+            : EdgeInsets.symmetric(horizontal: theme.spacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: theme.spacing.xl2),
+            if (!isDesktop()) ...[
+              Text(
+                title,
+                style: theme.textStyles.textLg.semibold.copyWith(
+                  fontSize: 24,
+                  color: theme.palette.textPrimary,
+                ),
+              ),
+              SizedBox(height: theme.spacing.xl2),
+            ],
             Observer(
               builder: (context) => RadioGroup(
                 groupValue: selectedPauseDuration.value,
@@ -96,6 +117,8 @@ class SubscriptionPauseView extends HookConsumerWidget {
                       .map(
                         (periodCode) => RadioListTile(
                           value: periodCode,
+                          horizontalTitleGap: isDesktop() ? theme.spacing.s : theme.spacing.none,
+                          contentPadding: EdgeInsets.zero,
                           title: Text(S.current.pauseForMonths(periodCode.numeric!)),
                         ),
                       )
@@ -104,10 +127,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: theme.spacing.md,
-                vertical: theme.spacing.md,
-              ),
+              padding: EdgeInsets.symmetric(vertical: theme.spacing.md),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: theme.palette.bgPrimary,

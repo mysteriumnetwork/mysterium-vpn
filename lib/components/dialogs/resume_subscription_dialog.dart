@@ -23,6 +23,7 @@ class _ResumeSubscriptionPrompt extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final isLoading = useState(false);
 
     Future<void> onResume() async {
@@ -66,7 +67,10 @@ class _ResumeSubscriptionPrompt extends HookConsumerWidget {
             ),
             secondaryButton: ButtonTertiary(
               onPressed: isLoading.value ? null : () => Navigator.pop(context, false),
-              child: Text(S.current.back),
+              child: Text(
+                S.current.back,
+                style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textPrimary),
+              ),
             ),
           ),
         ),

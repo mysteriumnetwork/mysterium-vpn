@@ -33,8 +33,7 @@ void main() {
     when(analyticsStore.logCancellationPauseDeclined()).thenAnswer((_) async {});
   });
 
-  /// Opens the pause offer as a modal so the close button is shown and
-  /// [Navigator.pop] can dismiss it.
+  /// Opens the pause offer as a modal so Back / × can dismiss it.
   Future<void> pumpPauseView(WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(

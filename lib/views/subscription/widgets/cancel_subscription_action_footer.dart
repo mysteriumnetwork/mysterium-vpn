@@ -32,13 +32,19 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
         loading: isProcessing ? const ButtonLoading() : null,
         onPressed: isProcessing || !primaryButtonEnabled ? null : onPrimaryButtonPressed,
         decoration: ButtonDecoration(
-          decorationColor: primaryButtonEnabled ? null : theme.palette.bgDisabled,
-          foregroundColor: primaryButtonEnabled ? null : theme.palette.textDisabled,
+          decorationColor: primaryButtonEnabled
+              ? null
+              : theme.brightness == Brightness.dark
+              ? Palette.grayDarkAlpha.shade800
+              : theme.palette.bgDisabled,
+          foregroundColor: primaryButtonEnabled
+              ? theme.palette.textWhite
+              : theme.palette.textDisabled,
         ),
         child: Text(
           primaryButtonLabel,
           style: theme.textStyles.textMd.semibold.copyWith(
-            color: primaryButtonEnabled ? null : theme.palette.textDisabled,
+            color: primaryButtonEnabled ? theme.palette.textWhite : theme.palette.textDisabled,
           ),
         ),
       ),
@@ -47,7 +53,10 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
     final secondaryButton = hasSecondaryButton
         ? ButtonTertiary(
             onPressed: isProcessing ? null : onSecondaryButtonPressed,
-            child: Text(secondaryButtonLabel!, style: theme.textStyles.textMd.semibold),
+            child: Text(
+              secondaryButtonLabel!,
+              style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textSecondary),
+            ),
           )
         : null;
 

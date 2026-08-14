@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
@@ -106,7 +107,14 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
     return ModalScaffold(
       showGradient: false,
       onModalClose: handleDismiss,
-      appbar: ModalAppbar(title: title, onModalClose: handleDismiss),
+      appbar: isDesktop()
+          ? ModalAppbar(title: title, onModalClose: handleDismiss)
+          : Header(
+              backgroundColor: theme.palette.bgPopover,
+              backLabel: S.current.back,
+              showBackButton: true,
+              onBackPressed: handleDismiss,
+            ),
       footer: CancelSubscriptionActionFooter(
         primaryButtonLabel: S.current.continueBtn,
         onPrimaryButtonPressed: handleSubmit,
@@ -114,8 +122,37 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         onSecondaryButtonPressed: handleSkip,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(theme.spacing.xl2),
-        child: _Form(form: form, items: reasons),
+        padding: isDesktop()
+            ? EdgeInsets.all(theme.spacing.xl2)
+            : EdgeInsets.symmetric(horizontal: theme.spacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!isDesktop()) ...[
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: S.current.cancelSurveyTitle,
+                      style: theme.textStyles.textLg.semibold.copyWith(
+                        fontSize: 24,
+                        color: theme.palette.textPrimary,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' (${S.current.optional})',
+                      style: theme.textStyles.textMd.medium.copyWith(
+                        color: theme.palette.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: theme.spacing.xl2),
+            ],
+            _Form(form: form, items: reasons),
+          ],
+        ),
       ),
     );
   }
