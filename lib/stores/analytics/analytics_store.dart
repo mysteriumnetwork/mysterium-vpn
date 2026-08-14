@@ -554,10 +554,7 @@ mixin AnalyticsStore {
   }) async {
     await logEvent(
       AnalyticsEvent.cancellationRedirectFailed,
-      parameters: {
-        'subscription_id': subscriptionId,
-        'failure_reason': failureReason,
-      },
+      parameters: {'subscription_id': subscriptionId, 'failure_reason': failureReason},
     );
   }
 
@@ -567,10 +564,7 @@ mixin AnalyticsStore {
   }) async {
     await logEvent(
       AnalyticsEvent.storeSubscriptionManageClicked,
-      parameters: {
-        'store': store,
-        'subscription_id': subscriptionId,
-      },
+      parameters: {'store': store, 'subscription_id': subscriptionId},
     );
   }
 
@@ -580,10 +574,7 @@ mixin AnalyticsStore {
   }) async {
     await logEvent(
       AnalyticsEvent.subscriptionResumeStarted,
-      parameters: {
-        'subscription_id': subscriptionId,
-        'pause_end_date': ?pauseEndDate,
-      },
+      parameters: {'subscription_id': subscriptionId, 'pause_end_date': ?pauseEndDate},
     );
   }
 
@@ -610,10 +601,7 @@ mixin AnalyticsStore {
   }) async {
     await logEvent(
       AnalyticsEvent.subscriptionResumeFailed,
-      parameters: {
-        'subscription_id': subscriptionId,
-        'failure_reason': failureReason,
-      },
+      parameters: {'subscription_id': subscriptionId, 'failure_reason': failureReason},
     );
   }
 

@@ -30,9 +30,7 @@ void main() {
 
     when(remoteConfigStore.pauseSubscriptionEnabled).thenReturn(true);
     when(subscriptionStore.useWebFlow).thenReturn(true);
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer(
+    when(subscriptionStore.subscriptionFuture).thenAnswer(
       (_) => ObservableFuture.value(Subscription(active: true, paused: false, id: 'sub-1')),
     );
     when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m', '3m', '6m']);
