@@ -39,6 +39,18 @@ void main() {
     when(
       analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
     ).thenAnswer((_) async {});
+    when(
+      analyticsStore.logSubscriptionCancellationSurvey(
+        reasons: anyNamed('reasons'),
+        feedback: anyNamed('feedback'),
+      ),
+    ).thenAnswer((_) async {});
+    when(
+      analyticsStore.logCancellationReasonSubmitted(
+        reasons: anyNamed('reasons'),
+        feedback: anyNamed('feedback'),
+      ),
+    ).thenAnswer((_) async {});
 
     store = SubscriptionCancellationStore(
       analyticsStore: analyticsStore,
@@ -46,6 +58,18 @@ void main() {
       subscriptionService: subscriptionService,
       remoteConfigStore: remoteConfigStore,
     );
+  });
+
+  group('isStoreSubscription', () {
+    test('returns false for web subscriptions', () {
+      expect(store.isStoreSubscription(), isFalse);
+    });
+
+    test('returns true for Apple/Google subscriptions', () {
+      when(subscriptionStore.useWebFlow).thenReturn(false);
+
+      expect(store.isStoreSubscription(), isTrue);
+    });
   });
 
   group('canPauseSubscription', () {
@@ -83,10 +107,37 @@ void main() {
       expect(store.availablePauseDurations, ['12m', '1m']);
     });
 
+    test('drops blank period codes from the API', () async {
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m', '  ', '3m']);
+
+      expect(await store.canPauseSubscription(), isTrue);
+      expect(store.availablePauseDurations, ['1m', '3m']);
+    });
+
     test('returns false when the subscription is already paused', () async {
       when(
         subscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+
+      expect(await store.canPauseSubscription(), isFalse);
+    });
+
+    test('returns false when pausedFrom is set', () async {
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(active: true, paused: false, pausedFrom: DateTime(2026)),
+        ),
+      );
+
+      expect(await store.canPauseSubscription(), isFalse);
+    });
+
+    test('returns false when pausedUntil is set', () async {
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(active: true, paused: false, pausedUntil: DateTime(2026)),
+        ),
+      );
 
       expect(await store.canPauseSubscription(), isFalse);
     });
@@ -96,6 +147,7 @@ void main() {
 
       expect(await store.canPauseSubscription(), isFalse);
       expect(store.availablePauseDurations, isEmpty);
+      expect(store.error, isA<Exception>());
     });
   });
 
@@ -106,6 +158,7 @@ void main() {
       final ok = await store.pauseSubscription('3m');
 
       expect(ok, isTrue);
+      expect(store.isProcessing, isFalse);
       verify(subscriptionStore.pauseSubscription('3m')).called(1);
       verify(analyticsStore.logCancellationPauseAccepted()).called(1);
       verify(analyticsStore.logSubscriptionCancellationPauseDuration(months: 3)).called(1);
@@ -119,6 +172,135 @@ void main() {
 
       expect(ok, isFalse);
       verifyNever(subscriptionStore.pauseSubscription(any));
+    });
+
+    test('skips duration analytics when the period code has no month number', () async {
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['foo']);
+      await store.canPauseSubscription();
+
+      final ok = await store.pauseSubscription('foo');
+
+      expect(ok, isTrue);
+      verify(subscriptionStore.pauseSubscription('foo')).called(1);
+      verify(analyticsStore.logCancellationPauseAccepted()).called(1);
+      verifyNever(
+        analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
+      );
+    });
+
+    test('returns false when pause fails', () async {
+      when(subscriptionStore.pauseSubscription(any)).thenThrow(Exception('network'));
+      await store.canPauseSubscription();
+
+      final ok = await store.pauseSubscription('3m');
+
+      expect(ok, isFalse);
+      expect(store.isProcessing, isFalse);
+      expect(store.error, isA<Exception>());
+      verifyNever(analyticsStore.logCancellationPauseAccepted());
+    });
+  });
+
+  group('setSurvey', () {
+    test('returns false when there are no reasons or feedback', () async {
+      final result = await store.setSurvey(reasons: {});
+
+      expect(result, isFalse);
+      verifyNever(
+        analyticsStore.logSubscriptionCancellationSurvey(
+          reasons: anyNamed('reasons'),
+          feedback: anyNamed('feedback'),
+        ),
+      );
+      verifyNever(
+        analyticsStore.logCancellationReasonSubmitted(
+          reasons: anyNamed('reasons'),
+          feedback: anyNamed('feedback'),
+        ),
+      );
+    });
+
+    test('returns false when reasons are empty and feedback is only spaces', () async {
+      final result = await store.setSurvey(reasons: {}, feedback: ' ');
+
+      expect(result, isFalse);
+      verifyNever(
+        analyticsStore.logSubscriptionCancellationSurvey(
+          reasons: anyNamed('reasons'),
+          feedback: anyNamed('feedback'),
+        ),
+      );
+    });
+
+    test('returns true when reasons are set', () async {
+      final result = await store.setSurvey(reasons: {'price'});
+
+      expect(result, isTrue);
+      expect(store.isProcessing, isFalse);
+      verify(analyticsStore.logSubscriptionCancellationSurvey(reasons: {'price'})).called(1);
+      verify(analyticsStore.logCancellationReasonSubmitted(reasons: {'price'})).called(1);
+    });
+
+    test('returns true when reasons are empty but feedback is set', () async {
+      final result = await store.setSurvey(reasons: {}, feedback: 'too expensive');
+
+      expect(result, isTrue);
+      verify(
+        analyticsStore.logSubscriptionCancellationSurvey(reasons: {}, feedback: 'too expensive'),
+      ).called(1);
+      verify(
+        analyticsStore.logCancellationReasonSubmitted(reasons: {}, feedback: 'too expensive'),
+      ).called(1);
+    });
+
+    test('trims feedback before logging', () async {
+      final result = await store.setSurvey(reasons: {'price'}, feedback: '  too expensive  ');
+
+      expect(result, isTrue);
+      verify(
+        analyticsStore.logSubscriptionCancellationSurvey(
+          reasons: {'price'},
+          feedback: 'too expensive',
+        ),
+      ).called(1);
+      verify(
+        analyticsStore.logCancellationReasonSubmitted(
+          reasons: {'price'},
+          feedback: 'too expensive',
+        ),
+      ).called(1);
+    });
+
+    test('returns false when analytics fails', () async {
+      when(
+        analyticsStore.logCancellationReasonSubmitted(
+          reasons: anyNamed('reasons'),
+          feedback: anyNamed('feedback'),
+        ),
+      ).thenThrow(Exception('network'));
+
+      final result = await store.setSurvey(reasons: {'price'});
+
+      expect(result, isFalse);
+      expect(store.isProcessing, isFalse);
+      expect(store.error, isA<Exception>());
+    });
+  });
+
+  group('reset', () {
+    test('clears processing and error after a failure', () async {
+      when(
+        analyticsStore.logCancellationReasonSubmitted(
+          reasons: anyNamed('reasons'),
+          feedback: anyNamed('feedback'),
+        ),
+      ).thenThrow(Exception('network'));
+      await store.setSurvey(reasons: {'price'});
+
+      store.reset();
+
+      expect(store.isProcessing, isFalse);
+      expect(store.error, isNull);
     });
   });
 }

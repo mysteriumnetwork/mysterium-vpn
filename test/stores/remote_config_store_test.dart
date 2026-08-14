@@ -106,6 +106,40 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.cancelSubscriptionPage', () {
+    test('returns the config URL when present', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSubscriptionPage': 'https://example.com/cancel'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
+    });
+
+    test('defaults to empty when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, isEmpty);
+    });
+
+    test('trims whitespace', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSubscriptionPage': '  https://example.com/cancel  '});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
+    });
+
+    test('throws when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'cancelSubscriptionPage': true});
+      store = createStore();
+      await store.configFuture;
+      expect(() => store.cancelSubscriptionPage, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
   group('RemoteConfigStore.enableQaHelpers', () {
     test('returns value from config if present', () async {
       store = createStore();
