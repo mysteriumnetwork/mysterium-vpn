@@ -394,9 +394,7 @@ class _SubscriptionCard extends StatelessWidget {
           child: Text(S.current.settingManageBtn),
         );
         final cancelButton = SettingsActionButton(
-          onPressed: isSubscribing
-              ? null
-              : () async => showCancelSubscriptionDialog(context, entrypoint: 'account'),
+          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
           child: Text(S.of(context).cancelBtn),
         );
         final isRecurring = subscription?.recurring ?? false;
