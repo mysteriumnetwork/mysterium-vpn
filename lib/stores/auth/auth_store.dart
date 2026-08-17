@@ -209,8 +209,13 @@ abstract class _AuthStore with Store {
     Sentry.configureScope((scope) => scope.setUser(SentryUser(id: userId, email: username)));
   }
 
+  void beginLogout() {
+    _authSessionStore.markLoggingOut();
+  }
+
   @action
   Future<void> logout({bool invalidateRemotely = true}) async {
+    beginLogout();
     logoutFeature = ObservableFuture(_authService.logout(invalidateRemotely: invalidateRemotely));
 
     await logoutFeature;

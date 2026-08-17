@@ -27,6 +27,7 @@ abstract class _ReviewPromptStore with Store {
     required AnalyticsStore analyticsStore,
     required VpnStore vpnStore,
     required AuthSessionStore authSessionStore,
+    required SubscriptionStore subscriptionStore,
     DateTime Function()? now,
     bool Function()? didCrashRecently,
     Future<bool> Function()? canShowNativeReview,
@@ -35,6 +36,7 @@ abstract class _ReviewPromptStore with Store {
        _analytics = analyticsStore,
        _vpnStore = vpnStore,
        _authSessionStore = authSessionStore,
+       _subscriptionStore = subscriptionStore,
        _now = now ?? DateTime.now,
        _didCrashRecently = didCrashRecently ?? (() => false),
        _canShowNativeReview = canShowNativeReview ?? (() async => true);
@@ -44,6 +46,7 @@ abstract class _ReviewPromptStore with Store {
   final AnalyticsStore _analytics;
   final VpnStore _vpnStore;
   final AuthSessionStore _authSessionStore;
+  final SubscriptionStore _subscriptionStore;
   final DateTime Function() _now;
   final bool Function() _didCrashRecently;
 
@@ -53,6 +56,7 @@ abstract class _ReviewPromptStore with Store {
   final Future<bool> Function() _canShowNativeReview;
 
   ReactionDisposer? _statusDisposer;
+  // ReactionDisposer? _blockDisposer;
   Timer? _stableTimer;
 
   /// Whether the current connection reached the stable threshold.
@@ -251,8 +255,11 @@ abstract class _ReviewPromptStore with Store {
     if (!_config.enabled) {
       return 'disabled';
     }
-    if (!_authSessionStore.isAuthenticated) {
+    if (!_authSessionStore.isAuthenticated || _authSessionStore.isLoggingOut) {
       return 'unauthenticated';
+    }
+    if (_isSubscriptionPaused) {
+      return 'subscription_paused';
     }
     if (_vpnStore.vpnStatus == VpnConnectionStatus.connecting) {
       return 'vpn_connecting';
@@ -280,6 +287,8 @@ abstract class _ReviewPromptStore with Store {
     return until != null && _nowMs < until;
   }
 
+  bool get _isSubscriptionPaused => _subscriptionStore.subscriptionFuture.value?.paused ?? false;
+
   bool get _isYearlyCapReached {
     final cap = _config.yearlyCap;
     // A cap of 0 disables the limit (consistent with the other "0 = off" knobs),
@@ -303,18 +312,22 @@ abstract class _ReviewPromptStore with Store {
 
   // ─── Modal action handlers ──────────────────────────────────────────────────
 
+  /// Clears [pendingPrompt] and records a suppression. Does not start a cooldown.
+  @action
+  Future<void> onSuppressed({required String reason}) async {
+    pendingPrompt = false;
+    await _analytics.logEvent(
+      AnalyticsEvent.reviewPromptSuppressed,
+      parameters: {'reason': reason},
+    );
+  }
+
   /// Called when the prompt was eligible but a blocking flow (onboarding,
   /// paywall/checkout, subscription, cancellation, …) is on top of the home
   /// screen at show time. Clears [pendingPrompt] and records the suppression;
   /// it will be re-evaluated after the next completed session.
   @action
-  Future<void> onSuppressedByActiveFlow() async {
-    pendingPrompt = false;
-    await _analytics.logEvent(
-      AnalyticsEvent.reviewPromptSuppressed,
-      parameters: {'reason': 'flow_active'},
-    );
-  }
+  Future<void> onSuppressedByActiveFlow() => onSuppressed(reason: 'flow_active');
 
   /// The satisfaction modal has been displayed. Records the display against the
   /// yearly cap and clears [pendingPrompt]. Also writes a baseline (dismissal)

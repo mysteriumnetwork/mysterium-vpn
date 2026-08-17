@@ -37,6 +37,7 @@ Future<void> shownDeleteAccountDialog(
       confirmText: S.current.goToLoginBtn,
       confirmVariant: ButtonVariant.secondary,
       onConfirm: () async {
+        authStore.beginLogout();
         await vpnStore.disconnectTunnel();
         authStore.logout();
       },

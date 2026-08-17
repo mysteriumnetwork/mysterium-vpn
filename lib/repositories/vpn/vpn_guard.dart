@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -10,6 +11,9 @@ abstract class VpnGuard {
        _authSessionStore = authSessionStore;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
+
+  @protected
+  SubscriptionStore get subscriptionStore => _subscriptionStore;
 
   Future<void> checkVpnGuards() async {
     await _authSessionStore.accessTokenFuture;

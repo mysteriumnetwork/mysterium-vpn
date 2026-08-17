@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -14,6 +15,7 @@ import 'review_prompt_store_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
   MockSpec<VpnStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<SubscriptionStore>(),
 ])
 void main() {
   late MockSharedPreferenceService prefs;
@@ -21,6 +23,7 @@ void main() {
   late MockAnalyticsStore analytics;
   late MockVpnStore vpnStore;
   late MockAuthSessionStore authSessionStore;
+  late MockSubscriptionStore subscriptionStore;
 
   // Fixed clock so age/cooldown maths are deterministic.
   final fixedNow = DateTime.utc(2026, 6, 10);
@@ -36,6 +39,7 @@ void main() {
     analyticsStore: analytics,
     vpnStore: vpnStore,
     authSessionStore: authSessionStore,
+    subscriptionStore: subscriptionStore,
     now: () => fixedNow,
     didCrashRecently: didCrashRecently,
     canShowNativeReview: canShowNativeReview,
@@ -56,6 +60,10 @@ void main() {
     when(remoteConfig.reviewPromptConfig).thenReturn(const ReviewPromptConfig());
 
     when(authSessionStore.isAuthenticated).thenReturn(true);
+    when(authSessionStore.isLoggingOut).thenReturn(false);
+    when(
+      subscriptionStore.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: false)));
     // The prompt is evaluated after a session completes, i.e. while
     // disconnected — that is the unsuppressed baseline.
     when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
@@ -67,6 +75,7 @@ void main() {
     analytics = MockAnalyticsStore();
     vpnStore = MockVpnStore();
     authSessionStore = MockAuthSessionStore();
+    subscriptionStore = MockSubscriptionStore();
     makeEligibleAndClear();
   });
 
@@ -157,6 +166,11 @@ void main() {
       expect(createStore().suppressionReason, 'unauthenticated');
     });
 
+    test('unauthenticated while logout is in progress', () {
+      when(authSessionStore.isLoggingOut).thenReturn(true);
+      expect(createStore().suppressionReason, 'unauthenticated');
+    });
+
     test('vpn_connecting while connecting', () {
       when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.connecting);
       expect(createStore().suppressionReason, 'vpn_connecting');
@@ -207,6 +221,20 @@ void main() {
       when(prefs.getReviewNativeReviewOpenedAt()).thenReturn(nowMs - 10 * dayMs);
       expect(createStore().suppressionReason, 'native_review_recent');
     });
+
+    test('subscription_paused when the current subscription is paused', () {
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+      expect(createStore().suppressionReason, 'subscription_paused');
+    });
+
+    test('paused null does not suppress', () {
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
+      expect(createStore().suppressionReason, isNull);
+    });
   });
 
   group('evaluate', () {
@@ -256,6 +284,39 @@ void main() {
           parameters: {'reason': 'native_review_unavailable'},
         ),
       ).called(1);
+    });
+
+    test('fires suppressed and does not start cooldown when paused', () async {
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+      final store = createStore();
+      await store.evaluate();
+      expect(store.pendingPrompt, isFalse);
+      verify(analytics.logEvent(AnalyticsEvent.reviewPromptEligible)).called(1);
+      verify(
+        analytics.logEvent(
+          AnalyticsEvent.reviewPromptSuppressed,
+          parameters: {'reason': 'subscription_paused'},
+        ),
+      ).called(1);
+      verifyNever(prefs.setReviewCooldownUntil(any));
+      verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted));
+    });
+
+    test('can set pendingPrompt on a later evaluate after pause is cleared', () async {
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+      final store = createStore();
+      await store.evaluate();
+      expect(store.pendingPrompt, isFalse);
+
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: false)));
+      await store.evaluate();
+      expect(store.pendingPrompt, isTrue);
     });
   });
 
@@ -438,6 +499,22 @@ void main() {
           parameters: {'reason': 'flow_active'},
         ),
       ).called(1);
+    });
+  });
+
+  group('onSuppressed', () {
+    test('clears pendingPrompt without starting cooldown', () async {
+      final store = createStore()..pendingPrompt = true;
+      await store.onSuppressed(reason: 'unauthenticated');
+      expect(store.pendingPrompt, isFalse);
+      verify(
+        analytics.logEvent(
+          AnalyticsEvent.reviewPromptSuppressed,
+          parameters: {'reason': 'unauthenticated'},
+        ),
+      ).called(1);
+      verifyNever(prefs.setReviewCooldownUntil(any));
+      verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted));
     });
   });
 

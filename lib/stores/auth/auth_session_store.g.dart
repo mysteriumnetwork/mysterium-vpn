@@ -75,6 +75,21 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     });
   }
 
+  late final _$isLoggingOutAtom = Atom(name: '_AuthSessionStore.isLoggingOut', context: context);
+
+  @override
+  bool get isLoggingOut {
+    _$isLoggingOutAtom.reportRead();
+    return super.isLoggingOut;
+  }
+
+  @override
+  set isLoggingOut(bool value) {
+    _$isLoggingOutAtom.reportWrite(value, super.isLoggingOut, () {
+      super.isLoggingOut = value;
+    });
+  }
+
   late final _$_accessTokenFutureAtom = Atom(
     name: '_AuthSessionStore._accessTokenFuture',
     context: context,
@@ -188,11 +203,29 @@ mixin _$AuthSessionStore on _AuthSessionStore, Store {
     return _$setUnauthenticatedAsyncAction.run(() => super.setUnauthenticated());
   }
 
+  late final _$_AuthSessionStoreActionController = ActionController(
+    name: '_AuthSessionStore',
+    context: context,
+  );
+
+  @override
+  void markLoggingOut() {
+    final _$actionInfo = _$_AuthSessionStoreActionController.startAction(
+      name: '_AuthSessionStore.markLoggingOut',
+    );
+    try {
+      return super.markLoggingOut();
+    } finally {
+      _$_AuthSessionStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 status: ${status},
 authShown: ${authShown},
+isLoggingOut: ${isLoggingOut},
 isAuthenticated: ${isAuthenticated},
 accessToken: ${accessToken},
 refreshToken: ${refreshToken},

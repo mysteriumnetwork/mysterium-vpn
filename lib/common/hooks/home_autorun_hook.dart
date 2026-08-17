@@ -140,11 +140,17 @@ void useHomeAutorun() {
           }
         }),
         autorun((_) {
-          if (!reviewPromptStore.pendingPrompt) {
+          if (!reviewPromptStore.pendingPrompt ||
+              !authSessionStore.isAuthenticated ||
+              authSessionStore.isLoggingOut) {
             return;
           }
           controller.add(() async {
             if (!context.mounted) {
+              return null;
+            }
+            if (!authSessionStore.isAuthenticated || authSessionStore.isLoggingOut) {
+              await reviewPromptStore.onSuppressed(reason: 'unauthenticated');
               return null;
             }
             // Suppress while a flow is on top of home (onboarding, paywall /
@@ -152,6 +158,11 @@ void useHomeAutorun() {
             // the active route.
             if (!(ModalRoute.of(context)?.isCurrent ?? true)) {
               await reviewPromptStore.onSuppressedByActiveFlow();
+              return null;
+            }
+            final reason = reviewPromptStore.suppressionReason;
+            if (reason != null) {
+              await reviewPromptStore.onSuppressed(reason: reason);
               return null;
             }
             await showReviewPromptDialog(context);

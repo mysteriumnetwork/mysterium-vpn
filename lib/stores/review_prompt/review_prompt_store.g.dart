@@ -53,14 +53,14 @@ mixin _$ReviewPromptStore on _ReviewPromptStore, Store {
     return _$evaluateAsyncAction.run(() => super.evaluate());
   }
 
-  late final _$onSuppressedByActiveFlowAsyncAction = AsyncAction(
-    '_ReviewPromptStore.onSuppressedByActiveFlow',
+  late final _$onSuppressedAsyncAction = AsyncAction(
+    '_ReviewPromptStore.onSuppressed',
     context: context,
   );
 
   @override
-  Future<void> onSuppressedByActiveFlow() {
-    return _$onSuppressedByActiveFlowAsyncAction.run(() => super.onSuppressedByActiveFlow());
+  Future<void> onSuppressed({required String reason}) {
+    return _$onSuppressedAsyncAction.run(() => super.onSuppressed(reason: reason));
   }
 
   late final _$onShownAsyncAction = AsyncAction('_ReviewPromptStore.onShown', context: context);
@@ -111,6 +111,18 @@ mixin _$ReviewPromptStore on _ReviewPromptStore, Store {
     name: '_ReviewPromptStore',
     context: context,
   );
+
+  @override
+  Future<void> onSuppressedByActiveFlow() {
+    final _$actionInfo = _$_ReviewPromptStoreActionController.startAction(
+      name: '_ReviewPromptStore.onSuppressedByActiveFlow',
+    );
+    try {
+      return super.onSuppressedByActiveFlow();
+    } finally {
+      _$_ReviewPromptStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   Future<void> onSatisfactionYes() {

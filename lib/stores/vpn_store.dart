@@ -107,6 +107,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   ReactionDisposer? _authReactionDisposer;
   ReactionDisposer? _protocolReactionDisposer;
   ReactionDisposer? _connectedAtReactionDisposer;
+  ReactionDisposer? _subscriptionReactionDisposer;
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -229,6 +230,22 @@ abstract class _VpnStore extends VpnGuard with Store {
       (_) => _connectionStatus == VpnConnectionStatus.connected,
       _updateConnectedAt,
     );
+
+    // Drop the tunnel when the subscription becomes inactive or paused.
+    _subscriptionReactionDisposer = reaction<({bool active, bool paused})>(
+      (_) {
+        final subscription = subscriptionStore.subscriptionFuture.value;
+        return (active: subscription?.active ?? false, paused: subscription?.paused ?? false);
+      },
+      (state) {
+        if (state.active && !state.paused) {
+          return;
+        }
+        if ([VpnConnectionStatus.connected, VpnConnectionStatus.connecting].contains(vpnStatus)) {
+          disconnectTunnel().ignore();
+        }
+      },
+    );
   }
 
   @action
@@ -302,6 +319,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     _authReactionDisposer?.call();
     _protocolReactionDisposer?.call();
     _connectedAtReactionDisposer?.call();
+    _subscriptionReactionDisposer?.call();
   }
 
   // ==================== Tunnel Management ====================

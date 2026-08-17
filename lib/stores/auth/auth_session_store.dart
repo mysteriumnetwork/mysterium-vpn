@@ -37,6 +37,11 @@ abstract class _AuthSessionStore with Store, Disposeable {
   @observable
   bool authShown = false;
 
+  // flag to indicate that the user is logging out. During the process of logging out,
+  // isAuthenticated will be true which will show the review prompt.
+  @observable
+  bool isLoggingOut = false;
+
   @computed
   bool get isAuthenticated => status == AuthStatus.authenticated;
 
@@ -77,10 +82,16 @@ abstract class _AuthSessionStore with Store, Disposeable {
   }
 
   @action
+  void markLoggingOut() {
+    isLoggingOut = true;
+  }
+
+  @action
   Future<void> setAuthenticated(String accessToken, String? refreshToken) async {
     _accessTokenFuture = ObservableFuture.value(accessToken);
     _refreshTokenFuture = ObservableFuture.value(refreshToken);
     status = AuthStatus.authenticated;
+    isLoggingOut = false;
 
     await _storageUpdate();
   }
@@ -99,6 +110,7 @@ abstract class _AuthSessionStore with Store, Disposeable {
     status = AuthStatus.unauthenticated;
     _userFuture = ObservableFuture.value(null);
     authShown = false;
+    isLoggingOut = false;
 
     await _storageCleanup();
   }
