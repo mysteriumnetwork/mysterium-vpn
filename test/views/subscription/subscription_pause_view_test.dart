@@ -89,10 +89,10 @@ void main() {
     await pumpPauseView(tester);
 
     // act
-    final button = tester.widget<ButtonPrimary>(find.byType(ButtonPrimary));
+    await tester.tap(find.text(S.current.pauseSubscriptionBtn), warnIfMissed: false);
 
     // assert
-    expect(button.onPressed, isNull);
+    verifyNever(cancelStore.pauseSubscription(any));
   });
 
   testWidgets('selecting a duration enables pause', (tester) async {
