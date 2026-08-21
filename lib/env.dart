@@ -16,6 +16,7 @@ abstract class Env {
   static const String webAppUrl = String.fromEnvironment('WEB_APP_URL');
   static const String sentryDsn = String.fromEnvironment('SENTRY_DSN');
   static const String manageSubscriptionPage = String.fromEnvironment('BILLING_PAGE');
+  static const String cancelSubscriptionPage = String.fromEnvironment('CANCEL_SUBS_PAGE');
   static const String upgradeSubscriptionPage = String.fromEnvironment('UPGRADE_SUBS_PAGE');
   static const String accountName = String.fromEnvironment('ACCOUNT_NAME');
   static const String appName = String.fromEnvironment('APP_NAME');
@@ -117,7 +118,7 @@ abstract class Env {
   }
 
   static String stringify() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}, oneSignalAppId: $oneSignalAppId, localizelyDistributionId: $localizelyDistributionId';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, cancelSubscriptionPage: $cancelSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}, oneSignalAppId: $oneSignalAppId, localizelyDistributionId: $localizelyDistributionId';
 
   static String _getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
@@ -135,6 +136,7 @@ abstract class Env {
     'SENTRY_DSN': sentryDsn,
     'BILLING_PAGE': manageSubscriptionPage,
     'UPGRADE_SUBS_PAGE': upgradeSubscriptionPage,
+    'CANCEL_SUBS_PAGE': cancelSubscriptionPage,
     'ACCOUNT_NAME': accountName,
     'APP_NAME': appName,
     'APPLE_CLIENT_ID': appleClientId,

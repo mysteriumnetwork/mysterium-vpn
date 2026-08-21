@@ -293,7 +293,7 @@ void main() {
       when(cancelStore.isStoreSubscription()).thenReturn(false);
       when(
         remoteConfigStore.cancelSubscriptionPage,
-      ).thenReturn('https://billing.example.com/manage');
+      ).thenReturn('https://app.example.com/dashboard/cancel');
       when(authSessionStore.accessToken).thenReturn('token-123');
     });
 
@@ -339,7 +339,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('opens the manage page with access_token and logs dashboard opened', (
+    testWidgets('opens the cancel page with access_token and logs dashboard opened', (
       tester,
     ) async {
       await openWebLink(tester);
@@ -352,7 +352,7 @@ void main() {
         ),
       ).called(1);
       expect(urlLauncher.launchedUrls, [
-        'https://billing.example.com/manage?access_token=token-123',
+        'https://app.example.com/dashboard/cancel?access_token=token-123',
       ]);
     });
   });

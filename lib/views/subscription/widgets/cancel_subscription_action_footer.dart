@@ -25,7 +25,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    debugPrint('MAZLOG primaryButtonEnabled: $primaryButtonEnabled');
+
     final primaryButton = IgnorePointer(
       ignoring: !primaryButtonEnabled || isProcessing,
       child: ButtonPrimary(

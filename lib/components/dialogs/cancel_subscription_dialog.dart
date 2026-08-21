@@ -51,8 +51,9 @@ Future<void> showCancelSubscriptionSurveyDialog(BuildContext context) async => s
   builder: (ctx) => const ModalMessengerScope(child: CancelSubscriptionSurveyView()),
 );
 
-/// Hands the user off to cancel/manage: store subs use the existing manage-subscription
-/// purchase flow; web subs open the billing manage page (same URL as Settings → Manage).
+/// Hands the user off to cancel: store subs use the existing manage-subscription
+/// purchase flow; web subs open [RemoteConfigStore.cancelSubscriptionPage]
+/// (Env `CANCEL_SUBS_PAGE` when ConfigCat has no override).
 Future<void> openCancelSubscriptionLink(
   BuildContext context, {
   required SubscriptionCancellationStore store,
@@ -107,9 +108,9 @@ Future<void> openCancelSubscriptionLink(
         pauseOfferShown: store.pauseOfferShown,
       )
       .ignore();
-  final managePage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
+  final cancelPage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
   final accessToken = container.read(authSessionStorePOD).accessToken;
-  final uri = Uri.parse(managePage);
+  final uri = Uri.parse(cancelPage);
   final httpsUri = Uri(
     scheme: uri.scheme,
     host: uri.host,

@@ -534,7 +534,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   @computed
   String get cancelSubscriptionPage {
     final value = config[_FeatureToggleKey.cancelSubscriptionPage.name] as String?;
-    return (value ?? '').trim();
+    return (value?.isNotEmpty ?? false ? value! : Env.cancelSubscriptionPage).trim();
   }
 
   @computed

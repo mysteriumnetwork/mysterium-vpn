@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
@@ -116,11 +117,11 @@ void main() {
       expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
     });
 
-    test('defaults to empty when not in config', () async {
+    test('falls back to Env.cancelSubscriptionPage when not in config', () async {
       when(client.getAllValues()).thenAnswer((_) async => {});
       store = createStore();
       await store.configFuture;
-      expect(store.cancelSubscriptionPage, isEmpty);
+      expect(store.cancelSubscriptionPage, Env.cancelSubscriptionPage);
     });
 
     test('trims whitespace', () async {
