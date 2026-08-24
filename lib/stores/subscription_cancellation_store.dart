@@ -37,7 +37,7 @@ abstract class _SubscriptionCancellationStore with Store {
   @computed
   Exception? get error => _error;
 
-  /// API period codes (e.g. `1m`, `3m`, `6m`). Empty when pause offer is unavailable.
+  /// API period codes (e.g. `1`, `3`, `6`). Empty when pause offer is unavailable.
   @readonly
   ObservableList<String> _availablePauseDurations = ObservableList<String>();
 
@@ -144,9 +144,7 @@ abstract class _SubscriptionCancellationStore with Store {
   Future<void> _loadPauseDurations() async {
     try {
       final periods = await _subscriptionService.fetchPauseDurations();
-      _availablePauseDurations = ObservableList.of(
-        periods.map((code) => code.trim()).where((code) => code.isNotEmpty),
-      );
+      _availablePauseDurations = ObservableList.of(periods.map(_normalizePauseDuration).nonNulls);
     } on Exception catch (e) {
       _error = e;
       _availablePauseDurations = ObservableList<String>();
@@ -165,4 +163,12 @@ abstract class _SubscriptionCancellationStore with Store {
       disposer();
     }
   }
+}
+
+String? _normalizePauseDuration(String raw) {
+  final match = RegExp(r'(\d+)').firstMatch(raw.trim());
+  if (match == null) {
+    return null;
+  }
+  return match.group(1);
 }

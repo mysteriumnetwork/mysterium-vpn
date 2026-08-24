@@ -66,7 +66,7 @@ extension StringExtensions on String {
   }
 
   int? get numeric {
-    final match = RegExp(r'^(\d+)m$').firstMatch(trim());
+    final match = RegExp(r'^(\d+)(?:mo?)?$').firstMatch(trim());
     if (match == null) {
       return null;
     }

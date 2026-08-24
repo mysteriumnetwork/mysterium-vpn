@@ -26,7 +26,7 @@ void main() {
     cancelStore = MockSubscriptionCancellationStore();
     analyticsStore = MockAnalyticsStore();
     when(cancelStore.isProcessing).thenReturn(false);
-    when(cancelStore.availablePauseDurations).thenReturn(ObservableList.of(['1m', '3m', '6m']));
+    when(cancelStore.availablePauseDurations).thenReturn(ObservableList.of(['1', '3', '6']));
     when(cancelStore.isStoreSubscription()).thenReturn(false);
     when(cancelStore.pauseSubscription(any)).thenAnswer((_) async => true);
     when(cancelStore.currentSubscriptionId()).thenReturn('sub-1');
@@ -132,7 +132,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // assert
-    verify(cancelStore.pauseSubscription('3m')).called(1);
+    verify(cancelStore.pauseSubscription('3')).called(1);
     verify(cancelStore.reset()).called(1);
     expect(find.byType(SubscriptionPauseView), findsNothing);
   });

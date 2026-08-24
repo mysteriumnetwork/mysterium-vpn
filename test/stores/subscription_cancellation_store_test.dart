@@ -33,7 +33,7 @@ void main() {
     when(subscriptionStore.subscriptionFuture).thenAnswer(
       (_) => ObservableFuture.value(Subscription(active: true, paused: false, id: 'sub-1')),
     );
-    when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m', '3m', '6m']);
+    when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1', '3', '6']);
     when(subscriptionStore.pauseSubscription(any)).thenAnswer((_) async {});
     when(
       analyticsStore.logCancellationPauseAccepted(
@@ -103,8 +103,15 @@ void main() {
 
     test('loads durations and returns true when pause is available', () async {
       expect(await store.canPauseSubscription(), isTrue);
-      expect(store.availablePauseDurations, ['1m', '3m', '6m']);
+      expect(store.availablePauseDurations, ['1', '3', '6']);
       verify(subscriptionService.fetchPauseDurations()).called(1);
+    });
+
+    test('normalizes month-like codes to month numbers', () async {
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1mo', '3m', '6']);
+
+      expect(await store.canPauseSubscription(), isTrue);
+      expect(store.availablePauseDurations, ['1', '3', '6']);
     });
 
     test('returns false when API returns no durations', () async {
@@ -114,18 +121,18 @@ void main() {
       expect(store.availablePauseDurations, isEmpty);
     });
 
-    test('keeps unknown period codes from the API', () async {
+    test('normalizes unknown month-like period codes from the API', () async {
       when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['12m', '1m']);
 
       expect(await store.canPauseSubscription(), isTrue);
-      expect(store.availablePauseDurations, ['12m', '1m']);
+      expect(store.availablePauseDurations, ['12', '1']);
     });
 
     test('drops blank period codes from the API', () async {
       when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m', '  ', '3m']);
 
       expect(await store.canPauseSubscription(), isTrue);
-      expect(store.availablePauseDurations, ['1m', '3m']);
+      expect(store.availablePauseDurations, ['1', '3']);
     });
 
     test('returns false when the subscription is already paused', () async {
@@ -169,14 +176,14 @@ void main() {
     test('sends the period code and logs analytics', () async {
       await store.canPauseSubscription();
 
-      final ok = await store.pauseSubscription('3m');
+      final ok = await store.pauseSubscription('3');
 
       expect(ok, isTrue);
       expect(store.isProcessing, isFalse);
-      verify(subscriptionStore.pauseSubscription('3m')).called(1);
+      verify(subscriptionStore.pauseSubscription('3')).called(1);
       verify(
         analyticsStore.logCancellationPauseAccepted(
-          pauseDuration: '3m',
+          pauseDuration: '3',
           subscriptionId: 'sub-1',
           pauseEndDate: anyNamed('pauseEndDate'),
           billingResumeDate: anyNamed('billingResumeDate'),
@@ -186,41 +193,27 @@ void main() {
     });
 
     test('returns false when the duration was not offered by the API', () async {
-      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1m']);
+      when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1']);
       await store.canPauseSubscription();
 
-      final ok = await store.pauseSubscription('6m');
+      final ok = await store.pauseSubscription('6');
 
       expect(ok, isFalse);
       verifyNever(subscriptionStore.pauseSubscription(any));
     });
 
-    test('skips duration analytics when the period code has no month number', () async {
+    test('drops period codes with no month number', () async {
       when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['foo']);
-      await store.canPauseSubscription();
 
-      final ok = await store.pauseSubscription('foo');
-
-      expect(ok, isTrue);
-      verify(subscriptionStore.pauseSubscription('foo')).called(1);
-      verify(
-        analyticsStore.logCancellationPauseAccepted(
-          pauseDuration: 'foo',
-          subscriptionId: 'sub-1',
-          pauseEndDate: anyNamed('pauseEndDate'),
-          billingResumeDate: anyNamed('billingResumeDate'),
-        ),
-      ).called(1);
-      verifyNever(
-        analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
-      );
+      expect(await store.canPauseSubscription(), isFalse);
+      expect(store.availablePauseDurations, isEmpty);
     });
 
     test('returns false when pause fails', () async {
       when(subscriptionStore.pauseSubscription(any)).thenThrow(Exception('network'));
       await store.canPauseSubscription();
 
-      final ok = await store.pauseSubscription('3m');
+      final ok = await store.pauseSubscription('3');
 
       expect(ok, isFalse);
       expect(store.isProcessing, isFalse);
@@ -236,7 +229,7 @@ void main() {
       verify(
         analyticsStore.logCancellationPauseFailed(
           subscriptionId: 'sub-1',
-          pauseDuration: '3m',
+          pauseDuration: '3',
           failureReason: anyNamed('failureReason'),
         ),
       ).called(1);

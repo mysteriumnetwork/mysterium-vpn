@@ -20,7 +20,6 @@ void main() {
   late MockSubscription apiSubscription;
   late MockInAppPurchase inAppPurchase;
   late MockTalker logger;
-  late Dio dio;
   late RestSubscriptionService service;
 
   setUp(() {
@@ -28,10 +27,8 @@ void main() {
     apiSubscription = MockSubscription();
     inAppPurchase = MockInAppPurchase();
     logger = MockTalker();
-    dio = Dio();
 
     when(vpnApi.getSubscription()).thenReturn(apiSubscription);
-    when(vpnApi.dio).thenReturn(dio);
 
     service = RestSubscriptionService(api: vpnApi, inAppPurchase: inAppPurchase, logger: logger);
   });
@@ -94,34 +91,18 @@ void main() {
   });
 
   group('fetchPauseDurations', () {
-    test('returns period codes from the JSON array payload', () async {
-      dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (options, handler) {
-            handler.resolve(
-              Response<List<dynamic>>(
-                requestOptions: options,
-                statusCode: 200,
-                data: const ['1m', '3m', '6m'],
-              ),
-            );
-          },
-        ),
-      );
+    test('returns durations as the API sent them', () async {
+      when(
+        apiSubscription.pauseDurations(),
+      ).thenAnswer((_) async => response(200, <String>['1', '3', '6']));
 
-      expect(await service.fetchPauseDurations(), ['1m', '3m', '6m']);
+      expect(await service.fetchPauseDurations(), ['1', '3', '6']);
     });
 
     test('rethrows arbitrary errors after logging', () async {
-      dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (options, handler) {
-            handler.reject(DioException(requestOptions: options, error: Exception('boom')));
-          },
-        ),
-      );
+      when(apiSubscription.pauseDurations()).thenThrow(Exception('boom'));
 
-      await expectLater(service.fetchPauseDurations(), throwsA(isA<DioException>()));
+      await expectLater(service.fetchPauseDurations(), throwsA(isA<Exception>()));
       verify(logger.handle(any, any)).called(1);
     });
   });
