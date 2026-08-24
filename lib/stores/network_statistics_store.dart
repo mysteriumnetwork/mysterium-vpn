@@ -1,8 +1,10 @@
 // Flutter imports:
 // Package imports:
 
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wireguard_dart/wireguard_dart.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/stores/vpn_store.dart';
 
 // Project imports:
 
@@ -12,12 +14,19 @@ part 'network_statistics_store.g.dart';
 class NetworkStatisticsStore = _NetworkStatisticsStore with _$NetworkStatisticsStore;
 
 abstract class _NetworkStatisticsStore with Store {
-  _NetworkStatisticsStore(this._wireguardService) {
+  _NetworkStatisticsStore(this._vpnStore, {required this.pollInterval}) {
     // Start the tunnel statistics stream
     _getTunnelStatistics();
   }
 
-  final WireguardDart _wireguardService;
+  /// How often the counters are sampled. Speeds are derived from the delta
+  /// between consecutive samples, so this doubles as the averaging window.
+  final Duration pollInterval;
+
+  /// Read through the store rather than a protocol plugin: it owns the active
+  /// repository, so statistics follow a WireGuard/OpenVPN switch on their own.
+  final VpnStore _vpnStore;
+  bool _stopped = false;
 
   @observable
   double downloadSpeed = 0;
@@ -25,16 +34,10 @@ abstract class _NetworkStatisticsStore with Store {
   double uploadSpeed = 0;
 
   @readonly
-  TunnelStatistics? _tunnelStatistics;
+  TunnelStats? _tunnelStatistics;
 
   @computed
-  DateTime? get latestHandshake {
-    if (_tunnelStatistics == null) {
-      return null;
-    }
-
-    return DateTime.fromMillisecondsSinceEpoch(_tunnelStatistics!.latestHandshake).toLocal();
-  }
+  DateTime? get latestHandshake => _tunnelStatistics?.latestHandshake;
 
   @computed
   int get totalDownload => _tunnelStatistics?.totalDownload ?? 0;
@@ -48,17 +51,30 @@ abstract class _NetworkStatisticsStore with Store {
 
   @action
   Future<void> _getTunnelStatistics() async {
-    while (true) {
-      await Future.delayed(const Duration(seconds: 1));
-      final prevStats = _tunnelStatistics;
-      final stats = await _wireguardService.getTunnelStatistics();
-      if (prevStats != null && stats != null) {
-        uploadSpeed =
-            ((stats.totalUpload - prevStats.totalUpload) * 8) / 1000000; // Convert to Mbps
-        downloadSpeed =
-            ((stats.totalDownload - prevStats.totalDownload) * 8) / 1000000; // Convert to Mbps
+    while (!_stopped) {
+      await Future.delayed(pollInterval);
+      if (_stopped) {
+        return;
       }
-      _tunnelStatistics = stats;
+      try {
+        final prevStats = _tunnelStatistics;
+        final stats = await _vpnStore.tunnelStatistics();
+        if (prevStats != null && stats != null) {
+          final seconds = pollInterval.inMicroseconds / Duration.microsecondsPerSecond;
+          uploadSpeed = ((stats.totalUpload - prevStats.totalUpload) * 8) / 1000000 / seconds;
+          downloadSpeed = ((stats.totalDownload - prevStats.totalDownload) * 8) / 1000000 / seconds;
+        }
+        _tunnelStatistics = stats;
+      } on MissingPluginException {
+        // Platform has no implementation; polling will never succeed.
+        _stopped = true;
+      } catch (_) {
+        // Transient failure (e.g. tunnel down mid-poll) — keep polling.
+      }
     }
+  }
+
+  void disposeStore() {
+    _stopped = true;
   }
 }

@@ -24,6 +24,7 @@ import 'connection_details_dialog_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
   MockSpec<SelectedLocationStore>(),
   MockSpec<IpRefreshExhaustionStore>(),
+  MockSpec<NetworkStatisticsStore>(),
 ])
 void main() {
   const germany = VPNLocation(
@@ -39,6 +40,7 @@ void main() {
   late MockAnalyticsStore analyticsStore;
   late MockSelectedLocationStore selectedLocationStore;
   late MockIpRefreshExhaustionStore ipRefreshExhaustionStore;
+  late MockNetworkStatisticsStore statisticsStore;
 
   setUp(() {
     vpnStore = MockVpnStore();
@@ -47,6 +49,7 @@ void main() {
     analyticsStore = MockAnalyticsStore();
     selectedLocationStore = MockSelectedLocationStore();
     ipRefreshExhaustionStore = MockIpRefreshExhaustionStore();
+    statisticsStore = MockNetworkStatisticsStore();
 
     when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.connected);
     when(vpnStore.isConnected).thenReturn(true);
@@ -57,6 +60,10 @@ void main() {
     when(connectionDisplayStore.connectedOrDisplayLocation).thenReturn(germany);
     when(protocolStore.protocol).thenReturn(ProtocolType.wireguard);
     when(ipRefreshExhaustionStore.exhaustionNotice).thenReturn(null);
+    when(statisticsStore.downloadSpeed).thenReturn(12.5);
+    when(statisticsStore.uploadSpeed).thenReturn(3.25);
+    when(statisticsStore.totalDownloadInMB).thenReturn(40);
+    when(statisticsStore.totalUploadInMB).thenReturn(10);
   });
 
   Future<void> openDialog(WidgetTester tester) async {
@@ -69,6 +76,7 @@ void main() {
           analyticsStorePOD.overrideWithValue(analyticsStore),
           selectedLocationStorePOD.overrideWithValue(selectedLocationStore),
           ipRefreshExhaustionStorePOD.overrideWithValue(ipRefreshExhaustionStore),
+          networkStatisticsStorePOD.overrideWithValue(statisticsStore),
         ],
         child: BeamerProvider(
           routerDelegate: BeamerDelegate(
@@ -127,6 +135,23 @@ void main() {
     expect(find.text('IP pool'), findsOneWidget);
     expect(find.text('4'), findsOneWidget);
     expect(find.text('Connected since'), findsOneWidget);
+  });
+
+  testWidgets('shows tunnel throughput and totals after the IP pool row', (tester) async {
+    await openDialog(tester);
+
+    expect(find.text('Current rate'), findsOneWidget);
+    expect(find.text('↓ 12.50 ↑ 3.25 Mbps'), findsOneWidget);
+    expect(find.text('Total transferred'), findsOneWidget);
+    expect(find.text('↓ 40.0 ↑ 10.0 MB'), findsOneWidget);
+
+    // They belong at the end of the section, after the pool row.
+    final poolY = tester.getTopLeft(find.text('IP pool')).dy;
+    expect(tester.getTopLeft(find.text('Current rate')).dy, greaterThan(poolY));
+    expect(
+      tester.getTopLeft(find.text('Total transferred')).dy,
+      greaterThan(tester.getTopLeft(find.text('Current rate')).dy),
+    );
   });
 
   testWidgets('refresh triggers an IP refresh via VpnStore', (tester) async {
@@ -257,6 +282,13 @@ void main() {
       expect(find.text('Hidden'), findsNothing);
       expect(find.byIcon(UntitledUI.eye_off), findsNothing);
       expect(find.text('...'), findsNothing);
+    });
+
+    testWidgets('hides the tunnel counters', (tester) async {
+      await openDialog(tester);
+
+      expect(find.text('Current rate'), findsNothing);
+      expect(find.text('Total transferred'), findsNothing);
     });
 
     testWidgets('Connect triggers a connection', (tester) async {

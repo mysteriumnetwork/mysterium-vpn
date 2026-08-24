@@ -101,6 +101,21 @@ class OpenVpnRepository extends BaseVpnRepository {
   }
 
   @override
+  Future<TunnelStats?> tunnelStatistics() async {
+    try {
+      final stats = await _service.tunnelStatistics();
+      if (stats == null) {
+        return null;
+      }
+      // OpenVPN has no handshake, so latestHandshake stays null.
+      return TunnelStats(totalDownload: stats.totalDownload, totalUpload: stats.totalUpload);
+    } catch (e) {
+      logger.warning('Failed to read OpenVPN tunnel statistics: $e');
+      return null;
+    }
+  }
+
+  @override
   Future<void> removeTunnelConfiguration() async {
     try {
       await _service.removeTunnelConfiguration();

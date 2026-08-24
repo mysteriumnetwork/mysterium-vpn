@@ -395,6 +395,10 @@ abstract class _VpnStore extends VpnGuard with Store {
     connectionRated = null;
   }
 
+  /// Byte counters from whichever protocol is active — `_vpnRepository` is
+  /// swapped on protocol change, so no selection logic is duplicated here.
+  Future<TunnelStats?> tunnelStatistics() => _vpnRepository.tunnelStatistics();
+
   Future<VpnConnectionStatus> checkTunnelStatus() async {
     try {
       return await _vpnRepository.currentStatus();

@@ -9,6 +9,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -102,6 +103,8 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
     final isDisconnected =
         vpnStatus == VpnConnectionStatus.disconnected && !isRefreshing.value && !isLoading;
     final canRefresh = ipPoolCount > 1 && isConnected && !isRefreshing.value;
+    // QA-only counters, test builds only.
+    final showTunnelStats = Env.flavor.isDev && isConnected;
     final refreshActive = canRefresh || isRefreshing.value;
     final refreshTextColor = refreshActive ? palette.textBrandPrimary : palette.textDisabled;
     final refreshIconColor = refreshActive ? palette.iconBrandPrimary : palette.textDisabled;
@@ -198,7 +201,9 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
                     DetailCard(
                       title: S.current.ipPool,
                       value: '$ipPoolCount',
-                      position: SettingsCardPosition.bottom,
+                      position: showTunnelStats
+                          ? SettingsCardPosition.middle
+                          : SettingsCardPosition.bottom,
                       trailing: isDisconnected
                           ? poolAction(
                               onPressed: onConnect,
@@ -219,6 +224,7 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
                               ),
                             ),
                     ),
+                    if (showTunnelStats) const _TunnelStatsCards(),
                   ],
                 ),
               ],
@@ -226,6 +232,35 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Owns the 1s tick for the QA counters so only these rows rebuild as they update.
+class _TunnelStatsCards extends HookConsumerWidget {
+  const _TunnelStatsCards();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.watch(networkStatisticsStorePOD);
+    final rate = useComputedValue(
+      () => tunnelRateLabel(downloadMbps: store.downloadSpeed, uploadMbps: store.uploadSpeed),
+      [store],
+    );
+    final total = useComputedValue(
+      () => tunnelTotalLabel(
+        totalDownloadMb: store.totalDownloadInMB,
+        totalUploadMb: store.totalUploadInMB,
+      ),
+      [store],
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DetailCard(title: 'Current rate', value: rate, position: SettingsCardPosition.middle),
+        DetailCard(title: 'Total transferred', value: total, position: SettingsCardPosition.bottom),
+      ],
     );
   }
 }

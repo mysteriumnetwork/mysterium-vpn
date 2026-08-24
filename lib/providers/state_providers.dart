@@ -357,8 +357,10 @@ final latLngStorePOD = Provider<LatLngStore>((ref) {
 });
 
 final networkStatisticsStorePOD = Provider.autoDispose<NetworkStatisticsStore>((ref) {
-  final wireguardService = ref.watch(wireguardServicePOD);
-  return NetworkStatisticsStore(wireguardService);
+  final vpnStore = ref.watch(vpnStorePOD);
+  final store = NetworkStatisticsStore(vpnStore, pollInterval: const Duration(seconds: 1));
+  ref.onDispose(store.disposeStore);
+  return store;
 });
 
 final updateAvailableStorePOD = Provider.autoDispose<UpdateAvailableStore>((ref) {

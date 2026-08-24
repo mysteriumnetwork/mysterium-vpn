@@ -13,5 +13,6 @@ export 'resolve_error_msg.dart';
 export 'semantic_version.dart';
 export 'snackbar.dart';
 export 'subscription_plan_resolver.dart';
+export 'tunnel_stats_label.dart';
 export 'url_launcher.dart';
 export 'uuid.dart';

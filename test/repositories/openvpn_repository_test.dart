@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/repositories/vpn/openvpn_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
+import 'package:openvpn_dart/vpn_statistics.dart';
 import 'package:openvpn_dart/vpn_status.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -187,6 +188,33 @@ void main() {
 
       when(api.udpBlockedCheck()).thenThrow(Exception('boom'));
       await expectLater(repo.udpBlockedCheck(), throwsA(isA<Exception>()));
+    });
+  });
+
+  group('tunnelStatistics', () {
+    test('maps the plugin counters onto TunnelStats', () async {
+      when(
+        service.tunnelStatistics(),
+      ).thenAnswer((_) async => const VPNStatistics(totalDownload: 54321, totalUpload: 12345));
+
+      final stats = await repo.tunnelStatistics();
+
+      expect(stats!.totalDownload, 54321);
+      expect(stats.totalUpload, 12345);
+      // OpenVPN has no handshake.
+      expect(stats.latestHandshake, isNull);
+    });
+
+    test('returns null when the plugin has nothing to report', () async {
+      when(service.tunnelStatistics()).thenAnswer((_) async => null);
+
+      expect(await repo.tunnelStatistics(), isNull);
+    });
+
+    test('returns null on a plugin failure', () async {
+      when(service.tunnelStatistics()).thenThrow(Exception('boom'));
+
+      expect(await repo.tunnelStatistics(), isNull);
     });
   });
 }
