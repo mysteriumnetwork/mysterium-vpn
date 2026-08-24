@@ -1,7 +1,7 @@
 import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:talker/talker.dart';
 
-/// Fetches over-the-air translations, returning whether they arrived.
+/// Fetches over-the-air translations, returning whether the fetch succeeded.
 /// Never throws, and never reaches `Talker.handle` — which Crashlytics records
 /// as a fatal crash — so an unavailable bundle just keeps the bundled ARBs.
 Future<bool> fetchOtaTranslations({

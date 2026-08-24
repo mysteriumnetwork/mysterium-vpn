@@ -14,7 +14,7 @@ void main() {
 
   setUp(() => logger = MockTalker());
 
-  test('reports fresh translations when the fetch succeeds', () async {
+  test('returns true when the fetch succeeds', () async {
     expect(await fetchOtaTranslations(logger: logger, fetch: () async {}), isTrue);
   });
 
