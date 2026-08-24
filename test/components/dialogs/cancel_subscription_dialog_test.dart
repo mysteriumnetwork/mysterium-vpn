@@ -355,5 +355,27 @@ void main() {
         'https://app.example.com/dashboard/cancel?access_token=token-123',
       ]);
     });
+
+    testWidgets('preserves existing query params and skips empty access_token', (tester) async {
+      when(
+        remoteConfigStore.cancelSubscriptionPage,
+      ).thenReturn('https://app.example.com/dashboard/cancel?foo=bar&baz=1');
+      when(authSessionStore.accessToken).thenReturn(null);
+
+      await openWebLink(tester);
+
+      expect(urlLauncher.launchedUrls, ['https://app.example.com/dashboard/cancel?foo=bar&baz=1']);
+    });
+
+    testWidgets('merges access_token into existing query params', (tester) async {
+      when(
+        remoteConfigStore.cancelSubscriptionPage,
+      ).thenReturn('https://app.example.com/dashboard/cancel?foo=bar');
+
+      await openWebLink(tester);
+
+      final launched = Uri.parse(urlLauncher.launchedUrls.single);
+      expect(launched.queryParameters, {'foo': 'bar', 'access_token': 'token-123'});
+    });
   });
 }

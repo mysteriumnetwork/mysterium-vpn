@@ -133,11 +133,30 @@ void main() {
       expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
     });
 
+    test('falls back to Env when config is whitespace-only', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'cancelSubscriptionPage': '   '});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, Env.cancelSubscriptionPage.trim());
+    });
+
     test('throws when value has the wrong type', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'cancelSubscriptionPage': true});
       store = createStore();
       await store.configFuture;
       expect(() => store.cancelSubscriptionPage, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
+  group('RemoteConfigStore.upgradeSubscriptionPage / manageSubscriptionPage', () {
+    test('falls back to Env when config is whitespace-only', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'upgradeSubscriptionPage': '  ', 'manageSubscriptionPage': '\t'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.upgradeSubscriptionPage, Env.upgradeSubscriptionPage.trim());
+      expect(store.manageSubscriptionPage, Env.manageSubscriptionPage.trim());
     });
   });
 

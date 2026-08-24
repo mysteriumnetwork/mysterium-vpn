@@ -111,13 +111,12 @@ Future<void> openCancelSubscriptionLink(
   final cancelPage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
   final accessToken = container.read(authSessionStorePOD).accessToken;
   final uri = Uri.parse(cancelPage);
-  final httpsUri = Uri(
-    scheme: uri.scheme,
-    host: uri.host,
-    path: uri.path,
-    queryParameters: {'access_token': accessToken ?? ''},
-  );
-  final opened = await openUrlLink(httpsUri, source: RedirectSource.cancelSubscription);
+  final queryParameters = Map<String, String>.from(uri.queryParameters);
+  if (accessToken != null && accessToken.isNotEmpty) {
+    queryParameters['access_token'] = accessToken;
+  }
+  final cancelUri = uri.replace(queryParameters: queryParameters);
+  final opened = await openUrlLink(cancelUri, source: RedirectSource.cancelSubscription);
   if (!opened) {
     analyticsStore
         .logCancellationRedirectFailed(
