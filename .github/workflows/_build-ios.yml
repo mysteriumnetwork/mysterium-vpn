@@ -95,23 +95,24 @@ jobs:
           fvm flutter build ipa --no-pub --release --flavor "${{ inputs.flavor }}" --dart-define-from-file="${{ inputs.env_file }}" --export-options-plist=ios/export_options.plist
           cat build/ios/ipa/ExportOptions.plist
 
-      - name: Upload dSYMs to Crashlytics
-        run: bash .github/scripts/upload-crashlytics-symbols.sh ios "${{ inputs.flavor }}"
-
-      - name: Upload dSYMs to Github
-        uses: actions/upload-artifact@v5
-        with:
-          name: iOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})
-          path: build/ios/archive/*.xcarchive/dSYMs
-          if-no-files-found: error
-          retention-days: 90
-
       - name: Publish to Apple Store
         env:
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APPLE_APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ vars.APPLE_APP_STORE_CONNECT_KEY_IDENTIFIER }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: app-store-connect publish --path "build/ios/ipa/Mysterium VPN.ipa" --platform IOS
+
+      - name: Upload dSYMs to Crashlytics
+        id: dsyms
+        run: bash .github/scripts/upload-crashlytics-symbols.sh ios "${{ inputs.flavor }}"
+
+      - name: Upload dSYMs to Github
+        uses: actions/upload-artifact@v5
+        with:
+          name: iOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})
+          path: ${{ steps.dsyms.outputs.paths }}
+          if-no-files-found: error
+          retention-days: 90
 
       - name: Post Set up keychain
         run: |

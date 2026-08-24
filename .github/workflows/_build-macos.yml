@@ -131,17 +131,6 @@ jobs:
             --flavor "${{ inputs.flavor }}" \
             --dart-define-from-file="${{ inputs.env_file }}"
 
-      - name: Upload dSYMs to Crashlytics
-        run: bash .github/scripts/upload-crashlytics-symbols.sh macos "${{ inputs.flavor }}"
-
-      - name: Upload dSYMs to Github
-        uses: actions/upload-artifact@v5
-        with:
-          name: macOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})
-          path: build/macos/Build/Products/Release-${{ inputs.flavor }}/*.dSYM
-          if-no-files-found: error
-          retention-days: 90
-
       - name: Build signed macOS installer
         working-directory: build/macos/Build/Products/Release-${{ inputs.flavor }}
         run: |
@@ -195,6 +184,18 @@ jobs:
           app-store-connect publish \
             --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/${{ inputs.product_name }}.pkg" \
             --platform MAC_OS
+
+      - name: Upload dSYMs to Crashlytics
+        id: dsyms
+        run: bash .github/scripts/upload-crashlytics-symbols.sh macos "${{ inputs.flavor }}"
+
+      - name: Upload dSYMs to Github
+        uses: actions/upload-artifact@v5
+        with:
+          name: macOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})
+          path: ${{ steps.dsyms.outputs.paths }}
+          if-no-files-found: error
+          retention-days: 90
 
       - name: Clean up keychain
         if: always()
