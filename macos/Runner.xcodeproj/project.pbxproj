@@ -325,7 +325,6 @@
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
 				97E13FD52A4F23E6000F2BBF /* Copy Goole-Service info */,
-				96349604B345CA6972A6E4E1 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 				BEB7F37DAEF057C6F6C2E176 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -525,26 +524,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$FLUTTER_ROOT\"/packages/flutter_tools/bin/macos_assemble.sh && touch Flutter/ephemeral/tripwire\n";
-		};
-		96349604B345CA6972A6E4E1 /* [firebase_crashlytics] Crashlytics Upload Symbols */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}\"",
-				"\"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\"",
-			);
-			name = "[firebase_crashlytics] Crashlytics Upload Symbols";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:104590535697:ios:30362bcd1ee53392f355b0\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:104590535697:ios:30362bcd1ee53392f355b0\necho \"Production crashlytics upload\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:139303438361:ios:d2ba132c760888aeb7c288\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:139303438361:ios:d2ba132c760888aeb7c288\necho \"Development crashlytics upload\"\nfi\n";
 		};
 		97E13FD52A4F23E6000F2BBF /* Copy Goole-Service info */ = {
 			isa = PBXShellScriptBuildPhase;

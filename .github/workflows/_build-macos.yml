@@ -185,6 +185,18 @@ jobs:
             --path "build/macos/Build/Products/Release-${{ inputs.flavor }}/${{ inputs.product_name }}.pkg" \
             --platform MAC_OS
 
+      - name: Upload dSYMs to Crashlytics
+        id: dsyms
+        run: bash .github/scripts/upload-crashlytics-symbols.sh macos "${{ inputs.flavor }}"
+
+      - name: Upload dSYMs to GitHub
+        uses: actions/upload-artifact@v5
+        with:
+          name: macOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})
+          path: ${{ steps.dsyms.outputs.paths }}
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Clean up keychain
         if: always()
         run: |

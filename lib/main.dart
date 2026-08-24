@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -45,18 +43,9 @@ void _setupErrorHandlers(AppInitializer initializer) {
 
 /// Filters out non-actionable exceptions from Sentry to reduce noise.
 SentryEvent? _sentryBeforeSend(SentryEvent event, Hint hint) {
-  debugPrint(event.throwable.toString());
-
-  if (event.throwable is ApiException ||
-      event.throwable is SignInAborted ||
-      event.throwable is KeyDoesntExistsException ||
-      event.throwable is TimeoutException ||
-      event.throwable is TokenAlreadyUsedException ||
-      event.throwable is OperationCancelledException ||
-      event.throwable is SubscriptionRequiredException ||
-      event.throwable is SubscriptionPausedException ||
-      event.throwable is RefreshTokenNotFoundException) {
-    return null;
+  if (kDebugMode) {
+    debugPrint(event.throwable.toString());
   }
-  return event;
+
+  return isNonActionable(event.throwable) ? null : event;
 }

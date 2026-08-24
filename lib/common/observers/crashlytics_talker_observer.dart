@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -17,8 +15,9 @@ class CrashlyticsLoggerObserver extends TalkerObserver {
 
   @override
   Future<void> onError(TalkerError err) async {
-    trackErrorEvent(err.exception);
-    if (shouldSkipEvent(err.exception)) {
+    // TalkerError populates `error`, never `exception`.
+    trackErrorEvent(err.error);
+    if (isNonActionable(err.error)) {
       return;
     }
     analyticsStore.logError(err: err.error ?? Error(), stack: err.stackTrace, fatal: true);
@@ -27,7 +26,7 @@ class CrashlyticsLoggerObserver extends TalkerObserver {
   @override
   Future<void> onException(TalkerException err) async {
     trackErrorEvent(err.exception);
-    if (shouldSkipEvent(err.exception)) {
+    if (isNonActionable(err.exception)) {
       return;
     }
     analyticsStore.logError(
@@ -52,19 +51,5 @@ class CrashlyticsLoggerObserver extends TalkerObserver {
         },
       );
     }
-  }
-
-  /// Skip some exceptions from being logged to Crashlytics
-  bool shouldSkipEvent(Object? exception) {
-    if (exception is ApiException ||
-        exception is SignInAborted ||
-        exception is KeyDoesntExistsException ||
-        exception is TimeoutException ||
-        exception is OperationCancelledException ||
-        exception is SubscriptionRequiredException ||
-        exception is SubscriptionPausedException) {
-      return true;
-    }
-    return false;
   }
 }
