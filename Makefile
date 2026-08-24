@@ -17,6 +17,11 @@ FIREBASE_PROJECT_ID = new-mysterium-vpn
 # 3. Runner targets set ENABLE_TESTING_SEARCH_PATHS=YES: patrol_cli builds link
 #    XCTest into the app, and SPM (unlike patrol's podspec) can't inject the
 #    developer test-framework search paths.
+# Crashlytics dSYM upload is a consequence of the same migration: the generated
+# Xcode phase pointed at $PODS_ROOT and silently uploaded nothing once Firebase
+# moved to SPM. It now runs in CI only (.github/scripts/upload-crashlytics-symbols.sh),
+# so a build archived locally from Xcode ships without symbols. firebase.json
+# keeps uploadDebugSymbols false so flutterfire configure can't re-add the phase.
 init:
 	fvm flutter config --enable-swift-package-manager
 	fvm flutter pub get

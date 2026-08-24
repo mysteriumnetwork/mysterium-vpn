@@ -17,6 +17,8 @@ All Flutter/Dart commands **must** be prefixed with `fvm` (Flutter 3.44.7 is pin
 
 Apple builds are hybrid Swift Package Manager + CocoaPods (`make init` enables SPM explicitly). Do not disable SPM or remove the workarounds documented in the Makefile header (OneSignal embed strip in `ios/Podfile`, PatrolImpl modulemap flag in the macOS Runner configs).
 
+Crashlytics dSYMs are uploaded by CI only (`.github/scripts/upload-crashlytics-symbols.sh`, called from the iOS/macOS build workflows) — the generated Xcode build phase was removed because it pointed at `$PODS_ROOT` and silently uploaded nothing after the SPM migration. A build archived locally from Xcode therefore ships unsymbolized.
+
 Single test / targeted runs (unit & widget tests need the dotenv defines):
 
 ```
