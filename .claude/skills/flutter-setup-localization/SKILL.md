@@ -29,7 +29,7 @@ metadata:
   ```
 - **Access:** `S.current.someKey` (context-free — works in widgets, and anywhere `S` has been loaded). The project convention is `S.current`, NOT `S.of(context)`.
 - **Delegates** (in `lib/app.dart`): `S.delegate` + `GlobalMaterialLocalizations.delegate` + `GlobalWidgetsLocalizations.delegate` + `GlobalCupertinoLocalizations.delegate`; `supportedLocales: S.delegate.supportedLocales`.
-- **OTA:** `lib/entrypoints/app_initializer.dart` calls `Localizely.init(...)` then `Localizely.updateTranslations()` in deferred init, reloading `S` so updated strings apply without a rebuild.
+- **OTA:** `lib/entrypoints/app_initializer.dart` calls `Localizely.init(...)`, then fires `fetchOtaTranslations()` (`lib/l10n/ota_translations.dart`) in deferred init without awaiting it, reloading `S` so updated strings apply without a rebuild. That helper is bounded and non-fatal by contract — failures (incl. 404 `release_not_found` when the distribution has no release) are logged, never routed through `Talker.handle`, which Crashlytics records as a fatal crash.
 
 ## Editing / adding strings
 
