@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/l10n/arb_locale.dart';
+import 'package:mysterium_vpn/l10n/ota_translations.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -56,7 +57,7 @@ class AppInitializer {
 
     GoogleFonts.config.allowRuntimeFetching = false;
 
-    if (Env.localizelySdkToken.isNotEmpty) {
+    if (_localizelyConfigured) {
       Localizely.init(Env.localizelySdkToken, Env.localizelyDistributionId);
     }
 
@@ -84,12 +85,12 @@ class AppInitializer {
     final total = Stopwatch()..start();
     var firebaseInitMs = 0;
     var oneSignalInitMs = 0;
+    // Fire-and-forget: `localizationRevision` repaints the tree when they land.
+    unawaited(_updateLocalizelyTranslations());
     try {
       await Future.wait([
         _initFirebaseSDK().then((ms) => firebaseInitMs = ms).then((_) => _onFirebaseReady()),
         _initOneSignal(logger).then((ms) => oneSignalInitMs = ms),
-        // Independent of Firebase/OneSignal — fetch OTA translations concurrently.
-        _updateLocalizelyTranslations(),
       ]);
       if (isMobile() && Firebase.apps.isNotEmpty) {
         await PerformanceMonitor.instance.activate();
@@ -109,20 +110,23 @@ class AppInitializer {
     }
   }
 
+  /// Both defines are needed for an OTA fetch; without them every request 404s.
+  bool get _localizelyConfigured =>
+      Env.localizelySdkToken.isNotEmpty && Env.localizelyDistributionId.isNotEmpty;
+
   /// Fetches the latest Localizely over-the-air translations and reloads `S`
   /// for the active locale so updated strings apply without an app rebuild.
   Future<void> _updateLocalizelyTranslations() async {
-    if (Env.localizelySdkToken.isEmpty) {
-      return;
-    }
+    // Nothing awaits this, so a throw here would land in PlatformDispatcher's
+    // handler and be reported as a fatal crash.
     try {
-      await Localizely.updateTranslations();
-      final locale = providerContainer.read(localeStorePOD).currentLocale;
-      await loadLocalizations(locale, force: true);
-      // S.current is not observable; bump the revision so the tree repaints.
-      localizationRevision.value++;
-    } catch (e, stack) {
-      logger.warning(e, stack);
+      if (_localizelyConfigured && await fetchOtaTranslations(logger: logger)) {
+        await loadLocalizations(providerContainer.read(localeStorePOD).currentLocale, force: true);
+        // S.current is not observable; bump the revision so the tree repaints.
+        localizationRevision.value++;
+      }
+    } catch (e) {
+      logger.log('OTA translation apply error (non-fatal): $e');
     }
   }
 
