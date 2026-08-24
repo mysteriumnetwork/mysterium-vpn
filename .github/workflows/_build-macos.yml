@@ -189,7 +189,7 @@ jobs:
         id: dsyms
         run: bash .github/scripts/upload-crashlytics-symbols.sh macos "${{ inputs.flavor }}"
 
-      - name: Upload dSYMs to Github
+      - name: Upload dSYMs to GitHub
         uses: actions/upload-artifact@v5
         with:
           name: macOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})

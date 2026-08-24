@@ -3,7 +3,6 @@
 # silently stopped working when Firebase moved from CocoaPods to SPM.
 # CI only: builds archived locally from Xcode ship without symbols.
 set -euo pipefail
-shopt -s nullglob
 
 platform="${1:?usage: upload-crashlytics-symbols.sh <ios|macos> <dev|prod>}"
 flavor="${2:?usage: upload-crashlytics-symbols.sh <ios|macos> <dev|prod>}"
@@ -11,13 +10,11 @@ flavor="${2:?usage: upload-crashlytics-symbols.sh <ios|macos> <dev|prod>}"
 case "$platform" in
   ios)
     upload_platform="ios"
-    dsym_paths=(build/ios/archive/*.xcarchive/dSYMs)
+    dsym_root="build/ios/archive"
     ;;
   macos)
     upload_platform="mac"
-    products="build/macos/Build/Products/Release-$flavor"
-    # Plugin dSYMs sit one level down, next to the top-level app and framework ones.
-    dsym_paths=("$products"/*.dSYM "$products"/*/*.dSYM)
+    dsym_root="build/macos/Build/Products/Release-$flavor"
     ;;
   *)
     echo "ERROR: unknown platform '$platform' (expected 'ios' or 'macos')" >&2
@@ -34,9 +31,15 @@ if [ -z "$upload_symbols" ]; then
   exit 1
 fi
 
-# Missing dSYMs are only a warning to upload-symbols, so guard them here instead.
+# Name every bundle: handed a directory, upload-symbols treats "no dSYMs in here"
+# as a warning and still exits 0 — the silent no-op this script exists to kill.
+dsym_paths=()
+while IFS= read -r dsym; do
+  dsym_paths+=("$dsym")
+done < <(find "$dsym_root" -type d -name '*.dSYM' -prune 2>/dev/null)
+
 if [ ${#dsym_paths[@]} -eq 0 ]; then
-  echo "ERROR: no dSYMs found for $platform $flavor" >&2
+  echo "ERROR: no dSYMs found under $dsym_root" >&2
   exit 1
 fi
 
