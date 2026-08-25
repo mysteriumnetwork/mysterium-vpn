@@ -123,10 +123,11 @@ abstract class _VpnStore extends VpnGuard with Store {
   @readonly
   DateTime? _connectedAt;
 
-  /// Why the last teardown happened. Reset to [VpnDisconnectReason.user] once a
-  /// fresh connection attempt settles.
+  /// True while an existing connection is being torn down and re-established
+  /// (IP refresh or server switch). The transitional `disconnected` it emits is
+  /// not a real session end, so the review prompt skips it.
   @readonly
-  VpnDisconnectReason _disconnectReason = VpnDisconnectReason.user;
+  bool _isReconnecting = false;
 
   /// Increments each time a user-initiated connection reaches the connected
   /// state. Excludes IP refresh / automatic fallback reconnections. Observed
@@ -266,7 +267,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     // If currently connected, disconnect before switching
     if (isConnected || isLoading) {
       _logger.info('Disconnecting before protocol switch');
-      await disconnectTunnel(reason: VpnDisconnectReason.user);
+      await disconnectTunnel();
     }
 
     _vpnRepository = newRepository;
@@ -366,7 +367,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       // so refresh-IP presses are tracked this session (no fresh connect fired).
       _ipRefreshExhaustionStore.onConnected(location);
     } catch (e) {
-      await disconnectTunnel(reason: VpnDisconnectReason.appInitiated);
+      await disconnectTunnel();
     }
   }
 
@@ -430,7 +431,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
     switch (action) {
       case ConnectionAction.disconnect:
-        await disconnectTunnel(reason: VpnDisconnectReason.user);
+        await disconnectTunnel();
         break;
 
       case ConnectionAction.connect:
@@ -480,7 +481,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       _handleConnectionError(e, stackTrace);
     } finally {
       _stopwatch.stop();
-      _disconnectReason = VpnDisconnectReason.user;
+      _isReconnecting = false;
     }
   }
 
@@ -526,7 +527,8 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   Future<void> _ensureDisconnected() async {
     if (await checkTunnelStatus() == VpnConnectionStatus.connected) {
-      await disconnectTunnel(reason: VpnDisconnectReason.reconnect);
+      _isReconnecting = true;
+      await disconnectTunnel(isReconnecting: true);
       await _waitForDisconnection();
     }
   }
@@ -828,7 +830,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     if (ipAddress != null && ipAddress.isNotEmpty) {
       _vpnConnection = _vpnConnection?.copyWith(connectionIP: ipAddress);
     } else if ((_vpnConnection?.connectionIP.isEmpty ?? true) && _connectingLocation == location) {
-      await disconnectTunnel(reason: VpnDisconnectReason.user);
+      await disconnectTunnel();
       _vpnConnection = null;
     }
   }
@@ -836,11 +838,10 @@ abstract class _VpnStore extends VpnGuard with Store {
   // ==================== Disconnection ====================
 
   @action
-  Future<void> disconnectTunnel({required VpnDisconnectReason reason}) async {
-    _disconnectReason = reason;
+  Future<void> disconnectTunnel({bool isReconnecting = false}) async {
     final disconnectSucceeded = await _vpnRepository.disconnect();
 
-    if (disconnectSucceeded && reason != VpnDisconnectReason.reconnect) {
+    if (disconnectSucceeded && !isReconnecting) {
       _userIntentsStore.userIntent = null;
       _connectingLocation = null;
       _requestedLocation = null;
@@ -863,7 +864,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<void> disconnectAllDevices() async {
     try {
       _disconnectAllDevicesFuture = ObservableFuture(_vpnRepository.disconnectAllDevices());
-      await disconnectTunnel(reason: VpnDisconnectReason.user);
+      await disconnectTunnel();
       await _disconnectAllDevicesFuture;
     } catch (e) {
       _logger.handle(e);
