@@ -106,7 +106,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
   ReactionDisposer? _authReactionDisposer;
   ReactionDisposer? _protocolReactionDisposer;
-  ReactionDisposer? _connectedAtReactionDisposer;
+  ReactionDisposer? _connectedReactionDisposer;
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -123,8 +123,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   @readonly
   DateTime? _connectedAt;
 
-  /// Why the last teardown happened. Reset to [VpnDisconnectReason.user] once a
-  /// fresh connection attempt settles.
+  /// Why the last teardown happened. Reset to [VpnDisconnectReason.user] on connect.
   @readonly
   VpnDisconnectReason _disconnectReason = VpnDisconnectReason.user;
 
@@ -224,19 +223,20 @@ abstract class _VpnStore extends VpnGuard with Store {
       _handleProtocolChange,
     );
 
-    _connectedAtReactionDisposer = reaction<bool>(
+    _connectedReactionDisposer = reaction<bool>(
       (_) => _connectionStatus == VpnConnectionStatus.connected,
-      _updateConnectedAt,
+      _handleConnectedChange,
     );
   }
 
   @action
-  void _updateConnectedAt(bool connected) {
+  void _handleConnectedChange(bool connected) {
     if (!connected) {
       _connectedAt = null;
       _prefs.remove(StorageKeys.connectedAt.name).ignore();
       return;
     }
+    _disconnectReason = VpnDisconnectReason.user;
     // A stamp persisted by a previous run means this session was already up
     // before launch — keep its original start time so the clock survives
     // restarts. In-run connects find no stamp (disconnect removes it).
@@ -300,7 +300,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     await _connectionStatusStream?.cancel();
     _authReactionDisposer?.call();
     _protocolReactionDisposer?.call();
-    _connectedAtReactionDisposer?.call();
+    _connectedReactionDisposer?.call();
   }
 
   // ==================== Tunnel Management ====================
@@ -480,7 +480,6 @@ abstract class _VpnStore extends VpnGuard with Store {
       _handleConnectionError(e, stackTrace);
     } finally {
       _stopwatch.stop();
-      _disconnectReason = VpnDisconnectReason.user;
     }
   }
 

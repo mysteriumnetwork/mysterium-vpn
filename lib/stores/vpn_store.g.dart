@@ -557,12 +557,12 @@ mixin _$VpnStore on _VpnStore, Store {
   }
 
   @override
-  void _updateConnectedAt(bool connected) {
+  void _handleConnectedChange(bool connected) {
     final _$actionInfo = _$_VpnStoreActionController.startAction(
-      name: '_VpnStore._updateConnectedAt',
+      name: '_VpnStore._handleConnectedChange',
     );
     try {
-      return super._updateConnectedAt(connected);
+      return super._handleConnectedChange(connected);
     } finally {
       _$_VpnStoreActionController.endAction(_$actionInfo);
     }

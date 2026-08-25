@@ -693,6 +693,24 @@ void main() {
         await store.disposeStore();
       });
 
+      test('reaching connected resets the teardown reason', () async {
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        final store = buildStore();
+        await pumpEventQueue();
+
+        await store.disconnectTunnel(reason: VpnDisconnectReason.reconnect);
+        expect(store.disconnectReason, VpnDisconnectReason.reconnect);
+
+        statusController.add(VpnConnectionStatus.connected);
+        await pumpEventQueue();
+
+        expect(store.disconnectReason, VpnDisconnectReason.user);
+        await store.disposeStore();
+      });
+
       test('stamps and persists a fresh connectedAt when no stamp is stored', () async {
         when(
           mockWireguardRepo.currentStatus(),
@@ -886,14 +904,19 @@ void main() {
       test('requestedLocation preserved across a refresh', () async {
         await connect(country);
         stubToggleAction(ConnectionAction.refreshIP);
+        clearInteractions(mockWireguardRepo);
         await vpnStore.manageConnection(refreshIP: true);
         expect(vpnStore.requestedLocation, country);
+        // A reconnect teardown must not tell the API the session ended.
+        verifyNever(mockWireguardRepo.notifyApiVpnDisconnected());
       });
 
       test('disconnect clears requestedLocation', () async {
         await connect(country);
+        clearInteractions(mockWireguardRepo);
         await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
         expect(vpnStore.requestedLocation, isNull);
+        verify(mockWireguardRepo.notifyApiVpnDisconnected()).called(1);
       });
 
       test('closest sentinel connect leaves requestedLocation null', () async {
@@ -942,7 +965,7 @@ void main() {
         verifyFetchVpnConfig(country: 'de', city: null);
       });
 
-      test('disconnectReason is reconnect while tearing down and user afterwards', () async {
+      test('disconnectReason is reconnect for a refresh teardown', () async {
         await connect(country);
         // Report a live tunnel once so the reconnect path tears it down, then
         // disconnected so _waitForDisconnection settles.
@@ -961,7 +984,8 @@ void main() {
         stubToggleAction(ConnectionAction.refreshIP);
         await vpnStore.manageConnection(refreshIP: true);
         expect(duringDisconnect, VpnDisconnectReason.reconnect);
-        expect(vpnStore.disconnectReason, VpnDisconnectReason.user);
+        // Stays set until a connection is actually established.
+        expect(vpnStore.disconnectReason, VpnDisconnectReason.reconnect);
       });
 
       test('connect timeout logs failure with a non-null error code and message', () async {

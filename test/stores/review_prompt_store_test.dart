@@ -459,6 +459,27 @@ void main() {
   });
 
   group('auth teardown', () {
+    test('a logout during the native-review probe does not arm the prompt', () async {
+      // A logout inside the async probe must not be overwritten.
+      final store = createStore(
+        canShowNativeReview: () async {
+          when(authSessionStore.isAuthenticated).thenReturn(false);
+          return true;
+        },
+      );
+
+      await store.evaluate();
+
+      expect(store.pendingPrompt, isFalse);
+      verify(
+        analytics.logEvent(
+          AnalyticsEvent.reviewPromptSuppressed,
+          parameters: {'reason': 'unauthenticated'},
+        ),
+      ).called(1);
+      store.dispose();
+    });
+
     test('losing authentication clears a prompt armed by an earlier session', () {
       final authenticated = Observable(true);
       when(authSessionStore.isAuthenticated).thenAnswer((_) => authenticated.value);
