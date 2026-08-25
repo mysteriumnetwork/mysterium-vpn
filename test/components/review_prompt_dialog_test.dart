@@ -13,18 +13,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../support/test_localizations.dart';
 import 'review_prompt_dialog_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<ReviewPromptStore>(), MockSpec<AnalyticsStore>()])
+@GenerateNiceMocks([
+  MockSpec<ReviewPromptStore>(),
+  MockSpec<AnalyticsStore>(),
+  MockSpec<AuthSessionStore>(),
+])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockReviewPromptStore store;
   late MockAnalyticsStore analytics;
+  late MockAuthSessionStore authSessionStore;
 
   const inAppReviewChannel = MethodChannel('dev.britannio.in_app_review');
 
   setUp(() {
     store = MockReviewPromptStore();
     analytics = MockAnalyticsStore();
+    authSessionStore = MockAuthSessionStore();
+    when(authSessionStore.isAuthenticated).thenReturn(true);
     SharedPreferences.setMockInitialValues({});
     // Keep the native-review side effect silent so the "Leave a review" path
     // doesn't hit a real platform channel.
@@ -49,6 +56,7 @@ void main() {
         overrides: [
           reviewPromptStorePOD.overrideWithValue(store),
           analyticsStorePOD.overrideWithValue(analytics),
+          authSessionStorePOD.overrideWithValue(authSessionStore),
         ],
         child: MaterialApp(
           theme: DesignSystem.lightTheme,
@@ -70,6 +78,20 @@ void main() {
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
   }
+
+  testWidgets('does not show if authentication is lost while recording the display', (
+    tester,
+  ) async {
+    // A logout inside the awaited onShown() must abort the flow.
+    when(store.onShown()).thenAnswer((_) async {
+      when(authSessionStore.isAuthenticated).thenReturn(false);
+    });
+
+    await openFlow(tester);
+
+    verify(store.onShown()).called(1);
+    expect(find.byType(AlertModal), findsNothing);
+  });
 
   testWidgets('records the display and shows the Yes/No satisfaction modal', (tester) async {
     await openFlow(tester);

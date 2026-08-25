@@ -53,6 +53,8 @@ abstract class _ReviewPromptStore with Store {
   final Future<bool> Function() _canShowNativeReview;
 
   ReactionDisposer? _statusDisposer;
+  ReactionDisposer? _authDisposer;
+  ReactionDisposer? _teardownDisposer;
   Timer? _stableTimer;
 
   /// Whether the current connection reached the stable threshold.
@@ -81,6 +83,21 @@ abstract class _ReviewPromptStore with Store {
       handleConnectionStatus,
       fireImmediately: false,
     );
+    // The dialog queue is serial, so a prompt can still be armed at logout.
+    _authDisposer ??= reaction<bool>((_) => _authSessionStore.isAuthenticated, (authenticated) {
+      if (!authenticated) {
+        pendingPrompt = false;
+      }
+    });
+    // Stamped before disconnectTunnel awaits, so this lands while the user is
+    // still authenticated — earlier than the auth reaction above can fire.
+    _teardownDisposer ??= reaction<VpnDisconnectReason>((_) => _vpnStore.disconnectReason, (
+      reason,
+    ) {
+      if (reason == VpnDisconnectReason.appInitiated) {
+        pendingPrompt = false;
+      }
+    });
   }
 
   /// Seeds the install date on first launch and counts each app open — the
@@ -97,6 +114,10 @@ abstract class _ReviewPromptStore with Store {
     _stableTimer?.cancel();
     _statusDisposer?.call();
     _statusDisposer = null;
+    _authDisposer?.call();
+    _authDisposer = null;
+    _teardownDisposer?.call();
+    _teardownDisposer = null;
   }
 
   /// Drives the session lifecycle off the VPN connection status. Public for
@@ -132,10 +153,8 @@ abstract class _ReviewPromptStore with Store {
         break;
       case VpnConnectionStatus.disconnected:
         _stableTimer?.cancel();
-        // An IP refresh / server switch tears the tunnel down and reconnects;
-        // that disconnect is transitional, not a session end, so don't evaluate
-        // or record an outcome. The following `connecting` resets the session.
-        if (_vpnStore.isReconnecting) {
+        // Only a user-driven disconnect ends a session; reconnects and logout don't.
+        if (_vpnStore.disconnectReason != VpnDisconnectReason.user) {
           break;
         }
         if (_sessionStable) {
@@ -189,7 +208,7 @@ abstract class _ReviewPromptStore with Store {
     }
     await _analytics.logEvent(AnalyticsEvent.reviewPromptEligible);
 
-    final reason = suppressionReason;
+    final reason = await _blockedReason();
     if (reason != null) {
       await _analytics.logEvent(
         AnalyticsEvent.reviewPromptSuppressed,
@@ -197,15 +216,20 @@ abstract class _ReviewPromptStore with Store {
       );
       return;
     }
+    pendingPrompt = true;
+  }
+
+  /// What blocks the prompt right now, or null if nothing does.
+  Future<String?> _blockedReason() async {
+    final reason = suppressionReason;
+    if (reason != null) {
+      return reason;
+    }
     // No point starting the flow if we can't ultimately open the native review.
     if (!await _canShowNativeReview()) {
-      await _analytics.logEvent(
-        AnalyticsEvent.reviewPromptSuppressed,
-        parameters: {'reason': 'native_review_unavailable'},
-      );
-      return;
+      return 'native_review_unavailable';
     }
-    pendingPrompt = true;
+    return suppressionReason; // Re-check: the probe above is async.
   }
 
   // ─── Eligibility ─────────────────────────────────────────────────────────

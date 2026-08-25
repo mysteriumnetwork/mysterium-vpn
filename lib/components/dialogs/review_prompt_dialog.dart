@@ -18,9 +18,10 @@ Future<void> showReviewPromptDialog(BuildContext context) async {
   final container = ProviderScope.containerOf(context, listen: false);
   final store = container.read(reviewPromptStorePOD);
   final analyticsStore = container.read(analyticsStorePOD);
+  final authSessionStore = container.read(authSessionStorePOD);
 
   await store.onShown();
-  if (!context.mounted) {
+  if (!context.mounted || !authSessionStore.isAuthenticated) {
     return;
   }
 
