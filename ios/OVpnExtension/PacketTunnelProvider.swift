@@ -98,20 +98,18 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     }
     
     override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)? = nil) {
-        if String(data: messageData, encoding: .utf8) == "OPENVPN_STATS" {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            
-            let statsString =
-                "\(UserDefaults.standard.string(forKey: "connected_on") ?? "")_" +
-                "\(vpnAdapter.interfaceStatistics.packetsIn)_" +
-                "\(vpnAdapter.interfaceStatistics.packetsOut)_" +
-                "\(vpnAdapter.interfaceStatistics.bytesIn)_" +
-                "\(vpnAdapter.interfaceStatistics.bytesOut)"
-            
-            os_log("[VPN] Updating connection stats: %@", log: PacketTunnelProvider.vpnLog, type: .info, statsString)
-            UserDefaults.standard.setValue(statsString, forKey: "connectionUpdate")
+        guard let completionHandler else { return }
+        guard String(data: messageData, encoding: .utf8) == "OPENVPN_STATS" else {
+            completionHandler(nil)
+            return
         }
+
+        // Shape mirrors wireguard_dart's TunnelStatistics so the Dart side parses
+        // both protocols identically; OpenVPN has no handshake equivalent.
+        let stats = vpnAdapter.interfaceStatistics
+        let json = "{\"totalDownload\":\(stats.bytesIn),\"totalUpload\":\(stats.bytesOut),\"latestHandshake\":0}"
+        os_log("[VPN] Reporting connection stats: %@", log: PacketTunnelProvider.vpnLog, type: .debug, json)
+        completionHandler(json.data(using: .utf8))
     }
 }
 
@@ -126,8 +124,6 @@ extension PacketTunnelProvider: OpenVPNAdapterDelegate {
     }
     
     func _updateEvent(_ event: OpenVPNAdapterEvent, openVPNAdapter: OpenVPNAdapter) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         var stage = ""
         
         os_log("[VPN] Event received: %@", log: PacketTunnelProvider.vpnLog, type: .info, "\(event)")
@@ -135,7 +131,6 @@ extension PacketTunnelProvider: OpenVPNAdapterDelegate {
         switch event {
         case .connected:
             stage = "CONNECTED"
-            UserDefaults.standard.setValue(formatter.string(from: Date()), forKey: "connected_on")
         case .disconnected:
             stage = "DISCONNECTED"
         case .connecting:
@@ -145,7 +140,6 @@ extension PacketTunnelProvider: OpenVPNAdapterDelegate {
         case .info:
             stage = "CONNECTED"
         default:
-            UserDefaults.standard.removeObject(forKey: "connected_on")
             stage = "INVALID"
         }
         

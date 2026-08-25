@@ -67,7 +67,7 @@ dependencies:
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: 0.0.9
+      ref: 0.1.0
   package_info_plus: 10.2.1
   reactive_forms: 17.0.1
   retry: 3.1.2
@@ -97,7 +97,7 @@ dependencies:
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: 0.9.13
+      ref: 0.9.14
 
 dev_dependencies:
   build: ^4.0.0

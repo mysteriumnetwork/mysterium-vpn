@@ -17,7 +17,6 @@ import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
-import 'package:mysterium_vpn/views/settings/network_statistics.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class QAToolbox extends HookConsumerWidget {
@@ -27,7 +26,6 @@ class QAToolbox extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Observer(
     builder: (context) => Column(
       children: [
-        if (ref.read(vpnStorePOD).isConnected && Platform.isAndroid) const NetworkStatistics(),
         _ExpandableSection(
           title: 'Data Management',
           icon: Icons.storage,

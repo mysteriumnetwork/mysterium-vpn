@@ -1344,8 +1344,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.9"
-      resolved-ref: "7ac4d91f5e401f2802c6942dcb868a476236cdcd"
+      ref: "0.1.0"
+      resolved-ref: "76f4bfcdfcb42bbad22e2cb00642b83232195b97"
       url: "https://github.com/mysteriumnetwork/openvpn_dart.git"
     source: git
     version: "0.0.1"
@@ -2247,8 +2247,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.9.13"
-      resolved-ref: bf3887b3fc86a14d80ced59b66c0c18b4621a9ff
+      ref: "0.9.14"
+      resolved-ref: d522a74d70870da61a7ae8953f5b0f9660d56c3c
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"
