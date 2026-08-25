@@ -56,7 +56,6 @@ abstract class _ReviewPromptStore with Store {
   final Future<bool> Function() _canShowNativeReview;
 
   ReactionDisposer? _statusDisposer;
-  // ReactionDisposer? _blockDisposer;
   Timer? _stableTimer;
 
   /// Whether the current connection reached the stable threshold.

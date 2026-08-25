@@ -234,7 +234,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     // Drop the tunnel when the subscription becomes inactive or paused.
     _subscriptionReactionDisposer = reaction<({bool active, bool paused})>(
       (_) {
-        final subscription = subscriptionStore.subscriptionFuture.value;
+        final future = subscriptionStore.subscriptionFuture;
+        if (future.status != FutureStatus.fulfilled) {
+          return (active: true, paused: false);
+        }
+        final subscription = future.value;
         return (active: subscription?.active ?? false, paused: subscription?.paused ?? false);
       },
       (state) {
