@@ -83,7 +83,7 @@ jobs:
   build_ios:
     name: Publish iOS app to TestFlight
     needs: [quality_checks]
-    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-ios.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
@@ -97,7 +97,7 @@ jobs:
   build_macos:
     name: Publish macOS app to TestFlight
     needs: [quality_checks]
-    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-macos.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
@@ -112,7 +112,7 @@ jobs:
   build_android:
     name: Publish Android app to Internal Testing
     needs: [quality_checks]
-    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-android.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
@@ -128,7 +128,7 @@ jobs:
   build_windows:
     name: Publish Windows app
     needs: [quality_checks]
-    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     uses: ./.github/workflows/_build-windows.yml
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}

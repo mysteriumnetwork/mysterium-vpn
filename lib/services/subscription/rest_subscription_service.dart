@@ -21,22 +21,16 @@ import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
-const kFetchSubscriptionConfig = '/subscription/config';
-const kFetchPauseDurations = '/subscription/pause-durations';
-const kPauseSubscription = '/subscription/pause';
-
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
     required api.VpnApi api,
     required InAppPurchase inAppPurchase,
     required Talker logger,
   }) : _apiSubscription = api.getSubscription(),
-       _dio = api.dio,
        _inAppPurchase = inAppPurchase,
        _logger = logger;
 
   final api.Subscription _apiSubscription;
-  final Dio _dio;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
 
@@ -353,26 +347,20 @@ class RestSubscriptionService extends SubscriptionService {
 
   @override
   Future<void> pauseSubscription(String periodCode) async {
-    final period = api.PauseSubscriptionRequestPeriodEnum.values.firstWhereOrNull(
-      (it) => it.value == periodCode,
-    );
-    if (period == null) {
-      throw Exception('Unsupported pause period: $periodCode');
-    }
     await _apiSubscription.pause(
-      pauseSubscriptionRequest: api.PauseSubscriptionRequest(period: period),
+      pauseSubscriptionRequest: api.PauseSubscriptionRequest(period: periodCode),
     );
   }
 
   @override
   Future<List<String>> fetchPauseDurations() async {
     try {
-      final res = await _dio.get<List<dynamic>>(kFetchPauseDurations);
+      final res = await _apiSubscription.pauseDurations();
       final data = res.data;
-      if (data == null) {
+      if (data == null || data.isEmpty) {
         throw Exception('No pause durations found');
       }
-      return data.map((e) => e.toString()).toList(growable: false);
+      return data;
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {

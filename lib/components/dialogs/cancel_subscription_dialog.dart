@@ -51,8 +51,9 @@ Future<void> showCancelSubscriptionSurveyDialog(BuildContext context) async => s
   builder: (ctx) => const ModalMessengerScope(child: CancelSubscriptionSurveyView()),
 );
 
-/// Hands the user off to cancel/manage: store subs use the existing manage-subscription
-/// purchase flow; web subs open the billing manage page (same URL as Settings → Manage).
+/// Hands the user off to cancel: store subs use the existing manage-subscription
+/// purchase flow; web subs open [RemoteConfigStore.cancelSubscriptionPage]
+/// (Env `CANCEL_SUBS_PAGE` when ConfigCat has no override).
 Future<void> openCancelSubscriptionLink(
   BuildContext context, {
   required SubscriptionCancellationStore store,
@@ -107,16 +108,15 @@ Future<void> openCancelSubscriptionLink(
         pauseOfferShown: store.pauseOfferShown,
       )
       .ignore();
-  final managePage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
+  final cancelPage = container.read(remoteConfigStorePOD).cancelSubscriptionPage;
   final accessToken = container.read(authSessionStorePOD).accessToken;
-  final uri = Uri.parse(managePage);
-  final httpsUri = Uri(
-    scheme: uri.scheme,
-    host: uri.host,
-    path: uri.path,
-    queryParameters: {'access_token': accessToken ?? ''},
-  );
-  final opened = await openUrlLink(httpsUri, source: RedirectSource.cancelSubscription);
+  final uri = Uri.parse(cancelPage);
+  final queryParameters = Map<String, String>.from(uri.queryParameters);
+  if (accessToken != null && accessToken.isNotEmpty) {
+    queryParameters['access_token'] = accessToken;
+  }
+  final cancelUri = uri.replace(queryParameters: queryParameters);
+  final opened = await openUrlLink(cancelUri, source: RedirectSource.cancelSubscription);
   if (!opened) {
     analyticsStore
         .logCancellationRedirectFailed(

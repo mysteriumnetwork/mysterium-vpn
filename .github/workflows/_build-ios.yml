@@ -102,6 +102,18 @@ jobs:
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_PRIVATE_KEY }}
         run: app-store-connect publish --path "build/ios/ipa/Mysterium VPN.ipa" --platform IOS
 
+      - name: Upload dSYMs to Crashlytics
+        id: dsyms
+        run: bash .github/scripts/upload-crashlytics-symbols.sh ios "${{ inputs.flavor }}"
+
+      - name: Upload dSYMs to GitHub
+        uses: actions/upload-artifact@v5
+        with:
+          name: iOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})
+          path: ${{ steps.dsyms.outputs.paths }}
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Post Set up keychain
         run: |
           keychain delete

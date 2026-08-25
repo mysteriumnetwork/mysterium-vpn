@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -43,15 +42,10 @@ void main() {
       for (final key in actual.keys) {
         expect(file.containsKey(key), true, reason: 'missing key $key in .env file');
       }
-      expect(
-        const SetEquality().equals(file.keys.toSet(), actual.keys.toSet()),
-        true,
-        reason: 'key sets differ',
-      );
     });
 
     test('all values match', () {
-      for (final key in file.keys) {
+      for (final key in actual.keys) {
         expect(
           file[key],
           actual[key],

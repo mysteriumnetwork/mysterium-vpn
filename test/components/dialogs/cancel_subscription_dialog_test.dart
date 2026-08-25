@@ -293,7 +293,7 @@ void main() {
       when(cancelStore.isStoreSubscription()).thenReturn(false);
       when(
         remoteConfigStore.cancelSubscriptionPage,
-      ).thenReturn('https://billing.example.com/manage');
+      ).thenReturn('https://app.example.com/dashboard/cancel');
       when(authSessionStore.accessToken).thenReturn('token-123');
     });
 
@@ -339,7 +339,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('opens the manage page with access_token and logs dashboard opened', (
+    testWidgets('opens the cancel page with access_token and logs dashboard opened', (
       tester,
     ) async {
       await openWebLink(tester);
@@ -352,8 +352,30 @@ void main() {
         ),
       ).called(1);
       expect(urlLauncher.launchedUrls, [
-        'https://billing.example.com/manage?access_token=token-123',
+        'https://app.example.com/dashboard/cancel?access_token=token-123',
       ]);
+    });
+
+    testWidgets('preserves existing query params and skips empty access_token', (tester) async {
+      when(
+        remoteConfigStore.cancelSubscriptionPage,
+      ).thenReturn('https://app.example.com/dashboard/cancel?foo=bar&baz=1');
+      when(authSessionStore.accessToken).thenReturn(null);
+
+      await openWebLink(tester);
+
+      expect(urlLauncher.launchedUrls, ['https://app.example.com/dashboard/cancel?foo=bar&baz=1']);
+    });
+
+    testWidgets('merges access_token into existing query params', (tester) async {
+      when(
+        remoteConfigStore.cancelSubscriptionPage,
+      ).thenReturn('https://app.example.com/dashboard/cancel?foo=bar');
+
+      await openWebLink(tester);
+
+      final launched = Uri.parse(urlLauncher.launchedUrls.single);
+      expect(launched.queryParameters, {'foo': 'bar', 'access_token': 'token-123'});
     });
   });
 }

@@ -34,13 +34,19 @@ void main() {
 
   testWidgets('disables the primary button when primaryButtonEnabled is false', (tester) async {
     // arrange
-    await pumpActionFooter(tester: tester);
+    var pressed = false;
+    await pumpActionFooter(
+      tester: tester,
+      onPrimaryButtonPressed: () {
+        pressed = true;
+      },
+    );
 
     // act
-    final button = tester.widget<ButtonPrimary>(find.byType(ButtonPrimary));
+    await tester.tap(find.byType(ButtonPrimary), warnIfMissed: false);
 
     // assert
-    expect(button.onPressed, isNull);
+    expect(pressed, isFalse);
   });
 
   testWidgets('enables the primary button when primaryButtonEnabled is true', (tester) async {
@@ -80,7 +86,6 @@ void main() {
     final button = tester.widget<ButtonPrimary>(find.byType(ButtonPrimary));
 
     // assert
-    expect(button.onPressed, isNull);
     expect(button.loading, isA<ButtonLoading>());
   });
 

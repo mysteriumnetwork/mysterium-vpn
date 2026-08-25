@@ -120,6 +120,11 @@ class _Authenticated extends HookConsumerWidget {
     final remoteConfigStore = ref.read(remoteConfigStorePOD);
     final vpnStore = ref.read(vpnStorePOD);
 
+    useEffect(() {
+      subscriptionStore.refreshSubscription(force: true).ignore();
+      return null;
+    }, const []);
+
     final handleSubscribe = useHandleSubscribe();
     final (notifier, subscribeStatus) = useFutureStatus();
 
