@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/connection_tile_state_hook.dart';
@@ -142,12 +143,40 @@ class _DevProtocolLabel extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vpnProtocol = ref.watch(vpnProtocolStorePOD);
+    final vpnStore = ref.watch(vpnStorePOD);
+    final isConnected = useComputedValue(() => vpnStore.isConnected);
+    // Watched only while connected: reading the provider starts its poll loop.
+    final statistics = isConnected ? ref.watch(networkStatisticsStorePOD) : null;
     final palette = Theme.of(context).palette;
+
     return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        'Protocol: ${vpnProtocol.protocol.name}',
-        style: TextStyle(fontSize: 8, color: palette.textSecondary, fontWeight: FontWeight.w800),
+      // scaleDown keeps the readout on a single line on narrow screens without
+      // ellipsizing away the trailing counters.
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Observer(
+          builder: (context) => Text(
+            tunnelStatsLabel(
+              protocol: vpnProtocol.protocol.name,
+              now: DateTime.now(),
+              stats: statistics == null
+                  ? null
+                  : (
+                      downloadMbps: statistics.downloadSpeed,
+                      uploadMbps: statistics.uploadSpeed,
+                      totalDownloadMb: statistics.totalDownloadInMB,
+                      totalUploadMb: statistics.totalUploadInMB,
+                      latestHandshake: statistics.latestHandshake,
+                    ),
+            ),
+            maxLines: 1,
+            style: TextStyle(
+              fontSize: 8,
+              color: palette.textSecondary,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
       ),
     );
   }

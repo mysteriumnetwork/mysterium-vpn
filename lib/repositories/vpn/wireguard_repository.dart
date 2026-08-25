@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -115,6 +117,30 @@ class WireguardRepository extends BaseVpnRepository {
   Future<VpnConnectionStatus> currentStatus() async {
     final status = await _service.status();
     return VpnConnectionStatus.fromString(status.name);
+  }
+
+  @override
+  Future<TunnelStats?> tunnelStatistics() async {
+    try {
+      final stats = await _service.getTunnelStatistics();
+      if (stats == null) {
+        return null;
+      }
+      return TunnelStats(
+        totalDownload: stats.totalDownload,
+        totalUpload: stats.totalUpload,
+        // WireGuard reports 0 until the first handshake.
+        latestHandshake: stats.latestHandshake > 0
+            ? DateTime.fromMillisecondsSinceEpoch(stats.latestHandshake).toLocal()
+            : null,
+      );
+    } on MissingPluginException {
+      // No implementation on this platform — let the caller stop polling.
+      rethrow;
+    } catch (e) {
+      logger.warning('Failed to read Wireguard tunnel statistics: $e');
+      return null;
+    }
   }
 
   @override

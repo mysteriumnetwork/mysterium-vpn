@@ -86,16 +86,16 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
     context: context,
   );
 
-  TunnelStatistics? get tunnelStatistics {
+  TunnelStats? get tunnelStatistics {
     _$_tunnelStatisticsAtom.reportRead();
     return super._tunnelStatistics;
   }
 
   @override
-  TunnelStatistics? get _tunnelStatistics => tunnelStatistics;
+  TunnelStats? get _tunnelStatistics => tunnelStatistics;
 
   @override
-  set _tunnelStatistics(TunnelStatistics? value) {
+  set _tunnelStatistics(TunnelStats? value) {
     _$_tunnelStatisticsAtom.reportWrite(value, super._tunnelStatistics, () {
       super._tunnelStatistics = value;
     });

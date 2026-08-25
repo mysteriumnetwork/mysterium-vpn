@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -98,6 +100,25 @@ class OpenVpnRepository extends BaseVpnRepository {
   Future<VpnConnectionStatus> currentStatus() async {
     final status = await _service.getVPNStatus();
     return VpnConnectionStatus.fromString(status.name);
+  }
+
+  @override
+  Future<TunnelStats?> tunnelStatistics() async {
+    try {
+      final stats = await _service.tunnelStatistics();
+      if (stats == null) {
+        return null;
+      }
+      // OpenVPN has no handshake, so latestHandshake stays null.
+      return TunnelStats(totalDownload: stats.totalDownload, totalUpload: stats.totalUpload);
+    } on MissingPluginException {
+      // No implementation on this platform — let the caller stop polling. The
+      // plugin currently maps this to null itself, so this is a contract guard.
+      rethrow;
+    } catch (e) {
+      logger.warning('Failed to read OpenVPN tunnel statistics: $e');
+      return null;
+    }
   }
 
   @override

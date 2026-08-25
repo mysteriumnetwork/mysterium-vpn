@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -263,6 +264,50 @@ void main() {
           tunnelName: anyNamed('tunnelName'),
         ),
       ).called(1);
+    });
+  });
+
+  group('tunnelStatistics', () {
+    test('maps the plugin counters onto TunnelStats', () async {
+      when(mockService.getTunnelStatistics()).thenAnswer(
+        (_) async => const TunnelStatistics(
+          totalDownload: 54321,
+          totalUpload: 12345,
+          latestHandshake: 1756000000000,
+        ),
+      );
+
+      final stats = await repository.tunnelStatistics();
+
+      expect(stats!.totalDownload, 54321);
+      expect(stats.totalUpload, 12345);
+      expect(stats.latestHandshake, DateTime.fromMillisecondsSinceEpoch(1756000000000));
+    });
+
+    test('maps a never-handshaked tunnel to a null handshake', () async {
+      when(mockService.getTunnelStatistics()).thenAnswer(
+        (_) async => const TunnelStatistics(totalDownload: 1, totalUpload: 2, latestHandshake: 0),
+      );
+
+      expect((await repository.tunnelStatistics())!.latestHandshake, isNull);
+    });
+
+    test('returns null when the plugin has nothing to report', () async {
+      when(mockService.getTunnelStatistics()).thenAnswer((_) async => null);
+
+      expect(await repository.tunnelStatistics(), isNull);
+    });
+
+    test('returns null on a plugin failure', () async {
+      when(mockService.getTunnelStatistics()).thenThrow(Exception('boom'));
+
+      expect(await repository.tunnelStatistics(), isNull);
+    });
+
+    test('rethrows MissingPluginException so the caller can stop polling', () async {
+      when(mockService.getTunnelStatistics()).thenThrow(MissingPluginException());
+
+      expect(repository.tunnelStatistics(), throwsA(isA<MissingPluginException>()));
     });
   });
 }

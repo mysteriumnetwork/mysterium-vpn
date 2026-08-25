@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -9,6 +10,12 @@ abstract class VpnRepository {
   Future<bool> isTunnelConfigured();
   Stream<VpnConnectionStatus> statusStream();
   Future<VpnConnectionStatus> currentStatus();
+
+  /// Live byte counters for the active tunnel, or null when unavailable.
+  ///
+  /// Throws [MissingPluginException] when the platform has no implementation at
+  /// all, so a caller polling this can stop instead of retrying forever.
+  Future<TunnelStats?> tunnelStatistics();
   Future<void> removeTunnelConfiguration();
   Future<void> init();
   Future<void> notifyApiVpnDisconnected();
