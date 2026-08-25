@@ -144,7 +144,7 @@ void useHomeAutorun() {
             return;
           }
           controller.add(() async {
-            if (!context.mounted) {
+            if (!context.mounted || !authSessionStore.isAuthenticated) {
               return null;
             }
             // Suppress while a flow is on top of home (onboarding, paywall /

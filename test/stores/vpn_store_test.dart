@@ -182,7 +182,7 @@ void main() {
       when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
       when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async => Future.value());
 
-      await vpnStore.disconnectTunnel();
+      await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
 
       expect(vpnStore.location, null);
       verify(mockWireguardRepo.notifyApiVpnDisconnected()).called(1);
@@ -892,7 +892,7 @@ void main() {
 
       test('disconnect clears requestedLocation', () async {
         await connect(country);
-        await vpnStore.disconnectTunnel();
+        await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
         expect(vpnStore.requestedLocation, isNull);
       });
 
@@ -942,7 +942,7 @@ void main() {
         verifyFetchVpnConfig(country: 'de', city: null);
       });
 
-      test('isReconnecting is true while tearing down to reconnect and false afterwards', () async {
+      test('disconnectReason is reconnect while tearing down and user afterwards', () async {
         await connect(country);
         // Report a live tunnel once so the reconnect path tears it down, then
         // disconnected so _waitForDisconnection settles.
@@ -953,15 +953,15 @@ void main() {
               ? VpnConnectionStatus.connected
               : VpnConnectionStatus.disconnected;
         });
-        bool? duringDisconnect;
+        VpnDisconnectReason? duringDisconnect;
         when(mockWireguardRepo.disconnect()).thenAnswer((_) async {
-          duringDisconnect = vpnStore.isReconnecting;
+          duringDisconnect = vpnStore.disconnectReason;
           return true;
         });
         stubToggleAction(ConnectionAction.refreshIP);
         await vpnStore.manageConnection(refreshIP: true);
-        expect(duringDisconnect, isTrue);
-        expect(vpnStore.isReconnecting, isFalse);
+        expect(duringDisconnect, VpnDisconnectReason.reconnect);
+        expect(vpnStore.disconnectReason, VpnDisconnectReason.user);
       });
 
       test('connect timeout logs failure with a non-null error code and message', () async {
