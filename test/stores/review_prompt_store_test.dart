@@ -480,6 +480,34 @@ void main() {
       store.dispose();
     });
 
+    test('an app-initiated teardown clears a prompt armed by an earlier session', () {
+      // disconnectTunnel stamps the reason before it awaits, so this lands
+      // while the user is still authenticated.
+      final reason = Observable(VpnDisconnectReason.user);
+      when(vpnStore.disconnectReason).thenAnswer((_) => reason.value);
+      final store = createStore()
+        ..init()
+        ..pendingPrompt = true;
+
+      runInAction(() => reason.value = VpnDisconnectReason.appInitiated);
+
+      expect(store.pendingPrompt, isFalse);
+      store.dispose();
+    });
+
+    test('a reconnect teardown leaves the prompt armed', () {
+      final reason = Observable(VpnDisconnectReason.user);
+      when(vpnStore.disconnectReason).thenAnswer((_) => reason.value);
+      final store = createStore()
+        ..init()
+        ..pendingPrompt = true;
+
+      runInAction(() => reason.value = VpnDisconnectReason.reconnect);
+
+      expect(store.pendingPrompt, isTrue);
+      store.dispose();
+    });
+
     test('losing authentication clears a prompt armed by an earlier session', () {
       final authenticated = Observable(true);
       when(authSessionStore.isAuthenticated).thenAnswer((_) => authenticated.value);
