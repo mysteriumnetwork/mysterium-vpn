@@ -134,20 +134,20 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_disconnectReasonAtom = Atom(name: '_VpnStore._disconnectReason', context: context);
+  late final _$_isReconnectingAtom = Atom(name: '_VpnStore._isReconnecting', context: context);
 
-  VpnDisconnectReason get disconnectReason {
-    _$_disconnectReasonAtom.reportRead();
-    return super._disconnectReason;
+  bool get isReconnecting {
+    _$_isReconnectingAtom.reportRead();
+    return super._isReconnecting;
   }
 
   @override
-  VpnDisconnectReason get _disconnectReason => disconnectReason;
+  bool get _isReconnecting => isReconnecting;
 
   @override
-  set _disconnectReason(VpnDisconnectReason value) {
-    _$_disconnectReasonAtom.reportWrite(value, super._disconnectReason, () {
-      super._disconnectReason = value;
+  set _isReconnecting(bool value) {
+    _$_isReconnectingAtom.reportWrite(value, super._isReconnecting, () {
+      super._isReconnecting = value;
     });
   }
 
@@ -495,8 +495,10 @@ mixin _$VpnStore on _VpnStore, Store {
   );
 
   @override
-  Future<void> disconnectTunnel({required VpnDisconnectReason reason}) {
-    return _$disconnectTunnelAsyncAction.run(() => super.disconnectTunnel(reason: reason));
+  Future<void> disconnectTunnel({bool isReconnecting = false}) {
+    return _$disconnectTunnelAsyncAction.run(
+      () => super.disconnectTunnel(isReconnecting: isReconnecting),
+    );
   }
 
   late final _$disconnectAllDevicesAsyncAction = AsyncAction(

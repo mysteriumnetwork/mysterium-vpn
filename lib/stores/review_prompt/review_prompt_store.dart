@@ -53,7 +53,6 @@ abstract class _ReviewPromptStore with Store {
   final Future<bool> Function() _canShowNativeReview;
 
   ReactionDisposer? _statusDisposer;
-  ReactionDisposer? _authDisposer;
   Timer? _stableTimer;
 
   /// Whether the current connection reached the stable threshold.
@@ -82,12 +81,6 @@ abstract class _ReviewPromptStore with Store {
       handleConnectionStatus,
       fireImmediately: false,
     );
-    // The dialog queue is serial, so a prompt can still be armed at logout.
-    _authDisposer ??= reaction<bool>((_) => _authSessionStore.isAuthenticated, (authenticated) {
-      if (!authenticated) {
-        pendingPrompt = false;
-      }
-    });
   }
 
   /// Seeds the install date on first launch and counts each app open — the
@@ -104,8 +97,6 @@ abstract class _ReviewPromptStore with Store {
     _stableTimer?.cancel();
     _statusDisposer?.call();
     _statusDisposer = null;
-    _authDisposer?.call();
-    _authDisposer = null;
   }
 
   /// Drives the session lifecycle off the VPN connection status. Public for
@@ -141,8 +132,10 @@ abstract class _ReviewPromptStore with Store {
         break;
       case VpnConnectionStatus.disconnected:
         _stableTimer?.cancel();
-        // Only a user-driven disconnect ends a session; reconnects and logout don't.
-        if (_vpnStore.disconnectReason != VpnDisconnectReason.user) {
+        // An IP refresh / server switch tears the tunnel down and reconnects;
+        // that disconnect is transitional, not a session end, so don't evaluate
+        // or record an outcome. The following `connecting` resets the session.
+        if (_vpnStore.isReconnecting) {
           break;
         }
         if (_sessionStable) {

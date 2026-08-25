@@ -62,7 +62,7 @@ class ProtocolPicker extends ConsumerWidget {
         supportingText: S.current.protocolPickerSettingDesc,
         onConfirm: () async {
           analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
-          await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
+          await vpnStore.disconnectTunnel();
           await vpnProtocolStore.setProtocol(newProtocol);
         },
         onCancel: () {
