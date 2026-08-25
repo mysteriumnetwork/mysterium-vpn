@@ -59,10 +59,10 @@ abstract class _NetworkStatisticsStore with Store {
       try {
         final prevStats = _tunnelStatistics;
         final stats = await _vpnStore.tunnelStatistics();
-        if (prevStats != null && stats != null) {
-          final seconds = pollInterval.inMicroseconds / Duration.microsecondsPerSecond;
-          uploadSpeed = ((stats.totalUpload - prevStats.totalUpload) * 8) / 1000000 / seconds;
-          downloadSpeed = ((stats.totalDownload - prevStats.totalDownload) * 8) / 1000000 / seconds;
+        final seconds = pollInterval.inMicroseconds / Duration.microsecondsPerSecond;
+        if (prevStats != null && stats != null && seconds > 0) {
+          uploadSpeed = _mbps(stats.totalUpload - prevStats.totalUpload, seconds);
+          downloadSpeed = _mbps(stats.totalDownload - prevStats.totalDownload, seconds);
         }
         _tunnelStatistics = stats;
       } on MissingPluginException {
@@ -73,6 +73,11 @@ abstract class _NetworkStatisticsStore with Store {
       }
     }
   }
+
+  /// Bytes moved over [seconds], as Mbps. A tunnel restart resets the platform
+  /// counters, which would otherwise show up here as a negative rate.
+  double _mbps(int byteDelta, double seconds) =>
+      byteDelta <= 0 ? 0 : (byteDelta * 8) / 1000000 / seconds;
 
   void disposeStore() {
     _stopped = true;

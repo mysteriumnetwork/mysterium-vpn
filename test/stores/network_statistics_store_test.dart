@@ -69,6 +69,34 @@ void main() {
     expect(store.totalDownloadInMB, 4);
   });
 
+  test('reports zero rather than a negative rate when the counters reset', () async {
+    var sample = 0;
+    when(vpnStore.tunnelStatistics()).thenAnswer((_) async {
+      sample++;
+      // Second sample is lower than the first, as a tunnel restart would report.
+      return TunnelStats(totalDownload: sample == 1 ? 5000000 : 1000, totalUpload: 0);
+    });
+
+    store = NetworkStatisticsStore(vpnStore, pollInterval: tick);
+    await Future<void>.delayed(tick * 6);
+
+    expect(store.downloadSpeed, 0);
+    expect(store.uploadSpeed, 0);
+  });
+
+  test('leaves speeds at zero when the interval is zero', () async {
+    when(
+      vpnStore.tunnelStatistics(),
+    ).thenAnswer((_) async => const TunnelStats(totalDownload: 1000000, totalUpload: 1000000));
+
+    store = NetworkStatisticsStore(vpnStore, pollInterval: Duration.zero);
+    await Future<void>.delayed(tick * 3);
+
+    expect(store.downloadSpeed, 0);
+    expect(store.uploadSpeed, 0);
+    expect(store.downloadSpeed.isFinite, isTrue);
+  });
+
   test('stops polling when the platform has no implementation', () async {
     var calls = 0;
     when(vpnStore.tunnelStatistics()).thenAnswer((_) async {
@@ -85,12 +113,13 @@ void main() {
   test('stops polling once disposed', () async {
     store = NetworkStatisticsStore(vpnStore, pollInterval: tick);
     await Future<void>.delayed(tick * 3);
-    store.disposeStore();
-    final callsAtDispose = verify(vpnStore.tunnelStatistics()).callCount;
+    verify(vpnStore.tunnelStatistics()).called(greaterThan(0));
 
+    store.disposeStore();
+    // Only calls made *after* disposal are of interest from here on.
+    clearInteractions(vpnStore);
     await Future<void>.delayed(tick * 6);
 
     verifyNever(vpnStore.tunnelStatistics());
-    expect(callsAtDispose, greaterThan(0));
   });
 }

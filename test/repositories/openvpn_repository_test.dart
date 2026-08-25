@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -209,6 +210,12 @@ void main() {
       when(service.tunnelStatistics()).thenAnswer((_) async => null);
 
       expect(await repo.tunnelStatistics(), isNull);
+    });
+
+    test('rethrows MissingPluginException so the caller can stop polling', () async {
+      when(service.tunnelStatistics()).thenThrow(MissingPluginException());
+
+      expect(repo.tunnelStatistics(), throwsA(isA<MissingPluginException>()));
     });
 
     test('returns null on a plugin failure', () async {
