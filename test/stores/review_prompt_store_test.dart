@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -56,6 +57,7 @@ void main() {
     when(remoteConfig.reviewPromptConfig).thenReturn(const ReviewPromptConfig());
 
     when(authSessionStore.isAuthenticated).thenReturn(true);
+    when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.user);
     // The prompt is evaluated after a session completes, i.e. while
     // disconnected — that is the unsuppressed baseline.
     when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
@@ -385,7 +387,22 @@ void main() {
       await Future<void>.delayed(Duration.zero);
       // The refresh button (or a server switch) tears the tunnel down mid-session
       // and reconnects. That `disconnected` is transitional, not a session end.
-      when(vpnStore.isReconnecting).thenReturn(true);
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.reconnect);
+      when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
+      store.handleConnectionStatus(VpnConnectionStatus.disconnected);
+      await Future<void>.delayed(Duration.zero);
+      expect(store.pendingPrompt, isFalse);
+      verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptEligible));
+      store.dispose();
+    });
+
+    test('a logout-driven disconnect does not surface the prompt', () async {
+      useInstantStableSession();
+      final store = createStore()..handleConnectionStatus(VpnConnectionStatus.connected);
+      await Future<void>.delayed(Duration.zero);
+      // Logging out (or deleting the account) tears the tunnel down. The user
+      // didn't end this session, so it isn't one to ask them to rate.
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.appInitiated);
       when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
       store.handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
@@ -438,6 +455,21 @@ void main() {
           parameters: {'reason': 'flow_active'},
         ),
       ).called(1);
+    });
+  });
+
+  group('auth teardown', () {
+    test('losing authentication clears a prompt armed by an earlier session', () {
+      final authenticated = Observable(true);
+      when(authSessionStore.isAuthenticated).thenAnswer((_) => authenticated.value);
+      final store = createStore()
+        ..init()
+        ..pendingPrompt = true;
+
+      runInAction(() => authenticated.value = false);
+
+      expect(store.pendingPrompt, isFalse);
+      store.dispose();
     });
   });
 
