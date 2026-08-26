@@ -141,8 +141,11 @@ class _Authenticated extends HookConsumerWidget {
             : S.current.logoutConfirmationDesc,
         onConfirm: () async {
           analyticsStore.logEvent(AnalyticsEvent.logOutConfirm);
-          await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.appInitiated);
-          authStore.logout();
+          await disconnectAndLogout(
+            vpnStore: vpnStore,
+            authStore: authStore,
+            analyticsStore: analyticsStore,
+          );
         },
         onCancel: () {
           analyticsStore.logEvent(AnalyticsEvent.logOutCancel);

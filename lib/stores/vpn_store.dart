@@ -837,17 +837,20 @@ abstract class _VpnStore extends VpnGuard with Store {
   @action
   Future<void> disconnectTunnel({required VpnDisconnectReason reason}) async {
     _disconnectReason = reason;
+    final teardown = Stopwatch()..start();
     final disconnectSucceeded = await _vpnRepository.disconnect();
+    _logger.info('Tunnel teardown took ${teardown.elapsedMilliseconds}ms');
+    _cancelSubscriptions();
 
     if (disconnectSucceeded && reason != VpnDisconnectReason.reconnect) {
       _userIntentsStore.userIntent = null;
       _connectingLocation = null;
       _requestedLocation = null;
       _ipRefreshExhaustionStore.onDisconnected();
+      final notify = Stopwatch()..start();
       await _vpnRepository.notifyApiVpnDisconnected();
+      _logger.info('Disconnect notify took ${notify.elapsedMilliseconds}ms');
     }
-
-    _cancelSubscriptions();
   }
 
   void _cancelSubscriptions() {
