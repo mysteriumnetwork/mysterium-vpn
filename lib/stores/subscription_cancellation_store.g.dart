@@ -9,31 +9,18 @@ part of 'subscription_cancellation_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
-  Computed<bool>? _$isProcessingComputed;
-
-  @override
-  bool get isProcessing => (_$isProcessingComputed ??= Computed<bool>(
-    () => super.isProcessing,
-    name: '_SubscriptionCancellationStore.isProcessing',
-  )).value;
-  Computed<Exception?>? _$errorComputed;
-
-  @override
-  Exception? get error => (_$errorComputed ??= Computed<Exception?>(
-    () => super.error,
-    name: '_SubscriptionCancellationStore.error',
-  )).value;
-
   late final _$_isProcessingAtom = Atom(
     name: '_SubscriptionCancellationStore._isProcessing',
     context: context,
   );
 
-  @override
-  bool get _isProcessing {
+  bool get isProcessing {
     _$_isProcessingAtom.reportRead();
     return super._isProcessing;
   }
+
+  @override
+  bool get _isProcessing => isProcessing;
 
   @override
   set _isProcessing(bool value) {
@@ -44,11 +31,13 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
 
   late final _$_errorAtom = Atom(name: '_SubscriptionCancellationStore._error', context: context);
 
-  @override
-  Exception? get _error {
+  Exception? get error {
     _$_errorAtom.reportRead();
     return super._error;
   }
+
+  @override
+  Exception? get _error => error;
 
   @override
   set _error(Exception? value) {
@@ -159,8 +148,7 @@ mixin _$SubscriptionCancellationStore on _SubscriptionCancellationStore, Store {
   @override
   String toString() {
     return '''
-isProcessing: ${isProcessing},
-error: ${error}
+
     ''';
   }
 }

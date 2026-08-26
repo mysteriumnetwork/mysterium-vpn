@@ -28,6 +28,7 @@ Future<bool> openUrlLink(
   required RedirectSource source,
   LaunchMode mode = LaunchMode.platformDefault,
 }) async {
+  var succeeded = true;
   final parameters = <String, dynamic>{
     'source': source.formattedName,
     'target_url': sanitizeRedirectUrl(url),
@@ -39,6 +40,7 @@ Future<bool> openUrlLink(
       throw Exception('Could not launch URL');
     }
   } catch (e) {
+    succeeded = false;
     parameters['redirect_success'] = false;
     // Strip the unsanitized URL (and its access_token) out of the error text.
     parameters['error_reason'] = e.toString().replaceAll(url.toString(), sanitizeRedirectUrl(url));
@@ -55,7 +57,7 @@ Future<bool> openUrlLink(
   } finally {
     analyticsStoreRef?.logEvent(AnalyticsEvent.webRedirect, parameters: parameters).ignore();
   }
-  return parameters['redirect_success']! as bool;
+  return succeeded;
 }
 
 Future<void> openAppStorePage() async {

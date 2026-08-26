@@ -19,23 +19,16 @@ abstract class _SubscriptionCancellationStore with Store {
     required this._remoteConfigStore,
   });
 
-  late final List<ReactionDisposer> _reactions = [];
   late final SubscriptionStore _subscriptionStore;
   late final AnalyticsStore _analyticsStore;
   late final SubscriptionService _subscriptionService;
   late final RemoteConfigStore _remoteConfigStore;
 
-  @observable
+  @readonly
   bool _isProcessing = false;
 
-  @computed
-  bool get isProcessing => _isProcessing;
-
-  @observable
+  @readonly
   Exception? _error;
-
-  @computed
-  Exception? get error => _error;
 
   /// API period codes (e.g. `1`, `3`, `6`). Empty when pause offer is unavailable.
   @readonly
@@ -124,27 +117,23 @@ abstract class _SubscriptionCancellationStore with Store {
     if (!_remoteConfigStore.pauseSubscriptionEnabled || isStoreSubscription()) {
       return false;
     }
-    await _loadPauseDurations();
-    if (_availablePauseDurations.isEmpty) {
-      return false;
-    }
     final subscription = await _subscriptionStore.subscriptionFuture;
-    if (subscription.paused == true) {
+    if (subscription.paused == true ||
+        subscription.pausedFrom != null ||
+        subscription.pausedUntil != null) {
       return false;
     }
-
-    if (subscription.pausedFrom != null || subscription.pausedUntil != null) {
-      return false;
-    }
-
-    return true;
+    await _loadPauseDurations();
+    return _availablePauseDurations.isNotEmpty;
   }
 
   @action
   Future<void> _loadPauseDurations() async {
     try {
       final periods = await _subscriptionService.fetchPauseDurations();
-      _availablePauseDurations = ObservableList.of(periods.map(_normalizePauseDuration).nonNulls);
+      _availablePauseDurations = ObservableList.of(
+        periods.map((it) => it.numeric?.toString()).nonNulls,
+      );
     } on Exception catch (e) {
       _error = e;
       _availablePauseDurations = ObservableList<String>();
@@ -157,18 +146,4 @@ abstract class _SubscriptionCancellationStore with Store {
     _error = null;
     _pauseOfferShown = false;
   }
-
-  FutureOr<void> dispose() async {
-    for (final disposer in _reactions) {
-      disposer();
-    }
-  }
-}
-
-String? _normalizePauseDuration(String raw) {
-  final match = RegExp(r'(\d+)').firstMatch(raw.trim());
-  if (match == null) {
-    return null;
-  }
-  return match.group(1);
 }

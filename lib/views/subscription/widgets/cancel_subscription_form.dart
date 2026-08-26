@@ -119,11 +119,10 @@ _FormGroup _useForm() {
 
   useEffect(() {
     final feedbackSub = form.feedback.valueChanges.listen((value) {
-      final hasText = (value ?? '').trim().isNotEmpty;
-      if (!hasText) {
+      if ((value ?? '').trim().isEmpty) {
         return;
       }
-      final current = {...?form.reasons.value};
+      final current = form.reasons.value ?? const <String>{};
       if (!current.contains(kCancelReasonOther)) {
         form.reasons.value = {...current, kCancelReasonOther};
       }

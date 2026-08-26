@@ -292,19 +292,18 @@ class _SubscriptionCard extends StatelessWidget {
           ? (Tr.byKeyOrNull(planId) ?? planId)
           : S.current.subscripton;
 
-      late final String planSubtitle;
+      final String planSubtitle;
       String? badgeText;
       var badgeType = BadgeType.warning;
 
       // Active subscription can be recurring or cancelled
       if (isSubscriptionActive) {
         // subscription paused
-        if (subscription?.paused ?? false) {
+        if (isSubscriptionInPauseState) {
           planSubtitle = S.current.pausedUntil(
             subscription!.pausedUntil?.toLocal().formatWithDay() ?? '',
           );
           badgeText = S.current.paused;
-          badgeType = BadgeType.warning;
 
           // subscription recurring
         } else if (subscription?.recurring ?? false) {
@@ -326,6 +325,15 @@ class _SubscriptionCard extends StatelessWidget {
 
       final spacing = Theme.of(context).spacing;
 
+      Widget actionPair(Widget first, Widget second) => isDesktop
+          ? Row(mainAxisSize: MainAxisSize.min, spacing: spacing.md, children: [first, second])
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              spacing: spacing.xs,
+              children: [first, second],
+            );
+
       Widget trailing;
       if (isLoading) {
         trailing = const LoadingIndicator();
@@ -344,26 +352,9 @@ class _SubscriptionCard extends StatelessWidget {
           onPressed: isSubscribing
               ? null
               : () async => showCancelSubscriptionDialog(context, entrypoint: 'account_paused'),
-          child: Text(S.of(context).cancelBtn),
+          child: Text(S.current.cancelBtn),
         );
-        trailing = isDesktop
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  resumeButton,
-                  SizedBox(width: spacing.md),
-                  cancelButton,
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  resumeButton,
-                  SizedBox(height: spacing.xs),
-                  cancelButton,
-                ],
-              );
+        trailing = actionPair(resumeButton, cancelButton);
         // No subscription
       } else if (!isSubscriptionActive) {
         trailing = SettingsActionButton(
@@ -375,8 +366,23 @@ class _SubscriptionCard extends StatelessWidget {
                 },
           child: isSubscribing ? const LoadingIndicator() : Text(S.current.pricingPlanSeePlansBtn),
         );
+      } else if (subscription?.recurring ?? false) {
+        final manageButton = SettingsActionButton(
+          onPressed: isSubscribing
+              ? null
+              : () async {
+                  analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
+                  await onSubscribePress(manageSubscription: true);
+                },
+          child: Text(S.current.settingManageBtn),
+        );
+        final cancelButton = SettingsActionButton(
+          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
+          child: Text(S.current.cancelBtn),
+        );
+        trailing = actionPair(manageButton, cancelButton);
       } else {
-        final getPlanButton = SettingsActionButton(
+        trailing = SettingsActionButton(
           onPressed: isSubscribing
               ? null
               : () {
@@ -392,42 +398,6 @@ class _SubscriptionCard extends StatelessWidget {
                 },
           child: Text(S.current.getAPlanBtn),
         );
-        final manageButton = SettingsActionButton(
-          onPressed: isSubscribing
-              ? null
-              : () async {
-                  analyticsStore.logEvent(AnalyticsEvent.manageSubscription);
-                  await onSubscribePress(manageSubscription: true);
-                },
-          child: Text(S.current.settingManageBtn),
-        );
-        final cancelButton = SettingsActionButton(
-          onPressed: isSubscribing ? null : () async => showCancelSubscriptionDialog(context),
-          child: Text(S.of(context).cancelBtn),
-        );
-        final isRecurring = subscription?.recurring ?? false;
-        if (!isRecurring) {
-          trailing = getPlanButton;
-        } else {
-          trailing = isDesktop
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    manageButton,
-                    SizedBox(width: spacing.md),
-                    cancelButton,
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    manageButton,
-                    SizedBox(height: spacing.xs),
-                    cancelButton,
-                  ],
-                );
-        }
       }
 
       return SettingsCard(

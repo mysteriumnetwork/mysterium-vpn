@@ -1,5 +1,7 @@
 final _uuidRegex = RegExp(r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$');
 
+final _numericPattern = RegExp(r'^(\d+)(?:mo?)?$');
+
 extension StringExtensions on String {
   bool isUpperCase() => this == toUpperCase();
 
@@ -66,7 +68,7 @@ extension StringExtensions on String {
   }
 
   int? get numeric {
-    final match = RegExp(r'^(\d+)(?:mo?)?$').firstMatch(trim());
+    final match = _numericPattern.firstMatch(trim());
     if (match == null) {
       return null;
     }

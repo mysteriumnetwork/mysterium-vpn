@@ -360,6 +360,7 @@ abstract class _SubscriptionStore with Store {
     await refreshSubscription(force: true);
   }
 
+  @action
   Future<void> resumeSubscription() async {
     await _subscriptionService.resumeSubscription();
     await refreshSubscription(force: true);

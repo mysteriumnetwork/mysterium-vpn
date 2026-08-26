@@ -25,7 +25,7 @@ class ConnectionErrorsInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.type == DioExceptionType.connectionError) {
       final endpoint = err.requestOptions.path;
       return handler.reject(

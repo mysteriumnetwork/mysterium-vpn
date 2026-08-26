@@ -20,8 +20,6 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
   final bool isProcessing;
   final bool primaryButtonEnabled;
 
-  bool get hasSecondaryButton => secondaryButtonLabel != null && onSecondaryButtonPressed != null;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -46,7 +44,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
       ),
     );
 
-    final secondaryButton = hasSecondaryButton
+    final secondaryButton = secondaryButtonLabel != null && onSecondaryButtonPressed != null
         ? ButtonTertiary(
             onPressed: isProcessing ? null : onSecondaryButtonPressed,
             child: Text(
@@ -67,8 +65,11 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
           ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (secondaryButton != null) Expanded(child: secondaryButton),
-                if (hasSecondaryButton) Expanded(child: primaryButton) else primaryButton,
+                if (secondaryButton != null) ...[
+                  Expanded(child: secondaryButton),
+                  Expanded(child: primaryButton),
+                ] else
+                  primaryButton,
               ],
             )
           : Column(

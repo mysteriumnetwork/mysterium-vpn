@@ -233,16 +233,14 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   return store;
 });
 
-final subscriptionCancellationStorePOD = Provider<SubscriptionCancellationStore>((ref) {
-  final store = SubscriptionCancellationStore(
+final subscriptionCancellationStorePOD = Provider<SubscriptionCancellationStore>(
+  (ref) => SubscriptionCancellationStore(
     analyticsStore: ref.watch(analyticsStorePOD),
     subscriptionStore: ref.watch(subscriptionStorePOD),
     subscriptionService: ref.watch(subscriptionServicePOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
-  );
-  ref.onDispose(store.dispose);
-  return store;
-});
+  ),
+);
 
 final analyticsInitPOD = FutureProvider.family<void, FirebaseOptions?>((ref, options) async {
   if (options == null) {
