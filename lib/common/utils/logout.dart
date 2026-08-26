@@ -19,9 +19,15 @@ Future<void> disconnectAndLogout({
   try {
     await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.appInitiated).timeout(timeout);
   } catch (e) {
-    await analyticsStore.logEvent(
-      AnalyticsEvent.logOutDisconnectFailed,
-      parameters: {'reason': e is TimeoutException ? 'timeout' : 'error'},
+    // Reporting the failure must not delay, or fail, the logout it reports on:
+    // logEvent awaits a Firebase platform call.
+    unawaited(
+      analyticsStore
+          .logEvent(
+            AnalyticsEvent.logOutDisconnectFailed,
+            parameters: {'reason': e is TimeoutException ? 'timeout' : 'error'},
+          )
+          .catchError((Object _) {}),
     );
   }
   await authStore.logout();

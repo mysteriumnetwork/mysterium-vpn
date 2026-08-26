@@ -53,6 +53,33 @@ void main() {
     ).called(1);
   });
 
+  test('a hung analytics call does not hold up the logout', () async {
+    when(
+      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
+    ).thenThrow(Exception('platform channel failed'));
+    // logEvent awaits a Firebase platform call; it must not gate logout.
+    when(
+      analytics.logEvent(any, parameters: anyNamed('parameters')),
+    ).thenAnswer((_) => Completer<void>().future);
+
+    await run().timeout(const Duration(seconds: 2));
+
+    verify(authStore.logout()).called(1);
+  });
+
+  test('a failing analytics call does not prevent the logout', () async {
+    when(
+      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
+    ).thenThrow(Exception('platform channel failed'));
+    when(
+      analytics.logEvent(any, parameters: anyNamed('parameters')),
+    ).thenAnswer((_) => Future<void>.error(Exception('analytics unavailable')));
+
+    await expectLater(run(), completes);
+
+    verify(authStore.logout()).called(1);
+  });
+
   test('logs out anyway when the teardown throws, and reports the error', () async {
     when(
       vpnStore.disconnectTunnel(reason: anyNamed('reason')),
