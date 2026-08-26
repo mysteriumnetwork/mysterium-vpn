@@ -28,19 +28,13 @@ class AppVersion extends HookConsumerWidget {
               theme.spacing.xl2,
             ),
       child: Observer(
-        builder: (_) {
-          var version = Env.buildInfo.buildVersion;
-          if (apiStore.lastHealthcheck?.version != null) {
-            version = '$version ${apiStore.lastHealthcheck?.version}';
-          }
-          return Row(
-            children: [
-              AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
-              if (remoteConfig.showApiVersion && apiStore.lastHealthcheck != null)
-                AppBadge(text: '${apiStore.lastHealthcheck?.version}'),
-            ],
-          );
-        },
+        builder: (_) => Row(
+          children: [
+            AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
+            if (remoteConfig.showApiVersion && apiStore.lastHealthcheck != null)
+              AppBadge(text: '${apiStore.lastHealthcheck?.version}'),
+          ],
+        ),
       ),
     );
   }
