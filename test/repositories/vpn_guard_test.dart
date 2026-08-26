@@ -73,6 +73,30 @@ void main() {
     verifyNever(subscription.refreshSubscription());
   });
 
+  test('reports paused ahead of inactive when the backend reports both', () async {
+    when(
+      subscription.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: false, paused: true)));
+
+    await expectLater(newGuard().checkVpnGuards(), throwsA(isA<SubscriptionPausedException>()));
+  });
+
+  test('subscriptionGrantsVpnAccess is true while the subscription is pending', () {
+    when(
+      subscription.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture(Completer<Subscription>().future));
+
+    expect(newGuard().subscriptionGrantsVpnAccess, isTrue);
+  });
+
+  test('subscriptionGrantsVpnAccess is false once a paused subscription loads', () {
+    when(
+      subscription.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+
+    expect(newGuard().subscriptionGrantsVpnAccess, isFalse);
+  });
+
   test('refreshes subscription on non-SubscriptionRequiredException errors', () async {
     when(
       subscription.subscriptionFuture,

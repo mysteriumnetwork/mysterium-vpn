@@ -51,6 +51,13 @@ abstract class Subscription with _$Subscription {
 
   bool get isAppleGateway => gateway?.toLowerCase() == 'apple';
 
+  bool get isPaused => paused ?? false;
+
+  /// The single rule for whether this subscription entitles the user to a
+  /// tunnel. Read by `VpnGuard` before connecting, and by the reaction that
+  /// tears an established tunnel down when entitlement is lost.
+  bool get grantsVpnAccess => active && !isPaused;
+
   /// Analytics-friendly status: paused / active / expired / inactive.
   String get analyticsStatus {
     if (paused == true) {
