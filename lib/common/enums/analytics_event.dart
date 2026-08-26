@@ -17,6 +17,7 @@ enum AnalyticsEvent {
   loginPopupYes,
   logOutCancel,
   logOutConfirm,
+  logOutDisconnectFailed,
   logOutPopup,
   appleLogin,
   emailInput,

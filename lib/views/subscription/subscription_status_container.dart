@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -224,7 +226,13 @@ Future<void> _checkForExistingSubscription(
           primaryButton: ButtonPrimary(
             onPressed: () {
               Navigator.of(context).pop();
-              ref.read(authStorePOD).logout();
+              unawaited(
+                disconnectAndLogout(
+                  vpnStore: ref.read(vpnStorePOD),
+                  authStore: ref.read(authStorePOD),
+                  analyticsStore: ref.read(analyticsStorePOD),
+                ),
+              );
             },
             child: Text(S.current.logout),
           ),

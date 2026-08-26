@@ -911,6 +911,34 @@ void main() {
         verifyNever(mockWireguardRepo.notifyApiVpnDisconnected());
       });
 
+      test('cancels MQTT subscriptions before waiting on the API notification', () async {
+        // Real controllers so cancellation is observable via hasListener.
+        final data = StreamController<String>.broadcast();
+        final killed = StreamController<String>.broadcast();
+        when(mockMqtt.subscribe(any)).thenAnswer(
+          (invocation) => (invocation.positionalArguments.first as String).endsWith('/killed')
+              ? killed.stream
+              : data.stream,
+        );
+
+        await connect(country);
+        await pumpEventQueue();
+        expect(data.hasListener, isTrue);
+        expect(killed.hasListener, isTrue);
+
+        // A hung notification must not delay tearing the streams down.
+        final notified = Completer<void>();
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) => notified.future);
+        unawaited(vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user));
+        await pumpEventQueue();
+
+        expect(data.hasListener, isFalse);
+        expect(killed.hasListener, isFalse);
+        notified.complete();
+        await data.close();
+        await killed.close();
+      });
+
       test('disconnect clears requestedLocation', () async {
         await connect(country);
         clearInteractions(mockWireguardRepo);

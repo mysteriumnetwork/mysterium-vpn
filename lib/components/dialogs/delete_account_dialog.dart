@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -37,8 +38,11 @@ Future<void> shownDeleteAccountDialog(
       confirmText: S.current.goToLoginBtn,
       confirmVariant: ButtonVariant.secondary,
       onConfirm: () async {
-        await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.appInitiated);
-        authStore.logout();
+        await disconnectAndLogout(
+          vpnStore: vpnStore,
+          authStore: authStore,
+          analyticsStore: analyticsStore,
+        );
       },
     );
   }
