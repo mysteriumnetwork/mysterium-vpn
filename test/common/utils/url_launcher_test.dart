@@ -53,6 +53,7 @@ void main() {
       expect(RedirectSource.manageSubscription.formattedName, 'manage_subscription');
       expect(RedirectSource.upgradeSubscription.formattedName, 'upgrade_subscription');
       expect(RedirectSource.googlePlaySubscriptions.formattedName, 'google_play_subscriptions');
+      expect(RedirectSource.newsCenter.formattedName, 'news_center');
       expect(RedirectSource.external.formattedName, 'external');
     });
   });

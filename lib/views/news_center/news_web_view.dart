@@ -1,12 +1,27 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+/// Whether `webview_flutter` has a platform implementation; overridable in tests.
+@visibleForTesting
+bool Function() inAppWebViewSupported = () => !Platform.isWindows && !Platform.isLinux;
+
 /// Opens a News Center item's content in an in-app webview modal (via
 /// [showModal] — this is a dialog, not a route).
+///
+/// Windows and Linux have no `webview_flutter` implementation, so the item
+/// opens in the default browser there instead.
 Future<void> showNewsWebView(BuildContext context, Uri uri) async {
+  if (!inAppWebViewSupported()) {
+    await openUrlLink(uri, source: RedirectSource.newsCenter);
+    return;
+  }
   await showModal<void>(context, builder: (_) => _NewsWebViewScreen(uri: uri));
 }
 
