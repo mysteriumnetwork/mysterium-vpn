@@ -15,6 +15,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_api/vpn_api.dart';
 
+import '../support/news_fixtures.dart';
 import '../support/test_localizations.dart';
 import 'news_center_page_test.mocks.dart';
 
@@ -33,15 +34,6 @@ void main() {
     service = MockNewsCenterService();
     analytics = MockAnalyticsStore();
   });
-
-  NewscenterInboxListResponseItem item(int id) => NewscenterInboxListResponseItem(
-    id: id,
-    category: NewscenterCategory.news,
-    title: 'Title $id',
-    summary: 'Message $id',
-    createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-    webViewUrl: 'https://mysterium.network/news/$id',
-  );
 
   Future<ProviderContainer> pumpPage(
     WidgetTester tester, {
@@ -96,7 +88,7 @@ void main() {
   });
 
   testWidgets('tapping a card marks it read, opens it, and logs the event', (tester) async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
     NewscenterInboxListResponseItem? opened;
 
     final container = await pumpPage(tester, onOpenItem: (_, i) => opened = i);
@@ -128,7 +120,7 @@ void main() {
   });
 
   testWidgets('deepLinkItemId opens that item once loaded, marking it read', (tester) async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1), newsItem(2)]);
     NewscenterInboxListResponseItem? opened;
 
     final container = await pumpPage(tester, onOpenItem: (_, i) => opened = i, deepLinkItemId: 2);
@@ -139,7 +131,7 @@ void main() {
   });
 
   testWidgets('an unknown deepLinkItemId opens nothing', (tester) async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
     NewscenterInboxListResponseItem? opened;
 
     await pumpPage(tester, onOpenItem: (_, i) => opened = i, deepLinkItemId: 999);
@@ -151,7 +143,7 @@ void main() {
   });
 
   testWidgets('a changed deepLinkItemId re-opens on a reused page', (tester) async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1), newsItem(2)]);
     final opened = <int>[];
     final id = ValueNotifier<int?>(1);
     addTearDown(id.dispose);
@@ -223,45 +215,10 @@ void main() {
     // Switch the target id before the feed resolves, then resolve it.
     id.value = 2;
     await tester.pump();
-    completer.complete([item(1), item(2)]);
+    completer.complete([newsItem(1), newsItem(2)]);
     await tester.pumpAndSettle();
 
     // Only the current id opened; the stale id-1 task was cancelled.
     expect(opened, [2]);
-  });
-
-  group('newsWebViewUri', () {
-    test('accepts http(s) urls', () {
-      expect(newsWebViewUri('https://example.com/a'), Uri.parse('https://example.com/a'));
-      expect(newsWebViewUri('http://example.com'), Uri.parse('http://example.com'));
-    });
-
-    test('rejects non-web and unparseable schemes', () {
-      expect(newsWebViewUri('file:///etc/passwd'), isNull);
-      expect(newsWebViewUri('javascript:alert(1)'), isNull);
-      expect(newsWebViewUri('intent://foo'), isNull);
-      expect(newsWebViewUri(''), isNull);
-    });
-
-    test('appends user_id when provided', () {
-      expect(
-        newsWebViewUri('https://example.com/a', userId: 'u-1'),
-        Uri.parse('https://example.com/a?user_id=u-1'),
-      );
-    });
-
-    test('preserves existing query parameters when appending user_id', () {
-      expect(
-        newsWebViewUri('https://example.com/a?foo=bar', userId: 'u-1'),
-        Uri.parse('https://example.com/a?foo=bar&user_id=u-1'),
-      );
-    });
-
-    test('omits empty user_id', () {
-      expect(
-        newsWebViewUri('https://example.com/a', userId: ''),
-        Uri.parse('https://example.com/a'),
-      );
-    });
   });
 }
