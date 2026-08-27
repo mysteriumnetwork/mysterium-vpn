@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/url_launcher.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:url_launcher_platform_interface/link.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
+
+import '../../support/fake_url_launcher.dart';
 
 class _FakeAnalyticsStore with AnalyticsStore {
   @override
@@ -16,29 +16,6 @@ class _FakeAnalyticsStore with AnalyticsStore {
   Future<void> setLogin([GrantType loginMethod = GrantType.email]) async {}
   @override
   Future<void> setConsents() async {}
-}
-
-class _FakeUrlLauncher extends UrlLauncherPlatform with MockPlatformInterfaceMixin {
-  _FakeUrlLauncher({
-    this.canLaunchResult = true,
-    this.launchResult = true,
-    this.launchThrows = false,
-  });
-  final bool canLaunchResult;
-  final bool launchResult;
-  final bool launchThrows;
-
-  @override
-  LinkDelegate? get linkDelegate => null;
-  @override
-  Future<bool> canLaunch(String url) async => canLaunchResult;
-  @override
-  Future<bool> launchUrl(String url, LaunchOptions options) async {
-    if (launchThrows) {
-      throw Exception('boom');
-    }
-    return launchResult;
-  }
 }
 
 void main() {
@@ -93,7 +70,7 @@ void main() {
     });
 
     test('logs web_redirect with redirect_success true on success', () async {
-      UrlLauncherPlatform.instance = _FakeUrlLauncher();
+      UrlLauncherPlatform.instance = FakeUrlLauncher();
       final next = analytics.watchLogs().first;
 
       await openUrlLink(
@@ -111,7 +88,7 @@ void main() {
     });
 
     test('logs redirect_success false with sanitized error_reason on failure', () async {
-      UrlLauncherPlatform.instance = _FakeUrlLauncher(canLaunchResult: false);
+      UrlLauncherPlatform.instance = FakeUrlLauncher(canLaunchResult: false);
       final next = analytics.watchLogs().first;
 
       await openUrlLink(
@@ -128,7 +105,7 @@ void main() {
     });
 
     test('logs redirect_success false when launchUrl returns false', () async {
-      UrlLauncherPlatform.instance = _FakeUrlLauncher(launchResult: false);
+      UrlLauncherPlatform.instance = FakeUrlLauncher(launchResult: false);
       final next = analytics.watchLogs().first;
 
       await openUrlLink(Uri.parse('https://example.com/p'), source: RedirectSource.external);
@@ -139,7 +116,7 @@ void main() {
     });
 
     test('logs redirect_success false with error_reason when launchUrl throws', () async {
-      UrlLauncherPlatform.instance = _FakeUrlLauncher(launchThrows: true);
+      UrlLauncherPlatform.instance = FakeUrlLauncher(launchThrows: true);
       final next = analytics.watchLogs().first;
 
       await openUrlLink(

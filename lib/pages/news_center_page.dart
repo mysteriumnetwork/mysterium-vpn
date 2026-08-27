@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -44,7 +43,8 @@ class NewsCenterPage extends HookConsumerWidget {
     final store = ref.watch(newsCenterStorePOD);
     final openItem =
         _onOpenItem ??
-        (ctx, item) => _openNewsWebView(ctx, item, ref.read(authSessionStorePOD).user?.userId);
+        (ctx, item) =>
+            showNewsItemWebView(ctx, item, userId: ref.read(authSessionStorePOD).user?.userId);
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
     void onItemTap(NewscenterInboxListResponseItem item) {
@@ -247,28 +247,4 @@ class _DesktopBackButton extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Parses [url] into a webview-safe [Uri], or null if it is unparseable or not
-/// an http(s) URL. Rejects non-web schemes (file:, intent:, javascript:, …)
-/// that a backend item URL might otherwise carry. A non-empty [userId] is
-/// appended as a `user_id` query parameter.
-@visibleForTesting
-Uri? newsWebViewUri(String url, {String? userId}) {
-  final uri = Uri.tryParse(url);
-  if (uri == null || (uri.scheme != 'http' && uri.scheme != 'https')) {
-    return null;
-  }
-  if (userId.isNullOrEmpty) {
-    return uri;
-  }
-  return uri.replace(queryParameters: {...uri.queryParameters, 'user_id': userId});
-}
-
-void _openNewsWebView(BuildContext context, NewscenterInboxListResponseItem item, String? userId) {
-  final uri = newsWebViewUri(item.webViewUrl, userId: userId);
-  if (uri == null) {
-    return;
-  }
-  unawaited(showNewsWebView(context, uri));
 }
