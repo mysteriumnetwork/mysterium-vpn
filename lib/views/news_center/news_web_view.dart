@@ -61,6 +61,10 @@ class _NewsWebViewScreen extends HookWidget {
       final controller = WebViewController();
       controller
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        // The native surface is opaque white until the page paints, and it is
+        // not masked to the modal's rounded corners; match the background so it
+        // cannot flash white through them.
+        ..setBackgroundColor(theme.palette.bgPopover)
         ..setNavigationDelegate(
           NavigationDelegate(
             onPageFinished: (_) async {
