@@ -153,6 +153,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.cancelSubscriptionReasonKeys,
         name: 'RemoteConfigStoreBase.cancelSubscriptionReasonKeys',
       )).value;
+  Computed<bool>? _$pauseSubscriptionEnabledComputed;
+
+  @override
+  bool get pauseSubscriptionEnabled => (_$pauseSubscriptionEnabledComputed ??= Computed<bool>(
+    () => super.pauseSubscriptionEnabled,
+    name: 'RemoteConfigStoreBase.pauseSubscriptionEnabled',
+  )).value;
   Computed<bool>? _$useStoreVersionCheckerComputed;
 
   @override
@@ -308,6 +315,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.manageSubscriptionPage,
     name: 'RemoteConfigStoreBase.manageSubscriptionPage',
   )).value;
+  Computed<String>? _$cancelSubscriptionPageComputed;
+
+  @override
+  String get cancelSubscriptionPage => (_$cancelSubscriptionPageComputed ??= Computed<String>(
+    () => super.cancelSubscriptionPage,
+    name: 'RemoteConfigStoreBase.cancelSubscriptionPage',
+  )).value;
   Computed<PromotionalBanner?>? _$promotionalBannerComputed;
 
   @override
@@ -430,6 +444,7 @@ browseUnauthenticated: ${browseUnauthenticated},
 shouldCheckUdp: ${shouldCheckUdp},
 latestStableAppVersion: ${latestStableAppVersion},
 cancelSubscriptionReasonKeys: ${cancelSubscriptionReasonKeys},
+pauseSubscriptionEnabled: ${pauseSubscriptionEnabled},
 useStoreVersionChecker: ${useStoreVersionChecker},
 enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
@@ -451,6 +466,7 @@ planFeatures: ${planFeatures},
 plansBestValue: ${plansBestValue},
 upgradeSubscriptionPage: ${upgradeSubscriptionPage},
 manageSubscriptionPage: ${manageSubscriptionPage},
+cancelSubscriptionPage: ${cancelSubscriptionPage},
 promotionalBanner: ${promotionalBanner},
 pushNotifPermissionPromptCooldown: ${pushNotifPermissionPromptCooldown},
 gatewaysSupportingUpgrade: ${gatewaysSupportingUpgrade},

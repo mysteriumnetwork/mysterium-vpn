@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Próxima cobrança: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: 'Pausar por ${count} mês', other: 'Pausar por ${count} meses')}";
+      "${Intl.plural(count, zero: 'Pausar por ${count} meses', one: 'Pausar por ${count} mês', other: 'Pausar por ${count} meses')}";
 
   static String m22(date) => "Pausado até ${date}";
 
@@ -146,10 +146,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tem certeza de que deseja cancelar sua assinatura?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Cancelar assinatura"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Sua assinatura será cancelada. Você pode continuar usando o Mysterium VPN até o fim do seu acesso.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("Informe mais detalhes..."),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("Conte mais (opcional)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Motivos do cancelamento"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Muito caro"),
@@ -176,7 +172,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("COMUNICAÇÕES"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Concluir"),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Confirmar cancelamento"),
     "connect": MessageLookupByLibrary.simpleMessage("Conectar"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Melhor servidor"),
     "connectToLocationBtn": m4,
@@ -446,6 +441,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Pausar assinatura"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível pausar sua assinatura. Tente novamente.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Você pode pausar seu plano uma vez por ciclo de cobrança.",
     ),
@@ -461,6 +459,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("Plano de 2 anos"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2 anos"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2 anos"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2 anos"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("Plano de 6 meses"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("Plano mensal"),
@@ -532,9 +531,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Como está sua conexão?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Do que você não gostou?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Do que você gostou?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "Você pode reativar sua assinatura a qualquer momento antes do fim do seu acesso.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Locais recentes"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Resgatar código de desconto"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -592,6 +588,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residencial"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Retomar"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível retomar sua assinatura. Tente novamente.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Sua assinatura será retomada imediatamente.",
     ),
@@ -653,7 +652,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 ano"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Todos os planos"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Faça upgrade do plano"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Assinatura cancelada"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Explore recursos avançados como protocolos VPN e bloqueio de malware.",
     ),

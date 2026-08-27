@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
@@ -80,6 +81,82 @@ void main() {
 
       await store.configFuture;
       expect(store.cancelSubscriptionReasonKeys, isNull);
+    });
+  });
+
+  group('RemoteConfigStore.pauseSubscriptionEnabled', () {
+    test('returns the config value when present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pauseSubscriptionEnabled': true});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pauseSubscriptionEnabled, isTrue);
+    });
+
+    test('defaults to false when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pauseSubscriptionEnabled, isFalse);
+    });
+
+    test('defaults to false when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pauseSubscriptionEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pauseSubscriptionEnabled, isFalse);
+    });
+  });
+
+  group('RemoteConfigStore.cancelSubscriptionPage', () {
+    test('returns the config URL when present', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSubscriptionPage': 'https://example.com/cancel'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
+    });
+
+    test('falls back to Env.cancelSubscriptionPage when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, Env.cancelSubscriptionPage);
+    });
+
+    test('trims whitespace', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'cancelSubscriptionPage': '  https://example.com/cancel  '});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
+    });
+
+    test('falls back to Env when config is whitespace-only', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'cancelSubscriptionPage': '   '});
+      store = createStore();
+      await store.configFuture;
+      expect(store.cancelSubscriptionPage, Env.cancelSubscriptionPage.trim());
+    });
+
+    test('throws when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'cancelSubscriptionPage': true});
+      store = createStore();
+      await store.configFuture;
+      expect(() => store.cancelSubscriptionPage, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
+  group('RemoteConfigStore.upgradeSubscriptionPage / manageSubscriptionPage', () {
+    test('falls back to Env when config is whitespace-only', () async {
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'upgradeSubscriptionPage': '  ', 'manageSubscriptionPage': '\t'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.upgradeSubscriptionPage, Env.upgradeSubscriptionPage.trim());
+      expect(store.manageSubscriptionPage, Env.manageSubscriptionPage.trim());
     });
   });
 

@@ -63,7 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(date) => "下次计费：${date}";
 
-  static String m21(count) => "${Intl.plural(count, zero: '', other: '暂停 ${count} 个月')}";
+  static String m21(count) =>
+      "${Intl.plural(count, zero: '暂停 ${count} 个月', other: '暂停 ${count} 个月')}";
 
   static String m22(date) => "已暂停至 ${date}";
 
@@ -127,10 +128,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("速度"),
     "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("确定要取消订阅吗？"),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("取消订阅"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "你的订阅将被取消。在访问到期前，你仍可继续使用 Mysterium VPN。",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("请填写更多详情…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("告诉我们更多（可选）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("取消原因"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("太贵了"),
@@ -149,7 +146,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("通讯"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("完成"),
     "confirm": MessageLookupByLibrary.simpleMessage("确认"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("确认取消"),
     "connect": MessageLookupByLibrary.simpleMessage("连接"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("最佳服务器"),
     "connectToLocationBtn": m4,
@@ -353,6 +349,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage("请选择一个暂停时长。"),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("暂停订阅"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage("无法暂停订阅。请重试。"),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage("每个账单周期只能暂停计划一次。"),
     "paused": MessageLookupByLibrary.simpleMessage("已暂停"),
     "pausedUntil": m22,
@@ -362,6 +359,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "planAlreadyPurchasedMsg": MessageLookupByLibrary.simpleMessage("一切就绪！你已激活此套餐。"),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("2 年套餐"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2 年"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2 年"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2 年"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("6 个月套餐"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("月度套餐"),
@@ -411,7 +409,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("你的连接如何？"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("你不喜欢什么？"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("你喜欢什么？"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage("在访问到期前，你可随时重新激活订阅。"),
     "recentLocations": MessageLookupByLibrary.simpleMessage("最近的地点"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("兑换折扣码"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage("你的账户已成功删除。你将被重定向到登录页面。"),
@@ -453,6 +450,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("住宅 IP 的工作原理"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("住宅 IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("恢复"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage("无法恢复订阅。请重试。"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("你的订阅将立即恢复。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("恢复订阅？"),
     "retryBtn": MessageLookupByLibrary.simpleMessage("重试"),
@@ -498,7 +496,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 年"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("所有套餐"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("升级你的套餐"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("订阅已取消"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "探索 VPN 协议和恶意软件拦截等高级功能。",
     ),

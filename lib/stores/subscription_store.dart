@@ -27,17 +27,12 @@ class SubscriptionStore = _SubscriptionStore with _$SubscriptionStore;
 abstract class _SubscriptionStore with Store {
   _SubscriptionStore({
     required api.VpnApi api,
-    required SubscriptionService subscriptionService,
-    required AuthSessionStore authSessionStore,
-    required AnalyticsStore analyticsStore,
-    required RemoteConfigStore remoteConfigStore,
-    required SubscriptionConfigStore configStore,
-  }) : _apiSubscription = api.getSubscription(),
-       _subscriptionService = subscriptionService,
-       _authSessionStore = authSessionStore,
-       _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore,
-       _configStore = configStore {
+    required this._subscriptionService,
+    required this._authSessionStore,
+    required this._analyticsStore,
+    required this._remoteConfigStore,
+    required this._configStore,
+  }) : _apiSubscription = api.getSubscription() {
     _reactions = [
       reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
         _hasShownExistingSubscriptionDialog = false;
@@ -357,6 +352,18 @@ abstract class _SubscriptionStore with Store {
   Future<void> refreshAll() async {
     await Future.wait([refreshSubscriptionConfig(), refreshSubscription()]);
     await refreshOtherSubscriber();
+  }
+
+  @action
+  Future<void> pauseSubscription(String periodCode) async {
+    await _subscriptionService.pauseSubscription(periodCode);
+    await refreshSubscription(force: true);
+  }
+
+  @action
+  Future<void> resumeSubscription() async {
+    await _subscriptionService.resumeSubscription();
+    await refreshSubscription(force: true);
   }
 
   Future<api.OrderSummaryResponse> calculateOrderBreakdown({

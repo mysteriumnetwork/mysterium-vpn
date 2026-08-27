@@ -70,7 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "अगला बिलिंग: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', one: '${count} महीने के लिए रोकें', other: '${count} महीनों के लिए रोकें')}";
+      "${Intl.plural(count, zero: '${count} महीनों के लिए रोकें', one: '${count} महीने के लिए रोकें', other: '${count} महीनों के लिए रोकें')}";
 
   static String m22(date) => "${date} तक रोका गया";
 
@@ -143,10 +143,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "क्या आप वाकई अपनी सदस्यता रद्द करना चाहते हैं?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("सदस्यता रद्द करें"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "आपकी सदस्यता रद्द कर दी जाएगी। पहुँच समाप्त होने तक आप Mysterium VPN का उपयोग जारी रख सकते हैं।",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage("कृपया और विवरण दर्ज करें…"),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("और बताएँ (वैकल्पिक)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("रद्द करने के कारण"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("बहुत महंगा"),
@@ -175,7 +171,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("संचार"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("पूरा करें"),
     "confirm": MessageLookupByLibrary.simpleMessage("पुष्टि करें"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("रद्दीकरण की पुष्टि करें"),
     "connect": MessageLookupByLibrary.simpleMessage("कनेक्ट करें"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("बेहतरीन सर्वर"),
     "connectToLocationBtn": m4,
@@ -441,6 +436,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("सदस्यता रोकें"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता रोक नहीं सके। कृपया फिर से प्रयास करें।",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "आप प्रति बिलिंग चक्र में एक बार अपना प्लान रोक सकते हैं।",
     ),
@@ -456,6 +454,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("2 वर्ष प्लान"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2-वर्ष"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2-वर्ष"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2-वर्ष"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("6-माह प्लान"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("मासिक प्लान"),
@@ -525,9 +524,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("आपका कनेक्शन कैसा है?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("आपको क्या पसंद नहीं आया?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("आपको क्या पसंद आया?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "पहुँच समाप्त होने से पहले आप कभी भी अपनी सदस्यता फिर से सक्रिय कर सकते हैं।",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("हाल की लोकेशन"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("डिस्काउंट कोड रिडीम करें"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -577,6 +573,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("आवासीय IP"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("फिर शुरू करें"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता फिर से शुरू नहीं हो सकी। कृपया फिर से प्रयास करें।",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "आपकी सदस्यता तुरंत फिर शुरू हो जाएगी।",
     ),
@@ -638,7 +637,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1-वर्ष"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("सभी प्लान"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("अपना प्लान अपग्रेड करें"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("सदस्यता रद्द हो गई"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "VPN प्रोटोकॉल और मैलवेयर ब्लॉकिंग जैसे उन्नत फ़ीचर देखें।",
     ),

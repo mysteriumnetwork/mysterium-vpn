@@ -207,6 +207,26 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     return _$refreshAllAsyncAction.run(() => super.refreshAll());
   }
 
+  late final _$pauseSubscriptionAsyncAction = AsyncAction(
+    '_SubscriptionStore.pauseSubscription',
+    context: context,
+  );
+
+  @override
+  Future<void> pauseSubscription(String periodCode) {
+    return _$pauseSubscriptionAsyncAction.run(() => super.pauseSubscription(periodCode));
+  }
+
+  late final _$resumeSubscriptionAsyncAction = AsyncAction(
+    '_SubscriptionStore.resumeSubscription',
+    context: context,
+  );
+
+  @override
+  Future<void> resumeSubscription() {
+    return _$resumeSubscriptionAsyncAction.run(() => super.resumeSubscription());
+  }
+
   late final _$_SubscriptionStoreActionController = ActionController(
     name: '_SubscriptionStore',
     context: context,

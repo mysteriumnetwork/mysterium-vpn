@@ -33,20 +33,40 @@ void main() {
     ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
     when(authSession.isAuthenticated).thenReturn(false);
     when(locations.refreshAll()).thenAnswer((_) async {});
+    when(
+      subscriptions.refreshSubscription(force: anyNamed('force')),
+    ).thenAnswer((_) async => Subscription.empty());
   });
+
+  SmartRefreshStore buildStore() {
+    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
+    addTearDown(store.dispose);
+    return store;
+  }
 
   test('constructs and disposes cleanly', () async {
     final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
     await store.dispose();
   });
 
-  test('logs errors raised by locations refresh', () async {
-    when(locations.refreshAll()).thenThrow(Exception('boom'));
+  test('resume refresh calls refreshSubscription(force: true)', () async {
+    final store = buildStore();
 
-    // The reaction does not fire on construction (fireImmediately: false), so
-    // we cannot easily trigger the refresh path without changing planId from
-    // a test. Verify the dispose path does not surface the error to callers.
-    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
-    await store.dispose();
+    await store.refreshSubscriptionOnResume();
+
+    verify(subscriptions.refreshSubscription(force: true)).called(1);
+  });
+
+  test('resume refresh logs errors without rethrowing', () async {
+    final error = Exception('offline');
+    when(
+      subscriptions.refreshSubscription(force: anyNamed('force')),
+    ).thenAnswer((_) async => throw error);
+
+    final store = buildStore();
+
+    await store.refreshSubscriptionOnResume();
+
+    verify(logger.handle(error, any)).called(1);
   });
 }

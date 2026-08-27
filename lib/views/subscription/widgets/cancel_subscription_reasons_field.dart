@@ -1,4 +1,4 @@
-part of 'cancel_subscription_survey_dialog.dart';
+part of '../cancel_subscription_survey_view.dart';
 
 class _ReasonsField extends HookWidget {
   const _ReasonsField({

@@ -141,12 +141,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("إلغاء الاشتراك"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "سيتم إلغاء اشتراكك. يمكنك مواصلة استخدام Mysterium VPN حتى ينتهي وصولك.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "يُرجى إدخال المزيد من التفاصيل...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("أخبرنا بالمزيد (اختياري)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
@@ -173,7 +167,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("الاتصالات"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("إكمال"),
     "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("تأكيد الإلغاء"),
     "connect": MessageLookupByLibrary.simpleMessage("اتصال"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("أفضل خادم"),
     "connectToLocationBtn": m4,
@@ -435,6 +428,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("إيقاف الاشتراك مؤقتًا"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر إيقاف اشتراكك مؤقتًا. يُرجى المحاولة مرة أخرى.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "يمكنك إيقاف خطتك مؤقتًا مرة واحدة لكل دورة فوترة.",
     ),
@@ -450,6 +446,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("خطة عامين"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic عامان"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus عامان"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro عامان"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("خطة 6 أشهر"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("الخطة الشهرية"),
@@ -513,9 +510,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("كيف هو اتصالك؟"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("ما الذي لم يعجبك؟"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("ما الذي أعجبك؟"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "يمكنك إعادة تفعيل اشتراكك في أي وقت قبل انتهاء وصولك.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("المواقع الأخيرة"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("استخدام رمز الخصم"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -565,6 +559,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("كيف تعمل عناوين IP السكنية"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("عنوان IP سكني"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("استئناف"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر استئناف اشتراكك. يُرجى المحاولة مرة أخرى.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "سيتم استئناف اشتراكك فورًا.",
     ),
@@ -618,7 +615,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("سنة واحدة"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("جميع الخطط"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("ترقية خطتك"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("تم إلغاء الاشتراك"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "استكشف ميزات متقدمة مثل بروتوكولات VPN وحظر البرامج الضارة.",
     ),

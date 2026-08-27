@@ -78,9 +78,18 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
     _subscriptionDebouncer.debounce(() {
       // Post-frame so the warm-start frame paints before the network refresh.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _subscriptionStore.refreshSubscription(force: true);
+        refreshSubscriptionOnResume();
       });
     });
+  }
+
+  @visibleForTesting
+  Future<void> refreshSubscriptionOnResume() async {
+    try {
+      await _subscriptionStore.refreshSubscription(force: true);
+    } on Object catch (e, stack) {
+      _logger.handle(e, stack);
+    }
   }
 
   Future<void> _onPause() async {}

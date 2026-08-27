@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
@@ -231,6 +232,15 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   ref.onDispose(store.dispose);
   return store;
 });
+
+final subscriptionCancellationStorePOD = Provider<SubscriptionCancellationStore>(
+  (ref) => SubscriptionCancellationStore(
+    analyticsStore: ref.watch(analyticsStorePOD),
+    subscriptionStore: ref.watch(subscriptionStorePOD),
+    subscriptionService: ref.watch(subscriptionServicePOD),
+    remoteConfigStore: ref.watch(remoteConfigStorePOD),
+  ),
+);
 
 final analyticsInitPOD = FutureProvider.family<void, FirebaseOptions?>((ref, options) async {
   if (options == null) {

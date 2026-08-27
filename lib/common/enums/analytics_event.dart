@@ -139,6 +139,9 @@ enum AnalyticsEvent {
   changeProtocolTypeDeclined,
   subscriptionVerificationRetryClick,
   subscriptionVerificationRetryCancel,
+  subscriptionResumeStarted,
+  subscriptionResumeCompleted,
+  subscriptionResumeFailed,
   pushNotificationReceived,
   pushNotificationClicked,
   redeemCodeOpenSuccess,
@@ -183,7 +186,24 @@ enum AnalyticsEvent {
   favoriteIpConnectionSucceeded,
   favoriteIpUnavailableStateShown,
   favoriteIpUpgradePlanClicked,
-  favoriteIpUndoRemove;
+  favoriteIpUndoRemove,
+  cancellationStarted,
+  cancellationConfirmViewed,
+  cancellationReasonSubmitted,
+  cancellationReasonSkipped,
+  cancellationPauseAccepted,
+  cancellationPauseOfferViewed,
+  cancellationPauseDeclined,
+  cancellationPausePeriod,
+  cancellationPauseFailed,
+  cancellationDashboardOpened,
+  cancellationRedirectFailed,
+  storeSubscriptionManageClicked,
+  cancellationDiscountViewed,
+  cancellationDiscountAccepted,
+  cancellationDiscountDeclined,
+  cancellationFinalConfirmViewed,
+  cancellationCompleted;
 
   String get formattedName => name.toSnakeCase;
 }

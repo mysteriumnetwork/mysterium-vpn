@@ -460,6 +460,151 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logCancellationConfirmViewed() async {
+    await logEvent(AnalyticsEvent.cancellationConfirmViewed);
+  }
+
+  Future<void> logCancellationStarted({required String entrypoint}) async {
+    await logEvent(AnalyticsEvent.cancellationStarted, parameters: {'entrypoint': entrypoint});
+  }
+
+  Future<void> logCancellationReasonSubmitted({
+    required Set<String> reasons,
+    String? feedback,
+  }) async {
+    final trimmed = feedback?.trim();
+    await logEvent(
+      AnalyticsEvent.cancellationReasonSubmitted,
+      parameters: {
+        'reason': reasons.join(','),
+        'has_free_text': trimmed != null && trimmed.isNotEmpty,
+      },
+    );
+  }
+
+  Future<void> logCancellationReasonSkipped() async {
+    await logEvent(AnalyticsEvent.cancellationReasonSkipped);
+  }
+
+  Future<void> logCancellationPauseOfferViewed() async {
+    await logEvent(AnalyticsEvent.cancellationPauseOfferViewed);
+  }
+
+  Future<void> logCancellationPauseAccepted({
+    required String pauseDuration,
+    required String subscriptionId,
+    String? pauseEndDate,
+    String? billingResumeDate,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.cancellationPauseAccepted,
+      parameters: {
+        'pause_duration': pauseDuration,
+        'subscription_id': subscriptionId,
+        'pause_end_date': ?pauseEndDate,
+        'billing_resume_date': ?billingResumeDate,
+      },
+    );
+  }
+
+  Future<void> logCancellationPauseDeclined({required String subscriptionId}) async {
+    await logEvent(
+      AnalyticsEvent.cancellationPauseDeclined,
+      parameters: {'subscription_id': subscriptionId},
+    );
+  }
+
+  Future<void> logSubscriptionCancellationPauseDuration({required int months}) async {
+    await logEvent(AnalyticsEvent.cancellationPausePeriod, parameters: {'months': months});
+  }
+
+  Future<void> logCancellationPauseFailed({
+    required String subscriptionId,
+    required String pauseDuration,
+    required String failureReason,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.cancellationPauseFailed,
+      parameters: {
+        'subscription_id': subscriptionId,
+        'pause_duration': pauseDuration,
+        'failure_reason': failureReason,
+      },
+    );
+  }
+
+  Future<void> logCancellationDashboardOpened({
+    required String source,
+    required String subscriptionId,
+    required bool pauseOfferShown,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.cancellationDashboardOpened,
+      parameters: {
+        'source': source,
+        'subscription_id': subscriptionId,
+        'pause_offer_shown': pauseOfferShown,
+      },
+    );
+  }
+
+  Future<void> logCancellationRedirectFailed({
+    required String subscriptionId,
+    required String failureReason,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.cancellationRedirectFailed,
+      parameters: {'subscription_id': subscriptionId, 'failure_reason': failureReason},
+    );
+  }
+
+  Future<void> logStoreSubscriptionManageClicked({
+    required String store,
+    required String subscriptionId,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.storeSubscriptionManageClicked,
+      parameters: {'store': store, 'subscription_id': subscriptionId},
+    );
+  }
+
+  Future<void> logSubscriptionResumeStarted({
+    required String subscriptionId,
+    String? pauseEndDate,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.subscriptionResumeStarted,
+      parameters: {'subscription_id': subscriptionId, 'pause_end_date': ?pauseEndDate},
+    );
+  }
+
+  Future<void> logSubscriptionResumeCompleted({
+    required String subscriptionId,
+    required String subscriptionStatusBefore,
+    required String subscriptionStatusAfter,
+    String? billingResumeDate,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.subscriptionResumeCompleted,
+      parameters: {
+        'subscription_id': subscriptionId,
+        'subscription_status_before': subscriptionStatusBefore,
+        'subscription_status_after': subscriptionStatusAfter,
+        'billing_resume_date': ?billingResumeDate,
+      },
+    );
+  }
+
+  Future<void> logSubscriptionResumeFailed({
+    required String subscriptionId,
+    required String failureReason,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.subscriptionResumeFailed,
+      parameters: {'subscription_id': subscriptionId, 'failure_reason': failureReason},
+    );
+  }
+
   Stream<AnalyticsLogEntry> watchLogs() => _logStreamController.stream;
   Stream<AnalyticsUserProperty> watchUserProperties() => _userPropertiesStreamController.stream;
 }

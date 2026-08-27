@@ -15,8 +15,10 @@ export 'refresh_token_not_found_exception.dart';
 export 'request_pn_permissions_not_allowed.dart';
 export 'sign_in_aborted.dart';
 export 'store_not_available.dart';
+export 'subscription_paused_exception.dart';
 export 'subscription_required_exception.dart';
 export 'subscription_verification.dart';
+
 export 'token_already_used.dart';
 export 'tunnel_setup_required_exception.dart';
 export 'unavailable_location_exception.dart';

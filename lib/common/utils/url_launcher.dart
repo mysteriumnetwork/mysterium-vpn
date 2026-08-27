@@ -23,11 +23,12 @@ String sanitizeRedirectUrl(Uri url) =>
 /// [mode] specifies how the URL should be launched (for example, using the
 /// platform default, an in-app web view, or an external application). The
 /// default is [LaunchMode.platformDefault].
-Future<void> openUrlLink(
+Future<bool> openUrlLink(
   Uri url, {
   required RedirectSource source,
   LaunchMode mode = LaunchMode.platformDefault,
 }) async {
+  var succeeded = true;
   final parameters = <String, dynamic>{
     'source': source.formattedName,
     'target_url': sanitizeRedirectUrl(url),
@@ -39,6 +40,7 @@ Future<void> openUrlLink(
       throw Exception('Could not launch URL');
     }
   } catch (e) {
+    succeeded = false;
     parameters['redirect_success'] = false;
     // Strip the unsanitized URL (and its access_token) out of the error text.
     parameters['error_reason'] = e.toString().replaceAll(url.toString(), sanitizeRedirectUrl(url));
@@ -55,6 +57,7 @@ Future<void> openUrlLink(
   } finally {
     analyticsStoreRef?.logEvent(AnalyticsEvent.webRedirect, parameters: parameters).ignore();
   }
+  return succeeded;
 }
 
 Future<void> openAppStorePage() async {

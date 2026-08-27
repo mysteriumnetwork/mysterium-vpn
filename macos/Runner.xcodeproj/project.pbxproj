@@ -604,6 +604,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E30DE00726ECCA9339E385BD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -749,7 +766,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/connectivity_plus\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
@@ -943,7 +959,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/connectivity_plus\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
@@ -1025,7 +1040,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/connectivity_plus\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
@@ -1778,7 +1792,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/connectivity_plus\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
@@ -1959,7 +1972,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/connectivity_plus\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
@@ -2137,7 +2149,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/connectivity_plus\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",

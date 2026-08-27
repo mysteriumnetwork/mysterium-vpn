@@ -68,7 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m20(date) => "Tagihan Berikutnya: ${date}";
 
   static String m21(count) =>
-      "${Intl.plural(count, zero: '', other: 'Jeda selama ${count} bulan')}";
+      "${Intl.plural(count, zero: 'Jeda selama ${count} bulan', other: 'Jeda selama ${count} bulan')}";
 
   static String m22(date) => "Dijeda hingga ${date}";
 
@@ -141,12 +141,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Yakin ingin membatalkan langgananmu?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Batalkan langganan"),
-    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
-      "Langgananmu akan dibatalkan. Kamu tetap bisa memakai Mysterium VPN hingga aksesmu berakhir.",
-    ),
-    "cancelSurveyFeedbackHint": MessageLookupByLibrary.simpleMessage(
-      "Masukkan detail selengkapnya...",
-    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Ceritakan lebih lanjut (opsional)",
     ),
@@ -173,7 +167,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "communicationLblDesktop": MessageLookupByLibrary.simpleMessage("KOMUNIKASI"),
     "completeBtn": MessageLookupByLibrary.simpleMessage("Selesai"),
     "confirm": MessageLookupByLibrary.simpleMessage("Konfirmasi"),
-    "confirmCancellationTitle": MessageLookupByLibrary.simpleMessage("Konfirmasi pembatalan"),
     "connect": MessageLookupByLibrary.simpleMessage("Hubungkan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("Server terbaik"),
     "connectToLocationBtn": m4,
@@ -429,6 +422,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pauseForMonths": m21,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Jeda langganan"),
+    "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Langganan tidak bisa dijeda. Coba lagi.",
+    ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage(
       "Kamu bisa menjeda paketmu sekali per siklus penagihan.",
     ),
@@ -444,6 +440,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "plan_2_years": MessageLookupByLibrary.simpleMessage("Paket 2 Tahun"),
     "plan_2_years_basic": MessageLookupByLibrary.simpleMessage("Basic 2 tahun"),
+    "plan_2_years_plus": MessageLookupByLibrary.simpleMessage("Plus 2 tahun"),
     "plan_2_years_pro": MessageLookupByLibrary.simpleMessage("Pro 2 tahun"),
     "plan_6_months": MessageLookupByLibrary.simpleMessage("Paket 6 Bulan"),
     "plan_monthly": MessageLookupByLibrary.simpleMessage("Paket Bulanan"),
@@ -513,9 +510,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bagaimana koneksimu?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Apa yang kurang kamu suka?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Apa yang kamu suka?"),
-    "reactivateSubscriptionAnytimeDesc": MessageLookupByLibrary.simpleMessage(
-      "Kamu bisa mengaktifkan ulang langgananmu kapan saja sebelum aksesmu berakhir.",
-    ),
     "recentLocations": MessageLookupByLibrary.simpleMessage("Lokasi terkini"),
     "redeemDiscountCode": MessageLookupByLibrary.simpleMessage("Tukarkan kode diskon"),
     "redirectToLoginPage": MessageLookupByLibrary.simpleMessage(
@@ -571,6 +565,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residensial"),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Lanjutkan"),
+    "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
+      "Langganan tidak bisa dilanjutkan. Coba lagi.",
+    ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage(
       "Langgananmu akan langsung dilanjutkan.",
     ),
@@ -628,7 +625,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionAllPlansTabYear": MessageLookupByLibrary.simpleMessage("1 Tahun"),
     "subscriptionAllPlansTitle": MessageLookupByLibrary.simpleMessage("Semua paket"),
     "subscriptionAllPlansUpgrade": MessageLookupByLibrary.simpleMessage("Tingkatkan paketmu"),
-    "subscriptionCancelledTitle": MessageLookupByLibrary.simpleMessage("Langganan dibatalkan"),
     "subscriptionOnboardingBoostProtectionDescription": MessageLookupByLibrary.simpleMessage(
       "Jelajahi fitur canggih seperti protokol VPN dan pemblokiran malware.",
     ),

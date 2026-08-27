@@ -318,6 +318,46 @@ void main() {
     });
   });
 
+  group('cancellation flow analytics', () {
+    test('logCancellationReasonSubmitted sends reason and has_free_text', () async {
+      final entry = nextLog();
+      await store.logCancellationReasonSubmitted(
+        reasons: {'price', 'speed'},
+        feedback: 'too pricey',
+      );
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.cancellationReasonSubmitted.formattedName);
+      expect((log.params!['reason']! as String).split(',').toSet(), {'price', 'speed'});
+      expect(log.params!['has_free_text'], isTrue);
+    });
+
+    test('logCancellationReasonSubmitted sets has_free_text false when empty', () async {
+      final entry = nextLog();
+      await store.logCancellationReasonSubmitted(reasons: {'price'});
+
+      final log = await entry;
+      expect(log.params!['has_free_text'], isFalse);
+    });
+
+    test('logCancellationStarted includes entrypoint', () async {
+      final entry = nextLog();
+      await store.logCancellationStarted(entrypoint: 'account');
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.cancellationStarted.formattedName);
+      expect(log.params!['entrypoint'], 'account');
+    });
+
+    test('logCancellationReasonSkipped emits event with no params', () async {
+      final entry = nextLog();
+      await store.logCancellationReasonSkipped();
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.cancellationReasonSkipped.formattedName);
+    });
+  });
+
   group('logPushNotificationsPermissionsChanged', () {
     test('granted → granted event + property', () async {
       final logFuture = nextLog();

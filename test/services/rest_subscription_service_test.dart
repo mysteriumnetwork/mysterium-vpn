@@ -39,13 +39,13 @@ void main() {
   group('fetchSubscriptionDetails', () {
     test('maps a populated GetSubscriptionResponse into a Subscription', () async {
       final apiResponse = api.GetSubscriptionResponse(
+        paused: false,
         active: true,
         expired: false,
         recurring: true,
         subscriptionId: 'sub-1',
         planId: 'plan_monthly',
         gateway: 'stripe',
-        paused: false,
       );
       when(
         apiSubscription.subscriptionStatus(),
@@ -87,6 +87,23 @@ void main() {
       when(apiSubscription.subscriptionConfig()).thenAnswer((_) async => response(200, config));
 
       expect(await service.fetchSubscriptionConfig(), config);
+    });
+  });
+
+  group('fetchPauseDurations', () {
+    test('returns durations as the API sent them', () async {
+      when(
+        apiSubscription.pauseDurations(),
+      ).thenAnswer((_) async => response(200, <String>['1', '3', '6']));
+
+      expect(await service.fetchPauseDurations(), ['1', '3', '6']);
+    });
+
+    test('rethrows arbitrary errors after logging', () async {
+      when(apiSubscription.pauseDurations()).thenThrow(Exception('boom'));
+
+      await expectLater(service.fetchPauseDurations(), throwsA(isA<Exception>()));
+      verify(logger.handle(any, any)).called(1);
     });
   });
 }

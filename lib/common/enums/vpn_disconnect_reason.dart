@@ -7,6 +7,7 @@ enum VpnDisconnectReason {
   /// Torn down to be re-established (IP refresh or server switch).
   reconnect,
 
-  /// The app ended it: logout or account deletion.
+  /// The app ended it: logout, account deletion, or the subscription becoming
+  /// inactive or paused. Never counts as a completed session.
   appInitiated,
 }

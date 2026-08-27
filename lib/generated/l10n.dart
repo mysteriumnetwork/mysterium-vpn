@@ -96,8 +96,6 @@ class S {
     'cancelSpeed': [],
     'cancelSubscriptionPromptDesc': [],
     'cancelSubscriptionTitle': [],
-    'cancelSubscriptionWarningDesc': [],
-    'cancelSurveyFeedbackHint': [],
     'cancelSurveyTellUsMoreHint': [],
     'cancelSurveyTitle': [],
     'cancelTooExpensive': [],
@@ -114,7 +112,6 @@ class S {
     'communicationLblDesktop': [],
     'completeBtn': [],
     'confirm': [],
-    'confirmCancellationTitle': [],
     'connect': [],
     'connectBestServer': [],
     'connected': [],
@@ -302,11 +299,13 @@ class S {
     'pauseForMonths': ['count'],
     'pauseSubscriptionBtn': [],
     'pauseSubscriptionInfoDesc': [],
+    'pauseSubscriptionFailed': [],
     'pendingTransactionMessage': [],
     'perMonth': [],
     'pl': [],
     'plan_2_years': [],
     'plan_2_years_basic': [],
+    'plan_2_years_plus': [],
     'plan_2_years_pro': [],
     'plan_6_months': [],
     'planAlreadyPurchasedMsg': [],
@@ -353,7 +352,6 @@ class S {
     'rateConnection': [],
     'rateConnectionDislike': [],
     'rateConnectionLike': [],
-    'reactivateSubscriptionAnytimeDesc': [],
     'recentLocations': [],
     'redeemDiscountCode': [],
     'redirectToLoginPage': [],
@@ -387,6 +385,7 @@ class S {
     'resumeBtn': [],
     'resumeSubscriptionPromptDesc': [],
     'resumeSubscriptionTitle': [],
+    'resumeSubscriptionFailed': [],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -424,7 +423,6 @@ class S {
     'subscriptionAllPlansTabYear': [],
     'subscriptionAllPlansTitle': [],
     'subscriptionAllPlansUpgrade': [],
-    'subscriptionCancelledTitle': [],
     'subscriptionOnboardingBoostProtectionDescription': [],
     'subscriptionOnboardingBoostProtectionTitle': [],
     'subscriptionOnboardingCancelTourLabel': [],
@@ -799,26 +797,6 @@ class S {
     return Intl.message('Cancel subscription', name: 'cancelSubscriptionTitle', desc: '', args: []);
   }
 
-  /// `Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.`
-  String get cancelSubscriptionWarningDesc {
-    return Intl.message(
-      'Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.',
-      name: 'cancelSubscriptionWarningDesc',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please enter more details...`
-  String get cancelSurveyFeedbackHint {
-    return Intl.message(
-      'Please enter more details...',
-      name: 'cancelSurveyFeedbackHint',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Tell us more (optional)`
   String get cancelSurveyTellUsMoreHint {
     return Intl.message(
@@ -927,16 +905,6 @@ class S {
   /// `Confirm`
   String get confirm {
     return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
-  }
-
-  /// `Confirm cancellation`
-  String get confirmCancellationTitle {
-    return Intl.message(
-      'Confirm cancellation',
-      name: 'confirmCancellationTitle',
-      desc: '',
-      args: [],
-    );
   }
 
   /// `Connect`
@@ -2203,11 +2171,11 @@ class S {
     );
   }
 
-  /// `{count, plural, zero{} one{Pause for {count} month} other{Pause for {count} months}}`
+  /// `{count, plural, zero{Pause for {count} months} one{Pause for {count} month} other{Pause for {count} months}}`
   String pauseForMonths(num count) {
     return Intl.plural(
       count,
-      zero: '',
+      zero: 'Pause for $count months',
       one: 'Pause for $count month',
       other: 'Pause for $count months',
       name: 'pauseForMonths',
@@ -2226,6 +2194,16 @@ class S {
     return Intl.message(
       'You can pause your plan once per billing cycle.',
       name: 'pauseSubscriptionInfoDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We could not pause your subscription. Please try again.`
+  String get pauseSubscriptionFailed {
+    return Intl.message(
+      'We could not pause your subscription. Please try again.',
+      name: 'pauseSubscriptionFailed',
       desc: '',
       args: [],
     );
@@ -2259,6 +2237,11 @@ class S {
   /// `Basic 2-Year`
   String get plan_2_years_basic {
     return Intl.message('Basic 2-Year', name: 'plan_2_years_basic', desc: '', args: []);
+  }
+
+  /// `2 Years Plus`
+  String get plan_2_years_plus {
+    return Intl.message('2 Years Plus', name: 'plan_2_years_plus', desc: '', args: []);
   }
 
   /// `Pro 2-Year`
@@ -2581,16 +2564,6 @@ class S {
     return Intl.message('What did you like?', name: 'rateConnectionLike', desc: '', args: []);
   }
 
-  /// `You can reactivate your subscription anytime before your access ends.`
-  String get reactivateSubscriptionAnytimeDesc {
-    return Intl.message(
-      'You can reactivate your subscription anytime before your access ends.',
-      name: 'reactivateSubscriptionAnytimeDesc',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Recent locations`
   String get recentLocations {
     return Intl.message('Recent locations', name: 'recentLocations', desc: '', args: []);
@@ -2861,6 +2834,16 @@ class S {
     );
   }
 
+  /// `We could not resume your subscription. Please try again.`
+  String get resumeSubscriptionFailed {
+    return Intl.message(
+      'We could not resume your subscription. Please try again.',
+      name: 'resumeSubscriptionFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Retry`
   String get retryBtn {
     return Intl.message('Retry', name: 'retryBtn', desc: '', args: []);
@@ -3114,16 +3097,6 @@ class S {
     return Intl.message(
       'Upgrade your plan',
       name: 'subscriptionAllPlansUpgrade',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Subscription cancelled`
-  String get subscriptionCancelledTitle {
-    return Intl.message(
-      'Subscription cancelled',
-      name: 'subscriptionCancelledTitle',
       desc: '',
       args: [],
     );

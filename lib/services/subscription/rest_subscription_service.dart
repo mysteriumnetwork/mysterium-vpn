@@ -21,8 +21,6 @@ import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
-const kFetchSubscriptionConfig = '/subscription/config';
-
 class RestSubscriptionService extends SubscriptionService {
   RestSubscriptionService({
     required api.VpnApi api,
@@ -273,6 +271,9 @@ class RestSubscriptionService extends SubscriptionService {
         recurring: data.recurring,
         storePlanId: data.storePlanId,
         periodStart: data.periodStart,
+        paused: data.paused,
+        pausedFrom: data.pausedFrom,
+        pausedUntil: data.pausedUntil,
       );
     } on ApiException {
       rethrow;
@@ -342,5 +343,34 @@ class RestSubscriptionService extends SubscriptionService {
         purchasedProductId: null,
       );
     }
+  }
+
+  @override
+  Future<void> pauseSubscription(String periodCode) async {
+    await _apiSubscription.pause(
+      pauseSubscriptionRequest: api.PauseSubscriptionRequest(period: periodCode),
+    );
+  }
+
+  @override
+  Future<List<String>> fetchPauseDurations() async {
+    try {
+      final res = await _apiSubscription.pauseDurations();
+      final data = res.data;
+      if (data == null || data.isEmpty) {
+        throw Exception('No pause durations found');
+      }
+      return data;
+    } on ApiException {
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> resumeSubscription() async {
+    await _apiSubscription.resume();
   }
 }

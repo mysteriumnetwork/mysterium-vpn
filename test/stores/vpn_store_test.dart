@@ -1251,5 +1251,113 @@ void main() {
         await expectLater(vpnStore.resetApp(), throwsA(isA<Exception>()));
       });
     });
+
+    group('subscription-driven teardown', () {
+      const loc = VPNLocation(
+        id: 'de',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'de',
+      );
+
+      late StreamController<VpnConnectionStatus> statusController;
+      late Observable<ObservableFuture<Subscription>> subscription;
+
+      void setSubscription(Subscription value) =>
+          runInAction(() => subscription.value = ObservableFuture.value(value));
+
+      setUp(() {
+        statusController = StreamController<VpnConnectionStatus>.broadcast();
+        subscription = Observable(ObservableFuture.value(Subscription(active: true)));
+        when(mockSubscriptionStore.subscriptionFuture).thenAnswer((_) => subscription.value);
+        when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
+        when(mockAuthSession.status).thenReturn(AuthStatus.authenticated);
+        when(mockWireguardRepo.init()).thenAnswer((_) async {});
+        when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.statusStream()).thenAnswer((_) => statusController.stream);
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
+        when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+        when(mockRecentLocations.add(any)).thenAnswer((_) async {});
+        when(mockConnectionDecision.potentialLocation).thenReturn(loc);
+        when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '3.3.3.3');
+      });
+
+      tearDown(() async {
+        await statusController.close();
+      });
+
+      Future<VpnStore> connectedStore() async {
+        final store = buildStore();
+        await pumpEventQueue();
+        statusController.add(VpnConnectionStatus.connected);
+        await pumpEventQueue();
+        expect(store.vpnStatus, VpnConnectionStatus.connected);
+        return store;
+      }
+
+      test('an expired subscription tears the tunnel down as app-initiated', () async {
+        final store = await connectedStore();
+
+        setSubscription(Subscription(active: false));
+        await pumpEventQueue();
+
+        verify(mockWireguardRepo.disconnect()).called(1);
+        expect(store.disconnectReason, VpnDisconnectReason.appInitiated);
+
+        await store.disposeStore();
+      });
+
+      test('a paused subscription tears the tunnel down as app-initiated', () async {
+        final store = await connectedStore();
+
+        setSubscription(Subscription(active: true, paused: true));
+        await pumpEventQueue();
+
+        verify(mockWireguardRepo.disconnect()).called(1);
+        expect(store.disconnectReason, VpnDisconnectReason.appInitiated);
+
+        await store.disposeStore();
+      });
+
+      test('a still-entitled subscription leaves the tunnel up', () async {
+        final store = await connectedStore();
+
+        setSubscription(Subscription(active: true, expired: false));
+        await pumpEventQueue();
+
+        verifyNever(mockWireguardRepo.disconnect());
+        expect(store.vpnStatus, VpnConnectionStatus.connected);
+
+        await store.disposeStore();
+      });
+
+      test('losing entitlement while disconnected does not disconnect again', () async {
+        final store = buildStore();
+        await pumpEventQueue();
+
+        setSubscription(Subscription(active: false));
+        await pumpEventQueue();
+
+        verifyNever(mockWireguardRepo.disconnect());
+
+        await store.disposeStore();
+      });
+
+      test('a pending subscription fetch never tears down a live tunnel', () async {
+        final store = await connectedStore();
+
+        runInAction(() => subscription.value = ObservableFuture(Completer<Subscription>().future));
+        await pumpEventQueue();
+
+        verifyNever(mockWireguardRepo.disconnect());
+        expect(store.vpnStatus, VpnConnectionStatus.connected);
+
+        await store.disposeStore();
+      });
+    });
   });
 }

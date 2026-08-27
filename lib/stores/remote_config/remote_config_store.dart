@@ -31,6 +31,7 @@ enum _FeatureToggleKey {
   shouldCheckUdp,
   latestStableAppVersion,
   cancelSurveyOptions,
+  pauseSubscriptionEnabled,
   useStoreVersionChecker,
   enableQaHelpers,
   showCitiesAndStates,
@@ -47,6 +48,7 @@ enum _FeatureToggleKey {
   plansBestValue,
   upgradeSubscriptionPage,
   manageSubscriptionPage,
+  cancelSubscriptionPage,
   promotionalBannerContent,
   pushNotifPermissionPromptCooldown,
   checkoutWebRedirectUrl,
@@ -239,6 +241,15 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return null;
+  }
+
+  @computed
+  bool get pauseSubscriptionEnabled {
+    final value = config[_FeatureToggleKey.pauseSubscriptionEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return false;
   }
 
   @computed
@@ -510,14 +521,20 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
 
   @computed
   String get upgradeSubscriptionPage {
-    final value = config[_FeatureToggleKey.upgradeSubscriptionPage.name] as String?;
-    return (value?.isNotEmpty ?? false ? value! : Env.upgradeSubscriptionPage).trim();
+    final value = (config[_FeatureToggleKey.upgradeSubscriptionPage.name] as String?)?.trim();
+    return value.isNotNullOrEmpty ? value! : Env.upgradeSubscriptionPage.trim();
   }
 
   @computed
   String get manageSubscriptionPage {
-    final value = config[_FeatureToggleKey.manageSubscriptionPage.name] as String?;
-    return (value?.isNotEmpty ?? false ? value! : Env.manageSubscriptionPage).trim();
+    final value = (config[_FeatureToggleKey.manageSubscriptionPage.name] as String?)?.trim();
+    return value.isNotNullOrEmpty ? value! : Env.manageSubscriptionPage.trim();
+  }
+
+  @computed
+  String get cancelSubscriptionPage {
+    final value = (config[_FeatureToggleKey.cancelSubscriptionPage.name] as String?)?.trim();
+    return value.isNotNullOrEmpty ? value! : Env.cancelSubscriptionPage.trim();
   }
 
   @computed
