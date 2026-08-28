@@ -73,26 +73,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "In pausa fino al ${date}";
 
-  static String m23(protocol, label) => "${protocol} (${label})";
+  static String m23(location) => "Aggiorna ${location}";
 
-  static String m24(location) => "Aggiorna ${location}";
+  static String m24(date) => "Si rinnova il ${date}";
 
-  static String m25(date) => "Si rinnova il ${date}";
-
-  static String m26(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: 'Invia di nuovo', one: 'Invia di nuovo', other: 'Invia di nuovo (${count})')}";
 
-  static String m27(percent) => "Risparmia ${percent}%";
+  static String m26(percent) => "Risparmia ${percent}%";
 
-  static String m28(percent, planId) => "Risparmia ${percent}% con un piano ${planId}";
+  static String m27(percent, planId) => "Risparmia ${percent}% con un piano ${planId}";
 
-  static String m29(plan) => "Passa a ${plan}";
+  static String m28(plan) => "Passa a ${plan}";
 
-  static String m30(plan) => "Passa al piano ${plan}";
+  static String m29(plan) => "Passa al piano ${plan}";
 
-  static String m31(location) => "Passa a ${location}";
+  static String m30(location) => "Passa a ${location}";
 
-  static String m32(word) => "Digita ${word}";
+  static String m31(word) => "Digita ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -122,7 +120,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticationFailed": MessageLookupByLibrary.simpleMessage("Impossibile accedere. Riprova."),
     "back": MessageLookupByLibrary.simpleMessage("Indietro"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Torna alle impostazioni"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Risparmio batteria"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlino, Germania 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -253,7 +250,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage(
       "Non siamo riusciti a verificare il tuo ultimo acquisto dell\'abbonamento. Tocca il pulsante qui sotto per riprovare.",
     ),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("Veloce"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Aggiungi alle IP preferite"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP aggiunta ai preferiti"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
@@ -506,7 +502,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("Prodotti VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("PROTETTO"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protocollo"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Cambiare il protocollo VPN ti disconnetterà. Dovrai riconnetterti in seguito.",
     ),
@@ -535,8 +530,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Aggiorna"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Aggiorna IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Aggiorna indirizzo IP"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Ripristina quando qualcosa non funziona"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Se procedi con il ripristino dell\'app, verrai disconnesso da Mysterium VPN.",
@@ -609,7 +604,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Seleziona un\'app email per continuare",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("semestrale"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Stiamo riscontrando problemi di rete temporanei. Riprova più tardi..",
     ),
@@ -751,8 +746,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Appari come un normale utente domestico, così puoi accedere ai servizi di streaming ed evitare il rilevamento della VPN.",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Server"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("Paesi supportati"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("Protocollo VPN"),
@@ -766,15 +761,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Il tuo abbonamento è di nuovo attivo.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Aggiorna"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "per accedere a oltre 7.500 IP residenziali",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Vedi tutti i piani"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("Riprova la verifica"),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abbonamento"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("Sistema"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Riprenditi internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Termini e Condizioni"),
@@ -804,7 +799,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Si è verificato un errore durante la configurazione del tunnel",
     ),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Scrivi qui il tuo feedback..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ucraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(

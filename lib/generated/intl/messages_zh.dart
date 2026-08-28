@@ -68,25 +68,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "已暂停至 ${date}";
 
-  static String m23(protocol, label) => "${protocol}（${label}）";
+  static String m23(location) => "刷新 ${location}";
 
-  static String m24(location) => "刷新 ${location}";
+  static String m24(date) => "${date} 续订";
 
-  static String m25(date) => "${date} 续订";
+  static String m25(count) => "${Intl.plural(count, zero: '重新发送', other: '重新发送 (${count})')}";
 
-  static String m26(count) => "${Intl.plural(count, zero: '重新发送', other: '重新发送 (${count})')}";
+  static String m26(percent) => "节省 ${percent}%";
 
-  static String m27(percent) => "节省 ${percent}%";
+  static String m27(percent, planId) => "选择 ${planId} 套餐可节省 ${percent}%";
 
-  static String m28(percent, planId) => "选择 ${planId} 套餐可节省 ${percent}%";
+  static String m28(plan) => "升级到 ${plan}";
 
-  static String m29(plan) => "升级到 ${plan}";
+  static String m29(plan) => "升级到 ${plan} 套餐";
 
-  static String m30(plan) => "升级到 ${plan} 套餐";
+  static String m30(location) => "切换到 ${location}";
 
-  static String m31(location) => "切换到 ${location}";
-
-  static String m32(word) => "输入 ${word}";
+  static String m31(word) => "输入 ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -112,7 +110,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticationFailed": MessageLookupByLibrary.simpleMessage("无法登录。请重试。"),
     "back": MessageLookupByLibrary.simpleMessage("返回"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("返回设置"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("省电"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("德国柏林 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -209,7 +206,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage("反馈提交失败。请重试。"),
     "failedToSubscribe": MessageLookupByLibrary.simpleMessage("你的订阅出现问题。请重试！"),
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage("我们无法验证你上次的订阅购买。请点击下方按钮重试。"),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("快速"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("加入收藏的 IP"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("已将 IP 加入收藏"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage("收藏 IP 已达上限。请移除一个 IP 后再保存新的。"),
@@ -394,7 +390,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN 产品"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("受保护"),
     "protocol": MessageLookupByLibrary.simpleMessage("协议"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage("切换 VPN 协议会断开你的连接。之后需要重新连接。"),
     "protocolPickerSettingTitle": MessageLookupByLibrary.simpleMessage("切换 VPN 协议"),
     "pt": MessageLookupByLibrary.simpleMessage("葡萄牙语"),
@@ -415,8 +410,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("刷新"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("刷新 IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("刷新 IP 地址"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("出现异常时进行重置"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "若继续重置应用，你将与 Mysterium VPN 断开连接。",
@@ -461,7 +456,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("查看套餐"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("选择电子邮件应用以继续"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("每半年"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage("我们遇到临时网络问题。请稍后重试。"),
     "settingManageBtn": MessageLookupByLibrary.simpleMessage("管理"),
     "settings": MessageLookupByLibrary.simpleMessage("设置"),
@@ -569,8 +564,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "让你看起来像普通家庭用户，从而访问流媒体服务并避免被检测为 VPN。",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("服务器"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("支持的国家/地区"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN 协议"),
@@ -580,15 +575,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("你尚未完成订阅更改。"),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("你的订阅已重新激活。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("升级"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "以访问 7,500+ 个住宅 IP",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("查看所有套餐"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("重试验证"),
     "subscripton": MessageLookupByLibrary.simpleMessage("订阅"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("系统"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("夺回互联网。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("条款和条件"),
@@ -610,7 +605,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("尝试搜索其他地点"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("启动 VPN 隧道需要授予权限。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("设置隧道时发生错误"),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("在此输入你的反馈…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("乌克兰"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage("无法连接支付处理器！请重试。"),

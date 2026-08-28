@@ -31,9 +31,7 @@ class ProtocolPicker extends ConsumerWidget {
         position: position,
         value: vpnProtocolStore.protocol,
         items: ProtocolType.values,
-        labelOf: (p) => S.current.protocolLabel(_label(p), p.subtitle),
-        subtitleOf: (p) => p.subtitle,
-        customLabel: _label,
+        labelOf: (p) => p.label,
         onChanged: (newProtocol) => _changeProtocol(
           context,
           newProtocol: newProtocol,
@@ -74,8 +72,3 @@ class ProtocolPicker extends ConsumerWidget {
     }
   }
 }
-
-String _label(ProtocolType p) => switch (p) {
-  ProtocolType.wireguard => S.current.fastLabel,
-  ProtocolType.openvpn => S.current.batterySaverLabel,
-};

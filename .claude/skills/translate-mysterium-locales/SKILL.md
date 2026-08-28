@@ -110,7 +110,6 @@ When converting English `one/other` plurals to other locales, **only add CLDR-re
 | `recentLocations` (section header for VPN locations) | "Ubicaciones recientes" / "Letzte Standorte" | both work; DE "Zuletzt verwendet" is more idiomatic for a recents list |
 | Comparison-card bullet points (`*ComparisonCardItem*`) | full-sentence translation | trim to ≤ 4 words; these are pill-style bullets |
 | `userIntent*` keys | translate as generic phrase | these are **preset names** (Best speed, Max privacy, Low latency) — keep as product feature labels, not generic advice |
-| `fastLabel` / `batterySaverLabel` (protocol suffix appended in parens) | full descriptor | short adjective (DE: "Schnell" / "Energiesparmodus"; fits in `Protocol (X)`) |
 
 ## Datacenter / Residential IP-type terms
 

@@ -18,7 +18,6 @@ class SettingsPickerCard<T> extends StatelessWidget {
     this.enabled = true,
     this.isLoading = false,
     this.subtitleOf,
-    this.customLabel,
     this.sheetKey,
     this.itemKeyOf,
     super.key,
@@ -33,7 +32,6 @@ class SettingsPickerCard<T> extends StatelessWidget {
   final bool enabled;
   final bool isLoading;
   final String? Function(T)? subtitleOf;
-  final String Function(T)? customLabel;
 
   /// Test key for the picker bottom sheet opened on mobile.
   final Key? sheetKey;
@@ -79,7 +77,7 @@ class SettingsPickerCard<T> extends StatelessWidget {
       title: title,
       items: items,
       value: value,
-      labelOf: customLabel ?? labelOf,
+      labelOf: labelOf,
       onChanged: onChanged,
       subtitleOf: subtitleOf,
       sheetKey: sheetKey,

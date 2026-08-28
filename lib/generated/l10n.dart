@@ -78,7 +78,6 @@ class S {
     'authenticationFailed': [],
     'back': [],
     'backToSettingsLbl': [],
-    'batterySaverLabel': [],
     'berlinLbl': [],
     'billedInTotal': ['amount', 'period'],
     'billedPerMonth': ['amount', 'period'],
@@ -171,7 +170,6 @@ class S {
     'failedToSubmitFeedback': [],
     'failedToSubscribe': [],
     'failedToVerifySubs': [],
-    'fastLabel': [],
     'favoriteIpAddAction': [],
     'favoriteIpAddedToast': [],
     'favoriteIpLimitReached': [],
@@ -339,7 +337,6 @@ class S {
     'productsTitle': [],
     'protectedLbl': [],
     'protocol': [],
-    'protocolLabel': ['protocol', 'label'],
     'protocolPickerSettingDesc': [],
     'protocolPickerSettingTitle': [],
     'pt': [],
@@ -685,11 +682,6 @@ class S {
   /// `Back to Settings`
   String get backToSettingsLbl {
     return Intl.message('Back to Settings', name: 'backToSettingsLbl', desc: '', args: []);
-  }
-
-  /// `Battery saver`
-  String get batterySaverLabel {
-    return Intl.message('Battery saver', name: 'batterySaverLabel', desc: '', args: []);
   }
 
   /// `Berlin, Germany 🇩🇪`
@@ -1305,11 +1297,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `Fast`
-  String get fastLabel {
-    return Intl.message('Fast', name: 'fastLabel', desc: '', args: []);
   }
 
   /// `Add to Favourite IPs`
@@ -2467,16 +2454,6 @@ class S {
   /// `Protocol`
   String get protocol {
     return Intl.message('Protocol', name: 'protocol', desc: '', args: []);
-  }
-
-  /// `{protocol} ({label})`
-  String protocolLabel(Object protocol, Object label) {
-    return Intl.message(
-      '$protocol ($label)',
-      name: 'protocolLabel',
-      desc: '',
-      args: [protocol, label],
-    );
   }
 
   /// `Switching the VPN protocol will disconnect you. You’ll need to reconnect afterwards.`

@@ -74,26 +74,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "${date} तक रोका गया";
 
-  static String m23(protocol, label) => "${protocol} (${label})";
+  static String m23(location) => "${location} रिफ्रेश करें";
 
-  static String m24(location) => "${location} रिफ्रेश करें";
+  static String m24(date) => "${date} को नवीनीकृत होगा";
 
-  static String m25(date) => "${date} को नवीनीकृत होगा";
-
-  static String m26(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: 'फिर से भेजें', one: 'फिर से भेजें', other: 'फिर से भेजें (${count})')}";
 
-  static String m27(percent) => "${percent}% की बचत";
+  static String m26(percent) => "${percent}% की बचत";
 
-  static String m28(percent, planId) => "${planId} प्लान के साथ ${percent}% की बचत";
+  static String m27(percent, planId) => "${planId} प्लान के साथ ${percent}% की बचत";
 
-  static String m29(plan) => "${plan} में अपग्रेड करें";
+  static String m28(plan) => "${plan} में अपग्रेड करें";
 
-  static String m30(plan) => "${plan} प्लान में अपग्रेड करें";
+  static String m29(plan) => "${plan} प्लान में अपग्रेड करें";
 
-  static String m31(location) => "${location} पर स्विच करें";
+  static String m30(location) => "${location} पर स्विच करें";
 
-  static String m32(word) => "${word} टाइप करें";
+  static String m31(word) => "${word} टाइप करें";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -125,7 +123,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "back": MessageLookupByLibrary.simpleMessage("वापस"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("सेटिंग्स पर वापस"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("बैटरी सेवर"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("बर्लिन, जर्मनी 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -256,7 +253,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage(
       "हम आपकी पिछली सदस्यता खरीद की पुष्टि नहीं कर सके। दोबारा कोशिश करने के लिए नीचे बटन दबाएँ।",
     ),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("तेज़"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("पसंदीदा IPs में जोड़ें"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP पसंदीदा में जोड़ा गया"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
@@ -503,7 +499,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN उत्पाद"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("सुरक्षित"),
     "protocol": MessageLookupByLibrary.simpleMessage("प्रोटोकॉल"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "VPN प्रोटोकॉल बदलने से आप डिस्कनेक्ट हो जाएँगे। इसके बाद आपको फिर से कनेक्ट करना होगा।",
     ),
@@ -532,8 +527,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("रिफ्रेश करें"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP रिफ्रेश करें"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP पता रिफ्रेश करें"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("जब कुछ काम न कर रहा हो तो रीसेट करें"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "अगर आप ऐप रीसेट करना जारी रखते हैं, तो आप Mysterium VPN से डिस्कनेक्ट हो जाएँगे।",
@@ -592,7 +587,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("प्लान देखें"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("जारी रखने के लिए ईमेल ऐप चुनें"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("अर्ध-वार्षिक"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "हमें अस्थायी नेटवर्क समस्याएँ आ रही हैं। कृपया बाद में फिर से प्रयास करें।",
     ),
@@ -734,8 +729,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "एक सामान्य घरेलू उपयोगकर्ता की तरह दिखें, जिससे आप स्ट्रीमिंग सेवाओं तक पहुँच पाएँ और VPN डिटेक्शन से बच सकें।",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("सर्वर"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("समर्थित देश"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN प्रोटोकॉल"),
@@ -747,15 +742,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("आपकी सदस्यता फिर से सक्रिय है।"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("अपग्रेड करें"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7,500+ आवासीय IPs तक पहुँच के लिए",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("सभी प्लान देखें"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("सत्यापन दोबारा करें"),
     "subscripton": MessageLookupByLibrary.simpleMessage("सदस्यता"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("सिस्टम"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("इंटरनेट को वापस पाएँ।"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("नियम और शर्तें"),
@@ -791,7 +786,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "VPN टनल शुरू करने के लिए आपको अनुमति देनी होगी।",
     ),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("टनल सेटअप करते समय एक त्रुटि हुई"),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("अपना फ़ीडबैक यहाँ लिखें…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("यूक्रेन"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
