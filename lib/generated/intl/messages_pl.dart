@@ -73,26 +73,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "Wstrzymano do ${date}";
 
-  static String m23(protocol, label) => "${protocol} (${label})";
+  static String m23(location) => "Odśwież ${location}";
 
-  static String m24(location) => "Odśwież ${location}";
+  static String m24(date) => "Odnawia się ${date}";
 
-  static String m25(date) => "Odnawia się ${date}";
-
-  static String m26(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: 'Wyślij ponownie', one: 'Wyślij ponownie', few: 'Wyślij ponownie (${count})', many: 'Wyślij ponownie (${count})', other: 'Wyślij ponownie (${count})')}";
 
-  static String m27(percent) => "Zaoszczędź ${percent}%";
+  static String m26(percent) => "Zaoszczędź ${percent}%";
 
-  static String m28(percent, planId) => "Zaoszczędź ${percent}% z planem ${planId}";
+  static String m27(percent, planId) => "Zaoszczędź ${percent}% z planem ${planId}";
 
-  static String m29(plan) => "Przejdź na ${plan}";
+  static String m28(plan) => "Przejdź na ${plan}";
 
-  static String m30(plan) => "Przejdź na plan ${plan}";
+  static String m29(plan) => "Przejdź na plan ${plan}";
 
-  static String m31(location) => "Przełącz na ${location}";
+  static String m30(location) => "Przełącz na ${location}";
 
-  static String m32(word) => "Wpisz ${word}";
+  static String m31(word) => "Wpisz ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -126,7 +124,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "back": MessageLookupByLibrary.simpleMessage("Wstecz"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Wróć do ustawień"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Oszczędzanie baterii"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlin, Niemcy 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -253,7 +250,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage(
       "Nie udało się zweryfikować Twojego ostatniego zakupu subskrypcji. Naciśnij przycisk poniżej, aby spróbować ponownie.",
     ),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("Szybki"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Dodaj do ulubionych IP"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("Dodano IP do ulubionych"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
@@ -508,7 +504,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("Produkty VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("CHRONIONY"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protokół"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Zmiana protokołu VPN spowoduje rozłączenie. Następnie trzeba będzie połączyć się ponownie.",
     ),
@@ -537,8 +532,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Odśwież"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Odśwież IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Odśwież adres IP"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Zresetuj, gdy coś nie działa"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Jeśli zresetujesz aplikację, zostaniesz odłączony od Mysterium VPN.",
@@ -611,7 +606,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Wybierz aplikację pocztową, aby kontynuować",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("co pół roku"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Występują tymczasowe problemy z siecią. Spróbuj ponownie później.",
     ),
@@ -755,8 +750,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Wyglądaj jak zwykły użytkownik domowy, co pozwala korzystać z usług streamingowych i unikać wykrycia VPN.",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Serwery"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("Obsługiwane kraje"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("Protokół VPN"),
@@ -770,17 +765,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Twoja subskrypcja jest znowu aktywna.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Ulepsz"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "aby uzyskać dostęp do ponad 7500 IP mieszkaniowych",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage(
       "Zobacz wszystkie plany",
     ),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("Ponów weryfikację"),
     "subscripton": MessageLookupByLibrary.simpleMessage("Subskrypcja"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("System"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Odzyskaj internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Regulamin"),
@@ -812,7 +807,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Wystąpił błąd podczas konfigurowania tunelu",
     ),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Wpisz tutaj swoją opinię…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(

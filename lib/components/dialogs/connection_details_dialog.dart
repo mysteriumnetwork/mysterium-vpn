@@ -195,7 +195,7 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
                     _ConnectedSinceCard(connectedAt: connectedAt),
                     DetailCard(
                       title: S.current.protocol,
-                      value: protocol.subtitle,
+                      value: protocol.label,
                       position: SettingsCardPosition.middle,
                     ),
                     DetailCard(

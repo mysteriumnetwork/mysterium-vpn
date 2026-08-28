@@ -3,7 +3,7 @@ enum ProtocolType {
   wireguard('WireGuard'),
   openvpn('OpenVPN');
 
-  const ProtocolType(this.subtitle);
+  const ProtocolType(this.label);
 
-  final String subtitle;
+  final String label;
 }

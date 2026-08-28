@@ -67,25 +67,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "${date} まで一時停止中";
 
-  static String m23(protocol, label) => "${protocol} (${label})";
+  static String m23(location) => "${location} を更新";
 
-  static String m24(location) => "${location} を更新";
+  static String m24(date) => "${date} に更新";
 
-  static String m25(date) => "${date} に更新";
+  static String m25(count) => "${Intl.plural(count, zero: '再送信', other: '再送信 (${count})')}";
 
-  static String m26(count) => "${Intl.plural(count, zero: '再送信', other: '再送信 (${count})')}";
+  static String m26(percent) => "${percent}% お得";
 
-  static String m27(percent) => "${percent}% お得";
+  static String m27(percent, planId) => "${planId} プランで ${percent}% お得";
 
-  static String m28(percent, planId) => "${planId} プランで ${percent}% お得";
+  static String m28(plan) => "${plan} にアップグレード";
 
-  static String m29(plan) => "${plan} にアップグレード";
+  static String m29(plan) => "${plan} プランにアップグレード";
 
-  static String m30(plan) => "${plan} プランにアップグレード";
+  static String m30(location) => "${location} に切り替える";
 
-  static String m31(location) => "${location} に切り替える";
-
-  static String m32(word) => "${word} を入力";
+  static String m31(word) => "${word} を入力";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -113,7 +111,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticationFailed": MessageLookupByLibrary.simpleMessage("サインインできませんでした。もう一度お試しください。"),
     "back": MessageLookupByLibrary.simpleMessage("戻る"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("設定に戻る"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("バッテリー節約"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("ベルリン（ドイツ） 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -220,7 +217,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage(
       "前回のサブスクリプション購入を確認できませんでした。下のボタンを押して再試行してください。",
     ),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("高速"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("お気に入り IP に追加"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP をお気に入りに追加しました"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
@@ -433,7 +429,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN 製品"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("保護中"),
     "protocol": MessageLookupByLibrary.simpleMessage("プロトコル"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "VPN プロトコルを切り替えると接続が切断されます。その後、再接続が必要です。",
     ),
@@ -458,8 +453,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("更新"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP を更新"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP アドレスを更新"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("うまく動作しないときにリセット"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "アプリのリセットを続行すると、Mysterium VPN から切断されます。",
@@ -506,7 +501,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("プランを見る"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("続行するにはメールアプリを選択"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("半年ごと"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "一時的なネットワークの問題が発生しています。後でもう一度お試しください。",
     ),
@@ -620,8 +615,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "通常の家庭ユーザーのように見せることで、ストリーミングサービスにアクセスでき、VPN の検出を回避できます。",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("サーバー"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("対応国"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN プロトコル"),
@@ -631,15 +626,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("サブスクリプションの変更が完了していません。"),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("サブスクリプションが再び有効になりました。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("アップグレード"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7,500 以上の レジデンシャル IP にアクセス",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("すべてのプランを見る"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("確認を再試行"),
     "subscripton": MessageLookupByLibrary.simpleMessage("サブスクリプション"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("システム"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("インターネットを取り戻そう。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("利用規約"),
@@ -661,7 +656,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("別のロケーションを検索してみてください"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("VPNトンネルを開始するには許可が必要です。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("トンネルの設定中にエラーが発生しました"),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("ここにフィードバックを入力…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("ウクライナ"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(

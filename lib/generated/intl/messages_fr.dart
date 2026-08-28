@@ -73,26 +73,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "En pause jusqu’au ${date}";
 
-  static String m23(protocol, label) => "${protocol} (${label})";
+  static String m23(location) => "Actualiser ${location}";
 
-  static String m24(location) => "Actualiser ${location}";
+  static String m24(date) => "Se renouvelle le ${date}";
 
-  static String m25(date) => "Se renouvelle le ${date}";
-
-  static String m26(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: 'Renvoyer', one: 'Renvoyer', other: 'Renvoyer (${count})')}";
 
-  static String m27(percent) => "Économise ${percent} %";
+  static String m26(percent) => "Économise ${percent} %";
 
-  static String m28(percent, planId) => "Économise ${percent} % avec une offre ${planId}";
+  static String m27(percent, planId) => "Économise ${percent} % avec une offre ${planId}";
 
-  static String m29(plan) => "Passe à ${plan}";
+  static String m28(plan) => "Passe à ${plan}";
 
-  static String m30(plan) => "Passe à l\'offre ${plan}";
+  static String m29(plan) => "Passe à l\'offre ${plan}";
 
-  static String m31(location) => "Passer à ${location}";
+  static String m30(location) => "Passer à ${location}";
 
-  static String m32(word) => "Saisis ${word}";
+  static String m31(word) => "Saisis ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -126,7 +124,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "back": MessageLookupByLibrary.simpleMessage("Retour"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Retour aux paramètres"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Économie de batterie"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlin, Allemagne 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -261,7 +258,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage(
       "Nous n\'avons pas pu vérifier ton dernier achat d\'abonnement. Appuie sur le bouton ci-dessous pour réessayer.",
     ),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("Rapide"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Ajouter aux IP favorites"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP ajoutée aux favoris"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
@@ -514,7 +510,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("Produits VPN"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("PROTÉGÉ"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protocole"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "Changer de protocole VPN te déconnectera. Tu devras te reconnecter ensuite.",
     ),
@@ -547,8 +542,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Actualiser"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("Actualiser l\'IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("Actualiser l\'adresse IP"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage(
       "Réinitialise quand quelque chose ne fonctionne pas",
     ),
@@ -623,7 +618,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sélectionne une application e-mail pour continuer",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("semestriel"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Nous rencontrons des problèmes réseau temporaires. Réessaie plus tard.",
     ),
@@ -773,8 +768,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Apparais comme un utilisateur domestique normal, ce qui te permet d\'accéder aux services de streaming et d\'éviter la détection VPN.",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Serveurs"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage(
       "Pays pris en charge",
@@ -790,11 +785,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ton abonnement est de nouveau actif.",
     ),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Améliorer"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "pour accéder à plus de 7 500 IP résidentielles",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage(
       "Voir toutes les offres",
     ),
@@ -802,7 +797,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Réessayer la vérification",
     ),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abonnement"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("Système"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage(
       "Reprends le contrôle d\'Internet.",
@@ -834,7 +829,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage(
       "Une erreur s\'est produite lors de la configuration du tunnel",
     ),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Écris ton avis ici…"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraine"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(

@@ -73,26 +73,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m22(date) => "${date} tarihine kadar duraklatıldı";
 
-  static String m23(protocol, label) => "${protocol} (${label})";
+  static String m23(location) => "${location} yenile";
 
-  static String m24(location) => "${location} yenile";
+  static String m24(date) => "${date} tarihinde yenilenir";
 
-  static String m25(date) => "${date} tarihinde yenilenir";
-
-  static String m26(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: 'Tekrar gönder', one: 'Tekrar gönder', other: 'Tekrar gönder (${count})')}";
 
-  static String m27(percent) => "%${percent} tasarruf";
+  static String m26(percent) => "%${percent} tasarruf";
 
-  static String m28(percent, planId) => "${planId} planıyla %${percent} tasarruf";
+  static String m27(percent, planId) => "${planId} planıyla %${percent} tasarruf";
+
+  static String m28(plan) => "${plan} planına yükselt";
 
   static String m29(plan) => "${plan} planına yükselt";
 
-  static String m30(plan) => "${plan} planına yükselt";
+  static String m30(location) => "${location} konumuna geç";
 
-  static String m31(location) => "${location} konumuna geç";
-
-  static String m32(word) => "${word} yaz";
+  static String m31(word) => "${word} yaz";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -126,7 +124,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "back": MessageLookupByLibrary.simpleMessage("Geri"),
     "backToSettingsLbl": MessageLookupByLibrary.simpleMessage("Ayarlara geri dön"),
-    "batterySaverLabel": MessageLookupByLibrary.simpleMessage("Pil tasarrufu"),
     "berlinLbl": MessageLookupByLibrary.simpleMessage("Berlin, Almanya 🇩🇪"),
     "billedInTotal": m2,
     "billedPerMonth": m3,
@@ -251,7 +248,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage(
       "Son abonelik satın alımını doğrulayamadık. Tekrar denemek için aşağıdaki düğmeye dokun.",
     ),
-    "fastLabel": MessageLookupByLibrary.simpleMessage("Hızlı"),
     "favoriteIpAddAction": MessageLookupByLibrary.simpleMessage("Favori IP\'lere ekle"),
     "favoriteIpAddedToast": MessageLookupByLibrary.simpleMessage("IP favorilere eklendi"),
     "favoriteIpLimitReached": MessageLookupByLibrary.simpleMessage(
@@ -500,7 +496,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "productsTitle": MessageLookupByLibrary.simpleMessage("VPN ürünleri"),
     "protectedLbl": MessageLookupByLibrary.simpleMessage("KORUMALI"),
     "protocol": MessageLookupByLibrary.simpleMessage("Protokol"),
-    "protocolLabel": m23,
     "protocolPickerSettingDesc": MessageLookupByLibrary.simpleMessage(
       "VPN protokolünü değiştirmek bağlantını kesecek. Sonrasında yeniden bağlanman gerekir.",
     ),
@@ -531,8 +526,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Yenile"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP\'yi yenile"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP adresini yenile"),
-    "refreshLocationsTooltip": m24,
-    "renewsOn": m25,
+    "refreshLocationsTooltip": m23,
+    "renewsOn": m24,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Bir şey çalışmadığında sıfırla"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Uygulamayı sıfırlamaya devam edersen Mysterium VPN bağlantın kesilir.",
@@ -599,7 +594,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Devam etmek için e-posta uygulaması seç",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("altı ayda bir"),
-    "sendAgain": m26,
+    "sendAgain": m25,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar dene..",
     ),
@@ -737,8 +732,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Normal bir ev kullanıcısı gibi görünerek streaming hizmetlerine erişmeni ve VPN tespitinden kaçınmanı sağlar.",
     ),
-    "subscriptionPlanSavePercent": m27,
-    "subscriptionPlanSaveWith": m28,
+    "subscriptionPlanSavePercent": m26,
+    "subscriptionPlanSaveWith": m27,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Sunucular"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage(
       "Desteklenen ülkeler",
@@ -752,17 +747,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("Aboneliğin yeniden etkin."),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Yükselt"),
-    "subscriptionUpgradeCTA": m29,
+    "subscriptionUpgradeCTA": m28,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7.500+ konut IP\'ye erişmek için",
     ),
-    "subscriptionUpgradeModalTitle": m30,
+    "subscriptionUpgradeModalTitle": m29,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage(
       "Doğrulamayı Yeniden Dene",
     ),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abonelik"),
-    "switchToLocationBtn": m31,
+    "switchToLocationBtn": m30,
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("İnterneti geri al."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Şartlar ve Koşullar"),
@@ -790,7 +785,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "VPN tünelini başlatmak için izin vermen gerekiyor.",
     ),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("Tünel kurulurken bir hata oluştu"),
-    "typeDelete": m32,
+    "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Geri bildirimini buraya yaz..."),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukrayna"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
