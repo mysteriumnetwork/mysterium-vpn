@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -1215,6 +1216,53 @@ void main() {
         expect(exhaustionStore.exhaustionNotice, connectedLocation);
 
         await store.disposeStore();
+      });
+
+      group('MQTT connection updates', () {
+        late StreamController<String> updates;
+
+        setUp(() async {
+          updates = StreamController<String>.broadcast();
+          when(mockMqtt.subscribe(any)).thenAnswer(
+            (invocation) => (invocation.positionalArguments.first as String).endsWith('/killed')
+                ? const Stream<String>.empty()
+                : updates.stream,
+          );
+          await connect(country);
+          await pumpEventQueue();
+          clearInteractions(mockAnalytics);
+        });
+
+        tearDown(() async => updates.close());
+
+        Future<void> publish({required String ip, required String from}) async {
+          updates.add(
+            json.encode({
+              'location': {'ip': ip, 'country': from, 'node_type': 'datacenter'},
+            }),
+          );
+          await pumpEventQueue();
+        }
+
+        test('republished metadata logs no event', () async {
+          await publish(ip: '2.2.2.2', from: 'fr');
+
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+        });
+
+        test('changed IP updates the connection and logs the event', () async {
+          await publish(ip: '9.9.9.9', from: 'fr');
+
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+        });
+
+        test('a new node carries its country into the location', () async {
+          await publish(ip: '9.9.9.9', from: 'de');
+
+          expect(vpnStore.location?.id, 'de');
+        });
       });
     });
 

@@ -971,14 +971,18 @@ abstract class _VpnStore extends VpnGuard with Store {
       return;
     }
 
-    final update = ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
-
-    _vpnConnection = connection.copyWith(
-      connectionIP: update.location.ip,
-      location: connection.location.copyWith(id: update.location.country),
+    final eventPayload = ConnectionMessage.fromJson(
+      json.decode(event) as Map<String, dynamic>,
+    ).location;
+    final connectionUpdate = connection.copyWith(
+      connectionIP: eventPayload.ip,
+      location: connection.location.copyWith(id: eventPayload.country),
     );
 
-    _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+    if (connectionUpdate != connection) {
+      _vpnConnection = connectionUpdate;
+      _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+    }
   }
 
   void _handleConnectionKilled(String _) {
