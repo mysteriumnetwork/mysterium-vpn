@@ -1238,7 +1238,7 @@ void main() {
         Future<void> publish({required String ip, required String from}) async {
           updates.add(
             json.encode({
-              'location': {'ip': ip, 'country': from, 'node_type': 'datacenter'},
+              'location': {'ip': ip, 'country': from, 'city': 'paris', 'node_type': 'datacenter'},
             }),
           );
           await pumpEventQueue();
