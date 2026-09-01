@@ -31,7 +31,9 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     required SubscriptionStore subscriptionStore,
     required SubscriptionOnboardingStore subscriptionOnboardingStore,
     required RemoteConfigStore remoteConfigStore,
-  }) : _apiService = apiService,
+    bool Function()? supportsPush,
+  }) : _supportsPush = supportsPush ?? isPushSupported,
+       _apiService = apiService,
        _analyticsStore = analyticsStore,
        _realIPInfo = realIPInfo,
        localDb = localDBService,
@@ -109,10 +111,11 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   bool anyPromptShownThisSession = false;
 
-  @visibleForTesting
-  bool testIsMobile = false; // default false, will override in tests
+  /// Injected so tests can force either answer — the host VM this suite runs on
+  /// is macOS, which is itself push-capable.
+  final bool Function() _supportsPush;
 
-  bool get supportsPushNotifications => testIsMobile || isMobile();
+  bool get supportsPushNotifications => _supportsPush();
 
   @action
   bool isPromptShown(UserPromptType type) {

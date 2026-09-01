@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -117,6 +118,27 @@ class SharedPreferenceService {
 
   bool getPushNotificationsShown() =>
       getBool(StorageKeys.pushNotificationsPermissionPromptShown.name) ?? false;
+
+  // ─── Notifier device registration ────────────────────────────────────────
+
+  Future<void> setNotifierRegistration(NotifierRegistration value) async =>
+      setString(StorageKeys.notifierRegistration.name, jsonEncode(value.toJson()));
+
+  /// Null when nothing is stored or the stored value is unreadable — either way
+  /// the device is treated as unregistered, which is the safe default.
+  NotifierRegistration? getNotifierRegistration() {
+    final raw = getString(StorageKeys.notifierRegistration.name);
+    if (raw.isNullOrEmpty) {
+      return null;
+    }
+    try {
+      return NotifierRegistration.fromJson(jsonDecode(raw!) as Map<String, dynamic>);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<bool> clearNotifierRegistration() async => remove(StorageKeys.notifierRegistration.name);
 
   // ─── Review prompt ──────────────────────────────────────────────────────
 

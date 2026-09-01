@@ -6,10 +6,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {
@@ -33,6 +35,34 @@ mixin AnalyticsStore {
       ),
     );
   }
+
+  /// Reports a handled failure to Crashlytics and Sentry **without** marking it
+  /// a crash.
+  ///
+  /// Fills the gap between the two existing paths: `logger.warning` only leaves
+  /// a Crashlytics breadcrumb, while `logger.handle`/`logger.error` report as
+  /// **fatal** via `CrashlyticsLoggerObserver`. Platform failures we recover
+  /// from are neither — they must be visible in the dashboards without
+  /// inflating the crash rate.
+  ///
+  /// Reserve this for genuinely unexpected failures. Routine, already-evented
+  /// outcomes (an HTTP error we retry, a permission the user declined) belong in
+  /// an analytics event, not here, or the signal drowns.
+  Future<void> logNonFatal({required Object err, StackTrace? stack, String? reason}) async {
+    if (isNonActionable(err)) {
+      return;
+    }
+    // This runs on a caller's recovery path, so it must never throw — a broken
+    // reporter would otherwise replace the failure it was meant to record.
+    try {
+      await logError(err: err, stack: stack, reason: reason);
+    } catch (_) {}
+    try {
+      await Sentry.captureException(err, stackTrace: stack, hint: _sentryHint(reason));
+    } catch (_) {}
+  }
+
+  Hint? _sentryHint(String? reason) => reason == null ? null : Hint.withMap({'reason': reason});
 
   List<NavigatorObserver> navigationObservers();
 
@@ -448,8 +478,8 @@ mixin AnalyticsStore {
   Future<void> logPushNotificationsPermissionsChanged({required bool permissionsGranted}) async {
     await logEvent(
       permissionsGranted
-          ? AnalyticsEvent.pushNotificationsPermissionsGranted
-          : AnalyticsEvent.pushNotificationsPermissionsDenied,
+          ? AnalyticsEvent.pushPermissionGranted
+          : AnalyticsEvent.pushPermissionDenied,
       parameters: {'permission': permissionsGranted.toString()},
     );
     await setUserProperty(
@@ -457,6 +487,14 @@ mixin AnalyticsStore {
         name: AnalyticsUserPropName.pnPermissionStatus,
         value: permissionsGranted.toString(),
       ),
+    );
+  }
+
+  /// [errorCategory] is a coarse bucket — never a token, key or response body.
+  Future<void> logPushDeviceRegistrationFailed({required String errorCategory, int? status}) async {
+    await logEvent(
+      AnalyticsEvent.pushDeviceRegistrationFailed,
+      parameters: {'error_category': errorCategory, 'status': ?status?.toString()},
     );
   }
 

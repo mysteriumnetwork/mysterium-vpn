@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
@@ -12,7 +13,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/repositories/notifications/fcm_notifications_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
@@ -940,6 +944,7 @@ class _ConfigPage extends ConsumerWidget {
     final configcatUser = ref.watch(configCatUserStorePOD);
     final abTesting = ref.watch(abTestingStorePOD);
     final pushNotificationStore = ref.watch(pushNotificationsStorePOD);
+    final fcmToken = ref.watch(pushNotificationsRepositoryPOD).currentToken;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -991,11 +996,35 @@ class _ConfigPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Push Notifications User: ',
+                  'APNs Token: ',
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
+                ),
+                // Diagnostic, Apple only: FCM cannot mint a token until APNs
+                // has delivered a device token. Empty here with a granted
+                // permission means APNs registration itself failed — look for
+                // didFailToRegisterForRemoteNotifications in the run log.
+                const _ApnsTokenValue(),
+                const SizedBox(height: 8),
+                Text(
+                  'FCM Token (tap to copy): ',
+                  style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
+                ),
+                _CopyableValue(
+                  // Shown in full, not truncated: the point is pasting it into
+                  // Firebase Console to send a test push. Dev-flavor panel only.
+                  value: fcmToken,
+                  emptyLabel: 'No token yet (null on iOS until APNs responds)',
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Notifier Registration: ',
                   style: textStyles.textMd.bold.copyWith(color: palette.textBrandPrimary),
                 ),
                 Text(
-                  pushNotificationStore.user ?? 'Loading...',
+                  describeNotifierRegistration(
+                    SharedPreferenceService.instance.getNotifierRegistration(),
+                    permissionGranted: pushNotificationStore.pushNotificationsPermissionGranted,
+                  ),
                   maxLines: 100,
                   overflow: TextOverflow.ellipsis,
                   style: textStyles.textMd.regular,
@@ -1240,6 +1269,110 @@ class _SharedPreferencesValues extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// One-line summary for the QA debug panel. The FCM token is truncated so a
+/// screenshot of the panel can't leak a usable device token.
+String describeNotifierRegistration(
+  NotifierRegistration? registration, {
+  required bool permissionGranted,
+}) {
+  if (registration == null) {
+    return 'not registered (permission: $permissionGranted)';
+  }
+  final token = registration.token;
+  final shortToken = token.length <= 12 ? token : '${token.substring(0, 12)}…';
+  return [
+    'user: ${registration.externalUserId}',
+    'token: $shortToken',
+    'platform: ${registration.platform.name}',
+    'contract: v${registration.contractVersion}',
+    if (registration.pending) 'PENDING RETRY',
+    'permission: $permissionGranted',
+  ].join('\n');
+}
+
+/// Tap-to-copy value row for the QA config panel.
+class _CopyableValue extends StatelessWidget {
+  const _CopyableValue({required this.value, required this.emptyLabel});
+
+  final String? value;
+  final String emptyLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final text = value;
+    if (text == null || text.isEmpty) {
+      return Text(
+        emptyLabel,
+        style: theme.textStyles.textMd.regular.copyWith(color: theme.palette.textTertiary),
+      );
+    }
+    return GestureDetector(
+      onTap: () {
+        Clipboard.setData(ClipboardData(text: text));
+        showSnackbar('Copied to clipboard', type: SnackbarType.info);
+      },
+      child: Text(text, style: theme.textStyles.textMd.regular),
+    );
+  }
+}
+
+/// APNs device-token diagnostic for the QA config panel.
+///
+/// Read directly rather than through the notifications repository: this exists
+/// only to debug Apple push registration and does not belong on a production
+/// interface that Windows and Linux also implement.
+/// APNs device-token diagnostic for the QA config panel.
+///
+/// Read directly rather than through the notifications repository: this exists
+/// only to debug Apple push registration and does not belong on a production
+/// interface that Windows and Linux also implement.
+class _ApnsTokenValue extends StatelessWidget {
+  const _ApnsTokenValue();
+
+  @override
+  Widget build(BuildContext context) {
+    if (!Platform.isMacOS && !Platform.isIOS) {
+      return const _PanelHint('n/a on this platform');
+    }
+    return FutureBuilder<({String? token, String? error})>(
+      future: readApnsTokenFromPlatform(),
+      builder: (context, snapshot) {
+        final result = snapshot.data;
+        if (snapshot.connectionState != ConnectionState.done || result == null) {
+          return const _PanelHint('Reading...');
+        }
+        // Surface the platform error verbatim — the whole point of this row is
+        // telling "APNs has not answered yet" apart from "the call failed".
+        final error = result.error;
+        if (error != null) {
+          return _PanelHint('error: $error');
+        }
+        final token = result.token;
+        if (token == null || token.isEmpty) {
+          return const _PanelHint('null — APNs has not delivered a token yet');
+        }
+        return _CopyableValue(value: token, emptyLabel: '');
+      },
+    );
+  }
+}
+
+class _PanelHint extends StatelessWidget {
+  const _PanelHint(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      text,
+      style: theme.textStyles.textMd.regular.copyWith(color: theme.palette.textTertiary),
     );
   }
 }

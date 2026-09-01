@@ -107,37 +107,37 @@ void useHomeAutorun() {
             return;
           }
           pushNotificationsStore.lastShownPushNotificationId = notification?.id;
-          if (notification?.additionalData != null) {
-            if (notification!.additionalData!.containsKey('redirect_url')) {
-              final redirectUrl = notification.additionalData!['redirect_url'];
-              if (redirectUrl is! String || redirectUrl.isEmpty) {
-                return;
-              }
-              Beamer.of(context).navigateToUrl(
-                url: redirectUrl,
-                context: context,
-                isAuthenticated: authSessionStore.isAuthenticated,
-                accessToken: authSessionStore.accessToken,
-              );
-            } else if (notification.additionalData!.containsKey('coupon_code')) {
-              final couponCode = notification.additionalData!['coupon_code'];
-              if (couponCode is! String || couponCode.isEmpty) {
-                return;
-              }
-              if (!authSessionStore.isAuthenticated) {
-                return;
-              }
-              Clipboard.setData(ClipboardData(text: couponCode)).then((value) {
-                showSnackbar(
-                  S.current.couponCodeCopied('"$couponCode"'),
-                  type: SnackbarType.success,
-                );
-                if (context.mounted) {
-                  showSubscriptionUpgradeModalPage(context);
-                }
-              });
-            }
+          if (notification == null) {
+            return;
           }
+
+          final couponCode = notification.additionalData?['coupon_code'];
+          if (couponCode is String && couponCode.isNotEmpty) {
+            if (!authSessionStore.isAuthenticated) {
+              return;
+            }
+            Clipboard.setData(ClipboardData(text: couponCode)).then((value) {
+              showSnackbar(S.current.couponCodeCopied('"$couponCode"'), type: SnackbarType.success);
+              if (context.mounted) {
+                showSubscriptionUpgradeModalPage(context);
+              }
+            });
+            return;
+          }
+
+          controller.add(() async {
+            if (!context.mounted) {
+              return null;
+            }
+            await openPushNotificationTarget(
+              deepLink: notification.launchUrl,
+              delegate: Beamer.of(context),
+              context: context,
+              isAuthenticated: authSessionStore.isAuthenticated,
+              accessToken: authSessionStore.accessToken,
+            );
+            return null;
+          });
         }),
         autorun((_) {
           if (!reviewPromptStore.pendingPrompt) {

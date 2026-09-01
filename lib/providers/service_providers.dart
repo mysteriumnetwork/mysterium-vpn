@@ -88,6 +88,34 @@ final dioOptionsPOD = Provider(
   ),
 );
 
+/// Separate from [vpnApiDioPOD] on purpose: Notifier authenticates with a
+/// static public API key, so the bearer-token injector, [RefreshTokenInterceptor]
+/// and [ApiErrorsInterceptor] must not be attached here.
+final notifierDioPOD = Provider<Dio>((ref) {
+  // Shares the app's base options (headers, timeouts) so a header rename or
+  // timeout change cannot silently skip Notifier; only the host and the auth
+  // scheme differ.
+  final options = ref.watch(dioOptionsPOD);
+  final dio = Dio(
+    options.copyWith(
+      baseUrl: Env.notifierBaseUrl,
+      headers: {...options.headers, 'Authorization': 'Bearer ${Env.notifierPublicApiKey}'},
+    ),
+  );
+
+  dio.interceptors.addAll([
+    ConnectionErrorsInterceptor(),
+    RetryRequestInterceptor(dio: dio),
+    if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
+  ]);
+
+  return dio;
+});
+
+final notifierServicePOD = Provider<NotifierService>(
+  (ref) => RestNotifierService(dio: ref.watch(notifierDioPOD), logger: ref.watch(loggerPOD)),
+);
+
 final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
   final logger = ref.watch(loggerPOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);

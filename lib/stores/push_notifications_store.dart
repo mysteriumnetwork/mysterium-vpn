@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/models/models.dart' hide UserData;
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -17,51 +15,55 @@ part 'push_notifications_store.g.dart';
 // ignore: library_private_types_in_public_api
 class PushNotificationsStore = _PushNotificationsStore with _$PushNotificationsStore;
 
+/// Device-level push concerns: notification permission, the prompt cooldown,
+/// and surfacing received/opened notifications.
+///
+/// Deliberately knows nothing about Notifier — event reporting goes through the
+/// repository, which owns the device token, and registration lives in
+/// [NotifierRegistrationStore].
 abstract class _PushNotificationsStore with Store, Disposeable {
   _PushNotificationsStore(
-    this._authSessionStore,
-    this._ipInfoStore,
-    this._subscriptionStore,
     this._logger,
     this._notificationsRepository,
     this._analyticsStore,
     this._localDb,
-    this._remoteConfigStore,
-  ) {
+    this._remoteConfigStore, {
+    bool Function()? supportsPush,
+  }) : _supportsPush = supportsPush ?? isPushSupported {
     _init();
   }
 
-  final List<ReactionDisposer> _disposers = [];
   final List<StreamSubscription<dynamic>> _subscriptions = [];
-  final AuthSessionStore _authSessionStore;
-  final RealIPInfoStore _ipInfoStore;
-  final SubscriptionStore _subscriptionStore;
   final Talker _logger;
   final NotificationsRepository _notificationsRepository;
   final AnalyticsStore _analyticsStore;
   final LocalDBService _localDb;
   final RemoteConfigStore _remoteConfigStore;
 
-  @visibleForTesting
-  bool testIsMobile = false; // default false, will override in tests
+  /// Injected so tests can force either answer — the host VM this suite runs on
+  /// is macOS, which is itself push-capable.
+  final bool Function() _supportsPush;
 
-  bool get supportsPushNotifications => testIsMobile || isMobile();
+  bool get supportsPushNotifications => _supportsPush();
 
   String? lastShownPushNotificationId;
 
   Future<void> _init() async {
     try {
       await _notificationsRepository.init();
-
-      _setupReactions();
       _setupStreamListeners();
     } catch (e, stack) {
-      _logger.handle(e, stack, 'Error initializing push notifications store');
+      // Push must never break startup.
+      _reportFailure(e, stack, 'store init');
     }
   }
 
   void _setupStreamListeners() {
-    _subscriptions.addAll([_createPermissionListener(), _createNotificationClickListener()]);
+    _subscriptions.addAll([
+      _createPermissionListener(),
+      _createReceivedListener(),
+      _createNotificationClickListener(),
+    ]);
   }
 
   StreamSubscription<bool> _createPermissionListener() => _pushNotificationsPermissionStream.listen(
@@ -75,139 +77,64 @@ abstract class _PushNotificationsStore with Store, Disposeable {
             ),
           )
           ..logPushNotificationsPermissionsChanged(permissionsGranted: granted);
-      } catch (e, stack) {
-        _logger.handle(e, stack, 'Error tracking push notifications permission change');
+      } catch (e) {
+        _logger.warning('Error tracking push notifications permission change: $e');
       }
     },
-    onError: (error, [stackTrace]) {
-      _logger.handle(
-        error.toString(),
-        stackTrace as StackTrace?,
-        'Error in push notifications permission status stream',
-      );
-    },
+    onError: (Object error, StackTrace stack) => _reportFailure(error, stack, 'permission stream'),
   );
+
+  StreamSubscription<PushNotification> _createReceivedListener() =>
+      _notificationsRepository.getReceivedStream().listen(
+        (notification) {
+          // No token or payload body in analytics parameters.
+          _analyticsStore.logEvent(
+            AnalyticsEvent.pushReceived,
+            parameters: {'notification_id': notification.id, 'campaign_id': notification.category},
+          );
+          unawaited(_report(notification, NotifierEventType.delivered));
+        },
+        onError: (Object error, StackTrace stack) =>
+            _reportFailure(error, stack, 'received stream'),
+      );
 
   StreamSubscription<PushNotification> _createNotificationClickListener() =>
       _notificationsStream.listen(
         (notification) {
-          try {
-            _analyticsStore.logEvent(
-              AnalyticsEvent.pushNotificationClicked,
-              parameters: {
-                'notification_id': notification.id,
-                'title': notification.title,
-                'body': notification.body,
-                'additional_data': notification.additionalData.toString(),
-              },
-            );
-          } catch (e, stack) {
-            _logger.handle(e, stack, 'Error tracking push notification open event');
-          }
-        },
-        onError: (error, [stackTrace]) {
-          _logger.handle(
-            error.toString(),
-            stackTrace as StackTrace?,
-            'Error in notifications stream',
+          _analyticsStore.logEvent(
+            AnalyticsEvent.pushOpened,
+            parameters: {'notification_id': notification.id, 'campaign_id': notification.category},
           );
+          unawaited(_report(notification, NotifierEventType.open));
         },
+        onError: (Object error, StackTrace stack) => _reportFailure(error, stack, 'opened stream'),
       );
 
-  void _setupReactions() {
-    _disposers.addAll([
-      _createAuthReaction(),
-      _createLocationReaction(),
-      _createSubscriptionReaction(),
-    ]);
-  }
-
-  ReactionDisposer _createAuthReaction() {
-    var wasAuthenticated = false;
-    return reaction((_) => _authSessionStore.userFuture.value.toUserData(), (data) async {
-      final isAuthenticated = _authSessionStore.userFuture.value != null;
-      if (!isAuthenticated) {
-        // Skip logout on the initial fire — only logout on a real
-        // authenticated → unauthenticated transition. Calling OneSignal.logout()
-        // on every cold start churns the device record unnecessarily.
-        if (wasAuthenticated) {
-          await _handleLogout();
-        }
-        wasAuthenticated = false;
-        return;
-      }
-
-      wasAuthenticated = true;
-      await _handleLogin(data);
-    }, fireImmediately: true);
-  }
-
-  ReactionDisposer _createLocationReaction() =>
-      reaction((_) => _ipInfoStore.infoFuture.value.toLocationData(), (data) async {
-        await _updateLocationTags(data);
-      }, fireImmediately: true);
-
-  ReactionDisposer _createSubscriptionReaction() => reaction(
-    (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
-    (data) async {
-      // Only update subscription tags if user is authenticated
-      if (!_authSessionStore.isAuthenticated) {
-        return;
-      }
-      await _updateSubscriptionTags(data);
-    },
-    fireImmediately: true,
-  );
-
-  Future<void> _handleLogout() async {
+  /// Logs and reports a handled failure without marking it a crash, so a
+  /// platform surprise is visible in Crashlytics and Sentry rather than silent.
+  void _reportFailure(Object error, StackTrace? stack, String what) {
+    _logger.warning('Push notifications $what failed: $error');
     try {
-      // Only logout from OneSignal to clear user-specific data (userId, email, tags)
-      // Keep the store, repository, and streams alive since permissions are device-level
-      await _notificationsRepository.logout();
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error logging out from push notifications');
+      // Synchronous throws from the reporter would escape the caller's catch,
+      // so `unawaited` alone is not enough protection here.
+      unawaited(
+        _analyticsStore
+            .logNonFatal(err: error, stack: stack, reason: 'push: $what')
+            .catchError((Object _) {}),
+      );
+    } catch (_) {}
+  }
+
+  /// The repository is contractually best-effort, but this runs inside a stream
+  /// listener — a throw here would escape into the zone as an unhandled error,
+  /// so contain it regardless.
+  Future<void> _report(PushNotification notification, NotifierEventType type) async {
+    try {
+      await _notificationsRepository.reportEvent(notification, type);
+    } catch (e) {
+      _logger.warning('Reporting the ${type.name} event failed: $e');
     }
   }
-
-  Future<void> _handleLogin(UserData data) async {
-    try {
-      await _notificationsRepository.login(userId: data.id, userEmail: data.email);
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error logging in to push notifications');
-    }
-  }
-
-  Future<void> _updateLocationTags(LocationData data) async {
-    try {
-      final tags = <String, String>{'country': data.country, 'city': data.city};
-      await _notificationsRepository.setTags(tags);
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error setting location tags');
-    }
-  }
-
-  Future<void> _updateSubscriptionTags(SubscriptionData data) async {
-    try {
-      final tags = <String, String>{
-        'subscription_duration': data.duration,
-        'subscription_exp_date': data.expirationDate,
-        'subscription_gateway': data.gateway,
-        'subscription_plan': data.plan,
-        'subscription_recurring': data.recurring,
-        'subscription_active': data.active,
-        'subscription_start_date': data.startDate,
-        'subscription_expired': data.expired,
-      };
-      await _notificationsRepository.setTags(tags);
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error setting subscription tags');
-    }
-  }
-
-  @readonly
-  late ObservableStream<PushNotificationsUser> _pushNotificationsUser = ObservableStream(
-    _notificationsRepository.getUser(),
-  );
 
   @readonly
   late ObservableStream<bool> _pushNotificationsPermissionStream = ObservableStream(
@@ -220,20 +147,12 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   );
 
   @computed
-  String? get user => _pushNotificationsUser.value?.toString();
-
-  @computed
   bool get pushNotificationsPermissionGranted {
     try {
-      final value = _pushNotificationsPermissionStream.value;
-      if (value == null) {
-        // If stream value is null, check repository directly
-        return _notificationsRepository.getPermissionStatus();
-      }
-      return value;
+      return _pushNotificationsPermissionStream.value ??
+          _notificationsRepository.getPermissionStatus();
     } catch (e) {
-      // Stream may be closed if repository was disposed
-      // Fall back to checking repository directly
+      // Stream may be closed if the repository was disposed.
       return _notificationsRepository.getPermissionStatus();
     }
   }
@@ -249,12 +168,14 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
     try {
       if (await _notificationsRepository.canRequestPermission()) {
-        await _notificationsRepository.requestPermission();
+        await _requestPermission();
       } else {
         await _notificationsRepository.openAppNotificationsSettings();
       }
     } catch (e, stack) {
-      _logger.handle(e, stack, 'Error opening app notification settings');
+      // Surfaced to the user as a snackbar by the settings view, so it is worth
+      // reporting rather than only logging.
+      _reportFailure(e, stack, 'opening system notification settings');
       rethrow;
     }
   }
@@ -267,18 +188,23 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
     if (userAllowed) {
       try {
-        final granted = await _notificationsRepository.requestPermission();
+        final granted = await _requestPermission();
         _logger.info('Push notifications permission request result: $granted');
       } catch (e, stack) {
-        _logger.handle(e, stack, 'Error requesting push notifications permission');
+        _reportFailure(e, stack, 'permission request');
       }
     }
 
     try {
       await _localDb.setPushNotificationsPromptLastShownAt(DateTime.now());
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error saving push notifications prompt timestamp');
+    } catch (e) {
+      _logger.warning('Error saving push notifications prompt timestamp: $e');
     }
+  }
+
+  Future<bool> _requestPermission() async {
+    _analyticsStore.logEvent(AnalyticsEvent.pushPermissionRequested);
+    return _notificationsRepository.requestPermission();
   }
 
   @action
@@ -297,8 +223,8 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       }
 
       return await _notificationsRepository.canRequestPermission();
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error checking if should show PN prompt');
+    } catch (e) {
+      _logger.warning('Error checking if should show PN prompt: $e');
       return false;
     }
   }
@@ -317,31 +243,15 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   @override
   Future<void> dispose() async {
-    await _disposeReactions();
-    await _disposeSubscriptions();
-
-    _logger.debug('PushNotificationsStore disposed');
-  }
-
-  Future<void> _disposeReactions() async {
-    for (final disposer in _disposers) {
-      try {
-        disposer();
-      } catch (e, stack) {
-        _logger.handle(e, stack, 'Error disposing reaction');
-      }
-    }
-    _disposers.clear();
-  }
-
-  Future<void> _disposeSubscriptions() async {
     for (final subscription in _subscriptions) {
       try {
         await subscription.cancel();
-      } catch (e, stack) {
-        _logger.handle(e, stack, 'Error canceling subscription');
+      } catch (e) {
+        _logger.warning('Error canceling subscription: $e');
       }
     }
     _subscriptions.clear();
+
+    _logger.debug('PushNotificationsStore disposed');
   }
 }

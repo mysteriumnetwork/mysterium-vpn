@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,15 +21,14 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:talker/talker.dart';
 import 'package:window_manager/window_manager.dart';
 
-/// Resolves once both Firebase and OneSignal have finished initializing
-/// (including the post-Firebase observer/analytics-store wiring). Awaited by
-/// the splash so dependents are only read once those SDKs are ready, while
-/// the first frame paints immediately.
+/// Resolves once Firebase has finished initializing, including the
+/// post-Firebase observer/analytics-store wiring. Awaited by the splash so
+/// dependents are only read once the SDK is ready, while the first frame paints
+/// immediately.
 final deferredInitFuturePOD = Provider<Future<void>>((ref) => Future.value());
 
 class AppInitializer {
@@ -76,7 +74,7 @@ class AppInitializer {
     // Expose the analytics store to ref-less utils (e.g. openUrlLink).
     analyticsStoreRef = providerContainer.read(analyticsStorePOD);
 
-    // Firebase + OneSignal run past the first frame; the splash awaits via
+    // Firebase runs past the first frame; the splash awaits via
     // deferredInitFuturePOD.
     unawaited(_runDeferredInit());
   }
@@ -84,19 +82,15 @@ class AppInitializer {
   Future<void> _runDeferredInit() async {
     final total = Stopwatch()..start();
     var firebaseInitMs = 0;
-    var oneSignalInitMs = 0;
     // Fire-and-forget: `localizationRevision` repaints the tree when they land.
     unawaited(_updateLocalizelyTranslations());
     try {
-      await Future.wait([
-        _initFirebaseSDK().then((ms) => firebaseInitMs = ms).then((_) => _onFirebaseReady()),
-        _initOneSignal(logger).then((ms) => oneSignalInitMs = ms),
-      ]);
+      firebaseInitMs = await _initFirebaseSDK();
+      await _onFirebaseReady();
       if (isMobile() && Firebase.apps.isNotEmpty) {
         await PerformanceMonitor.instance.activate();
         await PerformanceMonitor.instance.recordDeferredInit(
           firebaseInitMs: firebaseInitMs,
-          oneSignalInitMs: oneSignalInitMs,
           totalMs: total.elapsedMilliseconds,
           attributes: {'flavor': Env.flavor.name},
         );
@@ -154,22 +148,8 @@ class AppInitializer {
     }
   }
 
-  // ─── OneSignal ─────────────────────────────────────────────────────────────
-  Future<int> _initOneSignal(Talker logger) async {
-    if (!isMobile()) {
-      return 0;
-    }
-    final sw = Stopwatch()..start();
-    try {
-      if (kDebugMode) {
-        await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-      }
-      OneSignal.initialize(Env.oneSignalAppId);
-    } catch (e) {
-      logger.log('OneSignal init error (non-fatal): $e');
-    }
-    return sw.elapsedMilliseconds;
-  }
+  // Firebase Cloud Messaging needs no separate SDK init — FcmNotificationsRepository
+  // configures it from PushNotificationsStore once Firebase is up.
 
   // ─── Desktop window ──────────────────────────────────────────────────────
 

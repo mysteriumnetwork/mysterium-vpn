@@ -8,6 +8,7 @@ export 'key_does_not_exists.dart';
 export 'mqtt_exception.dart';
 export 'no_internet_connection.dart';
 export 'non_actionable.dart';
+export 'notifier_exception.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'pkce_pair_not_found.dart';

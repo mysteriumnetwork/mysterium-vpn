@@ -541,24 +541,29 @@ final promotionalContentStorePOD = Provider<PromotionalContentStore>((ref) {
 });
 
 final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
-  final authSessionStore = ref.watch(authSessionStorePOD);
-  final ipInfoStore = ref.watch(realIPInfoStorePOD);
-  final subscriptionStore = ref.watch(subscriptionStorePOD);
-  final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
-  final logger = ref.watch(loggerPOD);
-  final analyticsStore = ref.watch(analyticsStorePOD);
-  final localDb = LocalDBService.instance;
-  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-
   final store = PushNotificationsStore(
-    authSessionStore,
-    ipInfoStore,
-    subscriptionStore,
-    logger,
-    notificationsRepository,
-    analyticsStore,
-    localDb,
-    remoteConfigStore,
+    ref.watch(loggerPOD),
+    ref.watch(pushNotificationsRepositoryPOD),
+    ref.watch(analyticsStorePOD),
+    LocalDBService.instance,
+    ref.watch(remoteConfigStorePOD),
+  );
+
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
+final notifierRegistrationStorePOD = Provider<NotifierRegistrationStore>((ref) {
+  final store = NotifierRegistrationStore(
+    ref.watch(authSessionStorePOD),
+    ref.watch(realIPInfoStorePOD),
+    ref.watch(subscriptionStorePOD),
+    ref.watch(pushNotificationsRepositoryPOD),
+    ref.watch(notifierServicePOD),
+    SharedPreferenceService.instance,
+    ref.watch(analyticsStorePOD),
+    ref.watch(loggerPOD),
   );
 
   ref.onDispose(store.dispose);
