@@ -89,6 +89,7 @@ class S {
     'cancelDowntimes': [],
     'cancelError7040': [],
     'cancelLatency': [],
+    'cancelSubscriptionWarningDesc': [],
     'cancellationDateLbl': [],
     'cancelled': [],
     'cancelMissingFeatures': [],
@@ -500,6 +501,10 @@ class S {
     'tunnelSetupError': [],
     'typeDelete': ['word'],
     'typeFeedback': [],
+    'udpBlockedConfirm': [],
+    'udpBlockedDesc': [],
+    'udpBlockedSwitched': [],
+    'udpBlockedTitle': [],
     'ukraine': [],
     'unableToConnectToPaymentProcesor': [],
     'unauthenticatedBannerTitle': [],
@@ -752,6 +757,16 @@ class S {
   /// `Latency`
   String get cancelLatency {
     return Intl.message('Latency', name: 'cancelLatency', desc: '', args: []);
+  }
+
+  /// `Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.`
+  String get cancelSubscriptionWarningDesc {
+    return Intl.message(
+      'Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.',
+      name: 'cancelSubscriptionWarningDesc',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Cancellation date:`
@@ -3762,6 +3777,41 @@ class S {
   /// `Type your feedback here...`
   String get typeFeedback {
     return Intl.message('Type your feedback here...', name: 'typeFeedback', desc: '', args: []);
+  }
+
+  /// `Switch to OpenVPN`
+  String get udpBlockedConfirm {
+    return Intl.message('Switch to OpenVPN', name: 'udpBlockedConfirm', desc: '', args: []);
+  }
+
+  /// `WireGuard appears to be blocked on this network. OpenVPN connects in a different way and usually works here. Switch now?`
+  String get udpBlockedDesc {
+    return Intl.message(
+      'WireGuard appears to be blocked on this network. OpenVPN connects in a different way and usually works here. Switch now?',
+      name: 'udpBlockedDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switched to OpenVPN. You can change this any time in Settings.`
+  String get udpBlockedSwitched {
+    return Intl.message(
+      'Switched to OpenVPN. You can change this any time in Settings.',
+      name: 'udpBlockedSwitched',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WireGuard connection blocked`
+  String get udpBlockedTitle {
+    return Intl.message(
+      'WireGuard connection blocked',
+      name: 'udpBlockedTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Ukraine`
