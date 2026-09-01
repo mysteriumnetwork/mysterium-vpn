@@ -125,6 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("速度"),
     "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("确定要取消订阅吗？"),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("取消订阅"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "你的订阅将被取消。在访问到期前，你仍可继续使用 Mysterium VPN。",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("告诉我们更多（可选）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("取消原因"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("太贵了"),
@@ -607,6 +610,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("设置隧道时发生错误"),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("在此输入你的反馈…"),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("切换到 OpenVPN"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "此网络似乎阻止了 WireGuard。OpenVPN 采用不同的连接方式，通常可以在此使用。立即切换？",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage("已切换到 OpenVPN。你可以随时在设置中更改。"),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("WireGuard 连接被阻止"),
     "ukraine": MessageLookupByLibrary.simpleMessage("乌克兰"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage("无法连接支付处理器！请重试。"),
     "unauthenticatedBannerTitle": MessageLookupByLibrary.simpleMessage("你尚未登录"),

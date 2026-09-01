@@ -126,6 +126,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelSpeed": MessageLookupByLibrary.simpleMessage("速度"),
     "cancelSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("サブスクリプションを解約しますか？"),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("サブスクリプションを解約"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "サブスクリプションは解約されます。アクセス終了まで Mysterium VPN を引き続き利用できます。",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("詳しく教えて（任意）"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("キャンセルの理由"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("高すぎる"),
@@ -658,6 +661,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("トンネルの設定中にエラーが発生しました"),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("ここにフィードバックを入力…"),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("OpenVPN に切り替える"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "このネットワークでは WireGuard がブロックされているようです。OpenVPN は別の方法で接続するため、通常はここでも利用できます。今すぐ切り替えますか？",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage("OpenVPN に切り替えました。設定からいつでも変更できます。"),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("WireGuard 接続がブロックされています"),
     "ukraine": MessageLookupByLibrary.simpleMessage("ウクライナ"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "決済プロセッサに接続できません。もう一度お試しください。",

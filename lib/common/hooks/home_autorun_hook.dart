@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -25,6 +26,9 @@ void useHomeAutorun() {
   final pushNotificationsStore = useProvider<PushNotificationsStore>(pushNotificationsStorePOD);
   final reviewPromptStore = useProvider<ReviewPromptStore>(reviewPromptStorePOD);
   final subscriptionOnboardingStore = useProvider(subscriptionOnboardingStorePOD);
+  final udpBlockedSuggestionStore = useProvider<UdpBlockedSuggestionStore>(
+    udpBlockedSuggestionStorePOD,
+  );
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
@@ -138,6 +142,35 @@ void useHomeAutorun() {
               });
             }
           }
+        }),
+        // UDP found blocked on a WireGuard session: offer OpenVPN. A reaction on
+        // a counter, so a detection that happened while Home was unmounted is
+        // not replayed out of context, yet every later detection still fires.
+        reaction((_) => udpBlockedSuggestionStore.suggestionEpoch, (int _) {
+          controller.add(() async {
+            if (!context.mounted) {
+              return null;
+            }
+            udpBlockedSuggestionStore.onDialogShown();
+            final switched = await showUdpBlockedDialog(context);
+            udpBlockedSuggestionStore.onDecision(accepted: switched);
+            if (!switched) {
+              return null;
+            }
+            try {
+              final reconnected = await vpnStore.switchProtocolAndReconnect(ProtocolType.openvpn);
+              udpBlockedSuggestionStore.onFallbackOutcome(reconnected: reconnected);
+              if (reconnected) {
+                showSnackbar(S.current.udpBlockedSwitched, type: SnackbarType.success);
+              }
+            } catch (e) {
+              // A connect failure already surfaces via connectionError; this
+              // covers the switch itself failing, which otherwise says nothing.
+              udpBlockedSuggestionStore.onFallbackOutcome(reconnected: false, error: e);
+              showSnackbar(S.current.somethingWentWrong);
+            }
+            return null;
+          });
         }),
         autorun((_) {
           if (!reviewPromptStore.pendingPrompt) {

@@ -36,6 +36,7 @@ export 'subscription_onboarding_store.dart';
 export 'subscription_store.dart';
 export 'subscription_upgrade_store.dart';
 export 'theme_store.dart';
+export 'udp_blocked_suggestion_store.dart';
 export 'unavailable_locations_store.dart';
 export 'update_availabe_store.dart';
 export 'user_intents_store.dart';

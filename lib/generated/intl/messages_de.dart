@@ -143,6 +143,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Möchtest du dein Abo wirklich kündigen?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Abo kündigen"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Dein Abo wird gekündigt. Du kannst Mysterium VPN bis zum Ende deines Zugangs weiter nutzen.",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Erzähl uns mehr (optional)",
     ),
@@ -825,6 +828,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Gib hier dein Feedback ein..."),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("Zu OpenVPN wechseln"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "WireGuard scheint in diesem Netzwerk blockiert zu sein. OpenVPN verbindet sich anders und funktioniert hier meist. Jetzt wechseln?",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "Zu OpenVPN gewechselt. Du kannst das jederzeit in den Einstellungen ändern.",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("WireGuard-Verbindung blockiert"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraine"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Es konnte keine Verbindung zum Zahlungsabwickler hergestellt werden! Bitte versuche es erneut.",

@@ -82,7 +82,6 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final realIPInfoStore = ref.watch(realIPInfoStorePOD);
   final dnsStore = ref.watch(dnsStorePOD);
@@ -98,6 +97,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final protocolStore = ref.watch(vpnProtocolStorePOD);
   final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
   final ipRefreshExhaustionStore = ref.watch(ipRefreshExhaustionStorePOD);
+  final udpBlockedSuggestionStore = ref.watch(udpBlockedSuggestionStorePOD);
 
   final vpnStore = VpnStore(
     externalApiService: externalApiService,
@@ -106,7 +106,6 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     subscriptionStore: subscriptionStore,
     logger: logger,
     analyticsStore: analyticsStore,
-    remoteConfigStore: remoteConfigStore,
     authSessionStore: authSessionStore,
     realIPInfo: realIPInfoStore,
     dnsStore: dnsStore,
@@ -122,6 +121,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
     protocolStore: protocolStore,
     connectionDecisionStore: connectionDecisionStore,
     ipRefreshExhaustionStore: ipRefreshExhaustionStore,
+    udpBlockedSuggestionStore: udpBlockedSuggestionStore,
   );
 
   return vpnStore;
@@ -407,6 +407,15 @@ final refreshIPStorePOD = Provider<RefreshIPStore>(
 
 final ipRefreshExhaustionStorePOD = Provider<IpRefreshExhaustionStore>(
   (ref) => IpRefreshExhaustionStore(ref.watch(analyticsStorePOD)),
+);
+
+final udpBlockedSuggestionStorePOD = Provider<UdpBlockedSuggestionStore>(
+  (ref) => UdpBlockedSuggestionStore(
+    ref.watch(remoteConfigStorePOD),
+    ref.watch(vpnProtocolStorePOD),
+    ref.watch(authSessionStorePOD),
+    ref.watch(analyticsStorePOD),
+  ),
 );
 
 final newsCenterStorePOD = Provider<NewsCenterStore>(

@@ -140,6 +140,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "क्या आप वाकई अपनी सदस्यता रद्द करना चाहते हैं?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("सदस्यता रद्द करें"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "आपकी सदस्यता रद्द कर दी जाएगी। पहुँच समाप्त होने तक आप Mysterium VPN का उपयोग जारी रख सकते हैं।",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("और बताएँ (वैकल्पिक)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("रद्द करने के कारण"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("बहुत महंगा"),
@@ -788,6 +791,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("टनल सेटअप करते समय एक त्रुटि हुई"),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("अपना फ़ीडबैक यहाँ लिखें…"),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("OpenVPN पर स्विच करें"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "इस नेटवर्क पर WireGuard अवरुद्ध लगता है। OpenVPN अलग तरीके से कनेक्ट होता है और यहाँ आमतौर पर काम करता है। अभी बदलें?",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "OpenVPN पर स्विच किया गया। आप इसे कभी भी सेटिंग्स में बदल सकते हैं।",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("WireGuard कनेक्शन अवरुद्ध"),
     "ukraine": MessageLookupByLibrary.simpleMessage("यूक्रेन"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "पेमेंट प्रोसेसर से कनेक्ट नहीं हो सका! कृपया फिर से प्रयास करें।",

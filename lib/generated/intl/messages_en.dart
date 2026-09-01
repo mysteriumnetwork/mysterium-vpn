@@ -139,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Are you sure you want to cancel your subscription?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Cancel subscription"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("Tell us more (optional)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("Reasons for cancelling"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("Too expensive"),
@@ -779,6 +782,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Type your feedback here..."),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("Switch to OpenVPN"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "WireGuard appears to be blocked on this network. OpenVPN connects in a different way and usually works here. Switch now?",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "Switched to OpenVPN. You can change this any time in Settings.",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("WireGuard connection blocked"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraine"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Unable to connect to the payment processor! Please try again.",
