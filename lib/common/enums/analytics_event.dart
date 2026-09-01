@@ -203,7 +203,15 @@ enum AnalyticsEvent {
   cancellationDiscountAccepted,
   cancellationDiscountDeclined,
   cancellationFinalConfirmViewed,
-  cancellationCompleted;
+  cancellationCompleted,
+  // DPI protocol fallback: UDP blocked on WireGuard, so OpenVPN (TCP) is
+  // offered. Triggered -> dialog shown -> accepted/declined -> succeeded/failed.
+  dpiProtocolFallbackTriggered,
+  dpiProtocolFallbackDialogShown,
+  dpiProtocolFallbackAccepted,
+  dpiProtocolFallbackDeclined,
+  dpiProtocolFallbackSucceeded,
+  dpiProtocolFallbackFailed;
 
   String get formattedName => name.toSnakeCase;
 }

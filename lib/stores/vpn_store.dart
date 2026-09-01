@@ -30,7 +30,6 @@ abstract class _VpnStore extends VpnGuard with Store {
     required super.subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
-    required RemoteConfigStore remoteConfigStore,
     required super.authSessionStore,
     required RealIPInfoStore realIPInfo,
     required DNSStore dnsStore,
@@ -45,12 +44,12 @@ abstract class _VpnStore extends VpnGuard with Store {
     required ConnectionDecisionStore connectionDecisionStore,
     required VpnProtocolStore protocolStore,
     required IpRefreshExhaustionStore ipRefreshExhaustionStore,
+    required UdpBlockedSuggestionStore udpBlockedSuggestionStore,
   }) : _externalApiService = externalApiService,
        _mqtt = mqtt,
        _locationsStore = locationsStore,
        _connectionsLimitStore = connectionsLimitStore,
        _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore,
        _authSessionStore = authSessionStore,
        _realIPInfo = realIPInfo,
        _logger = logger,
@@ -68,7 +67,8 @@ abstract class _VpnStore extends VpnGuard with Store {
            ? wireguardRepository
            : openVpnRepository,
        _connectionDecisionStore = connectionDecisionStore,
-       _ipRefreshExhaustionStore = ipRefreshExhaustionStore {
+       _ipRefreshExhaustionStore = ipRefreshExhaustionStore,
+       _udpBlockedSuggestionStore = udpBlockedSuggestionStore {
     _init();
   }
 
@@ -83,7 +83,6 @@ abstract class _VpnStore extends VpnGuard with Store {
   // Stores
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
-  final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
   final RecentLocationsStore _recentLocationsStore;
@@ -97,6 +96,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   final ConnectionDecisionStore _connectionDecisionStore;
   final VpnProtocolStore _protocolStore;
   final IpRefreshExhaustionStore _ipRefreshExhaustionStore;
+  final UdpBlockedSuggestionStore _udpBlockedSuggestionStore;
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
@@ -141,6 +141,10 @@ abstract class _VpnStore extends VpnGuard with Store {
   /// IP refresh so a country keeps rotating country-wide. In-memory only.
   @readonly
   VPNLocation? _requestedLocation;
+
+  /// Target IP of the current favorite-IP connection, kept so a protocol
+  /// switch can reconnect to the same exit. In-memory only.
+  String? _requestedTargetIp;
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -221,7 +225,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     // Set up protocol change reaction
     _protocolReactionDisposer = reaction<ProtocolType>(
       (_) => _protocolStore.protocol,
-      _handleProtocolChange,
+      _applyProtocol,
     );
 
     _connectedReactionDisposer = reaction<bool>(
@@ -269,8 +273,15 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
+  /// Swaps [_vpnRepository] to match [protocol], tearing down any live tunnel
+  /// first. Idempotent: returns immediately when the repository already
+  /// matches, which is what lets the protocol reaction and an explicit
+  /// caller both run without doubling the work.
   @action
-  Future<void> _handleProtocolChange(ProtocolType protocol) async {
+  Future<void> _applyProtocol(
+    ProtocolType protocol, {
+    VpnDisconnectReason reason = VpnDisconnectReason.user,
+  }) async {
     if ((protocol == ProtocolType.wireguard && _vpnRepository is WireguardRepository) ||
         (protocol == ProtocolType.openvpn && _vpnRepository is OpenVpnRepository)) {
       _logger.info('Protocol is already set to: ${protocol.name}, no change needed');
@@ -286,13 +297,42 @@ abstract class _VpnStore extends VpnGuard with Store {
     // If currently connected, disconnect before switching
     if (isConnected || isLoading) {
       _logger.info('Disconnecting before protocol switch');
-      await disconnectTunnel(reason: VpnDisconnectReason.user);
+      await disconnectTunnel(reason: reason);
     }
 
     _vpnRepository = newRepository;
 
     // Reinitialize the new repository if authenticated
-    _handleAuthStatusChange(_authSessionStore.status);
+    await _handleAuthStatusChange(_authSessionStore.status);
+  }
+
+  /// Persists [protocol], swaps the repository, and restores the session the
+  /// user had: same location, intent and target IP.
+  ///
+  /// Returns whether the user ended up connected on [protocol] — trivially true
+  /// when the tunnel was already down and there was nothing to restore. A failed
+  /// reconnect surfaces through `connectionError` like any other connect failure.
+  @action
+  Future<bool> switchProtocolAndReconnect(ProtocolType protocol) async {
+    // Captured up front — the teardown inside _applyProtocol clears all three.
+    final wasConnected = isConnected;
+    final location = _requestedLocation ?? _vpnConnection?.location;
+    final intent = _userIntentsStore.userIntent;
+    final targetIp = _requestedTargetIp;
+
+    // Swap before persisting: _applyProtocol owns the teardown, and the reaction
+    // that setProtocol then fires hits its idempotent guard instead of racing.
+    // App-initiated, not user: ReviewPromptStore treats a `user` teardown as a
+    // completed session and would ask for a review right after a failed network.
+    await _applyProtocol(protocol, reason: VpnDisconnectReason.appInitiated);
+    await _protocolStore.setProtocol(protocol);
+
+    if (!wasConnected) {
+      return true;
+    }
+
+    await manageConnection(location: location, intent: intent, targetIp: targetIp);
+    return _vpnConnection != null;
   }
 
   Future<void> _handleAuthStatusChange(AuthStatus status) async {
@@ -367,7 +407,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       await _resolveExistingConnection();
     }
 
-    _listenToConnectionStatusChanges();
+    await _listenToConnectionStatusChanges();
   }
 
   Future<void> _resolveExistingConnection() async {
@@ -391,7 +431,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
-  void _listenToConnectionStatusChanges() {
+  Future<void> _listenToConnectionStatusChanges() async {
+    // A protocol switch re-enters this; without the cancel the old repository's
+    // listener stays live and keeps polling the wrong platform channel. Awaited
+    // so the old listener can't clobber _connectionStatus after the swap.
+    await _connectionStatusStream?.cancel();
     final stream = _vpnRepository.statusStream();
     _connectionStatusStream = stream.listen((status) async {
       // The stream can deliver a stale non-connected event while the tunnel is
@@ -483,7 +527,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     String? targetIp,
   }) async {
     await _validateConnectionPrerequisites();
-    await _prepareConnection(location, intent, refreshIP);
+    await _prepareConnection(location, intent, refreshIP, targetIp);
 
     if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
       return;
@@ -517,11 +561,17 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   @action
-  Future<void> _prepareConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) async {
+  Future<void> _prepareConnection(
+    VPNLocation? location,
+    UserIntent? intent,
+    bool refreshIP,
+    String? targetIp,
+  ) async {
     _userIntentsStore.userIntent = intent;
 
     if (!refreshIP) {
       _requestedLocation = location == VPNLocation.closest ? null : location;
+      _requestedTargetIp = targetIp;
     }
 
     _connectingLocation = _connectionDecisionStore.determineConnectingLocation(
@@ -867,6 +917,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       _userIntentsStore.userIntent = null;
       _connectingLocation = null;
       _requestedLocation = null;
+      _requestedTargetIp = null;
       _ipRefreshExhaustionStore.onDisconnected();
       final notify = Stopwatch()..start();
       await _vpnRepository.notifyApiVpnDisconnected();
@@ -932,14 +983,14 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> _udpBlockedCheck() async {
-    if (!_remoteConfigStore.shouldCheckUdp) {
+    if (!_udpBlockedSuggestionStore.shouldRunCheck) {
       return;
     }
 
     try {
       await _vpnRepository.udpBlockedCheck();
     } catch (e) {
-      _analyticsStore.logEvent(AnalyticsEvent.udpBlocked, parameters: {'error': e.toString()});
+      _udpBlockedSuggestionStore.onUdpBlocked(e.toString());
     }
   }
 

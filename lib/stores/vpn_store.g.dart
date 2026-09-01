@@ -366,14 +366,29 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$_initAsyncAction.run(() => super._init());
   }
 
-  late final _$_handleProtocolChangeAsyncAction = AsyncAction(
-    '_VpnStore._handleProtocolChange',
+  late final _$_applyProtocolAsyncAction = AsyncAction(
+    '_VpnStore._applyProtocol',
     context: context,
   );
 
   @override
-  Future<void> _handleProtocolChange(ProtocolType protocol) {
-    return _$_handleProtocolChangeAsyncAction.run(() => super._handleProtocolChange(protocol));
+  Future<void> _applyProtocol(
+    ProtocolType protocol, {
+    VpnDisconnectReason reason = VpnDisconnectReason.user,
+  }) {
+    return _$_applyProtocolAsyncAction.run(() => super._applyProtocol(protocol, reason: reason));
+  }
+
+  late final _$switchProtocolAndReconnectAsyncAction = AsyncAction(
+    '_VpnStore.switchProtocolAndReconnect',
+    context: context,
+  );
+
+  @override
+  Future<bool> switchProtocolAndReconnect(ProtocolType protocol) {
+    return _$switchProtocolAndReconnectAsyncAction.run(
+      () => super.switchProtocolAndReconnect(protocol),
+    );
   }
 
   late final _$_initTunnelAsyncAction = AsyncAction('_VpnStore._initTunnel', context: context);
@@ -456,9 +471,14 @@ mixin _$VpnStore on _VpnStore, Store {
   );
 
   @override
-  Future<void> _prepareConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) {
+  Future<void> _prepareConnection(
+    VPNLocation? location,
+    UserIntent? intent,
+    bool refreshIP,
+    String? targetIp,
+  ) {
     return _$_prepareConnectionAsyncAction.run(
-      () => super._prepareConnection(location, intent, refreshIP),
+      () => super._prepareConnection(location, intent, refreshIP, targetIp),
     );
   }
 
