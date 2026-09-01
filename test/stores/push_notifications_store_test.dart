@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -13,9 +14,6 @@ import 'package:talker/talker.dart';
 import 'push_notifications_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<AuthSessionStore>(),
-  MockSpec<RealIPInfoStore>(),
-  MockSpec<SubscriptionStore>(),
   MockSpec<NotificationsRepository>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<Talker>(),
@@ -24,275 +22,267 @@ import 'push_notifications_store_test.mocks.dart';
 ])
 void main() {
   late PushNotificationsStore store;
-  late MockAuthSessionStore mockAuthSessionStore;
-  late MockRealIPInfoStore mockRealIPInfoStore;
-  late MockSubscriptionStore mockSubscriptionStore;
-  late MockNotificationsRepository mockNotificationsRepository;
-  late MockAnalyticsStore mockAnalyticsStore;
-  late MockTalker mockLogger;
-  late MockLocalDBService mockLocalDb;
-  late MockRemoteConfigStore mockRemoteConfigStore;
+  late MockNotificationsRepository repository;
+  late MockAnalyticsStore analyticsStore;
+  late MockTalker logger;
+  late MockLocalDBService localDb;
+  late MockRemoteConfigStore remoteConfigStore;
+
+  late StreamController<bool> permissionController;
+  late StreamController<PushNotification> openedController;
+  late StreamController<PushNotification> receivedController;
+
+  PushNotification notification({String id = 'notif_1', String? campaignId}) => PushNotification(
+    id: id,
+    title: 'Test',
+    body: 'Body',
+    launchUrl: null,
+    rawPayload: const {},
+    category: campaignId,
+    additionalData: const {},
+  );
+
+  PushNotificationsStore build({bool supportsPush = true}) => PushNotificationsStore(
+    logger,
+    repository,
+    analyticsStore,
+    localDb,
+    remoteConfigStore,
+    supportsPush: () => supportsPush,
+  );
 
   setUp(() {
-    mockAuthSessionStore = MockAuthSessionStore();
-    mockRealIPInfoStore = MockRealIPInfoStore();
-    mockSubscriptionStore = MockSubscriptionStore();
-    mockNotificationsRepository = MockNotificationsRepository();
-    mockAnalyticsStore = MockAnalyticsStore();
-    mockLogger = MockTalker();
-    mockLocalDb = MockLocalDBService();
-    mockRemoteConfigStore = MockRemoteConfigStore();
+    repository = MockNotificationsRepository();
+    analyticsStore = MockAnalyticsStore();
+    logger = MockTalker();
+    localDb = MockLocalDBService();
+    remoteConfigStore = MockRemoteConfigStore();
 
-    // Notifications repository
-    when(mockNotificationsRepository.init()).thenAnswer((_) async {});
-    when(mockNotificationsRepository.getUser()).thenAnswer(
-      (_) => Stream.value(
-        PushNotificationsUser(pushNotificationsId: 'id', userId: 'userId', tags: {'key': 'value'}),
-      ),
-    );
-    when(
-      mockNotificationsRepository.getPermissionStatusStream(),
-    ).thenAnswer((_) => Stream.value(false));
-    when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
-    when(mockNotificationsRepository.requestPermission()).thenAnswer((_) async => true);
-    when(mockNotificationsRepository.openAppNotificationsSettings()).thenAnswer((_) async => true);
-    when(mockNotificationsRepository.setTags(any)).thenAnswer((_) async {});
-    when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => true);
-    when(mockNotificationsRepository.logout()).thenAnswer((_) async {});
-    when(
-      mockNotificationsRepository.login(
-        userId: anyNamed('userId'),
-        userEmail: anyNamed('userEmail'),
-      ),
-    ).thenAnswer((_) async {});
-    when(mockNotificationsRepository.getNotificationsStream()).thenAnswer(
-      (_) => Stream.value(
-        PushNotification(
-          id: 'notif_1',
-          title: 'Test',
-          body: 'Body',
-          launchUrl: '',
-          rawPayload: {},
-          category: '',
-          additionalData: {},
-        ),
-      ),
-    );
+    permissionController = StreamController<bool>.broadcast();
+    openedController = StreamController<PushNotification>.broadcast();
+    receivedController = StreamController<PushNotification>.broadcast();
 
-    // Auth session
-    when(mockAuthSessionStore.userFuture).thenAnswer(
-      (_) => ObservableFuture.value(AuthUser(userId: 'u1', username: 'test@example.com')),
-    );
-    when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+    when(repository.init()).thenAnswer((_) async {});
+    when(repository.getPermissionStatusStream()).thenAnswer((_) => permissionController.stream);
+    when(repository.getNotificationsStream()).thenAnswer((_) => openedController.stream);
+    when(repository.getReceivedStream()).thenAnswer((_) => receivedController.stream);
+    when(repository.getPermissionStatus()).thenReturn(false);
+    when(repository.requestPermission()).thenAnswer((_) async => true);
+    when(repository.canRequestPermission()).thenAnswer((_) async => true);
+    when(repository.openAppNotificationsSettings()).thenAnswer((_) async {});
 
-    // IP info
-    when(mockRealIPInfoStore.infoFuture).thenAnswer(
-      (_) => ObservableFuture.value(const IPInfo(city: 'City', country: 'Country', ip: '')),
-    );
+    when(localDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => null);
+    when(localDb.setPushNotificationsPromptLastShownAt(any)).thenAnswer((_) async {});
+    when(remoteConfigStore.pushNotifPermissionPromptCooldown).thenReturn(24);
 
-    // Subscription
-    when(mockSubscriptionStore.subscriptionFuture).thenAnswer(
-      (_) => ObservableFuture.value(
-        Subscription(
-          active: true,
-          planId: 'plan_monthly',
-          gateway: 'stripe',
-          recurring: true,
-          expired: false,
-        ),
-      ),
-    );
-
-    // Local DB
-    when(mockLocalDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => null);
-    when(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).thenAnswer((_) async {});
-
-    // Remote config
-    when(mockRemoteConfigStore.pushNotifPermissionPromptCooldown).thenReturn(24);
-
-    store = PushNotificationsStore(
-      mockAuthSessionStore,
-      mockRealIPInfoStore,
-      mockSubscriptionStore,
-      mockLogger,
-      mockNotificationsRepository,
-      mockAnalyticsStore,
-      mockLocalDb,
-      mockRemoteConfigStore,
-    )..testIsMobile = true;
+    store = build();
   });
 
-  group('Initialization', () {
-    test('initializes and sets up reactions', () async {
-      // Give time for reactions to fire
-      await Future.delayed(const Duration(milliseconds: 100));
+  tearDown(() async {
+    await store.dispose();
+    await permissionController.close();
+    await openedController.close();
+    await receivedController.close();
+  });
 
-      await mockAuthSessionStore.userFuture;
-      await mockRealIPInfoStore.infoFuture;
-      await mockSubscriptionStore.subscriptionFuture;
+  group('initialization', () {
+    test('initializes the repository', () async {
+      await Future<void>.delayed(Duration.zero);
 
-      verify(mockNotificationsRepository.init()).called(1);
-      verify(
-        mockNotificationsRepository.login(userId: 'u1', userEmail: 'test@example.com'),
-      ).called(1);
+      verify(repository.init()).called(1);
+    });
 
-      // Capture all setTags calls
-      final captured = verify(mockNotificationsRepository.setTags(captureAny)).captured;
-      expect(captured.length, greaterThanOrEqualTo(2));
+    test('knows nothing about Notifier — reporting goes through the repository', () async {
+      await Future<void>.delayed(Duration.zero);
 
-      // First call should have location tags
-      final locationTagsCall = captured[0] as Map<String, dynamic>;
-      expect(locationTagsCall['country'], 'Country');
-      expect(locationTagsCall['city'], 'City');
+      receivedController.add(notification(campaignId: 'campaign-1'));
+      await Future<void>.delayed(Duration.zero);
 
-      // Second call should have subscription tags
-      final subscriptionTagsCall = captured[1] as Map<String, dynamic>;
-      expect(subscriptionTagsCall['subscription_gateway'], 'Credit Card');
-      expect(subscriptionTagsCall['subscription_plan'], 'plan_monthly');
-      expect(subscriptionTagsCall['subscription_recurring'], isNotNull);
-      expect(subscriptionTagsCall['subscription_duration'].toString(), '1');
-      expect(subscriptionTagsCall.containsKey('subscription_exp_date'), true);
+      // The store never sees a device token; the repository fills it in.
+      verifyNever(repository.currentToken);
     });
   });
 
-  group('Push Notifications Permission', () {
-    test(
-      'shouldShowPushNotificationsPermissionPrompt returns true when not granted and cooldown passed',
-      () async {
-        when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
-        when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => true);
-
-        final result = await store.shouldShowPushNotificationsPermissionPrompt();
-
-        expect(result, isTrue);
-      },
-    );
-
-    test('shouldShowPushNotificationsPermissionPrompt returns false during cooldown', () async {
-      when(
-        mockLocalDb.getPushNotificationsPromptLastShownAt(),
-      ).thenAnswer((_) async => DateTime.now());
-
-      final result = await store.shouldShowPushNotificationsPermissionPrompt();
-
-      expect(result, isFalse);
+  group('permission prompt', () {
+    test('should show when not granted and the cooldown has passed', () async {
+      expect(await store.shouldShowPushNotificationsPermissionPrompt(), isTrue);
     });
 
-    test(
-      'shouldShowPushNotificationsPermissionPrompt returns false when already granted',
-      () async {
-        when(mockNotificationsRepository.getPermissionStatus()).thenReturn(true);
+    test('should not show during the cooldown', () async {
+      when(localDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => DateTime.now());
 
-        final result = await store.shouldShowPushNotificationsPermissionPrompt();
-
-        expect(result, isFalse);
-      },
-    );
-
-    test('shouldShowPushNotificationsPermissionPrompt returns false when cannot request', () async {
-      when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
-      when(mockNotificationsRepository.canRequestPermission()).thenAnswer((_) async => false);
-
-      final result = await store.shouldShowPushNotificationsPermissionPrompt();
-
-      expect(result, isFalse);
+      expect(await store.shouldShowPushNotificationsPermissionPrompt(), isFalse);
     });
 
-    test('setPushNotificationsShown requests permission when allowed', () async {
+    test('should not show when permission is already granted', () async {
+      when(repository.getPermissionStatus()).thenReturn(true);
+
+      expect(await store.shouldShowPushNotificationsPermissionPrompt(), isFalse);
+    });
+
+    test('should not show when the prompt can no longer be requested', () async {
+      when(repository.canRequestPermission()).thenAnswer((_) async => false);
+
+      expect(await store.shouldShowPushNotificationsPermissionPrompt(), isFalse);
+    });
+
+    test('should not show on an unsupported platform', () async {
+      await store.dispose();
+      store = build(supportsPush: false);
+
+      expect(await store.shouldShowPushNotificationsPermissionPrompt(), isFalse);
+    });
+  });
+
+  group('requesting permission', () {
+    test('setPushNotificationsShown requests permission when the user allowed it', () async {
       await store.setPushNotificationsShown(userAllowed: true);
 
-      verify(mockNotificationsRepository.requestPermission()).called(1);
-      verify(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).called(1);
+      verify(repository.requestPermission()).called(1);
+      verify(localDb.setPushNotificationsPromptLastShownAt(any)).called(1);
     });
 
-    test('setPushNotificationsShown does not request permission when not allowed', () async {
+    test('logs push_permission_requested before showing the system prompt', () async {
+      await store.setPushNotificationsShown(userAllowed: true);
+
+      verify(
+        analyticsStore.logEvent(
+          AnalyticsEvent.pushPermissionRequested,
+          parameters: anyNamed('parameters'),
+        ),
+      ).called(1);
+    });
+
+    test('does not request permission when the user declined', () async {
       await store.setPushNotificationsShown(userAllowed: false);
 
-      verifyNever(mockNotificationsRepository.requestPermission());
-      verify(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).called(1);
+      verifyNever(repository.requestPermission());
+      verify(localDb.setPushNotificationsPromptLastShownAt(any)).called(1);
     });
 
-    test('updatePushNotificationsPermissions opens app settings when supported', () async {
-      // Reset mocks to clear any calls from initialization
-      reset(mockNotificationsRepository);
-      when(
-        mockNotificationsRepository.openAppNotificationsSettings(),
-      ).thenAnswer((_) async => true);
+    test('requests permission when it can still be requested', () async {
+      await store.updatePushNotificationsPermissions();
+
+      verify(repository.requestPermission()).called(1);
+      verifyNever(repository.openAppNotificationsSettings());
+    });
+
+    test('opens system settings when the prompt can no longer be shown', () async {
+      when(repository.canRequestPermission()).thenAnswer((_) async => false);
 
       await store.updatePushNotificationsPermissions();
 
-      verify(mockNotificationsRepository.openAppNotificationsSettings()).called(1);
+      verify(repository.openAppNotificationsSettings()).called(1);
+      verifyNever(repository.requestPermission());
     });
 
-    test('updatePushNotificationsPermissions does nothing on non-mobile', () async {
-      store.testIsMobile = false;
-
-      await store.updatePushNotificationsPermissions();
-
-      verifyNever(mockNotificationsRepository.openAppNotificationsSettings());
-    });
-
-    test('pushNotificationsPermissionGranted reflects stream value', () {
-      expect(store.pushNotificationsPermissionGranted, isFalse);
-    });
-  });
-
-  group('Auth reaction', () {
-    test('does not call repository.logout() on initial fire when unauthenticated', () async {
-      // Discard the authenticated store from setUp and recreate with no auth user.
+    test('does nothing on an unsupported platform', () async {
       await store.dispose();
-      reset(mockNotificationsRepository);
+      store = build(supportsPush: false);
 
-      when(mockNotificationsRepository.init()).thenAnswer((_) async {});
-      when(mockNotificationsRepository.getUser()).thenAnswer(
-        (_) => Stream.value(
-          PushNotificationsUser(pushNotificationsId: 'id', userId: 'userId', tags: const {}),
-        ),
-      );
-      when(
-        mockNotificationsRepository.getPermissionStatusStream(),
-      ).thenAnswer((_) => Stream.value(false));
-      when(mockNotificationsRepository.getPermissionStatus()).thenReturn(false);
-      when(
-        mockNotificationsRepository.getNotificationsStream(),
-      ).thenAnswer((_) => const Stream.empty());
-      when(mockNotificationsRepository.setTags(any)).thenAnswer((_) async {});
-      when(mockNotificationsRepository.logout()).thenAnswer((_) async {});
+      await store.updatePushNotificationsPermissions();
 
-      when(mockAuthSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
-
-      store = PushNotificationsStore(
-        mockAuthSessionStore,
-        mockRealIPInfoStore,
-        mockSubscriptionStore,
-        mockLogger,
-        mockNotificationsRepository,
-        mockAnalyticsStore,
-        mockLocalDb,
-        mockRemoteConfigStore,
-      )..testIsMobile = true;
-
-      await Future.delayed(const Duration(milliseconds: 100));
-
-      verifyNever(mockNotificationsRepository.logout());
+      verifyNever(repository.openAppNotificationsSettings());
+      verifyNever(repository.requestPermission());
     });
   });
 
-  group('Computed Properties', () {
-    test('user returns string representation of PushNotificationsUser', () async {
-      await store.pushNotificationsUser.first;
+  group('permission status', () {
+    test('falls back to the repository before the stream emits', () {
+      when(repository.getPermissionStatus()).thenReturn(true);
 
-      expect(store.user, isNotNull);
-      expect(store.user, contains('id'));
+      expect(store.pushNotificationsPermissionGranted, isTrue);
     });
 
-    test('supportsPushNotifications returns testIsMobile', () {
-      store.testIsMobile = true;
-      expect(store.supportsPushNotifications, isTrue);
+    test('reflects the stream once it emits', () async {
+      permissionController.add(true);
+      await Future<void>.delayed(Duration.zero);
 
-      store.testIsMobile = false;
-      expect(store.supportsPushNotifications, isFalse);
+      expect(store.pushNotificationsPermissionGranted, isTrue);
     });
+
+    test('reports a permission change to analytics', () async {
+      permissionController.add(true);
+      await Future<void>.delayed(Duration.zero);
+
+      verify(
+        analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true),
+      ).called(1);
+    });
+  });
+
+  group('received notifications', () {
+    test('logs push_received', () async {
+      receivedController.add(notification(campaignId: 'campaign-1'));
+      await Future<void>.delayed(Duration.zero);
+
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('delegates a delivered event to the repository', () async {
+      final sent = notification(campaignId: 'campaign-1');
+      receivedController.add(sent);
+      await Future<void>.delayed(Duration.zero);
+
+      verify(repository.reportEvent(sent, NotifierEventType.delivered)).called(1);
+    });
+
+    test('a failing report does not escape the listener', () async {
+      when(
+        repository.reportEvent(any, any),
+      ).thenThrow(const NotifierException(category: 'network'));
+
+      receivedController.add(notification(campaignId: 'campaign-1'));
+
+      await expectLater(Future<void>.delayed(Duration.zero), completes);
+    });
+  });
+
+  group('opened notifications', () {
+    test('exposes the notification as lastNotification', () async {
+      openedController.add(notification(id: 'notif_9'));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(store.lastNotification?.id, 'notif_9');
+    });
+
+    test('logs push_opened', () async {
+      openedController.add(notification(campaignId: 'campaign-1'));
+      await Future<void>.delayed(Duration.zero);
+
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushOpened, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('delegates an open event to the repository', () async {
+      final sent = notification(campaignId: 'campaign-1');
+      openedController.add(sent);
+      await Future<void>.delayed(Duration.zero);
+
+      verify(repository.reportEvent(sent, NotifierEventType.open)).called(1);
+    });
+
+    test('never puts the device token in analytics parameters', () async {
+      openedController.add(notification(campaignId: 'campaign-1'));
+      await Future<void>.delayed(Duration.zero);
+
+      final captured = verify(
+        analyticsStore.logEvent(any, parameters: captureAnyNamed('parameters')),
+      ).captured;
+      for (final params in captured) {
+        expect(params.toString(), isNot(contains('fcm-token')));
+      }
+    });
+  });
+
+  test('supportsPushNotifications follows the injected platform predicate', () async {
+    expect(store.supportsPushNotifications, isTrue);
+
+    await store.dispose();
+    store = build(supportsPush: false);
+    expect(store.supportsPushNotifications, isFalse);
   });
 }

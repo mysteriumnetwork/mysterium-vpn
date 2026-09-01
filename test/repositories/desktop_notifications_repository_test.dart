@@ -8,11 +8,9 @@ void main() {
     repo = DesktopNotificationsRepository();
   });
 
-  test('init / login / logout / setTags / openAppNotificationsSettings are no-ops', () async {
+  test('init / clearToken / openAppNotificationsSettings are no-ops', () async {
     await repo.init();
-    await repo.login(userId: 'u1', userEmail: 'u@e.com');
-    await repo.logout();
-    await repo.setTags({'key': 'value'});
+    await repo.clearToken();
     await repo.openAppNotificationsSettings();
     await repo.dispose();
     // None of the above should throw.
@@ -20,13 +18,19 @@ void main() {
 
   test('permission queries return false', () async {
     expect(repo.getPermissionStatus(), isFalse);
+    expect(await repo.refreshPermissionStatus(), isFalse);
     expect(await repo.requestPermission(), isFalse);
     expect(await repo.canRequestPermission(), isFalse);
   });
 
+  test('there is no device token', () {
+    expect(repo.currentToken, isNull);
+  });
+
   test('streams emit nothing and complete', () async {
-    expect(await repo.getUser().toList(), isEmpty);
+    expect(await repo.tokenStream.toList(), isEmpty);
     expect(await repo.getPermissionStatusStream().toList(), isEmpty);
     expect(await repo.getNotificationsStream().toList(), isEmpty);
+    expect(await repo.getReceivedStream().toList(), isEmpty);
   });
 }
