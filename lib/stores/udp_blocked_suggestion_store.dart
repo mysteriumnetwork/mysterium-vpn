@@ -38,9 +38,13 @@ abstract class _UdpBlockedSuggestionStore with Store {
   bool get isOpenVpnAvailable =>
       _protocolStore.isProtocolPickerAvailable && _authSessionStore.isAuthenticated;
 
-  /// Set when UDP is blocked and OpenVPN is a real option; drives the dialog.
+  /// Bumped once per blocked-UDP detection worth acting on. A counter, not a
+  /// flag: a bool set while Home is unmounted stays true, and because the
+  /// view's reaction does not fire immediately on remount, the next detection
+  /// would re-assign true, produce no MobX change, and silently wedge the
+  /// feature for the rest of the session. Every detection is a new value here.
   @observable
-  bool suggestOpenVpn = false;
+  int suggestionEpoch = 0;
 
   @action
   void onUdpBlocked(String error) {
@@ -58,14 +62,7 @@ abstract class _UdpBlockedSuggestionStore with Store {
       AnalyticsEvent.dpiProtocolFallbackTriggered,
       parameters: {'error': error, 'from_protocol': ProtocolType.wireguard.name},
     );
-    suggestOpenVpn = true;
-  }
-
-  /// Called by the view once the dialog is shown. Returning to false re-arms
-  /// the notice, so the next blocked connection suggests again.
-  @action
-  void clearSuggestion() {
-    suggestOpenVpn = false;
+    suggestionEpoch++;
   }
 
   void onDialogShown() => _analyticsStore.logEvent(AnalyticsEvent.dpiProtocolFallbackDialogShown);

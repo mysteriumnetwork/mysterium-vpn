@@ -331,8 +331,12 @@ abstract class _VpnStore extends VpnGuard with Store {
       return true;
     }
 
+    // _userConnectEpoch only advances in _logConnectionSuccess, so it is the
+    // one signal that distinguishes a completed connect from a failed one —
+    // _vpnConnection still holds the previous session after a failed attempt.
+    final epochBefore = _userConnectEpoch;
     await manageConnection(location: location, intent: intent, targetIp: targetIp);
-    return _vpnConnection != null;
+    return _userConnectEpoch > epochBefore;
   }
 
   Future<void> _handleAuthStatusChange(AuthStatus status) async {
@@ -989,8 +993,14 @@ abstract class _VpnStore extends VpnGuard with Store {
 
     try {
       await _vpnRepository.udpBlockedCheck();
-    } catch (e) {
+    } on TimeoutException catch (e) {
+      // No STUN reply within the probe window — the only outcome that actually
+      // implicates UDP.
       _udpBlockedSuggestionStore.onUdpBlocked(e.toString());
+    } catch (e) {
+      // DNS lookup or socket setup failed: the probe never got far enough to
+      // say anything about UDP, and the network is likely down entirely.
+      _logger.warning('UDP probe inconclusive, not offering a protocol switch: $e');
     }
   }
 

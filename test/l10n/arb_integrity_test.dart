@@ -40,6 +40,22 @@ void main() {
         );
       });
 
+      // Asserted on the raw source, not the decoded map: jsonDecode turns
+      // \uD83C\uDDE9 back into the flag, so a decoded check can never see the
+      // escaping the fetch introduces.
+      test('$name keeps non-BMP characters literal', () {
+        final raw = file.readAsStringSync();
+        final escapes = RegExp(r'\\u[dD][89abAB][0-9a-fA-F]{2}').allMatches(raw);
+        expect(
+          escapes.map((m) => m.group(0)).toSet(),
+          isEmpty,
+          reason:
+              'Surrogate-pair escapes in $name. The Localizely download '
+              're-escapes emoji; run `make localizely-fetch` (which '
+              'normalizes) rather than intl_utils:localizely_download.',
+        );
+      });
+
       test('$name has no empty translations', () {
         final blank = json.entries
             .where((e) => !e.key.startsWith('@'))

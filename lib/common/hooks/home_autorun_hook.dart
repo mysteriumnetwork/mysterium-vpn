@@ -143,15 +143,10 @@ void useHomeAutorun() {
             }
           }
         }),
-        // UDP found blocked on a WireGuard session: offer OpenVPN. A reaction
-        // (not autorun) so a notice raised while Home was unmounted isn't
-        // replayed out of context on remount.
-        reaction((_) => udpBlockedSuggestionStore.suggestOpenVpn, (bool suggest) {
-          if (!suggest) {
-            return;
-          }
-          // Cleared on show, which re-arms the notice for the next occurrence.
-          udpBlockedSuggestionStore.clearSuggestion();
+        // UDP found blocked on a WireGuard session: offer OpenVPN. A reaction on
+        // a counter, so a detection that happened while Home was unmounted is
+        // not replayed out of context, yet every later detection still fires.
+        reaction((_) => udpBlockedSuggestionStore.suggestionEpoch, (int _) {
           controller.add(() async {
             if (!context.mounted) {
               return null;

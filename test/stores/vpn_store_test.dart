@@ -1510,7 +1510,7 @@ void main() {
         await pumpEventQueue();
 
         verify(mockWireguardRepo.udpBlockedCheck()).called(1);
-        expect(udpBlockedSuggestionStore.suggestOpenVpn, true);
+        expect(udpBlockedSuggestionStore.suggestionEpoch, 1);
       });
 
       test('raises nothing when the check succeeds', () async {
@@ -1518,7 +1518,7 @@ void main() {
         await pumpEventQueue();
 
         verify(mockWireguardRepo.udpBlockedCheck()).called(1);
-        expect(udpBlockedSuggestionStore.suggestOpenVpn, false);
+        expect(udpBlockedSuggestionStore.suggestionEpoch, 0);
       });
 
       test('does not suggest when the protocol picker is unavailable', () async {
@@ -1528,7 +1528,7 @@ void main() {
         await vpnStore.manageConnection(location: paris);
         await pumpEventQueue();
 
-        expect(udpBlockedSuggestionStore.suggestOpenVpn, false);
+        expect(udpBlockedSuggestionStore.suggestionEpoch, 0);
       });
 
       group('switchProtocolAndReconnect', () {

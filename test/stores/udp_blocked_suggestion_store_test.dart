@@ -73,7 +73,7 @@ void main() {
     test('raises the suggestion and logs detection plus the fallback trigger', () {
       store.onUdpBlocked('timeout');
 
-      expect(store.suggestOpenVpn, true);
+      expect(store.suggestionEpoch, 1);
       verify(
         analytics.logEvent(
           AnalyticsEvent.udpBlocked,
@@ -93,7 +93,7 @@ void main() {
 
       store.onUdpBlocked('timeout');
 
-      expect(store.suggestOpenVpn, false);
+      expect(store.suggestionEpoch, 0);
       verify(
         analytics.logEvent(
           AnalyticsEvent.udpBlocked,
@@ -147,14 +147,14 @@ void main() {
     });
   });
 
-  test('clearSuggestion re-arms the notice for the next occurrence', () {
-    store
-      ..onUdpBlocked('timeout')
-      ..clearSuggestion();
-    expect(store.suggestOpenVpn, false);
+  test('every detection advances the epoch, so none is ever swallowed', () {
+    store.onUdpBlocked('timeout');
+    expect(store.suggestionEpoch, 1);
 
+    // The view may not have consumed the first one — e.g. Home was unmounted.
+    // A flag would already be `true` here and produce no observable change.
     store.onUdpBlocked('timeout again');
 
-    expect(store.suggestOpenVpn, true);
+    expect(store.suggestionEpoch, 2);
   });
 }

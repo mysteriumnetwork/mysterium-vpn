@@ -24,21 +24,21 @@ mixin _$UdpBlockedSuggestionStore on _UdpBlockedSuggestionStore, Store {
     name: '_UdpBlockedSuggestionStore.isOpenVpnAvailable',
   )).value;
 
-  late final _$suggestOpenVpnAtom = Atom(
-    name: '_UdpBlockedSuggestionStore.suggestOpenVpn',
+  late final _$suggestionEpochAtom = Atom(
+    name: '_UdpBlockedSuggestionStore.suggestionEpoch',
     context: context,
   );
 
   @override
-  bool get suggestOpenVpn {
-    _$suggestOpenVpnAtom.reportRead();
-    return super.suggestOpenVpn;
+  int get suggestionEpoch {
+    _$suggestionEpochAtom.reportRead();
+    return super.suggestionEpoch;
   }
 
   @override
-  set suggestOpenVpn(bool value) {
-    _$suggestOpenVpnAtom.reportWrite(value, super.suggestOpenVpn, () {
-      super.suggestOpenVpn = value;
+  set suggestionEpoch(int value) {
+    _$suggestionEpochAtom.reportWrite(value, super.suggestionEpoch, () {
+      super.suggestionEpoch = value;
     });
   }
 
@@ -60,21 +60,9 @@ mixin _$UdpBlockedSuggestionStore on _UdpBlockedSuggestionStore, Store {
   }
 
   @override
-  void clearSuggestion() {
-    final _$actionInfo = _$_UdpBlockedSuggestionStoreActionController.startAction(
-      name: '_UdpBlockedSuggestionStore.clearSuggestion',
-    );
-    try {
-      return super.clearSuggestion();
-    } finally {
-      _$_UdpBlockedSuggestionStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
-suggestOpenVpn: ${suggestOpenVpn},
+suggestionEpoch: ${suggestionEpoch},
 shouldRunCheck: ${shouldRunCheck},
 isOpenVpnAvailable: ${isOpenVpnAvailable}
     ''';
