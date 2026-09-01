@@ -58,9 +58,17 @@ fi
 endef
 
 # Pull the latest translations from Localizely into lib/l10n/*.arb.
+# Snapshot the ARBs first: the download empties non-CLDR plural arms (notably
+# `zero`, which Dart's Intl.plural does use) and re-escapes flag emoji. The
+# normalizer diffs against the snapshot and keeps the local value wherever the
+# fetch would have replaced a non-empty string with an empty one.
 localizely-fetch:
 	@$(resolve_localizely_token); \
-	fvm dart run intl_utils:localizely_download --api-token "$$token"
+	baseline="$$(mktemp -d)"; \
+	cp lib/l10n/intl_*.arb "$$baseline/"; \
+	fvm dart run intl_utils:localizely_download --api-token "$$token"; \
+	fvm dart run tool/normalize_arb.dart --baseline "$$baseline"; \
+	rm -rf "$$baseline"
 
 # Upload the source (en) ARB to Localizely — adds new keys without overwriting
 # existing translations. Pass `flags=--upload-overwrite` when an existing en
