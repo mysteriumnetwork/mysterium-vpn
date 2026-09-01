@@ -741,4 +741,52 @@ void main() {
       expect(store.canShowSubscriptionOnboardingFlow, isFalse);
     });
   });
+
+  group('RemoteConfigStore.shouldCheckUdp', () {
+    test('defaults to true when the key is absent', () async {
+      store = createStore();
+      await store.configFuture;
+      expect(store.shouldCheckUdp, isTrue);
+    });
+
+    test('returns the configured value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'shouldCheckUdp': false});
+      await store.configFuture;
+      expect(store.shouldCheckUdp, isFalse);
+    });
+
+    test('throws on a wrong-typed value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'shouldCheckUdp': 'nope'});
+      await store.configFuture;
+      expect(() => store.shouldCheckUdp, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
+  group('RemoteConfigStore.isProtocolPickerAvailable', () {
+    test('defaults to false when the key is absent', () async {
+      store = createStore();
+      await store.configFuture;
+      expect(store.isProtocolPickerAvailable, isFalse);
+    });
+
+    test('returns the configured value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'isProtocolPickerAvailable': true});
+      await store.configFuture;
+      expect(store.isProtocolPickerAvailable, isTrue);
+    });
+
+    test('throws on a wrong-typed value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'isProtocolPickerAvailable': 1});
+      await store.configFuture;
+      expect(() => store.isProtocolPickerAvailable, throwsA(isA<MobXCaughtException>()));
+    });
+  });
 }
