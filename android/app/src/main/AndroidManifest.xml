@@ -111,6 +111,14 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Channel id must match `pushChannelId` in FcmNotificationsRepository,
+        or Android drops background notifications from Notifier. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="mysterium_push" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
         <meta-data
             android:name="google_analytics_default_allow_ad_user_data"
             android:value="true" />

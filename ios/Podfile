@@ -1,13 +1,6 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, "15.0"
 
-# Override the Firebase iOS SDK version hardcoded by firebase_core 4.8.0 (12.12.0).
-# 12.12.1 patches a fatal NSInvalidArgumentException in -[ODCConversionStore writeToFile]
-# triggered via GoogleAppMeasurement → GoogleAdsOnDeviceConversion on fresh installs.
-# Remove this line once a future firebase_core release pins to >= 12.12.1 natively.
-# See: https://github.com/firebase/firebase-ios-sdk/issues/15961
-$FirebaseSDKVersion = '12.12.1'
-
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV["COCOAPODS_DISABLE_STATS"] = "true"
 
@@ -65,23 +58,3 @@ target 'OVpnExtension' do
   pod 'OpenVPNAdapter', :git => 'https://github.com/ss-abramchuk/OpenVPNAdapter.git', :tag => '0.8.0'
 end
 
-target 'OneSignalNotificationServiceExtension' do
-  use_frameworks!
-  # Keep in lockstep with the OneSignal-XCFramework version pinned by
-  # onesignal_flutter's Package.swift — SPM embeds these frameworks at runtime.
-  pod 'OneSignalXCFramework', '5.5.5'
-end
-
-# onesignal_flutter resolves via SPM, which already embeds the OneSignal
-# frameworks into Runner.app/Frameworks. CocoaPods hoists the NSE's OneSignal
-# pod into Runner's embed phase too, so the same frameworks get two producers
-# ("Multiple commands produce"). Strip OneSignal from the CocoaPods embed
-# script and its declared outputs; the pod remains only the NSE's link-time
-# dependency, and at runtime the NSE loads SPM's copies from the host app.
-post_integrate do |installer|
-  support_dir = File.join(__dir__, 'Pods', 'Target Support Files', 'Pods-Runner')
-  Dir.glob(File.join(support_dir, 'Pods-Runner-frameworks*')).each do |file|
-    stripped = File.read(file).lines.reject { |line| line.include?('OneSignal') }.join
-    File.write(file, stripped)
-  end
-end

@@ -8,13 +8,11 @@ FIREBASE_PROJECT_ID = new-mysterium-vpn
 # SPM is enabled explicitly so every machine builds the same way regardless of
 # global flutter config. Apple targets use hybrid SPM + CocoaPods: SPM-capable
 # plugins resolve via FlutterGeneratedPluginSwiftPackage, the rest (WireGuardKit,
-# OpenVPNAdapter, OneSignal NSE) stay on CocoaPods. Two workarounds keep this
-# hybrid green — remove them once fixed upstream:
-# 1. ios/Podfile post_integrate strips OneSignal from CocoaPods' embed phase
-#    (SPM already embeds it; two producers = "Multiple commands produce").
-# 2. all macos Runner configs pass patrol's generated PatrolImpl modulemap via
+# OpenVPNAdapter) stay on CocoaPods. Two workarounds keep this hybrid green —
+# remove them once fixed upstream:
+# 1. all macos Runner configs pass patrol's generated PatrolImpl modulemap via
 #    OTHER_SWIFT_FLAGS (https://github.com/leancodepl/patrol/issues/3177).
-# 3. Runner targets set ENABLE_TESTING_SEARCH_PATHS=YES: patrol_cli builds link
+# 2. Runner targets set ENABLE_TESTING_SEARCH_PATHS=YES: patrol_cli builds link
 #    XCTest into the app, and SPM (unlike patrol's podspec) can't inject the
 #    developer test-framework search paths.
 # Crashlytics dSYM upload is a consequence of the same migration: the generated
