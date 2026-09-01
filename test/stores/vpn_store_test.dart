@@ -1221,6 +1221,21 @@ void main() {
       group('MQTT connection updates', () {
         late StreamController<String> updates;
 
+        // Shapes mirror the locations API: uppercase country, lowercase
+        // underscored city id.
+        const texas = VPNLocation(
+          id: 'texas',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'US',
+        );
+        const newMexico = VPNLocation(
+          id: 'new_mexico',
+          ipType: IPType.datacenter,
+          translations: {'en': 'New Mexico'},
+          countryCode: 'US',
+        );
+
         setUp(() async {
           updates = StreamController<String>.broadcast();
           when(mockMqtt.subscribe(any)).thenAnswer(
@@ -1228,40 +1243,84 @@ void main() {
                 ? const Stream<String>.empty()
                 : updates.stream,
           );
-          await connect(country);
+          await connect(texas);
           await pumpEventQueue();
           clearInteractions(mockAnalytics);
         });
 
         tearDown(() async => updates.close());
 
-        Future<void> publish({required String ip, required String from}) async {
+        Future<void> publish({
+          required String ip,
+          String from = 'US',
+          String fromCity = 'texas',
+        }) async {
           updates.add(
             json.encode({
-              'location': {'ip': ip, 'country': from, 'city': 'paris', 'node_type': 'datacenter'},
+              'location': {'ip': ip, 'country': from, 'city': fromCity, 'node_type': 'hosting'},
             }),
           );
           await pumpEventQueue();
         }
 
-        test('republished metadata logs no event', () async {
-          await publish(ip: '2.2.2.2', from: 'fr');
+        test('the first update repeats the established IP and logs no event', () async {
+          await publish(ip: '2.2.2.2');
 
           verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
-          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
         });
 
-        test('changed IP updates the connection and logs the event', () async {
-          await publish(ip: '9.9.9.9', from: 'fr');
+        test('the first update may refine the location without logging', () async {
+          await publish(ip: '2.2.2.2', fromCity: 'florida');
 
-          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+          expect(vpnStore.location?.id, 'florida');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a renewal within the same city logs the event', () async {
+          await publish(ip: '9.9.9.9');
+
           expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
         });
 
-        test('a new node carries its country into the location', () async {
-          await publish(ip: '9.9.9.9', from: 'de');
+        test('a renewal into another city of the same country moves the location', () async {
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
 
-          expect(vpnStore.location?.id, 'de');
+          expect(vpnStore.location?.id, 'florida');
+          expect(vpnStore.location?.countryCode, 'US');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a renewal into another country moves both', () async {
+          await publish(ip: '9.9.9.9', from: 'DE', fromCity: 'hofgeismar');
+
+          expect(vpnStore.location?.id, 'hofgeismar');
+          expect(vpnStore.location?.countryCode, 'DE');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a city in the catalog brings its translations', () async {
+          when(
+            mockLocationsStore.findById(
+              'new_mexico',
+              countryCode: anyNamed('countryCode'),
+              ipType: anyNamed('ipType'),
+            ),
+          ).thenAnswer((_) async => newMexico);
+
+          await publish(ip: '9.9.9.9', fromCity: 'new_mexico');
+
+          expect(vpnStore.location?.id, 'new_mexico');
+          expect(vpnStore.location?.translations, {'en': 'New Mexico'});
+        });
+
+        test('a city missing from the catalog keeps the payload metadata', () async {
+          await publish(ip: '9.9.9.9', fromCity: 'new_york');
+
+          expect(vpnStore.location?.id, 'new_york');
+          expect(vpnStore.location?.countryCode, 'US');
+          expect(vpnStore.location?.translations, isEmpty);
         });
       });
     });

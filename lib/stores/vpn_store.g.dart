@@ -529,6 +529,16 @@ mixin _$VpnStore on _VpnStore, Store {
     return _$disconnectAllDevicesAsyncAction.run(() => super.disconnectAllDevices());
   }
 
+  late final _$_handleConnectionUpdateAsyncAction = AsyncAction(
+    '_VpnStore._handleConnectionUpdate',
+    context: context,
+  );
+
+  @override
+  Future<void> _handleConnectionUpdate(String event) {
+    return _$_handleConnectionUpdateAsyncAction.run(() => super._handleConnectionUpdate(event));
+  }
+
   late final _$_udpBlockedCheckAsyncAction = AsyncAction(
     '_VpnStore._udpBlockedCheck',
     context: context,

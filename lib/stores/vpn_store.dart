@@ -965,7 +965,8 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
-  void _handleConnectionUpdate(String event) {
+  @action
+  Future<void> _handleConnectionUpdate(String event) async {
     final connection = _vpnConnection;
     if (connection == null) {
       return;
@@ -974,13 +975,24 @@ abstract class _VpnStore extends VpnGuard with Store {
     final eventPayload = ConnectionMessage.fromJson(
       json.decode(event) as Map<String, dynamic>,
     ).location;
-    final connectionUpdate = connection.copyWith(
-      connectionIP: eventPayload.ip,
-      location: connection.location.copyWith(id: eventPayload.country),
-    );
 
-    if (connectionUpdate != connection) {
-      _vpnConnection = connectionUpdate;
+    final location =
+        await _locationsStore.findById(
+          eventPayload.city,
+          countryCode: eventPayload.country,
+          ipType: connection.location.ipType,
+        ) ??
+        VPNLocation(
+          id: eventPayload.city,
+          ipType: connection.location.ipType,
+          translations: const {},
+          countryCode: eventPayload.country,
+        );
+    _vpnConnection = connection.copyWith(connectionIP: eventPayload.ip, location: location);
+
+    // The first update repeats the IP the connection was established with;
+    // only a renewal carries a new one.
+    if (connection.connectionIP.isNotEmpty && eventPayload.ip != connection.connectionIP) {
       _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
     }
   }
