@@ -29,6 +29,7 @@ class AppVersion extends HookConsumerWidget {
             ),
       child: Observer(
         builder: (_) => Row(
+          spacing: theme.spacing.sm,
           children: [
             AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
             if (remoteConfig.showApiVersion && apiStore.lastHealthcheck != null)

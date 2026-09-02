@@ -766,6 +766,65 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.showApiVersion', () {
+    test('defaults to false when the key is absent', () async {
+      store = createStore();
+      await store.configFuture;
+      expect(store.showApiVersion, isFalse);
+    });
+
+    test('returns the configured value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'showApiVersion': true});
+      await store.configFuture;
+      expect(store.showApiVersion, isTrue);
+    });
+
+    test('is independent of showCitiesAndStates', () async {
+      store = createStore();
+
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'showApiVersion': false, 'showCitiesAndStates': true});
+      await store.configFuture;
+      expect(store.showApiVersion, isFalse);
+      expect(store.showCitiesAndStates, isTrue);
+    });
+
+    test('throws on a wrong-typed value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'showApiVersion': 'yes'});
+      await store.configFuture;
+      expect(() => store.showApiVersion, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
+  group('RemoteConfigStore.showCitiesAndStates', () {
+    test('defaults to false when the key is absent', () async {
+      store = createStore();
+      await store.configFuture;
+      expect(store.showCitiesAndStates, isFalse);
+    });
+
+    test('returns the configured value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'showCitiesAndStates': true});
+      await store.configFuture;
+      expect(store.showCitiesAndStates, isTrue);
+    });
+
+    test('throws on a wrong-typed value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'showCitiesAndStates': 1});
+      await store.configFuture;
+      expect(() => store.showCitiesAndStates, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
   group('RemoteConfigStore.isProtocolPickerAvailable', () {
     test('defaults to false when the key is absent', () async {
       store = createStore();
