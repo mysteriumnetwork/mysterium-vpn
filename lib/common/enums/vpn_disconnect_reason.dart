@@ -1,5 +1,5 @@
-/// Why the tunnel was torn down. Only [user] is a session the user ended; the
-/// rest are transitional or app-initiated.
+/// Why the tunnel was torn down. [user] ends the user's own connection attempt;
+/// the rest are transitional or app-initiated.
 enum VpnDisconnectReason {
   /// The user ended the session (Disconnect, a protocol switch made in
   /// Settings, connection error).

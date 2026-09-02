@@ -283,15 +283,17 @@ abstract class _ReviewPromptStore with Store {
     if (!_config.enabled) {
       return 'disabled';
     }
-    if (!_authSessionStore.isAuthenticated) {
-      return 'unauthenticated';
-    }
     if (_subscriptionStore.isPaused) {
       return 'subscription_paused';
     }
+    // Ranked above `unauthenticated`: the teardown reason outlives the logout
+    // that set it, so the label stays the same however the two race.
     final teardown = _vpnStore.disconnectReason;
     if (teardown.isAppInitiated) {
       return teardown == VpnDisconnectReason.logout ? 'logout' : 'app_disconnect';
+    }
+    if (!_authSessionStore.isAuthenticated) {
+      return 'unauthenticated';
     }
     if (_vpnStore.vpnStatus == VpnConnectionStatus.connecting) {
       return 'vpn_connecting';

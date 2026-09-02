@@ -537,6 +537,25 @@ void main() {
       store.dispose();
     });
 
+    test('a logout landing mid-evaluation still reports the logout reason', () async {
+      // evaluate() awaits the eligible event before reading the reason, so
+      // disconnectAndLogout can flip authentication while that await is
+      // pending. The teardown reason outlives it, so the label must not change.
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.logout);
+      when(analytics.logEvent(AnalyticsEvent.reviewPromptEligible)).thenAnswer((_) async {
+        when(authSessionStore.isAuthenticated).thenReturn(false);
+      });
+
+      final store = createStore();
+      await store.evaluate();
+
+      expect(store.pendingPrompt, isFalse);
+      verify(
+        analytics.logEvent(AnalyticsEvent.reviewPromptSuppressed, parameters: {'reason': 'logout'}),
+      ).called(1);
+      store.dispose();
+    });
+
     test('an app-initiated teardown clears a prompt armed by an earlier session', () {
       // disconnectTunnel stamps the reason before it awaits, so this lands
       // while the user is still authenticated.
