@@ -1241,6 +1241,12 @@ void main() {
           translations: {},
           countryCode: 'US',
         );
+        const unitedStates = VPNLocation(
+          id: 'US',
+          ipType: IPType.datacenter,
+          translations: {'en': 'United States'},
+          countryCode: 'US',
+        );
 
         setUp(() async {
           updates = StreamController<String>.broadcast();
@@ -1359,7 +1365,22 @@ void main() {
           expect(vpnStore.location?.translations, {'en': 'New Mexico'});
         });
 
-        test('a city missing from the catalog keeps the payload metadata', () async {
+        test('a city missing from the catalog resolves to the country entry', () async {
+          // findById already falls back to the country when the city id is
+          // unknown, so an uncatalogued city keeps real translations.
+          stubLookup('new_york', () async => unitedStates);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_york');
+
+          expect(vpnStore.location?.id, 'US');
+          expect(vpnStore.location?.translations, {'en': 'United States'});
+        });
+
+        test('a payload the catalog cannot resolve at all is synthesised', () async {
+          // Neither the city nor its country is in the catalog.
+          stubLookup('new_york', () async => null);
+
           await publishEcho();
           await publish(ip: '9.9.9.9', fromCity: 'new_york');
 
@@ -1368,12 +1389,14 @@ void main() {
           expect(vpnStore.location?.translations, isEmpty);
         });
 
-        test('an empty city falls back to the country', () async {
+        test('an empty city looks the country up by its code', () async {
+          stubLookup('US', () async => unitedStates);
+
           await publishEcho();
           await publish(ip: '9.9.9.9', fromCity: '');
 
           expect(vpnStore.location?.id, 'US');
-          expect(vpnStore.location?.countryCode, 'US');
+          expect(vpnStore.location?.translations, {'en': 'United States'});
         });
 
         test('a payload missing a required field is ignored', () async {
