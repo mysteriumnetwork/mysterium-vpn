@@ -1446,6 +1446,32 @@ void main() {
           verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
         });
 
+        test('events queued from the previous connection are dropped after a reconnect', () async {
+          final stalled = Completer<VPNLocation?>();
+          stubLookup('florida', () => stalled.future);
+
+          // Two old-session events: the first stalls on its lookup, the second
+          // queues behind it and only runs once the reconnect has happened.
+          await publish(ip: '5.5.5.5', fromCity: 'florida');
+          await publish(ip: '9.9.9.9', fromCity: 'nevada');
+
+          await connect(oregon);
+          await pumpEventQueue();
+
+          stalled.complete(null);
+          await pumpEventQueue();
+
+          expect(vpnStore.location?.id, 'oregon');
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+
+          // The stale events must not have consumed the new session's replay
+          // marker, so its own first message still logs nothing.
+          await publish(ip: '7.7.7.7');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '7.7.7.7');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
         test('a renewal right after a malformed replay still logs the event', () async {
           updates.add('not json');
           await pumpEventQueue();

@@ -535,8 +535,10 @@ mixin _$VpnStore on _VpnStore, Store {
   );
 
   @override
-  Future<void> _handleConnectionUpdate(String event) {
-    return _$_handleConnectionUpdateAsyncAction.run(() => super._handleConnectionUpdate(event));
+  Future<void> _handleConnectionUpdate(String event, {required int session}) {
+    return _$_handleConnectionUpdateAsyncAction.run(
+      () => super._handleConnectionUpdate(event, session: session),
+    );
   }
 
   late final _$_udpBlockedCheckAsyncAction = AsyncAction(

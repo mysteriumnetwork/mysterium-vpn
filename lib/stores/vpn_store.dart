@@ -980,15 +980,19 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   void _enqueueConnectionUpdate(String event) {
+    // Stamped on arrival: cancelling the subscription does not drain events
+    // already queued behind a slow one, and by the time they run the session
+    // may have moved on.
+    final session = _connectionSession;
     _connectionUpdates = _connectionUpdates
-        .then((_) => _handleConnectionUpdate(event))
+        .then((_) => _handleConnectionUpdate(event, session: session))
         .catchError((Object e) => _logger.warning('Connection update failed: $e'));
   }
 
   @action
-  Future<void> _handleConnectionUpdate(String event) async {
+  Future<void> _handleConnectionUpdate(String event, {required int session}) async {
     final connection = _vpnConnection;
-    if (connection == null) {
+    if (connection == null || session != _connectionSession) {
       return;
     }
 
@@ -1004,8 +1008,6 @@ abstract class _VpnStore extends VpnGuard with Store {
       _logger.warning('Malformed connection update, ignoring: $e');
       return;
     }
-
-    final session = _connectionSession;
 
     // The catalog lookup can fail (locations fetch rejected while offline); the
     // renewed IP is still worth applying, so keep the location we already have.
