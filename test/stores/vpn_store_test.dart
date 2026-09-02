@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -1215,6 +1216,359 @@ void main() {
         expect(exhaustionStore.exhaustionNotice, connectedLocation);
 
         await store.disposeStore();
+      });
+
+      group('MQTT connection updates', () {
+        late StreamController<String> updates;
+
+        // Shapes mirror the locations API: uppercase country, lowercase
+        // underscored city id.
+        const texas = VPNLocation(
+          id: 'texas',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'US',
+        );
+        const newMexico = VPNLocation(
+          id: 'new_mexico',
+          ipType: IPType.datacenter,
+          translations: {'en': 'New Mexico'},
+          countryCode: 'US',
+        );
+        const oregon = VPNLocation(
+          id: 'oregon',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'US',
+        );
+        const unitedStates = VPNLocation(
+          id: 'US',
+          ipType: IPType.datacenter,
+          translations: {'en': 'United States'},
+          countryCode: 'US',
+        );
+
+        setUp(() async {
+          updates = StreamController<String>.broadcast();
+          when(mockMqtt.subscribe(any)).thenAnswer(
+            (invocation) => (invocation.positionalArguments.first as String).endsWith('/killed')
+                ? const Stream<String>.empty()
+                : updates.stream,
+          );
+          await connect(texas);
+          await pumpEventQueue();
+          clearInteractions(mockAnalytics);
+        });
+
+        tearDown(() async => updates.close());
+
+        String payload({required String ip, required String country, required String city}) =>
+            json.encode({
+              'location': {'ip': ip, 'country': country, 'city': city, 'node_type': 'hosting'},
+            });
+
+        Future<void> publish({
+          required String ip,
+          String from = 'US',
+          String fromCity = 'texas',
+        }) async {
+          updates.add(payload(ip: ip, country: from, city: fromCity));
+          await pumpEventQueue();
+        }
+
+        // The broker replays the connection's current state on subscribe, so a
+        // renewal is only ever the second message onwards.
+        Future<void> publishEcho() => publish(ip: '2.2.2.2');
+
+        void stubLookup(String city, Future<VPNLocation?> Function() answer) {
+          when(
+            mockLocationsStore.findById(
+              city,
+              countryCode: anyNamed('countryCode'),
+              ipType: anyNamed('ipType'),
+            ),
+          ).thenAnswer((_) => answer());
+        }
+
+        test('the first update repeats the established IP and logs no event', () async {
+          await publish(ip: '2.2.2.2');
+
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('the first update may refine the location without logging', () async {
+          await publish(ip: '2.2.2.2', fromCity: 'florida');
+
+          expect(vpnStore.location?.id, 'florida');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a first update carrying a different IP still logs no event', () async {
+          // The established IP can come from getIPAddress() rather than the
+          // config, so a mismatch on the replayed state is not a renewal.
+          await publish(ip: '3.3.3.3');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '3.3.3.3');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a repeated IP after the first update logs no event', () async {
+          await publishEcho();
+          await publish(ip: '2.2.2.2');
+
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a renewal within the same city logs the event', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('every subsequent renewal logs the event', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9');
+          await publish(ip: '8.8.8.8');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '8.8.8.8');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(2);
+        });
+
+        test('a renewal into another city of the same country moves the location', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+          expect(vpnStore.location?.id, 'florida');
+          expect(vpnStore.location?.countryCode, 'US');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a renewal into another country moves both', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9', from: 'DE', fromCity: 'hofgeismar');
+
+          expect(vpnStore.location?.id, 'hofgeismar');
+          expect(vpnStore.location?.countryCode, 'DE');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a city in the catalog brings its translations', () async {
+          stubLookup('new_mexico', () async => newMexico);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_mexico');
+
+          expect(vpnStore.location?.id, 'new_mexico');
+          expect(vpnStore.location?.translations, {'en': 'New Mexico'});
+        });
+
+        test('a city missing from the catalog resolves to the country entry', () async {
+          // findById already falls back to the country when the city id is
+          // unknown, so an uncatalogued city keeps real translations.
+          stubLookup('new_york', () async => unitedStates);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_york');
+
+          expect(vpnStore.location?.id, 'US');
+          expect(vpnStore.location?.translations, {'en': 'United States'});
+        });
+
+        test('a payload the catalog cannot resolve at all is synthesised', () async {
+          // Neither the city nor its country is in the catalog.
+          stubLookup('new_york', () async => null);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_york');
+
+          expect(vpnStore.location?.id, 'new_york');
+          expect(vpnStore.location?.countryCode, 'US');
+          expect(vpnStore.location?.translations, isEmpty);
+        });
+
+        test('an empty city looks the country up by its code', () async {
+          stubLookup('US', () async => unitedStates);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: '');
+
+          expect(vpnStore.location?.id, 'US');
+          expect(vpnStore.location?.translations, {'en': 'United States'});
+        });
+
+        test('a payload missing a required field is ignored', () async {
+          updates.add(
+            json.encode({
+              'location': {'ip': '9.9.9.9', 'country': 'US', 'node_type': 'hosting'},
+            }),
+          );
+          await pumpEventQueue();
+
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+          expect(vpnStore.location?.id, 'texas');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a non-JSON payload is ignored', () async {
+          updates.add('not json');
+          await pumpEventQueue();
+
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a malformed payload does not stop later updates', () async {
+          updates.add('not json');
+          await pumpEventQueue();
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a failed catalog lookup keeps the location and still applies the IP', () async {
+          stubLookup('florida', () async => throw Exception('locations unavailable'));
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a failed catalog lookup does not stop later updates', () async {
+          stubLookup('florida', () async => throw Exception('locations unavailable'));
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
+          await publish(ip: '8.8.8.8');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '8.8.8.8');
+          expect(vpnStore.location?.id, 'texas');
+        });
+
+        test('updates are applied in the order the broker sent them', () async {
+          final replay = Completer<VPNLocation?>();
+          stubLookup('florida', () => replay.future);
+
+          // The replay stalls on its lookup; the renewal must not overtake it.
+          await publish(ip: '2.2.2.2', fromCity: 'florida');
+          await publish(ip: '9.9.9.9');
+
+          replay.complete(null);
+          await pumpEventQueue();
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('events queued from the previous connection are dropped after a reconnect', () async {
+          final stalled = Completer<VPNLocation?>();
+          stubLookup('florida', () => stalled.future);
+
+          // Two old-session events: the first stalls on its lookup, the second
+          // queues behind it and only runs once the reconnect has happened.
+          await publish(ip: '5.5.5.5', fromCity: 'florida');
+          await publish(ip: '9.9.9.9', fromCity: 'nevada');
+
+          await connect(oregon);
+          await pumpEventQueue();
+
+          stalled.complete(null);
+          await pumpEventQueue();
+
+          expect(vpnStore.location?.id, 'oregon');
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+
+          // The stale events must not have consumed the new session's replay
+          // marker, so its own first message still logs nothing.
+          await publish(ip: '7.7.7.7');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '7.7.7.7');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a renewal right after a malformed replay still logs the event', () async {
+          updates.add('not json');
+          await pumpEventQueue();
+
+          await publish(ip: '9.9.9.9');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('re-subscribing drops the previous connection listeners', () async {
+          final streams = <StreamController<String>>[];
+          when(mockMqtt.subscribe(any)).thenAnswer((invocation) {
+            if ((invocation.positionalArguments.first as String).endsWith('/killed')) {
+              return const Stream<String>.empty();
+            }
+            final controller = StreamController<String>();
+            streams.add(controller);
+            return controller.stream;
+          });
+
+          await connect(oregon);
+          await connect(texas);
+          await pumpEventQueue();
+
+          expect(streams.length, 2);
+          expect(streams.first.hasListener, isFalse);
+          expect(streams.last.hasListener, isTrue);
+        });
+
+        test(
+          'a disconnect while the lookup is in flight does not resurrect the connection',
+          () async {
+            final statuses = StreamController<VpnConnectionStatus>.broadcast();
+            addTearDown(statuses.close);
+            when(mockWireguardRepo.statusStream()).thenAnswer((_) => statuses.stream);
+            await vpnStore.setupTunnel();
+
+            final lookup = Completer<VPNLocation?>();
+            stubLookup('florida', () => lookup.future);
+
+            await publishEcho();
+            await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+            statuses.add(VpnConnectionStatus.disconnecting);
+            await pumpEventQueue();
+            expect(vpnStore.vpnConnection, isNull);
+
+            lookup.complete(null);
+            await pumpEventQueue();
+
+            expect(vpnStore.vpnConnection, isNull);
+          },
+        );
+
+        test(
+          'a reconnect while the lookup is in flight does not clobber the new session',
+          () async {
+            final lookup = Completer<VPNLocation?>();
+            stubLookup('florida', () => lookup.future);
+
+            await publishEcho();
+            await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+            await connect(oregon);
+            await pumpEventQueue();
+
+            lookup.complete(null);
+            await pumpEventQueue();
+
+            expect(vpnStore.location?.id, 'oregon');
+            expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+          },
+        );
       });
     });
 

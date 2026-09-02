@@ -109,6 +109,18 @@ abstract class _VpnStore extends VpnGuard with Store {
   ReactionDisposer? _connectedReactionDisposer;
   ReactionDisposer? _subscriptionReactionDisposer;
 
+  /// The broker replays the connection's current state on subscribe, so the
+  /// first message is not a renewal. Reset per subscription.
+  bool _isFirstConnectionUpdate = true;
+
+  /// Bumped whenever a new connection is established, so an in-flight update
+  /// from the previous one can tell that it is stale.
+  int _connectionSession = 0;
+
+  /// Serialises connection updates: each one awaits a catalog lookup, so
+  /// without a queue a slow message could land after a newer one.
+  Future<void> _connectionUpdates = Future<void>.value();
+
   @readonly
   VpnConnection? _vpnConnection;
 
@@ -824,33 +836,31 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   Future<VPNLocation> _resolveConnectedLocation(VPNLocation? requestedLocation) async {
-    final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
+    final resolved = await _catalogLocation(
+      city: _vpnConfig?.city,
+      countryCode: _vpnConfig?.country,
+      ipType: _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!),
+    );
 
-    if (locationId != null) {
-      final countryCode = _vpnConfig?.country;
-      final ipType = _vpnConfig?.ipType == null
-          ? IPType.datacenter
-          : IPType.fromKey(_vpnConfig!.ipType!);
+    return resolved ??
+        potentialLocation ??
+        (throw Exception('Could not find connected location information'));
+  }
 
-      final match = await _locationsStore.findById(
-        locationId,
-        countryCode: countryCode,
-        ipType: ipType,
-      );
-
-      if (match != null) {
-        return match;
-      }
-
-      return VPNLocation(
-        id: locationId,
-        ipType: ipType,
-        translations: const {},
-        countryCode: countryCode ?? locationId,
-      );
+  /// Resolves a city/country pair from the locations catalog, synthesising a
+  /// bare location when the catalog has no entry for it.
+  Future<VPNLocation?> _catalogLocation({
+    required String? city,
+    required String? countryCode,
+    required IPType ipType,
+  }) async {
+    final id = (city == null || city.isEmpty) ? countryCode : city;
+    if (id == null || id.isEmpty) {
+      return null;
     }
 
-    return potentialLocation ?? (throw Exception('Could not find connected location information'));
+    return await _locationsStore.findById(id, countryCode: countryCode, ipType: ipType) ??
+        VPNLocation(id: id, ipType: ipType, translations: const {}, countryCode: countryCode ?? id);
   }
 
   Future<void> _connectToTunnel() async {
@@ -892,6 +902,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     required String hash,
   }) async {
     await _recentLocationsStore.add(location);
+    _connectionSession++;
     _vpnConnection = VpnConnection(connectionIP: '', location: location);
     await checkLocation();
   }
@@ -953,9 +964,12 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   Future<void> _subscribeConnectionChanges(String connectionID) async {
     try {
+      _cancelSubscriptions();
+      _isFirstConnectionUpdate = true;
+      _connectionUpdates = Future<void>.value();
       _connectionDataSub = _mqtt
           .subscribe('mysterium-vpn/connection/$connectionID')
-          .listen(_handleConnectionUpdate);
+          .listen(_enqueueConnectionUpdate);
 
       _connectionKilledSub = _mqtt
           .subscribe('mysterium-vpn/connection/$connectionID/killed')
@@ -965,20 +979,65 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
-  void _handleConnectionUpdate(String event) {
+  void _enqueueConnectionUpdate(String event) {
+    // Stamped on arrival: cancelling the subscription does not drain events
+    // already queued behind a slow one, and by the time they run the session
+    // may have moved on.
+    final session = _connectionSession;
+    _connectionUpdates = _connectionUpdates
+        .then((_) => _handleConnectionUpdate(event, session: session))
+        .catchError((Object e) => _logger.warning('Connection update failed: $e'));
+  }
+
+  @action
+  Future<void> _handleConnectionUpdate(String event, {required int session}) async {
     final connection = _vpnConnection;
-    if (connection == null) {
+    if (connection == null || session != _connectionSession) {
       return;
     }
 
-    final update = ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
+    // Every message consumes the replayed state, malformed ones included, so a
+    // renewal arriving next is not mistaken for the replay.
+    final isFirstUpdate = _isFirstConnectionUpdate;
+    _isFirstConnectionUpdate = false;
 
-    _vpnConnection = connection.copyWith(
-      connectionIP: update.location.ip,
-      location: connection.location.copyWith(id: update.location.country),
+    final ConnectionMessageLocation payload;
+    try {
+      payload = ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>).location;
+    } catch (e) {
+      _logger.warning('Malformed connection update, ignoring: $e');
+      return;
+    }
+
+    // The catalog lookup can fail (locations fetch rejected while offline); the
+    // renewed IP is still worth applying, so keep the location we already have.
+    VPNLocation? resolved;
+    try {
+      resolved = await _catalogLocation(
+        city: payload.city,
+        countryCode: payload.country,
+        ipType: connection.location.ipType,
+      );
+    } catch (e) {
+      _logger.warning('Could not resolve renewed location, keeping current: $e');
+    }
+
+    // Re-read the connection: a disconnect or reconnect during the lookup means
+    // this update belongs to a session that no longer exists, while a
+    // concurrent update may have advanced the one that does.
+    final current = _vpnConnection;
+    if (current == null || session != _connectionSession) {
+      return;
+    }
+
+    _vpnConnection = current.copyWith(
+      connectionIP: payload.ip,
+      location: resolved ?? current.location,
     );
 
-    _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+    if (!isFirstUpdate && payload.ip != current.connectionIP) {
+      _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+    }
   }
 
   void _handleConnectionKilled(String _) {
