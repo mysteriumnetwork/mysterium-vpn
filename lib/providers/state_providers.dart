@@ -596,6 +596,7 @@ final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
     analyticsStore: ref.watch(analyticsStorePOD),
     vpnStore: ref.watch(vpnStorePOD),
     authSessionStore: ref.watch(authSessionStorePOD),
+    subscriptionStore: ref.watch(subscriptionStorePOD),
     didCrashRecently: () => crashedRecently,
     canShowNativeReview: InAppReviewService().isAvailable,
   )..init();

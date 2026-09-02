@@ -29,12 +29,12 @@ void main() {
     when(authStore.logout()).thenAnswer((_) async {});
   });
 
-  test('tears the tunnel down as app-initiated, then logs out', () async {
+  test('tears the tunnel down as a logout, then logs out', () async {
     when(vpnStore.disconnectTunnel(reason: anyNamed('reason'))).thenAnswer((_) async {});
 
     await run();
 
-    verify(vpnStore.disconnectTunnel(reason: VpnDisconnectReason.appInitiated)).called(1);
+    verify(vpnStore.disconnectTunnel(reason: VpnDisconnectReason.logout)).called(1);
     verify(authStore.logout()).called(1);
     verifyNever(analytics.logEvent(AnalyticsEvent.logOutDisconnectFailed));
   });

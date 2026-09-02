@@ -16,6 +16,13 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.isSubscribed,
     name: '_SubscriptionStore.isSubscribed',
   )).value;
+  Computed<bool>? _$isPausedComputed;
+
+  @override
+  bool get isPaused => (_$isPausedComputed ??= Computed<bool>(
+    () => super.isPaused,
+    name: '_SubscriptionStore.isPaused',
+  )).value;
   Computed<bool>? _$isSubscriptionLoadingComputed;
 
   @override
@@ -248,6 +255,7 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
   String toString() {
     return '''
 isSubscribed: ${isSubscribed},
+isPaused: ${isPaused},
 isSubscriptionLoading: ${isSubscriptionLoading},
 storeState: ${storeState},
 planMetadata: ${planMetadata},

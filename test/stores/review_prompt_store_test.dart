@@ -15,6 +15,7 @@ import 'review_prompt_store_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
   MockSpec<VpnStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<SubscriptionStore>(),
 ])
 void main() {
   late MockSharedPreferenceService prefs;
@@ -22,6 +23,7 @@ void main() {
   late MockAnalyticsStore analytics;
   late MockVpnStore vpnStore;
   late MockAuthSessionStore authSessionStore;
+  late MockSubscriptionStore subscriptionStore;
 
   // Fixed clock so age/cooldown maths are deterministic.
   final fixedNow = DateTime.utc(2026, 6, 10);
@@ -37,6 +39,7 @@ void main() {
     analyticsStore: analytics,
     vpnStore: vpnStore,
     authSessionStore: authSessionStore,
+    subscriptionStore: subscriptionStore,
     now: () => fixedNow,
     didCrashRecently: didCrashRecently,
     canShowNativeReview: canShowNativeReview,
@@ -57,6 +60,7 @@ void main() {
     when(remoteConfig.reviewPromptConfig).thenReturn(const ReviewPromptConfig());
 
     when(authSessionStore.isAuthenticated).thenReturn(true);
+    when(subscriptionStore.isPaused).thenReturn(false);
     when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.user);
     // The prompt is evaluated after a session completes, i.e. while
     // disconnected — that is the unsuppressed baseline.
@@ -69,6 +73,7 @@ void main() {
     analytics = MockAnalyticsStore();
     vpnStore = MockVpnStore();
     authSessionStore = MockAuthSessionStore();
+    subscriptionStore = MockSubscriptionStore();
     makeEligibleAndClear();
   });
 
@@ -203,6 +208,21 @@ void main() {
         prefs.getReviewPromptShownTimestamps(),
       ).thenReturn([nowMs - 400 * dayMs, nowMs - 401 * dayMs, nowMs - 402 * dayMs]);
       expect(createStore().suppressionReason, isNull);
+    });
+
+    test('subscription_paused when the subscription is paused', () {
+      when(subscriptionStore.isPaused).thenReturn(true);
+      expect(createStore().suppressionReason, 'subscription_paused');
+    });
+
+    test('logout when the tunnel came down for a logout', () {
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.logout);
+      expect(createStore().suppressionReason, 'logout');
+    });
+
+    test('app_disconnect when the app tore the tunnel down', () {
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.appInitiated);
+      expect(createStore().suppressionReason, 'app_disconnect');
     });
 
     test('native_review_recent when a native prompt opened within positive cooldown', () {
@@ -396,17 +416,54 @@ void main() {
       store.dispose();
     });
 
-    test('a logout-driven disconnect does not surface the prompt', () async {
+    test('a logout-driven disconnect reports the suppression instead of prompting', () async {
       useInstantStableSession();
       final store = createStore()..handleConnectionStatus(VpnConnectionStatus.connected);
       await Future<void>.delayed(Duration.zero);
       // Logging out (or deleting the account) tears the tunnel down. The user
-      // didn't end this session, so it isn't one to ask them to rate.
+      // didn't end this session, so it isn't one to ask them to rate — but the
+      // non-show is still reported.
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.logout);
+      when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
+      store.handleConnectionStatus(VpnConnectionStatus.disconnected);
+      await Future<void>.delayed(Duration.zero);
+      expect(store.pendingPrompt, isFalse);
+      verify(analytics.logEvent(AnalyticsEvent.reviewPromptEligible)).called(1);
+      verify(
+        analytics.logEvent(AnalyticsEvent.reviewPromptSuppressed, parameters: {'reason': 'logout'}),
+      ).called(1);
+      store.dispose();
+    });
+
+    test('a pause-driven teardown reports subscription_paused', () async {
+      useInstantStableSession();
+      final store = createStore()..handleConnectionStatus(VpnConnectionStatus.connected);
+      await Future<void>.delayed(Duration.zero);
+      // Pausing revokes entitlement, so VpnStore drops the tunnel itself.
+      when(subscriptionStore.isPaused).thenReturn(true);
       when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.appInitiated);
       when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
       store.handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
       expect(store.pendingPrompt, isFalse);
+      verify(
+        analytics.logEvent(
+          AnalyticsEvent.reviewPromptSuppressed,
+          parameters: {'reason': 'subscription_paused'},
+        ),
+      ).called(1);
+      store.dispose();
+    });
+
+    test('a logout before the session stabilised records no failed outcome', () async {
+      // Default 60s window — the session never stabilises. A logout is not the
+      // user failing a connection, so the clean-sessions streak is untouched.
+      when(vpnStore.disconnectReason).thenReturn(VpnDisconnectReason.logout);
+      final store = createStore()
+        ..handleConnectionStatus(VpnConnectionStatus.connecting)
+        ..handleConnectionStatus(VpnConnectionStatus.disconnected);
+      await Future<void>.delayed(Duration.zero);
+      verifyNever(prefs.setReviewRecentSessionOutcomes(any));
       verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptEligible));
       store.dispose();
     });
@@ -490,6 +547,19 @@ void main() {
         ..pendingPrompt = true;
 
       runInAction(() => reason.value = VpnDisconnectReason.appInitiated);
+
+      expect(store.pendingPrompt, isFalse);
+      store.dispose();
+    });
+
+    test('a logout teardown clears a prompt armed by an earlier session', () {
+      final reason = Observable(VpnDisconnectReason.user);
+      when(vpnStore.disconnectReason).thenAnswer((_) => reason.value);
+      final store = createStore()
+        ..init()
+        ..pendingPrompt = true;
+
+      runInAction(() => reason.value = VpnDisconnectReason.logout);
 
       expect(store.pendingPrompt, isFalse);
       store.dispose();
