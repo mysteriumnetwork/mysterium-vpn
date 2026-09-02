@@ -27,6 +27,7 @@ abstract class _ReviewPromptStore with Store {
     required AnalyticsStore analyticsStore,
     required VpnStore vpnStore,
     required AuthSessionStore authSessionStore,
+    required SubscriptionStore subscriptionStore,
     DateTime Function()? now,
     bool Function()? didCrashRecently,
     Future<bool> Function()? canShowNativeReview,
@@ -35,6 +36,7 @@ abstract class _ReviewPromptStore with Store {
        _analytics = analyticsStore,
        _vpnStore = vpnStore,
        _authSessionStore = authSessionStore,
+       _subscriptionStore = subscriptionStore,
        _now = now ?? DateTime.now,
        _didCrashRecently = didCrashRecently ?? (() => false),
        _canShowNativeReview = canShowNativeReview ?? (() async => true);
@@ -44,6 +46,7 @@ abstract class _ReviewPromptStore with Store {
   final AnalyticsStore _analytics;
   final VpnStore _vpnStore;
   final AuthSessionStore _authSessionStore;
+  final SubscriptionStore _subscriptionStore;
   final DateTime Function() _now;
   final bool Function() _didCrashRecently;
 
@@ -94,7 +97,7 @@ abstract class _ReviewPromptStore with Store {
     _teardownDisposer ??= reaction<VpnDisconnectReason>((_) => _vpnStore.disconnectReason, (
       reason,
     ) {
-      if (reason == VpnDisconnectReason.appInitiated) {
+      if (reason.isAppInitiated) {
         pendingPrompt = false;
       }
     });
@@ -153,16 +156,18 @@ abstract class _ReviewPromptStore with Store {
         break;
       case VpnConnectionStatus.disconnected:
         _stableTimer?.cancel();
-        // Only a user-driven disconnect ends a session; reconnects and logout don't.
-        if (_vpnStore.disconnectReason != VpnDisconnectReason.user) {
+        final teardown = _vpnStore.disconnectReason;
+        // Transitional; the following `connecting` resets the session.
+        if (teardown == VpnDisconnectReason.reconnect) {
           break;
         }
         if (_sessionStable) {
           // A successful, stable session has completed — per the ticket the
           // eligibility check runs now, while disconnected (never while
-          // connected/connecting).
+          // connected/connecting). App-initiated teardowns fall through here so
+          // the suppression is reported rather than passing silently.
           unawaited(evaluate());
-        } else if (_sessionAttempted) {
+        } else if (_sessionAttempted && teardown == VpnDisconnectReason.user) {
           // An attempt ended without reaching stability: either connected then
           // dropped early, or a connection error that never established. Both
           // count as an unclean recent session (ticket: "no disconnects or
@@ -269,11 +274,23 @@ abstract class _ReviewPromptStore with Store {
   /// A machine-readable reason the prompt is blocked, or `null` if clear.
   /// Only meaningful when [isEligible] is `true`.
   ///
+  /// Evaluated at a session end — the teardown reasons name the disconnect that
+  /// just completed.
+  ///
   /// Not @computed: it reads SharedPreferences and VPN status that aren't all
   /// MobX observables, so a memoized value could go stale. See [isEligible].
   String? get suppressionReason {
     if (!_config.enabled) {
       return 'disabled';
+    }
+    if (_subscriptionStore.isPaused) {
+      return 'subscription_paused';
+    }
+    // Ranked above `unauthenticated`: the teardown reason outlives the logout
+    // that set it, so the label stays the same however the two race.
+    final teardown = _vpnStore.disconnectReason;
+    if (teardown.isAppInitiated) {
+      return teardown == VpnDisconnectReason.logout ? 'logout' : 'app_disconnect';
     }
     if (!_authSessionStore.isAuthenticated) {
       return 'unauthenticated';

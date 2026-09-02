@@ -1,5 +1,5 @@
-/// Why the tunnel was torn down. Only [user] ends a session the review prompt
-/// counts; the rest are transitional or app-initiated.
+/// Why the tunnel was torn down. [user] ends the user's own connection attempt;
+/// the rest are transitional or app-initiated.
 enum VpnDisconnectReason {
   /// The user ended the session (Disconnect, a protocol switch made in
   /// Settings, connection error).
@@ -8,8 +8,13 @@ enum VpnDisconnectReason {
   /// Torn down to be re-established (IP refresh or server switch).
   reconnect,
 
-  /// The app ended it: logout, account deletion, the subscription becoming
-  /// inactive or paused, or a protocol fallback after the network blocked the
-  /// current protocol. Never counts as a completed session.
+  /// The app ended it (entitlement lost, protocol fallback, failed startup).
   appInitiated,
+
+  /// The app ended it because the account is going away: logout or account
+  /// deletion.
+  logout;
+
+  /// Whether the app, not the user, tore the tunnel down.
+  bool get isAppInitiated => this == appInitiated || this == logout;
 }
