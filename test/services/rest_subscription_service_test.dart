@@ -43,6 +43,7 @@ void main() {
         active: true,
         expired: false,
         recurring: true,
+        pauseAllowed: true,
         subscriptionId: 'sub-1',
         planId: 'plan_monthly',
         gateway: 'stripe',
@@ -56,6 +57,7 @@ void main() {
       expect(sub.active, isTrue);
       expect(sub.planId, 'plan_monthly');
       expect(sub.gateway, 'stripe');
+      expect(sub.isPauseAllowed, isTrue);
     });
 
     test('rethrows arbitrary errors after logging', () async {

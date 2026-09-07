@@ -13,6 +13,7 @@ void main() {
     String? secondaryButtonLabel,
     VoidCallback? onSecondaryButtonPressed,
     VoidCallback? onPrimaryButtonPressed,
+    double bottomViewPadding = 0,
   }) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -20,6 +21,12 @@ void main() {
         locale: testLocale,
         localizationsDelegates: testLocalizationsDelegates,
         supportedLocales: testSupportedLocales,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(viewPadding: EdgeInsets.only(bottom: bottomViewPadding)),
+          child: child!,
+        ),
         home: CancelSubscriptionActionFooter(
           primaryButtonLabel: 'Pause',
           secondaryButtonLabel: secondaryButtonLabel,
@@ -148,6 +155,38 @@ void main() {
     // assert
     expect(button.onPressed, isNull);
     expect(button, isA<ButtonTertiary>());
+  });
+
+  testWidgets('keeps the design bottom padding when there is no system inset', (tester) async {
+    // arrange
+    await pumpActionFooter(tester: tester);
+
+    // act
+    final padding = tester
+        .widget<Padding>(
+          find.ancestor(of: find.byType(ButtonPrimary), matching: find.byType(Padding)).last,
+        )
+        .padding
+        .resolve(TextDirection.ltr);
+
+    // assert
+    expect(padding.bottom, 40);
+  });
+
+  testWidgets('pads past the system inset so buttons clear the nav bar', (tester) async {
+    // arrange
+    await pumpActionFooter(tester: tester, bottomViewPadding: 48);
+
+    // act
+    final padding = tester
+        .widget<Padding>(
+          find.ancestor(of: find.byType(ButtonPrimary), matching: find.byType(Padding)).last,
+        )
+        .padding
+        .resolve(TextDirection.ltr);
+
+    // assert
+    expect(padding.bottom, 48 + 16);
   });
 
   testWidgets('secondary button is not shown when only the label is set', (tester) async {
