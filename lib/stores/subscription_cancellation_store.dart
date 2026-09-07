@@ -114,13 +114,11 @@ abstract class _SubscriptionCancellationStore with Store {
   }
 
   Future<bool> canPauseSubscription() async {
-    if (!_remoteConfigStore.pauseSubscriptionEnabled || isStoreSubscription()) {
+    if (!_remoteConfigStore.pauseSubscriptionEnabled) {
       return false;
     }
     final subscription = await _subscriptionStore.subscriptionFuture;
-    if (subscription.paused == true ||
-        subscription.pausedFrom != null ||
-        subscription.pausedUntil != null) {
+    if (!subscription.isPauseAllowed) {
       return false;
     }
     await _loadPauseDurations();

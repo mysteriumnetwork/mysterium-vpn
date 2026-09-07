@@ -272,6 +272,7 @@ class RestSubscriptionService extends SubscriptionService {
         storePlanId: data.storePlanId,
         periodStart: data.periodStart,
         paused: data.paused,
+        pauseAllowed: data.pauseAllowed,
         pausedFrom: data.pausedFrom,
         pausedUntil: data.pausedUntil,
       );
