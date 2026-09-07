@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -54,10 +56,13 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
           )
         : null;
 
+    // Keep the buttons clear of the Android nav bar / iOS home indicator.
+    final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+
     return Padding(
       padding: EdgeInsets.only(
         top: theme.spacing.xl2,
-        bottom: theme.spacing.xl4,
+        bottom: math.max(theme.spacing.xl4, bottomInset + theme.spacing.md),
         left: theme.spacing.xl2,
         right: theme.spacing.xl2,
       ),
