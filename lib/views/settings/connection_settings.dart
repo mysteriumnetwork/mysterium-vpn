@@ -67,8 +67,8 @@ class ConnectionSettings extends HookConsumerWidget {
 
         builders.add(
           (pos) => SettingsCard(
-            title: S.current.refreshIPAddress,
-            subtitle: S.current.getNewIPAddress,
+            title: S.current.changeIpOnReconnect,
+            subtitle: S.current.changeIpOnReconnectDesc,
             position: pos,
             trailing: Observer(
               builder: (context) => refreshIPStore.refreshIPFuture.status == FutureStatus.pending

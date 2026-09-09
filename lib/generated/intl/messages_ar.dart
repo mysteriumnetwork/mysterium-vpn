@@ -153,6 +153,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("تاريخ الإلغاء:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("ملغى"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("تغيير عنوان IP عند إعادة الاتصال"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "استخدم عنوان IP مختلفًا في كل مرة تتصل",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "تعذّر علينا استرداد معلومات خطتك.",
     ),

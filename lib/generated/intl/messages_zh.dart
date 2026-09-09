@@ -136,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelYourSubsMess": MessageLookupByLibrary.simpleMessage("删除账户前，请先在 App Store 订阅中取消你的订阅。"),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("取消日期："),
     "cancelled": MessageLookupByLibrary.simpleMessage("已取消"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("重新连接时更换 IP"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage("每次连接时使用不同的 IP"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage("我们无法获取你的套餐信息。"),
     "checkSubsStatusFailedTitle": MessageLookupByLibrary.simpleMessage("套餐信息不可用"),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("正在获取套餐信息…"),
