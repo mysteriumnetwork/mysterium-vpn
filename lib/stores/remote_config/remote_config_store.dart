@@ -687,7 +687,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   @computed
   bool get showApiVersion {
     if (config.containsKey(_FeatureToggleKey.showApiVersion.name)) {
-      return config[_FeatureToggleKey.showCitiesAndStates.name] as bool;
+      return config[_FeatureToggleKey.showApiVersion.name] as bool;
     }
     return false;
   }

@@ -466,6 +466,23 @@ class QAToolbox extends HookConsumerWidget {
             ),
           ),
           _QAActionButton(
+            label: 'UDP Blocked',
+            onPressed: () {
+              final store = ref.read(udpBlockedSuggestionStorePOD);
+              if (!store.isOpenVpnAvailable) {
+                showSnackbar(
+                  'Suppressed: isProtocolPickerAvailable is off or the session is '
+                  'unauthenticated, so OpenVPN is not offered.',
+                  type: SnackbarType.info,
+                );
+                return;
+              }
+              // Goes through the real notice so the reaction, dialog, protocol
+              // switch and reconnect all run as they would in the field.
+              store.onUdpBlocked('QA toolbox');
+            },
+          ),
+          _QAActionButton(
             label: 'Subscription Onboarding',
             onPressed: () => ref
                 .read<SubscriptionOnboardingStore>(subscriptionOnboardingStorePOD)

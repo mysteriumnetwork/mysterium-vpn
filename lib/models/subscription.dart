@@ -18,6 +18,7 @@ abstract class Subscription with _$Subscription {
     bool? expired,
     bool? recurring,
     bool? paused,
+    bool? pauseAllowed,
     DateTime? pausedFrom,
     DateTime? pausedUntil,
     String? storePlanId,
@@ -52,6 +53,9 @@ abstract class Subscription with _$Subscription {
   bool get isAppleGateway => gateway?.toLowerCase() == 'apple';
 
   bool get isPaused => paused ?? false;
+
+  /// Server-side pause eligibility — the single source of truth for the pause offer.
+  bool get isPauseAllowed => pauseAllowed ?? false;
 
   /// The single rule for whether this subscription entitles the user to a
   /// tunnel. Read by `VpnGuard` before connecting, and by the reaction that

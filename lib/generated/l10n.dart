@@ -89,6 +89,7 @@ class S {
     'cancelDowntimes': [],
     'cancelError7040': [],
     'cancelLatency': [],
+    'cancelSubscriptionWarningDesc': [],
     'cancellationDateLbl': [],
     'cancelled': [],
     'cancelMissingFeatures': [],
@@ -101,6 +102,8 @@ class S {
     'cancelUnableToAccessBlockedSites': [],
     'cancelUsabilityIssues': [],
     'cancelYourSubsMess': [],
+    'changeIpOnReconnect': [],
+    'changeIpOnReconnectDesc': [],
     'checkSubsStatusFailedDesc': [],
     'checkSubsStatusFailedTitle': [],
     'checkSubsStatusTitle': [],
@@ -500,6 +503,10 @@ class S {
     'tunnelSetupError': [],
     'typeDelete': ['word'],
     'typeFeedback': [],
+    'udpBlockedConfirm': [],
+    'udpBlockedDesc': [],
+    'udpBlockedSwitched': [],
+    'udpBlockedTitle': [],
     'ukraine': [],
     'unableToConnectToPaymentProcesor': [],
     'unauthenticatedBannerTitle': [],
@@ -754,6 +761,16 @@ class S {
     return Intl.message('Latency', name: 'cancelLatency', desc: '', args: []);
   }
 
+  /// `Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.`
+  String get cancelSubscriptionWarningDesc {
+    return Intl.message(
+      'Your subscription will be cancelled. You can continue using Mysterium VPN until your access ends.',
+      name: 'cancelSubscriptionWarningDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancellation date:`
   String get cancellationDateLbl {
     return Intl.message('Cancellation date:', name: 'cancellationDateLbl', desc: '', args: []);
@@ -829,6 +846,21 @@ class S {
     return Intl.message(
       'Cancel your subscription on the App Store subscriptions before deleting your account.',
       name: 'cancelYourSubsMess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change IP on reconnect`
+  String get changeIpOnReconnect {
+    return Intl.message('Change IP on reconnect', name: 'changeIpOnReconnect', desc: '', args: []);
+  }
+
+  /// `Use a different IP each time you connect`
+  String get changeIpOnReconnectDesc {
+    return Intl.message(
+      'Use a different IP each time you connect',
+      name: 'changeIpOnReconnectDesc',
       desc: '',
       args: [],
     );
@@ -3762,6 +3794,41 @@ class S {
   /// `Type your feedback here...`
   String get typeFeedback {
     return Intl.message('Type your feedback here...', name: 'typeFeedback', desc: '', args: []);
+  }
+
+  /// `Switch to OpenVPN`
+  String get udpBlockedConfirm {
+    return Intl.message('Switch to OpenVPN', name: 'udpBlockedConfirm', desc: '', args: []);
+  }
+
+  /// `WireGuard appears to be blocked on this network. OpenVPN connects in a different way and usually works here. Switch now?`
+  String get udpBlockedDesc {
+    return Intl.message(
+      'WireGuard appears to be blocked on this network. OpenVPN connects in a different way and usually works here. Switch now?',
+      name: 'udpBlockedDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switched to OpenVPN. You can change this any time in Settings.`
+  String get udpBlockedSwitched {
+    return Intl.message(
+      'Switched to OpenVPN. You can change this any time in Settings.',
+      name: 'udpBlockedSwitched',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WireGuard connection blocked`
+  String get udpBlockedTitle {
+    return Intl.message(
+      'WireGuard connection blocked',
+      name: 'udpBlockedTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Ukraine`

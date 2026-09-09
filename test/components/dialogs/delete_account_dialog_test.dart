@@ -63,11 +63,11 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('tears the tunnel down as app-initiated, then logs out', (tester) async {
+  testWidgets('tears the tunnel down as a logout, then logs out', (tester) async {
     await deleteAndRedirect(tester);
 
     verify(authStore.deleteAccount()).called(1);
-    verify(vpnStore.disconnectTunnel(reason: VpnDisconnectReason.appInitiated)).called(1);
+    verify(vpnStore.disconnectTunnel(reason: VpnDisconnectReason.logout)).called(1);
     verify(authStore.logout()).called(1);
   });
 

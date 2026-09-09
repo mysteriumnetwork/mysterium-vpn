@@ -141,6 +141,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aboneliğini iptal etmek istediğinden emin misin?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Aboneliği iptal et"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Aboneliğin iptal edilecek. Erişimin bitene kadar Mysterium VPN’i kullanmaya devam edebilirsin.",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Daha fazla anlat (isteğe bağlı)",
     ),
@@ -155,6 +158,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("İptal tarihi:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("İptal edildi"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage(
+      "Yeniden bağlanınca IP\'yi değiştir",
+    ),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "Her bağlandığında farklı bir IP kullan",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Plan bilgilerine ulaşamıyoruz.",
     ),
@@ -787,6 +796,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("Tünel kurulurken bir hata oluştu"),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Geri bildirimini buraya yaz..."),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("OpenVPN\'e geç"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "Bu ağda WireGuard engelleniyor gibi görünüyor. OpenVPN farklı şekilde bağlanır ve burada genellikle çalışır. Şimdi geçilsin mi?",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "OpenVPN\'e geçildi. Bunu istediğin zaman Ayarlar\'dan değiştirebilirsin.",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("WireGuard bağlantısı engellendi"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukrayna"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Ödeme işlemcisine bağlanılamıyor! Lütfen tekrar dene.",

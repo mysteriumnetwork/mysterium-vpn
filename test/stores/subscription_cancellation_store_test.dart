@@ -31,7 +31,9 @@ void main() {
     when(remoteConfigStore.pauseSubscriptionEnabled).thenReturn(true);
     when(subscriptionStore.useWebFlow).thenReturn(true);
     when(subscriptionStore.subscriptionFuture).thenAnswer(
-      (_) => ObservableFuture.value(Subscription(active: true, paused: false, id: 'sub-1')),
+      (_) => ObservableFuture.value(
+        Subscription(active: true, paused: false, pauseAllowed: true, id: 'sub-1'),
+      ),
     );
     when(subscriptionService.fetchPauseDurations()).thenAnswer((_) async => ['1', '3', '6']);
     when(subscriptionStore.pauseSubscription(any)).thenAnswer((_) async {});
@@ -94,11 +96,10 @@ void main() {
       verifyNever(subscriptionService.fetchPauseDurations());
     });
 
-    test('returns false for store (Apple/Google) subscriptions', () async {
+    test('ignores the store/web flow and trusts pauseAllowed', () async {
       when(subscriptionStore.useWebFlow).thenReturn(false);
 
-      expect(await store.canPauseSubscription(), isFalse);
-      verifyNever(subscriptionService.fetchPauseDurations());
+      expect(await store.canPauseSubscription(), isTrue);
     });
 
     test('loads durations and returns true when pause is available', () async {
@@ -135,32 +136,37 @@ void main() {
       expect(store.availablePauseDurations, ['1', '3']);
     });
 
-    test('returns false when the subscription is already paused', () async {
+    test('returns false when the API does not allow pausing', () async {
       when(
         subscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, pauseAllowed: false)));
+
+      expect(await store.canPauseSubscription(), isFalse);
+      verifyNever(subscriptionService.fetchPauseDurations());
+    });
+
+    test('returns false when pauseAllowed is missing', () async {
+      when(
+        subscriptionStore.subscriptionFuture,
+      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
 
       expect(await store.canPauseSubscription(), isFalse);
     });
 
-    test('returns false when pausedFrom is set', () async {
+    test('returns true while paused fields are set but pausing is allowed', () async {
       when(subscriptionStore.subscriptionFuture).thenAnswer(
         (_) => ObservableFuture.value(
-          Subscription(active: true, paused: false, pausedFrom: DateTime(2026)),
+          Subscription(
+            active: true,
+            paused: true,
+            pauseAllowed: true,
+            pausedFrom: DateTime(2026),
+            pausedUntil: DateTime(2026, 4),
+          ),
         ),
       );
 
-      expect(await store.canPauseSubscription(), isFalse);
-    });
-
-    test('returns false when pausedUntil is set', () async {
-      when(subscriptionStore.subscriptionFuture).thenAnswer(
-        (_) => ObservableFuture.value(
-          Subscription(active: true, paused: false, pausedUntil: DateTime(2026)),
-        ),
-      );
-
-      expect(await store.canPauseSubscription(), isFalse);
+      expect(await store.canPauseSubscription(), isTrue);
     });
 
     test('returns false when fetch fails', () async {

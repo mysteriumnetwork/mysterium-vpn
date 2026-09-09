@@ -141,6 +141,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Es-tu sûr de vouloir annuler ton abonnement ?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Annuler l’abonnement"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Ton abonnement sera annulé. Tu pourras continuer à utiliser Mysterium VPN jusqu’à la fin de ton accès.",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Dis-nous en plus (facultatif)",
     ),
@@ -155,6 +158,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Date d’annulation :"),
     "cancelled": MessageLookupByLibrary.simpleMessage("Annulée"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("Changer d\'IP à la reconnexion"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "Utilise une IP différente à chaque connexion",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Nous ne parvenons pas à récupérer les infos de ton offre.",
     ),
@@ -831,6 +838,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Écris ton avis ici…"),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("Passer à OpenVPN"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "WireGuard semble bloqué sur ce réseau. OpenVPN se connecte différemment et fonctionne généralement ici. Changer maintenant ?",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "Passé à OpenVPN. Tu peux changer ça à tout moment dans les Paramètres.",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("Connexion WireGuard bloquée"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraine"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Impossible de se connecter au processeur de paiement ! Réessaie.",

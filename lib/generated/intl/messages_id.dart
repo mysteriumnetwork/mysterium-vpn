@@ -138,6 +138,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Yakin ingin membatalkan langgananmu?",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Batalkan langganan"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "Langgananmu akan dibatalkan. Kamu tetap bisa memakai Mysterium VPN hingga aksesmu berakhir.",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage(
       "Ceritakan lebih lanjut (opsional)",
     ),
@@ -152,6 +155,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal pembatalan:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("Dibatalkan"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("Ganti IP saat menyambung ulang"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "Gunakan IP berbeda setiap kali kamu menyambung",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Kami tidak bisa mengambil info paketmu.",
     ),
@@ -766,6 +773,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Ketik masukanmu di sini..."),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("Ganti ke OpenVPN"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "WireGuard tampaknya diblokir di jaringan ini. OpenVPN terhubung dengan cara berbeda dan biasanya berfungsi di sini. Ganti sekarang?",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "Diganti ke OpenVPN. Kamu bisa mengubahnya kapan saja di Pengaturan.",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("Koneksi WireGuard diblokir"),
     "ukraine": MessageLookupByLibrary.simpleMessage("Ukraina"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "Tidak bisa terhubung ke pemroses pembayaran! Coba lagi.",

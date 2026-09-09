@@ -138,6 +138,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
     ),
     "cancelSubscriptionTitle": MessageLookupByLibrary.simpleMessage("إلغاء الاشتراك"),
+    "cancelSubscriptionWarningDesc": MessageLookupByLibrary.simpleMessage(
+      "سيتم إلغاء اشتراكك. يمكنك مواصلة استخدام Mysterium VPN حتى ينتهي وصولك.",
+    ),
     "cancelSurveyTellUsMoreHint": MessageLookupByLibrary.simpleMessage("أخبرنا بالمزيد (اختياري)"),
     "cancelSurveyTitle": MessageLookupByLibrary.simpleMessage("أسباب الإلغاء"),
     "cancelTooExpensive": MessageLookupByLibrary.simpleMessage("باهظ الثمن"),
@@ -150,6 +153,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("تاريخ الإلغاء:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("ملغى"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("تغيير عنوان IP عند إعادة الاتصال"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "استخدم عنوان IP مختلفًا في كل مرة تتصل",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "تعذّر علينا استرداد معلومات خطتك.",
     ),
@@ -748,6 +755,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء إعداد النفق"),
     "typeDelete": m31,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("اكتب ملاحظاتك هنا..."),
+    "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("التبديل إلى OpenVPN"),
+    "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(
+      "يبدو أن WireGuard محظور على هذه الشبكة. يتصل OpenVPN بطريقة مختلفة وعادةً ما يعمل هنا. هل تريد التبديل الآن؟",
+    ),
+    "udpBlockedSwitched": MessageLookupByLibrary.simpleMessage(
+      "تم التبديل إلى OpenVPN. يمكنك تغيير ذلك في أي وقت من الإعدادات.",
+    ),
+    "udpBlockedTitle": MessageLookupByLibrary.simpleMessage("اتصال WireGuard محظور"),
     "ukraine": MessageLookupByLibrary.simpleMessage("أوكرانيا"),
     "unableToConnectToPaymentProcesor": MessageLookupByLibrary.simpleMessage(
       "تعذّر الاتصال بمعالج الدفع! يُرجى المحاولة مرة أخرى.",

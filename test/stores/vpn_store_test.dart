@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,6 +65,7 @@ void main() {
   late MockTalker mockLogger;
   late MockSubscriptionStore mockSubscriptionStore;
   late MockVpnProtocolStore mockVpnProtocolStore;
+  late UdpBlockedSuggestionStore udpBlockedSuggestionStore;
 
   VpnStore buildStore() => VpnStore(
     externalApiService: mockExternalApi,
@@ -73,7 +75,6 @@ void main() {
     subscriptionStore: mockSubscriptionStore,
     logger: mockLogger,
     analyticsStore: mockAnalytics,
-    remoteConfigStore: mockRemoteConfig,
     authSessionStore: mockAuthSession,
     realIPInfo: mockRealIPInfo,
     dnsStore: mockDns,
@@ -88,6 +89,7 @@ void main() {
     connectionDecisionStore: mockConnectionDecision,
     protocolStore: mockVpnProtocolStore,
     ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
+    udpBlockedSuggestionStore: udpBlockedSuggestionStore,
   );
 
   setUp(() async {
@@ -118,6 +120,13 @@ void main() {
     // Setup default protocol store behavior
     when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
     when(mockAuthSession.status).thenReturn(AuthStatus.unauthenticated);
+
+    udpBlockedSuggestionStore = UdpBlockedSuggestionStore(
+      mockRemoteConfig,
+      mockVpnProtocolStore,
+      mockAuthSession,
+      mockAnalytics,
+    );
 
     vpnStore = buildStore();
   });
@@ -1179,7 +1188,6 @@ void main() {
           subscriptionStore: mockSubscriptionStore,
           logger: mockLogger,
           analyticsStore: mockAnalytics,
-          remoteConfigStore: mockRemoteConfig,
           authSessionStore: mockAuthSession,
           realIPInfo: mockRealIPInfo,
           dnsStore: mockDns,
@@ -1194,6 +1202,7 @@ void main() {
           connectionDecisionStore: mockConnectionDecision,
           protocolStore: mockVpnProtocolStore,
           ipRefreshExhaustionStore: exhaustionStore,
+          udpBlockedSuggestionStore: udpBlockedSuggestionStore,
         );
 
         // Tunnel was already up at launch: this resolves the existing connection
@@ -1207,6 +1216,359 @@ void main() {
         expect(exhaustionStore.exhaustionNotice, connectedLocation);
 
         await store.disposeStore();
+      });
+
+      group('MQTT connection updates', () {
+        late StreamController<String> updates;
+
+        // Shapes mirror the locations API: uppercase country, lowercase
+        // underscored city id.
+        const texas = VPNLocation(
+          id: 'texas',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'US',
+        );
+        const newMexico = VPNLocation(
+          id: 'new_mexico',
+          ipType: IPType.datacenter,
+          translations: {'en': 'New Mexico'},
+          countryCode: 'US',
+        );
+        const oregon = VPNLocation(
+          id: 'oregon',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'US',
+        );
+        const unitedStates = VPNLocation(
+          id: 'US',
+          ipType: IPType.datacenter,
+          translations: {'en': 'United States'},
+          countryCode: 'US',
+        );
+
+        setUp(() async {
+          updates = StreamController<String>.broadcast();
+          when(mockMqtt.subscribe(any)).thenAnswer(
+            (invocation) => (invocation.positionalArguments.first as String).endsWith('/killed')
+                ? const Stream<String>.empty()
+                : updates.stream,
+          );
+          await connect(texas);
+          await pumpEventQueue();
+          clearInteractions(mockAnalytics);
+        });
+
+        tearDown(() async => updates.close());
+
+        String payload({required String ip, required String country, required String city}) =>
+            json.encode({
+              'location': {'ip': ip, 'country': country, 'city': city, 'node_type': 'hosting'},
+            });
+
+        Future<void> publish({
+          required String ip,
+          String from = 'US',
+          String fromCity = 'texas',
+        }) async {
+          updates.add(payload(ip: ip, country: from, city: fromCity));
+          await pumpEventQueue();
+        }
+
+        // The broker replays the connection's current state on subscribe, so a
+        // renewal is only ever the second message onwards.
+        Future<void> publishEcho() => publish(ip: '2.2.2.2');
+
+        void stubLookup(String city, Future<VPNLocation?> Function() answer) {
+          when(
+            mockLocationsStore.findById(
+              city,
+              countryCode: anyNamed('countryCode'),
+              ipType: anyNamed('ipType'),
+            ),
+          ).thenAnswer((_) => answer());
+        }
+
+        test('the first update repeats the established IP and logs no event', () async {
+          await publish(ip: '2.2.2.2');
+
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('the first update may refine the location without logging', () async {
+          await publish(ip: '2.2.2.2', fromCity: 'florida');
+
+          expect(vpnStore.location?.id, 'florida');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a first update carrying a different IP still logs no event', () async {
+          // The established IP can come from getIPAddress() rather than the
+          // config, so a mismatch on the replayed state is not a renewal.
+          await publish(ip: '3.3.3.3');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '3.3.3.3');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a repeated IP after the first update logs no event', () async {
+          await publishEcho();
+          await publish(ip: '2.2.2.2');
+
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a renewal within the same city logs the event', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('every subsequent renewal logs the event', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9');
+          await publish(ip: '8.8.8.8');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '8.8.8.8');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(2);
+        });
+
+        test('a renewal into another city of the same country moves the location', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+          expect(vpnStore.location?.id, 'florida');
+          expect(vpnStore.location?.countryCode, 'US');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a renewal into another country moves both', () async {
+          await publishEcho();
+          await publish(ip: '9.9.9.9', from: 'DE', fromCity: 'hofgeismar');
+
+          expect(vpnStore.location?.id, 'hofgeismar');
+          expect(vpnStore.location?.countryCode, 'DE');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a city in the catalog brings its translations', () async {
+          stubLookup('new_mexico', () async => newMexico);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_mexico');
+
+          expect(vpnStore.location?.id, 'new_mexico');
+          expect(vpnStore.location?.translations, {'en': 'New Mexico'});
+        });
+
+        test('a city missing from the catalog resolves to the country entry', () async {
+          // findById already falls back to the country when the city id is
+          // unknown, so an uncatalogued city keeps real translations.
+          stubLookup('new_york', () async => unitedStates);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_york');
+
+          expect(vpnStore.location?.id, 'US');
+          expect(vpnStore.location?.translations, {'en': 'United States'});
+        });
+
+        test('a payload the catalog cannot resolve at all is synthesised', () async {
+          // Neither the city nor its country is in the catalog.
+          stubLookup('new_york', () async => null);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'new_york');
+
+          expect(vpnStore.location?.id, 'new_york');
+          expect(vpnStore.location?.countryCode, 'US');
+          expect(vpnStore.location?.translations, isEmpty);
+        });
+
+        test('an empty city looks the country up by its code', () async {
+          stubLookup('US', () async => unitedStates);
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: '');
+
+          expect(vpnStore.location?.id, 'US');
+          expect(vpnStore.location?.translations, {'en': 'United States'});
+        });
+
+        test('a payload missing a required field is ignored', () async {
+          updates.add(
+            json.encode({
+              'location': {'ip': '9.9.9.9', 'country': 'US', 'node_type': 'hosting'},
+            }),
+          );
+          await pumpEventQueue();
+
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+          expect(vpnStore.location?.id, 'texas');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a non-JSON payload is ignored', () async {
+          updates.add('not json');
+          await pumpEventQueue();
+
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a malformed payload does not stop later updates', () async {
+          updates.add('not json');
+          await pumpEventQueue();
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a failed catalog lookup keeps the location and still applies the IP', () async {
+          stubLookup('florida', () async => throw Exception('locations unavailable'));
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('a failed catalog lookup does not stop later updates', () async {
+          stubLookup('florida', () async => throw Exception('locations unavailable'));
+
+          await publishEcho();
+          await publish(ip: '9.9.9.9', fromCity: 'florida');
+          await publish(ip: '8.8.8.8');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '8.8.8.8');
+          expect(vpnStore.location?.id, 'texas');
+        });
+
+        test('updates are applied in the order the broker sent them', () async {
+          final replay = Completer<VPNLocation?>();
+          stubLookup('florida', () => replay.future);
+
+          // The replay stalls on its lookup; the renewal must not overtake it.
+          await publish(ip: '2.2.2.2', fromCity: 'florida');
+          await publish(ip: '9.9.9.9');
+
+          replay.complete(null);
+          await pumpEventQueue();
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          expect(vpnStore.location?.id, 'texas');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('events queued from the previous connection are dropped after a reconnect', () async {
+          final stalled = Completer<VPNLocation?>();
+          stubLookup('florida', () => stalled.future);
+
+          // Two old-session events: the first stalls on its lookup, the second
+          // queues behind it and only runs once the reconnect has happened.
+          await publish(ip: '5.5.5.5', fromCity: 'florida');
+          await publish(ip: '9.9.9.9', fromCity: 'nevada');
+
+          await connect(oregon);
+          await pumpEventQueue();
+
+          stalled.complete(null);
+          await pumpEventQueue();
+
+          expect(vpnStore.location?.id, 'oregon');
+          expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+
+          // The stale events must not have consumed the new session's replay
+          // marker, so its own first message still logs nothing.
+          await publish(ip: '7.7.7.7');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '7.7.7.7');
+          verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('a renewal right after a malformed replay still logs the event', () async {
+          updates.add('not json');
+          await pumpEventQueue();
+
+          await publish(ip: '9.9.9.9');
+
+          expect(vpnStore.vpnConnection?.connectionIP, '9.9.9.9');
+          verify(mockAnalytics.logEvent(AnalyticsEvent.ipChanged)).called(1);
+        });
+
+        test('re-subscribing drops the previous connection listeners', () async {
+          final streams = <StreamController<String>>[];
+          when(mockMqtt.subscribe(any)).thenAnswer((invocation) {
+            if ((invocation.positionalArguments.first as String).endsWith('/killed')) {
+              return const Stream<String>.empty();
+            }
+            final controller = StreamController<String>();
+            streams.add(controller);
+            return controller.stream;
+          });
+
+          await connect(oregon);
+          await connect(texas);
+          await pumpEventQueue();
+
+          expect(streams.length, 2);
+          expect(streams.first.hasListener, isFalse);
+          expect(streams.last.hasListener, isTrue);
+        });
+
+        test(
+          'a disconnect while the lookup is in flight does not resurrect the connection',
+          () async {
+            final statuses = StreamController<VpnConnectionStatus>.broadcast();
+            addTearDown(statuses.close);
+            when(mockWireguardRepo.statusStream()).thenAnswer((_) => statuses.stream);
+            await vpnStore.setupTunnel();
+
+            final lookup = Completer<VPNLocation?>();
+            stubLookup('florida', () => lookup.future);
+
+            await publishEcho();
+            await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+            statuses.add(VpnConnectionStatus.disconnecting);
+            await pumpEventQueue();
+            expect(vpnStore.vpnConnection, isNull);
+
+            lookup.complete(null);
+            await pumpEventQueue();
+
+            expect(vpnStore.vpnConnection, isNull);
+          },
+        );
+
+        test(
+          'a reconnect while the lookup is in flight does not clobber the new session',
+          () async {
+            final lookup = Completer<VPNLocation?>();
+            stubLookup('florida', () => lookup.future);
+
+            await publishEcho();
+            await publish(ip: '9.9.9.9', fromCity: 'florida');
+
+            await connect(oregon);
+            await pumpEventQueue();
+
+            lookup.complete(null);
+            await pumpEventQueue();
+
+            expect(vpnStore.location?.id, 'oregon');
+            expect(vpnStore.vpnConnection?.connectionIP, '2.2.2.2');
+          },
+        );
       });
     });
 
@@ -1357,6 +1719,251 @@ void main() {
         expect(store.vpnStatus, VpnConnectionStatus.connected);
 
         await store.disposeStore();
+      });
+    });
+
+    group('UDP blocked suggestion', () {
+      const paris = VPNLocation(
+        id: 'paris',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'fr',
+      );
+
+      late StreamController<VpnConnectionStatus> wgStatus;
+      late StreamController<VpnConnectionStatus> ovpnStatus;
+
+      void stubConnectFlow(VpnRepository repo) {
+        when(repo.init()).thenAnswer((_) async {});
+        when(repo.isTunnelConfigured()).thenAnswer((_) async => true);
+        when(repo.currentStatus()).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(repo.connect(config: 'cfg')).thenAnswer((_) async {});
+        when(repo.disconnect()).thenAnswer((_) async => true);
+        when(repo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
+        when(repo.udpBlockedCheck()).thenAnswer((_) async {});
+        when(
+          repo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: '1.1.1.1',
+            targetIp: anyNamed('targetIp'),
+          ),
+        ).thenAnswer((invocation) async {
+          final country = invocation.namedArguments[#country] as String?;
+          final city = invocation.namedArguments[#city] as String?;
+          return VpnConfig(
+            id: 'config1',
+            config: 'cfg',
+            exitIp: '2.2.2.2',
+            hash: 'hash',
+            country: country,
+            city: city,
+            ipType: IPType.datacenter.key,
+          );
+        });
+      }
+
+      setUp(() {
+        wgStatus = StreamController<VpnConnectionStatus>.broadcast();
+        ovpnStatus = StreamController<VpnConnectionStatus>.broadcast();
+
+        when(mockAuthSession.status).thenReturn(AuthStatus.authenticated);
+        when(mockAuthSession.isAuthenticated).thenReturn(true);
+        when(mockAuthSession.accessTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+        when(
+          mockSubscriptionStore.subscriptionFuture,
+        ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
+
+        when(mockRemoteConfig.shouldCheckUdp).thenReturn(true);
+        when(mockVpnProtocolStore.isProtocolPickerAvailable).thenReturn(true);
+
+        stubConnectFlow(mockWireguardRepo);
+        stubConnectFlow(mockOpenVpnRepo);
+        when(mockWireguardRepo.statusStream()).thenAnswer((_) => wgStatus.stream);
+        when(mockOpenVpnRepo.statusStream()).thenAnswer((_) => ovpnStatus.stream);
+
+        when(
+          mockConnectionDecision.determineToggleAction(
+            currentStatus: anyNamed('currentStatus'),
+            currentLocation: anyNamed('currentLocation'),
+            requestedLocation: anyNamed('requestedLocation'),
+            requestedIntent: anyNamed('requestedIntent'),
+            isRefreshIP: anyNamed('isRefreshIP'),
+            requestedTargetIp: anyNamed('requestedTargetIp'),
+            currentIp: anyNamed('currentIp'),
+          ),
+        ).thenReturn(ConnectionAction.connect);
+        when(
+          mockConnectionDecision.determineConnectingLocation(
+            requestedLocation: anyNamed('requestedLocation'),
+            currentLocation: anyNamed('currentLocation'),
+            isRefreshIP: anyNamed('isRefreshIP'),
+            intent: anyNamed('intent'),
+          ),
+        ).thenAnswer((invocation) => invocation.namedArguments[#requestedLocation] as VPNLocation?);
+        when(mockConnectionDecision.shouldResolveClosestLocation(any)).thenReturn(false);
+
+        when(mockRealIPInfo.infoFuture).thenAnswer(
+          (_) => ObservableFuture.value(const IPInfo(country: 'us', city: 'ny', ip: '1.1.1.1')),
+        );
+        when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+        when(mockRecentLocations.add(any)).thenAnswer((_) async {});
+        when(
+          mockLocationsStore.findById(
+            any,
+            countryCode: anyNamed('countryCode'),
+            ipType: anyNamed('ipType'),
+          ),
+        ).thenAnswer((_) async => null);
+        when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '3.3.3.3');
+        when(mockLocationsQuery.ipType).thenReturn(IPType.datacenter);
+        when(mockRefreshIP.refreshIPConnection).thenReturn(false);
+        when(mockDns.dnsAddress).thenReturn('1.1.1.1');
+      });
+
+      tearDown(() async {
+        await wgStatus.close();
+        await ovpnStatus.close();
+      });
+
+      /// One matcher for the OpenVPN config fetch; only the pinned arguments
+      /// differ between call sites.
+      Future<VpnConfig> openVpnFetch({String? country, String? city, String? targetIp}) =>
+          mockOpenVpnRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: country ?? anyNamed('country'),
+            city: city ?? anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+            targetIp: targetIp ?? anyNamed('targetIp'),
+          );
+
+      test('skips the STUN check entirely when the protocol is OpenVPN', () async {
+        when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
+        final store = buildStore();
+
+        await store.manageConnection(location: paris);
+        await pumpEventQueue();
+
+        verifyNever(mockOpenVpnRepo.udpBlockedCheck());
+        await store.disposeStore();
+      });
+
+      test('runs the check on WireGuard and suggests OpenVPN when it fails', () async {
+        when(mockWireguardRepo.udpBlockedCheck()).thenThrow(TimeoutException('no STUN reply'));
+
+        await vpnStore.manageConnection(location: paris);
+        await pumpEventQueue();
+
+        verify(mockWireguardRepo.udpBlockedCheck()).called(1);
+        expect(udpBlockedSuggestionStore.suggestionEpoch, 1);
+      });
+
+      test('raises nothing when the check succeeds', () async {
+        await vpnStore.manageConnection(location: paris);
+        await pumpEventQueue();
+
+        verify(mockWireguardRepo.udpBlockedCheck()).called(1);
+        expect(udpBlockedSuggestionStore.suggestionEpoch, 0);
+      });
+
+      test('does not suggest when the protocol picker is unavailable', () async {
+        when(mockVpnProtocolStore.isProtocolPickerAvailable).thenReturn(false);
+        when(mockWireguardRepo.udpBlockedCheck()).thenThrow(TimeoutException('no STUN reply'));
+
+        await vpnStore.manageConnection(location: paris);
+        await pumpEventQueue();
+
+        expect(udpBlockedSuggestionStore.suggestionEpoch, 0);
+      });
+
+      group('switchProtocolAndReconnect', () {
+        // Built here rather than in the outer setUp, which constructs the store
+        // while unauthenticated — the auth reaction would then never attach the
+        // status listener that carries the tunnel to `connected`.
+        Future<VpnStore> connectedOverWireguard({String? targetIp}) async {
+          final store = buildStore();
+          await pumpEventQueue();
+          await store.manageConnection(location: paris, targetIp: targetIp);
+          wgStatus.add(VpnConnectionStatus.connected);
+          await pumpEventQueue();
+          expect(store.isConnected, true);
+          return store;
+        }
+
+        test('reconnects over OpenVPN to the same location', () async {
+          final store = await connectedOverWireguard();
+
+          await store.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          verify(mockVpnProtocolStore.setProtocol(ProtocolType.openvpn)).called(1);
+          verify(openVpnFetch(country: 'fr', city: 'paris')).called(1);
+          await store.disposeStore();
+        });
+
+        test('reconnects to the same favorite IP', () async {
+          final store = await connectedOverWireguard(targetIp: '5.5.5.5');
+
+          await store.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          verify(openVpnFetch(targetIp: '5.5.5.5')).called(1);
+          await store.disposeStore();
+        });
+
+        test('reports the reconnect outcome to its caller', () async {
+          final store = await connectedOverWireguard();
+
+          expect(await store.switchProtocolAndReconnect(ProtocolType.openvpn), true);
+          await store.disposeStore();
+        });
+
+        test('rethrows when persisting the protocol fails', () async {
+          final store = await connectedOverWireguard();
+          when(mockVpnProtocolStore.setProtocol(any)).thenThrow(Exception('db write failed'));
+
+          await expectLater(
+            store.switchProtocolAndReconnect(ProtocolType.openvpn),
+            throwsA(isA<Exception>()),
+          );
+          await store.disposeStore();
+        });
+
+        test('tears the tunnel down exactly once', () async {
+          final store = await connectedOverWireguard();
+          clearInteractions(mockWireguardRepo);
+
+          await store.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          verify(mockWireguardRepo.disconnect()).called(1);
+          await store.disposeStore();
+        });
+
+        test('tears down as app-initiated so the review prompt stays disarmed', () async {
+          final store = await connectedOverWireguard();
+
+          await store.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          // ReviewPromptStore counts a `user` teardown as a completed session
+          // and evaluates eligibility on it — a blocked-network fallback is
+          // recovery, not a session the user chose to end.
+          expect(store.disconnectReason, VpnDisconnectReason.appInitiated);
+          await store.disposeStore();
+        });
+
+        test('switches without reconnecting when the tunnel was down', () async {
+          await vpnStore.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          verify(mockVpnProtocolStore.setProtocol(ProtocolType.openvpn)).called(1);
+          verifyNever(openVpnFetch());
+        });
       });
     });
   });

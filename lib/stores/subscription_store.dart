@@ -108,6 +108,9 @@ abstract class _SubscriptionStore with Store {
   bool? get isSubscribed => _subscriptionFuture.value?.active;
 
   @computed
+  bool get isPaused => _subscriptionFuture.value?.isPaused ?? false;
+
+  @computed
   bool get isSubscriptionLoading =>
       _subscriptionFuture.status == FutureStatus.pending ||
       subscriptionConfigFuture.status == FutureStatus.pending;

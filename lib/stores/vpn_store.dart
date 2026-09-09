@@ -30,7 +30,6 @@ abstract class _VpnStore extends VpnGuard with Store {
     required super.subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
-    required RemoteConfigStore remoteConfigStore,
     required super.authSessionStore,
     required RealIPInfoStore realIPInfo,
     required DNSStore dnsStore,
@@ -45,12 +44,12 @@ abstract class _VpnStore extends VpnGuard with Store {
     required ConnectionDecisionStore connectionDecisionStore,
     required VpnProtocolStore protocolStore,
     required IpRefreshExhaustionStore ipRefreshExhaustionStore,
+    required UdpBlockedSuggestionStore udpBlockedSuggestionStore,
   }) : _externalApiService = externalApiService,
        _mqtt = mqtt,
        _locationsStore = locationsStore,
        _connectionsLimitStore = connectionsLimitStore,
        _analyticsStore = analyticsStore,
-       _remoteConfigStore = remoteConfigStore,
        _authSessionStore = authSessionStore,
        _realIPInfo = realIPInfo,
        _logger = logger,
@@ -68,7 +67,8 @@ abstract class _VpnStore extends VpnGuard with Store {
            ? wireguardRepository
            : openVpnRepository,
        _connectionDecisionStore = connectionDecisionStore,
-       _ipRefreshExhaustionStore = ipRefreshExhaustionStore {
+       _ipRefreshExhaustionStore = ipRefreshExhaustionStore,
+       _udpBlockedSuggestionStore = udpBlockedSuggestionStore {
     _init();
   }
 
@@ -83,7 +83,6 @@ abstract class _VpnStore extends VpnGuard with Store {
   // Stores
   final LocationsStore _locationsStore;
   final AnalyticsStore _analyticsStore;
-  final RemoteConfigStore _remoteConfigStore;
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _realIPInfo;
   final RecentLocationsStore _recentLocationsStore;
@@ -97,6 +96,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   final ConnectionDecisionStore _connectionDecisionStore;
   final VpnProtocolStore _protocolStore;
   final IpRefreshExhaustionStore _ipRefreshExhaustionStore;
+  final UdpBlockedSuggestionStore _udpBlockedSuggestionStore;
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
@@ -108,6 +108,18 @@ abstract class _VpnStore extends VpnGuard with Store {
   ReactionDisposer? _protocolReactionDisposer;
   ReactionDisposer? _connectedReactionDisposer;
   ReactionDisposer? _subscriptionReactionDisposer;
+
+  /// The broker replays the connection's current state on subscribe, so the
+  /// first message is not a renewal. Reset per subscription.
+  bool _isFirstConnectionUpdate = true;
+
+  /// Bumped whenever a new connection is established, so an in-flight update
+  /// from the previous one can tell that it is stale.
+  int _connectionSession = 0;
+
+  /// Serialises connection updates: each one awaits a catalog lookup, so
+  /// without a queue a slow message could land after a newer one.
+  Future<void> _connectionUpdates = Future<void>.value();
 
   @readonly
   VpnConnection? _vpnConnection;
@@ -141,6 +153,10 @@ abstract class _VpnStore extends VpnGuard with Store {
   /// IP refresh so a country keeps rotating country-wide. In-memory only.
   @readonly
   VPNLocation? _requestedLocation;
+
+  /// Target IP of the current favorite-IP connection, kept so a protocol
+  /// switch can reconnect to the same exit. In-memory only.
+  String? _requestedTargetIp;
 
   @readonly
   ObservableFuture<void>? _resolveConnectionLocationFuture;
@@ -221,7 +237,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     // Set up protocol change reaction
     _protocolReactionDisposer = reaction<ProtocolType>(
       (_) => _protocolStore.protocol,
-      _handleProtocolChange,
+      _applyProtocol,
     );
 
     _connectedReactionDisposer = reaction<bool>(
@@ -269,8 +285,15 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
+  /// Swaps [_vpnRepository] to match [protocol], tearing down any live tunnel
+  /// first. Idempotent: returns immediately when the repository already
+  /// matches, which is what lets the protocol reaction and an explicit
+  /// caller both run without doubling the work.
   @action
-  Future<void> _handleProtocolChange(ProtocolType protocol) async {
+  Future<void> _applyProtocol(
+    ProtocolType protocol, {
+    VpnDisconnectReason reason = VpnDisconnectReason.user,
+  }) async {
     if ((protocol == ProtocolType.wireguard && _vpnRepository is WireguardRepository) ||
         (protocol == ProtocolType.openvpn && _vpnRepository is OpenVpnRepository)) {
       _logger.info('Protocol is already set to: ${protocol.name}, no change needed');
@@ -286,13 +309,46 @@ abstract class _VpnStore extends VpnGuard with Store {
     // If currently connected, disconnect before switching
     if (isConnected || isLoading) {
       _logger.info('Disconnecting before protocol switch');
-      await disconnectTunnel(reason: VpnDisconnectReason.user);
+      await disconnectTunnel(reason: reason);
     }
 
     _vpnRepository = newRepository;
 
     // Reinitialize the new repository if authenticated
-    _handleAuthStatusChange(_authSessionStore.status);
+    await _handleAuthStatusChange(_authSessionStore.status);
+  }
+
+  /// Persists [protocol], swaps the repository, and restores the session the
+  /// user had: same location, intent and target IP.
+  ///
+  /// Returns whether the user ended up connected on [protocol] — trivially true
+  /// when the tunnel was already down and there was nothing to restore. A failed
+  /// reconnect surfaces through `connectionError` like any other connect failure.
+  @action
+  Future<bool> switchProtocolAndReconnect(ProtocolType protocol) async {
+    // Captured up front — the teardown inside _applyProtocol clears all three.
+    final wasConnected = isConnected;
+    final location = _requestedLocation ?? _vpnConnection?.location;
+    final intent = _userIntentsStore.userIntent;
+    final targetIp = _requestedTargetIp;
+
+    // Swap before persisting: _applyProtocol owns the teardown, and the reaction
+    // that setProtocol then fires hits its idempotent guard instead of racing.
+    // App-initiated, not user: ReviewPromptStore treats a `user` teardown as a
+    // completed session and would ask for a review right after a failed network.
+    await _applyProtocol(protocol, reason: VpnDisconnectReason.appInitiated);
+    await _protocolStore.setProtocol(protocol);
+
+    if (!wasConnected) {
+      return true;
+    }
+
+    // _userConnectEpoch only advances in _logConnectionSuccess, so it is the
+    // one signal that distinguishes a completed connect from a failed one —
+    // _vpnConnection still holds the previous session after a failed attempt.
+    final epochBefore = _userConnectEpoch;
+    await manageConnection(location: location, intent: intent, targetIp: targetIp);
+    return _userConnectEpoch > epochBefore;
   }
 
   Future<void> _handleAuthStatusChange(AuthStatus status) async {
@@ -367,7 +423,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       await _resolveExistingConnection();
     }
 
-    _listenToConnectionStatusChanges();
+    await _listenToConnectionStatusChanges();
   }
 
   Future<void> _resolveExistingConnection() async {
@@ -391,7 +447,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
-  void _listenToConnectionStatusChanges() {
+  Future<void> _listenToConnectionStatusChanges() async {
+    // A protocol switch re-enters this; without the cancel the old repository's
+    // listener stays live and keeps polling the wrong platform channel. Awaited
+    // so the old listener can't clobber _connectionStatus after the swap.
+    await _connectionStatusStream?.cancel();
     final stream = _vpnRepository.statusStream();
     _connectionStatusStream = stream.listen((status) async {
       // The stream can deliver a stale non-connected event while the tunnel is
@@ -483,7 +543,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     String? targetIp,
   }) async {
     await _validateConnectionPrerequisites();
-    await _prepareConnection(location, intent, refreshIP);
+    await _prepareConnection(location, intent, refreshIP, targetIp);
 
     if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
       return;
@@ -517,11 +577,17 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   @action
-  Future<void> _prepareConnection(VPNLocation? location, UserIntent? intent, bool refreshIP) async {
+  Future<void> _prepareConnection(
+    VPNLocation? location,
+    UserIntent? intent,
+    bool refreshIP,
+    String? targetIp,
+  ) async {
     _userIntentsStore.userIntent = intent;
 
     if (!refreshIP) {
       _requestedLocation = location == VPNLocation.closest ? null : location;
+      _requestedTargetIp = targetIp;
     }
 
     _connectingLocation = _connectionDecisionStore.determineConnectingLocation(
@@ -770,33 +836,31 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   Future<VPNLocation> _resolveConnectedLocation(VPNLocation? requestedLocation) async {
-    final locationId = _vpnConfig?.city ?? _vpnConfig?.country;
+    final resolved = await _catalogLocation(
+      city: _vpnConfig?.city,
+      countryCode: _vpnConfig?.country,
+      ipType: _vpnConfig?.ipType == null ? IPType.datacenter : IPType.fromKey(_vpnConfig!.ipType!),
+    );
 
-    if (locationId != null) {
-      final countryCode = _vpnConfig?.country;
-      final ipType = _vpnConfig?.ipType == null
-          ? IPType.datacenter
-          : IPType.fromKey(_vpnConfig!.ipType!);
+    return resolved ??
+        potentialLocation ??
+        (throw Exception('Could not find connected location information'));
+  }
 
-      final match = await _locationsStore.findById(
-        locationId,
-        countryCode: countryCode,
-        ipType: ipType,
-      );
-
-      if (match != null) {
-        return match;
-      }
-
-      return VPNLocation(
-        id: locationId,
-        ipType: ipType,
-        translations: const {},
-        countryCode: countryCode ?? locationId,
-      );
+  /// Resolves a city/country pair from the locations catalog, synthesising a
+  /// bare location when the catalog has no entry for it.
+  Future<VPNLocation?> _catalogLocation({
+    required String? city,
+    required String? countryCode,
+    required IPType ipType,
+  }) async {
+    final id = (city == null || city.isEmpty) ? countryCode : city;
+    if (id == null || id.isEmpty) {
+      return null;
     }
 
-    return potentialLocation ?? (throw Exception('Could not find connected location information'));
+    return await _locationsStore.findById(id, countryCode: countryCode, ipType: ipType) ??
+        VPNLocation(id: id, ipType: ipType, translations: const {}, countryCode: countryCode ?? id);
   }
 
   Future<void> _connectToTunnel() async {
@@ -838,6 +902,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     required String hash,
   }) async {
     await _recentLocationsStore.add(location);
+    _connectionSession++;
     _vpnConnection = VpnConnection(connectionIP: '', location: location);
     await checkLocation();
   }
@@ -867,6 +932,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       _userIntentsStore.userIntent = null;
       _connectingLocation = null;
       _requestedLocation = null;
+      _requestedTargetIp = null;
       _ipRefreshExhaustionStore.onDisconnected();
       final notify = Stopwatch()..start();
       await _vpnRepository.notifyApiVpnDisconnected();
@@ -898,9 +964,12 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   Future<void> _subscribeConnectionChanges(String connectionID) async {
     try {
+      _cancelSubscriptions();
+      _isFirstConnectionUpdate = true;
+      _connectionUpdates = Future<void>.value();
       _connectionDataSub = _mqtt
           .subscribe('mysterium-vpn/connection/$connectionID')
-          .listen(_handleConnectionUpdate);
+          .listen(_enqueueConnectionUpdate);
 
       _connectionKilledSub = _mqtt
           .subscribe('mysterium-vpn/connection/$connectionID/killed')
@@ -910,20 +979,65 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
-  void _handleConnectionUpdate(String event) {
+  void _enqueueConnectionUpdate(String event) {
+    // Stamped on arrival: cancelling the subscription does not drain events
+    // already queued behind a slow one, and by the time they run the session
+    // may have moved on.
+    final session = _connectionSession;
+    _connectionUpdates = _connectionUpdates
+        .then((_) => _handleConnectionUpdate(event, session: session))
+        .catchError((Object e) => _logger.warning('Connection update failed: $e'));
+  }
+
+  @action
+  Future<void> _handleConnectionUpdate(String event, {required int session}) async {
     final connection = _vpnConnection;
-    if (connection == null) {
+    if (connection == null || session != _connectionSession) {
       return;
     }
 
-    final update = ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>);
+    // Every message consumes the replayed state, malformed ones included, so a
+    // renewal arriving next is not mistaken for the replay.
+    final isFirstUpdate = _isFirstConnectionUpdate;
+    _isFirstConnectionUpdate = false;
 
-    _vpnConnection = connection.copyWith(
-      connectionIP: update.location.ip,
-      location: connection.location.copyWith(id: update.location.country),
+    final ConnectionMessageLocation payload;
+    try {
+      payload = ConnectionMessage.fromJson(json.decode(event) as Map<String, dynamic>).location;
+    } catch (e) {
+      _logger.warning('Malformed connection update, ignoring: $e');
+      return;
+    }
+
+    // The catalog lookup can fail (locations fetch rejected while offline); the
+    // renewed IP is still worth applying, so keep the location we already have.
+    VPNLocation? resolved;
+    try {
+      resolved = await _catalogLocation(
+        city: payload.city,
+        countryCode: payload.country,
+        ipType: connection.location.ipType,
+      );
+    } catch (e) {
+      _logger.warning('Could not resolve renewed location, keeping current: $e');
+    }
+
+    // Re-read the connection: a disconnect or reconnect during the lookup means
+    // this update belongs to a session that no longer exists, while a
+    // concurrent update may have advanced the one that does.
+    final current = _vpnConnection;
+    if (current == null || session != _connectionSession) {
+      return;
+    }
+
+    _vpnConnection = current.copyWith(
+      connectionIP: payload.ip,
+      location: resolved ?? current.location,
     );
 
-    _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+    if (!isFirstUpdate && payload.ip != current.connectionIP) {
+      _analyticsStore.logEvent(AnalyticsEvent.ipChanged);
+    }
   }
 
   void _handleConnectionKilled(String _) {
@@ -932,14 +1046,20 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> _udpBlockedCheck() async {
-    if (!_remoteConfigStore.shouldCheckUdp) {
+    if (!_udpBlockedSuggestionStore.shouldRunCheck) {
       return;
     }
 
     try {
       await _vpnRepository.udpBlockedCheck();
+    } on TimeoutException catch (e) {
+      // No STUN reply within the probe window — the only outcome that actually
+      // implicates UDP.
+      _udpBlockedSuggestionStore.onUdpBlocked(e.toString());
     } catch (e) {
-      _analyticsStore.logEvent(AnalyticsEvent.udpBlocked, parameters: {'error': e.toString()});
+      // DNS lookup or socket setup failed: the probe never got far enough to
+      // say anything about UDP, and the network is likely down entirely.
+      _logger.warning('UDP probe inconclusive, not offering a protocol switch: $e');
     }
   }
 
