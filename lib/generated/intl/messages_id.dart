@@ -155,6 +155,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Tanggal pembatalan:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("Dibatalkan"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("Ganti IP saat menyambung ulang"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "Gunakan IP berbeda setiap kali kamu menyambung",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Kami tidak bisa mengambil info paketmu.",
     ),

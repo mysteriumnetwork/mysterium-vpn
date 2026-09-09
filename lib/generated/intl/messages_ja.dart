@@ -139,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("解約日:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("キャンセル済み"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("再接続時に IP を変更"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage("接続するたびに別の IP を使用します"),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage("プラン情報を取得できませんでした。"),
     "checkSubsStatusFailedTitle": MessageLookupByLibrary.simpleMessage("プラン情報を取得できません"),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("プラン情報を取得中…"),

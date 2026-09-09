@@ -102,6 +102,8 @@ class S {
     'cancelUnableToAccessBlockedSites': [],
     'cancelUsabilityIssues': [],
     'cancelYourSubsMess': [],
+    'changeIpOnReconnect': [],
+    'changeIpOnReconnectDesc': [],
     'checkSubsStatusFailedDesc': [],
     'checkSubsStatusFailedTitle': [],
     'checkSubsStatusTitle': [],
@@ -844,6 +846,21 @@ class S {
     return Intl.message(
       'Cancel your subscription on the App Store subscriptions before deleting your account.',
       name: 'cancelYourSubsMess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change IP on reconnect`
+  String get changeIpOnReconnect {
+    return Intl.message('Change IP on reconnect', name: 'changeIpOnReconnect', desc: '', args: []);
+  }
+
+  /// `Use a different IP each time you connect`
+  String get changeIpOnReconnectDesc {
+    return Intl.message(
+      'Use a different IP each time you connect',
+      name: 'changeIpOnReconnectDesc',
       desc: '',
       args: [],
     );

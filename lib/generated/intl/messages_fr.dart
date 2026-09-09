@@ -158,6 +158,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("Date d’annulation :"),
     "cancelled": MessageLookupByLibrary.simpleMessage("Annulée"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("Changer d\'IP à la reconnexion"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "Utilise une IP différente à chaque connexion",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "Nous ne parvenons pas à récupérer les infos de ton offre.",
     ),

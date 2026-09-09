@@ -155,6 +155,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancellationDateLbl": MessageLookupByLibrary.simpleMessage("रद्द करने की तिथि:"),
     "cancelled": MessageLookupByLibrary.simpleMessage("रद्द"),
+    "changeIpOnReconnect": MessageLookupByLibrary.simpleMessage("फिर से कनेक्ट होने पर IP बदलें"),
+    "changeIpOnReconnectDesc": MessageLookupByLibrary.simpleMessage(
+      "हर बार कनेक्ट होने पर अलग IP इस्तेमाल करें",
+    ),
     "checkSubsStatusFailedDesc": MessageLookupByLibrary.simpleMessage(
       "हम आपकी प्लान जानकारी प्राप्त नहीं कर पा रहे हैं।",
     ),
