@@ -20,6 +20,9 @@ android {
     compileSdk = 36
 
     compileOptions {
+        // Required by flutter_local_notifications (10+), even without scheduled
+        // notifications — the AAR metadata check fails the build otherwise.
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -99,6 +102,8 @@ android {
 
 dependencies {
     androidTestUtil "androidx.test:orchestrator:1.6.1"
+    // Version the flutter_local_notifications example pins; AGP 8.13 supports 2.x.
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }
 
 flutter {
