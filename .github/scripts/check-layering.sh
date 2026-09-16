@@ -14,9 +14,23 @@ set -uo pipefail
 
 status=0
 
+# A missing directory means the check cannot run; fail rather than report a
+# vacuous pass, otherwise a rename silently disables enforcement.
+require_dirs() {
+  local missing=0
+  for dir in "$@"; do
+    if [ ! -d "${dir}" ]; then
+      echo "✗ ${dir} not found - run from the repo root, or update this script after a rename"
+      missing=1
+    fi
+  done
+  return "${missing}"
+}
+
 check() {
   local label=$1 dir=$2 forbidden=$3
   local hits
+  require_dirs "${dir}" || { status=1; return; }
   hits=$(grep -rnE "^\s*(import|export)\s+'(package:mysterium_vpn/|(\.\./)+)(${forbidden})/" \
     "${dir}" --include='*.dart' 2>/dev/null \
     | grep -v '\.g\.dart:\|\.freezed\.dart:\|\.mocks\.dart:') || true
@@ -34,8 +48,9 @@ check "lib/repositories" lib/repositories "providers|stores|views|pages|componen
 check "lib/stores"       lib/stores       "views|pages|components|debug"
 
 # The UI talks to the app's own models, never to the backend client directly.
-ui_api=$(grep -rn "package:vpn_api/" lib/views lib/pages lib/components --include='*.dart' 2>/dev/null) || true
-if [ -n "${ui_api}" ]; then
+if ! require_dirs lib/views lib/pages lib/components; then
+  status=1
+elif ui_api=$(grep -rn "package:vpn_api/" lib/views lib/pages lib/components --include='*.dart'); then
   echo "✗ lib/views, lib/pages, lib/components must not import package:vpn_api"
   echo "${ui_api}" | sed 's/^/    /'
   status=1
