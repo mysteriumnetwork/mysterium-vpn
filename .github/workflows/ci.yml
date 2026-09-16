@@ -54,6 +54,9 @@ jobs:
             echo "No uncommitted changes. All generated files are properly committed."
           fi
 
+      - name: Check layer boundaries
+        run: bash .github/scripts/check-layering.sh
+
       - name: Run Flutter Analyze (Lint)
         run: fvm flutter analyze
 
