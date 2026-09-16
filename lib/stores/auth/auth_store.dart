@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/auth/auth_error.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -35,10 +34,8 @@ abstract class _AuthStore with Store {
     required Talker logger,
     required ABTestingStore abTestingStore,
     required DeviceIDStore deviceIDStore,
-    required LocalDBService localDb,
-    required SecureStorageService secureStorageService,
-  }) : _localDb = localDb,
-       _secureStorageService = secureStorageService,
+    required AuthFlowRepository flow,
+  }) : _flow = flow,
        _authService = authService,
        _authSessionStore = authSessionStore,
        _appLinks = appLinks,
@@ -51,9 +48,8 @@ abstract class _AuthStore with Store {
 
   final AuthRepository _authService;
   final AuthSessionStore _authSessionStore;
-  final LocalDBService _localDb;
   final AppLinks _appLinks;
-  final SecureStorageService _secureStorageService;
+  final AuthFlowRepository _flow;
   final AnalyticsStore _analyticsStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
@@ -94,20 +90,19 @@ abstract class _AuthStore with Store {
   ObservableFuture<TokenResponse>? authenticateFeature;
 
   @action
-  Future<String?> getLastLoggedInUser() async =>
-      email ?? await _secureStorageService.getLastLoggedInUser();
+  Future<String?> getLastLoggedInUser() async => email ?? await _flow.lastLoggedInUser();
 
   @action
   Future<void> initAuth() async {
     try {
-      email = await _secureStorageService.getLastLoggedInUser();
+      email = await _flow.lastLoggedInUser();
       _appLinks.uriLinkStream.listen((appLink) async {
         if (_authSessionStore.isAuthenticated) {
           return;
         }
-        final storedLink = await _secureStorageService.getAppLink();
+        final storedLink = await _flow.appLink();
         if (appLink.toString() != storedLink) {
-          await _secureStorageService.saveAppLink(appLink: appLink.toString());
+          await _flow.saveAppLink(appLink.toString());
 
           await verifyMagicLinkAndAuthenticate(appLink);
         } else {
@@ -130,7 +125,7 @@ abstract class _AuthStore with Store {
         throw IncorrectCodeException();
       }
 
-      if (_pkcePair == null && (_pkcePair = await _secureStorageService.getPkcePair()) == null) {
+      if (_pkcePair == null && (_pkcePair = await _flow.pkcePair()) == null) {
         throw PkcePairNotFoundException();
       }
       authenticate(
@@ -194,8 +189,8 @@ abstract class _AuthStore with Store {
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
 
     // Set auth user
-    await _localDb.setUser(user);
-    final userSettings = await _localDb.getUserData();
+    await _flow.setUser(user);
+    final userSettings = await _flow.userData();
     _logger.info(userSettings.toString());
   }
 
@@ -224,7 +219,7 @@ abstract class _AuthStore with Store {
   @action
   Future<String?> signInwithEmail({required String email}) async {
     _pkcePair = PkcePair.generate();
-    await _secureStorageService.savePkcePair(
+    await _flow.savePkcePair(
       codeChallenge: _pkcePair!.codeChallenge,
       codeVerifier: _pkcePair!.codeVerifier,
     );
@@ -319,7 +314,7 @@ abstract class _AuthStore with Store {
   @action
   Future<void> loginDesktop() async {
     _pkcePair = PkcePair.generate();
-    _secureStorageService.savePkcePair(
+    _flow.savePkcePair(
       codeChallenge: _pkcePair!.codeChallenge,
       codeVerifier: _pkcePair!.codeVerifier,
     );

@@ -44,8 +44,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final deviceIDStore = ref.watch(deviceIDStorePOD);
 
   return AuthStore(
-    localDb: ref.watch(localDBServicePOD),
-    secureStorageService: ref.watch(secureStorageServicePOD),
+    flow: ref.watch(authFlowRepositoryPOD),
     authService: authService,
     authSessionStore: authSessionStore,
     appLinks: appLinks,

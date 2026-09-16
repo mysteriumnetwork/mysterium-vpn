@@ -95,8 +95,10 @@ void main() {
     when(analyticsStore.setLogin(any)).thenAnswer((_) async {});
 
     store = AuthStore(
-      localDb: LocalDBService(),
-      secureStorageService: MockSecureStorageService(),
+      flow: LocalAuthFlowRepository(
+        secureStorage: MockSecureStorageService(),
+        db: LocalDBService(),
+      ),
       authService: authService,
       authSessionStore: sessionStore,
       appLinks: appLinks,
