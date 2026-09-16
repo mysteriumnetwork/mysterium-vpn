@@ -16,7 +16,11 @@ class RestAuthService extends AuthService {
     required NetworkService networkService,
     required AuthSessionGateway authSession,
     required Talker logger,
-  }) : _apiAuth = api.getAuthentication(),
+    required SecureStorageService securedStorage,
+    required LocalDBService localDb,
+  }) : _securedStorage = securedStorage,
+       _localDb = localDb,
+       _apiAuth = api.getAuthentication(),
        _networkService = networkService,
        _authSession = authSession,
        _logger = logger {
@@ -27,7 +31,8 @@ class RestAuthService extends AuthService {
   final NetworkService _networkService;
 
   final AuthSessionGateway _authSession;
-  final _securedStorage = SecureStorageService.instance;
+  final SecureStorageService _securedStorage;
+  final LocalDBService _localDb;
   final Talker _logger;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   late final Future<void> _ensureInitialized;
@@ -125,7 +130,7 @@ class RestAuthService extends AuthService {
 
   Future<void> removeLocalData() async {
     final currentUsername = _authSession.user?.username;
-    LocalDBService.instance.clearUser();
+    _localDb.clearUser();
     await _authSession.setUnauthenticated();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {

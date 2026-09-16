@@ -14,10 +14,10 @@ part 'theme_store.g.dart';
 class ThemeStore = _ThemeStore with _$ThemeStore;
 
 abstract class _ThemeStore with Store {
-  _ThemeStore() {
+  _ThemeStore({required SharedPreferenceService sharedPrefs}) : _sharedPrefs = sharedPrefs {
     themeMode = _sharedPrefs.getThemeType() ?? ThemeMode.system;
   }
-  final _sharedPrefs = SharedPreferenceService.instance;
+  final SharedPreferenceService _sharedPrefs;
   final darkTheme = DesignSystem.darkTheme;
   final lightTheme = DesignSystem.lightTheme;
 

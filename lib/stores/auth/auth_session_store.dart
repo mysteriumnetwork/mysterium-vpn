@@ -18,8 +18,10 @@ abstract class _AuthSessionStore with Store, Disposeable {
   _AuthSessionStore({
     required SecureStorageService secureStorage,
     required RemoteConfigStore remoteConfigStore,
+    required LocalDBService localDb,
   }) : _secureStorage = secureStorage,
-       _remoteConfigStore = remoteConfigStore {
+       _remoteConfigStore = remoteConfigStore,
+       _localDb = localDb {
     _userReactionDisposer = reaction((_) => user, (user) {
       if (user != null) {
         _localDb.setUser(user);
@@ -31,7 +33,7 @@ abstract class _AuthSessionStore with Store, Disposeable {
 
   final SecureStorageService _secureStorage;
   final RemoteConfigStore _remoteConfigStore;
-  final LocalDBService _localDb = LocalDBService.instance;
+  final LocalDBService _localDb;
   late final ReactionDisposer _userReactionDisposer;
 
   @observable

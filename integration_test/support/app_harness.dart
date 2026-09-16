@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:mysterium_vpn/env.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:patrol/patrol.dart';
 
 /// Initializes the app environment for an integration test and clears secure
@@ -12,7 +12,7 @@ Future<AppInitializer> bootApp() async {
   await Env.init();
   final environment = AppInitializer();
   await environment.init();
-  await SecureStorageService.instance.clearAll();
+  await environment.providerContainer.read(secureStorageServicePOD).clearAll();
   return environment;
 }
 

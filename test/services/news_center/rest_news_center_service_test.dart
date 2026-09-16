@@ -10,6 +10,8 @@ import 'rest_news_center_service_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Newscenter>()])
 void main() {
+  late SharedPreferenceService prefsService;
+
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockNewscenter api;
@@ -17,12 +19,13 @@ void main() {
   setUp(() async {
     api = MockNewscenter();
     SharedPreferences.setMockInitialValues({});
-    await SharedPreferenceService.instance.init();
+    prefsService = SharedPreferenceService();
+    await prefsService.init();
   });
 
   RestNewsCenterService build() => RestNewsCenterService(
     api: api,
-    prefs: SharedPreferenceService.instance,
+    prefs: prefsService,
     originCountry: () => 'US',
     osType: 'ios',
     appVersion: '2.4.7',

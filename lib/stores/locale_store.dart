@@ -11,11 +11,11 @@ part 'locale_store.g.dart';
 class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
-  _LocaleStore() {
+  _LocaleStore({required SharedPreferenceService sharedPrefs}) : _sharedPrefs = sharedPrefs {
     _currentLocale = _sharedPrefs.getLocale();
   }
 
-  final _sharedPrefs = SharedPreferenceService.instance;
+  final SharedPreferenceService _sharedPrefs;
   @readonly
   Locale _currentLocale = kFallbackLocale;
 

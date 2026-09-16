@@ -11,13 +11,9 @@ import 'package:retry/retry.dart';
 // Project imports:
 
 class SecureStorageService {
-  factory SecureStorageService() => instance;
-
-  SecureStorageService._internal();
+  SecureStorageService();
 
   late FlutterSecureStorage _securedStorage;
-
-  static final SecureStorageService instance = SecureStorageService._internal();
 
   Future<void> init() async {
     _securedStorage = const FlutterSecureStorage(

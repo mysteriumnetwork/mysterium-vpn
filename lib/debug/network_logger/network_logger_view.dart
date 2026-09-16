@@ -12,8 +12,8 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/network_logger_events.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 /// Overlay for [NetworkLoggerButton].
@@ -945,7 +945,7 @@ class _SecuredStorageValues extends ConsumerWidget {
         padding: const EdgeInsets.all(8),
         child: SingleChildScrollView(
           child: FutureBuilder<Map<String, dynamic>>(
-            future: SecureStorageService.instance.readAll(),
+            future: ref.read(secureStorageServicePOD).readAll(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final data = snapshot.data!;
@@ -1013,7 +1013,7 @@ class _SharedPreferencesValues extends ConsumerWidget {
     // Only our own keys — the raw dump also contains third-party plugin caches
     // (e.g. ConfigCat's serialised config), which are noise here.
     final ownKeys = StorageKeys.values.map((it) => it.name).toSet();
-    final data = SharedPreferenceService.instance.readAll()
+    final data = ref.read(sharedPreferenceServicePOD).readAll()
       ..removeWhere((key, _) => !ownKeys.contains(key));
     final keys = data.keys.toList()..sort();
     return Scaffold(

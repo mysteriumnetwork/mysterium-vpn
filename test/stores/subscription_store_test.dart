@@ -47,6 +47,7 @@ Future<void> _initEnvWithIosVersion(
 }
 
 @GenerateNiceMocks([
+  MockSpec<SecureStorageService>(),
   MockSpec<vpn_api.VpnApi>(),
   MockSpec<SubscriptionService>(),
   MockSpec<AuthSessionStore>(),
@@ -102,6 +103,7 @@ void main() {
     when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());
 
     subscriptionStore = SubscriptionStore(
+      secureStorageService: MockSecureStorageService(),
       api: mockVpnApi,
       subscriptionService: mockSubscriptionService,
       authSessionStore: mockAuthSessionStore,

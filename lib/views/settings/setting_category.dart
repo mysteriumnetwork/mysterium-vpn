@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/debug/qa_toolbox.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/views/settings/account_settings.dart';
 import 'package:mysterium_vpn/views/settings/application_settings.dart';
 import 'package:mysterium_vpn/views/settings/connection_settings.dart';
-import 'package:mysterium_vpn/views/settings/qa_toolbox.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// View-layer presentation for [SettingCategory].

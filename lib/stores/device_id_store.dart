@@ -16,10 +16,10 @@ class DeviceIDStore = _DeviceIDStore with _$DeviceIDStore;
 
 abstract class _DeviceIDStore with Store {
   _DeviceIDStore({
-    SecureStorageService? secureStorageService,
+    required SecureStorageService secureStorageService,
     DeviceInfoPlugin? deviceInfoPlugin,
     Future<String> Function()? flutterUdid,
-  }) : _secureStorageService = secureStorageService ?? SecureStorageService.instance,
+  }) : _secureStorageService = secureStorageService,
        _deviceInfoPlugin = deviceInfoPlugin ?? DeviceInfoPlugin(),
        _flutterUdid = flutterUdid {
     deviceIdFuture = ObservableFuture(getDeviceId());
