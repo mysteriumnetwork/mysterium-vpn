@@ -18,13 +18,25 @@ abstract class ConnectionSettingsRepository {
   Future<ProtocolType> protocolType();
 
   Future<void> setProtocolType(ProtocolType protocol);
+
+  /// When the current tunnel was established, used to show session duration.
+  DateTime? connectedAt();
+
+  Future<void> setConnectedAt(DateTime value);
+
+  Future<void> clearConnectedAt();
 }
 
 /// [ConnectionSettingsRepository] backed by [LocalDBService] (Hive).
 class LocalConnectionSettingsRepository implements ConnectionSettingsRepository {
-  LocalConnectionSettingsRepository(this._db);
+  LocalConnectionSettingsRepository({
+    required LocalDBService db,
+    required SharedPreferenceService prefs,
+  }) : _db = db,
+       _prefs = prefs;
 
   final LocalDBService _db;
+  final SharedPreferenceService _prefs;
 
   @override
   Future<bool> malwareContentBlocker() => _db.getMalwareContentBlocker();
@@ -52,4 +64,17 @@ class LocalConnectionSettingsRepository implements ConnectionSettingsRepository 
 
   @override
   Future<void> setProtocolType(ProtocolType protocol) => _db.setProtocolType(protocol);
+
+  @override
+  DateTime? connectedAt() {
+    final storedMs = _prefs.getInt(StorageKeys.connectedAt.name);
+    return storedMs == null ? null : DateTime.fromMillisecondsSinceEpoch(storedMs);
+  }
+
+  @override
+  Future<void> setConnectedAt(DateTime value) =>
+      _prefs.setInt(StorageKeys.connectedAt.name, value.millisecondsSinceEpoch);
+
+  @override
+  Future<void> clearConnectedAt() => _prefs.remove(StorageKeys.connectedAt.name);
 }

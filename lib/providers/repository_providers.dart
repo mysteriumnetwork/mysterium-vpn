@@ -24,7 +24,10 @@ final promptsRepositoryPOD = Provider<PromptsRepository>(
 );
 
 final connectionSettingsRepositoryPOD = Provider<ConnectionSettingsRepository>(
-  (ref) => LocalConnectionSettingsRepository(ref.watch(localDBServicePOD)),
+  (ref) => LocalConnectionSettingsRepository(
+    db: ref.watch(localDBServicePOD),
+    prefs: ref.watch(sharedPreferenceServicePOD),
+  ),
 );
 
 final sessionRepositoryPOD = Provider<SessionRepository>(

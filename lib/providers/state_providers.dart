@@ -105,7 +105,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final udpBlockedSuggestionStore = ref.watch(udpBlockedSuggestionStorePOD);
 
   final vpnStore = VpnStore(
-    prefs: ref.watch(sharedPreferenceServicePOD),
+    settings: ref.watch(connectionSettingsRepositoryPOD),
     externalApiService: externalApiService,
     mqtt: mqttService,
     locationsStore: locationsStore,
