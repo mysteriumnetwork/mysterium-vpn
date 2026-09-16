@@ -176,7 +176,6 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
 });
 
 final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
-  final dbService = ref.watch(localDBServicePOD);
   final filterService = ref.watch(filterServicePOD);
   final queryStore = ref.watch(locationsQueryStorePOD);
   final localeStore = ref.watch(localeStorePOD);
@@ -184,7 +183,7 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
 
   final store = RecentLocationsStore(
-    dbService,
+    ref.watch(recentLocationsRepositoryPOD),
     filterService,
     queryStore,
     remoteConfigStore,

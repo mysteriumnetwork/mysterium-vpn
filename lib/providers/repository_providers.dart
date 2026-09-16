@@ -4,6 +4,10 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 
+final recentLocationsRepositoryPOD = Provider<RecentLocationsRepository>(
+  (ref) => LocalRecentLocationsRepository(ref.watch(localDBServicePOD)),
+);
+
 final locationsRepositoryPOD = Provider<LocationsRepository>(
   (ref) => RestLocationsRepository(
     connection: ref.watch(vpnApiPOD).getConnection(),
