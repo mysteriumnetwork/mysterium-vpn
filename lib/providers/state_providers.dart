@@ -198,8 +198,7 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
 
 final favoriteIpsStorePOD = Provider<FavoriteIpsStore>((ref) {
   final store = FavoriteIpsStore(
-    ref.watch(localDBServicePOD),
-    ref.watch(favoriteIpsAvailabilityServicePOD),
+    ref.watch(favoriteIpsRepositoryPOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(remoteConfigStorePOD),
     ref.watch(analyticsStorePOD),

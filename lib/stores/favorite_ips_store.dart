@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'favorite_ips_store.g.dart';
@@ -17,32 +17,25 @@ enum FavoriteIpsNotice { limitReached }
 class FavoriteIpsStore = _FavoriteIpsStore with _$FavoriteIpsStore;
 
 abstract class _FavoriteIpsStore with Store {
-  _FavoriteIpsStore(
-    this._db,
-    this._availabilityService,
-    this._subscription,
-    this._remoteConfig,
-    this._analytics,
-  ) {
+  _FavoriteIpsStore(this._repository, this._subscription, this._remoteConfig, this._analytics) {
     // Availability is refreshed when the Favorite tab is opened (view) or
     // explicitly (refresh button / pull) — not here: the user-data stream
     // fires on every unrelated write (e.g. recents after each connect).
     // The user-data box emits on every write (recents after a connect, banners,
     // …), so ignore emissions that don't change the saved list.
-    _dbChangesSubscription = _db.watchFavoriteIps().listen((saved) {
+    _dbChangesSubscription = _repository.watch().listen((saved) {
       if (_future.value != null && listEquals(_future.value, saved)) {
         return;
       }
       // The list changed, so cached availability no longer covers it. The
       // mutators reset this eagerly to close the window before this stream
       // catches up; this covers changes that did not originate there.
-      _availabilityCheckedAt = null;
+      _repository.invalidateAvailability();
       _future = _future.replaceOrReset(Future.value(saved));
     });
   }
 
-  final LocalDBService _db;
-  final FavoriteIpsAvailabilityService _availabilityService;
+  final FavoriteIpsRepository _repository;
   final SubscriptionStore _subscription;
   final RemoteConfigStore _remoteConfig;
   final AnalyticsStore _analytics;
@@ -50,7 +43,7 @@ abstract class _FavoriteIpsStore with Store {
   late final StreamSubscription<List<FavoriteIp>> _dbChangesSubscription;
 
   @readonly
-  late ObservableFuture<List<FavoriteIp>> _future = ObservableFuture(_db.getFavoriteIps());
+  late ObservableFuture<List<FavoriteIp>> _future = ObservableFuture(_repository.load());
 
   /// Availability by IP, updated by [refreshAvailability]. IPs missing from
   /// the map are treated as available.
@@ -104,8 +97,8 @@ abstract class _FavoriteIpsStore with Store {
       return false;
     }
 
-    _availabilityCheckedAt = null;
-    await _db.setFavoriteIps([favorite, ...favorites]);
+    _repository.invalidateAvailability();
+    await _repository.save([favorite, ...favorites]);
     return true;
   }
 
@@ -117,8 +110,8 @@ abstract class _FavoriteIpsStore with Store {
     }
 
     final remaining = favorites.where((it) => it.ip != ip).toList();
-    _availabilityCheckedAt = null;
-    await _db.setFavoriteIps(remaining);
+    _repository.invalidateAvailability();
+    await _repository.save(remaining);
     _lastRemoved = favorite;
     unawaited(
       _analytics.logFavoriteIpRemoved(
@@ -138,9 +131,9 @@ abstract class _FavoriteIpsStore with Store {
       return false;
     }
     _lastRemoved = null;
-    _availabilityCheckedAt = null;
+    _repository.invalidateAvailability();
 
-    await _db.setFavoriteIps([favorite, ...favorites]);
+    await _repository.save([favorite, ...favorites]);
     unawaited(_analytics.logFavoriteIpUndoRemove());
     return true;
   }
@@ -193,28 +186,18 @@ abstract class _FavoriteIpsStore with Store {
 
   @action
   Future<void> clear() async {
-    _availabilityCheckedAt = null;
-    await _db.setFavoriteIps(const <FavoriteIp>[]);
+    _repository.invalidateAvailability();
+    await _repository.save(const <FavoriteIp>[]);
   }
-
-  /// How long a successful availability result is considered fresh. The tab
-  /// refreshes on open, and that view can remount for reasons unrelated to
-  /// favorites (the locations tree above it changing shape after a connect),
-  /// so without this every remount would re-hit the endpoint.
-  static const availabilityTtl = Duration(seconds: 30);
-
-  Future<bool>? _availabilityRefresh;
-  DateTime? _availabilityCheckedAt;
 
   /// Refreshes per-IP availability, reporting success.
   ///
   /// Concurrent callers share one request, and a result that is still fresh
-  /// (see [availabilityTtl]) for the same set of IPs is reused instead of
+  /// (see `LocalFavoriteIpsRepository.availabilityTtl`) is reused instead of
   /// re-requesting. Pass [force] for user-triggered refreshes, which must
   /// always hit the backend. On failure the previous map is kept so favorites
   /// stay tappable and connect surfaces the error.
-  Future<bool> refreshAvailability({bool force = false}) => _availabilityRefresh ??=
-      _refreshAvailability(force: force).whenComplete(() => _availabilityRefresh = null);
+  Future<bool> refreshAvailability({bool force = false}) => _refreshAvailability(force: force);
 
   @action
   Future<bool> _refreshAvailability({required bool force}) async {
@@ -224,17 +207,16 @@ abstract class _FavoriteIpsStore with Store {
       return true;
     }
 
-    final checkedAt = _availabilityCheckedAt;
-    if (!force && checkedAt != null && DateTime.now().difference(checkedAt) < availabilityTtl) {
-      return true;
-    }
-
     try {
-      final result = await _availabilityService.checkAvailability(ips);
+      final result = await _repository.availability(ips, force: force);
+      // null means the previous result is still fresh — keep what we have, so
+      // a locally marked-unavailable IP survives a remount.
+      if (result == null) {
+        return true;
+      }
       if (!mapEquals(_availability, result)) {
         _availability = ObservableMap.of(result);
       }
-      _availabilityCheckedAt = DateTime.now();
       _logUnavailableShown(result, checkedFavorites);
       return true;
     } catch (_) {
