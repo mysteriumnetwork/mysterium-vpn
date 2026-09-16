@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/l10n/arb_locale.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,12 +23,12 @@ void main() {
   });
 
   test('seeds currentLocale from SharedPreferenceService', () {
-    final store = LocaleStore(sharedPrefs: prefsService);
+    final store = LocaleStore(settings: LocalAppSettingsRepository(prefsService));
     expect(store.currentLocale, kFallbackLocale);
   });
 
   test('setLocale persists and updates a supported locale', () async {
-    final store = LocaleStore(sharedPrefs: prefsService);
+    final store = LocaleStore(settings: LocalAppSettingsRepository(prefsService));
     final supported = supportedLocales.firstWhere(
       (l) => l.languageCode != kFallbackLocale.languageCode,
     );
@@ -35,12 +36,12 @@ void main() {
     await store.setLocale(supported);
 
     expect(store.currentLocale, supported);
-    final fresh = LocaleStore(sharedPrefs: prefsService);
+    final fresh = LocaleStore(settings: LocalAppSettingsRepository(prefsService));
     expect(fresh.currentLocale, supported);
   });
 
   test('setLocale ignores unsupported locales', () async {
-    final store = LocaleStore(sharedPrefs: prefsService);
+    final store = LocaleStore(settings: LocalAppSettingsRepository(prefsService));
     final original = store.currentLocale;
     const unsupported = Locale('zz');
 

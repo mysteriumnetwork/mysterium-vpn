@@ -20,7 +20,7 @@ import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>(
-  (ref) => LocaleStore(sharedPrefs: ref.watch(sharedPreferenceServicePOD)),
+  (ref) => LocaleStore(settings: ref.watch(appSettingsRepositoryPOD)),
 );
 
 final authSessionStorePOD = Provider<AuthSessionStore>((ref) {
@@ -67,7 +67,7 @@ final apiStorePOD = Provider<MqttStore>((ref) {
 });
 
 final themeStorePOD = Provider<ThemeStore>(
-  (ref) => ThemeStore(sharedPrefs: ref.watch(sharedPreferenceServicePOD)),
+  (ref) => ThemeStore(settings: ref.watch(appSettingsRepositoryPOD)),
 );
 
 final homeTabsStorePOD = Provider<HomeTabsStore>((ref) {
@@ -137,10 +137,10 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 final selectedLocationStorePOD = Provider<SelectedLocationStore>((ref) => SelectedLocationStore());
 
 final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
-  final prefs = ref.watch(sharedPreferenceServicePOD);
+  final settings = ref.watch(appSettingsRepositoryPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-  final store = LocationsQueryStore(prefs, analyticsStore, localeStore);
+  final store = LocationsQueryStore(settings, analyticsStore, localeStore);
 
   ref.onDispose(store.dispose);
 

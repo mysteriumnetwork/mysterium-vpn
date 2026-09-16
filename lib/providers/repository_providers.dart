@@ -4,6 +4,10 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 
+final appSettingsRepositoryPOD = Provider<AppSettingsRepository>(
+  (ref) => LocalAppSettingsRepository(ref.watch(sharedPreferenceServicePOD)),
+);
+
 final promptsRepositoryPOD = Provider<PromptsRepository>(
   (ref) => LocalPromptsRepository(ref.watch(localDBServicePOD)),
 );
