@@ -25,9 +25,8 @@ final localeStorePOD = Provider<LocaleStore>(
 
 final authSessionStorePOD = Provider<AuthSessionStore>((ref) {
   final store = AuthSessionStore(
-    secureStorage: ref.watch(secureStorageServicePOD),
+    repository: ref.watch(sessionRepositoryPOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
-    localDb: ref.watch(localDBServicePOD),
   );
 
   ref.onDispose(store.dispose);
