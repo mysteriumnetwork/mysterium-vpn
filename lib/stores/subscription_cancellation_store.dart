@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'subscription_cancellation_store.g.dart';
@@ -21,7 +21,7 @@ abstract class _SubscriptionCancellationStore with Store {
 
   late final SubscriptionStore _subscriptionStore;
   late final AnalyticsStore _analyticsStore;
-  late final SubscriptionService _subscriptionService;
+  late final SubscriptionRepository _subscriptionService;
   late final RemoteConfigStore _remoteConfigStore;
 
   @readonly

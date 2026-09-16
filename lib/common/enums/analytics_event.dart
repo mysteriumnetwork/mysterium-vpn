@@ -110,7 +110,7 @@ enum AnalyticsEvent {
   paymentSuccess6m,
   paymentSuccess1y,
   subscriptionCancellationSurvey,
-  getWireguradKeyError,
+  getWireguardKeyError,
   wireguardKeyUnavailable,
   wireguardKeysDoNotMatch,
   createMarketingContactSuccess,

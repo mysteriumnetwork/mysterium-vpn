@@ -121,12 +121,12 @@ final vpnApiPOD = Provider<VpnApi>((ref) {
   return VpnApi(dio: dio);
 });
 
-final subscriptionServicePOD = Provider<SubscriptionService>((ref) {
+final subscriptionServicePOD = Provider<SubscriptionRepository>((ref) {
   final api = ref.watch(vpnApiPOD);
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestSubscriptionService(api: api, inAppPurchase: inAppPurchase, logger: logger);
+  return RestSubscriptionRepository(api: api, inAppPurchase: inAppPurchase, logger: logger);
 });
 
 final apiServicePOD = Provider<ApiService>((ref) {
@@ -150,13 +150,13 @@ final externalNetworkServicePOD = Provider<NetworkService>((ref) {
   return DioNetworkService(dio);
 });
 
-final authServicePOD = Provider<AuthService>((ref) {
+final authServicePOD = Provider<AuthRepository>((ref) {
   final api = ref.watch(vpnApiPOD);
   final networkService = ref.watch(networkServicePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestAuthService(
+  return RestAuthRepository(
     securedStorage: ref.watch(secureStorageServicePOD),
     localDb: ref.watch(localDBServicePOD),
     api: api,
@@ -218,8 +218,8 @@ final newsCenterServicePOD = Provider<NewsCenterRepository>(
   ),
 );
 
-final wireguradKeyServicePOD = Provider<WireguradKeyService>(
-  (ref) => WireguradKeyService(
+final wireguardKeyRepositoryPOD = Provider<WireguardKeyRepository>(
+  (ref) => WireguardKeyRepository(
     wireguardService: ref.watch(wireguardServicePOD),
     secureStorageService: ref.watch(secureStorageServicePOD),
     analyticsLogger: ref.watch(analyticsStorePOD).logEvent,

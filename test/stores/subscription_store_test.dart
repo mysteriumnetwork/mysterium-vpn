@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
@@ -49,7 +50,7 @@ Future<void> _initEnvWithIosVersion(
 @GenerateNiceMocks([
   MockSpec<SecureStorageService>(),
   MockSpec<vpn_api.VpnApi>(),
-  MockSpec<SubscriptionService>(),
+  MockSpec<SubscriptionRepository>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<RemoteConfigStore>(),
@@ -59,7 +60,7 @@ Future<void> _initEnvWithIosVersion(
 void main() {
   late SubscriptionStore subscriptionStore;
   late MockVpnApi mockVpnApi;
-  late MockSubscriptionService mockSubscriptionService;
+  late MockSubscriptionRepository mockSubscriptionService;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
@@ -83,7 +84,7 @@ void main() {
 
   setUp(() async {
     mockVpnApi = MockVpnApi();
-    mockSubscriptionService = MockSubscriptionService();
+    mockSubscriptionService = MockSubscriptionRepository();
     mockAuthSessionStore = MockAuthSessionStore();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();

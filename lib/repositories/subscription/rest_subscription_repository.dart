@@ -15,14 +15,14 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/subscription/subscription_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
-class RestSubscriptionService extends SubscriptionService {
-  RestSubscriptionService({
+class RestSubscriptionRepository extends SubscriptionRepository {
+  RestSubscriptionRepository({
     required api.VpnApi api,
     required InAppPurchase inAppPurchase,
     required Talker logger,

@@ -7,7 +7,7 @@ final wireguardRepositoryPOD = Provider<WireguardRepository>(
   (ref) => WireguardRepository(
     service: ref.watch(wireguardServicePOD),
     logger: ref.watch(loggerPOD),
-    wireguradKeyService: ref.watch(wireguradKeyServicePOD),
+    wireguardKeyRepository: ref.watch(wireguardKeyRepositoryPOD),
     apiService: ref.watch(apiServicePOD),
   ),
 );

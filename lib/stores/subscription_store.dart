@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
 import 'package:mysterium_vpn/common/utils/subscription_plan_resolver.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
@@ -47,7 +48,7 @@ abstract class _SubscriptionStore with Store {
   }
 
   final api.Subscription _apiSubscription;
-  final SubscriptionService _subscriptionService;
+  final SubscriptionRepository _subscriptionService;
   final AuthSessionStore _authSessionStore;
   final SecureStorageService _secureStorageService;
   final AnalyticsStore _analyticsStore;
