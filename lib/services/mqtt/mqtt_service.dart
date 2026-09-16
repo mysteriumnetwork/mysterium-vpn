@@ -80,7 +80,7 @@ class MQTTService {
   final Map<String, StreamSubscription<String>> _forwards = {};
 
   Future<void> start() async {
-    if (!_experimentFlag.mqttExperiment) {
+    if (!_experimentFlag()) {
       return;
     }
 
@@ -120,7 +120,7 @@ class MQTTService {
   ///
   /// Returns a stream of message payloads as strings.
   Stream<String> subscribe(String topic) {
-    if (!_experimentFlag.mqttExperiment) {
+    if (!_experimentFlag()) {
       return const Stream<String>.empty();
     }
 

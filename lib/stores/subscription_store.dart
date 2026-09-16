@@ -13,7 +13,6 @@ import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
 import 'package:mysterium_vpn/common/utils/subscription_plan_resolver.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/vpn/vpn_access_ports.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
@@ -23,9 +22,7 @@ import 'package:vpn_api/vpn_api.dart' as api;
 part 'subscription_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class SubscriptionStore = _SubscriptionStore
-    with _$SubscriptionStore
-    implements VpnSubscriptionAccess;
+class SubscriptionStore = _SubscriptionStore with _$SubscriptionStore;
 
 abstract class _SubscriptionStore with Store {
   _SubscriptionStore({

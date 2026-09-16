@@ -27,10 +27,10 @@ abstract class _VpnStore extends VpnGuard with Store {
     required MQTTService mqtt,
     required LocationsStore locationsStore,
     required LocationsService locationsService,
-    required SubscriptionStore subscriptionStore,
+    required super.subscriptionStore,
     required Talker logger,
     required AnalyticsStore analyticsStore,
-    required AuthSessionStore authSessionStore,
+    required super.authSessionStore,
     required RealIPInfoStore realIPInfo,
     required DNSStore dnsStore,
     required RefreshIPStore refreshIPStore,
@@ -70,8 +70,7 @@ abstract class _VpnStore extends VpnGuard with Store {
            : openVpnRepository,
        _connectionDecisionStore = connectionDecisionStore,
        _ipRefreshExhaustionStore = ipRefreshExhaustionStore,
-       _udpBlockedSuggestionStore = udpBlockedSuggestionStore,
-       super(subscriptionAccess: subscriptionStore, sessionAccess: authSessionStore) {
+       _udpBlockedSuggestionStore = udpBlockedSuggestionStore {
     _init();
   }
 

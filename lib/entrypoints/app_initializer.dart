@@ -61,12 +61,12 @@ class AppInitializer {
       Localizely.init(Env.localizelySdkToken, Env.localizelyDistributionId);
     }
 
-    // Hive boxes must be open before `localDBServicePOD` constructs the service.
-    await LocalDBService.initialize();
-
+    // LocalDBService.initialize() opens the Hive boxes the service reads in its
+    // field initializers; nothing awaited here reads localDBServicePOD, and the
+    // first read of it happens below, so these still run concurrently.
     await Future.wait([
+      LocalDBService.initialize(),
       providerContainer.read(sharedPreferenceServicePOD).init(),
-      providerContainer.read(secureStorageServicePOD).init(),
       // Preload S so `S.current` is available before the first frame; app.dart's
       // locale reaction re-loads the persisted locale once the store is ready
       // (a no-op when it resolves to the same ARB locale).

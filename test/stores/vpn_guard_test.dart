@@ -6,13 +6,12 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/vpn/vpn_guard.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'vpn_guard_test.mocks.dart';
 
 class _TestVpnGuard extends VpnGuard {
-  _TestVpnGuard({required super.subscriptionAccess, required super.sessionAccess});
+  _TestVpnGuard({required super.subscriptionStore, required super.authSessionStore});
 }
 
 @GenerateNiceMocks([MockSpec<SubscriptionStore>(), MockSpec<AuthSessionStore>()])
@@ -28,7 +27,7 @@ void main() {
   });
 
   _TestVpnGuard newGuard() =>
-      _TestVpnGuard(subscriptionAccess: subscription, sessionAccess: session);
+      _TestVpnGuard(subscriptionStore: subscription, authSessionStore: session);
 
   test('throws AuthenticationRequiredException when not authenticated', () async {
     when(session.isAuthenticated).thenReturn(false);

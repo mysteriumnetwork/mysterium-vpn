@@ -11,17 +11,11 @@ import 'package:retry/retry.dart';
 // Project imports:
 
 class SecureStorageService {
-  SecureStorageService();
-
-  late FlutterSecureStorage _securedStorage;
-
-  Future<void> init() async {
-    _securedStorage = const FlutterSecureStorage(
-      iOptions: IOSOptions(accountName: Env.accountName),
-      mOptions: MacOsOptions(accountName: Env.accountName, synchronizable: true),
-      wOptions: WindowsOptions(useBackwardCompatibility: true),
-    );
-  }
+  static const _securedStorage = FlutterSecureStorage(
+    iOptions: IOSOptions(accountName: Env.accountName),
+    mOptions: MacOsOptions(accountName: Env.accountName, synchronizable: true),
+    wOptions: WindowsOptions(useBackwardCompatibility: true),
+  );
 
   Future<Map<String, dynamic>> readAll() async {
     try {

@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Check layer boundaries
-        run: bash .github/scripts/check-layering.sh
+        run: make check-layering
 
       - name: Run Flutter Analyze (Lint)
         run: fvm flutter analyze

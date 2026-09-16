@@ -2,7 +2,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/vpn/vpn_access_ports.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -10,9 +9,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 part 'auth_session_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class AuthSessionStore = _AuthSessionStore
-    with _$AuthSessionStore
-    implements AuthSessionGateway, VpnSessionAccess;
+class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore implements AuthSessionGateway;
 
 abstract class _AuthSessionStore with Store, Disposeable {
   _AuthSessionStore({

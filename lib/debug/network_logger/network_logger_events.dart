@@ -72,9 +72,6 @@ class NetworkEvent {
 class Headers {
   Headers(Iterable<MapEntry<String, String>> entries) : entries = entries.toList();
 
-  Headers.fromMap(Map<String, String> map)
-    : entries = map.entries as List<MapEntry<String, String>>;
-
   final List<MapEntry<String, String>> entries;
 
   bool get isNotEmpty => entries.isNotEmpty;

@@ -12,7 +12,6 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker/talker.dart';
 
 @GenerateNiceMocks([
@@ -38,6 +37,7 @@ import 'package:talker/talker.dart';
   MockSpec<SubscriptionStore>(),
   MockSpec<VpnProtocolStore>(),
 ])
+import '../support/test_prefs.dart';
 import 'vpn_store_test.mocks.dart';
 
 void main() {
@@ -96,9 +96,7 @@ void main() {
   );
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    prefsService = SharedPreferenceService();
-    await prefsService.init();
+    prefsService = await initTestPrefs();
     mockWireguardRepo = MockWireguardRepository();
     mockOpenVpnRepo = MockOpenVpnRepository();
     mockExternalApi = MockExternalApiService();

@@ -9,21 +9,13 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
+import '../support/news_fixtures.dart';
 import 'news_center_store_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<NewsCenterService>(), MockSpec<Talker>()])
 void main() {
   late MockNewsCenterService service;
   late MockTalker logger;
-
-  NewsItem item(int id, {NewsCategory category = NewsCategory.news}) => NewsItem(
-    id: id,
-    category: category,
-    title: 'Title $id',
-    summary: 'Summary $id',
-    createdAt: DateTime.utc(2026, 7, 14),
-    webViewUrl: 'https://mysterium.network/news-center/$id',
-  );
 
   setUp(() {
     service = MockNewsCenterService();
@@ -38,7 +30,7 @@ void main() {
   });
 
   test('load populates items and isEmpty becomes false', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1), newsItem(2)]);
 
     final store = build();
     await store.load();
@@ -59,9 +51,9 @@ void main() {
   test('filteredItems filters by the selected category', () async {
     when(service.getFeed()).thenAnswer(
       (_) async => [
-        item(1, category: NewsCategory.incident),
-        item(2),
-        item(3, category: NewsCategory.offer),
+        newsItem(1, category: NewsCategory.incident),
+        newsItem(2),
+        newsItem(3, category: NewsCategory.offer),
       ],
     );
 
@@ -93,7 +85,7 @@ void main() {
   test('nonEmptyFilters includes all plus only the categories present', () async {
     when(
       service.getFeed(),
-    ).thenAnswer((_) async => [item(1, category: NewsCategory.incident), item(2)]);
+    ).thenAnswer((_) async => [newsItem(1, category: NewsCategory.incident), newsItem(2)]);
 
     final store = build();
     await store.load();
@@ -102,7 +94,7 @@ void main() {
   });
 
   test('ensureLoaded triggers a load when none has started', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
     await store.ensureLoaded();
@@ -112,7 +104,7 @@ void main() {
   });
 
   test('ensureLoaded does not reload when items are already present', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
     await store.load();
@@ -128,7 +120,7 @@ void main() {
     final store = build();
     final loading = store.load();
     final ensuring = store.ensureLoaded();
-    completer.complete([item(1)]);
+    completer.complete([newsItem(1)]);
     await Future.wait([loading, ensuring]);
 
     expect(store.itemById(1)?.id, 1);
@@ -137,7 +129,7 @@ void main() {
 
   test('ensureLoaded awaits an in-flight refresh even when items are cached', () async {
     // Cache holds item 1 from an initial load.
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
     final store = build();
     await store.load();
     expect(store.itemById(2), isNull);
@@ -149,14 +141,14 @@ void main() {
 
     // ensureLoaded must await that refresh rather than returning the stale cache.
     final ensuring = store.ensureLoaded();
-    completer.complete([item(1), item(2)]);
+    completer.complete([newsItem(1), newsItem(2)]);
     await Future.wait([refreshing, ensuring]);
 
     expect(store.itemById(2)?.id, 2);
   });
 
   test('feedFetchFailed is false after a successful load', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
     final store = build();
     await store.load();
 
@@ -164,7 +156,7 @@ void main() {
   });
 
   test('feedFetchFailed is true when the latest fetch is rejected, even with cache', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
     final store = build();
     await store.load();
 
@@ -177,7 +169,7 @@ void main() {
   });
 
   test('itemById finds a loaded item and returns null otherwise', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1), newsItem(2)]);
 
     final store = build();
     expect(store.itemById(1), isNull);
@@ -189,7 +181,7 @@ void main() {
 
   test('derives read state from the persisted read ids', () async {
     when(service.readIds()).thenReturn({2});
-    when(service.getFeed()).thenAnswer((_) async => [item(1), item(2), item(3)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1), newsItem(2), newsItem(3)]);
 
     final store = build();
     await store.load();
@@ -201,7 +193,7 @@ void main() {
   });
 
   test('markRead flips the item, updates unreadCount, and persists the id', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
     await store.load();
@@ -215,7 +207,7 @@ void main() {
   });
 
   test('clearRead clears read state in memory and persists the clear', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
     await store.load();
@@ -230,7 +222,7 @@ void main() {
   });
 
   test('a read item stays read across a reload', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
     await store.load();
@@ -243,7 +235,7 @@ void main() {
   });
 
   test('refresh returns true and updates items on success', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
 
@@ -252,7 +244,7 @@ void main() {
   });
 
   test('a failed refresh returns false and keeps the previously loaded items', () async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     final store = build();
     await store.load();

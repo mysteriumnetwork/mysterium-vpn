@@ -110,7 +110,7 @@ final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
     Env.mqttPassword,
     generateUuidV4().truncate(23),
     logger,
-    remoteConfigStore,
+    () => remoteConfigStore.mqttExperiment,
   );
 });
 

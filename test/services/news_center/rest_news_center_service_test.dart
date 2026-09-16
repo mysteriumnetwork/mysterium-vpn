@@ -4,9 +4,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_api/vpn_api.dart';
 
+import '../../support/test_prefs.dart';
 import 'rest_news_center_service_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Newscenter>()])
@@ -19,9 +19,7 @@ void main() {
 
   setUp(() async {
     api = MockNewscenter();
-    SharedPreferences.setMockInitialValues({});
-    prefsService = SharedPreferenceService();
-    await prefsService.init();
+    prefsService = await initTestPrefs();
   });
 
   RestNewsCenterService build() => RestNewsCenterService(

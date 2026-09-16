@@ -4,14 +4,14 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../support/test_prefs.dart';
+
 void main() {
   late SharedPreferenceService prefsService;
 
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences.setMockInitialValues({});
-    prefsService = SharedPreferenceService();
-    await prefsService.init();
+    prefsService = await initTestPrefs();
   });
 
   setUp(() async {

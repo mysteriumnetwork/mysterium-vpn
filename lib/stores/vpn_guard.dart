@@ -1,16 +1,16 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/repositories/vpn/vpn_access_ports.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 
 abstract class VpnGuard {
   VpnGuard({
-    required VpnSubscriptionAccess subscriptionAccess,
-    required VpnSessionAccess sessionAccess,
-  }) : _subscription = subscriptionAccess,
-       _session = sessionAccess;
+    required SubscriptionStore subscriptionStore,
+    required AuthSessionStore authSessionStore,
+  }) : _subscription = subscriptionStore,
+       _session = authSessionStore;
 
-  final VpnSubscriptionAccess _subscription;
-  final VpnSessionAccess _session;
+  final SubscriptionStore _subscription;
+  final AuthSessionStore _session;
 
   /// Whether the loaded subscription currently entitles the user to a tunnel.
   /// A not-yet-fulfilled subscription counts as entitled, so a pending fetch

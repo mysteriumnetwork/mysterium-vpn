@@ -9,17 +9,9 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// Labels are hardcoded English (see news_center_strings.dart): this feature is
 /// English-only. A `switch` here fails at compile time if an enum value is added.
 
-IconData newsCategoryIcon(NewsCategory category) => switch (category) {
-  NewsCategory.incident => UntitledUI.alert_triangle,
-  NewsCategory.news => UntitledUI.file_06,
-  NewsCategory.offer => UntitledUI.tag_01,
-};
+IconData newsCategoryIcon(NewsCategory category) => newsFilterIcon(category.filter);
 
-String newsCategoryLabel(NewsCategory category) => switch (category) {
-  NewsCategory.incident => newsFilterIncidentsText,
-  NewsCategory.news => newsFilterNewsText,
-  NewsCategory.offer => newsFilterOffersText,
-};
+String newsCategoryLabel(NewsCategory category) => newsFilterLabel(category.filter);
 
 IconData newsFilterIcon(NewsFilter filter) => switch (filter) {
   NewsFilter.all => UntitledUI.inbox_01,

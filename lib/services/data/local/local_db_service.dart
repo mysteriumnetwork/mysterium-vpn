@@ -7,11 +7,9 @@ import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
 import 'package:mysterium_vpn/services/data/local/box_recovery.dart';
 import 'package:mysterium_vpn/services/data/local/residential_education_storage.dart';
 
+/// Construct only after [initialize] has run: Hive boxes are opened there and
+/// read in this class's field initializers.
 class LocalDBService implements ResidentialEducationStorage {
-  /// Construct only after [initialize] has run: Hive boxes are opened there
-  /// and read in this class's field initializers.
-  LocalDBService();
-
   static Future<void> initialize() async {
     await Hive.initFlutter();
     Hive

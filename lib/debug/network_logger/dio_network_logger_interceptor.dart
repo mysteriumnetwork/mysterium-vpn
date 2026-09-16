@@ -1,12 +1,6 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:mysterium_vpn/debug/network_logger/network_logger_events.dart';
 
-extension DioNetworkLoggerX on dio.Dio {
-  void addNetworkLogger() {
-    interceptors.add(DioNetworkLoggerInterceptor());
-  }
-}
-
 class DioNetworkLoggerInterceptor extends dio.Interceptor {
   DioNetworkLoggerInterceptor({NetworkEventList? eventList})
     : eventList = eventList ?? DioNetworkLogger.instance;
