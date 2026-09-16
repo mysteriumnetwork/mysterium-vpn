@@ -5,20 +5,20 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 import '../support/news_fixtures.dart';
 import 'news_center_store_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<NewsCenterService>(), MockSpec<Talker>()])
+@GenerateNiceMocks([MockSpec<NewsCenterRepository>(), MockSpec<Talker>()])
 void main() {
-  late MockNewsCenterService service;
+  late MockNewsCenterRepository service;
   late MockTalker logger;
 
   setUp(() {
-    service = MockNewsCenterService();
+    service = MockNewsCenterRepository();
     logger = MockTalker();
     when(service.readIds()).thenReturn(<int>{});
   });

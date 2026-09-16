@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
@@ -207,8 +208,8 @@ final favoriteIpsAvailabilityServicePOD = Provider<FavoriteIpsAvailabilityServic
   (ref) => RestFavoriteIpsAvailabilityService(ref.watch(vpnApiDioPOD)),
 );
 
-final newsCenterServicePOD = Provider<NewsCenterService>(
-  (ref) => RestNewsCenterService(
+final newsCenterServicePOD = Provider<NewsCenterRepository>(
+  (ref) => RestNewsCenterRepository(
     api: ref.watch(vpnApiPOD).getNewscenter(),
     prefs: ref.watch(sharedPreferenceServicePOD),
     originCountry: () => ref.read(realIPInfoStorePOD).info?.country ?? '',

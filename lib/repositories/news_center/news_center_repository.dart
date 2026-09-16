@@ -1,10 +1,10 @@
 import 'package:mysterium_vpn/models/models.dart';
 
 /// Reads the personalized News Center feed and tracks which items the user has
-/// read. Backed by `RestNewsCenterService` (the `vpn_api` News Center endpoint
+/// read. Backed by `RestNewsCenterRepository` (the `vpn_api` News Center endpoint
 /// for the feed, local storage for read state — the API does not carry read
 /// state).
-abstract class NewsCenterService {
+abstract class NewsCenterRepository {
   /// The personalized list of items for the user (`GET /newscenter/inbox`).
   Future<List<NewsItem>> getFeed();
 

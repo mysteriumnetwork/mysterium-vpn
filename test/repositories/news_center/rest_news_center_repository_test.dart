@@ -3,11 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 import '../../support/test_prefs.dart';
-import 'rest_news_center_service_test.mocks.dart';
+import 'rest_news_center_repository_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Newscenter>()])
 void main() {
@@ -22,7 +23,7 @@ void main() {
     prefsService = await initTestPrefs();
   });
 
-  RestNewsCenterService build() => RestNewsCenterService(
+  RestNewsCenterRepository build() => RestNewsCenterRepository(
     api: api,
     prefs: prefsService,
     originCountry: () => 'US',

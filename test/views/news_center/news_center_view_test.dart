@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/news_center/components/news_center_loading_view.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
@@ -21,11 +21,11 @@ import '../../support/news_fixtures.dart';
 import '../../support/test_localizations.dart';
 import 'news_center_view_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<NewsCenterService>(), MockSpec<AnalyticsStore>()])
+@GenerateNiceMocks([MockSpec<NewsCenterRepository>(), MockSpec<AnalyticsStore>()])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockNewsCenterService service;
+  late MockNewsCenterRepository service;
   late MockAnalyticsStore analytics;
 
   setUpAll(() {
@@ -33,7 +33,7 @@ void main() {
   });
 
   setUp(() {
-    service = MockNewsCenterService();
+    service = MockNewsCenterRepository();
     analytics = MockAnalyticsStore();
   });
 
