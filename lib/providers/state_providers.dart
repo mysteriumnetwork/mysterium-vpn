@@ -392,7 +392,7 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>((ref) {
 
 final dnsStorePOD = Provider<DNSStore>(
   (ref) => DNSStore(
-    ref.watch(localDBServicePOD),
+    ref.watch(connectionSettingsRepositoryPOD),
     ref.watch(remoteConfigStorePOD),
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
@@ -402,7 +402,7 @@ final dnsStorePOD = Provider<DNSStore>(
 
 final refreshIPStorePOD = Provider<RefreshIPStore>(
   (ref) => RefreshIPStore(
-    ref.watch(localDBServicePOD),
+    ref.watch(connectionSettingsRepositoryPOD),
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
   ),
@@ -463,11 +463,11 @@ final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOff
 });
 
 final vpnProtocolStorePOD = Provider<VpnProtocolStore>((ref) {
-  final localDB = ref.watch(localDBServicePOD);
+  final settings = ref.watch(connectionSettingsRepositoryPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  return VpnProtocolStore(localDB, analyticsStore, remoteConfigStore, authSessionStore);
+  return VpnProtocolStore(settings, analyticsStore, remoteConfigStore, authSessionStore);
 });
 
 final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
