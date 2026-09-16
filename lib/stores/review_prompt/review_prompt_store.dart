@@ -5,7 +5,6 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'review_prompt_store.g.dart';
@@ -17,7 +16,7 @@ part 'review_prompt_store.g.dart';
 /// session and evaluates eligibility + suppression. When the user is eligible
 /// and nothing blocks the prompt, `pendingPrompt` flips to `true` and the home
 /// autorun surfaces the modal. All persisted state (counters, cooldown, yearly
-/// cap) lives in [SharedPreferenceService] so it survives restarts.
+/// cap) lives in [ReviewPromptRepository] so it survives restarts.
 // ignore: library_private_types_in_public_api
 class ReviewPromptStore = _ReviewPromptStore with _$ReviewPromptStore;
 

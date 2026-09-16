@@ -301,7 +301,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
     apiService: apiService,
     analyticsStore: analyticsStore,
     realIPInfo: realIPInfoStore,
-    localDBService: ref.watch(localDBServicePOD),
+    prompts: ref.watch(promptsRepositoryPOD),
     pushNotificationsStore: pushNotificationsStore,
     authSessionStore: authSessionStore,
     subscriptionStore: subscriptionStore,

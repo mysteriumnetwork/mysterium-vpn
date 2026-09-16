@@ -18,6 +18,20 @@ abstract class PromptsRepository {
   Future<void> setSubscriptionOnboardingShown();
 
   Future<void> resetSubscriptionOnboardingShown();
+
+  Future<int> appOpenCount();
+
+  Future<bool> marketingConsentShown();
+
+  Future<void> setMarketingConsentShown();
+
+  Future<bool> noneSubsOnboardingCompleted();
+
+  Future<void> setNoneSubsOnboardingCompleted();
+
+  Future<int> noneSubsOnboardingStep();
+
+  Future<void> setNoneSubsOnboardingStep(int step);
 }
 
 /// [PromptsRepository] backed by [LocalDBService] (Hive).
@@ -50,4 +64,25 @@ class LocalPromptsRepository implements PromptsRepository {
 
   @override
   Future<void> resetSubscriptionOnboardingShown() => _db.resetSubscriptionOnboardingShown();
+
+  @override
+  Future<int> appOpenCount() => _db.getAppOpenCount();
+
+  @override
+  Future<bool> marketingConsentShown() => _db.getMarketingConsentShown();
+
+  @override
+  Future<void> setMarketingConsentShown() => _db.setMarketingConsentShown();
+
+  @override
+  Future<bool> noneSubsOnboardingCompleted() => _db.getNoneSubsOnboardingCompleted();
+
+  @override
+  Future<void> setNoneSubsOnboardingCompleted() => _db.setNoneSubsOnboardingCompleted();
+
+  @override
+  Future<int> noneSubsOnboardingStep() => _db.getNoneSubsOnboardingStep();
+
+  @override
+  Future<void> setNoneSubsOnboardingStep(int step) => _db.setNoneSubsOnboardingStep(step);
 }
