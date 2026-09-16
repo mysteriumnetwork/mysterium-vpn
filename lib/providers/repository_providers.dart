@@ -4,6 +4,18 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 
+final ipInfoRepositoryPOD = Provider<IpInfoRepository>(
+  (ref) => RestIpInfoRepository(
+    api: ref.watch(externalApiServicePOD),
+    preferences: ref.watch(sharedPreferenceServicePOD),
+    wireguardService: ref.watch(wireguardServicePOD),
+  ),
+);
+
+final deviceIdRepositoryPOD = Provider<DeviceIdRepository>(
+  (ref) => PlatformDeviceIdRepository(secureStorageService: ref.watch(secureStorageServicePOD)),
+);
+
 final favoriteIpsRepositoryPOD = Provider<FavoriteIpsRepository>(
   (ref) => LocalFavoriteIpsRepository(
     db: ref.watch(localDBServicePOD),

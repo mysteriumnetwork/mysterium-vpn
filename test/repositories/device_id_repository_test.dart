@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 
-import 'device_id_store_test.mocks.dart';
+import 'device_id_repository_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SecureStorageService>(),
@@ -22,13 +22,13 @@ import 'device_id_store_test.mocks.dart';
 void main() {
   late MockSecureStorageService mockStorage;
   late MockDeviceInfoPlugin mockDeviceInfoPlugin;
-  late DeviceIDStore store;
+  late PlatformDeviceIdRepository repository;
   const mockDeviceID = '3f8d7cb624d30561e803a6e3e0572fd59fe8ff721a12609212bc9262f5c32fb7';
 
   setUp(() {
     mockStorage = MockSecureStorageService();
     mockDeviceInfoPlugin = MockDeviceInfoPlugin();
-    store = DeviceIDStore(
+    repository = PlatformDeviceIdRepository(
       secureStorageService: mockStorage,
       deviceInfoPlugin: mockDeviceInfoPlugin,
       flutterUdid: () async => mockDeviceID,
@@ -40,7 +40,7 @@ void main() {
       when(mockStorage.getDeviceId()).thenAnswer((_) async => mockDeviceID);
       when(mockStorage.saveDeviceId(any)).thenAnswer((_) async => {});
 
-      final id = await store.getDeviceId();
+      final id = await repository.getDeviceId();
 
       // Compute expected truncated SHA256
       final expected = sha256.convert(utf8.encode(mockDeviceID)).toString().substring(0, 36);
@@ -54,7 +54,7 @@ void main() {
       const plainId = 'not-a-sha';
       when(mockStorage.getDeviceId()).thenAnswer((_) async => plainId);
 
-      final localStore = DeviceIDStore(
+      final localStore = PlatformDeviceIdRepository(
         secureStorageService: mockStorage,
         deviceInfoPlugin: mockDeviceInfoPlugin,
         flutterUdid: () async => 'mockUdid',
@@ -76,7 +76,7 @@ void main() {
       when(mockAndroidInfo.id).thenReturn('android-fallback');
       when(mockStorage.saveDeviceId(any)).thenAnswer((_) async => {});
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
       final expected = sha256.convert(utf8.encode('android-fallback')).toString().substring(0, 36);
 
       expect(id, expected);
@@ -89,7 +89,7 @@ void main() {
       when(mockDeviceInfoPlugin.androidInfo).thenAnswer((_) async => mockAndroidInfo);
       when(mockAndroidInfo.id).thenReturn('android-id-123');
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
       final expected = sha256.convert(utf8.encode('android-id-123')).toString().substring(0, 36);
 
       expect(id, expected);
@@ -100,7 +100,7 @@ void main() {
       when(mockDeviceInfoPlugin.iosInfo).thenAnswer((_) async => mockIosInfo);
       when(mockIosInfo.identifierForVendor).thenReturn('ios-id-456');
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.iOS);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.iOS);
       final expected = sha256.convert(utf8.encode('ios-id-456')).toString().substring(0, 36);
 
       expect(id, expected);
@@ -111,7 +111,7 @@ void main() {
       when(mockDeviceInfoPlugin.macOsInfo).thenAnswer((_) async => mockMacInfo);
       when(mockMacInfo.systemGUID).thenReturn('macos-id-789');
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.macOS);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.macOS);
       final expected = sha256.convert(utf8.encode('macos-id-789')).toString().substring(0, 36);
 
       expect(id, expected);
@@ -122,7 +122,7 @@ void main() {
       when(mockDeviceInfoPlugin.windowsInfo).thenAnswer((_) async => mockWinInfo);
       when(mockWinInfo.deviceId).thenReturn('windows-id-101');
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.windows);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.windows);
       final expected = sha256.convert(utf8.encode('windows-id-101')).toString().substring(0, 36);
 
       expect(id, expected);
@@ -133,7 +133,7 @@ void main() {
       when(mockDeviceInfoPlugin.androidInfo).thenAnswer((_) async => mockAndroidInfo);
       when(mockAndroidInfo.id).thenReturn('');
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
 
       expect(id, isNotEmpty);
       expect(id.length, lessThanOrEqualTo(36)); // truncated
@@ -142,7 +142,7 @@ void main() {
     test('returns non-empty hashed UUID on exception', () async {
       when(mockDeviceInfoPlugin.androidInfo).thenThrow(Exception('fail'));
 
-      final id = await store.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
+      final id = await repository.getDeviceIdFromDeviceInfo(platform: TargetPlatform.android);
 
       expect(id, isNotEmpty);
       expect(id.length, lessThanOrEqualTo(36)); // truncated

@@ -355,16 +355,11 @@ final residentialEducationStorePOD = Provider<ResidentialEducationStore>(
 );
 
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
-  (ref) => RealIPInfoStore(
-    ref.watch(externalApiServicePOD),
-    ref.watch(sharedPreferenceServicePOD),
-    ref.watch(wireguardServicePOD),
-    ref.watch(analyticsStorePOD),
-  ),
+  (ref) => RealIPInfoStore(ref.watch(ipInfoRepositoryPOD), ref.watch(analyticsStorePOD)),
 );
 
 final deviceIDStorePOD = Provider<DeviceIDStore>(
-  (ref) => DeviceIDStore(secureStorageService: ref.watch(secureStorageServicePOD)),
+  (ref) => DeviceIDStore(repository: ref.watch(deviceIdRepositoryPOD)),
 );
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {
