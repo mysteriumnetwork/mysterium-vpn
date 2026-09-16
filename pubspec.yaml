@@ -37,6 +37,7 @@ dependencies:
   flutter_secure_storage: 10.3.1
   flutter_svg: 2.3.0
   flutter_udid: 4.1.6
+  flutter_widget_from_html_core: 0.17.4
   freezed_annotation: 3.1.0
   google_fonts: 8.2.0
   google_sign_in: 7.2.0
@@ -60,7 +61,8 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.34
+      # ref: 0.0.34
+      ref: fix/alert_modal_adjustment
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:
