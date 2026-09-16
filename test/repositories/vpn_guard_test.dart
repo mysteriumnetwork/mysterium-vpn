@@ -12,7 +12,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'vpn_guard_test.mocks.dart';
 
 class _TestVpnGuard extends VpnGuard {
-  _TestVpnGuard({required super.subscriptionStore, required super.authSessionStore});
+  _TestVpnGuard({required super.subscriptionAccess, required super.sessionAccess});
 }
 
 @GenerateNiceMocks([MockSpec<SubscriptionStore>(), MockSpec<AuthSessionStore>()])
@@ -28,7 +28,7 @@ void main() {
   });
 
   _TestVpnGuard newGuard() =>
-      _TestVpnGuard(subscriptionStore: subscription, authSessionStore: session);
+      _TestVpnGuard(subscriptionAccess: subscription, sessionAccess: session);
 
   test('throws AuthenticationRequiredException when not authenticated', () async {
     when(session.isAuthenticated).thenReturn(false);

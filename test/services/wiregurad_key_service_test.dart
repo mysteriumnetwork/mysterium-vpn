@@ -27,7 +27,7 @@ void main() {
       wireguradKeyService = WireguradKeyService(
         wireguardService: mockWireguardDart,
         secureStorageService: mockSecureStorageService,
-        analyticsStore: mockAnalyticsStore,
+        analyticsLogger: mockAnalyticsStore.logEvent,
       );
     });
 

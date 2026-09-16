@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -15,11 +14,11 @@ class RestAuthService extends AuthService {
   RestAuthService({
     required VpnApi api,
     required NetworkService networkService,
-    required AuthSessionStore authSessionStore,
+    required AuthSessionGateway authSession,
     required Talker logger,
   }) : _apiAuth = api.getAuthentication(),
        _networkService = networkService,
-       _authSessionStore = authSessionStore,
+       _authSession = authSession,
        _logger = logger {
     _init();
   }
@@ -27,8 +26,7 @@ class RestAuthService extends AuthService {
   final Authentication _apiAuth;
   final NetworkService _networkService;
 
-  // TODO(Kristiajn):  Remove this dependency store should not be used in a service
-  final AuthSessionStore _authSessionStore;
+  final AuthSessionGateway _authSession;
   final _securedStorage = SecureStorageService.instance;
   final Talker _logger;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
@@ -126,9 +124,9 @@ class RestAuthService extends AuthService {
   }
 
   Future<void> removeLocalData() async {
-    final currentUsername = _authSessionStore.user?.username;
+    final currentUsername = _authSession.user?.username;
     LocalDBService.instance.clearUser();
-    await _authSessionStore.setUnauthenticated();
+    await _authSession.setUnauthenticated();
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
       _logger.info('User $currentUsername logged out');

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/views/settings/setting_category.dart';
 
 part 'home_tabs_store.g.dart';
 

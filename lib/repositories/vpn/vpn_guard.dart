@@ -1,22 +1,22 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/repositories/vpn/vpn_access_ports.dart';
 
 abstract class VpnGuard {
   VpnGuard({
-    required SubscriptionStore subscriptionStore,
-    required AuthSessionStore authSessionStore,
-  }) : _subscriptionStore = subscriptionStore,
-       _authSessionStore = authSessionStore;
+    required VpnSubscriptionAccess subscriptionAccess,
+    required VpnSessionAccess sessionAccess,
+  }) : _subscription = subscriptionAccess,
+       _session = sessionAccess;
 
-  final SubscriptionStore _subscriptionStore;
-  final AuthSessionStore _authSessionStore;
+  final VpnSubscriptionAccess _subscription;
+  final VpnSessionAccess _session;
 
   /// Whether the loaded subscription currently entitles the user to a tunnel.
   /// A not-yet-fulfilled subscription counts as entitled, so a pending fetch
   /// never tears down a live tunnel.
   bool get subscriptionGrantsVpnAccess {
-    final future = _subscriptionStore.subscriptionFuture;
+    final future = _subscription.subscriptionFuture;
     if (future.status != FutureStatus.fulfilled) {
       return true;
     }
@@ -24,15 +24,15 @@ abstract class VpnGuard {
   }
 
   Future<void> checkVpnGuards() async {
-    await _authSessionStore.accessTokenFuture;
-    if (!_authSessionStore.isAuthenticated) {
+    await _session.accessTokenFuture;
+    if (!_session.isAuthenticated) {
       throw AuthenticationRequiredException();
     }
-    if (_subscriptionStore.subscriptionFuture.status == FutureStatus.pending) {
+    if (_subscription.subscriptionFuture.status == FutureStatus.pending) {
       return;
     }
     try {
-      final subscription = await _subscriptionStore.subscriptionFuture;
+      final subscription = await _subscription.subscriptionFuture;
       if (subscription.grantsVpnAccess) {
         return;
       }
@@ -44,7 +44,7 @@ abstract class VpnGuard {
       throw const SubscriptionRequiredException();
     } catch (e) {
       if (e is! SubscriptionRequiredException && e is! SubscriptionPausedException) {
-        _subscriptionStore.refreshSubscription();
+        _subscription.refreshSubscription();
       }
       rethrow;
     }

@@ -146,7 +146,7 @@ final authServicePOD = Provider<AuthService>((ref) {
   return RestAuthService(
     api: api,
     networkService: networkService,
-    authSessionStore: authSessionStore,
+    authSession: authSessionStore,
     logger: logger,
   );
 });
@@ -207,6 +207,6 @@ final wireguradKeyServicePOD = Provider<WireguradKeyService>(
   (ref) => WireguradKeyService(
     wireguardService: ref.watch(wireguardServicePOD),
     secureStorageService: SecureStorageService.instance,
-    analyticsStore: ref.watch(analyticsStorePOD),
+    analyticsLogger: ref.watch(analyticsStorePOD).logEvent,
   ),
 );
