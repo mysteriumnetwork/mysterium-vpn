@@ -2,27 +2,29 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/services/services.dart' hide Response;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:vpn_api/vpn_api.dart';
 
+import '../../support/test_prefs.dart';
 import 'rest_news_center_service_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Newscenter>()])
 void main() {
+  late SharedPreferenceService prefsService;
+
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockNewscenter api;
 
   setUp(() async {
     api = MockNewscenter();
-    SharedPreferences.setMockInitialValues({});
-    await SharedPreferenceService.instance.init();
+    prefsService = await initTestPrefs();
   });
 
   RestNewsCenterService build() => RestNewsCenterService(
     api: api,
-    prefs: SharedPreferenceService.instance,
+    prefs: prefsService,
     originCountry: () => 'US',
     osType: 'ios',
     appVersion: '2.4.7',
@@ -66,7 +68,8 @@ void main() {
       final items = await build().getFeed();
 
       expect(items.map((i) => i.id), [1, 2]);
-      expect(items.first.category, NewscenterCategory.incident);
+      // The API category is mapped to the domain enum at this boundary.
+      expect(items.map((i) => i.category), [NewsCategory.incident, NewsCategory.offer]);
       expect(items.first.title, 'Title 1');
       expect(items.first.webViewUrl, 'https://mysterium.network/news-center/1');
     });

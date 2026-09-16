@@ -9,14 +9,16 @@ import 'package:mysterium_vpn/stores/stores.dart';
 part 'auth_session_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
+class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore implements AuthSessionGateway;
 
 abstract class _AuthSessionStore with Store, Disposeable {
   _AuthSessionStore({
     required SecureStorageService secureStorage,
     required RemoteConfigStore remoteConfigStore,
+    required LocalDBService localDb,
   }) : _secureStorage = secureStorage,
-       _remoteConfigStore = remoteConfigStore {
+       _remoteConfigStore = remoteConfigStore,
+       _localDb = localDb {
     _userReactionDisposer = reaction((_) => user, (user) {
       if (user != null) {
         _localDb.setUser(user);
@@ -28,7 +30,7 @@ abstract class _AuthSessionStore with Store, Disposeable {
 
   final SecureStorageService _secureStorage;
   final RemoteConfigStore _remoteConfigStore;
-  final LocalDBService _localDb = LocalDBService.instance;
+  final LocalDBService _localDb;
   late final ReactionDisposer _userReactionDisposer;
 
   @observable

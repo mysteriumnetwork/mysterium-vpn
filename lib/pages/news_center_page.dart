@@ -6,17 +6,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_view.dart';
 import 'package:mysterium_vpn/views/news_center/news_web_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 /// Opens a tapped feed item. Injectable so widget tests can avoid launching a
 /// real webview.
-typedef NewsItemOpener = void Function(BuildContext context, NewscenterInboxListResponseItem item);
+typedef NewsItemOpener = void Function(BuildContext context, NewsItem item);
 
 /// News Center feed, pushed on top of home via the `/main/news-center` route.
 ///
@@ -47,10 +47,8 @@ class NewsCenterPage extends HookConsumerWidget {
             showNewsItemWebView(ctx, item, userId: ref.read(authSessionStorePOD).user?.userId);
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
-    void onItemTap(NewscenterInboxListResponseItem item) {
-      ref
-          .read(analyticsStorePOD)
-          .logNewsCenterItemOpened(id: item.id.toInt(), category: item.category);
+    void onItemTap(NewsItem item) {
+      ref.read(analyticsStorePOD).logNewsCenterItemOpened(id: item.id, category: item.category);
       store.markRead(item.id);
       openItem(context, item);
     }

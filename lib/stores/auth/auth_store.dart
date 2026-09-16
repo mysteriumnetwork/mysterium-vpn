@@ -34,7 +34,11 @@ abstract class _AuthStore with Store {
     required Talker logger,
     required ABTestingStore abTestingStore,
     required DeviceIDStore deviceIDStore,
-  }) : _authService = authService,
+    required LocalDBService localDb,
+    required SecureStorageService secureStorageService,
+  }) : _localDb = localDb,
+       _secureStorageService = secureStorageService,
+       _authService = authService,
        _authSessionStore = authSessionStore,
        _appLinks = appLinks,
        _analyticsStore = analyticsStore,
@@ -46,9 +50,9 @@ abstract class _AuthStore with Store {
 
   final AuthService _authService;
   final AuthSessionStore _authSessionStore;
-  final LocalDBService _localDb = LocalDBService.instance;
+  final LocalDBService _localDb;
   final AppLinks _appLinks;
-  final SecureStorageService _secureStorageService = SecureStorageService.instance;
+  final SecureStorageService _secureStorageService;
   final AnalyticsStore _analyticsStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;

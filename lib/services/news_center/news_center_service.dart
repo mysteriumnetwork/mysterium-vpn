@@ -1,4 +1,4 @@
-import 'package:vpn_api/vpn_api.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 /// Reads the personalized News Center feed and tracks which items the user has
 /// read. Backed by `RestNewsCenterService` (the `vpn_api` News Center endpoint
@@ -6,7 +6,7 @@ import 'package:vpn_api/vpn_api.dart';
 /// state).
 abstract class NewsCenterService {
   /// The personalized list of items for the user (`GET /newscenter/inbox`).
-  Future<List<NewscenterInboxListResponseItem>> getFeed();
+  Future<List<NewsItem>> getFeed();
 
   /// Ids of items the user has already read.
   Set<int> readIds();

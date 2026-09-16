@@ -32,7 +32,9 @@ abstract class _SubscriptionStore with Store {
     required this._analyticsStore,
     required this._remoteConfigStore,
     required this._configStore,
-  }) : _apiSubscription = api.getSubscription() {
+    required SecureStorageService secureStorageService,
+  }) : _secureStorageService = secureStorageService,
+       _apiSubscription = api.getSubscription() {
     _reactions = [
       reaction<bool>((_) => _authSessionStore.isAuthenticated, (status) {
         _hasShownExistingSubscriptionDialog = false;
@@ -47,7 +49,7 @@ abstract class _SubscriptionStore with Store {
   final api.Subscription _apiSubscription;
   final SubscriptionService _subscriptionService;
   final AuthSessionStore _authSessionStore;
-  final SecureStorageService _secureStorageService = SecureStorageService.instance;
+  final SecureStorageService _secureStorageService;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final SubscriptionConfigStore _configStore;

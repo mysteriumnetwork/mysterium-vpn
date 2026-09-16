@@ -15,7 +15,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
-import 'package:mysterium_vpn/services/services.dart' hide Response;
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';

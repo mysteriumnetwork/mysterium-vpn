@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -10,12 +9,12 @@ class WireguradKeyService {
   const WireguradKeyService({
     required this.wireguardService,
     required this.secureStorageService,
-    required this.analyticsStore,
+    required this.analyticsLogger,
   });
 
   final WireguardDart wireguardService;
   final SecureStorageService secureStorageService;
-  final AnalyticsStore analyticsStore;
+  final AnalyticsEventLogger analyticsLogger;
 
   Future<KeyPair> getWireguradKey() async {
     try {
@@ -23,7 +22,7 @@ class WireguradKeyService {
       if (wireguradKey != null) {
         return wireguradKey;
       } else {
-        analyticsStore.logEvent(
+        analyticsLogger(
           AnalyticsEvent.wireguardKeyUnavailable,
           parameters: {
             'description': 'Wireguard keys not found in secure storage, generating new keys',
@@ -64,7 +63,7 @@ class WireguradKeyService {
         stackTrace: s,
         hint: Hint.withMap({'message': 'Failed to get Wireguard keys from storage'}),
       );
-      analyticsStore.logEvent(
+      analyticsLogger(
         AnalyticsEvent.getWireguradKeyError,
         parameters: {
           'error': e.toString(),
@@ -82,7 +81,7 @@ class WireguradKeyService {
       await secureStorageService.saveWireguardPrivateKey(privateKey: privateKey);
       final key = await _getKeyFromStorage(); // Verify that keys are saved correctly
       if (key == null) {
-        analyticsStore.logEvent(
+        analyticsLogger(
           AnalyticsEvent.wireguardKeyUnavailable,
           parameters: {
             'description': 'Wireguard keys not found after saving, check secure storage',
@@ -94,7 +93,7 @@ class WireguradKeyService {
       if (publicKey != key.publicKey || privateKey != key.privateKey) {
         await secureStorageService.removeWireguardPrivateKey();
         await secureStorageService.removeWireguardPublicKey();
-        analyticsStore.logEvent(
+        analyticsLogger(
           AnalyticsEvent.wireguardKeysDoNotMatch,
           parameters: {'description': 'Stored Wireguard keys do not match the provided keys'},
         );

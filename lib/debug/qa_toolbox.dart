@@ -14,8 +14,8 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -99,21 +99,21 @@ class QAToolbox extends HookConsumerWidget {
         _QAActionButton(
           label: 'Reset PN Cooldown',
           onPressed: () async {
-            await LocalDBService.instance.resetPushNotificationsPromptLastShownAt();
+            await ref.read(localDBServicePOD).resetPushNotificationsPromptLastShownAt();
             showSnackbar('Push notifications prompt cooldown reset successfully');
           },
         ),
         _QAActionButton(
           label: 'Reset App open count',
           onPressed: () async {
-            await LocalDBService.instance.resetAppOpenCount();
+            await ref.read(localDBServicePOD).resetAppOpenCount();
             showSnackbar('App open count reset successfully');
           },
         ),
         _QAActionButton(
           label: 'Reset Onboarding',
           onPressed: () async {
-            await LocalDBService.instance.resetNoneSubsOnboarding();
+            await ref.read(localDBServicePOD).resetNoneSubsOnboarding();
             showSnackbar('Onboarding flag reset — will show on next launch');
           },
         ),

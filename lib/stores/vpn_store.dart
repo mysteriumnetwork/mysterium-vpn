@@ -45,7 +45,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     required VpnProtocolStore protocolStore,
     required IpRefreshExhaustionStore ipRefreshExhaustionStore,
     required UdpBlockedSuggestionStore udpBlockedSuggestionStore,
-  }) : _externalApiService = externalApiService,
+    required SharedPreferenceService prefs,
+  }) : _prefs = prefs,
+       _externalApiService = externalApiService,
        _mqtt = mqtt,
        _locationsStore = locationsStore,
        _connectionsLimitStore = connectionsLimitStore,
@@ -100,7 +102,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
-  final SharedPreferenceService _prefs = SharedPreferenceService.instance;
+  final SharedPreferenceService _prefs;
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
@@ -174,7 +176,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   ObservableFuture<void>? _resetAppFuture;
 
   @observable
-  RateConnectionRequestModeEnum? connectionRated;
+  RateConnectionMode? connectionRated;
 
   @observable
   bool _isDeviceLimitErrorShown = false;
@@ -1077,7 +1079,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> submitRateConnection({
-    required RateConnectionRequestModeEnum mode,
+    required RateConnectionMode mode,
     required String? reasons,
     required String? feedback,
   }) async {

@@ -13,10 +13,6 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
-  factory SharedPreferenceService() => instance;
-  SharedPreferenceService._internal();
-  static final SharedPreferenceService instance = SharedPreferenceService._internal();
-
   late SharedPreferences _prefsInstance;
 
   Future<void> init() async {

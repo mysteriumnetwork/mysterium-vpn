@@ -6,7 +6,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/vpn/vpn_guard.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'vpn_guard_test.mocks.dart';

@@ -6,11 +6,14 @@ import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dar
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../support/test_prefs.dart';
+
 void main() {
+  late SharedPreferenceService prefsService;
+
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences.setMockInitialValues({});
-    await SharedPreferenceService.instance.init();
+    prefsService = await initTestPrefs();
   });
 
   setUp(() async {
@@ -19,12 +22,12 @@ void main() {
   });
 
   test('seeds currentLocale from SharedPreferenceService', () {
-    final store = LocaleStore();
+    final store = LocaleStore(sharedPrefs: prefsService);
     expect(store.currentLocale, kFallbackLocale);
   });
 
   test('setLocale persists and updates a supported locale', () async {
-    final store = LocaleStore();
+    final store = LocaleStore(sharedPrefs: prefsService);
     final supported = supportedLocales.firstWhere(
       (l) => l.languageCode != kFallbackLocale.languageCode,
     );
@@ -32,12 +35,12 @@ void main() {
     await store.setLocale(supported);
 
     expect(store.currentLocale, supported);
-    final fresh = LocaleStore();
+    final fresh = LocaleStore(sharedPrefs: prefsService);
     expect(fresh.currentLocale, supported);
   });
 
   test('setLocale ignores unsupported locales', () async {
-    final store = LocaleStore();
+    final store = LocaleStore(sharedPrefs: prefsService);
     final original = store.currentLocale;
     const unsupported = Locale('zz');
 

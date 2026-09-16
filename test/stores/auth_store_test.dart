@@ -27,6 +27,7 @@ import 'auth_store_test.mocks.dart';
   MockSpec<Talker>(),
   MockSpec<ABTestingStore>(),
   MockSpec<DeviceIDStore>(),
+  MockSpec<SecureStorageService>(),
 ])
 void main() {
   late AuthStore store;
@@ -50,8 +51,8 @@ void main() {
     severity: ExceptionSeverity.low,
   );
 
-  // AuthStore touches LocalDBService.instance at construction (which calls
-  // Hive.box(...) synchronously), so the boxes must exist before each test.
+  // LocalDBService reads Hive boxes in its field initializers, so the boxes
+  // must exist before each test.
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     hiveDir = await Directory.systemTemp.createTemp('auth_store_test_');
@@ -93,6 +94,8 @@ void main() {
     when(analyticsStore.setLogin(any)).thenAnswer((_) async {});
 
     store = AuthStore(
+      localDb: LocalDBService(),
+      secureStorageService: MockSecureStorageService(),
       authService: authService,
       authSessionStore: sessionStore,
       appLinks: appLinks,

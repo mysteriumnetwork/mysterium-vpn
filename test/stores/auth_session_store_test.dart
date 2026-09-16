@@ -61,8 +61,11 @@ void main() {
     when(remoteConfig.browseUnauthenticated).thenReturn(false);
   });
 
-  AuthSessionStore newStore() =>
-      AuthSessionStore(secureStorage: storage, remoteConfigStore: remoteConfig);
+  AuthSessionStore newStore() => AuthSessionStore(
+    secureStorage: storage,
+    remoteConfigStore: remoteConfig,
+    localDb: LocalDBService(),
+  );
 
   group('initStore', () {
     test('marks unauthenticated when no access token is stored', () async {

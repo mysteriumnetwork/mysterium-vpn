@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -21,6 +22,17 @@ import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
+
+/// Local storage. Each is created once here and initialized by AppInitializer
+/// before the first frame; `LocalDBService` additionally requires the static
+/// `LocalDBService.initialize()` to have run.
+final sharedPreferenceServicePOD = Provider<SharedPreferenceService>(
+  (ref) => SharedPreferenceService(),
+);
+
+final secureStorageServicePOD = Provider<SecureStorageService>((ref) => SecureStorageService());
+
+final localDBServicePOD = Provider<LocalDBService>((ref) => LocalDBService());
 
 final inAppPurchasePOD = Provider((ref) => InAppPurchase.instance);
 
@@ -98,7 +110,7 @@ final vpnApiMQTTPOD = Provider<MQTTService>((ref) {
     Env.mqttPassword,
     generateUuidV4().truncate(23),
     logger,
-    remoteConfigStore,
+    () => remoteConfigStore.mqttExperiment,
   );
 });
 
@@ -144,9 +156,11 @@ final authServicePOD = Provider<AuthService>((ref) {
   final logger = ref.watch(loggerPOD);
 
   return RestAuthService(
+    securedStorage: ref.watch(secureStorageServicePOD),
+    localDb: ref.watch(localDBServicePOD),
     api: api,
     networkService: networkService,
-    authSessionStore: authSessionStore,
+    authSession: authSessionStore,
     logger: logger,
   );
 });
@@ -162,7 +176,7 @@ final remoteConfigClientPOD = Provider<ConfigCatClient>(
     options: ConfigCatOptions(
       pollingMode: PollingMode.manualPoll(),
       logger: Env.flavor.isDev ? ConfigCatLogger() : null,
-      cache: ConfigCatPreferencesCache(),
+      cache: ConfigCatPreferencesCache(ref.watch(sharedPreferenceServicePOD)),
     ),
   ),
 );
@@ -175,7 +189,7 @@ final abTestingClientPOD = Provider<ConfigCatClient>(
         cacheRefreshInterval: Duration(seconds: Env.flavor.isDev ? 30 : 60 * 180),
       ),
       logger: Env.flavor.isDev ? ConfigCatLogger() : null,
-      cache: ConfigCatPreferencesCache(),
+      cache: ConfigCatPreferencesCache(ref.watch(sharedPreferenceServicePOD)),
     ),
   ),
 );
@@ -196,7 +210,7 @@ final favoriteIpsAvailabilityServicePOD = Provider<FavoriteIpsAvailabilityServic
 final newsCenterServicePOD = Provider<NewsCenterService>(
   (ref) => RestNewsCenterService(
     api: ref.watch(vpnApiPOD).getNewscenter(),
-    prefs: SharedPreferenceService.instance,
+    prefs: ref.watch(sharedPreferenceServicePOD),
     originCountry: () => ref.read(realIPInfoStorePOD).info?.country ?? '',
     osType: Platform.operatingSystem,
     appVersion: Env.buildInfo.buildVersion,
@@ -206,7 +220,7 @@ final newsCenterServicePOD = Provider<NewsCenterService>(
 final wireguradKeyServicePOD = Provider<WireguradKeyService>(
   (ref) => WireguradKeyService(
     wireguardService: ref.watch(wireguardServicePOD),
-    secureStorageService: SecureStorageService.instance,
-    analyticsStore: ref.watch(analyticsStorePOD),
+    secureStorageService: ref.watch(secureStorageServicePOD),
+    analyticsLogger: ref.watch(analyticsStorePOD).logEvent,
   ),
 );

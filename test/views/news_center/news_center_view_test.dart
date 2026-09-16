@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -15,8 +16,8 @@ import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vpn_api/vpn_api.dart';
 
+import '../../support/news_fixtures.dart';
 import '../../support/test_localizations.dart';
 import 'news_center_view_test.mocks.dart';
 
@@ -38,22 +39,8 @@ void main() {
 
   // Recent timestamps keep the card time label on the relative-string path
   // (avoids DateFormat, which needs date symbols not loaded in widget tests).
-  NewscenterInboxListResponseItem item(
-    int id, {
-    NewscenterCategory category = NewscenterCategory.news,
-  }) => NewscenterInboxListResponseItem(
-    id: id,
-    category: category,
-    title: 'Title $id',
-    summary: 'Message $id',
-    createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-    webViewUrl: 'https://mysterium.network/news/$id',
-  );
 
-  Future<void> pump(
-    WidgetTester tester, {
-    void Function(NewscenterInboxListResponseItem)? onItemTap,
-  }) async {
+  Future<void> pump(WidgetTester tester, {void Function(NewsItem)? onItemTap}) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -74,7 +61,7 @@ void main() {
   testWidgets('shows the shimmer skeleton during the initial load with no cached data', (
     tester,
   ) async {
-    final completer = Completer<List<NewscenterInboxListResponseItem>>();
+    final completer = Completer<List<NewsItem>>();
     when(service.getFeed()).thenAnswer((_) => completer.future);
 
     await pump(tester);
@@ -122,7 +109,7 @@ void main() {
   testWidgets('renders a card per item and filters by the selected tab', (tester) async {
     when(
       service.getFeed(),
-    ).thenAnswer((_) async => [item(1, category: NewscenterCategory.incident), item(2)]);
+    ).thenAnswer((_) async => [newsItem(1, category: NewsCategory.incident), newsItem(2)]);
 
     await pump(tester);
     await tester.pumpAndSettle();
@@ -139,9 +126,7 @@ void main() {
   });
 
   testWidgets('disables filter tabs whose category has no items', (tester) async {
-    when(
-      service.getFeed(),
-    ).thenAnswer((_) async => [item(1, category: NewscenterCategory.incident)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1, category: NewsCategory.incident)]);
 
     await pump(tester);
     await tester.pumpAndSettle();
@@ -157,8 +142,8 @@ void main() {
   });
 
   testWidgets('tapping a card invokes onItemTap with the item', (tester) async {
-    NewscenterInboxListResponseItem? tapped;
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    NewsItem? tapped;
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     await pump(tester, onItemTap: (i) => tapped = i);
     await tester.pumpAndSettle();
@@ -170,7 +155,7 @@ void main() {
   });
 
   testWidgets('the unread dot clears reactively when an item is marked read', (tester) async {
-    when(service.getFeed()).thenAnswer((_) async => [item(1)]);
+    when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
 
     await pump(tester);
     await tester.pumpAndSettle();
