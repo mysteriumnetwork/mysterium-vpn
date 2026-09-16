@@ -45,7 +45,7 @@ check() {
 
 check "lib/services"     lib/services     "providers|stores|views|pages|components|repositories|debug"
 check "lib/repositories" lib/repositories "providers|stores|views|pages|components|debug"
-check "lib/stores"       lib/stores       "views|pages|components|debug"
+check "lib/stores"       lib/stores       "providers|views|pages|components|debug"
 
 # The UI talks to the app's own models, never to the backend client directly.
 if ! require_dirs lib/views lib/pages lib/components; then

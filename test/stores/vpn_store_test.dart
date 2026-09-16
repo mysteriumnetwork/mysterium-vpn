@@ -14,6 +14,8 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
+import '../support/test_prefs.dart';
+
 @GenerateNiceMocks([
   MockSpec<WireguardRepository>(),
   MockSpec<OpenVpnRepository>(),
@@ -37,7 +39,6 @@ import 'package:talker/talker.dart';
   MockSpec<SubscriptionStore>(),
   MockSpec<VpnProtocolStore>(),
 ])
-import '../support/test_prefs.dart';
 import 'vpn_store_test.mocks.dart';
 
 void main() {
