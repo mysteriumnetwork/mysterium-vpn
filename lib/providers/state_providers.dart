@@ -284,7 +284,7 @@ final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>((re
   return SubscriptionOnboardingStore(
     analyticsStore: analyticsStore,
     subscriptionStore: subscriptionStore,
-    localDBService: ref.watch(localDBServicePOD),
+    prompts: ref.watch(promptsRepositoryPOD),
     remoteConfigStore: remoteConfigStore,
   );
 });
@@ -341,7 +341,7 @@ final abTestingStorePOD = Provider<ABTestingStore>((ref) {
 
 final bannersStorePOD = Provider<BannersStore>(
   (ref) => BannersStore(
-    ref.watch(localDBServicePOD),
+    ref.watch(promptsRepositoryPOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(authSessionStorePOD),
     ref.watch(connectionsLimitStorePOD),
@@ -559,7 +559,7 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
   final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  final localDb = ref.watch(localDBServicePOD);
+  final prompts = ref.watch(promptsRepositoryPOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   final store = PushNotificationsStore(
@@ -569,7 +569,7 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
     logger,
     notificationsRepository,
     analyticsStore,
-    localDb,
+    prompts,
     remoteConfigStore,
   );
 

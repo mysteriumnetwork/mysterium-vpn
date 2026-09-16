@@ -5,8 +5,7 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -19,7 +18,7 @@ import 'push_notifications_store_test.mocks.dart';
   MockSpec<NotificationsRepository>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<Talker>(),
-  MockSpec<LocalDBService>(),
+  MockSpec<PromptsRepository>(),
   MockSpec<RemoteConfigStore>(),
 ])
 void main() {
@@ -30,7 +29,7 @@ void main() {
   late MockNotificationsRepository mockNotificationsRepository;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockTalker mockLogger;
-  late MockLocalDBService mockLocalDb;
+  late MockPromptsRepository mockLocalDb;
   late MockRemoteConfigStore mockRemoteConfigStore;
 
   setUp(() {
@@ -40,7 +39,7 @@ void main() {
     mockNotificationsRepository = MockNotificationsRepository();
     mockAnalyticsStore = MockAnalyticsStore();
     mockLogger = MockTalker();
-    mockLocalDb = MockLocalDBService();
+    mockLocalDb = MockPromptsRepository();
     mockRemoteConfigStore = MockRemoteConfigStore();
 
     // Notifications repository
@@ -104,8 +103,8 @@ void main() {
     );
 
     // Local DB
-    when(mockLocalDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => null);
-    when(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).thenAnswer((_) async {});
+    when(mockLocalDb.pushPromptLastShownAt()).thenAnswer((_) async => null);
+    when(mockLocalDb.setPushPromptLastShownAt(any)).thenAnswer((_) async {});
 
     // Remote config
     when(mockRemoteConfigStore.pushNotifPermissionPromptCooldown).thenReturn(24);
@@ -169,9 +168,7 @@ void main() {
     );
 
     test('shouldShowPushNotificationsPermissionPrompt returns false during cooldown', () async {
-      when(
-        mockLocalDb.getPushNotificationsPromptLastShownAt(),
-      ).thenAnswer((_) async => DateTime.now());
+      when(mockLocalDb.pushPromptLastShownAt()).thenAnswer((_) async => DateTime.now());
 
       final result = await store.shouldShowPushNotificationsPermissionPrompt();
 
@@ -202,14 +199,14 @@ void main() {
       await store.setPushNotificationsShown(userAllowed: true);
 
       verify(mockNotificationsRepository.requestPermission()).called(1);
-      verify(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).called(1);
+      verify(mockLocalDb.setPushPromptLastShownAt(any)).called(1);
     });
 
     test('setPushNotificationsShown does not request permission when not allowed', () async {
       await store.setPushNotificationsShown(userAllowed: false);
 
       verifyNever(mockNotificationsRepository.requestPermission());
-      verify(mockLocalDb.setPushNotificationsPromptLastShownAt(any)).called(1);
+      verify(mockLocalDb.setPushPromptLastShownAt(any)).called(1);
     });
 
     test('updatePushNotificationsPermissions opens app settings when supported', () async {

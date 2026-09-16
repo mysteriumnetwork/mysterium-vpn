@@ -6,7 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -19,14 +19,14 @@ import 'arrowed_progress_card_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<AnalyticsStore>(),
   MockSpec<SubscriptionStore>(),
-  MockSpec<LocalDBService>(),
+  MockSpec<PromptsRepository>(),
   MockSpec<ThemeStore>(),
   MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockAnalyticsStore analyticsStore;
   late MockSubscriptionStore subscriptionStore;
-  late MockLocalDBService localDBService;
+  late MockPromptsRepository prompts;
   late MockThemeStore themeStore;
   late MockRemoteConfigStore remoteConfigStore;
   late SubscriptionOnboardingStore subscriptionOnboardingStore;
@@ -35,14 +35,14 @@ void main() {
   setUp(() {
     analyticsStore = MockAnalyticsStore();
     subscriptionStore = MockSubscriptionStore();
-    localDBService = MockLocalDBService();
+    prompts = MockPromptsRepository();
     themeStore = MockThemeStore();
     remoteConfigStore = MockRemoteConfigStore();
     showcaseKey = GlobalKey<State<StatefulWidget>>();
 
     when(themeStore.isDarkMode).thenReturn(false);
 
-    when(localDBService.getSubscriptionOnboardingShown()).thenAnswer((_) async => false);
+    when(prompts.subscriptionOnboardingShown()).thenAnswer((_) async => false);
     when(
       subscriptionStore.subscriptionFuture,
     ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
@@ -50,7 +50,7 @@ void main() {
     subscriptionOnboardingStore = SubscriptionOnboardingStore(
       analyticsStore: analyticsStore,
       subscriptionStore: subscriptionStore,
-      localDBService: localDBService,
+      prompts: prompts,
       remoteConfigStore: remoteConfigStore,
     );
   });

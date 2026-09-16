@@ -6,9 +6,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide UserData;
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -25,7 +23,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     this._logger,
     this._notificationsRepository,
     this._analyticsStore,
-    this._localDb,
+    this._prompts,
     this._remoteConfigStore,
   ) {
     _init();
@@ -39,7 +37,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   final Talker _logger;
   final NotificationsRepository _notificationsRepository;
   final AnalyticsStore _analyticsStore;
-  final LocalDBService _localDb;
+  final PromptsRepository _prompts;
   final RemoteConfigStore _remoteConfigStore;
 
   @visibleForTesting
@@ -275,7 +273,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     }
 
     try {
-      await _localDb.setPushNotificationsPromptLastShownAt(DateTime.now());
+      await _prompts.setPushPromptLastShownAt(DateTime.now());
     } catch (e, stack) {
       _logger.handle(e, stack, 'Error saving push notifications prompt timestamp');
     }
@@ -305,7 +303,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   Future<bool> _isInCooldownPeriod() async {
     final cooldownHours = _remoteConfigStore.pushNotifPermissionPromptCooldown;
-    final lastShownAt = await _localDb.getPushNotificationsPromptLastShownAt();
+    final lastShownAt = await _prompts.pushPromptLastShownAt();
 
     if (lastShownAt == null) {
       return false;
