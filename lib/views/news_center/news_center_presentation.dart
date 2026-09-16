@@ -3,23 +3,22 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/news_time_label.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 /// View-layer mapping of News Center enums to icons and labels.
 ///
 /// Labels are hardcoded English (see news_center_strings.dart): this feature is
 /// English-only. A `switch` here fails at compile time if an enum value is added.
 
-IconData newsCategoryIcon(NewscenterCategory category) => switch (category) {
-  NewscenterCategory.incident => UntitledUI.alert_triangle,
-  NewscenterCategory.news => UntitledUI.file_06,
-  NewscenterCategory.offer => UntitledUI.tag_01,
+IconData newsCategoryIcon(NewsCategory category) => switch (category) {
+  NewsCategory.incident => UntitledUI.alert_triangle,
+  NewsCategory.news => UntitledUI.file_06,
+  NewsCategory.offer => UntitledUI.tag_01,
 };
 
-String newsCategoryLabel(NewscenterCategory category) => switch (category) {
-  NewscenterCategory.incident => newsFilterIncidentsText,
-  NewscenterCategory.news => newsFilterNewsText,
-  NewscenterCategory.offer => newsFilterOffersText,
+String newsCategoryLabel(NewsCategory category) => switch (category) {
+  NewsCategory.incident => newsFilterIncidentsText,
+  NewsCategory.news => newsFilterNewsText,
+  NewsCategory.offer => newsFilterOffersText,
 };
 
 IconData newsFilterIcon(NewsFilter filter) => switch (filter) {

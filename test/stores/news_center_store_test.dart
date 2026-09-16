@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import 'news_center_store_test.mocks.dart';
 
@@ -16,10 +16,7 @@ void main() {
   late MockNewsCenterService service;
   late MockTalker logger;
 
-  NewscenterInboxListResponseItem item(
-    int id, {
-    NewscenterCategory category = NewscenterCategory.news,
-  }) => NewscenterInboxListResponseItem(
+  NewsItem item(int id, {NewsCategory category = NewsCategory.news}) => NewsItem(
     id: id,
     category: category,
     title: 'Title $id',
@@ -51,7 +48,7 @@ void main() {
   });
 
   test('isEmpty is true when a load returns no items', () async {
-    when(service.getFeed()).thenAnswer((_) async => <NewscenterInboxListResponseItem>[]);
+    when(service.getFeed()).thenAnswer((_) async => <NewsItem>[]);
 
     final store = build();
     await store.load();
@@ -62,9 +59,9 @@ void main() {
   test('filteredItems filters by the selected category', () async {
     when(service.getFeed()).thenAnswer(
       (_) async => [
-        item(1, category: NewscenterCategory.incident),
+        item(1, category: NewsCategory.incident),
         item(2),
-        item(3, category: NewscenterCategory.offer),
+        item(3, category: NewsCategory.offer),
       ],
     );
 
@@ -88,7 +85,7 @@ void main() {
     final store = build();
     expect(store.nonEmptyFilters, isEmpty);
 
-    when(service.getFeed()).thenAnswer((_) async => <NewscenterInboxListResponseItem>[]);
+    when(service.getFeed()).thenAnswer((_) async => <NewsItem>[]);
     await store.load();
     expect(store.nonEmptyFilters, isEmpty);
   });
@@ -96,7 +93,7 @@ void main() {
   test('nonEmptyFilters includes all plus only the categories present', () async {
     when(
       service.getFeed(),
-    ).thenAnswer((_) async => [item(1, category: NewscenterCategory.incident), item(2)]);
+    ).thenAnswer((_) async => [item(1, category: NewsCategory.incident), item(2)]);
 
     final store = build();
     await store.load();
@@ -125,7 +122,7 @@ void main() {
   });
 
   test('ensureLoaded awaits a load already in flight (no duplicate fetch)', () async {
-    final completer = Completer<List<NewscenterInboxListResponseItem>>();
+    final completer = Completer<List<NewsItem>>();
     when(service.getFeed()).thenAnswer((_) => completer.future);
 
     final store = build();
@@ -146,7 +143,7 @@ void main() {
     expect(store.itemById(2), isNull);
 
     // A refresh is in flight that will bring in item 2.
-    final completer = Completer<List<NewscenterInboxListResponseItem>>();
+    final completer = Completer<List<NewsItem>>();
     when(service.getFeed()).thenAnswer((_) => completer.future);
     final refreshing = store.refresh();
 

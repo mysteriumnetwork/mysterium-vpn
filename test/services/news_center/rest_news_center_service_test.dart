@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -69,7 +70,8 @@ void main() {
       final items = await build().getFeed();
 
       expect(items.map((i) => i.id), [1, 2]);
-      expect(items.first.category, NewscenterCategory.incident);
+      // The API category is mapped to the domain enum at this boundary.
+      expect(items.map((i) => i.category), [NewsCategory.incident, NewsCategory.offer]);
       expect(items.first.title, 'Title 1');
       expect(items.first.webViewUrl, 'https://mysterium.network/news-center/1');
     });

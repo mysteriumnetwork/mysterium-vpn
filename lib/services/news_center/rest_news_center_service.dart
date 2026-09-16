@@ -1,3 +1,5 @@
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
 import 'package:mysterium_vpn/services/news_center/news_center_service.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -27,14 +29,28 @@ class RestNewsCenterService implements NewsCenterService {
   final String _appVersion;
 
   @override
-  Future<List<NewscenterInboxListResponseItem>> getFeed() async {
+  Future<List<NewsItem>> getFeed() async {
     final response = await _api.inboxList(
       originCountry: _originCountry(),
       osType: _osType,
       appVersion: _appVersion,
     );
-    return response.data?.messages ?? const [];
+    return (response.data?.messages ?? const []).map(_toNewsItem).toList();
   }
+
+  static NewsItem _toNewsItem(NewscenterInboxListResponseItem item) => NewsItem(
+    id: item.id.toInt(),
+    title: item.title,
+    summary: item.summary,
+    category: switch (item.category) {
+      NewscenterCategory.offer => NewsCategory.offer,
+      NewscenterCategory.news => NewsCategory.news,
+      NewscenterCategory.incident => NewsCategory.incident,
+    },
+    webViewUrl: item.webViewUrl,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
+  );
 
   @override
   Set<int> readIds() => _prefs.getNewsCenterReadIds();

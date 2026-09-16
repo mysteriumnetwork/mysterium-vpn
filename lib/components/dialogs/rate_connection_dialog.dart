@@ -9,12 +9,8 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:vpn_api/vpn_api.dart';
 
-Future<void> showRateConnectionDialog(
-  BuildContext context,
-  RateConnectionRequestModeEnum mode,
-) async {
+Future<void> showRateConnectionDialog(BuildContext context, RateConnectionMode mode) async {
   final container = ProviderScope.containerOf(context, listen: false);
   final store = RateConnectionStore(
     mode,
@@ -27,7 +23,7 @@ Future<void> showRateConnectionDialog(
     mobileConstraints: BoxConstraints(maxHeight: getMediaHeight(context) * 0.95),
     desktopConstraints: const BoxConstraints(maxWidth: 637, maxHeight: 700),
     builder: (ctx) => BottomSheetDialog(
-      title: mode == RateConnectionRequestModeEnum.like
+      title: mode == RateConnectionMode.like
           ? S.current.rateConnectionLike
           : S.current.rateConnectionDislike,
       body: _RateConnectionBody(store: store),

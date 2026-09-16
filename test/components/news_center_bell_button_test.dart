@@ -3,14 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/news_center_bell_button.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import '../support/test_localizations.dart';
 import 'news_center_bell_button_test.mocks.dart';
@@ -31,9 +32,9 @@ void main() {
     service = MockNewsCenterService();
   });
 
-  NewscenterInboxListResponseItem item(int id) => NewscenterInboxListResponseItem(
+  NewsItem item(int id) => NewsItem(
     id: id,
-    category: NewscenterCategory.news,
+    category: NewsCategory.news,
     title: 'Title $id',
     summary: 'Message $id',
     createdAt: DateTime.now(),
@@ -43,7 +44,7 @@ void main() {
   Future<void> pumpBell(
     WidgetTester tester, {
     required bool enabled,
-    List<NewscenterInboxListResponseItem> feed = const [],
+    List<NewsItem> feed = const [],
     Set<int> readIds = const {},
   }) async {
     when(config.newsCenterEnabled).thenReturn(enabled);

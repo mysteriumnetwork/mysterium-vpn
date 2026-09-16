@@ -177,7 +177,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   ObservableFuture<void>? _resetAppFuture;
 
   @observable
-  RateConnectionRequestModeEnum? connectionRated;
+  RateConnectionMode? connectionRated;
 
   @observable
   bool _isDeviceLimitErrorShown = false;
@@ -1080,7 +1080,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> submitRateConnection({
-    required RateConnectionRequestModeEnum mode,
+    required RateConnectionMode mode,
     required String? reasons,
     required String? feedback,
   }) async {

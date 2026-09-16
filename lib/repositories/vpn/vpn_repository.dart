@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 abstract class VpnRepository {
   Future<void> setupTunnel();
@@ -24,7 +23,7 @@ abstract class VpnRepository {
     required String country,
     required String? feedback,
     required String? reasons,
-    required RateConnectionRequestModeEnum mode,
+    required RateConnectionMode mode,
   });
   Future<VpnConfig> fetchVpnConfig({
     required String? countryOriginate,

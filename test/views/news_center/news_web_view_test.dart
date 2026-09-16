@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/news_center/news_web_view.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import '../../support/fake_url_launcher.dart';
 import '../../support/news_fixtures.dart';
@@ -13,11 +13,7 @@ void main() {
     launcher = installFakeUrlLauncher();
   });
 
-  Future<void> pumpOpener(
-    WidgetTester tester,
-    NewscenterInboxListResponseItem item, {
-    String? userId,
-  }) async {
+  Future<void> pumpOpener(WidgetTester tester, NewsItem item, {String? userId}) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Builder(

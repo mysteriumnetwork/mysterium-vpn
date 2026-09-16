@@ -11,6 +11,7 @@ export 'ip_type.dart';
 export 'location_mode.dart';
 export 'locations_tab.dart';
 export 'marketing_analytics_event.dart';
+export 'news_category.dart';
 export 'news_filter.dart';
 export 'orientation_type.dart';
 export 'products_screen_variant.dart';

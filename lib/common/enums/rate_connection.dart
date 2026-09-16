@@ -1,3 +1,7 @@
+/// Whether the user rated the connection positively or negatively. Mapped to
+/// the API's `RateConnectionRequestModeEnum` in the VPN repository.
+enum RateConnectionMode { like, dislike }
+
 enum RateConnectionReason {
   stableConnection,
   consistentSpeed,

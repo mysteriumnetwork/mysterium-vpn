@@ -81,11 +81,11 @@ mixin _$ConnectionDisplayStore on _ConnectionDisplayStore, Store {
     () => super.connectionIntent,
     name: '_ConnectionDisplayStore.connectionIntent',
   )).value;
-  Computed<RateConnectionRequestModeEnum?>? _$connectionRatedComputed;
+  Computed<RateConnectionMode?>? _$connectionRatedComputed;
 
   @override
-  RateConnectionRequestModeEnum? get connectionRated =>
-      (_$connectionRatedComputed ??= Computed<RateConnectionRequestModeEnum?>(
+  RateConnectionMode? get connectionRated =>
+      (_$connectionRatedComputed ??= Computed<RateConnectionMode?>(
         () => super.connectionRated,
         name: '_ConnectionDisplayStore.connectionRated',
       )).value;

@@ -234,7 +234,7 @@ void main() {
         country: 'US',
         feedback: 'good',
         reasons: 'reason',
-        mode: RateConnectionRequestModeEnum.like,
+        mode: RateConnectionMode.like,
       );
 
       verify(mockApiService.rateConnection(request: anyNamed('request'))).called(1);
