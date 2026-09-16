@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
@@ -8,29 +7,27 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import 'locations_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<Connection>(),
+  MockSpec<LocationsRepository>(),
   MockSpec<FilterService>(),
   MockSpec<LocationsService>(),
   MockSpec<Talker>(unsupportedMembers: {#configure}),
   MockSpec<RemoteConfigStore>(),
   MockSpec<LocationsQueryStore>(),
   MockSpec<LocaleStore>(),
-  MockSpec<LocalDBService>(),
   MockSpec<AuthSessionStore>(),
 ])
 void main() {
   late LocationsStore store;
-  late MockConnection mockApiConnection;
+  late MockLocationsRepository mockRepository;
   late MockFilterService mockFilterService;
-  late MockLocalDBService mockLocalDB;
   late MockLocationsService mockLocationsService;
   late MockTalker mockLogger;
   late MockRemoteConfigStore mockRemoteConfigStore;
@@ -41,32 +38,9 @@ void main() {
   late List<VPNLocation> mockResidential;
   late List<VPNLocation> mockDatacenter;
 
-  ConnectionLocationCity cityFromLocation(VPNLocation location) => ConnectionLocationCity(
-    city: location.id,
-    total: location.nodeCount ?? 0,
-    translations: location.translations,
-    latitude: location.coordinates?.latitude,
-    longitude: location.coordinates?.longitude,
-  );
-
-  ConnectionLocation countryFromLocation(VPNLocation location) => ConnectionLocation(
-    country: location.id,
-    total: location.nodeCount ?? 0,
-    translations: location.translations,
-    cities: location.children?.map(cityFromLocation).toList() ?? [],
-  );
-
-  Response<List<ConnectionLocation>> mockResponse(List<VPNLocation> locations) =>
-      Response<List<ConnectionLocation>>(
-        statusCode: 200,
-        data: locations.map(countryFromLocation).toList(),
-        requestOptions: RequestOptions(),
-      );
-
   setUp(() async {
-    mockApiConnection = MockConnection();
+    mockRepository = MockLocationsRepository();
     mockFilterService = MockFilterService();
-    mockLocalDB = MockLocalDBService();
     mockLocationsService = MockLocationsService();
     mockLogger = MockTalker();
     mockRemoteConfigStore = MockRemoteConfigStore();
@@ -97,16 +71,12 @@ void main() {
     when(mockQuery.searchTrimmed).thenReturn('');
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(const Duration(hours: 1));
     when(
-      mockApiConnection.connectionLocations(ipType: IPType.datacenter.key),
-    ).thenAnswer((_) async => mockResponse(mockDatacenter));
+      mockRepository.fetch(IPType.datacenter),
+    ).thenAnswer((_) async => VPNLocations(locations: mockDatacenter));
     when(
-      mockApiConnection.connectionLocations(ipType: IPType.residential.key),
-    ).thenAnswer((_) async => mockResponse(mockResidential));
-
-    when(mockLocalDB.getLocations(IPType.datacenter)).thenAnswer((_) async => VPNLocations());
-    when(mockLocalDB.getLocations(IPType.residential)).thenAnswer((_) async => VPNLocations());
-    when(mockLocalDB.watchLocations(IPType.datacenter)).thenAnswer((_) => const Stream.empty());
-    when(mockLocalDB.watchLocations(IPType.residential)).thenAnswer((_) => const Stream.empty());
+      mockRepository.fetch(IPType.residential),
+    ).thenAnswer((_) async => VPNLocations(locations: mockResidential));
+    when(mockRepository.watch(any)).thenAnswer((_) => const Stream.empty());
     when(
       mockFilterService.filterLocations(
         any,
@@ -117,9 +87,8 @@ void main() {
     ).thenAnswer((invocation) => invocation.positionalArguments[0] as List<VPNLocation>);
 
     store = LocationsStore(
-      mockApiConnection,
+      mockRepository,
       mockFilterService,
-      mockLocalDB,
       mockLocationsService,
       mockLogger,
       mockRemoteConfigStore,

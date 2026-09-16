@@ -1,7 +1,17 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
+import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
+
+final locationsRepositoryPOD = Provider<LocationsRepository>(
+  (ref) => RestLocationsRepository(
+    connection: ref.watch(vpnApiPOD).getConnection(),
+    db: ref.watch(localDBServicePOD),
+    logger: ref.watch(loggerPOD),
+    isAuthenticated: () => ref.read(authSessionStorePOD).isAuthenticated,
+  ),
+);
 
 final wireguardRepositoryPOD = Provider<WireguardRepository>(
   (ref) => WireguardRepository(

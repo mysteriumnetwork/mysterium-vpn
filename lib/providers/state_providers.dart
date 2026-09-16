@@ -149,9 +149,7 @@ final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
 });
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
-  final api = ref.watch(vpnApiPOD);
   final filterService = ref.watch(filterServicePOD);
-  final dbService = ref.watch(localDBServicePOD);
   final locationsService = ref.watch(locationsServicePOD);
   final logger = ref.watch(loggerPOD);
 
@@ -162,9 +160,8 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
 
   final store = LocationsStore(
-    api.getConnection(),
+    ref.watch(locationsRepositoryPOD),
     filterService,
-    dbService,
     locationsService,
     logger,
     remoteConfigStore,
