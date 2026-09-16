@@ -591,7 +591,7 @@ final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
   }
 
   final store = ReviewPromptStore(
-    prefs: ref.watch(sharedPreferenceServicePOD),
+    prefs: ref.watch(reviewPromptRepositoryPOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
     analyticsStore: ref.watch(analyticsStorePOD),
     vpnStore: ref.watch(vpnStorePOD),
