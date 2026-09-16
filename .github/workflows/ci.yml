@@ -16,7 +16,7 @@ jobs:
       dev_build: ${{ steps.calculate-build.outputs.build }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Materialize .env files from repo secrets
         shell: bash
