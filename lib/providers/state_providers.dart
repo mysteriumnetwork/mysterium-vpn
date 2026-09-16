@@ -224,7 +224,6 @@ final subscriptionStorePOD = Provider<SubscriptionStore>((ref) {
   final configStore = ref.watch(subscriptionConfigStorePOD);
 
   final store = SubscriptionStore(
-    secureStorageService: ref.watch(secureStorageServicePOD),
     api: api,
     subscriptionService: subscriptionService,
     authSessionStore: authSessionStore,
@@ -499,7 +498,6 @@ final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>((ref) {
 
 final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
-  final secureStorageService = ref.watch(secureStorageServicePOD);
   final subscriptionService = ref.read(subscriptionServicePOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -509,7 +507,6 @@ final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
 
   final store = SubscriptionPurchaseStore(
     inAppPurchase,
-    secureStorageService,
     subscriptionService,
     logger,
     analyticsStore,

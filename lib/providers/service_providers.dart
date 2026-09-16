@@ -126,7 +126,12 @@ final subscriptionServicePOD = Provider<SubscriptionRepository>((ref) {
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestSubscriptionRepository(api: api, inAppPurchase: inAppPurchase, logger: logger);
+  return RestSubscriptionRepository(
+    api: api,
+    inAppPurchase: inAppPurchase,
+    logger: logger,
+    secureStorage: ref.watch(secureStorageServicePOD),
+  );
 });
 
 final apiServicePOD = Provider<ApiService>((ref) {

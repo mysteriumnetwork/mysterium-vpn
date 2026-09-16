@@ -32,7 +32,6 @@ import 'subscription_purchase_store_test.mocks.dart';
 ])
 void main() {
   late MockInAppPurchase inAppPurchase;
-  late MockSecureStorageService storage;
   late MockSubscriptionRepository service;
   late MockTalker logger;
   late MockAnalyticsStore analytics;
@@ -55,7 +54,6 @@ void main() {
 
   setUp(() {
     inAppPurchase = MockInAppPurchase();
-    storage = MockSecureStorageService();
     service = MockSubscriptionRepository();
     logger = MockTalker();
     analytics = MockAnalyticsStore();
@@ -93,7 +91,6 @@ void main() {
 
     store = SubscriptionPurchaseStore(
       inAppPurchase,
-      storage,
       service,
       logger,
       analytics,

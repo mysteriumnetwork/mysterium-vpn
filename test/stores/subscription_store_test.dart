@@ -104,7 +104,6 @@ void main() {
     when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());
 
     subscriptionStore = SubscriptionStore(
-      secureStorageService: MockSecureStorageService(),
       api: mockVpnApi,
       subscriptionService: mockSubscriptionService,
       authSessionStore: mockAuthSessionStore,
