@@ -9,6 +9,7 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
@@ -172,10 +173,20 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         throw const SubscriptionRequiredException();
       }
 
-      await _subscriptionService.manageSubscription(
-        productDetails: product.productDetails,
-        userId: user.userId,
-      );
+      // Android manages subscriptions on the Play Store page; the other
+      // platforms run it through the store's own purchase flow.
+      if (Platform.isAndroid) {
+        final url = await _subscriptionService.androidManageSubscriptionUrl(
+          product.productDetails.id,
+        );
+        await openUrlLink(url, source: RedirectSource.googlePlaySubscriptions);
+      } else {
+        await _subscriptionService.subscribeToPackage(
+          productDetails: product.productDetails,
+          userId: user.userId,
+          purchasedProductId: null,
+        );
+      }
     } catch (e, stack) {
       if (e is PlatformException && e.code == 'storekit2_purchase_cancelled') {
         return;

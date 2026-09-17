@@ -43,5 +43,7 @@ abstract class SubscriptionRepository {
   /// [activeUntil] is ignored.
   Future<void> savePaymentInfo({required String email, required DateTime? activeUntil});
 
-  Future<void> manageSubscription({required ProductDetails productDetails, required String userId});
+  /// Where the Play Store manages [productId]'s subscription. Data only —
+  /// opening it is a navigation decision that belongs above this layer.
+  Future<Uri> androidManageSubscriptionUrl(String productId);
 }

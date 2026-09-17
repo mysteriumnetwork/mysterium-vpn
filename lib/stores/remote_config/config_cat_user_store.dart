@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:configcat_client/configcat_client.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/extensions/config_cat_user.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -150,15 +151,6 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
 }
 
 extension ConfigCatUserExtensions on ConfigCatUser {
-  T? getAttributeOrNull<T>(String key) {
-    final value = getAttribute(key);
-    if (value is T) {
-      return value;
-    } else {
-      return null;
-    }
-  }
-
   String? get email => getAttributeOrNull('Email');
 
   String? get country => getAttributeOrNull('Country');

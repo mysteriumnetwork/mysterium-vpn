@@ -21,4 +21,3 @@ export 'mqtt/mqtt_experiment_flag.dart';
 export 'mqtt/mqtt_service.dart';
 export 'performance/performance_monitor.dart';
 export 'residential_education_storage.dart';
-export 'url_opener.dart';

@@ -37,7 +37,6 @@ void main() {
       inAppPurchase: inAppPurchase,
       logger: logger,
       secureStorage: MockSecureStorageService(),
-      openUrl: (_, {required source}) async => true,
     );
   });
 

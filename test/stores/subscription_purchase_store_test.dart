@@ -81,12 +81,6 @@ void main() {
         userId: anyNamed('userId'),
       ),
     ).thenAnswer((_) async {});
-    when(
-      service.manageSubscription(
-        productDetails: anyNamed('productDetails'),
-        userId: anyNamed('userId'),
-      ),
-    ).thenAnswer((_) async {});
     when(service.clearPendingTransactions()).thenAnswer((_) async {});
 
     store = SubscriptionPurchaseStore(
@@ -180,7 +174,14 @@ void main() {
 
       await store.manageSubscription();
 
-      verify(service.manageSubscription(productDetails: productDetails, userId: 'u1')).called(1);
+      // Not Android under test, so manage routes through the purchase flow.
+      verify(
+        service.subscribeToPackage(
+          productDetails: productDetails,
+          userId: 'u1',
+          purchasedProductId: null,
+        ),
+      ).called(1);
     });
 
     test('throws SubscriptionRequiredException when not subscribed', () async {
@@ -188,9 +189,10 @@ void main() {
 
       await expectLater(store.manageSubscription(), throwsA(isA<SubscriptionRequiredException>()));
       verifyNever(
-        service.manageSubscription(
+        service.subscribeToPackage(
           productDetails: anyNamed('productDetails'),
           userId: anyNamed('userId'),
+          purchasedProductId: anyNamed('purchasedProductId'),
         ),
       );
     });
@@ -208,9 +210,10 @@ void main() {
       when(product.productDetails).thenReturn(productDetails);
       when(plans.future).thenAnswer((_) => ObservableFuture.value([product]));
       when(
-        service.manageSubscription(
+        service.subscribeToPackage(
           productDetails: anyNamed('productDetails'),
           userId: anyNamed('userId'),
+          purchasedProductId: anyNamed('purchasedProductId'),
         ),
       ).thenThrow(PlatformException(code: 'storekit2_purchase_cancelled'));
 
@@ -223,9 +226,10 @@ void main() {
       when(product.productDetails).thenReturn(productDetails);
       when(plans.future).thenAnswer((_) => ObservableFuture.value([product]));
       when(
-        service.manageSubscription(
+        service.subscribeToPackage(
           productDetails: anyNamed('productDetails'),
           userId: anyNamed('userId'),
+          purchasedProductId: anyNamed('purchasedProductId'),
         ),
       ).thenThrow(Exception('boom'));
 
