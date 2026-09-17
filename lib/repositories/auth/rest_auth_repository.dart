@@ -5,13 +5,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/auth/auth_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
-class RestAuthService extends AuthService {
-  RestAuthService({
+class RestAuthRepository extends AuthRepository {
+  RestAuthRepository({
     required VpnApi api,
     required NetworkService networkService,
     required AuthSessionGateway authSession,

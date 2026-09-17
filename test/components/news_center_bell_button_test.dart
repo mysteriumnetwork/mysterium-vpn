@@ -7,7 +7,7 @@ import 'package:mysterium_vpn/components/news_center_bell_button.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,12 +16,12 @@ import '../support/news_fixtures.dart';
 import '../support/test_localizations.dart';
 import 'news_center_bell_button_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<RemoteConfigStore>(), MockSpec<NewsCenterService>()])
+@GenerateNiceMocks([MockSpec<RemoteConfigStore>(), MockSpec<NewsCenterRepository>()])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockRemoteConfigStore config;
-  late MockNewsCenterService service;
+  late MockNewsCenterRepository service;
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues({});
@@ -29,7 +29,7 @@ void main() {
 
   setUp(() {
     config = MockRemoteConfigStore();
-    service = MockNewsCenterService();
+    service = MockNewsCenterRepository();
   });
 
   Future<void> pumpBell(

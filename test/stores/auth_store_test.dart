@@ -12,6 +12,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -20,7 +21,7 @@ import 'package:talker/talker.dart';
 import 'auth_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<AuthService>(),
+  MockSpec<AuthRepository>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<AppLinks>(),
   MockSpec<AnalyticsStore>(),
@@ -31,7 +32,7 @@ import 'auth_store_test.mocks.dart';
 ])
 void main() {
   late AuthStore store;
-  late MockAuthService authService;
+  late MockAuthRepository authService;
   late MockAuthSessionStore sessionStore;
   late MockAppLinks appLinks;
   late MockAnalyticsStore analyticsStore;
@@ -77,7 +78,7 @@ void main() {
   });
 
   setUp(() {
-    authService = MockAuthService();
+    authService = MockAuthRepository();
     sessionStore = MockAuthSessionStore();
     appLinks = MockAppLinks();
     analyticsStore = MockAnalyticsStore();

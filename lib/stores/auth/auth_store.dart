@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/auth/auth_error.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -27,7 +28,7 @@ class AuthStore = _AuthStore with _$AuthStore;
 
 abstract class _AuthStore with Store {
   _AuthStore({
-    required AuthService authService,
+    required AuthRepository authService,
     required AuthSessionStore authSessionStore,
     required AppLinks appLinks,
     required AnalyticsStore analyticsStore,
@@ -48,7 +49,7 @@ abstract class _AuthStore with Store {
     refreshTokenCallback = refreshAuthToken;
   }
 
-  final AuthService _authService;
+  final AuthRepository _authService;
   final AuthSessionStore _authSessionStore;
   final LocalDBService _localDb;
   final AppLinks _appLinks;

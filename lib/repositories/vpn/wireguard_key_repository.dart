@@ -5,8 +5,8 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-class WireguradKeyService {
-  const WireguradKeyService({
+class WireguardKeyRepository {
+  const WireguardKeyRepository({
     required this.wireguardService,
     required this.secureStorageService,
     required this.analyticsLogger,
@@ -16,20 +16,20 @@ class WireguradKeyService {
   final SecureStorageService secureStorageService;
   final AnalyticsEventLogger analyticsLogger;
 
-  Future<KeyPair> getWireguradKey() async {
+  Future<KeyPair> getWireguardKey() async {
     try {
-      final wireguradKey = await _getKeyFromStorage();
-      if (wireguradKey != null) {
-        return wireguradKey;
+      final wireguardKey = await _getKeyFromStorage();
+      if (wireguardKey != null) {
+        return wireguardKey;
       } else {
         analyticsLogger(
           AnalyticsEvent.wireguardKeyUnavailable,
           parameters: {
             'description': 'Wireguard keys not found in secure storage, generating new keys',
-            'method': 'getWireguradKey',
+            'method': 'getWireguardKey',
           },
         );
-        final key = await _generateWireguradKey();
+        final key = await _generateWireguardKey();
         await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
         return key;
       }
@@ -40,7 +40,7 @@ class WireguradKeyService {
 
   Future<KeyPair> regenerateWireguardKeys() async {
     try {
-      final key = await _generateWireguradKey();
+      final key = await _generateWireguardKey();
       await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
       return key;
     } catch (_) {
@@ -111,7 +111,7 @@ class WireguradKeyService {
     }
   }
 
-  Future<KeyPair> _generateWireguradKey() async {
+  Future<KeyPair> _generateWireguardKey() async {
     try {
       return await wireguardService.generateKeyPair();
     } catch (e, s) {

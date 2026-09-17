@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
 
@@ -24,7 +24,7 @@ abstract class _SubscriptionConfigStore with Store, Disposeable {
   }
 
   final AuthSessionStore _authSessionStore;
-  final SubscriptionService _service;
+  final SubscriptionRepository _service;
 
   late final List<ReactionDisposer> _reactions;
 

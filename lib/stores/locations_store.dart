@@ -6,10 +6,10 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 part 'locations_store.g.dart';
 
@@ -24,9 +24,8 @@ class LocationsStore = _LocationsStore with _$LocationsStore;
 /// - Providing filtered and computed projections for the UI
 abstract class _LocationsStore with Store {
   _LocationsStore(
-    this._connection,
+    this._repository,
     this._filter,
-    this._db,
     this._locationsService,
     this._logger,
     this._config,
@@ -38,20 +37,21 @@ abstract class _LocationsStore with Store {
     // These watchers are all disposed of in the dispose method to avoid memory leaks.
     _streamSubscriptions = [
       // Watch for changes in residential locations and update the value of observable future.
-      _watch(
-        IPType.residential,
-      ).listen((it) => _residentialLocationsFuture = ObservableFuture.value(it)),
+      _repository
+          .watch(IPType.residential)
+          .listen((it) => _residentialLocationsFuture = ObservableFuture.value(it)),
       // Watch for changes in datacenter locations and update the value of observable future.
-      _watch(IPType.datacenter).listen((it) => _dcLocationsFuture = ObservableFuture.value(it)),
+      _repository
+          .watch(IPType.datacenter)
+          .listen((it) => _dcLocationsFuture = ObservableFuture.value(it)),
       // Sets up periodic auto-refresh of location data based on the configured interval.
       // This ensures the app maintains up-to-date location information without user intervention.
       Stream.periodic(_config.locationsRefreshInterval).listen((_) => refresh()),
     ];
   }
 
-  final Connection _connection;
+  final LocationsRepository _repository;
   final FilterService _filter;
-  final LocalDBService _db;
   final LocationsService _locationsService;
   final Talker _logger;
 
@@ -162,52 +162,7 @@ abstract class _LocationsStore with Store {
     // Authorization header even when the user is authenticated, and the
     // backend responds with is_available=false for every location.
     await _authSessionStore.accessTokenFuture;
-    final wasAuthenticated = _authSessionStore.isAuthenticated;
-
-    try {
-      final response = await _connection.connectionLocations(
-        ipType: switch (ipType) {
-          IPType.closest => null,
-          _ => ipType.key,
-        },
-      );
-      final config = response.data;
-      if (config == null) {
-        throw Exception('No data found');
-      }
-
-      final locations = config.map((it) => VPNLocation.fromAPICountry(it, ipType: ipType)).toList();
-      final data = VPNLocations(locations: locations);
-
-      // Skip persisting unauth responses — they mark every location
-      // is_available=false and would poison `_watch`'s cache for the next
-      // `LocationsStore`. Check both pre- and post-request auth state to
-      // also catch a logout that races a request that's already in flight.
-      if (wasAuthenticated && _authSessionStore.isAuthenticated) {
-        await _db.setLocations(data, type: ipType);
-      }
-      return data;
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
-
-  /// Stream current + future location sets for a given IP type.
-  /// Emits synchronously from cache (if present) then live updates from DB.
-  /// This ensures the UI can reactively update as location data changes.
-  Stream<VPNLocations> _watch(IPType ipType) async* {
-    final cached = await _db.getLocations(ipType);
-
-    // Emit cached locations first if available for immediate UI responsiveness.
-    if (cached != null && cached.isNotEmpty) {
-      yield cached;
-    }
-
-    // Then yield live updates from the database.
-    yield* _db.watchLocations(ipType).where((it) => it != null).map((it) => it!);
+    return _repository.fetch(ipType);
   }
 
   /// Refreshes location data from the backend for the specified IP type.
@@ -409,12 +364,7 @@ abstract class _LocationsStore with Store {
   /// Clears all stored locations (both datacenter and residential) from the local database.
   /// This is primarily used for development purposes to reset cached data.
   @action
-  Future<void> clear() async {
-    await Future.wait([
-      _db.setLocations(VPNLocations(), type: IPType.residential),
-      _db.setLocations(VPNLocations(), type: IPType.datacenter),
-    ]);
-  }
+  Future<void> clear() => _repository.clear();
 
   /// Disposes of resources such as debouncers and stream subscriptions to prevent memory leaks.
   FutureOr<void> dispose() async {

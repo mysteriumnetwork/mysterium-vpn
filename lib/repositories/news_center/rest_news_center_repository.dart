@@ -1,14 +1,14 @@
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/news_center/news_center_repository.dart';
 import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
-import 'package:mysterium_vpn/services/news_center/news_center_service.dart';
 import 'package:vpn_api/vpn_api.dart';
 
-/// [NewsCenterService] backed by the `vpn_api` News Center endpoint
+/// [NewsCenterRepository] backed by the `vpn_api` News Center endpoint
 /// (`GET /newscenter/inbox`) for the feed and [SharedPreferenceService] for
 /// read state (which is not part of the API payload).
-class RestNewsCenterService implements NewsCenterService {
-  RestNewsCenterService({
+class RestNewsCenterRepository implements NewsCenterRepository {
+  RestNewsCenterRepository({
     required Newscenter api,
     required SharedPreferenceService prefs,
     required String Function() originCountry,

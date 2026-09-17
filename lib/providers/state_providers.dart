@@ -25,9 +25,8 @@ final localeStorePOD = Provider<LocaleStore>(
 
 final authSessionStorePOD = Provider<AuthSessionStore>((ref) {
   final store = AuthSessionStore(
-    secureStorage: ref.watch(secureStorageServicePOD),
+    repository: ref.watch(sessionRepositoryPOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
-    localDb: ref.watch(localDBServicePOD),
   );
 
   ref.onDispose(store.dispose);
@@ -149,9 +148,7 @@ final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
 });
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
-  final api = ref.watch(vpnApiPOD);
   final filterService = ref.watch(filterServicePOD);
-  final dbService = ref.watch(localDBServicePOD);
   final locationsService = ref.watch(locationsServicePOD);
   final logger = ref.watch(loggerPOD);
 
@@ -162,9 +159,8 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
 
   final store = LocationsStore(
-    api.getConnection(),
+    ref.watch(locationsRepositoryPOD),
     filterService,
-    dbService,
     locationsService,
     logger,
     remoteConfigStore,
@@ -179,7 +175,6 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
 });
 
 final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
-  final dbService = ref.watch(localDBServicePOD);
   final filterService = ref.watch(filterServicePOD);
   final queryStore = ref.watch(locationsQueryStorePOD);
   final localeStore = ref.watch(localeStorePOD);
@@ -187,7 +182,7 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
 
   final store = RecentLocationsStore(
-    dbService,
+    ref.watch(recentLocationsRepositoryPOD),
     filterService,
     queryStore,
     remoteConfigStore,
@@ -202,8 +197,7 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
 
 final favoriteIpsStorePOD = Provider<FavoriteIpsStore>((ref) {
   final store = FavoriteIpsStore(
-    ref.watch(localDBServicePOD),
-    ref.watch(favoriteIpsAvailabilityServicePOD),
+    ref.watch(favoriteIpsRepositoryPOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(remoteConfigStorePOD),
     ref.watch(analyticsStorePOD),
@@ -360,16 +354,11 @@ final residentialEducationStorePOD = Provider<ResidentialEducationStore>(
 );
 
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
-  (ref) => RealIPInfoStore(
-    ref.watch(externalApiServicePOD),
-    ref.watch(sharedPreferenceServicePOD),
-    ref.watch(wireguardServicePOD),
-    ref.watch(analyticsStorePOD),
-  ),
+  (ref) => RealIPInfoStore(ref.watch(ipInfoRepositoryPOD), ref.watch(analyticsStorePOD)),
 );
 
 final deviceIDStorePOD = Provider<DeviceIDStore>(
-  (ref) => DeviceIDStore(secureStorageService: ref.watch(secureStorageServicePOD)),
+  (ref) => DeviceIDStore(repository: ref.watch(deviceIdRepositoryPOD)),
 );
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {

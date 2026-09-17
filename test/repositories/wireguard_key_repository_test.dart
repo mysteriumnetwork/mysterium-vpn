@@ -1,11 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/repositories/vpn/wireguard_key_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
-import 'wiregurad_key_service_test.mocks.dart';
+import 'wireguard_key_repository_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<WireguardDart>(),
@@ -13,8 +14,8 @@ import 'wiregurad_key_service_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
 ])
 void main() {
-  group('WireguradKeyService', () {
-    late WireguradKeyService wireguradKeyService;
+  group('WireguardKeyRepository', () {
+    late WireguardKeyRepository wireguardKeyRepository;
     late MockWireguardDart mockWireguardDart;
     late MockSecureStorageService mockSecureStorageService;
     late MockAnalyticsStore mockAnalyticsStore;
@@ -24,37 +25,37 @@ void main() {
       mockSecureStorageService = MockSecureStorageService();
       mockAnalyticsStore = MockAnalyticsStore();
 
-      wireguradKeyService = WireguradKeyService(
+      wireguardKeyRepository = WireguardKeyRepository(
         wireguardService: mockWireguardDart,
         secureStorageService: mockSecureStorageService,
         analyticsLogger: mockAnalyticsStore.logEvent,
       );
     });
 
-    group('WireguradKeyService', () {
-      test('getWireguradKey returns existing key available in storage', () async {
+    group('WireguardKeyRepository', () {
+      test('getWireguardKey returns existing key available in storage', () async {
         when(mockSecureStorageService.getWireguardPublicKey()).thenAnswer((_) async => 'publicKey');
         when(
           mockSecureStorageService.getWireguardPrivateKey(),
         ).thenAnswer((_) async => 'privateKey');
-        final key = await wireguradKeyService.getWireguradKey();
+        final key = await wireguardKeyRepository.getWireguardKey();
         expect(key.publicKey, 'publicKey');
         expect(key.privateKey, 'privateKey');
       });
 
-      test('getWireguradKey throws exception', () async {
+      test('getWireguardKey throws exception', () async {
         when(
           mockSecureStorageService.getWireguardPublicKey(),
         ).thenThrow(Exception('Storage error'));
         when(mockWireguardDart.generateKeyPair()).thenThrow(Exception('Wireguard error'));
-        expect(() async => wireguradKeyService.getWireguradKey(), throwsException);
+        expect(() async => wireguardKeyRepository.getWireguardKey(), throwsException);
       });
 
       test('regenerateWireguardKeys generates new keys and saves them', () async {
         when(
           mockWireguardDart.generateKeyPair(),
         ).thenAnswer((_) async => KeyPair('publicKey', 'privateKey'));
-        final key = await wireguradKeyService.regenerateWireguardKeys();
+        final key = await wireguardKeyRepository.regenerateWireguardKeys();
         expect(key.publicKey, 'publicKey');
         expect(key.privateKey, 'privateKey');
         verify(
@@ -65,17 +66,17 @@ void main() {
 
       test('regenerateWireguardKeys throws exception', () async {
         when(mockWireguardDart.generateKeyPair()).thenThrow(Exception('Wireguard error'));
-        expect(() async => wireguradKeyService.regenerateWireguardKeys(), throwsException);
+        expect(() async => wireguardKeyRepository.regenerateWireguardKeys(), throwsException);
       });
 
-      test('getWireguradKey generates new key if no key in storage', () async {
+      test('getWireguardKey generates new key if no key in storage', () async {
         when(mockSecureStorageService.getWireguardPublicKey()).thenAnswer((_) async => null);
         when(mockSecureStorageService.getWireguardPrivateKey()).thenAnswer((_) async => null);
         when(
           mockWireguardDart.generateKeyPair(),
         ).thenAnswer((_) async => KeyPair('newPublicKey', 'newPrivateKey'));
 
-        final key = await wireguradKeyService.getWireguradKey();
+        final key = await wireguardKeyRepository.getWireguardKey();
         expect(key.publicKey, 'newPublicKey');
         expect(key.privateKey, 'newPrivateKey');
         verify(
@@ -86,12 +87,12 @@ void main() {
         ).called(1);
       });
 
-      test('getWireguradKey returns null if no key in storage and generation fails', () async {
+      test('getWireguardKey returns null if no key in storage and generation fails', () async {
         when(mockSecureStorageService.getWireguardPublicKey()).thenAnswer((_) async => null);
         when(mockSecureStorageService.getWireguardPrivateKey()).thenAnswer((_) async => null);
         when(mockWireguardDart.generateKeyPair()).thenThrow(Exception('Wireguard error'));
 
-        expect(() async => wireguradKeyService.getWireguradKey(), throwsException);
+        expect(() async => wireguardKeyRepository.getWireguardKey(), throwsException);
       });
 
       test('regenerateWireguardKeys saves new keys', () async {
@@ -99,7 +100,7 @@ void main() {
           mockWireguardDart.generateKeyPair(),
         ).thenAnswer((_) async => KeyPair('newPublicKey', 'newPrivateKey'));
 
-        final key = await wireguradKeyService.regenerateWireguardKeys();
+        final key = await wireguardKeyRepository.regenerateWireguardKeys();
         expect(key.publicKey, 'newPublicKey');
         expect(key.privateKey, 'newPrivateKey');
         verify(

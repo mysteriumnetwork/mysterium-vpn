@@ -1,6 +1,6 @@
 import 'package:mysterium_vpn/models/models.dart';
 
-abstract class AuthService {
+abstract class AuthRepository {
   Future<AuthUser> currentUser();
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair});
   Future<String> signInWithGoogle();

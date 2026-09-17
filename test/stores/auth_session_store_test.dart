@@ -7,6 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -62,9 +63,8 @@ void main() {
   });
 
   AuthSessionStore newStore() => AuthSessionStore(
-    secureStorage: storage,
+    repository: LocalSessionRepository(secureStorage: storage, db: LocalDBService()),
     remoteConfigStore: remoteConfig,
-    localDb: LocalDBService(),
   );
 
   group('initStore', () {

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/repositories/vpn/wireguard_key_repository.dart';
 import 'package:mysterium_vpn/repositories/vpn/wireguard_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
@@ -15,14 +16,14 @@ import 'wireguard_repository_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<WireguardDart>(),
-  MockSpec<WireguradKeyService>(),
+  MockSpec<WireguardKeyRepository>(),
   MockSpec<ApiService>(),
   MockSpec<Talker>(),
 ])
 void main() {
   late WireguardRepository repository;
   late MockWireguardDart mockService;
-  late MockWireguradKeyService mockKeyService;
+  late MockWireguardKeyRepository mockKeyService;
   late MockApiService mockApiService;
   late MockTalker mockLogger;
 
@@ -30,16 +31,16 @@ void main() {
 
   setUp(() {
     mockService = MockWireguardDart();
-    mockKeyService = MockWireguradKeyService();
+    mockKeyService = MockWireguardKeyRepository();
     mockApiService = MockApiService();
     mockLogger = MockTalker();
 
-    when(mockKeyService.getWireguradKey()).thenAnswer((_) async => testKeyPair);
+    when(mockKeyService.getWireguardKey()).thenAnswer((_) async => testKeyPair);
     when(mockKeyService.regenerateWireguardKeys()).thenAnswer((_) async => testKeyPair);
 
     repository = WireguardRepository(
       service: mockService,
-      wireguradKeyService: mockKeyService,
+      wireguardKeyRepository: mockKeyService,
       apiService: mockApiService,
       logger: mockLogger,
     );
@@ -48,7 +49,7 @@ void main() {
   group('WireguardRepository', () {
     test('init sets Wireguard key', () async {
       await repository.init();
-      verify(mockKeyService.getWireguradKey()).called(1);
+      verify(mockKeyService.getWireguardKey()).called(1);
     });
 
     test('connect replaces private key and calls service.connect', () async {
