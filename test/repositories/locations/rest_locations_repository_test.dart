@@ -65,9 +65,7 @@ void main() {
     });
 
     test('sends no ipType filter for IPType.closest', () async {
-      when(
-        connection.connectionLocations(),
-      ).thenAnswer((_) async => ok([country('US')]));
+      when(connection.connectionLocations()).thenAnswer((_) async => ok([country('US')]));
 
       await build().fetch(IPType.closest);
 
