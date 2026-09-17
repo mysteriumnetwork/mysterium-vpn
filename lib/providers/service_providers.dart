@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_intercepto
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
@@ -126,7 +127,12 @@ final subscriptionServicePOD = Provider<SubscriptionRepository>((ref) {
   final inAppPurchase = ref.watch(inAppPurchasePOD);
   final logger = ref.watch(loggerPOD);
 
-  return RestSubscriptionRepository(api: api, inAppPurchase: inAppPurchase, logger: logger);
+  return RestSubscriptionRepository(
+    api: api,
+    inAppPurchase: inAppPurchase,
+    logger: logger,
+    secureStorage: ref.watch(secureStorageServicePOD),
+  );
 });
 
 final apiServicePOD = Provider<ApiService>((ref) {

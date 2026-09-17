@@ -10,6 +10,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
@@ -17,6 +18,7 @@ import 'package:talker/talker.dart';
 import '../support/test_prefs.dart';
 
 @GenerateNiceMocks([
+  MockSpec<LocalDBService>(),
   MockSpec<WireguardRepository>(),
   MockSpec<OpenVpnRepository>(),
   MockSpec<ExternalApiService>(),
@@ -71,7 +73,7 @@ void main() {
   late UdpBlockedSuggestionStore udpBlockedSuggestionStore;
 
   VpnStore buildStore() => VpnStore(
-    prefs: prefsService,
+    settings: LocalConnectionSettingsRepository(db: MockLocalDBService(), prefs: prefsService),
     externalApiService: mockExternalApi,
     mqtt: mockMqtt,
     locationsStore: mockLocationsStore,
@@ -1178,7 +1180,10 @@ void main() {
         when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '2.2.2.2');
 
         final store = VpnStore(
-          prefs: prefsService,
+          settings: LocalConnectionSettingsRepository(
+            db: MockLocalDBService(),
+            prefs: prefsService,
+          ),
           externalApiService: mockExternalApi,
           mqtt: mockMqtt,
           locationsStore: mockLocationsStore,

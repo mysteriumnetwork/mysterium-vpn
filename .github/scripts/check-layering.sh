@@ -45,7 +45,9 @@ check() {
 
 check "lib/services"     lib/services     "providers|stores|views|pages|components|repositories|debug"
 check "lib/repositories" lib/repositories "providers|stores|views|pages|components|debug"
-check "lib/stores"       lib/stores       "providers|views|pages|components|debug"
+# Stores reach storage through a repository, never directly. services/data
+# holds the storage primitives; the rest of services/ is fair game.
+check "lib/stores"       lib/stores       "providers|views|pages|components|debug|services/data"
 
 # The UI talks to the app's own models, never to the backend client directly.
 if ! require_dirs lib/views lib/pages lib/components; then
@@ -61,7 +63,7 @@ fi
 if [ "${status}" -ne 0 ]; then
   echo
   echo "Give the lower layer a narrow port it owns (see lib/services/mqtt/mqtt_experiment_flag.dart),"
-  echo "or map to an app model at the boundary (see lib/services/news_center/rest_news_center_service.dart)."
+  echo "or map to an app model at the boundary (see lib/repositories/news_center/rest_news_center_repository.dart)."
 fi
 
 exit "${status}"

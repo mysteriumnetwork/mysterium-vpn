@@ -4,6 +4,29 @@ import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 
+final authFlowRepositoryPOD = Provider<AuthFlowRepository>(
+  (ref) => LocalAuthFlowRepository(ref.watch(secureStorageServicePOD)),
+);
+
+final reviewPromptRepositoryPOD = Provider<ReviewPromptRepository>(
+  (ref) => LocalReviewPromptRepository(ref.watch(sharedPreferenceServicePOD)),
+);
+
+final appSettingsRepositoryPOD = Provider<AppSettingsRepository>(
+  (ref) => LocalAppSettingsRepository(ref.watch(sharedPreferenceServicePOD)),
+);
+
+final promptsRepositoryPOD = Provider<PromptsRepository>(
+  (ref) => LocalPromptsRepository(ref.watch(localDBServicePOD)),
+);
+
+final connectionSettingsRepositoryPOD = Provider<ConnectionSettingsRepository>(
+  (ref) => LocalConnectionSettingsRepository(
+    db: ref.watch(localDBServicePOD),
+    prefs: ref.watch(sharedPreferenceServicePOD),
+  ),
+);
+
 final sessionRepositoryPOD = Provider<SessionRepository>(
   (ref) => LocalSessionRepository(
     secureStorage: ref.watch(secureStorageServicePOD),

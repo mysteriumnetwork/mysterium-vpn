@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../support/test_prefs.dart';
+import '../support/test_repositories.dart';
 
 void main() {
   late SharedPreferenceService prefsService;
@@ -22,13 +23,13 @@ void main() {
   });
 
   test('themeMode defaults to system when no preference is stored', () {
-    final store = ThemeStore(sharedPrefs: prefsService);
+    final store = ThemeStore(settings: appSettings(prefsService));
 
     expect(store.themeMode, ThemeMode.system);
   });
 
   test('isDarkMode follows themeMode when explicitly set to dark', () async {
-    final store = ThemeStore(sharedPrefs: prefsService);
+    final store = ThemeStore(settings: appSettings(prefsService));
 
     await store.setThemeType(ThemeMode.dark);
 
@@ -37,7 +38,7 @@ void main() {
   });
 
   test('isDarkMode is false when explicitly set to light', () async {
-    final store = ThemeStore(sharedPrefs: prefsService);
+    final store = ThemeStore(settings: appSettings(prefsService));
 
     await store.setThemeType(ThemeMode.light);
 
@@ -46,7 +47,7 @@ void main() {
   });
 
   test('isDarkMode follows systemTheme when themeMode is system', () {
-    final store = ThemeStore(sharedPrefs: prefsService);
+    final store = ThemeStore(settings: appSettings(prefsService));
     expect(store.themeMode, ThemeMode.system);
 
     store.systemTheme = true;
@@ -57,15 +58,15 @@ void main() {
   });
 
   test('persists themeMode across instances via SharedPreferences', () async {
-    final store = ThemeStore(sharedPrefs: prefsService);
+    final store = ThemeStore(settings: appSettings(prefsService));
     await store.setThemeType(ThemeMode.dark);
 
-    final fresh = ThemeStore(sharedPrefs: prefsService);
+    final fresh = ThemeStore(settings: appSettings(prefsService));
     expect(fresh.themeMode, ThemeMode.dark);
   });
 
   test('updateSystemTheme refreshes systemTheme from platform brightness', () async {
-    final store = ThemeStore(sharedPrefs: prefsService);
+    final store = ThemeStore(settings: appSettings(prefsService));
     await store.updateSystemTheme();
     // The exact value depends on the host but the call must not throw.
     expect(store.systemTheme, isA<bool>());

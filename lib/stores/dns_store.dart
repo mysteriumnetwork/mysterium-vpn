@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/enums/blocker_type.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -16,7 +16,7 @@ class DNSStore = _DNSStore with _$DNSStore;
 
 abstract class _DNSStore with Store {
   _DNSStore(
-    this._localDBService,
+    this._settings,
     this._remoteConfigStore,
     this._logger,
     this._authSessionStore,
@@ -35,7 +35,7 @@ abstract class _DNSStore with Store {
     );
   }
 
-  final LocalDBService _localDBService;
+  final ConnectionSettingsRepository _settings;
   final RemoteConfigStore _remoteConfigStore;
   final Talker _logger;
   final AuthSessionStore _authSessionStore;
@@ -101,7 +101,7 @@ abstract class _DNSStore with Store {
   @action
   Future<bool> _getAndSetMalwareBlockerContent() async {
     try {
-      return await _localDBService.getMalwareContentBlocker();
+      return await _settings.malwareContentBlocker();
     } catch (e) {
       _logger.handle(e);
       return false;
@@ -111,7 +111,7 @@ abstract class _DNSStore with Store {
   @action
   Future<bool> _getAndSetNotSafeContentBlocker() async {
     try {
-      return await _localDBService.getNotSafeContentBlocker();
+      return await _settings.notSafeContentBlocker();
     } catch (e) {
       _logger.handle(e);
       return false;
@@ -120,7 +120,7 @@ abstract class _DNSStore with Store {
 
   @action
   Future<void> toggleMalwareBlocker() async {
-    await _localDBService.setMalwareContentBlocker(value: !malwareContentBlocker);
+    await _settings.setMalwareContentBlocker(value: !malwareContentBlocker);
     malwareContentBlockerFuture = ObservableFuture.value(!malwareContentBlocker);
   }
 
@@ -128,10 +128,10 @@ abstract class _DNSStore with Store {
   Future<void> toggleNotSafeContentBlocker() async {
     final value = !notSafeContentBlocker;
     if (value) {
-      await _localDBService.setMalwareContentBlocker(value: value);
+      await _settings.setMalwareContentBlocker(value: value);
       malwareContentBlockerFuture = ObservableFuture.value(value);
     }
-    await _localDBService.setNotSafeContentBlocker(value: value);
+    await _settings.setNotSafeContentBlocker(value: value);
     notSafeContentBlockerFuture = ObservableFuture.value(value);
   }
 

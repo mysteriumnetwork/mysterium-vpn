@@ -36,5 +36,12 @@ abstract class SubscriptionRepository {
 
   Future<bool> isEligibleForIntroOffer(String productId);
 
+  /// The locally remembered payment email and the date it was active until.
+  Future<(String, DateTime)> paymentInfo();
+
+  /// Remembers the payment email and its active-until date. A null
+  /// [activeUntil] is ignored.
+  Future<void> savePaymentInfo({required String email, required DateTime? activeUntil});
+
   Future<void> manageSubscription({required ProductDetails productDetails, required String userId});
 }

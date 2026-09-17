@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/subscription_repository.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';
@@ -26,13 +27,23 @@ class RestSubscriptionRepository extends SubscriptionRepository {
     required api.VpnApi api,
     required InAppPurchase inAppPurchase,
     required Talker logger,
+    required SecureStorageService secureStorage,
   }) : _apiSubscription = api.getSubscription(),
        _inAppPurchase = inAppPurchase,
-       _logger = logger;
+       _logger = logger,
+       _secureStorage = secureStorage;
 
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
+  final SecureStorageService _secureStorage;
+
+  @override
+  Future<(String, DateTime)> paymentInfo() => _secureStorage.getSubscriptionPaymentInfo();
+
+  @override
+  Future<void> savePaymentInfo({required String email, required DateTime? activeUntil}) =>
+      _secureStorage.saveSubscriptionPaymentInfo(email: email, activeUntil: activeUntil);
 
   @override
   Future<Subscription> verifyPurchase({

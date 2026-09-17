@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
 import 'package:mysterium_vpn/services/data/local/box_recovery.dart';
-import 'package:mysterium_vpn/services/data/local/residential_education_storage.dart';
+import 'package:mysterium_vpn/services/residential_education_storage.dart';
 
 /// Construct only after [initialize] has run: Hive boxes are opened there and
 /// read in this class's field initializers.

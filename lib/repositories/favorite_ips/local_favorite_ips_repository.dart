@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/favorite_ips/favorite_ips_repository.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
 /// [FavoriteIpsRepository] backed by [LocalDBService] (Hive) for the saved list

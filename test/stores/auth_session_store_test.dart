@@ -9,7 +9,7 @@ import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'auth_session_store_test.mocks.dart';
