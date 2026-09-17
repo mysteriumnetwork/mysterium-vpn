@@ -3,26 +3,26 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'vpn_protocol_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<LocalDBService>(),
+  MockSpec<ConnectionSettingsRepository>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<AuthSessionStore>(),
 ])
 void main() {
-  late MockLocalDBService mockLocalDBService;
+  late MockConnectionSettingsRepository mockLocalDBService;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockAuthSessionStore mockAuthSessionStore;
   late VpnProtocolStore store;
 
   setUp(() {
-    mockLocalDBService = MockLocalDBService();
+    mockLocalDBService = MockConnectionSettingsRepository();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockAuthSessionStore = MockAuthSessionStore();
@@ -45,33 +45,33 @@ void main() {
   group('getProtocol', () {
     test('returns protocol from localDB when successful', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
-      when(mockLocalDBService.getProtocolType()).thenAnswer((_) async => ProtocolType.openvpn);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.openvpn);
       final result = await store.getProtocol();
       expect(result, ProtocolType.openvpn);
-      verify(mockLocalDBService.getProtocolType()).called(1);
+      verify(mockLocalDBService.protocolType()).called(1);
     });
 
     test('returns wireguard protocol from localDB when successful', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
-      when(mockLocalDBService.getProtocolType()).thenAnswer((_) async => ProtocolType.wireguard);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.wireguard);
       final result = await store.getProtocol();
       expect(result, ProtocolType.wireguard);
-      verify(mockLocalDBService.getProtocolType()).called(1);
+      verify(mockLocalDBService.protocolType()).called(1);
     });
 
     test('returns default protocol (wireguard) when protocol picker is not available', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(false);
       final result = await store.getProtocol();
       expect(result, ProtocolType.wireguard);
-      verifyNever(mockLocalDBService.getProtocolType());
+      verifyNever(mockLocalDBService.protocolType());
     });
 
     test('returns default protocol (wireguard) when localDB throws', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
-      when(mockLocalDBService.getProtocolType()).thenThrow(Exception('fail'));
+      when(mockLocalDBService.protocolType()).thenThrow(Exception('fail'));
       final result = await store.getProtocol();
       expect(result, ProtocolType.wireguard);
-      verify(mockLocalDBService.getProtocolType()).called(1);
+      verify(mockLocalDBService.protocolType()).called(1);
     });
   });
 
@@ -151,7 +151,7 @@ void main() {
 
     test('returns protocol value from protocolFuture when available', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
-      when(mockLocalDBService.getProtocolType()).thenAnswer((_) async => ProtocolType.openvpn);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.openvpn);
 
       store.protocolFuture = ObservableFuture(store.getProtocol());
       await store.protocolFuture;
@@ -179,7 +179,7 @@ void main() {
         newMockAuthSessionStore,
       );
 
-      when(mockLocalDBService.getProtocolType()).thenAnswer((_) async => ProtocolType.openvpn);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.openvpn);
 
       // Simulate authentication status change
       when(newMockAuthSessionStore.status).thenReturn(AuthStatus.authenticated);

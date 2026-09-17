@@ -8,7 +8,8 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,7 @@ void main() {
       subscriptionStore,
       repository,
       service,
-      prefs,
+      LocalNotifierRegistrationRepository(prefs),
       analyticsStore,
       Talker(),
       connectivity: connectivity,
@@ -121,7 +122,7 @@ void main() {
     connectivity = MockConnectivity();
 
     SharedPreferences.setMockInitialValues({});
-    prefs = SharedPreferenceService.instance;
+    prefs = SharedPreferenceService();
     await prefs.init();
 
     tokenController = StreamController<String>.broadcast();
@@ -333,7 +334,7 @@ void main() {
         subscriptionStore,
         repository,
         service,
-        prefs,
+        LocalNotifierRegistrationRepository(prefs),
         analyticsStore,
         Talker(),
         connectivity: connectivity,

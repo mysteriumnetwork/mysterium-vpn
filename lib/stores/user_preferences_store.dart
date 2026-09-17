@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -25,7 +26,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     required ApiService apiService,
     required AnalyticsStore analyticsStore,
     required RealIPInfoStore realIPInfo,
-    required LocalDBService localDBService,
+    required PromptsRepository prompts,
     required PushNotificationsStore pushNotificationsStore,
     required AuthSessionStore authSessionStore,
     required SubscriptionStore subscriptionStore,
@@ -36,7 +37,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
        _apiService = apiService,
        _analyticsStore = analyticsStore,
        _realIPInfo = realIPInfo,
-       localDb = localDBService,
+       _prompts = prompts,
        _pushNotificationsStore = pushNotificationsStore,
        _authSessionStore = authSessionStore,
        _subscriptionStore = subscriptionStore,
@@ -70,7 +71,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   final ApiService _apiService;
   final AnalyticsStore _analyticsStore;
   final RealIPInfoStore _realIPInfo;
-  final LocalDBService localDb;
+  final PromptsRepository _prompts;
   final PushNotificationsStore _pushNotificationsStore;
   final AuthSessionStore _authSessionStore;
   final SubscriptionStore _subscriptionStore;
@@ -192,7 +193,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   }
 
   @action
-  Future<bool> getSubscriptionOnboardingShown() async => localDb.getSubscriptionOnboardingShown();
+  Future<bool> getSubscriptionOnboardingShown() async => _prompts.subscriptionOnboardingShown();
 
   @visibleForTesting
   @action
@@ -205,7 +206,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     if (!_remoteConfigStore.canShowNoSubsOnboardingFlow) {
       return false;
     }
-    final alreadyCompleted = await localDb.getNoneSubsOnboardingCompleted();
+    final alreadyCompleted = await _prompts.noneSubsOnboardingCompleted();
     if (alreadyCompleted) {
       return false;
     }
@@ -222,7 +223,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
 
   @action
   Future<void> setNoneSubsOnboardingCompleted() async {
-    await localDb.setNoneSubsOnboardingCompleted();
+    await _prompts.setNoneSubsOnboardingCompleted();
     await evaluatePromptToShow();
   }
 
@@ -230,17 +231,18 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   /// (default 0 when onboarding has never been opened). Used to resume from
   /// the same step after an interrupted run.
   @action
-  Future<int> getNoneSubsOnboardingStep() async => localDb.getNoneSubsOnboardingStep();
+  Future<int> getNoneSubsOnboardingStep() async => _prompts.noneSubsOnboardingStep();
 
   @action
-  Future<void> setNoneSubsOnboardingStep(int step) async => localDb.setNoneSubsOnboardingStep(step);
+  Future<void> setNoneSubsOnboardingStep(int step) async =>
+      _prompts.setNoneSubsOnboardingStep(step);
 
   @visibleForTesting
   @action
   Future<bool> shouldShowMarketingConsent() async {
     final consentValue = await getMarketingConsentFuture;
-    final consentShown = await localDb.getMarketingConsentShown();
-    final appOpenCount = await localDb.getAppOpenCount();
+    final consentShown = await _prompts.marketingConsentShown();
+    final appOpenCount = await _prompts.appOpenCount();
 
     return consentValue == false && !consentShown && appOpenCount >= 3;
   }
@@ -248,7 +250,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
   @visibleForTesting
   @action
   Future<void> setMarketingConsentShown() async {
-    await localDb.setMarketingConsentShown();
+    await _prompts.setMarketingConsentShown();
   }
 
   // Create a marketing contact in Omnisend

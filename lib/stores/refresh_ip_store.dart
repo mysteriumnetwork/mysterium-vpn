@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/auth/auth_session_store.dart';
 import 'package:talker/talker.dart';
 
@@ -11,7 +11,7 @@ const _initialRefreshIPConnectionValue = true;
 class RefreshIPStore = _RefreshIPStore with _$RefreshIPStore;
 
 abstract class _RefreshIPStore with Store {
-  _RefreshIPStore(this._localDBService, this._logger, this._authSessionStore) {
+  _RefreshIPStore(this._settings, this._logger, this._authSessionStore) {
     _authReactionDisposer = reaction<AuthStatus>(
       (_) => _authSessionStore.status,
       (status) {
@@ -24,7 +24,7 @@ abstract class _RefreshIPStore with Store {
     );
   }
 
-  final LocalDBService _localDBService;
+  final ConnectionSettingsRepository _settings;
   final Talker _logger;
   final AuthSessionStore _authSessionStore;
   ReactionDisposer? _authReactionDisposer;
@@ -42,7 +42,7 @@ abstract class _RefreshIPStore with Store {
   @action
   Future<bool> _getAndSetRefreshIPConnection() async {
     try {
-      return await _localDBService.getRefreshIPConnection();
+      return await _settings.refreshIpOnConnect();
     } catch (e) {
       _logger.handle(e);
       return true;
@@ -52,7 +52,7 @@ abstract class _RefreshIPStore with Store {
   @action
   Future<void> toggleRefreshIPWhenConnecting() async {
     try {
-      await _localDBService.setRefreshIPConnection(refreshIPConnection: !refreshIPConnection);
+      await _settings.setRefreshIpOnConnect(value: !refreshIPConnection);
       refreshIPFuture = ObservableFuture.value(!refreshIPConnection);
     } catch (e) {
       _logger.handle(e);

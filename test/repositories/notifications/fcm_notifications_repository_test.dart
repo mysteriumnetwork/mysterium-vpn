@@ -8,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/fcm_notifications_repository.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +39,7 @@ void main() {
     messaging = MockFirebaseMessaging();
     localNotifications = MockFlutterLocalNotificationsPlugin();
     SharedPreferences.setMockInitialValues({});
-    prefs = SharedPreferenceService.instance;
+    prefs = SharedPreferenceService();
     await prefs.init();
   });
 
@@ -62,7 +63,7 @@ void main() {
     messaging: messaging,
     localNotifications: localNotifications,
     notifierService: notifierService,
-    analyticsStore: analyticsStore,
+    logNonFatal: analyticsStore.logNonFatal,
     isApple: isApple,
   );
 

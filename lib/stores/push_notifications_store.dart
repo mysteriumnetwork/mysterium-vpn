@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
+import 'package:mysterium_vpn/models/models.dart' hide UserData;
 import 'package:mysterium_vpn/repositories/repositories.dart';
-import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -26,7 +24,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     this._logger,
     this._notificationsRepository,
     this._analyticsStore,
-    this._localDb,
+    this._prompts,
     this._remoteConfigStore, {
     bool Function()? supportsPush,
   }) : _supportsPush = supportsPush ?? isPushSupported {
@@ -37,7 +35,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   final Talker _logger;
   final NotificationsRepository _notificationsRepository;
   final AnalyticsStore _analyticsStore;
-  final LocalDBService _localDb;
+  final PromptsRepository _prompts;
   final RemoteConfigStore _remoteConfigStore;
 
   /// Injected so tests can force either answer — the host VM this suite runs on
@@ -196,8 +194,10 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     }
 
     try {
-      await _localDb.setPushNotificationsPromptLastShownAt(DateTime.now());
+      await _prompts.setPushPromptLastShownAt(DateTime.now());
     } catch (e) {
+      // warning, not handle: handle reports fatal to Crashlytics and a failed
+      // prompt-timestamp save is expected.
       _logger.warning('Error saving push notifications prompt timestamp: $e');
     }
   }
@@ -231,7 +231,7 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   Future<bool> _isInCooldownPeriod() async {
     final cooldownHours = _remoteConfigStore.pushNotifPermissionPromptCooldown;
-    final lastShownAt = await _localDb.getPushNotificationsPromptLastShownAt();
+    final lastShownAt = await _prompts.pushPromptLastShownAt();
 
     if (lastShownAt == null) {
       return false;

@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 /// Android notification channel used for every push. Must match
@@ -28,20 +27,20 @@ class FcmNotificationsRepository implements NotificationsRepository {
   FcmNotificationsRepository({
     required Talker logger,
     required NotifierService notifierService,
-    required AnalyticsStore analyticsStore,
+    required NonFatalLogger logNonFatal,
     FirebaseMessaging? messaging,
     FlutterLocalNotificationsPlugin? localNotifications,
     bool? isApple,
   }) : _logger = logger,
        _notifierService = notifierService,
-       _analyticsStore = analyticsStore,
+       _logNonFatal = logNonFatal,
        _messaging = messaging ?? FirebaseMessaging.instance,
        _localNotifications = localNotifications ?? FlutterLocalNotificationsPlugin(),
        _isApple = isApple ?? (Platform.isIOS || Platform.isMacOS);
 
   final Talker _logger;
   final NotifierService _notifierService;
-  final AnalyticsStore _analyticsStore;
+  final NonFatalLogger _logNonFatal;
   final FirebaseMessaging _messaging;
   final FlutterLocalNotificationsPlugin _localNotifications;
   final bool _isApple;
@@ -351,11 +350,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
   }
 
   void _onForegroundMessage(RemoteMessage message) {
-    final notification = mapRemoteMessage(
-      message,
-      logger: _logger,
-      onError: _analyticsStore.logNonFatal,
-    );
+    final notification = mapRemoteMessage(message, logger: _logger, onError: _logNonFatal);
     if (notification == null) {
       return;
     }
@@ -370,11 +365,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// invoke it are static streams.
   @visibleForTesting
   void handleOpened(RemoteMessage message) {
-    final notification = mapRemoteMessage(
-      message,
-      logger: _logger,
-      onError: _analyticsStore.logNonFatal,
-    );
+    final notification = mapRemoteMessage(message, logger: _logger, onError: _logNonFatal);
     if (notification == null) {
       return;
     }
@@ -454,9 +445,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
       // Synchronous throws from the reporter would escape the caller's catch,
       // so `unawaited` alone is not enough protection here.
       unawaited(
-        _analyticsStore
-            .logNonFatal(err: error, stack: stack, reason: 'push: $what')
-            .catchError((Object _) {}),
+        _logNonFatal(err: error, stack: stack, reason: 'push: $what').catchError((Object _) {}),
       );
     } catch (_) {}
   }

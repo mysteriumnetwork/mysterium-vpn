@@ -11,7 +11,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:talker/talker.dart';
@@ -24,7 +24,6 @@ class SubscriptionPurchaseStore = _SubscriptionPurchaseStore with _$Subscription
 abstract class _SubscriptionPurchaseStore with Store, Disposeable {
   _SubscriptionPurchaseStore(
     this._inAppPurchase,
-    this._secureStorageService,
     this._subscriptionService,
     this._logger,
     this._analyticsStore,
@@ -36,8 +35,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
   }
 
   final InAppPurchase _inAppPurchase;
-  final SecureStorageService _secureStorageService;
-  final SubscriptionService _subscriptionService;
+  final SubscriptionRepository _subscriptionService;
   final Talker _logger;
 
   final AnalyticsStore _analyticsStore;
@@ -280,7 +278,7 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
           }
         }
         _subscriptionStatus = SubscriptionStatus.purchased;
-        await _secureStorageService.saveSubscriptionPaymentInfo(
+        await _subscriptionService.savePaymentInfo(
           email: _authSessionStore.user!.username,
           activeUntil: subscription.activeUntil,
         );

@@ -8,6 +8,7 @@ export 'gateway.dart';
 export 'ip_info.dart';
 export 'location.dart';
 export 'map_config.dart';
+export 'news_item.dart';
 export 'notifier_device.dart';
 export 'pkce.dart';
 export 'product_offer.dart';

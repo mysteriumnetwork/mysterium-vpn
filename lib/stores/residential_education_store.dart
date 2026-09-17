@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/services/data/local/residential_education_storage.dart';
+import 'package:mysterium_vpn/services/residential_education_storage.dart';
 
 /// What the education trigger should present after a residential connection
 /// has been confirmed connected for the dwell window.

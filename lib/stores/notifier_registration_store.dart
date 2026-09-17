@@ -10,7 +10,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart' hide UserData;
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
@@ -35,7 +35,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     this._subscriptionStore,
     this._repository,
     this._service,
-    this._prefs,
+    this._registration,
     this._analyticsStore,
     this._logger, {
     Connectivity? connectivity,
@@ -50,7 +50,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   final SubscriptionStore _subscriptionStore;
   final NotificationsRepository _repository;
   final NotifierService _service;
-  final SharedPreferenceService _prefs;
+  final NotifierRegistrationRepository _registration;
   final AnalyticsStore _analyticsStore;
   final Talker _logger;
   final Connectivity _connectivity;
@@ -132,7 +132,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'permission stream')),
       _connectivity.onConnectivityChanged.listen((results) async {
         // Only worth retrying if something is actually outstanding.
-        if (results.hasConnectivity && (_prefs.getNotifierRegistration()?.pending ?? false)) {
+        if (results.hasConnectivity && (_registration.read()?.pending ?? false)) {
           await syncRegistration();
         }
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'connectivity stream')),
@@ -162,7 +162,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
 
-    final stored = _prefs.getNotifierRegistration();
+    final stored = _registration.read();
     if (stored != null && !stored.pending && stored.matches(desired)) {
       return;
     }
@@ -176,7 +176,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
         token: desired.token,
         platform: desired.platform,
       );
-      await _prefs.setNotifierRegistration(desired);
+      await _registration.save(desired);
       _analyticsStore.logEvent(AnalyticsEvent.pushDeviceRegistrationSucceeded);
       registered = desired;
     } catch (e, stack) {
@@ -212,7 +212,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     // is local — so run them concurrently, each guarded so one failing cannot
     // skip the other.
     await Future.wait([
-      _guard('Clearing Notifier registration state', _prefs.clearNotifierRegistration),
+      _guard('Clearing Notifier registration state', _registration.clear),
       _guard('Clearing the push token', _repository.clearToken),
     ]);
   }
@@ -247,7 +247,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     if (_attributesInFlight || !Env.notifierConfigured) {
       return;
     }
-    final stored = known ?? _prefs.getNotifierRegistration();
+    final stored = known ?? _registration.read();
     if (stored == null || stored.pending) {
       return;
     }
@@ -311,7 +311,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
 
   Future<void> _markPending(NotifierRegistration desired) async {
     try {
-      await _prefs.setNotifierRegistration(desired.copyWith(pending: true));
+      await _registration.save(desired.copyWith(pending: true));
     } catch (e, stack) {
       // Losing this flag loses the retry, so it is not merely cosmetic.
       _reportUnexpected(e, stack, 'persisting pending registration');

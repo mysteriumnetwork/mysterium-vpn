@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'banners_store_test.mocks.dart';
@@ -13,14 +13,14 @@ import 'banners_store_test.mocks.dart';
   MockSpec<SubscriptionStore>(),
   MockSpec<LocationsStore>(),
   MockSpec<AuthSessionStore>(),
-  MockSpec<LocalDBService>(),
+  MockSpec<PromptsRepository>(),
   MockSpec<ConnectionsLimitStore>(),
   MockSpec<UpdateAvailableStore>(),
 ])
 void main() {
   group('BannersStore', () {
     late BannersStore bannersStore;
-    late MockLocalDBService mockLocalDBService;
+    late MockPromptsRepository mockPrompts;
     late MockSubscriptionStore mockSubscriptionStore;
     late MockAuthSessionStore mockAuthSessionStore;
     late MockConnectionsLimitStore mockConnectionsLimitStore;
@@ -28,21 +28,20 @@ void main() {
     late MockUpdateAvailableStore mockUpdateAvailableStore;
 
     setUp(() async {
-      mockLocalDBService = MockLocalDBService();
+      mockPrompts = MockPromptsRepository();
       mockSubscriptionStore = MockSubscriptionStore();
       mockAuthSessionStore = MockAuthSessionStore();
       mockConnectionsLimitStore = MockConnectionsLimitStore();
 
-      when(mockLocalDBService.getShownBanners()).thenAnswer((_) async => <BannerType>[]);
+      when(mockPrompts.shownBanners()).thenAnswer((_) async => <BannerType>[]);
       mockUpdateAvailableStore = MockUpdateAvailableStore();
       when(
         mockSubscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription(active: false)));
-      when(mockLocalDBService.getMainBanners()).thenAnswer((_) async => <BannerType>[]);
       when(mockSubscriptionStore.isSubscribed).thenReturn(true);
       when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
       bannersStore = BannersStore(
-        mockLocalDBService,
+        mockPrompts,
         mockSubscriptionStore,
         mockAuthSessionStore,
         mockConnectionsLimitStore,
@@ -71,9 +70,6 @@ void main() {
       });
 
       test('excludes shown banners from the list', () async {
-        when(
-          mockLocalDBService.getMainBanners(),
-        ).thenAnswer((_) async => [BannerType.highSpeedIPs]);
         when(mockSubscriptionStore.isSubscribed).thenReturn(false);
         when(mockUpdateAvailableStore.appUpdateAvailable).thenReturn(true);
         when(mockConnectionsLimitStore.connectionLimitReached).thenReturn(true);

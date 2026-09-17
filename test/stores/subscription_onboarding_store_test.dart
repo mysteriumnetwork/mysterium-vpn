@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'subscription_onboarding_store_test.mocks.dart';
@@ -12,24 +12,24 @@ import 'subscription_onboarding_store_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<AnalyticsStore>(),
   MockSpec<SubscriptionStore>(),
-  MockSpec<LocalDBService>(),
+  MockSpec<PromptsRepository>(),
   MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockAnalyticsStore analyticsStore;
   late MockSubscriptionStore subscriptionStore;
-  late MockLocalDBService localDBService;
+  late MockPromptsRepository localDBService;
   late MockRemoteConfigStore remoteConfigStore;
   late SubscriptionOnboardingStore store;
 
   setUp(() {
     analyticsStore = MockAnalyticsStore();
     subscriptionStore = MockSubscriptionStore();
-    localDBService = MockLocalDBService();
+    localDBService = MockPromptsRepository();
     remoteConfigStore = MockRemoteConfigStore();
 
     when(remoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
-    when(localDBService.getSubscriptionOnboardingShown()).thenAnswer((_) async => false);
+    when(localDBService.subscriptionOnboardingShown()).thenAnswer((_) async => false);
     when(localDBService.setSubscriptionOnboardingShown()).thenAnswer((_) async {});
     when(
       subscriptionStore.subscriptionFuture,
@@ -38,7 +38,7 @@ void main() {
     store = SubscriptionOnboardingStore(
       analyticsStore: analyticsStore,
       subscriptionStore: subscriptionStore,
-      localDBService: localDBService,
+      prompts: localDBService,
       remoteConfigStore: remoteConfigStore,
     );
   });
@@ -52,13 +52,13 @@ void main() {
 
     // assert
     expect(result, isFalse);
-    verifyNever(localDBService.getSubscriptionOnboardingShown());
+    verifyNever(localDBService.subscriptionOnboardingShown());
     verifyNever(subscriptionStore.subscriptionFuture);
   });
 
   test('shouldShow returns false when onboarding was already shown', () async {
     //arrange
-    when(localDBService.getSubscriptionOnboardingShown()).thenAnswer((_) async => true);
+    when(localDBService.subscriptionOnboardingShown()).thenAnswer((_) async => true);
 
     // act
     final result = await store.shouldShow();

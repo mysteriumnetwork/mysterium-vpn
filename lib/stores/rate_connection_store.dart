@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 part 'rate_connection_store.g.dart';
 
@@ -13,16 +12,16 @@ abstract class _RateConnectionStore with Store {
 
   final AnalyticsStore _analyticsStore;
   final VpnStore _vpnStore;
-  final RateConnectionRequestModeEnum _rateConnectionMode;
+  final RateConnectionMode _rateConnectionMode;
 
   final ObservableList<RateConnectionReason> _rateConnectionReasons =
       ObservableList<RateConnectionReason>();
 
   @computed
-  bool get isLikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.like;
+  bool get isLikeMode => _rateConnectionMode == RateConnectionMode.like;
 
   @computed
-  bool get isDislikeMode => _rateConnectionMode == RateConnectionRequestModeEnum.dislike;
+  bool get isDislikeMode => _rateConnectionMode == RateConnectionMode.dislike;
 
   @computed
   List<RateConnectionReason> get selectedReasons => _rateConnectionReasons.toList();

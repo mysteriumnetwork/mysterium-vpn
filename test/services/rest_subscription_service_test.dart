@@ -3,13 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/services/subscription/rest_subscription_service.dart';
+import 'package:mysterium_vpn/repositories/subscription/rest_subscription_repository.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
 import 'rest_subscription_service_test.mocks.dart';
 
 @GenerateNiceMocks([
+  MockSpec<SecureStorageService>(),
   MockSpec<api.VpnApi>(),
   MockSpec<api.Subscription>(),
   MockSpec<InAppPurchase>(),
@@ -20,7 +22,7 @@ void main() {
   late MockSubscription apiSubscription;
   late MockInAppPurchase inAppPurchase;
   late MockTalker logger;
-  late RestSubscriptionService service;
+  late RestSubscriptionRepository service;
 
   setUp(() {
     vpnApi = MockVpnApi();
@@ -30,7 +32,12 @@ void main() {
 
     when(vpnApi.getSubscription()).thenReturn(apiSubscription);
 
-    service = RestSubscriptionService(api: vpnApi, inAppPurchase: inAppPurchase, logger: logger);
+    service = RestSubscriptionRepository(
+      api: vpnApi,
+      inAppPurchase: inAppPurchase,
+      logger: logger,
+      secureStorage: MockSecureStorageService(),
+    );
   });
 
   Response<T> response<T>(int code, T data) =>

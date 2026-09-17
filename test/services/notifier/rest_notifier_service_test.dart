@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
-import 'package:mysterium_vpn/services/services.dart' hide Response;
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 
 import 'rest_notifier_service_test.mocks.dart';

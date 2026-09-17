@@ -1,13 +1,14 @@
-import 'package:vpn_api/vpn_api.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
 
 /// Feed item fixture. [id] drives the title/summary text the widget tests match
 /// on, so `newsItem(1)` renders as "Title 1" / "Message 1".
-NewscenterInboxListResponseItem newsItem(
+NewsItem newsItem(
   int id, {
-  NewscenterCategory category = NewscenterCategory.news,
+  NewsCategory category = NewsCategory.news,
   String? webViewUrl,
   DateTime? createdAt,
-}) => NewscenterInboxListResponseItem(
+}) => NewsItem(
   id: id,
   category: category,
   title: 'Title $id',

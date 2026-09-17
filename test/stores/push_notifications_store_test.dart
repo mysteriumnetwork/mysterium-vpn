@@ -6,8 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/repositories/notifications/notifications_repository.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -17,7 +16,7 @@ import 'push_notifications_store_test.mocks.dart';
   MockSpec<NotificationsRepository>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<Talker>(),
-  MockSpec<LocalDBService>(),
+  MockSpec<PromptsRepository>(),
   MockSpec<RemoteConfigStore>(),
 ])
 void main() {
@@ -25,7 +24,7 @@ void main() {
   late MockNotificationsRepository repository;
   late MockAnalyticsStore analyticsStore;
   late MockTalker logger;
-  late MockLocalDBService localDb;
+  late MockPromptsRepository prompts;
   late MockRemoteConfigStore remoteConfigStore;
 
   late StreamController<bool> permissionController;
@@ -46,7 +45,7 @@ void main() {
     logger,
     repository,
     analyticsStore,
-    localDb,
+    prompts,
     remoteConfigStore,
     supportsPush: () => supportsPush,
   );
@@ -55,7 +54,7 @@ void main() {
     repository = MockNotificationsRepository();
     analyticsStore = MockAnalyticsStore();
     logger = MockTalker();
-    localDb = MockLocalDBService();
+    prompts = MockPromptsRepository();
     remoteConfigStore = MockRemoteConfigStore();
 
     permissionController = StreamController<bool>.broadcast();
@@ -71,8 +70,8 @@ void main() {
     when(repository.canRequestPermission()).thenAnswer((_) async => true);
     when(repository.openAppNotificationsSettings()).thenAnswer((_) async {});
 
-    when(localDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => null);
-    when(localDb.setPushNotificationsPromptLastShownAt(any)).thenAnswer((_) async {});
+    when(prompts.pushPromptLastShownAt()).thenAnswer((_) async => null);
+    when(prompts.setPushPromptLastShownAt(any)).thenAnswer((_) async {});
     when(remoteConfigStore.pushNotifPermissionPromptCooldown).thenReturn(24);
 
     store = build();
@@ -109,7 +108,7 @@ void main() {
     });
 
     test('should not show during the cooldown', () async {
-      when(localDb.getPushNotificationsPromptLastShownAt()).thenAnswer((_) async => DateTime.now());
+      when(prompts.pushPromptLastShownAt()).thenAnswer((_) async => DateTime.now());
 
       expect(await store.shouldShowPushNotificationsPermissionPrompt(), isFalse);
     });
@@ -139,7 +138,7 @@ void main() {
       await store.setPushNotificationsShown(userAllowed: true);
 
       verify(repository.requestPermission()).called(1);
-      verify(localDb.setPushNotificationsPromptLastShownAt(any)).called(1);
+      verify(prompts.setPushPromptLastShownAt(any)).called(1);
     });
 
     test('logs push_permission_requested before showing the system prompt', () async {
@@ -157,7 +156,7 @@ void main() {
       await store.setPushNotificationsShown(userAllowed: false);
 
       verifyNever(repository.requestPermission());
-      verify(localDb.setPushNotificationsPromptLastShownAt(any)).called(1);
+      verify(prompts.setPushPromptLastShownAt(any)).called(1);
     });
 
     test('requests permission when it can still be requested', () async {

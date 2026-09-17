@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -13,7 +14,7 @@ import 'user_preferences_store_test.mocks.dart';
   MockSpec<ApiService>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<RealIPInfoStore>(),
-  MockSpec<LocalDBService>(),
+  MockSpec<PromptsRepository>(),
   MockSpec<PushNotificationsStore>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
@@ -25,7 +26,7 @@ void main() {
   late MockApiService mockApiService;
   late MockAnalyticsStore mockAnalyticsStore;
   late MockRealIPInfoStore mockRealIPInfoStore;
-  late MockLocalDBService mockLocalDBService;
+  late MockPromptsRepository mockPrompts;
   late MockPushNotificationsStore mockPushNotificationsStore;
   late MockAuthSessionStore mockAuthSessionStore;
   late MockSubscriptionStore mockSubscriptionStore;
@@ -35,7 +36,7 @@ void main() {
     apiService: mockApiService,
     analyticsStore: mockAnalyticsStore,
     realIPInfo: mockRealIPInfoStore,
-    localDBService: mockLocalDBService,
+    prompts: mockPrompts,
     pushNotificationsStore: mockPushNotificationsStore,
     authSessionStore: mockAuthSessionStore,
     subscriptionStore: mockSubscriptionStore,
@@ -48,7 +49,7 @@ void main() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
     mockRealIPInfoStore = MockRealIPInfoStore();
-    mockLocalDBService = MockLocalDBService();
+    mockPrompts = MockPromptsRepository();
     mockPushNotificationsStore = MockPushNotificationsStore();
     mockAuthSessionStore = MockAuthSessionStore();
     mockSubscriptionStore = MockSubscriptionStore();
@@ -69,11 +70,11 @@ void main() {
       mockApiService.createMarketingContact(country: anyNamed('country')),
     ).thenAnswer((_) async => {});
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
-    when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-    when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 0);
+    when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+    when(mockPrompts.appOpenCount()).thenAnswer((_) async => 0);
     // Default: noneSubsOnboarding has already been shown so it doesn't fire in
     // unrelated tests. Tests that exercise the onboarding flow override this.
-    when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
+    when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => true);
     when(
       mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
     ).thenAnswer((_) async => false);
@@ -114,8 +115,8 @@ void main() {
       ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => false);
@@ -161,8 +162,8 @@ void main() {
   group('App Open Count', () {
     test('appOpenCount from localDb is used in prompt evaluation', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       final result = await store.shouldShowMarketingConsent();
       expect(result, isTrue);
@@ -275,21 +276,21 @@ void main() {
     });
 
     test('getNoneSubsOnboardingStep delegates to localDb', () async {
-      when(mockLocalDBService.getNoneSubsOnboardingStep()).thenAnswer((_) async => 2);
+      when(mockPrompts.noneSubsOnboardingStep()).thenAnswer((_) async => 2);
 
       final step = await store.getNoneSubsOnboardingStep();
 
       expect(step, 2);
-      verify(mockLocalDBService.getNoneSubsOnboardingStep()).called(1);
+      verify(mockPrompts.noneSubsOnboardingStep()).called(1);
     });
 
     test('setNoneSubsOnboardingStep persists the step without re-evaluating prompts', () async {
       await store.setNoneSubsOnboardingStep(1);
 
-      verify(mockLocalDBService.setNoneSubsOnboardingStep(1)).called(1);
+      verify(mockPrompts.setNoneSubsOnboardingStep(1)).called(1);
       // Step updates happen mid-dialog and must not cascade into prompt
       // re-evaluation (which would otherwise short-circuit other prompts).
-      verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+      verifyNever(mockPrompts.noneSubsOnboardingCompleted());
     });
 
     test('setSubscriptionOnboardingShown delegates to subscription onboarding store', () async {
@@ -299,7 +300,7 @@ void main() {
     });
 
     test('shouldShowNoneSubsOnboarding skips when already completed', () async {
-      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => true);
+      when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => true);
       expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
     });
 
@@ -307,7 +308,7 @@ void main() {
       // FF kill switch wins even if the user has never completed onboarding
       // and has no active subscription.
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
-      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
       when(
         mockSubscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
@@ -316,7 +317,7 @@ void main() {
 
       // FF short-circuits — neither the persistence layer nor the
       // subscription fetch should be consulted.
-      verifyNever(mockLocalDBService.getNoneSubsOnboardingCompleted());
+      verifyNever(mockPrompts.noneSubsOnboardingCompleted());
       verifyNever(mockSubscriptionStore.subscriptionFuture);
     });
 
@@ -324,7 +325,7 @@ void main() {
       'shouldShowNoneSubsOnboarding returns true when FF on, not completed, no subscription',
       () async {
         when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
-        when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+        when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
         when(
           mockSubscriptionStore.subscriptionFuture,
         ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
@@ -338,7 +339,7 @@ void main() {
       () async {
         // Protect paying users from seeing the non-subscriber pitch.
         when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
-        when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+        when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
         when(mockSubscriptionStore.subscriptionFuture).thenAnswer(
           (_) =>
               ObservableFuture.value(Subscription(active: true, expired: false, recurring: true)),
@@ -352,7 +353,7 @@ void main() {
       // Offline / API errors must not flash onboarding at a possibly-paying
       // user; eligibility is re-evaluated on the next launch.
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
-      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
       when(
         mockSubscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
@@ -363,15 +364,15 @@ void main() {
     test('evaluatePromptToShow falls through to marketing when FF disables onboarding', () async {
       // Onboarding would normally be eligible (not completed, no active sub).
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
-      when(mockLocalDBService.getNoneSubsOnboardingCompleted()).thenAnswer((_) async => false);
+      when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
       when(
         mockSubscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
       // Marketing consent is eligible (3rd app open, no consent yet).
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       await store.evaluatePromptToShow();
 
@@ -382,8 +383,8 @@ void main() {
       when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => true);
 
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => true);
@@ -401,8 +402,8 @@ void main() {
         when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
 
         store.getMarketingConsentFuture = ObservableFuture.value(false);
-        when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-        when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+        when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+        when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
         // act
         await store.evaluatePromptToShow();
@@ -454,8 +455,8 @@ void main() {
       store
         ..getMarketingConsentFuture = ObservableFuture.value(false)
         ..anyPromptShownThisSession = true;
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       await store.evaluatePromptToShow();
 
@@ -465,8 +466,8 @@ void main() {
     test('only one prompt can be shown per session — second evaluation yields none', () async {
       // First evaluation triggers marketingConsent
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => true);
@@ -486,8 +487,8 @@ void main() {
   group('Marketing Consent', () {
     test('shouldShowMarketingConsent returns false if consent is true', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(true);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       final result = await store.shouldShowMarketingConsent();
       expect(result, isFalse);
@@ -495,8 +496,8 @@ void main() {
 
     test('shouldShowMarketingConsent returns false if already shown', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       final result = await store.shouldShowMarketingConsent();
       expect(result, isFalse);
@@ -504,8 +505,8 @@ void main() {
 
     test('shouldShowMarketingConsent returns false if app open count is less than 3', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 2);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 2);
 
       final result = await store.shouldShowMarketingConsent();
       expect(result, isFalse);
@@ -513,8 +514,8 @@ void main() {
 
     test('shouldShowMarketingConsent returns true on 3rd open and beyond', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       final result = await store.shouldShowMarketingConsent();
       expect(result, isTrue);
@@ -522,19 +523,19 @@ void main() {
 
     test('shouldShowMarketingConsent returns true on 4th open if not shown yet', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 4);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 4);
 
       final result = await store.shouldShowMarketingConsent();
       expect(result, isTrue);
     });
 
     test('setMarketingConsentShown calls localDb', () async {
-      when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
+      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
 
       await store.setMarketingConsentShown();
 
-      verify(mockLocalDBService.setMarketingConsentShown()).called(1);
+      verify(mockPrompts.setMarketingConsentShown()).called(1);
     });
 
     test('createMarketingContact logs success event', () async {
@@ -573,11 +574,11 @@ void main() {
 
     test('updateMarketingContact calls setMarketingConsentShown when fromPopup is true', () async {
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
-      when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
+      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
 
       await store.updateMarketingContact(consent: true, fromPopup: true);
 
-      verify(mockLocalDBService.setMarketingConsentShown()).called(1);
+      verify(mockPrompts.setMarketingConsentShown()).called(1);
     });
 
     test(
@@ -587,14 +588,14 @@ void main() {
 
         await store.updateMarketingContact(consent: true);
 
-        verifyNever(mockLocalDBService.setMarketingConsentShown());
+        verifyNever(mockPrompts.setMarketingConsentShown());
       },
     );
 
     test('updateMarketingContact does not re-evaluate prompts after setting shown', () async {
       store.nextPromptToShow = UserPromptType.marketingConsent;
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
-      when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
+      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
 
       await store.updateMarketingContact(consent: true, fromPopup: true);
 
@@ -682,8 +683,8 @@ void main() {
   group('Next Prompt Logic', () {
     test('evaluatePromptToShow prioritizes marketing consent over push notifications', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => true);
@@ -696,8 +697,8 @@ void main() {
 
     test('evaluatePromptToShow shows push when marketing not needed', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => true);
@@ -709,8 +710,8 @@ void main() {
 
     test('evaluatePromptToShow shows none when marketing consent already shown', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => false);
@@ -722,8 +723,8 @@ void main() {
 
     test('evaluatePromptToShow shows none when all prompts done', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(true);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => true);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => false);
@@ -736,8 +737,8 @@ void main() {
     test('evaluatePromptToShow shows marketing on non-mobile', () async {
       store = buildStore(supportsPush: false)
         ..getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => false);
@@ -750,8 +751,8 @@ void main() {
 
     test('evaluatePromptToShow shows none when not 3rd app open', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 2);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 2);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => false);
@@ -763,8 +764,8 @@ void main() {
 
     test('evaluatePromptToShow shows push on 1st open if eligible', () async {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getMarketingConsentShown()).thenAnswer((_) async => false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 1);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 1);
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => true);
@@ -781,10 +782,10 @@ void main() {
       store
         ..nextPromptToShow = UserPromptType.marketingConsent
         ..getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockLocalDBService.getAppOpenCount()).thenAnswer((_) async => 3);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
-      when(mockLocalDBService.setMarketingConsentShown()).thenAnswer((_) async {});
+      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
       when(
         mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
       ).thenAnswer((_) async => true);
