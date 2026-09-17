@@ -10,15 +10,10 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// Single source of truth for this installation's device id: a truncated
 /// SHA-256 digest, derived once from the platform and then persisted.
+// ignore: one_member_abstracts
 abstract class DeviceIdRepository {
   /// The stored device id, deriving and persisting one if none is valid yet.
   Future<String> getDeviceId();
-
-  /// Whether [deviceId] is a valid truncated SHA-256 digest.
-  bool isSha256Digest(String? deviceId);
-
-  /// Derives an id from platform device info. Exposed for the fallback path.
-  Future<String> getDeviceIdFromDeviceInfo({TargetPlatform? platform});
 }
 
 /// [DeviceIdRepository] backed by flutter_udid / device_info_plus for the raw
@@ -66,7 +61,8 @@ class PlatformDeviceIdRepository implements DeviceIdRepository {
   }
 
   /// Check if the provided deviceId is a valid truncated SHA-256 digest
-  @override
+  /// Whether [deviceId] is a valid truncated SHA-256 digest.
+  @visibleForTesting
   bool isSha256Digest(String? deviceId) {
     if (deviceId == null || deviceId.isEmpty) {
       return false;
@@ -105,7 +101,8 @@ class PlatformDeviceIdRepository implements DeviceIdRepository {
     return null;
   }
 
-  @override
+  /// Derives an id from platform device info — the fallback path.
+  @visibleForTesting
   Future<String> getDeviceIdFromDeviceInfo({TargetPlatform? platform}) async {
     try {
       final currentPlatform = platform ?? defaultTargetPlatform;

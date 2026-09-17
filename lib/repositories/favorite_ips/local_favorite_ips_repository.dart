@@ -33,15 +33,17 @@ class LocalFavoriteIpsRepository implements FavoriteIpsRepository {
   Future<void> save(List<FavoriteIp> favorites) => _db.setFavoriteIps(favorites);
 
   @override
-  Future<Map<String, bool>?> availability(List<String> ips, {bool force = false}) =>
-      _inFlight ??= _availability(ips, force: force).whenComplete(() => _inFlight = null);
-
-  Future<Map<String, bool>?> _availability(List<String> ips, {required bool force}) async {
+  Future<Map<String, bool>?> availability(List<String> ips, {bool force = false}) {
+    // Checked before the dedup so a fresh result costs a field compare rather
+    // than two futures — the favorites tab remounts often.
     final checkedAt = _checkedAt;
     if (!force && checkedAt != null && DateTime.now().difference(checkedAt) < availabilityTtl) {
-      return null;
+      return Future.value();
     }
+    return _inFlight ??= _availability(ips).whenComplete(() => _inFlight = null);
+  }
 
+  Future<Map<String, bool>?> _availability(List<String> ips) async {
     final result = await _availabilityService.checkAvailability(ips);
     _checkedAt = DateTime.now();
     return result;

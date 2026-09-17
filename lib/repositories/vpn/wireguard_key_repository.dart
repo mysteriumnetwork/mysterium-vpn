@@ -64,7 +64,7 @@ class WireguardKeyRepository {
         hint: Hint.withMap({'message': 'Failed to get Wireguard keys from storage'}),
       );
       analyticsLogger(
-        AnalyticsEvent.getWireguardKeyError,
+        AnalyticsEvent.getWireguradKeyError,
         parameters: {
           'error': e.toString(),
           'stackTrace': s.toString(),

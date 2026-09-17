@@ -110,7 +110,10 @@ enum AnalyticsEvent {
   paymentSuccess6m,
   paymentSuccess1y,
   subscriptionCancellationSurvey,
-  getWireguardKeyError,
+  // Misspelling is deliberate: `name.toSnakeCase` is the GA4 event name, so
+  // correcting it would split the metric from the historical series.
+  // ignore: constant_identifier_names
+  getWireguradKeyError,
   wireguardKeyUnavailable,
   wireguardKeysDoNotMatch,
   createMarketingContactSuccess,

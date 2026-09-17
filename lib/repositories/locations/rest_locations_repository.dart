@@ -6,10 +6,6 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
-/// Reports whether the user is currently authenticated, so the repository can
-/// refuse to cache an unauthenticated response.
-typedef IsAuthenticated = bool Function();
-
 /// [LocationsRepository] backed by the `vpn_api` connection endpoint for the
 /// feed and [LocalDBService] (Hive) for the cache.
 class RestLocationsRepository implements LocationsRepository {
@@ -17,20 +13,20 @@ class RestLocationsRepository implements LocationsRepository {
     required Connection connection,
     required LocalDBService db,
     required Talker logger,
-    required IsAuthenticated isAuthenticated,
+    required AuthSessionGateway session,
   }) : _connection = connection,
        _db = db,
        _logger = logger,
-       _isAuthenticated = isAuthenticated;
+       _session = session;
 
   final Connection _connection;
   final LocalDBService _db;
   final Talker _logger;
-  final IsAuthenticated _isAuthenticated;
+  final AuthSessionGateway _session;
 
   @override
   Future<VPNLocations> fetch(IPType ipType) async {
-    final wasAuthenticated = _isAuthenticated();
+    final wasAuthenticated = _session.isAuthenticated;
 
     try {
       final response = await _connection.connectionLocations(
@@ -51,7 +47,7 @@ class RestLocationsRepository implements LocationsRepository {
       // is_available=false and would poison the cache for the next reader.
       // Check both pre- and post-request auth state to also catch a logout
       // that races a request that's already in flight.
-      if (wasAuthenticated && _isAuthenticated()) {
+      if (wasAuthenticated && _session.isAuthenticated) {
         await _db.setLocations(data, type: ipType);
       }
       return data;

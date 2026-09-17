@@ -18,6 +18,11 @@ class FavoriteIpsStore = _FavoriteIpsStore with _$FavoriteIpsStore;
 
 abstract class _FavoriteIpsStore with Store {
   _FavoriteIpsStore(this._repository, this._subscription, this._remoteConfig, this._analytics) {
+    // The availability map lives here but its freshness window lives in the
+    // repository, which outlives this store (logout invalidates the store, not
+    // the repository). Drop the window so a new store always refetches instead
+    // of reading an empty map as "everything available".
+    _repository.invalidateAvailability();
     // Availability is refreshed when the Favorite tab is opened (view) or
     // explicitly (refresh button / pull) — not here: the user-data stream
     // fires on every unrelated write (e.g. recents after each connect).
@@ -190,14 +195,19 @@ abstract class _FavoriteIpsStore with Store {
     await _repository.save(const <FavoriteIp>[]);
   }
 
+  Future<bool>? _availabilityRefresh;
+
   /// Refreshes per-IP availability, reporting success.
   ///
-  /// Concurrent callers share one request, and a result that is still fresh
-  /// (see `LocalFavoriteIpsRepository.availabilityTtl`) is reused instead of
-  /// re-requesting. Pass [force] for user-triggered refreshes, which must
-  /// always hit the backend. On failure the previous map is kept so favorites
-  /// stay tappable and connect surfaces the error.
-  Future<bool> refreshAvailability({bool force = false}) => _refreshAvailability(force: force);
+  /// Concurrent callers share one refresh, and a result that is still fresh
+  /// is reused instead of re-requesting. The repository dedups the request
+  /// itself; sharing here also shares the commit and analytics tail, which
+  /// would otherwise log one unavailable-shown event per caller. Pass [force]
+  /// for user-triggered refreshes, which must always hit the backend. On
+  /// failure the previous map is kept so favorites stay tappable and connect
+  /// surfaces the error.
+  Future<bool> refreshAvailability({bool force = false}) => _availabilityRefresh ??=
+      _refreshAvailability(force: force).whenComplete(() => _availabilityRefresh = null);
 
   @action
   Future<bool> _refreshAvailability({required bool force}) async {
