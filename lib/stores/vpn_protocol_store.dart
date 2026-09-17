@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/data/local/local_db_service.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
@@ -16,7 +16,7 @@ class VpnProtocolStore = _VpnProtocolStore with _$VpnProtocolStore;
 
 abstract class _VpnProtocolStore with Store {
   _VpnProtocolStore(
-    this._localDB,
+    this._settings,
     this._analyticsStore,
     this._remoteConfigStore,
     this._authSessionStore,
@@ -33,7 +33,7 @@ abstract class _VpnProtocolStore with Store {
     );
   }
 
-  final LocalDBService _localDB;
+  final ConnectionSettingsRepository _settings;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   ReactionDisposer? _authReactionDisposer;
@@ -55,7 +55,7 @@ abstract class _VpnProtocolStore with Store {
       if (!_remoteConfigStore.isProtocolPickerAvailable) {
         return _defaultProtocol;
       }
-      final protocol = await _localDB.getProtocolType();
+      final protocol = await _settings.protocolType();
       _analyticsStore.setUserProperty(
         AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.protocol, value: protocol.name),
       );
@@ -80,7 +80,7 @@ abstract class _VpnProtocolStore with Store {
     }
     try {
       protocolFuture = ObservableFuture.value(newProtocol);
-      await _localDB.setProtocolType(newProtocol);
+      await _settings.setProtocolType(newProtocol);
       _analyticsStore.logEvent(
         AnalyticsEvent.changeProtocolType,
         parameters: {'protocol': newProtocol.name},

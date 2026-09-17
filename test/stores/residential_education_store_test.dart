@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/services/data/local/residential_education_storage.dart';
+import 'package:mysterium_vpn/services/residential_education_storage.dart';
 import 'package:mysterium_vpn/stores/residential_education_store.dart';
 
 /// In-memory [ResidentialEducationStorage] for deterministic unit tests.

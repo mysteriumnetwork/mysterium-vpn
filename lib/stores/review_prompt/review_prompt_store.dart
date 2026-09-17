@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'review_prompt_store.g.dart';
@@ -16,13 +16,13 @@ part 'review_prompt_store.g.dart';
 /// session and evaluates eligibility + suppression. When the user is eligible
 /// and nothing blocks the prompt, `pendingPrompt` flips to `true` and the home
 /// autorun surfaces the modal. All persisted state (counters, cooldown, yearly
-/// cap) lives in [SharedPreferenceService] so it survives restarts.
+/// cap) lives in [ReviewPromptRepository] so it survives restarts.
 // ignore: library_private_types_in_public_api
 class ReviewPromptStore = _ReviewPromptStore with _$ReviewPromptStore;
 
 abstract class _ReviewPromptStore with Store {
   _ReviewPromptStore({
-    required SharedPreferenceService prefs,
+    required ReviewPromptRepository prefs,
     required RemoteConfigStore remoteConfigStore,
     required AnalyticsStore analyticsStore,
     required VpnStore vpnStore,
@@ -41,7 +41,7 @@ abstract class _ReviewPromptStore with Store {
        _didCrashRecently = didCrashRecently ?? (() => false),
        _canShowNativeReview = canShowNativeReview ?? (() async => true);
 
-  final SharedPreferenceService _prefs;
+  final ReviewPromptRepository _prefs;
   final RemoteConfigStore _remoteConfig;
   final AnalyticsStore _analytics;
   final VpnStore _vpnStore;
@@ -107,10 +107,10 @@ abstract class _ReviewPromptStore with Store {
   /// account-age and app-open eligibility inputs. Fire-and-forget: the values
   /// aren't read until a session completes, well after launch.
   void _trackAppOpen() {
-    if (_prefs.getAppInstallDay() == null) {
+    if (_prefs.appInstallDay() == null) {
       unawaited(_prefs.setAppInstallDay(_nowMs));
     }
-    unawaited(_prefs.setReviewAppOpenCount(_prefs.getReviewAppOpenCount() + 1));
+    unawaited(_prefs.setOpensSinceInstall(_prefs.opensSinceInstall() + 1));
   }
 
   void dispose() {
@@ -185,7 +185,7 @@ abstract class _ReviewPromptStore with Store {
   /// (on disconnect), not here, so the prompt never surfaces while connected.
   @action
   Future<void> recordSuccessfulSession() async {
-    await _prefs.setReviewSuccessfulConnections(_prefs.getReviewSuccessfulConnections() + 1);
+    await _prefs.setSuccessfulConnections(_prefs.successfulConnections() + 1);
     await recordSessionOutcome(success: true);
   }
 
@@ -194,11 +194,11 @@ abstract class _ReviewPromptStore with Store {
   @action
   Future<void> recordSessionOutcome({required bool success}) async {
     final window = _config.cleanSessionsRequired;
-    final outcomes = [..._prefs.getReviewRecentSessionOutcomes(), success];
+    final outcomes = [..._prefs.recentSessionOutcomes(), success];
     final trimmed = outcomes.length > window
         ? outcomes.sublist(outcomes.length - window)
         : outcomes;
-    await _prefs.setReviewRecentSessionOutcomes(trimmed);
+    await _prefs.setRecentSessionOutcomes(trimmed);
   }
 
   /// Run eligibility, then suppression. Fires the matching analytics events and
@@ -244,12 +244,12 @@ abstract class _ReviewPromptStore with Store {
   // restart. A plain getter re-reads the live values on every evaluate.
   bool get isEligible =>
       _isOldEnough &&
-      _prefs.getReviewAppOpenCount() >= _config.minAppOpens &&
-      _prefs.getReviewSuccessfulConnections() >= _config.minConnections &&
+      _prefs.opensSinceInstall() >= _config.minAppOpens &&
+      _prefs.successfulConnections() >= _config.minConnections &&
       _hasCleanRecentSessions;
 
   bool get _isOldEnough {
-    final installDay = _prefs.getAppInstallDay();
+    final installDay = _prefs.appInstallDay();
     if (installDay == null) {
       return false;
     }
@@ -262,7 +262,7 @@ abstract class _ReviewPromptStore with Store {
     if (required <= 0) {
       return true;
     }
-    final outcomes = _prefs.getReviewRecentSessionOutcomes();
+    final outcomes = _prefs.recentSessionOutcomes();
     final recent = outcomes.length >= required
         ? outcomes.sublist(outcomes.length - required)
         : outcomes;
@@ -317,7 +317,7 @@ abstract class _ReviewPromptStore with Store {
   }
 
   bool get _isCooldownActive {
-    final until = _prefs.getReviewCooldownUntil();
+    final until = _prefs.cooldownUntil();
     return until != null && _nowMs < until;
   }
 
@@ -331,11 +331,11 @@ abstract class _ReviewPromptStore with Store {
   /// Prompt-display timestamps within the trailing 365 days.
   List<int> _recentShownTimestamps() {
     final yearAgo = _nowMs - 365 * Duration.millisecondsPerDay;
-    return _prefs.getReviewPromptShownTimestamps().where((it) => it >= yearAgo).toList();
+    return _prefs.promptShownTimestamps().where((it) => it >= yearAgo).toList();
   }
 
   bool get _wasNativeReviewOpenedRecently {
-    final openedAt = _prefs.getReviewNativeReviewOpenedAt();
+    final openedAt = _prefs.nativeReviewOpenedAt();
     if (openedAt == null) {
       return false;
     }
@@ -367,7 +367,7 @@ abstract class _ReviewPromptStore with Store {
   Future<void> onShown() async {
     pendingPrompt = false;
     await _analytics.logEvent(AnalyticsEvent.reviewPromptShown);
-    await _prefs.setReviewPromptShownTimestamps([..._recentShownTimestamps(), _nowMs]);
+    await _prefs.setPromptShownTimestamps([..._recentShownTimestamps(), _nowMs]);
     await _setCooldown(_config.cooldownDismissMinutes);
   }
 
@@ -390,7 +390,7 @@ abstract class _ReviewPromptStore with Store {
   @action
   Future<void> onLeaveReview() async {
     await _analytics.logEvent(AnalyticsEvent.nativeReviewPromptOpened);
-    await _prefs.setReviewNativeReviewOpenedAt(_nowMs);
+    await _prefs.setNativeReviewOpenedAt(_nowMs);
     await _startCooldown(_config.cooldownPositiveMinutes);
   }
 
@@ -407,13 +407,13 @@ abstract class _ReviewPromptStore with Store {
   @action
   Future<void> resetState() async {
     pendingPrompt = false;
-    await _prefs.resetReviewPromptState();
+    await _prefs.reset();
   }
 
   /// Persists the cooldown without emitting analytics — used for the baseline
   /// cooldown set when the prompt is shown.
   Future<void> _setCooldown(int minutes) =>
-      _prefs.setReviewCooldownUntil(_nowMs + minutes * Duration.millisecondsPerMinute);
+      _prefs.setCooldownUntil(_nowMs + minutes * Duration.millisecondsPerMinute);
 
   /// Persists the cooldown for an explicit user action and emits the event.
   Future<void> _startCooldown(int minutes) async {

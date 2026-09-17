@@ -312,13 +312,13 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$connectionRatedAtom = Atom(name: '_VpnStore.connectionRated', context: context);
 
   @override
-  RateConnectionRequestModeEnum? get connectionRated {
+  RateConnectionMode? get connectionRated {
     _$connectionRatedAtom.reportRead();
     return super.connectionRated;
   }
 
   @override
-  set connectionRated(RateConnectionRequestModeEnum? value) {
+  set connectionRated(RateConnectionMode? value) {
     _$connectionRatedAtom.reportWrite(value, super.connectionRated, () {
       super.connectionRated = value;
     });
@@ -565,7 +565,7 @@ mixin _$VpnStore on _VpnStore, Store {
 
   @override
   Future<void> submitRateConnection({
-    required RateConnectionRequestModeEnum mode,
+    required RateConnectionMode mode,
     required String? reasons,
     required String? feedback,
   }) {

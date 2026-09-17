@@ -6,13 +6,14 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'recent_locations_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<LocalDBService>(),
+  MockSpec<RecentLocationsRepository>(),
   MockSpec<FilterService>(),
   MockSpec<LocationsQueryStore>(),
   MockSpec<RemoteConfigStore>(),
@@ -20,7 +21,7 @@ import 'recent_locations_store_test.mocks.dart';
   MockSpec<LocaleStore>(),
 ])
 void main() {
-  late MockLocalDBService mockDB;
+  late MockRecentLocationsRepository mockRepository;
   late MockFilterService mockFilter;
   late MockLocationsQueryStore mockQuery;
   late MockRemoteConfigStore mockConfig;
@@ -31,7 +32,7 @@ void main() {
   late List<VPNLocation> residentialLocations;
 
   setUp(() {
-    mockDB = MockLocalDBService();
+    mockRepository = MockRecentLocationsRepository();
     mockFilter = MockFilterService();
     mockQuery = MockLocationsQueryStore();
     mockConfig = MockRemoteConfigStore();
@@ -42,7 +43,7 @@ void main() {
     when(mockLocale.currentLocale).thenReturn(const Locale('en'));
 
     store = RecentLocationsStore(
-      mockDB,
+      mockRepository,
       mockFilter,
       mockQuery,
       mockConfig,
@@ -75,7 +76,7 @@ void main() {
 
   group('value', () {
     test('returns empty list when future value is null', () {
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => []);
+      when(mockRepository.load()).thenAnswer((_) async => []);
       when(
         mockLocations.dcLocationsFuture,
       ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
@@ -87,7 +88,7 @@ void main() {
     });
 
     test('returns empty list when future value is empty', () {
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => []);
+      when(mockRepository.load()).thenAnswer((_) async => []);
       when(
         mockLocations.dcLocationsFuture,
       ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
@@ -101,7 +102,7 @@ void main() {
     test('returns filtered and limited locations', () async {
       final recentLocations = [...residentialLocations, ...dcLocations];
 
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
+      when(mockRepository.load()).thenAnswer((_) async => recentLocations);
       when(
         mockFilter.filterLocations(any, keyword: anyNamed('keyword'), locale: anyNamed('locale')),
       ).thenReturn(recentLocations);
@@ -126,7 +127,7 @@ void main() {
         Mocks.locationResidentialUS,
       ];
 
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
+      when(mockRepository.load()).thenAnswer((_) async => recentLocations);
       when(
         mockLocations.dcLocationsFuture,
       ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: availableDCLocations)));
@@ -147,32 +148,32 @@ void main() {
 
   group('add', () {
     test('does not add location when closest is set', () async {
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => []);
+      when(mockRepository.load()).thenAnswer((_) async => []);
 
       await store.add(VPNLocation.closest);
 
-      verifyNever(mockDB.setRecentLocations(any));
+      verifyNever(mockRepository.save(any));
     });
 
     test('does not add location when already in recents', () async {
       final recentLocations = [Mocks.locationDatacenterDE, Mocks.locationDatacenterGB];
 
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
+      when(mockRepository.load()).thenAnswer((_) async => recentLocations);
 
       await store.add(Mocks.locationDatacenterDE);
 
-      final captured = verify(mockDB.setRecentLocations(captureAny)).captured.single;
+      final captured = verify(mockRepository.save(captureAny)).captured.single;
       expect(captured, equals(recentLocations));
     });
 
     test('adds location to the start of the list', () async {
       final recentLocations = [Mocks.locationDatacenterDE, Mocks.locationDatacenterGB];
 
-      when(mockDB.getRecentLocations()).thenAnswer((_) async => recentLocations);
+      when(mockRepository.load()).thenAnswer((_) async => recentLocations);
 
       await store.add(Mocks.locationDatacenterUS);
 
-      final captured = verify(mockDB.setRecentLocations(captureAny)).captured.single;
+      final captured = verify(mockRepository.save(captureAny)).captured.single;
       expect(captured, equals([Mocks.locationDatacenterUS, ...recentLocations]));
     });
   });

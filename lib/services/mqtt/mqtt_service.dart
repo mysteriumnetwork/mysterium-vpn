@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mqtt5_client/mqtt5_client.dart';
 import 'package:mqtt5_client/mqtt5_server_client.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/services/mqtt/mqtt_experiment_flag.dart';
 import 'package:talker/talker.dart';
 
 class MQTTService {
@@ -14,14 +14,14 @@ class MQTTService {
     String password,
     String clientID,
     Talker logger,
-    RemoteConfigStore remoteConfigStore,
+    MqttExperimentFlag experimentFlag,
   ) : this.withClient(
         MqttServerClient(url, clientID, maxConnectionAttempts: 2),
         url,
         username,
         password,
         logger,
-        remoteConfigStore,
+        experimentFlag,
       );
 
   @visibleForTesting
@@ -31,11 +31,11 @@ class MQTTService {
     String username,
     String password,
     Talker logger,
-    RemoteConfigStore remoteConfigStore,
+    MqttExperimentFlag experimentFlag,
   ) : _username = username,
       _password = password,
       _logger = logger,
-      _remoteConfigStore = remoteConfigStore {
+      _experimentFlag = experimentFlag {
     final uri = Uri.parse(url);
 
     // Client ID length can not exceed 23, see http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
@@ -74,13 +74,13 @@ class MQTTService {
   final String _username;
   final String _password;
   final Talker _logger;
-  final RemoteConfigStore _remoteConfigStore;
+  final MqttExperimentFlag _experimentFlag;
 
   final Map<String, StreamController<String>> _subscriptions = {};
   final Map<String, StreamSubscription<String>> _forwards = {};
 
   Future<void> start() async {
-    if (!_remoteConfigStore.mqttExperiment) {
+    if (!_experimentFlag()) {
       return;
     }
 
@@ -120,7 +120,7 @@ class MQTTService {
   ///
   /// Returns a stream of message payloads as strings.
   Stream<String> subscribe(String topic) {
-    if (!_remoteConfigStore.mqttExperiment) {
+    if (!_experimentFlag()) {
       return const Stream<String>.empty();
     }
 

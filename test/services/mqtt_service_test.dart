@@ -64,8 +64,14 @@ void main() {
     when(remoteConfig.mqttExperiment).thenReturn(true);
   });
 
-  MQTTService newService() =>
-      MQTTService.withClient(client, 'wss://broker.test:443', 'user', 'pass', logger, remoteConfig);
+  MQTTService newService() => MQTTService.withClient(
+    client,
+    'wss://broker.test:443',
+    'user',
+    'pass',
+    logger,
+    () => remoteConfig.mqttExperiment,
+  );
 
   test('delivers messages for a subscribed topic', () async {
     final service = newService();

@@ -10,7 +10,6 @@ import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:openvpn_dart/vpn_statistics.dart';
 import 'package:openvpn_dart/vpn_status.dart';
 import 'package:talker/talker.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import 'openvpn_repository_test.mocks.dart';
 
@@ -144,7 +143,7 @@ void main() {
         country: 'US',
         feedback: 'great',
         reasons: 'fast',
-        mode: RateConnectionRequestModeEnum.like,
+        mode: RateConnectionMode.like,
       );
 
       verify(api.rateConnection(request: anyNamed('request'))).called(1);
@@ -159,7 +158,7 @@ void main() {
           country: 'US',
           feedback: null,
           reasons: null,
-          mode: RateConnectionRequestModeEnum.dislike,
+          mode: RateConnectionMode.dislike,
         ),
         throwsA(isA<Exception>()),
       );

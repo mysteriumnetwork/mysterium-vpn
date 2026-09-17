@@ -4,13 +4,13 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'review_prompt_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SharedPreferenceService>(),
+  MockSpec<ReviewPromptRepository>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<VpnStore>(),
@@ -18,7 +18,7 @@ import 'review_prompt_store_test.mocks.dart';
   MockSpec<SubscriptionStore>(),
 ])
 void main() {
-  late MockSharedPreferenceService prefs;
+  late MockReviewPromptRepository prefs;
   late MockRemoteConfigStore remoteConfig;
   late MockAnalyticsStore analytics;
   late MockVpnStore vpnStore;
@@ -47,13 +47,13 @@ void main() {
 
   /// Configure all mocks so the user is eligible and nothing suppresses.
   void makeEligibleAndClear() {
-    when(prefs.getAppInstallDay()).thenReturn(nowMs - 10 * dayMs);
-    when(prefs.getReviewAppOpenCount()).thenReturn(5);
-    when(prefs.getReviewSuccessfulConnections()).thenReturn(10);
-    when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true, true, true]);
-    when(prefs.getReviewCooldownUntil()).thenReturn(null);
-    when(prefs.getReviewPromptShownTimestamps()).thenReturn([]);
-    when(prefs.getReviewNativeReviewOpenedAt()).thenReturn(null);
+    when(prefs.appInstallDay()).thenReturn(nowMs - 10 * dayMs);
+    when(prefs.opensSinceInstall()).thenReturn(5);
+    when(prefs.successfulConnections()).thenReturn(10);
+    when(prefs.recentSessionOutcomes()).thenReturn([true, true, true]);
+    when(prefs.cooldownUntil()).thenReturn(null);
+    when(prefs.promptShownTimestamps()).thenReturn([]);
+    when(prefs.nativeReviewOpenedAt()).thenReturn(null);
 
     // Defaults match the eligible/clear scenario (7d age, 5 opens, 10 conns,
     // 60s stable, 30/75/105 cooldowns, cap 3, enabled).
@@ -68,7 +68,7 @@ void main() {
   }
 
   setUp(() {
-    prefs = MockSharedPreferenceService();
+    prefs = MockReviewPromptRepository();
     remoteConfig = MockRemoteConfigStore();
     analytics = MockAnalyticsStore();
     vpnStore = MockVpnStore();
@@ -83,32 +83,32 @@ void main() {
     });
 
     test('false when account is too young', () {
-      when(prefs.getAppInstallDay()).thenReturn(nowMs - 3 * dayMs);
+      when(prefs.appInstallDay()).thenReturn(nowMs - 3 * dayMs);
       expect(createStore().isEligible, isFalse);
     });
 
     test('false when install day is unknown', () {
-      when(prefs.getAppInstallDay()).thenReturn(null);
+      when(prefs.appInstallDay()).thenReturn(null);
       expect(createStore().isEligible, isFalse);
     });
 
     test('false when too few app opens', () {
-      when(prefs.getReviewAppOpenCount()).thenReturn(4);
+      when(prefs.opensSinceInstall()).thenReturn(4);
       expect(createStore().isEligible, isFalse);
     });
 
     test('false when too few successful connections', () {
-      when(prefs.getReviewSuccessfulConnections()).thenReturn(9);
+      when(prefs.successfulConnections()).thenReturn(9);
       expect(createStore().isEligible, isFalse);
     });
 
     test('false when a recent session failed', () {
-      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true, false, true]);
+      when(prefs.recentSessionOutcomes()).thenReturn([true, false, true]);
       expect(createStore().isEligible, isFalse);
     });
 
     test('false when fewer than three recent sessions', () {
-      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true, true]);
+      when(prefs.recentSessionOutcomes()).thenReturn([true, true]);
       expect(createStore().isEligible, isFalse);
     });
 
@@ -116,7 +116,7 @@ void main() {
       when(
         remoteConfig.reviewPromptConfig,
       ).thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 1));
-      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true]);
+      when(prefs.recentSessionOutcomes()).thenReturn([true]);
       expect(createStore().isEligible, isTrue);
     });
 
@@ -125,7 +125,7 @@ void main() {
         remoteConfig.reviewPromptConfig,
       ).thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 0));
       // Even with a failure on record, the check is disabled.
-      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([false]);
+      when(prefs.recentSessionOutcomes()).thenReturn([false]);
       expect(createStore().isEligible, isTrue);
     });
   });
@@ -136,14 +136,14 @@ void main() {
     // verdict and never recomputed as the counters grew, so the prompt only
     // surfaced after an app restart recreated the store.
     test('becomes eligible on a later session as connections cross the minimum', () async {
-      when(prefs.getReviewSuccessfulConnections()).thenReturn(9);
+      when(prefs.successfulConnections()).thenReturn(9);
       final store = createStore();
 
       await store.evaluate();
       expect(store.pendingPrompt, isFalse);
 
       // A later stable session pushes connections to the minimum.
-      when(prefs.getReviewSuccessfulConnections()).thenReturn(10);
+      when(prefs.successfulConnections()).thenReturn(10);
       await store.evaluate();
       expect(store.pendingPrompt, isTrue);
     });
@@ -179,18 +179,18 @@ void main() {
     });
 
     test('cooldown_active while cooldown is in the future', () {
-      when(prefs.getReviewCooldownUntil()).thenReturn(nowMs + dayMs);
+      when(prefs.cooldownUntil()).thenReturn(nowMs + dayMs);
       expect(createStore().suppressionReason, 'cooldown_active');
     });
 
     test('no suppression once cooldown has elapsed', () {
-      when(prefs.getReviewCooldownUntil()).thenReturn(nowMs - dayMs);
+      when(prefs.cooldownUntil()).thenReturn(nowMs - dayMs);
       expect(createStore().suppressionReason, isNull);
     });
 
     test('yearly_cap when cap reached within the year', () {
       when(
-        prefs.getReviewPromptShownTimestamps(),
+        prefs.promptShownTimestamps(),
       ).thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
       expect(createStore().suppressionReason, 'yearly_cap');
     });
@@ -198,14 +198,14 @@ void main() {
     test('yearly cap is disabled when yearlyCap is 0', () {
       when(remoteConfig.reviewPromptConfig).thenReturn(const ReviewPromptConfig(yearlyCap: 0));
       when(
-        prefs.getReviewPromptShownTimestamps(),
+        prefs.promptShownTimestamps(),
       ).thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
       expect(createStore().suppressionReason, isNull);
     });
 
     test('old displays outside the year do not count toward the cap', () {
       when(
-        prefs.getReviewPromptShownTimestamps(),
+        prefs.promptShownTimestamps(),
       ).thenReturn([nowMs - 400 * dayMs, nowMs - 401 * dayMs, nowMs - 402 * dayMs]);
       expect(createStore().suppressionReason, isNull);
     });
@@ -226,7 +226,7 @@ void main() {
     });
 
     test('native_review_recent when a native prompt opened within positive cooldown', () {
-      when(prefs.getReviewNativeReviewOpenedAt()).thenReturn(nowMs - 10 * dayMs);
+      when(prefs.nativeReviewOpenedAt()).thenReturn(nowMs - 10 * dayMs);
       expect(createStore().suppressionReason, 'native_review_recent');
     });
   });
@@ -246,7 +246,7 @@ void main() {
     });
 
     test('fires suppressed and leaves pendingPrompt false when blocked', () async {
-      when(prefs.getReviewCooldownUntil()).thenReturn(nowMs + dayMs);
+      when(prefs.cooldownUntil()).thenReturn(nowMs + dayMs);
       final store = createStore();
       await store.evaluate();
       expect(store.pendingPrompt, isFalse);
@@ -260,7 +260,7 @@ void main() {
     });
 
     test('does nothing when not eligible', () async {
-      when(prefs.getReviewSuccessfulConnections()).thenReturn(0);
+      when(prefs.successfulConnections()).thenReturn(0);
       final store = createStore();
       await store.evaluate();
       expect(store.pendingPrompt, isFalse);
@@ -284,14 +284,14 @@ void main() {
   group('session recording', () {
     test('recordSuccessfulSession bumps the counter and pushes a success', () async {
       await createStore().recordSuccessfulSession();
-      verify(prefs.setReviewSuccessfulConnections(11)).called(1);
-      verify(prefs.setReviewRecentSessionOutcomes([true, true, true])).called(1);
+      verify(prefs.setSuccessfulConnections(11)).called(1);
+      verify(prefs.setRecentSessionOutcomes([true, true, true])).called(1);
     });
 
     test('recordSessionOutcome keeps only the last three', () async {
-      when(prefs.getReviewRecentSessionOutcomes()).thenReturn([true, true, true]);
+      when(prefs.recentSessionOutcomes()).thenReturn([true, true, true]);
       await createStore().recordSessionOutcome(success: false);
-      verify(prefs.setReviewRecentSessionOutcomes([true, true, false])).called(1);
+      verify(prefs.setRecentSessionOutcomes([true, true, false])).called(1);
     });
   });
 
@@ -299,17 +299,15 @@ void main() {
     test(
       'onShown records the display, prunes the year window, and sets a baseline cooldown',
       () async {
-        when(
-          prefs.getReviewPromptShownTimestamps(),
-        ).thenReturn([nowMs - 400 * dayMs, nowMs - dayMs]);
+        when(prefs.promptShownTimestamps()).thenReturn([nowMs - 400 * dayMs, nowMs - dayMs]);
         final store = createStore()..pendingPrompt = true;
         await store.onShown();
         expect(store.pendingPrompt, isFalse);
         verify(analytics.logEvent(AnalyticsEvent.reviewPromptShown)).called(1);
-        verify(prefs.setReviewPromptShownTimestamps([nowMs - dayMs, nowMs])).called(1);
+        verify(prefs.setPromptShownTimestamps([nowMs - dayMs, nowMs])).called(1);
         // Baseline dismissal cooldown so abandoning the flow still defers, and a
         // session completing mid-dialog can't re-enqueue the prompt.
-        verify(prefs.setReviewCooldownUntil(nowMs + 30 * dayMs)).called(1);
+        verify(prefs.setCooldownUntil(nowMs + 30 * dayMs)).called(1);
         verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted));
       },
     );
@@ -318,21 +316,21 @@ void main() {
       await createStore().onSatisfactionNo();
       verify(analytics.logEvent(AnalyticsEvent.reviewPromptNegativeClicked)).called(1);
       verify(analytics.logEvent(AnalyticsEvent.feedbackFlowOpened)).called(1);
-      verify(prefs.setReviewCooldownUntil(nowMs + 75 * dayMs)).called(1);
+      verify(prefs.setCooldownUntil(nowMs + 75 * dayMs)).called(1);
       verify(analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted)).called(1);
     });
 
     test('onLeaveReview records native open and starts positive cooldown', () async {
       await createStore().onLeaveReview();
       verify(analytics.logEvent(AnalyticsEvent.nativeReviewPromptOpened)).called(1);
-      verify(prefs.setReviewNativeReviewOpenedAt(nowMs)).called(1);
-      verify(prefs.setReviewCooldownUntil(nowMs + 105 * dayMs)).called(1);
+      verify(prefs.setNativeReviewOpenedAt(nowMs)).called(1);
+      verify(prefs.setCooldownUntil(nowMs + 105 * dayMs)).called(1);
     });
 
     test('onDismiss starts the short dismissal cooldown', () async {
       await createStore().onDismiss();
       verify(analytics.logEvent(AnalyticsEvent.reviewPromptDismissed)).called(1);
-      verify(prefs.setReviewCooldownUntil(nowMs + 30 * dayMs)).called(1);
+      verify(prefs.setCooldownUntil(nowMs + 30 * dayMs)).called(1);
     });
 
     test('cooldown durations are interpreted as minutes', () async {
@@ -341,7 +339,7 @@ void main() {
         remoteConfig.reviewPromptConfig,
       ).thenReturn(const ReviewPromptConfig(cooldownDismissMinutes: 5));
       await createStore().onDismiss();
-      verify(prefs.setReviewCooldownUntil(nowMs + 5 * minuteMs)).called(1);
+      verify(prefs.setCooldownUntil(nowMs + 5 * minuteMs)).called(1);
     });
 
     test('onSatisfactionYes fires the positive-clicked event only', () async {
@@ -353,16 +351,16 @@ void main() {
 
   group('init app-open tracking', () {
     test('seeds install day when absent and increments app-open count', () {
-      when(prefs.getAppInstallDay()).thenReturn(null);
-      when(prefs.getReviewAppOpenCount()).thenReturn(2);
+      when(prefs.appInstallDay()).thenReturn(null);
+      when(prefs.opensSinceInstall()).thenReturn(2);
       final store = createStore()..init();
       verify(prefs.setAppInstallDay(nowMs)).called(1);
-      verify(prefs.setReviewAppOpenCount(3)).called(1);
+      verify(prefs.setOpensSinceInstall(3)).called(1);
       store.dispose();
     });
 
     test('does not reseed install day when already set', () {
-      when(prefs.getAppInstallDay()).thenReturn(nowMs - 5 * dayMs);
+      when(prefs.appInstallDay()).thenReturn(nowMs - 5 * dayMs);
       final store = createStore()..init();
       verifyNever(prefs.setAppInstallDay(any));
       store.dispose();
@@ -383,8 +381,8 @@ void main() {
       useInstantStableSession();
       final store = createStore()..handleConnectionStatus(VpnConnectionStatus.connected);
       await Future<void>.delayed(Duration.zero); // let the stability timer fire
-      verify(prefs.setReviewSuccessfulConnections(11)).called(1);
-      verify(prefs.setReviewRecentSessionOutcomes([true, true, true])).called(1);
+      verify(prefs.setSuccessfulConnections(11)).called(1);
+      verify(prefs.setRecentSessionOutcomes([true, true, true])).called(1);
       store.dispose();
     });
 
@@ -463,7 +461,7 @@ void main() {
         ..handleConnectionStatus(VpnConnectionStatus.connecting)
         ..handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
-      verifyNever(prefs.setReviewRecentSessionOutcomes(any));
+      verifyNever(prefs.setRecentSessionOutcomes(any));
       verifyNever(analytics.logEvent(AnalyticsEvent.reviewPromptEligible));
       store.dispose();
     });
@@ -474,7 +472,7 @@ void main() {
         ..handleConnectionStatus(VpnConnectionStatus.connected)
         ..handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
-      verify(prefs.setReviewRecentSessionOutcomes([true, true, false])).called(1);
+      verify(prefs.setRecentSessionOutcomes([true, true, false])).called(1);
       expect(store.pendingPrompt, isFalse);
       store.dispose();
     });
@@ -487,16 +485,16 @@ void main() {
         ..handleConnectionStatus(VpnConnectionStatus.connecting)
         ..handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
-      verify(prefs.setReviewRecentSessionOutcomes([true, true, false])).called(1);
-      verifyNever(prefs.setReviewSuccessfulConnections(any));
+      verify(prefs.setRecentSessionOutcomes([true, true, false])).called(1);
+      verifyNever(prefs.setSuccessfulConnections(any));
       store.dispose();
     });
 
     test('an idle disconnect with no attempt records nothing', () async {
       final store = createStore()..handleConnectionStatus(VpnConnectionStatus.disconnected);
       await Future<void>.delayed(Duration.zero);
-      verifyNever(prefs.setReviewRecentSessionOutcomes(any));
-      verifyNever(prefs.setReviewSuccessfulConnections(any));
+      verifyNever(prefs.setRecentSessionOutcomes(any));
+      verifyNever(prefs.setSuccessfulConnections(any));
       store.dispose();
     });
   });
@@ -616,7 +614,7 @@ void main() {
       final store = createStore()..pendingPrompt = true;
       await store.resetState();
       expect(store.pendingPrompt, isFalse);
-      verify(prefs.resetReviewPromptState()).called(1);
+      verify(prefs.reset()).called(1);
     });
   });
 }

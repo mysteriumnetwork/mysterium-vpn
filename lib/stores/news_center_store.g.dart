@@ -9,14 +9,13 @@ part of 'news_center_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$NewsCenterStore on _NewsCenterStore, Store {
-  Computed<List<NewscenterInboxListResponseItem>>? _$filteredItemsComputed;
+  Computed<List<NewsItem>>? _$filteredItemsComputed;
 
   @override
-  List<NewscenterInboxListResponseItem> get filteredItems =>
-      (_$filteredItemsComputed ??= Computed<List<NewscenterInboxListResponseItem>>(
-        () => super.filteredItems,
-        name: '_NewsCenterStore.filteredItems',
-      )).value;
+  List<NewsItem> get filteredItems => (_$filteredItemsComputed ??= Computed<List<NewsItem>>(
+    () => super.filteredItems,
+    name: '_NewsCenterStore.filteredItems',
+  )).value;
   Computed<Set<NewsFilter>>? _$nonEmptyFiltersComputed;
 
   @override
@@ -69,16 +68,16 @@ mixin _$NewsCenterStore on _NewsCenterStore, Store {
 
   late final _$_feedFutureAtom = Atom(name: '_NewsCenterStore._feedFuture', context: context);
 
-  ObservableFuture<List<NewscenterInboxListResponseItem>>? get feedFuture {
+  ObservableFuture<List<NewsItem>>? get feedFuture {
     _$_feedFutureAtom.reportRead();
     return super._feedFuture;
   }
 
   @override
-  ObservableFuture<List<NewscenterInboxListResponseItem>>? get _feedFuture => feedFuture;
+  ObservableFuture<List<NewsItem>>? get _feedFuture => feedFuture;
 
   @override
-  set _feedFuture(ObservableFuture<List<NewscenterInboxListResponseItem>>? value) {
+  set _feedFuture(ObservableFuture<List<NewsItem>>? value) {
     _$_feedFutureAtom.reportWrite(value, super._feedFuture, () {
       super._feedFuture = value;
     });
@@ -86,16 +85,16 @@ mixin _$NewsCenterStore on _NewsCenterStore, Store {
 
   late final _$_itemsAtom = Atom(name: '_NewsCenterStore._items', context: context);
 
-  List<NewscenterInboxListResponseItem>? get items {
+  List<NewsItem>? get items {
     _$_itemsAtom.reportRead();
     return super._items;
   }
 
   @override
-  List<NewscenterInboxListResponseItem>? get _items => items;
+  List<NewsItem>? get _items => items;
 
   @override
-  set _items(List<NewscenterInboxListResponseItem>? value) {
+  set _items(List<NewsItem>? value) {
     _$_itemsAtom.reportWrite(value, super._items, () {
       super._items = value;
     });

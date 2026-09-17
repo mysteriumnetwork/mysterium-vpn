@@ -1,2 +1,9 @@
+export 'auth/auth.dart';
+export 'device/device.dart';
+export 'favorite_ips/favorite_ips.dart';
+export 'locations/locations.dart';
+export 'news_center/news_center.dart';
 export 'notifications/notifications.dart';
+export 'settings/settings.dart';
+export 'subscription/subscription.dart';
 export 'vpn/vpn.dart';

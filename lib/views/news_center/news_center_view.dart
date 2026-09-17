@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/news_center/components/news_center_empty_view.dart';
 import 'package:mysterium_vpn/views/news_center/components/news_center_loading_view.dart';
@@ -12,7 +13,6 @@ import 'package:mysterium_vpn/views/news_center/news_center_presentation.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 /// Body of the News Center page: the filter tabs and the feed, with loading,
 /// empty, error and data states. Pull-to-refresh is available wherever the
@@ -21,7 +21,7 @@ class NewsCenterView extends HookConsumerWidget {
   const NewsCenterView({required this.onItemTap, super.key});
 
   /// Called when a card is tapped (marks read + opens the item).
-  final void Function(NewscenterInboxListResponseItem item) onItemTap;
+  final void Function(NewsItem item) onItemTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

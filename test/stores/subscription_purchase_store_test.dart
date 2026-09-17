@@ -9,7 +9,8 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/subscription_required_exception.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
@@ -20,7 +21,7 @@ import 'subscription_purchase_store_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<InAppPurchase>(),
   MockSpec<SecureStorageService>(),
-  MockSpec<SubscriptionService>(),
+  MockSpec<SubscriptionRepository>(),
   MockSpec<Talker>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<AuthSessionStore>(),
@@ -31,8 +32,7 @@ import 'subscription_purchase_store_test.mocks.dart';
 ])
 void main() {
   late MockInAppPurchase inAppPurchase;
-  late MockSecureStorageService storage;
-  late MockSubscriptionService service;
+  late MockSubscriptionRepository service;
   late MockTalker logger;
   late MockAnalyticsStore analytics;
   late MockAuthSessionStore session;
@@ -54,8 +54,7 @@ void main() {
 
   setUp(() {
     inAppPurchase = MockInAppPurchase();
-    storage = MockSecureStorageService();
-    service = MockSubscriptionService();
+    service = MockSubscriptionRepository();
     logger = MockTalker();
     analytics = MockAnalyticsStore();
     session = MockAuthSessionStore();
@@ -92,7 +91,6 @@ void main() {
 
     store = SubscriptionPurchaseStore(
       inAppPurchase,
-      storage,
       service,
       logger,
       analytics,

@@ -1,3 +1,4 @@
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/repositories/vpn/vpn_repository.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -17,12 +18,15 @@ abstract class BaseVpnRepository implements VpnRepository {
     required String country,
     required String? feedback,
     required String? reasons,
-    required RateConnectionRequestModeEnum mode,
+    required RateConnectionMode mode,
   }) async {
     try {
       await apiService.rateConnection(
         request: RateConnectionRequest(
-          mode: mode,
+          mode: switch (mode) {
+            RateConnectionMode.like => RateConnectionRequestModeEnum.like,
+            RateConnectionMode.dislike => RateConnectionRequestModeEnum.dislike,
+          },
           reasons: reasons,
           feedback: feedback,
           country: country,

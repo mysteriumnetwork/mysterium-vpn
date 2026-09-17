@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:vpn_api/vpn_api.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 /// Parses [url] into a webview-safe [Uri], or null if it is unparseable or not
@@ -27,11 +27,7 @@ Uri? newsWebViewUri(String url, {String? userId}) {
 /// Opens [item]'s content in an in-app webview modal (a dialog, not a route),
 /// or in the default browser where there is no webview — see
 /// [openInAppWebView]. No-ops when the item carries no usable web url.
-Future<void> showNewsItemWebView(
-  BuildContext context,
-  NewscenterInboxListResponseItem item, {
-  String? userId,
-}) async {
+Future<void> showNewsItemWebView(BuildContext context, NewsItem item, {String? userId}) async {
   final uri = newsWebViewUri(item.webViewUrl, userId: userId);
   if (uri == null) {
     return;

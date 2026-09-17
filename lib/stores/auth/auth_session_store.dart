@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -9,26 +10,23 @@ import 'package:mysterium_vpn/stores/stores.dart';
 part 'auth_session_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore;
+class AuthSessionStore = _AuthSessionStore with _$AuthSessionStore implements AuthSessionGateway;
 
 abstract class _AuthSessionStore with Store, Disposeable {
   _AuthSessionStore({
-    required SecureStorageService secureStorage,
+    required SessionRepository repository,
     required RemoteConfigStore remoteConfigStore,
-  }) : _secureStorage = secureStorage,
+  }) : _repository = repository,
        _remoteConfigStore = remoteConfigStore {
-    _userReactionDisposer = reaction((_) => user, (user) {
-      if (user != null) {
-        _localDb.setUser(user);
-      } else {
-        _localDb.clearUser();
-      }
-    }, fireImmediately: true);
+    _userReactionDisposer = reaction(
+      (_) => user,
+      _repository.cacheUserRecord,
+      fireImmediately: true,
+    );
   }
 
-  final SecureStorageService _secureStorage;
+  final SessionRepository _repository;
   final RemoteConfigStore _remoteConfigStore;
-  final LocalDBService _localDb = LocalDBService.instance;
   late final ReactionDisposer _userReactionDisposer;
 
   @observable
@@ -41,17 +39,13 @@ abstract class _AuthSessionStore with Store, Disposeable {
   bool get isAuthenticated => status == AuthStatus.authenticated;
 
   @readonly
-  late ObservableFuture<String?> _accessTokenFuture = ObservableFuture(
-    _secureStorage.getAccessToken(),
-  );
+  late ObservableFuture<String?> _accessTokenFuture = ObservableFuture(_repository.accessToken());
 
   @readonly
-  late ObservableFuture<String?> _refreshTokenFuture = ObservableFuture(
-    _secureStorage.getRefreshToken(),
-  );
+  late ObservableFuture<String?> _refreshTokenFuture = ObservableFuture(_repository.refreshToken());
 
   @readonly
-  late ObservableFuture<AuthUser?> _userFuture = ObservableFuture(_loadUser());
+  late ObservableFuture<AuthUser?> _userFuture = ObservableFuture(_repository.user());
 
   @computed
   String? get accessToken => _accessTokenFuture.value;
@@ -103,43 +97,13 @@ abstract class _AuthSessionStore with Store, Disposeable {
     await _storageCleanup();
   }
 
-  Future<AuthUser?> _loadUser() async {
-    final [userId, userEmail] = await Future.wait([
-      _secureStorage.getUserId(),
-      _secureStorage.getUsername(),
-    ]);
+  Future<void> _storageUpdate() =>
+      _repository.save(accessToken: accessToken, refreshToken: refreshToken, user: user);
 
-    if (userId != null && userEmail != null) {
-      return AuthUser(userId: userId, username: userEmail);
-    }
-    return null;
-  }
-
-  Future<void> _storageUpdate() async {
-    if (accessToken != null) {
-      await _secureStorage.saveAccessToken(accessToken!);
-    }
-    if (refreshToken != null) {
-      await _secureStorage.saveRefreshToken(refreshToken!);
-    }
-    if (user != null) {
-      await _secureStorage.saveUserId(userId: user!.userId);
-      await _secureStorage.saveUsername(username: user!.username);
-    }
-  }
-
-  Future<void> _storageCleanup() async {
-    await _secureStorage.removeAccessToken();
-    await _secureStorage.removeRefreshToken();
-    await _secureStorage.removeUserId();
-    await _secureStorage.removeUsername();
-  }
+  Future<void> _storageCleanup() => _repository.clear();
 
   Future<void> invalidateAccessToken() async {
-    _accessTokenFuture = _accessTokenFuture.replace(() async {
-      await _secureStorage.saveAccessToken('invalid');
-      return _secureStorage.getAccessToken();
-    }());
+    _accessTokenFuture = _accessTokenFuture.replace(_repository.corruptAccessToken());
     await _accessTokenFuture;
   }
 

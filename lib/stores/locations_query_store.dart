@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'locations_query_store.g.dart';
@@ -10,7 +10,7 @@ part 'locations_query_store.g.dart';
 class LocationsQueryStore = _LocationsQueryStore with _$LocationsQueryStore;
 
 abstract class _LocationsQueryStore with Store, Disposeable {
-  _LocationsQueryStore(this._prefs, this._analyticsStore, LocaleStore localeStore) {
+  _LocationsQueryStore(this._settings, this._analyticsStore, LocaleStore localeStore) {
     _localeReactionDisposer = reaction((_) => localeStore.currentLocale, (value) {
       if (_search.trim().isNotEmpty) {
         setSearch('', debounce: Duration.zero);
@@ -18,7 +18,7 @@ abstract class _LocationsQueryStore with Store, Disposeable {
     });
   }
 
-  final SharedPreferenceService _prefs;
+  final AppSettingsRepository _settings;
   final AnalyticsStore _analyticsStore;
 
   late final Debouncer _debouncer = Debouncer();
@@ -28,7 +28,7 @@ abstract class _LocationsQueryStore with Store, Disposeable {
   late String _search = '';
 
   @readonly
-  late IPType _ipType = _prefs.getIPType() ?? IPType.residential;
+  late IPType _ipType = _settings.ipType() ?? IPType.residential;
 
   /// View-level flag: the Favorite tab is selected instead of an IP-type tab.
   /// Not persisted so the app always reopens on an IP-type list.
@@ -74,7 +74,7 @@ abstract class _LocationsQueryStore with Store, Disposeable {
   @action
   Future<void> syncIPType(IPType value) async {
     _ipType = value;
-    await _prefs.setIPType(value);
+    await _settings.setIpType(value);
   }
 
   /// Drops a Favorite-tab selection when the tab goes away (logout, or the

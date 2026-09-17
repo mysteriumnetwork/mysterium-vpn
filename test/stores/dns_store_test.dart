@@ -3,21 +3,21 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/auth_status.dart';
 import 'package:mysterium_vpn/common/enums/blocker_type.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 import 'dns_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<LocalDBService>(),
+  MockSpec<ConnectionSettingsRepository>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<Talker>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
 ])
 void main() {
-  late MockLocalDBService mockLocalDBService;
+  late MockConnectionSettingsRepository mockLocalDBService;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockTalker mockLogger;
   late MockAuthSessionStore mockAuthSessionStore;
@@ -25,7 +25,7 @@ void main() {
   late DNSStore store;
 
   setUp(() {
-    mockLocalDBService = MockLocalDBService();
+    mockLocalDBService = MockConnectionSettingsRepository();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockLogger = MockTalker();
     mockAuthSessionStore = MockAuthSessionStore();
@@ -44,14 +44,14 @@ void main() {
 
   group('getMalwareBlockerContent', () {
     test('returns true when localDB returns true', () async {
-      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      when(mockLocalDBService.malwareContentBlocker()).thenAnswer((_) async => true);
       final result = await store.getMalwareContentBlocker();
       expect(result, isTrue);
       expect(store.malwareContentBlocker, isTrue);
     });
 
     test('returns false and logs error when localDB throws', () async {
-      when(mockLocalDBService.getMalwareContentBlocker()).thenThrow(Exception('fail'));
+      when(mockLocalDBService.malwareContentBlocker()).thenThrow(Exception('fail'));
       final result = await store.getMalwareContentBlocker();
       expect(result, isFalse);
       verify(mockLogger.handle(any)).called(1);
@@ -60,14 +60,14 @@ void main() {
 
   group('getNotSafeContentBlocker', () {
     test('returns true when localDB returns true', () async {
-      when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
+      when(mockLocalDBService.notSafeContentBlocker()).thenAnswer((_) async => true);
       final result = await store.getNotSafeContentBlocker();
       expect(result, isTrue);
       expect(store.notSafeContentBlocker, isTrue);
     });
 
     test('returns false and logs error when localDB throws', () async {
-      when(mockLocalDBService.getNotSafeContentBlocker()).thenThrow(Exception('fail'));
+      when(mockLocalDBService.notSafeContentBlocker()).thenThrow(Exception('fail'));
       final result = await store.getNotSafeContentBlocker();
       expect(result, isFalse);
       verify(mockLogger.handle(any)).called(1);
@@ -114,7 +114,7 @@ void main() {
     });
 
     test('returns malware when only malware blocker is on', () async {
-      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      when(mockLocalDBService.malwareContentBlocker()).thenAnswer((_) async => true);
       await store.getMalwareContentBlocker();
       expect(store.blockerType, BlockerType.malware);
     });
@@ -136,7 +136,7 @@ void main() {
         when(mockSubscriptionStore.malwareBlockingAllowed).thenReturn(true);
         when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(false);
         when(mockRemoteConfigStore.notSafeContentBlockerDnsAddress).thenReturn('1.1.1.3');
-        when(mockLocalDBService.getNotSafeContentBlocker()).thenAnswer((_) async => true);
+        when(mockLocalDBService.notSafeContentBlocker()).thenAnswer((_) async => true);
         await store.getNotSafeContentBlocker();
         expect(store.dnsAddress, '1.1.1.3');
       },
@@ -147,7 +147,7 @@ void main() {
       when(mockRemoteConfigStore.hideNotSafeContentBlocker).thenReturn(true);
       when(mockRemoteConfigStore.hideMalwareBlocker).thenReturn(false);
       when(mockRemoteConfigStore.malwareBlockerDnsAddress).thenReturn('8.8.8.8');
-      when(mockLocalDBService.getMalwareContentBlocker()).thenAnswer((_) async => true);
+      when(mockLocalDBService.malwareContentBlocker()).thenAnswer((_) async => true);
       await store.getMalwareContentBlocker();
       expect(store.dnsAddress, '8.8.8.8');
     });

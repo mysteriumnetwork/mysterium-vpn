@@ -10,12 +10,15 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker/talker.dart';
 
+import '../support/test_prefs.dart';
+
 @GenerateNiceMocks([
+  MockSpec<LocalDBService>(),
   MockSpec<WireguardRepository>(),
   MockSpec<OpenVpnRepository>(),
   MockSpec<ExternalApiService>(),
@@ -41,6 +44,8 @@ import 'package:talker/talker.dart';
 import 'vpn_store_test.mocks.dart';
 
 void main() {
+  late SharedPreferenceService prefsService;
+
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late VpnStore vpnStore;
@@ -68,6 +73,7 @@ void main() {
   late UdpBlockedSuggestionStore udpBlockedSuggestionStore;
 
   VpnStore buildStore() => VpnStore(
+    settings: LocalConnectionSettingsRepository(db: MockLocalDBService(), prefs: prefsService),
     externalApiService: mockExternalApi,
     mqtt: mockMqtt,
     locationsStore: mockLocationsStore,
@@ -93,8 +99,7 @@ void main() {
   );
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    await SharedPreferenceService.instance.init();
+    prefsService = await initTestPrefs();
     mockWireguardRepo = MockWireguardRepository();
     mockOpenVpnRepo = MockOpenVpnRepository();
     mockExternalApi = MockExternalApiService();
@@ -685,10 +690,7 @@ void main() {
 
       test('restores the persisted connectedAt when the tunnel is already up at launch', () async {
         final storedAt = DateTime.now().subtract(const Duration(minutes: 5));
-        await SharedPreferenceService.instance.setInt(
-          StorageKeys.connectedAt.name,
-          storedAt.millisecondsSinceEpoch,
-        );
+        await prefsService.setInt(StorageKeys.connectedAt.name, storedAt.millisecondsSinceEpoch);
         when(
           mockWireguardRepo.currentStatus(),
         ).thenAnswer((_) async => VpnConnectionStatus.connected);
@@ -732,7 +734,7 @@ void main() {
         expect(store.connectedAt, isNotNull);
         expect(store.connectedAt!.isBefore(before), isFalse);
         expect(
-          SharedPreferenceService.instance.getInt(StorageKeys.connectedAt.name),
+          prefsService.getInt(StorageKeys.connectedAt.name),
           store.connectedAt!.millisecondsSinceEpoch,
         );
 
@@ -755,17 +757,14 @@ void main() {
         await pumpEventQueue();
 
         expect(store.connectedAt, isNull);
-        expect(SharedPreferenceService.instance.getInt(StorageKeys.connectedAt.name), isNull);
+        expect(prefsService.getInt(StorageKeys.connectedAt.name), isNull);
 
         await store.disposeStore();
       });
 
       test('ignores a stale stored stamp when connecting after a disconnected launch', () async {
         final staleAt = DateTime.now().subtract(const Duration(hours: 2));
-        await SharedPreferenceService.instance.setInt(
-          StorageKeys.connectedAt.name,
-          staleAt.millisecondsSinceEpoch,
-        );
+        await prefsService.setInt(StorageKeys.connectedAt.name, staleAt.millisecondsSinceEpoch);
         when(
           mockWireguardRepo.currentStatus(),
         ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
@@ -1181,6 +1180,10 @@ void main() {
         when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '2.2.2.2');
 
         final store = VpnStore(
+          settings: LocalConnectionSettingsRepository(
+            db: MockLocalDBService(),
+            prefs: prefsService,
+          ),
           externalApiService: mockExternalApi,
           mqtt: mockMqtt,
           locationsStore: mockLocationsStore,

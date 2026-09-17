@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mysterium_vpn/services/data/local/shared_preferences_service.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 // Project imports:
@@ -14,10 +14,10 @@ part 'theme_store.g.dart';
 class ThemeStore = _ThemeStore with _$ThemeStore;
 
 abstract class _ThemeStore with Store {
-  _ThemeStore() {
-    themeMode = _sharedPrefs.getThemeType() ?? ThemeMode.system;
+  _ThemeStore({required AppSettingsRepository settings}) : _settings = settings {
+    themeMode = _settings.themeMode() ?? ThemeMode.system;
   }
-  final _sharedPrefs = SharedPreferenceService.instance;
+  final AppSettingsRepository _settings;
   final darkTheme = DesignSystem.darkTheme;
   final lightTheme = DesignSystem.lightTheme;
 
@@ -33,7 +33,7 @@ abstract class _ThemeStore with Store {
 
   @action
   Future<void> setThemeType(ThemeMode mode) async {
-    await _sharedPrefs.setThemeType(mode);
+    await _settings.setThemeMode(mode);
     themeMode = mode;
   }
 

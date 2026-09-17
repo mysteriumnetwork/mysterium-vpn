@@ -3,7 +3,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import 'rate_connection_store_test.mocks.dart';
 
@@ -18,14 +17,10 @@ void main() {
     mockAnalyticsStore = MockAnalyticsStore();
     mockVpnStore = MockVpnStore();
 
-    likeModeStore = RateConnectionStore(
-      RateConnectionRequestModeEnum.like,
-      mockAnalyticsStore,
-      mockVpnStore,
-    );
+    likeModeStore = RateConnectionStore(RateConnectionMode.like, mockAnalyticsStore, mockVpnStore);
 
     dislikeModeStore = RateConnectionStore(
-      RateConnectionRequestModeEnum.dislike,
+      RateConnectionMode.dislike,
       mockAnalyticsStore,
       mockVpnStore,
     );
@@ -82,7 +77,7 @@ void main() {
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.rateConnectionSubmit)).called(1);
       verify(
         mockVpnStore.submitRateConnection(
-          mode: RateConnectionRequestModeEnum.like,
+          mode: RateConnectionMode.like,
           reasons: RateConnectionReason.likeReasons.first.name,
           feedback: 'Great connection!',
         ),
@@ -107,7 +102,7 @@ void main() {
       // Assert
       verify(
         mockVpnStore.submitRateConnection(
-          mode: RateConnectionRequestModeEnum.like,
+          mode: RateConnectionMode.like,
           reasons: RateConnectionReason.other.name,
           feedback: 'Great connection!',
         ),
@@ -135,9 +130,7 @@ void main() {
 
     test('cancelRateConnection logs analytics event', () {
       likeModeStore.cancelRateConnection();
-      verify(
-        mockAnalyticsStore.logRateConnectionCancel(RateConnectionRequestModeEnum.like),
-      ).called(1);
+      verify(mockAnalyticsStore.logRateConnectionCancel(RateConnectionMode.like)).called(1);
     });
   });
 }

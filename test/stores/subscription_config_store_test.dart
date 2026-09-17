@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
@@ -10,20 +10,20 @@ import 'subscription_config_store_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<AuthSessionStore>(),
-  MockSpec<SubscriptionService>(),
+  MockSpec<SubscriptionRepository>(),
   MockSpec<SubscriptionConfigResponse>(),
   MockSpec<GetPlanResponse>(),
 ])
 void main() {
   late MockAuthSessionStore session;
-  late MockSubscriptionService service;
+  late MockSubscriptionRepository service;
 
   late MockSubscriptionConfigResponse config;
   late MockGetPlanResponse plan;
 
   setUp(() {
     session = MockAuthSessionStore();
-    service = MockSubscriptionService();
+    service = MockSubscriptionRepository();
     config = MockSubscriptionConfigResponse();
     plan = MockGetPlanResponse();
 

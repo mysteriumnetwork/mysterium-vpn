@@ -12,25 +12,27 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
 import 'auth_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<AuthService>(),
+  MockSpec<AuthRepository>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<AppLinks>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<Talker>(),
   MockSpec<ABTestingStore>(),
   MockSpec<DeviceIDStore>(),
+  MockSpec<SecureStorageService>(),
 ])
 void main() {
   late AuthStore store;
-  late MockAuthService authService;
+  late MockAuthRepository authService;
   late MockAuthSessionStore sessionStore;
   late MockAppLinks appLinks;
   late MockAnalyticsStore analyticsStore;
@@ -50,8 +52,8 @@ void main() {
     severity: ExceptionSeverity.low,
   );
 
-  // AuthStore touches LocalDBService.instance at construction (which calls
-  // Hive.box(...) synchronously), so the boxes must exist before each test.
+  // LocalDBService reads Hive boxes in its field initializers, so the boxes
+  // must exist before each test.
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     hiveDir = await Directory.systemTemp.createTemp('auth_store_test_');
@@ -76,7 +78,7 @@ void main() {
   });
 
   setUp(() {
-    authService = MockAuthService();
+    authService = MockAuthRepository();
     sessionStore = MockAuthSessionStore();
     appLinks = MockAppLinks();
     analyticsStore = MockAnalyticsStore();
@@ -93,6 +95,11 @@ void main() {
     when(analyticsStore.setLogin(any)).thenAnswer((_) async {});
 
     store = AuthStore(
+      flow: LocalAuthFlowRepository(MockSecureStorageService()),
+      session: LocalSessionRepository(
+        secureStorage: MockSecureStorageService(),
+        db: LocalDBService(),
+      ),
       authService: authService,
       authSessionStore: sessionStore,
       appLinks: appLinks,

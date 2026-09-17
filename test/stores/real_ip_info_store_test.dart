@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
@@ -35,7 +37,10 @@ void main() {
     when(wireguard.status()).thenAnswer((_) async => ConnectionStatus.disconnected);
   });
 
-  RealIPInfoStore newStore() => RealIPInfoStore(api, preferences, wireguard, analytics);
+  RealIPInfoStore newStore() => RealIPInfoStore(
+    RestIpInfoRepository(api: api, preferences: preferences, wireguardService: wireguard),
+    analytics,
+  );
 
   test('fetches fresh IP info when not connected to VPN', () async {
     final store = newStore();

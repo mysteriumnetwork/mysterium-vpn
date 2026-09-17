@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'banners_store.g.dart';
@@ -11,14 +11,14 @@ class BannersStore = _BannersStore with _$BannersStore;
 
 abstract class _BannersStore with Store {
   _BannersStore(
-    this._localDBService,
+    this._prompts,
     this._subscriptionStore,
     this._authSessionStore,
     this._connectionsLimitStore,
     this._updateAvailableStore,
   );
 
-  final LocalDBService _localDBService;
+  final PromptsRepository _prompts;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
   final ConnectionsLimitStore _connectionsLimitStore;
@@ -40,9 +40,7 @@ abstract class _BannersStore with Store {
   };
 
   @readonly
-  late ObservableFuture<List<BannerType>> _shownBanners = ObservableFuture(
-    _localDBService.getShownBanners(),
-  );
+  late ObservableFuture<List<BannerType>> _shownBanners = ObservableFuture(_prompts.shownBanners());
 
   @computed
   List<BannerType>? get shown =>
@@ -123,7 +121,7 @@ abstract class _BannersStore with Store {
       return;
     }
     final shownBanners = [...(await _shownBanners), banner];
-    await _localDBService.setShownBanners(shownBanners);
+    await _prompts.setShownBanners(shownBanners);
 
     _shownBanners = ObservableFuture.value(shownBanners);
   }
@@ -134,7 +132,7 @@ abstract class _BannersStore with Store {
       _unauthenticatedHidden.clear();
       return;
     }
-    await _localDBService.resetShownBanners();
+    await _prompts.resetShownBanners();
     _shownBanners = ObservableFuture.value([]);
   }
 }

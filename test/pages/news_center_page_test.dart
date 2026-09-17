@@ -5,25 +5,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/pages/news_center_page.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 import '../support/news_fixtures.dart';
 import '../support/test_localizations.dart';
 import 'news_center_page_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<NewsCenterService>(), MockSpec<AnalyticsStore>()])
+@GenerateNiceMocks([MockSpec<NewsCenterRepository>(), MockSpec<AnalyticsStore>()])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockNewsCenterService service;
+  late MockNewsCenterRepository service;
   late MockAnalyticsStore analytics;
 
   setUpAll(() {
@@ -31,7 +32,7 @@ void main() {
   });
 
   setUp(() {
-    service = MockNewsCenterService();
+    service = MockNewsCenterRepository();
     analytics = MockAnalyticsStore();
   });
 
@@ -89,7 +90,7 @@ void main() {
 
   testWidgets('tapping a card marks it read, opens it, and logs the event', (tester) async {
     when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
-    NewscenterInboxListResponseItem? opened;
+    NewsItem? opened;
 
     final container = await pumpPage(tester, onOpenItem: (_, i) => opened = i);
 
@@ -98,7 +99,7 @@ void main() {
 
     expect(opened?.id, 1);
     expect(container.read(newsCenterStorePOD).isRead(1), isTrue);
-    verify(analytics.logNewsCenterItemOpened(id: 1, category: NewscenterCategory.news)).called(1);
+    verify(analytics.logNewsCenterItemOpened(id: 1, category: NewsCategory.news)).called(1);
   });
 
   testWidgets('constrains the feed to a fixed width on desktop', (tester) async {
@@ -121,18 +122,18 @@ void main() {
 
   testWidgets('deepLinkItemId opens that item once loaded, marking it read', (tester) async {
     when(service.getFeed()).thenAnswer((_) async => [newsItem(1), newsItem(2)]);
-    NewscenterInboxListResponseItem? opened;
+    NewsItem? opened;
 
     final container = await pumpPage(tester, onOpenItem: (_, i) => opened = i, deepLinkItemId: 2);
 
     expect(opened?.id, 2);
     expect(container.read(newsCenterStorePOD).isRead(2), isTrue);
-    verify(analytics.logNewsCenterItemOpened(id: 2, category: NewscenterCategory.news)).called(1);
+    verify(analytics.logNewsCenterItemOpened(id: 2, category: NewsCategory.news)).called(1);
   });
 
   testWidgets('an unknown deepLinkItemId opens nothing', (tester) async {
     when(service.getFeed()).thenAnswer((_) async => [newsItem(1)]);
-    NewscenterInboxListResponseItem? opened;
+    NewsItem? opened;
 
     await pumpPage(tester, onOpenItem: (_, i) => opened = i, deepLinkItemId: 999);
 
@@ -164,10 +165,8 @@ void main() {
           // route's page for a new `?id=`).
           home: ValueListenableBuilder<int?>(
             valueListenable: id,
-            builder: (_, value, _) => NewsCenterPage(
-              onOpenItem: (_, i) => opened.add(i.id.toInt()),
-              deepLinkItemId: value,
-            ),
+            builder: (_, value, _) =>
+                NewsCenterPage(onOpenItem: (_, i) => opened.add(i.id), deepLinkItemId: value),
           ),
         ),
       ),
@@ -183,7 +182,7 @@ void main() {
   testWidgets('a deepLinkItemId change mid-load does not open the stale item', (tester) async {
     // Feed load stays in flight until we complete it, so we can change the id
     // while the first deep-link task is still awaiting.
-    final completer = Completer<List<NewscenterInboxListResponseItem>>();
+    final completer = Completer<List<NewsItem>>();
     when(service.getFeed()).thenAnswer((_) => completer.future);
     final opened = <int>[];
     final id = ValueNotifier<int?>(1);
@@ -202,10 +201,8 @@ void main() {
           supportedLocales: testSupportedLocales,
           home: ValueListenableBuilder<int?>(
             valueListenable: id,
-            builder: (_, value, _) => NewsCenterPage(
-              onOpenItem: (_, i) => opened.add(i.id.toInt()),
-              deepLinkItemId: value,
-            ),
+            builder: (_, value, _) =>
+                NewsCenterPage(onOpenItem: (_, i) => opened.add(i.id), deepLinkItemId: value),
           ),
         ),
       ),

@@ -13,7 +13,7 @@ import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
 import 'package:mysterium_vpn/common/utils/subscription_plan_resolver.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
@@ -45,9 +45,8 @@ abstract class _SubscriptionStore with Store {
   }
 
   final api.Subscription _apiSubscription;
-  final SubscriptionService _subscriptionService;
+  final SubscriptionRepository _subscriptionService;
   final AuthSessionStore _authSessionStore;
-  final SecureStorageService _secureStorageService = SecureStorageService.instance;
   final AnalyticsStore _analyticsStore;
   final RemoteConfigStore _remoteConfigStore;
   final SubscriptionConfigStore _configStore;
@@ -306,7 +305,7 @@ abstract class _SubscriptionStore with Store {
 
     try {
       final user = await _authSessionStore.userFuture;
-      final (email, activeUntil) = await _secureStorageService.getSubscriptionPaymentInfo();
+      final (email, activeUntil) = await _subscriptionService.paymentInfo();
       if (email != user!.username && activeUntil.isAfter(DateTime.now())) {
         return email;
       }

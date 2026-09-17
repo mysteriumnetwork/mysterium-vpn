@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 part 'connection_display_store.g.dart';
 
@@ -101,7 +101,7 @@ abstract class _ConnectionDisplayStore with Store {
 
   /// The current connection rating
   @computed
-  RateConnectionRequestModeEnum? get connectionRated => _vpnStore.connectionRated;
+  RateConnectionMode? get connectionRated => _vpnStore.connectionRated;
 
   /// Whether the user has selected a location that differs from the currently
   /// connected one — i.e. a "switch" scenario.

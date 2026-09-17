@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/response.dart';
-import 'package:mysterium_vpn/services/services.dart' hide Response;
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
 
 import 'rest_external_api_service_test.mocks.dart';
