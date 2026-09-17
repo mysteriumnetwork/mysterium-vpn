@@ -296,6 +296,8 @@ class _SubscriptionCard extends StatelessWidget {
       String? badgeText;
       var badgeType = BadgeType.warning;
 
+      final spacing = Theme.of(context).spacing;
+
       // Active subscription can be recurring or cancelled
       if (isSubscriptionActive) {
         // subscription paused
@@ -322,8 +324,6 @@ class _SubscriptionCard extends StatelessWidget {
       } else {
         planSubtitle = S.current.noActiveSubsDesc;
       }
-
-      final spacing = Theme.of(context).spacing;
 
       Widget actionPair(Widget first, Widget second) => isDesktop
           ? Row(mainAxisSize: MainAxisSize.min, spacing: spacing.md, children: [first, second])
@@ -400,9 +400,24 @@ class _SubscriptionCard extends StatelessWidget {
         );
       }
 
+      const discountedPrice = r'$71.76';
+      const originalPrice = r'$89.73';
+
+      final subtitle = _SubscriptionSubtitle(
+        subtitle: planSubtitle,
+        discountedPrice: discountedPrice,
+        originalPrice: originalPrice,
+      );
+
       return SettingsCard(
         title: planTitle,
-        subtitle: planSubtitle,
+        subtitleWidget: isDesktop ? subtitle : null,
+        footer: isDesktop
+            ? null
+            : Padding(
+                padding: EdgeInsets.only(top: spacing.s),
+                child: Align(alignment: Alignment.centerRight, child: subtitle),
+              ),
         position: position,
         trailing: trailing,
         badgeText: badgeText,
@@ -410,4 +425,57 @@ class _SubscriptionCard extends StatelessWidget {
       );
     },
   );
+}
+
+class _SubscriptionSubtitle extends StatelessWidget {
+  const _SubscriptionSubtitle({
+    required this._subtitle,
+    this._discountedPrice,
+    this._originalPrice,
+  });
+
+  final String _subtitle;
+  final String? _discountedPrice;
+  final String? _originalPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: isDesktop() ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+      children: [
+        // Flexible so the subtitle ellipsizes on narrow screens; an unflexed
+        // Text in a Row is laid out unbounded and overflows instead.
+        Flexible(
+          child: Text(
+            _subtitle,
+            style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        if (_discountedPrice != null && _originalPrice != null)
+          Row(
+            children: [
+              SizedBox(width: theme.spacing.md),
+              Icon(UntitledUI.sale_02, size: 20, color: theme.palette.iconPrimary),
+              SizedBox(width: theme.spacing.xs),
+              Text(
+                _discountedPrice,
+                style: theme.textStyles.textSm.semibold.copyWith(color: theme.palette.textPrimary),
+              ),
+              SizedBox(width: theme.spacing.xs),
+              Text(
+                _originalPrice,
+                style: theme.textStyles.textSm.regular.copyWith(
+                  color: theme.palette.textTertiary,
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: theme.palette.textTertiary,
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
 }
