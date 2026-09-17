@@ -19,11 +19,13 @@ import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart'
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
 
-final localeStorePOD = Provider<LocaleStore>((ref) => LocaleStore());
+final localeStorePOD = Provider<LocaleStore>(
+  (ref) => LocaleStore(settings: ref.watch(appSettingsRepositoryPOD)),
+);
 
 final authSessionStorePOD = Provider<AuthSessionStore>((ref) {
   final store = AuthSessionStore(
-    secureStorage: SecureStorageService.instance,
+    repository: ref.watch(sessionRepositoryPOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
   );
 
@@ -42,6 +44,8 @@ final authStorePOD = Provider<AuthStore>((ref) {
   final deviceIDStore = ref.watch(deviceIDStorePOD);
 
   return AuthStore(
+    flow: ref.watch(authFlowRepositoryPOD),
+    session: ref.watch(sessionRepositoryPOD),
     authService: authService,
     authSessionStore: authSessionStore,
     appLinks: appLinks,
@@ -62,7 +66,9 @@ final apiStorePOD = Provider<MqttStore>((ref) {
   return store;
 });
 
-final themeStorePOD = Provider<ThemeStore>((ref) => ThemeStore());
+final themeStorePOD = Provider<ThemeStore>(
+  (ref) => ThemeStore(settings: ref.watch(appSettingsRepositoryPOD)),
+);
 
 final homeTabsStorePOD = Provider<HomeTabsStore>((ref) {
   final store = HomeTabsStore(
@@ -100,6 +106,7 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   final udpBlockedSuggestionStore = ref.watch(udpBlockedSuggestionStorePOD);
 
   final vpnStore = VpnStore(
+    settings: ref.watch(connectionSettingsRepositoryPOD),
     externalApiService: externalApiService,
     mqtt: mqttService,
     locationsStore: locationsStore,
@@ -130,10 +137,10 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
 final selectedLocationStorePOD = Provider<SelectedLocationStore>((ref) => SelectedLocationStore());
 
 final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
-  final prefs = SharedPreferenceService.instance;
+  final settings = ref.watch(appSettingsRepositoryPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final localeStore = ref.watch(localeStorePOD);
-  final store = LocationsQueryStore(prefs, analyticsStore, localeStore);
+  final store = LocationsQueryStore(settings, analyticsStore, localeStore);
 
   ref.onDispose(store.dispose);
 
@@ -141,9 +148,7 @@ final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
 });
 
 final locationsStorePOD = Provider<LocationsStore>((ref) {
-  final api = ref.watch(vpnApiPOD);
   final filterService = ref.watch(filterServicePOD);
-  final dbService = LocalDBService.instance;
   final locationsService = ref.watch(locationsServicePOD);
   final logger = ref.watch(loggerPOD);
 
@@ -154,9 +159,8 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
   final authSessionStore = ref.watch(authSessionStorePOD);
 
   final store = LocationsStore(
-    api.getConnection(),
+    ref.watch(locationsRepositoryPOD),
     filterService,
-    dbService,
     locationsService,
     logger,
     remoteConfigStore,
@@ -171,7 +175,6 @@ final locationsStorePOD = Provider<LocationsStore>((ref) {
 });
 
 final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
-  final dbService = LocalDBService.instance;
   final filterService = ref.watch(filterServicePOD);
   final queryStore = ref.watch(locationsQueryStorePOD);
   final localeStore = ref.watch(localeStorePOD);
@@ -179,7 +182,7 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
 
   final store = RecentLocationsStore(
-    dbService,
+    ref.watch(recentLocationsRepositoryPOD),
     filterService,
     queryStore,
     remoteConfigStore,
@@ -194,8 +197,7 @@ final recentLocationsStorePOD = Provider<RecentLocationsStore>((ref) {
 
 final favoriteIpsStorePOD = Provider<FavoriteIpsStore>((ref) {
   final store = FavoriteIpsStore(
-    LocalDBService.instance,
-    ref.watch(favoriteIpsAvailabilityServicePOD),
+    ref.watch(favoriteIpsRepositoryPOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(remoteConfigStorePOD),
     ref.watch(analyticsStorePOD),
@@ -281,7 +283,7 @@ final subscriptionOnboardingStorePOD = Provider<SubscriptionOnboardingStore>((re
   return SubscriptionOnboardingStore(
     analyticsStore: analyticsStore,
     subscriptionStore: subscriptionStore,
-    localDBService: LocalDBService.instance,
+    prompts: ref.watch(promptsRepositoryPOD),
     remoteConfigStore: remoteConfigStore,
   );
 });
@@ -300,7 +302,7 @@ final userPreferencesStorePOD = Provider<UserPreferencesStore>((ref) {
     apiService: apiService,
     analyticsStore: analyticsStore,
     realIPInfo: realIPInfoStore,
-    localDBService: LocalDBService.instance,
+    prompts: ref.watch(promptsRepositoryPOD),
     pushNotificationsStore: pushNotificationsStore,
     authSessionStore: authSessionStore,
     subscriptionStore: subscriptionStore,
@@ -338,7 +340,7 @@ final abTestingStorePOD = Provider<ABTestingStore>((ref) {
 
 final bannersStorePOD = Provider<BannersStore>(
   (ref) => BannersStore(
-    LocalDBService.instance,
+    ref.watch(promptsRepositoryPOD),
     ref.watch(subscriptionStorePOD),
     ref.watch(authSessionStorePOD),
     ref.watch(connectionsLimitStorePOD),
@@ -347,19 +349,16 @@ final bannersStorePOD = Provider<BannersStore>(
 );
 
 final residentialEducationStorePOD = Provider<ResidentialEducationStore>(
-  (ref) => ResidentialEducationStore(LocalDBService.instance),
+  (ref) => ResidentialEducationStore(ref.watch(localDBServicePOD)),
 );
 
 final realIPInfoStorePOD = Provider<RealIPInfoStore>(
-  (ref) => RealIPInfoStore(
-    ref.watch(externalApiServicePOD),
-    SharedPreferenceService.instance,
-    ref.watch(wireguardServicePOD),
-    ref.watch(analyticsStorePOD),
-  ),
+  (ref) => RealIPInfoStore(ref.watch(ipInfoRepositoryPOD), ref.watch(analyticsStorePOD)),
 );
 
-final deviceIDStorePOD = Provider<DeviceIDStore>((ref) => DeviceIDStore());
+final deviceIDStorePOD = Provider<DeviceIDStore>(
+  (ref) => DeviceIDStore(repository: ref.watch(deviceIdRepositoryPOD)),
+);
 
 final latLngStorePOD = Provider<LatLngStore>((ref) {
   final assetsService = ref.watch(assetsServicePOD);
@@ -392,7 +391,7 @@ final userIntentsStorePOD = Provider.autoDispose<UserIntentsStore>((ref) {
 
 final dnsStorePOD = Provider<DNSStore>(
   (ref) => DNSStore(
-    LocalDBService.instance,
+    ref.watch(connectionSettingsRepositoryPOD),
     ref.watch(remoteConfigStorePOD),
     ref.watch(loggerPOD),
     ref.watch(authSessionStorePOD),
@@ -401,8 +400,11 @@ final dnsStorePOD = Provider<DNSStore>(
 );
 
 final refreshIPStorePOD = Provider<RefreshIPStore>(
-  (ref) =>
-      RefreshIPStore(LocalDBService.instance, ref.watch(loggerPOD), ref.watch(authSessionStorePOD)),
+  (ref) => RefreshIPStore(
+    ref.watch(connectionSettingsRepositoryPOD),
+    ref.watch(loggerPOD),
+    ref.watch(authSessionStorePOD),
+  ),
 );
 
 final ipRefreshExhaustionStorePOD = Provider<IpRefreshExhaustionStore>(
@@ -460,11 +462,11 @@ final subscriptionLimitedTimeOfferStorePOD = Provider<SubscriptionLimitedTimeOff
 });
 
 final vpnProtocolStorePOD = Provider<VpnProtocolStore>((ref) {
-  final localDB = LocalDBService.instance;
+  final settings = ref.watch(connectionSettingsRepositoryPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
-  return VpnProtocolStore(localDB, analyticsStore, remoteConfigStore, authSessionStore);
+  return VpnProtocolStore(settings, analyticsStore, remoteConfigStore, authSessionStore);
 });
 
 final connectionDisplayStorePOD = Provider<ConnectionDisplayStore>(
@@ -496,7 +498,6 @@ final subscriptionPlansStorePOD = Provider<SubscriptionPlansStore>((ref) {
 
 final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
   final inAppPurchase = ref.read(inAppPurchasePOD);
-  final secureStorageService = SecureStorageService.instance;
   final subscriptionService = ref.read(subscriptionServicePOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
@@ -506,7 +507,6 @@ final subscriptionPurchaseStorePOD = Provider<SubscriptionPurchaseStore>((ref) {
 
   final store = SubscriptionPurchaseStore(
     inAppPurchase,
-    secureStorageService,
     subscriptionService,
     logger,
     analyticsStore,
@@ -556,7 +556,7 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
   final notificationsRepository = ref.watch(pushNotificationsRepositoryPOD);
   final logger = ref.watch(loggerPOD);
   final analyticsStore = ref.watch(analyticsStorePOD);
-  final localDb = LocalDBService.instance;
+  final prompts = ref.watch(promptsRepositoryPOD);
   final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
   final store = PushNotificationsStore(
@@ -566,7 +566,7 @@ final pushNotificationsStorePOD = Provider<PushNotificationsStore>((ref) {
     logger,
     notificationsRepository,
     analyticsStore,
-    localDb,
+    prompts,
     remoteConfigStore,
   );
 
@@ -591,7 +591,7 @@ final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
   }
 
   final store = ReviewPromptStore(
-    prefs: SharedPreferenceService.instance,
+    prefs: ref.watch(reviewPromptRepositoryPOD),
     remoteConfigStore: ref.watch(remoteConfigStorePOD),
     analyticsStore: ref.watch(analyticsStorePOD),
     vpnStore: ref.watch(vpnStorePOD),

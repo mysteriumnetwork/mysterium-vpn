@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/analytics_event.dart';
 import 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_store.dart';
@@ -18,16 +18,16 @@ abstract class _SubscriptionOnboardingStore with Store {
   _SubscriptionOnboardingStore({
     required AnalyticsStore analyticsStore,
     required SubscriptionStore subscriptionStore,
-    required LocalDBService localDBService,
+    required PromptsRepository prompts,
     required RemoteConfigStore remoteConfigStore,
   }) : _analyticsStore = analyticsStore,
        _subscriptionStore = subscriptionStore,
        _remoteConfigStore = remoteConfigStore,
-       _localDb = localDBService;
+       _prompts = prompts;
 
   final AnalyticsStore _analyticsStore;
   final SubscriptionStore _subscriptionStore;
-  final LocalDBService _localDb;
+  final PromptsRepository _prompts;
   final RemoteConfigStore _remoteConfigStore;
 
   @observable
@@ -44,7 +44,7 @@ abstract class _SubscriptionOnboardingStore with Store {
       return false;
     }
 
-    if (await _localDb.getSubscriptionOnboardingShown()) {
+    if (await _prompts.subscriptionOnboardingShown()) {
       return false;
     }
 
@@ -58,11 +58,11 @@ abstract class _SubscriptionOnboardingStore with Store {
 
   @action
   Future<void> markShown() async {
-    await _localDb.setSubscriptionOnboardingShown();
+    await _prompts.setSubscriptionOnboardingShown();
     _startTour = false;
   }
 
-  Future<void> clearShown() => _localDb.resetSubscriptionOnboardingShown();
+  Future<void> clearShown() => _prompts.resetSubscriptionOnboardingShown();
 
   void trackSkipped() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedSkipped).ignore();

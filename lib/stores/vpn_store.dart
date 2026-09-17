@@ -45,7 +45,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     required VpnProtocolStore protocolStore,
     required IpRefreshExhaustionStore ipRefreshExhaustionStore,
     required UdpBlockedSuggestionStore udpBlockedSuggestionStore,
-  }) : _externalApiService = externalApiService,
+    required ConnectionSettingsRepository settings,
+  }) : _settings = settings,
+       _externalApiService = externalApiService,
        _mqtt = mqtt,
        _locationsStore = locationsStore,
        _connectionsLimitStore = connectionsLimitStore,
@@ -100,7 +102,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   // State
   final Stopwatch _stopwatch = Stopwatch();
-  final SharedPreferenceService _prefs = SharedPreferenceService.instance;
+  final ConnectionSettingsRepository _settings;
   StreamSubscription<String>? _connectionDataSub;
   StreamSubscription<String>? _connectionKilledSub;
   StreamSubscription<VpnConnectionStatus>? _connectionStatusStream;
@@ -174,7 +176,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   ObservableFuture<void>? _resetAppFuture;
 
   @observable
-  RateConnectionRequestModeEnum? connectionRated;
+  RateConnectionMode? connectionRated;
 
   @observable
   bool _isDeviceLimitErrorShown = false;
@@ -269,19 +271,19 @@ abstract class _VpnStore extends VpnGuard with Store {
   void _handleConnectedChange(bool connected) {
     if (!connected) {
       _connectedAt = null;
-      _prefs.remove(StorageKeys.connectedAt.name).ignore();
+      _settings.clearConnectedAt().ignore();
       return;
     }
     _disconnectReason = VpnDisconnectReason.user;
     // A stamp persisted by a previous run means this session was already up
     // before launch — keep its original start time so the clock survives
     // restarts. In-run connects find no stamp (disconnect removes it).
-    final storedMs = _prefs.getInt(StorageKeys.connectedAt.name);
-    if (storedMs != null) {
-      _connectedAt = DateTime.fromMillisecondsSinceEpoch(storedMs);
+    final stored = _settings.connectedAt();
+    if (stored != null) {
+      _connectedAt = stored;
     } else {
       _connectedAt = DateTime.now();
-      _prefs.setInt(StorageKeys.connectedAt.name, _connectedAt!.millisecondsSinceEpoch).ignore();
+      _settings.setConnectedAt(_connectedAt!).ignore();
     }
   }
 
@@ -413,7 +415,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     // Tunnel down at launch — drop any stale connectedAt stamp left by a
     // previous run so a later connect doesn't restore it.
     if (status != VpnConnectionStatus.connected) {
-      await _prefs.remove(StorageKeys.connectedAt.name);
+      await _settings.clearConnectedAt();
     }
     _connectionStatus = status;
 
@@ -1077,7 +1079,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> submitRateConnection({
-    required RateConnectionRequestModeEnum mode,
+    required RateConnectionMode mode,
     required String? reasons,
     required String? feedback,
   }) async {

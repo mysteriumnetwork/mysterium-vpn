@@ -2,40 +2,40 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 import 'locations_query_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SharedPreferenceService>(),
+  MockSpec<AppSettingsRepository>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<LocaleStore>(),
 ])
 void main() {
-  late MockSharedPreferenceService prefs;
+  late MockAppSettingsRepository prefs;
   late MockAnalyticsStore analytics;
   late MockLocaleStore localeStore;
 
   setUp(() {
-    prefs = MockSharedPreferenceService();
+    prefs = MockAppSettingsRepository();
     analytics = MockAnalyticsStore();
     localeStore = MockLocaleStore();
 
-    when(prefs.getIPType()).thenReturn(IPType.residential);
-    when(prefs.setIPType(any)).thenAnswer((_) async => true);
+    when(prefs.ipType()).thenReturn(IPType.residential);
+    when(prefs.setIpType(any)).thenAnswer((_) async => true);
   });
 
   LocationsQueryStore newStore() => LocationsQueryStore(prefs, analytics, localeStore);
 
   test('seeds ipType from SharedPreferenceService', () {
-    when(prefs.getIPType()).thenReturn(IPType.datacenter);
+    when(prefs.ipType()).thenReturn(IPType.datacenter);
     final store = newStore();
     expect(store.ipType, IPType.datacenter);
   });
 
   test('falls back to residential when prefs are empty', () {
-    when(prefs.getIPType()).thenReturn(null);
+    when(prefs.ipType()).thenReturn(null);
     final store = newStore();
     expect(store.ipType, IPType.residential);
   });
@@ -61,7 +61,7 @@ void main() {
     await store.setIPType(IPType.datacenter);
 
     expect(store.ipType, IPType.datacenter);
-    verify(prefs.setIPType(IPType.datacenter)).called(1);
+    verify(prefs.setIpType(IPType.datacenter)).called(1);
     verifyNever(analytics.logTabChange(any));
   });
 
@@ -71,7 +71,7 @@ void main() {
 
   group('favourite tab', () {
     test('tab reflects ipType when favourites are not selected', () {
-      when(prefs.getIPType()).thenReturn(IPType.datacenter);
+      when(prefs.ipType()).thenReturn(IPType.datacenter);
       final store = newStore();
 
       expect(store.tab, LocationsTab.datacenter);
@@ -82,7 +82,7 @@ void main() {
 
       expect(store.tab, LocationsTab.favorite);
       expect(store.ipType, IPType.residential);
-      verifyNever(prefs.setIPType(any));
+      verifyNever(prefs.setIpType(any));
     });
 
     test('selectTab of an IP-type tab deselects favourites', () async {
@@ -109,7 +109,7 @@ void main() {
 
       expect(store.tab, LocationsTab.favorite);
       expect(store.ipType, IPType.datacenter);
-      verify(prefs.setIPType(IPType.datacenter)).called(1);
+      verify(prefs.setIpType(IPType.datacenter)).called(1);
     });
   });
 }

@@ -135,13 +135,6 @@ mixin _$LocationsStore on _LocationsStore, Store {
     return _$refreshAllAsyncAction.run(() => super.refreshAll(invalidate: invalidate));
   }
 
-  late final _$clearAsyncAction = AsyncAction('_LocationsStore.clear', context: context);
-
-  @override
-  Future<void> clear() {
-    return _$clearAsyncAction.run(() => super.clear());
-  }
-
   late final _$_LocationsStoreActionController = ActionController(
     name: '_LocationsStore',
     context: context,
@@ -154,6 +147,18 @@ mixin _$LocationsStore on _LocationsStore, Store {
     );
     try {
       return super.insertInvalidLocations();
+    } finally {
+      _$_LocationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<void> clear() {
+    final _$actionInfo = _$_LocationsStoreActionController.startAction(
+      name: '_LocationsStore.clear',
+    );
+    try {
+      return super.clear();
     } finally {
       _$_LocationsStoreActionController.endAction(_$actionInfo);
     }

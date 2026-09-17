@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:vpn_api/vpn_api.dart' hide Subscription;
@@ -12,7 +12,7 @@ import 'package:vpn_api/vpn_api.dart' hide Subscription;
 import 'subscription_plans_store_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SubscriptionService>(),
+  MockSpec<SubscriptionRepository>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<RemoteConfigStore>(),
   MockSpec<PurchasableProduct>(),
@@ -20,7 +20,7 @@ import 'subscription_plans_store_test.mocks.dart';
   MockSpec<InAppPurchase>(),
 ])
 void main() {
-  late MockSubscriptionService mockService;
+  late MockSubscriptionRepository mockService;
   late MockSubscriptionStore mockSubscriptionStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
   late MockInAppPurchase mockInAppPurchase;
@@ -32,7 +32,7 @@ void main() {
   late SubscriptionPlanFeatures featuresPlus;
 
   setUp(() {
-    mockService = MockSubscriptionService();
+    mockService = MockSubscriptionRepository();
     mockSubscriptionStore = MockSubscriptionStore();
     mockRemoteConfigStore = MockRemoteConfigStore();
     mockInAppPurchase = MockInAppPurchase();

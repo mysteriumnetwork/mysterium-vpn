@@ -41,5 +41,6 @@ export 'unavailable_locations_store.dart';
 export 'update_availabe_store.dart';
 export 'user_intents_store.dart';
 export 'user_preferences_store.dart';
+export 'vpn_guard.dart';
 export 'vpn_protocol_store.dart';
 export 'vpn_store.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/l10n/arb_locale.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 
 // Include generated file
 part 'locale_store.g.dart';
@@ -11,11 +11,11 @@ part 'locale_store.g.dart';
 class LocaleStore = _LocaleStore with _$LocaleStore;
 
 abstract class _LocaleStore with Store {
-  _LocaleStore() {
-    _currentLocale = _sharedPrefs.getLocale();
+  _LocaleStore({required AppSettingsRepository settings}) : _settings = settings {
+    _currentLocale = _settings.locale();
   }
 
-  final _sharedPrefs = SharedPreferenceService.instance;
+  final AppSettingsRepository _settings;
   @readonly
   Locale _currentLocale = kFallbackLocale;
 
@@ -23,7 +23,7 @@ abstract class _LocaleStore with Store {
   Future<void> setLocale(Locale locale) async {
     // Set the locale if it's one we support.
     if (supportedLocales.contains(locale)) {
-      await _sharedPrefs.setLocale(locale);
+      await _settings.setLocale(locale);
       _currentLocale = locale;
     }
   }

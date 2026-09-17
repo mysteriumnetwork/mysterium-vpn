@@ -9,21 +9,21 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/vpn/base_vpn_repository.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/vpn/wireguard_key_repository.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 class WireguardRepository extends BaseVpnRepository {
   WireguardRepository({
     required WireguardDart service,
-    required WireguradKeyService wireguradKeyService,
+    required WireguardKeyRepository wireguardKeyRepository,
     required super.apiService,
     required super.logger,
   }) : _service = service,
-       _wireguradKeyService = wireguradKeyService;
+       _wireguardKeyRepository = wireguardKeyRepository;
 
   final WireguardDart _service;
-  final WireguradKeyService _wireguradKeyService;
+  final WireguardKeyRepository _wireguardKeyRepository;
 
   KeyPair? _wireguardKey;
 
@@ -34,7 +34,7 @@ class WireguardRepository extends BaseVpnRepository {
 
   Future<void> _initWireguardKey() async {
     try {
-      _wireguardKey = await _wireguradKeyService.getWireguradKey();
+      _wireguardKey = await _wireguardKeyRepository.getWireguardKey();
     } catch (e) {
       logger.handle(e);
     }
@@ -43,13 +43,13 @@ class WireguardRepository extends BaseVpnRepository {
   Future<void> _regenerateWireguardKey() async {
     try {
       await disconnect();
-      _wireguardKey = await _wireguradKeyService.regenerateWireguardKeys();
+      _wireguardKey = await _wireguardKeyRepository.regenerateWireguardKeys();
     } catch (e) {
       logger.handle(e);
     }
   }
 
-  Future<KeyPair> _getWireguradKey() async {
+  Future<KeyPair> _getWireguardKey() async {
     if (_wireguardKey == null) {
       await _initWireguardKey();
     }
@@ -74,7 +74,7 @@ class WireguardRepository extends BaseVpnRepository {
   @override
   Future<void> connect({required String config}) async {
     try {
-      final key = await _getWireguradKey();
+      final key = await _getWireguardKey();
       final replaced = config.replaceFirst('%private_key%', key.privateKey);
       await _service
           .connect(cfg: replaced)
@@ -167,7 +167,7 @@ class WireguardRepository extends BaseVpnRepository {
     String? targetIp,
   }) async {
     try {
-      final key = await _getWireguradKey();
+      final key = await _getWireguardKey();
       final response = await apiService.fetchVpnConfig(
         request: WireguardConnectRequest(
           publicKey: key.publicKey,

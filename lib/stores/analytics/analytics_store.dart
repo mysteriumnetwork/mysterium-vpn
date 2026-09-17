@@ -10,7 +10,6 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/map_extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 mixin AnalyticsStore {
   final Debouncer _debouncer = Debouncer();
@@ -253,7 +252,7 @@ mixin AnalyticsStore {
   Future<void> logNewsCenterFilterSelected(NewsFilter filter) =>
       logEvent(AnalyticsEvent.newsCenterFilterSelected, parameters: {'filter': filter.name});
 
-  Future<void> logNewsCenterItemOpened({required int id, required NewscenterCategory category}) =>
+  Future<void> logNewsCenterItemOpened({required int id, required NewsCategory category}) =>
       logEvent(
         AnalyticsEvent.newsCenterItemOpened,
         parameters: {'item_id': id, 'category': category.name},
@@ -353,11 +352,11 @@ mixin AnalyticsStore {
 
   Future<void> setDeviceInfo() async {}
 
-  Future<void> logRateConnnectionClicked(RateConnectionRequestModeEnum mode) async {
+  Future<void> logRateConnnectionClicked(RateConnectionMode mode) async {
     logEvent(AnalyticsEvent.rateConnectionClicked, parameters: {'mode': mode.name});
   }
 
-  Future<void> logRateConnectionCancel(RateConnectionRequestModeEnum mode) async {
+  Future<void> logRateConnectionCancel(RateConnectionMode mode) async {
     logEvent(AnalyticsEvent.rateConnectionCancel, parameters: {'mode': mode.name});
   }
 

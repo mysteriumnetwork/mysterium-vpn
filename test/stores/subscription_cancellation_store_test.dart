@@ -3,7 +3,7 @@ import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/subscription_cancellation_store.dart';
 
@@ -12,20 +12,20 @@ import 'subscription_cancellation_store_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<AnalyticsStore>(),
   MockSpec<SubscriptionStore>(),
-  MockSpec<SubscriptionService>(),
+  MockSpec<SubscriptionRepository>(),
   MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   late MockAnalyticsStore analyticsStore;
   late MockSubscriptionStore subscriptionStore;
-  late MockSubscriptionService subscriptionService;
+  late MockSubscriptionRepository subscriptionService;
   late MockRemoteConfigStore remoteConfigStore;
   late SubscriptionCancellationStore store;
 
   setUp(() {
     analyticsStore = MockAnalyticsStore();
     subscriptionStore = MockSubscriptionStore();
-    subscriptionService = MockSubscriptionService();
+    subscriptionService = MockSubscriptionRepository();
     remoteConfigStore = MockRemoteConfigStore();
 
     when(remoteConfigStore.pauseSubscriptionEnabled).thenReturn(true);

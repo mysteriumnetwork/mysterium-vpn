@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/models/models.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:talker/talker.dart';
-import 'package:vpn_api/vpn_api.dart';
 
 part 'news_center_store.g.dart';
 
@@ -20,14 +20,14 @@ class NewsCenterStore = _NewsCenterStore with _$NewsCenterStore;
 /// visible while a refresh is in flight, and a failed refresh keeps the cache.
 ///
 /// Read state is not part of the API payload: it's tracked as a set of read ids
-/// (seeded from [NewsCenterService.readIds], persisted via
-/// [NewsCenterService.markRead]) and unread-ness is derived from it.
+/// (seeded from [NewsCenterRepository.readIds], persisted via
+/// [NewsCenterRepository.markRead]) and unread-ness is derived from it.
 abstract class _NewsCenterStore with Store {
-  _NewsCenterStore(NewsCenterService service, this._logger)
+  _NewsCenterStore(NewsCenterRepository service, this._logger)
     : _service = service,
       _readIds = ObservableSet.of(service.readIds());
 
-  final NewsCenterService _service;
+  final NewsCenterRepository _service;
   final Talker _logger;
 
   /// Ids the user has read; drives [isRead] / [unreadCount].
@@ -35,26 +35,25 @@ abstract class _NewsCenterStore with Store {
 
   /// The current load attempt. `null` until [load] is first called.
   @readonly
-  ObservableFuture<List<NewscenterInboxListResponseItem>>? _feedFuture;
+  ObservableFuture<List<NewsItem>>? _feedFuture;
 
   /// The last successfully loaded feed. `null` until the first success, then
   /// retained across failed refreshes so the UI never loses data.
   @readonly
-  List<NewscenterInboxListResponseItem>? _items;
+  List<NewsItem>? _items;
 
   @observable
   NewsFilter selectedFilter = NewsFilter.all;
 
   /// Items matching [selectedFilter].
   @computed
-  List<NewscenterInboxListResponseItem> get filteredItems {
+  List<NewsItem> get filteredItems {
     final items = _items ?? const [];
     return switch (selectedFilter) {
       NewsFilter.all => items,
-      NewsFilter.incidents =>
-        items.where((i) => i.category == NewscenterCategory.incident).toList(),
-      NewsFilter.news => items.where((i) => i.category == NewscenterCategory.news).toList(),
-      NewsFilter.offers => items.where((i) => i.category == NewscenterCategory.offer).toList(),
+      NewsFilter.incidents => items.where((i) => i.category == NewsCategory.incident).toList(),
+      NewsFilter.news => items.where((i) => i.category == NewsCategory.news).toList(),
+      NewsFilter.offers => items.where((i) => i.category == NewsCategory.offer).toList(),
     };
   }
 
@@ -70,9 +69,9 @@ abstract class _NewsCenterStore with Store {
     final categories = items.map((i) => i.category).toSet();
     return {
       NewsFilter.all,
-      if (categories.contains(NewscenterCategory.incident)) NewsFilter.incidents,
-      if (categories.contains(NewscenterCategory.news)) NewsFilter.news,
-      if (categories.contains(NewscenterCategory.offer)) NewsFilter.offers,
+      if (categories.contains(NewsCategory.incident)) NewsFilter.incidents,
+      if (categories.contains(NewsCategory.news)) NewsFilter.news,
+      if (categories.contains(NewsCategory.offer)) NewsFilter.offers,
     };
   }
 
@@ -81,7 +80,7 @@ abstract class _NewsCenterStore with Store {
   int get unreadCount => (_items ?? const []).where((i) => !isRead(i.id)).length;
 
   /// Whether the item with [id] has been read.
-  bool isRead(num id) => _readIds.contains(id.toInt());
+  bool isRead(int id) => _readIds.contains(id);
 
   /// `null` while never-loaded, `true` when loaded and empty, `false` otherwise.
   @computed
@@ -145,8 +144,7 @@ abstract class _NewsCenterStore with Store {
 
   /// The loaded feed item with [id], or null when the feed isn't loaded or has
   /// no such item.
-  NewscenterInboxListResponseItem? itemById(num id) =>
-      (_items ?? const []).firstWhereOrNull((i) => i.id.toInt() == id.toInt());
+  NewsItem? itemById(int id) => (_items ?? const []).firstWhereOrNull((i) => i.id == id);
 
   Future<bool> _fetch() async {
     // Future.sync converts a synchronous throw from the service into a rejected
