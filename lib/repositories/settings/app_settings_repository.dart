@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for the user's persisted app-level settings.
 abstract class AppSettingsRepository {

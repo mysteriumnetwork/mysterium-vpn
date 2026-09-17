@@ -48,7 +48,7 @@ void main() {
   /// Configure all mocks so the user is eligible and nothing suppresses.
   void makeEligibleAndClear() {
     when(prefs.appInstallDay()).thenReturn(nowMs - 10 * dayMs);
-    when(prefs.appOpenCount()).thenReturn(5);
+    when(prefs.opensSinceInstall()).thenReturn(5);
     when(prefs.successfulConnections()).thenReturn(10);
     when(prefs.recentSessionOutcomes()).thenReturn([true, true, true]);
     when(prefs.cooldownUntil()).thenReturn(null);
@@ -93,7 +93,7 @@ void main() {
     });
 
     test('false when too few app opens', () {
-      when(prefs.appOpenCount()).thenReturn(4);
+      when(prefs.opensSinceInstall()).thenReturn(4);
       expect(createStore().isEligible, isFalse);
     });
 
@@ -352,10 +352,10 @@ void main() {
   group('init app-open tracking', () {
     test('seeds install day when absent and increments app-open count', () {
       when(prefs.appInstallDay()).thenReturn(null);
-      when(prefs.appOpenCount()).thenReturn(2);
+      when(prefs.opensSinceInstall()).thenReturn(2);
       final store = createStore()..init();
       verify(prefs.setAppInstallDay(nowMs)).called(1);
-      verify(prefs.setAppOpenCount(3)).called(1);
+      verify(prefs.setOpensSinceInstall(3)).called(1);
       store.dispose();
     });
 

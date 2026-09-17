@@ -1,5 +1,5 @@
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for the persisted session: the tokens and identity
 /// in secure storage, plus the local user record they key into.
@@ -24,6 +24,9 @@ abstract class SessionRepository {
   /// Mirrors the signed-in [user] into the local user record, or clears it
   /// when [user] is null.
   Future<void> cacheUserRecord(AuthUser? user);
+
+  /// The stored user record, including per-user settings.
+  Future<UserData> userRecord();
 }
 
 /// [SessionRepository] over [SecureStorageService] and [LocalDBService].
@@ -56,24 +59,23 @@ class LocalSessionRepository implements SessionRepository {
 
   @override
   Future<void> save({String? accessToken, String? refreshToken, AuthUser? user}) async {
-    if (accessToken != null) {
-      await _secureStorage.saveAccessToken(accessToken);
-    }
-    if (refreshToken != null) {
-      await _secureStorage.saveRefreshToken(refreshToken);
-    }
-    if (user != null) {
-      await _secureStorage.saveUserId(userId: user.userId);
-      await _secureStorage.saveUsername(username: user.username);
-    }
+    // Independent keys, each a platform-channel round trip into the keychain.
+    await Future.wait([
+      if (accessToken != null) _secureStorage.saveAccessToken(accessToken),
+      if (refreshToken != null) _secureStorage.saveRefreshToken(refreshToken),
+      if (user != null) _secureStorage.saveUserId(userId: user.userId),
+      if (user != null) _secureStorage.saveUsername(username: user.username),
+    ]);
   }
 
   @override
   Future<void> clear() async {
-    await _secureStorage.removeAccessToken();
-    await _secureStorage.removeRefreshToken();
-    await _secureStorage.removeUserId();
-    await _secureStorage.removeUsername();
+    await Future.wait([
+      _secureStorage.removeAccessToken(),
+      _secureStorage.removeRefreshToken(),
+      _secureStorage.removeUserId(),
+      _secureStorage.removeUsername(),
+    ]);
   }
 
   @override
@@ -90,4 +92,7 @@ class LocalSessionRepository implements SessionRepository {
       _db.clearUser();
     }
   }
+
+  @override
+  Future<UserData> userRecord() => _db.getUserData();
 }

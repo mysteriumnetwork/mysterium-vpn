@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Creates a [SharedPreferenceService] backed by in-memory preferences.

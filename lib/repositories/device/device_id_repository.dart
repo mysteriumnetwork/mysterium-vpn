@@ -5,7 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// Single source of truth for this installation's device id: a truncated

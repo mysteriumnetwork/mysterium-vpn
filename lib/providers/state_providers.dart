@@ -45,6 +45,7 @@ final authStorePOD = Provider<AuthStore>((ref) {
 
   return AuthStore(
     flow: ref.watch(authFlowRepositoryPOD),
+    session: ref.watch(sessionRepositoryPOD),
     authService: authService,
     authSessionStore: authSessionStore,
     appLinks: appLinks,

@@ -1,5 +1,5 @@
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for the user's recently used locations.
 ///

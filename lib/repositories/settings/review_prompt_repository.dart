@@ -1,4 +1,4 @@
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for the state that decides when to ask the user for
 /// an app-store review.
@@ -7,9 +7,11 @@ abstract class ReviewPromptRepository {
 
   Future<void> setAppInstallDay(int value);
 
-  int appOpenCount();
+  /// Device-wide opens since install. Distinct from
+  /// `PromptsRepository.appOpenCount`, which is per-user and lives in Hive.
+  int opensSinceInstall();
 
-  Future<void> setAppOpenCount(int value);
+  Future<void> setOpensSinceInstall(int value);
 
   int successfulConnections();
 
@@ -47,10 +49,10 @@ class LocalReviewPromptRepository implements ReviewPromptRepository {
   Future<void> setAppInstallDay(int value) => _prefs.setAppInstallDay(value);
 
   @override
-  int appOpenCount() => _prefs.getReviewAppOpenCount();
+  int opensSinceInstall() => _prefs.getReviewAppOpenCount();
 
   @override
-  Future<void> setAppOpenCount(int value) => _prefs.setReviewAppOpenCount(value);
+  Future<void> setOpensSinceInstall(int value) => _prefs.setReviewAppOpenCount(value);
 
   @override
   int successfulConnections() => _prefs.getReviewSuccessfulConnections();

@@ -35,7 +35,9 @@ abstract class _AuthStore with Store {
     required ABTestingStore abTestingStore,
     required DeviceIDStore deviceIDStore,
     required AuthFlowRepository flow,
+    required SessionRepository session,
   }) : _flow = flow,
+       _session = session,
        _authService = authService,
        _authSessionStore = authSessionStore,
        _appLinks = appLinks,
@@ -50,6 +52,7 @@ abstract class _AuthStore with Store {
   final AuthSessionStore _authSessionStore;
   final AppLinks _appLinks;
   final AuthFlowRepository _flow;
+  final SessionRepository _session;
   final AnalyticsStore _analyticsStore;
   final Talker _logger;
   final ABTestingStore _abTestingStore;
@@ -189,8 +192,8 @@ abstract class _AuthStore with Store {
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
 
     // Set auth user
-    await _flow.setUser(user);
-    final userSettings = await _flow.userData();
+    await _session.cacheUserRecord(user);
+    final userSettings = await _session.userRecord();
     _logger.info(userSettings.toString());
   }
 

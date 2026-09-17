@@ -1,5 +1,5 @@
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for which one-off prompts the user has already seen.
 abstract class PromptsRepository {

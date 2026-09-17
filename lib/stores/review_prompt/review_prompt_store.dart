@@ -110,7 +110,7 @@ abstract class _ReviewPromptStore with Store {
     if (_prefs.appInstallDay() == null) {
       unawaited(_prefs.setAppInstallDay(_nowMs));
     }
-    unawaited(_prefs.setAppOpenCount(_prefs.appOpenCount() + 1));
+    unawaited(_prefs.setOpensSinceInstall(_prefs.opensSinceInstall() + 1));
   }
 
   void dispose() {
@@ -244,7 +244,7 @@ abstract class _ReviewPromptStore with Store {
   // restart. A plain getter re-reads the live values on every evaluate.
   bool get isEligible =>
       _isOldEnough &&
-      _prefs.appOpenCount() >= _config.minAppOpens &&
+      _prefs.opensSinceInstall() >= _config.minAppOpens &&
       _prefs.successfulConnections() >= _config.minConnections &&
       _hasCleanRecentSessions;
 

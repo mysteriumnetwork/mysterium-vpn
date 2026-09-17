@@ -14,7 +14,7 @@ import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/local/adapters/adapters.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -95,7 +95,8 @@ void main() {
     when(analyticsStore.setLogin(any)).thenAnswer((_) async {});
 
     store = AuthStore(
-      flow: LocalAuthFlowRepository(
+      flow: LocalAuthFlowRepository(MockSecureStorageService()),
+      session: LocalSessionRepository(
         secureStorage: MockSecureStorageService(),
         db: LocalDBService(),
       ),

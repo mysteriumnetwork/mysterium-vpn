@@ -1,8 +1,10 @@
 import 'package:mysterium_vpn/models/models.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for the state a sign-in attempt needs across app
 /// launches: the PKCE pair, a deferred deep link, and who signed in last.
+///
+/// The user record itself belongs to `SessionRepository`.
 abstract class AuthFlowRepository {
   Future<PkcePair?> pkcePair();
 
@@ -13,21 +15,13 @@ abstract class AuthFlowRepository {
   Future<void> saveAppLink(String appLink);
 
   Future<String?> lastLoggedInUser();
-
-  /// The signed-in user's local record, written on sign-in.
-  Future<void> setUser(AuthUser user);
-
-  Future<UserData> userData();
 }
 
-/// [AuthFlowRepository] over [SecureStorageService] and [LocalDBService].
+/// [AuthFlowRepository] over [SecureStorageService].
 class LocalAuthFlowRepository implements AuthFlowRepository {
-  LocalAuthFlowRepository({required SecureStorageService secureStorage, required LocalDBService db})
-    : _secureStorage = secureStorage,
-      _db = db;
+  LocalAuthFlowRepository(this._secureStorage);
 
   final SecureStorageService _secureStorage;
-  final LocalDBService _db;
 
   @override
   Future<PkcePair?> pkcePair() => _secureStorage.getPkcePair();
@@ -44,10 +38,4 @@ class LocalAuthFlowRepository implements AuthFlowRepository {
 
   @override
   Future<String?> lastLoggedInUser() => _secureStorage.getLastLoggedInUser();
-
-  @override
-  Future<void> setUser(AuthUser user) => _db.setUser(user);
-
-  @override
-  Future<UserData> userData() => _db.getUserData();
 }

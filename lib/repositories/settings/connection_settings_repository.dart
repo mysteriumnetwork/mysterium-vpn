@@ -1,5 +1,5 @@
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/services/services.dart';
+import 'package:mysterium_vpn/services/data/storage.dart';
 
 /// Single source of truth for the user's persisted VPN connection settings.
 abstract class ConnectionSettingsRepository {
@@ -27,7 +27,8 @@ abstract class ConnectionSettingsRepository {
   Future<void> clearConnectedAt();
 }
 
-/// [ConnectionSettingsRepository] backed by [LocalDBService] (Hive).
+/// [ConnectionSettingsRepository] backed by [LocalDBService] (Hive) for the
+/// settings and [SharedPreferenceService] for the connected-at stamp.
 class LocalConnectionSettingsRepository implements ConnectionSettingsRepository {
   LocalConnectionSettingsRepository({
     required LocalDBService db,
