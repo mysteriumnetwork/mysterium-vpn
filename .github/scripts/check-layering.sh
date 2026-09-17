@@ -43,10 +43,12 @@ check() {
   fi
 }
 
-check "lib/services"     lib/services     "providers|stores|views|pages|components|repositories|debug"
-check "lib/repositories" lib/repositories "providers|stores|views|pages|components|debug"
+check "lib/services"     lib/services     "providers|stores|views|pages|components|repositories|debug|common/ui"
+check "lib/repositories" lib/repositories "providers|stores|views|pages|components|debug|common/ui"
 # Stores reach storage through a repository, never directly. services/data
 # holds the storage primitives; the rest of services/ is fair game.
+# common/ui holds helpers that need widgets or stores; common/utils stays pure
+# so any layer can use it.
 check "lib/stores"       lib/stores       "providers|views|pages|components|debug|services/data"
 
 # The UI talks to the app's own models, never to the backend client directly.

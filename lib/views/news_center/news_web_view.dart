@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';

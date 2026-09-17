@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/views/home/home_banner.dart';
 import 'package:mysterium_vpn/views/home/home_map.dart';

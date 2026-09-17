@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/snackbar.dart';
+import 'package:mysterium_vpn/common/ui/snackbar.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';

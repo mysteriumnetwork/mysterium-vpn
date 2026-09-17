@@ -13,10 +13,10 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/subscription_repository.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:retry/retry.dart';
 import 'package:talker/talker.dart';
@@ -28,15 +28,18 @@ class RestSubscriptionRepository extends SubscriptionRepository {
     required InAppPurchase inAppPurchase,
     required Talker logger,
     required SecureStorageService secureStorage,
+    required UrlOpener openUrl,
   }) : _apiSubscription = api.getSubscription(),
        _inAppPurchase = inAppPurchase,
        _logger = logger,
-       _secureStorage = secureStorage;
+       _secureStorage = secureStorage,
+       _openUrl = openUrl;
 
   final api.Subscription _apiSubscription;
   final InAppPurchase _inAppPurchase;
   final Talker _logger;
   final SecureStorageService _secureStorage;
+  final UrlOpener _openUrl;
 
   @override
   Future<(String, DateTime)> paymentInfo() => _secureStorage.getSubscriptionPaymentInfo();
@@ -142,7 +145,7 @@ class RestSubscriptionRepository extends SubscriptionRepository {
     final url =
         'https://play.google.com/store/account/subscriptions?sku=$productId&package=$packageName';
 
-    await openUrlLink(Uri.parse(url), source: RedirectSource.googlePlaySubscriptions);
+    await _openUrl(Uri.parse(url), source: RedirectSource.googlePlaySubscriptions);
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/url_launcher.dart';
+import 'package:mysterium_vpn/common/ui/url_launcher.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
