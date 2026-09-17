@@ -173,14 +173,15 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         throw const SubscriptionRequiredException();
       }
 
-      // Android manages subscriptions on the Play Store page; the other
-      // platforms run it through the store's own purchase flow.
+      // Android manages subscriptions on the Play Store page; Apple platforms
+      // route it through StoreKit. Windows and Linux have no store flow, so
+      // this is a no-op there — buyNonConsumable would throw.
       if (Platform.isAndroid) {
         final url = await _subscriptionService.androidManageSubscriptionUrl(
           product.productDetails.id,
         );
         await openUrlLink(url, source: RedirectSource.googlePlaySubscriptions);
-      } else {
+      } else if (Platform.isIOS || Platform.isMacOS) {
         await _subscriptionService.subscribeToPackage(
           productDetails: product.productDetails,
           userId: user.userId,

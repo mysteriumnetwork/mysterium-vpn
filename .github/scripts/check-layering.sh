@@ -29,9 +29,12 @@ require_dirs() {
 
 check() {
   local label=$1 dir=$2 forbidden=$3
-  local hits
+  local hits leaves
   require_dirs "${dir}" || { status=1; return; }
-  hits=$(grep -rnE "^\s*(import|export)\s+'(package:mysterium_vpn/|(\.\./)+)(${forbidden})/" \
+  # A relative directive names a sibling by its last segment (../ui/), not by
+  # the full token (../common/ui/), so match both forms.
+  leaves=$(printf '%s' "${forbidden}" | tr '|' '\n' | sed 's|.*/||' | paste -sd'|' -)
+  hits=$(grep -rnE "^\s*(import|export)\s+'(package:mysterium_vpn/(${forbidden})|(\.\./)+((${forbidden})|(${leaves})))/" \
     "${dir}" --include='*.dart' 2>/dev/null \
     | grep -v '\.g\.dart:\|\.freezed\.dart:\|\.mocks\.dart:') || true
   if [ -n "${hits}" ]; then
