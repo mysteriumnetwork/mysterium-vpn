@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/favorite_ips/favorite_ips_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -21,7 +22,13 @@ class LocalFavoriteIpsRepository implements FavoriteIpsRepository {
   final FavoriteIpsAvailabilityService _availabilityService;
 
   Future<Map<String, bool>?>? _inFlight;
+  List<String>? _inFlightIps;
   DateTime? _checkedAt;
+
+  /// Bumped by [invalidateAvailability]. A request that completes against an
+  /// older generation still returns its result, but does not refresh the
+  /// window — it never covered the current list.
+  int _generation = 0;
 
   @override
   Future<List<FavoriteIp>> load() => _db.getFavoriteIps();
@@ -40,15 +47,37 @@ class LocalFavoriteIpsRepository implements FavoriteIpsRepository {
     if (!force && checkedAt != null && DateTime.now().difference(checkedAt) < availabilityTtl) {
       return Future.value();
     }
-    return _inFlight ??= _availability(ips).whenComplete(() => _inFlight = null);
+    // Only share a request that asked about the same IPs — a caller with a
+    // different list is asking a different question.
+    final inFlight = _inFlight;
+    if (inFlight != null && listEquals(_inFlightIps, ips)) {
+      return inFlight;
+    }
+
+    _inFlightIps = List<String>.unmodifiable(ips);
+    return _inFlight = _availability(ips, _generation).whenComplete(() {
+      _inFlight = null;
+      _inFlightIps = null;
+    });
   }
 
-  Future<Map<String, bool>?> _availability(List<String> ips) async {
+  Future<Map<String, bool>?> _availability(List<String> ips, int generation) async {
     final result = await _availabilityService.checkAvailability(ips);
-    _checkedAt = DateTime.now();
+    // The result is still valid for the IPs it asked about, so it is returned
+    // either way. But if the list changed or the session ended while it was in
+    // flight it must not restore the freshness window, or the next caller
+    // would be served a cached answer that never covered the current list.
+    if (generation == _generation) {
+      _checkedAt = DateTime.now();
+    }
     return result;
   }
 
   @override
-  void invalidateAvailability() => _checkedAt = null;
+  void invalidateAvailability() {
+    _generation++;
+    _checkedAt = null;
+    _inFlight = null;
+    _inFlightIps = null;
+  }
 }
