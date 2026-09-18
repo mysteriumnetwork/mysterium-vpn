@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mysterium_vpn/common/utils/keys.dart';
+import 'package:mysterium_vpn/common/ui/keys.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:patrol/patrol.dart';
 

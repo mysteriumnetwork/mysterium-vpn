@@ -150,15 +150,6 @@ abstract class _ConfigCatUserStore with Store, Disposeable {
 }
 
 extension ConfigCatUserExtensions on ConfigCatUser {
-  T? getAttributeOrNull<T>(String key) {
-    final value = getAttribute(key);
-    if (value is T) {
-      return value;
-    } else {
-      return null;
-    }
-  }
-
   String? get email => getAttributeOrNull('Email');
 
   String? get country => getAttributeOrNull('Country');

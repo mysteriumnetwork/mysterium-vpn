@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/webview.dart';
+import 'package:mysterium_vpn/common/ui/webview.dart';
 
 import '../../support/fake_url_launcher.dart';
 

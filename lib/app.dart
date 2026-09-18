@@ -14,7 +14,7 @@ import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_watcher_hook.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
-import 'package:mysterium_vpn/common/utils/snackbar.dart';
+import 'package:mysterium_vpn/common/ui/snackbar.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';

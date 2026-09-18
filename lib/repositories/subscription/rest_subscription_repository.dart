@@ -11,9 +11,7 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/subscription_repository.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
@@ -136,13 +134,13 @@ class RestSubscriptionRepository extends SubscriptionRepository {
     }
   }
 
-  Future<void> openAndroidManageSubscriptions(String productId) async {
+  @override
+  Future<Uri> androidManageSubscriptionUrl(String productId) async {
     final info = await PackageInfo.fromPlatform();
-    final packageName = info.packageName;
-    final url =
-        'https://play.google.com/store/account/subscriptions?sku=$productId&package=$packageName';
-
-    await openUrlLink(Uri.parse(url), source: RedirectSource.googlePlaySubscriptions);
+    return Uri.parse(
+      'https://play.google.com/store/account/subscriptions'
+      '?sku=$productId&package=${info.packageName}',
+    );
   }
 
   @override
@@ -339,22 +337,6 @@ class RestSubscriptionRepository extends SubscriptionRepository {
     }
 
     return isEligible && introductoryPrice != null && introductoryPrice > 0;
-  }
-
-  @override
-  Future<void> manageSubscription({
-    required ProductDetails productDetails,
-    required String userId,
-  }) async {
-    if (Platform.isAndroid) {
-      return openAndroidManageSubscriptions(productDetails.id);
-    } else if (Platform.isIOS || Platform.isMacOS) {
-      return subscribeToPackage(
-        productDetails: productDetails,
-        userId: userId,
-        purchasedProductId: null,
-      );
-    }
   }
 
   @override

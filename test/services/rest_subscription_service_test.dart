@@ -5,6 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/repositories/subscription/rest_subscription_repository.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
@@ -42,6 +43,25 @@ void main() {
 
   Response<T> response<T>(int code, T data) =>
       Response<T>(requestOptions: RequestOptions(), statusCode: code, data: data);
+
+  group('androidManageSubscriptionUrl', () {
+    test('builds the Play Store subscriptions deep link for the product', () async {
+      PackageInfo.setMockInitialValues(
+        appName: 'Mysterium VPN',
+        packageName: 'com.mysteriumvpn.android',
+        version: '1.0.0',
+        buildNumber: '1',
+        buildSignature: '',
+      );
+
+      final url = await service.androidManageSubscriptionUrl('plan_monthly');
+
+      expect(url.host, 'play.google.com');
+      expect(url.path, '/store/account/subscriptions');
+      expect(url.queryParameters['sku'], 'plan_monthly');
+      expect(url.queryParameters['package'], 'com.mysteriumvpn.android');
+    });
+  });
 
   group('fetchSubscriptionDetails', () {
     test('maps a populated GetSubscriptionResponse into a Subscription', () async {

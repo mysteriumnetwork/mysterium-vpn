@@ -12,6 +12,7 @@ import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:mysterium_vpn/app.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/observers/crashlytics_talker_observer.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_dev.dart' as dev;
 import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' as prod;
