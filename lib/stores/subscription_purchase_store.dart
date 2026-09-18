@@ -30,10 +30,14 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
     this._analyticsStore,
     this._authSessionStore,
     this._subscriptionStore,
-    this._plansStore,
-  ) {
+    this._plansStore, {
+    SubscriptionManagementMode Function()? managementMode,
+  }) : _managementMode = managementMode ?? subscriptionManagementMode {
     _future.ignore();
   }
+
+  /// Injectable so every branch is testable on any host.
+  final SubscriptionManagementMode Function() _managementMode;
 
   final InAppPurchase _inAppPurchase;
   final SubscriptionRepository _subscriptionService;
@@ -173,20 +177,21 @@ abstract class _SubscriptionPurchaseStore with Store, Disposeable {
         throw const SubscriptionRequiredException();
       }
 
-      // Android manages subscriptions on the Play Store page; Apple platforms
-      // route it through StoreKit. Windows and Linux have no store flow, so
-      // this is a no-op there — buyNonConsumable would throw.
-      if (Platform.isAndroid) {
-        final url = await _subscriptionService.androidManageSubscriptionUrl(
-          product.productDetails.id,
-        );
-        await openUrlLink(url, source: RedirectSource.googlePlaySubscriptions);
-      } else if (Platform.isIOS || Platform.isMacOS) {
-        await _subscriptionService.subscribeToPackage(
-          productDetails: product.productDetails,
-          userId: user.userId,
-          purchasedProductId: null,
-        );
+      switch (_managementMode()) {
+        case SubscriptionManagementMode.playStore:
+          final url = await _subscriptionService.androidManageSubscriptionUrl(
+            product.productDetails.id,
+          );
+          await openUrlLink(url, source: RedirectSource.googlePlaySubscriptions);
+        case SubscriptionManagementMode.appStore:
+          await _subscriptionService.subscribeToPackage(
+            productDetails: product.productDetails,
+            userId: user.userId,
+            purchasedProductId: null,
+          );
+        case SubscriptionManagementMode.unsupported:
+          // Windows and Linux have no store flow; buyNonConsumable would throw.
+          break;
       }
     } catch (e, stack) {
       if (e is PlatformException && e.code == 'storekit2_purchase_cancelled') {

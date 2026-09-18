@@ -52,6 +52,19 @@ void main() {
   );
   final inactiveSub = Subscription(active: false, expired: false, recurring: false);
 
+  SubscriptionPurchaseStore buildStore({
+    SubscriptionManagementMode mode = SubscriptionManagementMode.appStore,
+  }) => SubscriptionPurchaseStore(
+    inAppPurchase,
+    service,
+    logger,
+    analytics,
+    session,
+    subscriptions,
+    plans,
+    managementMode: () => mode,
+  );
+
   setUp(() {
     inAppPurchase = MockInAppPurchase();
     service = MockSubscriptionRepository();
@@ -83,15 +96,7 @@ void main() {
     ).thenAnswer((_) async {});
     when(service.clearPendingTransactions()).thenAnswer((_) async {});
 
-    store = SubscriptionPurchaseStore(
-      inAppPurchase,
-      service,
-      logger,
-      analytics,
-      session,
-      subscriptions,
-      plans,
-    );
+    store = buildStore();
   });
 
   group('subscribeToPackage', () {
@@ -166,15 +171,14 @@ void main() {
   });
 
   group('manageSubscription', () {
-    test('happy path delegates to subscriptionService', () async {
+    test('on Apple platforms it routes through the purchase flow', () async {
       final product = MockPurchasableProduct();
       when(product.id).thenReturn('plan_monthly');
       when(product.productDetails).thenReturn(productDetails);
       when(plans.future).thenAnswer((_) => ObservableFuture.value([product]));
 
-      await store.manageSubscription();
+      await buildStore().manageSubscription();
 
-      // Not Android under test, so manage routes through the purchase flow.
       verify(
         service.subscribeToPackage(
           productDetails: productDetails,
@@ -182,6 +186,48 @@ void main() {
           purchasedProductId: null,
         ),
       ).called(1);
+    });
+
+    test('on Android it opens the Play Store subscriptions page', () async {
+      final product = MockPurchasableProduct();
+      when(product.id).thenReturn('plan_monthly');
+      when(product.productDetails).thenReturn(productDetails);
+      when(plans.future).thenAnswer((_) => ObservableFuture.value([product]));
+      when(
+        service.androidManageSubscriptionUrl(any),
+      ).thenAnswer((_) async => Uri.parse('https://play.google.com/store/account/subscriptions'));
+
+      await buildStore(mode: SubscriptionManagementMode.playStore).manageSubscription();
+
+      verify(service.androidManageSubscriptionUrl('plan_monthly')).called(1);
+      verifyNever(
+        service.subscribeToPackage(
+          productDetails: anyNamed('productDetails'),
+          userId: anyNamed('userId'),
+          purchasedProductId: anyNamed('purchasedProductId'),
+        ),
+      );
+    });
+
+    test('on Windows and Linux it does nothing rather than throwing', () async {
+      final product = MockPurchasableProduct();
+      when(product.id).thenReturn('plan_monthly');
+      when(product.productDetails).thenReturn(productDetails);
+      when(plans.future).thenAnswer((_) => ObservableFuture.value([product]));
+
+      await expectLater(
+        buildStore(mode: SubscriptionManagementMode.unsupported).manageSubscription(),
+        completes,
+      );
+
+      verifyNever(
+        service.subscribeToPackage(
+          productDetails: anyNamed('productDetails'),
+          userId: anyNamed('userId'),
+          purchasedProductId: anyNamed('purchasedProductId'),
+        ),
+      );
+      verifyNever(service.androidManageSubscriptionUrl(any));
     });
 
     test('throws SubscriptionRequiredException when not subscribed', () async {
