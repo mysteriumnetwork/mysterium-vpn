@@ -3,7 +3,7 @@ import 'package:patrol/patrol.dart';
 
 /// Reusable end-to-end flows shared across integration tests.
 ///
-/// Widget keys come from `lib/common/utils/keys.dart` (`K`); Patrol addresses
+/// Widget keys come from `lib/common/ui/keys.dart` (`K`); Patrol addresses
 /// them with the `#symbol` finder (e.g. `#loginPage` matches `Key('loginPage')`).
 
 /// Logs in with the given `email` starting from the launch login screen.

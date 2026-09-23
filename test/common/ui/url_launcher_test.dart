@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/utils/url_launcher.dart';
+import 'package:mysterium_vpn/common/ui/url_launcher.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
