@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/ui/url_launcher.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/views/review/trustpilot_review_web_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 enum _SatisfactionAction { yes, no, dismiss }
@@ -30,8 +32,18 @@ Future<void> showReviewPromptDialog(BuildContext context) async {
   switch (action ?? _SatisfactionAction.dismiss) {
     case _SatisfactionAction.yes:
       await store.onSatisfactionYes();
-      if (context.mounted) {
-        await _showPositiveModal(context, store);
+      if (!context.mounted) {
+        return;
+      }
+      switch (store.reviewDestination) {
+        // Trustpilot's collector is itself a "leave a review" screen, so a
+        // modal asking the same thing first would be a redundant second tap.
+        case ReviewDestination.trustpilot:
+          await _openTrustpilotCollector(context, store, authSessionStore.accessToken);
+        // The native prompt is a system dialog with its own quota, so the
+        // intermediate modal stays: it gets explicit intent before spending it.
+        case ReviewDestination.store:
+          await _showPositiveModal(context, store);
       }
     case _SatisfactionAction.no:
       await store.onSatisfactionNo();
@@ -117,9 +129,9 @@ Future<void> _showPositiveModal(BuildContext context, ReviewPromptStore store) a
   switch (action ?? _PositiveAction.dismiss) {
     case _PositiveAction.review:
       await store.onLeaveReview();
-      // Best-effort: open the native review, falling back to the store page.
-      // Never let a failed launch (unsupported platform, missing store id,
-      // no browser) crash the flow — the cooldown is already recorded.
+      // Best-effort: open the native prompt, falling back to the store page.
+      // Never let a failed launch (unsupported platform, missing store id, no
+      // browser) crash the flow — the cooldown is already recorded.
       try {
         final requested = await InAppReviewService().requestReview();
         if (!requested) {
@@ -130,5 +142,18 @@ Future<void> _showPositiveModal(BuildContext context, ReviewPromptStore store) a
       }
     case _PositiveAction.dismiss:
       await store.onDismiss();
+  }
+}
+
+/// Opens Trustpilot's collector straight from the satisfaction modal. Records
+/// the cooldown first, so abandoning the webview still defers the next prompt.
+Future<void> _openTrustpilotCollector(
+  BuildContext context,
+  ReviewPromptStore store,
+  String? accessToken,
+) async {
+  await store.onLeaveReview();
+  if (context.mounted) {
+    await showTrustpilotReviewWebView(context, accessToken: accessToken);
   }
 }
