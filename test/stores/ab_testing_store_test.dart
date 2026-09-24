@@ -2,6 +2,7 @@ import 'package:configcat_client/configcat_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
 
@@ -50,5 +51,39 @@ void main() {
     await Future<void>.delayed(Duration.zero);
 
     verify(analytics.setUserProperty(any)).called(greaterThanOrEqualTo(1));
+  });
+
+  group('reviewDestination', () {
+    Future<ABTestingStore> storeWith(Map<String, dynamic> values) async {
+      when(client.getAllValues()).thenAnswer((_) async => values);
+      final store = ABTestingStore(client, logger, analytics);
+      await store.setUser(ConfigCatUser(identifier: 'u1'));
+      await store.configFuture;
+      return store;
+    }
+
+    test('defaults to the store prompt when the variant is absent', () async {
+      expect((await storeWith({})).reviewDestination, ReviewDestination.store);
+    });
+
+    test('returns trustpilot when assigned', () async {
+      final store = await storeWith({'reviewDestination': 'trustpilot'});
+      expect(store.reviewDestination, ReviewDestination.trustpilot);
+    });
+
+    test('returns the store prompt when assigned', () async {
+      final store = await storeWith({'reviewDestination': 'store'});
+      expect(store.reviewDestination, ReviewDestination.store);
+    });
+
+    test('falls back to the store prompt on a wrong-typed value', () async {
+      final store = await storeWith({'reviewDestination': 42});
+      expect(store.reviewDestination, ReviewDestination.store);
+    });
+
+    test('falls back to the store prompt on an unknown variant', () async {
+      final store = await storeWith({'reviewDestination': 'yelp'});
+      expect(store.reviewDestination, ReviewDestination.store);
+    });
   });
 }
