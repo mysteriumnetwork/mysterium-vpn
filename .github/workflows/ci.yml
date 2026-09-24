@@ -142,6 +142,6 @@ jobs:
       application_logo: "assets/logo/dev/desktop.png"
       env_file: ".env.dev"
       standalone_sign: true
-      standalone_keyvault_certificate: "mysteriumvpn-selfsigned"
+      standalone_keyvault_certificate: "mysteriumvpn-gogetssl"
       protocol_activation: "mysteriumvpntest"
     secrets: inherit
