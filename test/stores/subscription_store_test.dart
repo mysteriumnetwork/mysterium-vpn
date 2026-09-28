@@ -728,7 +728,7 @@ void main() {
       when(
         mockSubscriptionService.fetchSubscriptionDetails(),
       ).thenAnswer((_) async => Subscription(active: true, orderSummary: orderSummary));
-      await subscriptionStore.refreshSubscription();
+      await subscriptionStore.refreshSubscription(force: true);
     }
 
     test(r'prefixes a real USD discount with $', () async {
@@ -760,6 +760,14 @@ void main() {
     test('hides the prices when an amount is not a number', () async {
       await load(summary(totalPriceBeforeDiscount: 'n/a'));
 
+      expect(subscriptionStore.priceInfo, isNull);
+    });
+
+    test('hides the prices when an amount is NaN or infinite', () async {
+      await load(summary(totalPrice: 'NaN'));
+      expect(subscriptionStore.priceInfo, isNull);
+
+      await load(summary(totalPriceBeforeDiscount: 'Infinity'));
       expect(subscriptionStore.priceInfo, isNull);
     });
 

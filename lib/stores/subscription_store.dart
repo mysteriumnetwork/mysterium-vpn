@@ -7,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/number.dart';
 import 'package:mysterium_vpn/common/extensions/observable_future_extensions.dart';
 import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
@@ -260,7 +261,9 @@ abstract class _SubscriptionStore with Store {
     }
     final price = double.tryParse(orderSummary.totalPrice);
     final priceBeforeDiscount = double.tryParse(orderSummary.totalPriceBeforeDiscount);
-    if (price == null || priceBeforeDiscount == null || priceBeforeDiscount <= price) {
+    if (price.isNullOrNotFinite ||
+        priceBeforeDiscount.isNullOrNotFinite ||
+        priceBeforeDiscount! <= price!) {
       return null;
     }
     final currency = orderSummary.currency.trim().toLowerCase() == 'usd' ? r'$' : '';

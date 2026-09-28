@@ -123,6 +123,7 @@ void main() {
       expect(renewsOn, findsOneWidget);
       expect(priceIcon, findsOneWidget);
       expect(find.text(r'$74.23'), findsOneWidget);
+      expect(find.text(r'$89.54'), findsOneWidget);
 
       // Mobile puts the subtitle+prices in the card footer, so they sit under
       // the row that holds the title and the Manage/Cancel actions.
