@@ -252,6 +252,25 @@ abstract class _SubscriptionStore with Store {
     return false;
   }
 
+  @computed
+  ({String discountedPrice, String priceBeforeDiscount})? get priceInfo {
+    final orderSummary = _subscriptionFuture.value?.orderSummary;
+    if (orderSummary == null) {
+      return null;
+    }
+    final price = double.tryParse(orderSummary.totalPrice);
+    final priceBeforeDiscount = double.tryParse(orderSummary.totalPriceBeforeDiscount);
+    if (price == null || priceBeforeDiscount == null || priceBeforeDiscount <= price) {
+      return null;
+    }
+    final currency = orderSummary.currency.trim().toLowerCase() == 'usd' ? r'$' : '';
+
+    return (
+      priceBeforeDiscount: currency + orderSummary.totalPriceBeforeDiscount,
+      discountedPrice: currency + orderSummary.totalPrice,
+    );
+  }
+
   @action
   Future<Subscription> _fetchSubscription() async {
     if (!_authSessionStore.isAuthenticated) {

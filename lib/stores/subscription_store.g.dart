@@ -109,6 +109,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.canRedeemCode,
     name: '_SubscriptionStore.canRedeemCode',
   )).value;
+  Computed<({String discountedPrice, String priceBeforeDiscount})?>? _$priceInfoComputed;
+
+  @override
+  ({String discountedPrice, String priceBeforeDiscount})? get priceInfo =>
+      (_$priceInfoComputed ??= Computed<({String discountedPrice, String priceBeforeDiscount})?>(
+        () => super.priceInfo,
+        name: '_SubscriptionStore.priceInfo',
+      )).value;
 
   late final _$_subscriptionFutureAtom = Atom(
     name: '_SubscriptionStore._subscriptionFuture',
@@ -267,7 +275,8 @@ productsScreenVariant: ${productsScreenVariant},
 malwareBlockingAllowed: ${malwareBlockingAllowed},
 favoriteIpsAllowed: ${favoriteIpsAllowed},
 favoriteIpsLimit: ${favoriteIpsLimit},
-canRedeemCode: ${canRedeemCode}
+canRedeemCode: ${canRedeemCode},
+priceInfo: ${priceInfo}
     ''';
   }
 }

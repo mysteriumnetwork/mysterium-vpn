@@ -64,6 +64,9 @@ void main() {
     // Keep the card list short so geometry assertions stay unambiguous.
     when(remoteConfigStore.hideDeleteAccount).thenReturn(true);
     when(vpnStore.isConnected).thenReturn(false);
+    when(
+      subscriptionStore.priceInfo,
+    ).thenReturn((discountedPrice: r'$74.23', priceBeforeDiscount: r'$89.54'));
   });
 
   Widget buildHarness() => ProviderScope(
@@ -101,9 +104,8 @@ void main() {
     await tester.pump();
   }
 
-  // The prices are placeholders in the widget until they are wired to the
-  // store; match the discount icon instead of the literal amounts so these
-  // tests keep passing once real values arrive.
+  // Prices come from `SubscriptionStore.priceInfo`. The stub above is what
+  // these tests look for; a null `priceInfo` hides the discount row.
   final priceIcon = find.byWidgetPredicate(
     (w) => w is Icon && w.icon == UntitledUI.sale_02,
     description: 'discount (sale_02) icon',
@@ -120,6 +122,7 @@ void main() {
 
       expect(renewsOn, findsOneWidget);
       expect(priceIcon, findsOneWidget);
+      expect(find.text(r'$74.23'), findsOneWidget);
 
       // Mobile puts the subtitle+prices in the card footer, so they sit under
       // the row that holds the title and the Manage/Cancel actions.
@@ -144,6 +147,7 @@ void main() {
 
       expect(renewsOn, findsOneWidget);
       expect(priceIcon, findsOneWidget);
+      expect(find.text(r'$74.23'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -152,6 +156,7 @@ void main() {
 
       expect(renewsOn, findsOneWidget);
       expect(priceIcon, findsOneWidget);
+      expect(find.text(r'$74.23'), findsOneWidget);
 
       // Inline means the prices share the subtitle's row rather than dropping
       // to a footer line of their own.
@@ -185,14 +190,13 @@ void main() {
       when(
         subscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+      when(subscriptionStore.priceInfo).thenReturn(null);
 
       await pumpAt(tester, const Size(390, 900));
 
       expect(renewsOn, findsNothing);
       expect(cancelAction, findsNothing);
-      // The prices are still hardcoded placeholders, so they render regardless
-      // of subscription state — assert the action instead until they are wired
-      // to the store.
+      expect(priceIcon, findsNothing);
       expect(find.text('See all plans'), findsOneWidget);
       expect(find.text('You have no active subscription'), findsOneWidget);
     });

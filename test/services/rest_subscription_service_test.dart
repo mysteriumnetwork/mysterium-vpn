@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/rest_subscription_repository.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -85,6 +86,55 @@ void main() {
       expect(sub.planId, 'plan_monthly');
       expect(sub.gateway, 'stripe');
       expect(sub.isPauseAllowed, isTrue);
+      expect(sub.orderSummary, isNull);
+    });
+
+    test('copies orderSummary onto the subscription', () async {
+      final apiResponse = api.GetSubscriptionResponse(
+        paused: false,
+        active: true,
+        expired: false,
+        recurring: true,
+        pauseAllowed: true,
+        subscriptionId: 'sub-1',
+        orderSummary: api.GetSubscriptionResponseOrderSummary(
+          country: 'US',
+          currency: 'USD',
+          itemSubtotal: '70.00',
+          itemSubtotalBeforeDiscount: '80.00',
+          taxRate: '0.1',
+          taxSubtotal: '4.23',
+          taxSubtotalBeforeDiscount: '9.54',
+          taxType: 'vat',
+          totalPrice: '74.23',
+          totalPriceBeforeDiscount: '89.54',
+          discountAmount: '15.31',
+          discountUnits: 'usd',
+        ),
+      );
+      when(
+        apiSubscription.subscriptionStatus(),
+      ).thenAnswer((_) async => response(200, apiResponse));
+
+      final sub = await service.fetchSubscriptionDetails();
+
+      expect(
+        sub.orderSummary,
+        OrderSummary(
+          country: 'US',
+          currency: 'USD',
+          itemSubtotal: '70.00',
+          itemSubtotalBeforeDiscount: '80.00',
+          taxRate: '0.1',
+          taxSubtotal: '4.23',
+          taxSubtotalBeforeDiscount: '9.54',
+          taxType: 'vat',
+          totalPrice: '74.23',
+          totalPriceBeforeDiscount: '89.54',
+          discountAmount: '15.31',
+          discountUnits: 'usd',
+        ),
+      );
     });
 
     test('rethrows arbitrary errors after logging', () async {

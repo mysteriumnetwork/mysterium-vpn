@@ -402,24 +402,24 @@ class _SubscriptionCard extends StatelessWidget {
         );
       }
 
-      const discountedPrice = r'$71.76';
-      const originalPrice = r'$89.73';
-
       final subtitle = _SubscriptionSubtitle(
         subtitle: planSubtitle,
-        discountedPrice: discountedPrice,
-        originalPrice: originalPrice,
+        isDesktop: isDesktop,
+        discountedPrice: subscriptionStore.priceInfo?.discountedPrice,
+        originalPrice: subscriptionStore.priceInfo?.priceBeforeDiscount,
       );
+
+      final showSubtitleInFooter = !isDesktop && subscriptionStore.priceInfo != null;
 
       return SettingsCard(
         title: planTitle,
-        subtitleWidget: isDesktop ? subtitle : null,
-        footer: isDesktop
-            ? null
-            : Padding(
+        subtitleWidget: showSubtitleInFooter ? null : subtitle,
+        footer: showSubtitleInFooter
+            ? Padding(
                 padding: EdgeInsets.only(top: spacing.s),
                 child: Align(alignment: Alignment.centerRight, child: subtitle),
-              ),
+              )
+            : null,
         position: position,
         trailing: trailing,
         badgeText: badgeText,
@@ -431,12 +431,16 @@ class _SubscriptionCard extends StatelessWidget {
 
 class _SubscriptionSubtitle extends StatelessWidget {
   const _SubscriptionSubtitle({
-    required this._subtitle,
-    this._discountedPrice,
-    this._originalPrice,
-  });
+    required String subtitle,
+    required this.isDesktop,
+    String? discountedPrice,
+    String? originalPrice,
+  }) : _subtitle = subtitle,
+       _discountedPrice = discountedPrice,
+       _originalPrice = originalPrice;
 
   final String _subtitle;
+  final bool isDesktop;
   final String? _discountedPrice;
   final String? _originalPrice;
 
@@ -444,10 +448,8 @@ class _SubscriptionSubtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
-      mainAxisAlignment: isDesktop() ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: isDesktop ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
       children: [
-        // Flexible so the subtitle ellipsizes on narrow screens; an unflexed
-        // Text in a Row is laid out unbounded and overflows instead.
         Flexible(
           child: Text(
             _subtitle,
