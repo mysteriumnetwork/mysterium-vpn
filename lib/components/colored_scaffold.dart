@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 // Project imports:
-import 'package:mysterium_vpn/common/layout_builders/edge_to_edge_handler.dart';
 import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -19,15 +18,15 @@ class ColoredScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor;
-    final pallete = Theme.of(context).palette;
-    backgroundColor = checkMediaWidth(context, 750)
-        ? pallete.bgSidePanel
-        : this.backgroundColor ?? pallete.bgPrimary;
-    return EdgeToEdgeScaffold(
+    final palette = Theme.of(context).palette;
+    final background = checkMediaWidth(context, 750)
+        ? palette.bgSidePanel
+        : backgroundColor ?? palette.bgPrimary;
+    return Scaffold(
+      backgroundColor: background,
       extendBodyBehindAppBar: extendBodyBehindAppBar,
-      backgroundColor: backgroundColor,
-      body: body,
+      // Bottom inset is owned by whatever sits there (nav bar, modal footers).
+      body: SafeArea(top: !extendBodyBehindAppBar, bottom: false, child: body),
     );
   }
 }
