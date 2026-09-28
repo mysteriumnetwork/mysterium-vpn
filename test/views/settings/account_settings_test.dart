@@ -39,6 +39,11 @@ void main() {
     gateway: 'stripe',
     planId: 'plan_yearly_pro',
     activeUntil: DateTime.utc(2027, 8, 14),
+    orderSummary: OrderSummary(
+      currency: 'USD',
+      totalPrice: '74.23',
+      totalPriceBeforeDiscount: '89.54',
+    ),
   );
 
   setUp(() {
@@ -64,9 +69,6 @@ void main() {
     // Keep the card list short so geometry assertions stay unambiguous.
     when(remoteConfigStore.hideDeleteAccount).thenReturn(true);
     when(vpnStore.isConnected).thenReturn(false);
-    when(
-      subscriptionStore.priceInfo,
-    ).thenReturn((discountedPrice: r'$74.23', priceBeforeDiscount: r'$89.54'));
   });
 
   Widget buildHarness() => ProviderScope(
@@ -104,8 +106,7 @@ void main() {
     await tester.pump();
   }
 
-  // Prices come from `SubscriptionStore.priceInfo`. The stub above is what
-  // these tests look for; a null `priceInfo` hides the discount row.
+  // Prices come from `Subscription.priceInfo` on the loaded subscription.
   final priceIcon = find.byWidgetPredicate(
     (w) => w is Icon && w.icon == UntitledUI.sale_02,
     description: 'discount (sale_02) icon',
@@ -191,7 +192,6 @@ void main() {
       when(
         subscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
-      when(subscriptionStore.priceInfo).thenReturn(null);
 
       await pumpAt(tester, const Size(390, 900));
 

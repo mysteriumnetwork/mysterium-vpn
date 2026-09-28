@@ -287,18 +287,9 @@ class RestSubscriptionRepository extends SubscriptionRepository {
         orderSummary: data.orderSummary == null
             ? null
             : OrderSummary(
-                country: data.orderSummary!.country,
                 currency: data.orderSummary!.currency,
-                itemSubtotal: data.orderSummary!.itemSubtotal,
-                itemSubtotalBeforeDiscount: data.orderSummary!.itemSubtotalBeforeDiscount,
-                taxRate: data.orderSummary!.taxRate,
-                taxSubtotal: data.orderSummary!.taxSubtotal,
-                taxSubtotalBeforeDiscount: data.orderSummary!.taxSubtotalBeforeDiscount,
-                taxType: data.orderSummary!.taxType,
                 totalPrice: data.orderSummary!.totalPrice,
                 totalPriceBeforeDiscount: data.orderSummary!.totalPriceBeforeDiscount,
-                discountAmount: data.orderSummary!.discountAmount,
-                discountUnits: data.orderSummary!.discountUnits,
               ),
       );
     } on ApiException {

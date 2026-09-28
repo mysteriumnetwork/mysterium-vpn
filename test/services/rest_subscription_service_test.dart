@@ -121,18 +121,9 @@ void main() {
       expect(
         sub.orderSummary,
         OrderSummary(
-          country: 'US',
           currency: 'USD',
-          itemSubtotal: '70.00',
-          itemSubtotalBeforeDiscount: '80.00',
-          taxRate: '0.1',
-          taxSubtotal: '4.23',
-          taxSubtotalBeforeDiscount: '9.54',
-          taxType: 'vat',
           totalPrice: '74.23',
           totalPriceBeforeDiscount: '89.54',
-          discountAmount: '15.31',
-          discountUnits: 'usd',
         ),
       );
     });

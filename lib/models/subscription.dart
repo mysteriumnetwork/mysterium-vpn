@@ -99,4 +99,39 @@ abstract class Subscription with _$Subscription {
 
     return null;
   }
+
+  String? get currencySymbol {
+    final currency = orderSummary?.currency.trim().toLowerCase();
+    if (currency == 'usd') {
+      return r'$';
+    }
+    return null;
+  }
+
+  bool get hasDiscount {
+    if (currencySymbol == null || orderSummary == null) {
+      return false;
+    }
+
+    final discountedPrice = double.tryParse(orderSummary!.totalPrice);
+    final priceBeforeDiscount = double.tryParse(orderSummary!.totalPriceBeforeDiscount);
+    if (discountedPrice.isNullOrNotFinite || priceBeforeDiscount.isNullOrNotFinite) {
+      return false;
+    }
+
+    return (priceBeforeDiscount! * 100).round() > (discountedPrice! * 100).round();
+  }
+
+  ({String discountedPrice, String priceBeforeDiscount})? get priceInfo {
+    final summary = orderSummary;
+    final symbol = currencySymbol;
+    if (!hasDiscount || symbol == null || summary == null) {
+      return null;
+    }
+
+    return (
+      priceBeforeDiscount: '$symbol${summary.totalPriceBeforeDiscount}',
+      discountedPrice: '$symbol${summary.totalPrice}',
+    );
+  }
 }

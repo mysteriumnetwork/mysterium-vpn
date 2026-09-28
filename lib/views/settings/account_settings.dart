@@ -405,11 +405,11 @@ class _SubscriptionCard extends StatelessWidget {
       final subtitle = _SubscriptionSubtitle(
         subtitle: planSubtitle,
         isDesktop: isDesktop,
-        discountedPrice: subscriptionStore.priceInfo?.discountedPrice,
-        originalPrice: subscriptionStore.priceInfo?.priceBeforeDiscount,
+        discountedPrice: subscription?.priceInfo?.discountedPrice,
+        originalPrice: subscription?.priceInfo?.priceBeforeDiscount,
       );
 
-      final showSubtitleInFooter = !isDesktop && subscriptionStore.priceInfo != null;
+      final showSubtitleInFooter = !isDesktop && subscription?.priceInfo != null;
 
       return SettingsCard(
         title: planTitle,

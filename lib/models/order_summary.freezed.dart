@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderSummary {
 
- String get country; String get currency; String get itemSubtotal; String get itemSubtotalBeforeDiscount; String get taxRate; String get taxSubtotal; String get taxSubtotalBeforeDiscount; String get taxType; String get totalPrice; String get totalPriceBeforeDiscount; String? get discountAmount; String? get discountUnits;
+ String get currency; String get totalPrice; String get totalPriceBeforeDiscount;
 /// Create a copy of OrderSummary
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $OrderSummaryCopyWith<OrderSummary> get copyWith => _$OrderSummaryCopyWithImpl<O
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderSummary&&(identical(other.country, country) || other.country == country)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.itemSubtotal, itemSubtotal) || other.itemSubtotal == itemSubtotal)&&(identical(other.itemSubtotalBeforeDiscount, itemSubtotalBeforeDiscount) || other.itemSubtotalBeforeDiscount == itemSubtotalBeforeDiscount)&&(identical(other.taxRate, taxRate) || other.taxRate == taxRate)&&(identical(other.taxSubtotal, taxSubtotal) || other.taxSubtotal == taxSubtotal)&&(identical(other.taxSubtotalBeforeDiscount, taxSubtotalBeforeDiscount) || other.taxSubtotalBeforeDiscount == taxSubtotalBeforeDiscount)&&(identical(other.taxType, taxType) || other.taxType == taxType)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount)&&(identical(other.discountAmount, discountAmount) || other.discountAmount == discountAmount)&&(identical(other.discountUnits, discountUnits) || other.discountUnits == discountUnits));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderSummary&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,country,currency,itemSubtotal,itemSubtotalBeforeDiscount,taxRate,taxSubtotal,taxSubtotalBeforeDiscount,taxType,totalPrice,totalPriceBeforeDiscount,discountAmount,discountUnits);
+int get hashCode => Object.hash(runtimeType,currency,totalPrice,totalPriceBeforeDiscount);
 
 @override
 String toString() {
-  return 'OrderSummary(country: $country, currency: $currency, itemSubtotal: $itemSubtotal, itemSubtotalBeforeDiscount: $itemSubtotalBeforeDiscount, taxRate: $taxRate, taxSubtotal: $taxSubtotal, taxSubtotalBeforeDiscount: $taxSubtotalBeforeDiscount, taxType: $taxType, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount, discountAmount: $discountAmount, discountUnits: $discountUnits)';
+  return 'OrderSummary(currency: $currency, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $OrderSummaryCopyWith<$Res>  {
   factory $OrderSummaryCopyWith(OrderSummary value, $Res Function(OrderSummary) _then) = _$OrderSummaryCopyWithImpl;
 @useResult
 $Res call({
- String country, String currency, String itemSubtotal, String itemSubtotalBeforeDiscount, String taxRate, String taxSubtotal, String taxSubtotalBeforeDiscount, String taxType, String totalPrice, String totalPriceBeforeDiscount, String? discountAmount, String? discountUnits
+ String currency, String totalPrice, String totalPriceBeforeDiscount
 });
 
 
@@ -62,21 +62,12 @@ class _$OrderSummaryCopyWithImpl<$Res>
 
 /// Create a copy of OrderSummary
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? country = null,Object? currency = null,Object? itemSubtotal = null,Object? itemSubtotalBeforeDiscount = null,Object? taxRate = null,Object? taxSubtotal = null,Object? taxSubtotalBeforeDiscount = null,Object? taxType = null,Object? totalPrice = null,Object? totalPriceBeforeDiscount = null,Object? discountAmount = freezed,Object? discountUnits = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currency = null,Object? totalPrice = null,Object? totalPriceBeforeDiscount = null,}) {
   return _then(_self.copyWith(
-country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,itemSubtotal: null == itemSubtotal ? _self.itemSubtotal : itemSubtotal // ignore: cast_nullable_to_non_nullable
-as String,itemSubtotalBeforeDiscount: null == itemSubtotalBeforeDiscount ? _self.itemSubtotalBeforeDiscount : itemSubtotalBeforeDiscount // ignore: cast_nullable_to_non_nullable
-as String,taxRate: null == taxRate ? _self.taxRate : taxRate // ignore: cast_nullable_to_non_nullable
-as String,taxSubtotal: null == taxSubtotal ? _self.taxSubtotal : taxSubtotal // ignore: cast_nullable_to_non_nullable
-as String,taxSubtotalBeforeDiscount: null == taxSubtotalBeforeDiscount ? _self.taxSubtotalBeforeDiscount : taxSubtotalBeforeDiscount // ignore: cast_nullable_to_non_nullable
-as String,taxType: null == taxType ? _self.taxType : taxType // ignore: cast_nullable_to_non_nullable
+currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,totalPrice: null == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
 as String,totalPriceBeforeDiscount: null == totalPriceBeforeDiscount ? _self.totalPriceBeforeDiscount : totalPriceBeforeDiscount // ignore: cast_nullable_to_non_nullable
-as String,discountAmount: freezed == discountAmount ? _self.discountAmount : discountAmount // ignore: cast_nullable_to_non_nullable
-as String?,discountUnits: freezed == discountUnits ? _self.discountUnits : discountUnits // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,
   ));
 }
 
@@ -161,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String country,  String currency,  String itemSubtotal,  String itemSubtotalBeforeDiscount,  String taxRate,  String taxSubtotal,  String taxSubtotalBeforeDiscount,  String taxType,  String totalPrice,  String totalPriceBeforeDiscount,  String? discountAmount,  String? discountUnits)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String currency,  String totalPrice,  String totalPriceBeforeDiscount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderSummary() when $default != null:
-return $default(_that.country,_that.currency,_that.itemSubtotal,_that.itemSubtotalBeforeDiscount,_that.taxRate,_that.taxSubtotal,_that.taxSubtotalBeforeDiscount,_that.taxType,_that.totalPrice,_that.totalPriceBeforeDiscount,_that.discountAmount,_that.discountUnits);case _:
+return $default(_that.currency,_that.totalPrice,_that.totalPriceBeforeDiscount);case _:
   return orElse();
 
 }
@@ -182,10 +173,10 @@ return $default(_that.country,_that.currency,_that.itemSubtotal,_that.itemSubtot
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String country,  String currency,  String itemSubtotal,  String itemSubtotalBeforeDiscount,  String taxRate,  String taxSubtotal,  String taxSubtotalBeforeDiscount,  String taxType,  String totalPrice,  String totalPriceBeforeDiscount,  String? discountAmount,  String? discountUnits)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String currency,  String totalPrice,  String totalPriceBeforeDiscount)  $default,) {final _that = this;
 switch (_that) {
 case _OrderSummary():
-return $default(_that.country,_that.currency,_that.itemSubtotal,_that.itemSubtotalBeforeDiscount,_that.taxRate,_that.taxSubtotal,_that.taxSubtotalBeforeDiscount,_that.taxType,_that.totalPrice,_that.totalPriceBeforeDiscount,_that.discountAmount,_that.discountUnits);case _:
+return $default(_that.currency,_that.totalPrice,_that.totalPriceBeforeDiscount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +193,10 @@ return $default(_that.country,_that.currency,_that.itemSubtotal,_that.itemSubtot
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String country,  String currency,  String itemSubtotal,  String itemSubtotalBeforeDiscount,  String taxRate,  String taxSubtotal,  String taxSubtotalBeforeDiscount,  String taxType,  String totalPrice,  String totalPriceBeforeDiscount,  String? discountAmount,  String? discountUnits)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String currency,  String totalPrice,  String totalPriceBeforeDiscount)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderSummary() when $default != null:
-return $default(_that.country,_that.currency,_that.itemSubtotal,_that.itemSubtotalBeforeDiscount,_that.taxRate,_that.taxSubtotal,_that.taxSubtotalBeforeDiscount,_that.taxType,_that.totalPrice,_that.totalPriceBeforeDiscount,_that.discountAmount,_that.discountUnits);case _:
+return $default(_that.currency,_that.totalPrice,_that.totalPriceBeforeDiscount);case _:
   return null;
 
 }
@@ -217,21 +208,12 @@ return $default(_that.country,_that.currency,_that.itemSubtotal,_that.itemSubtot
 
 
 class _OrderSummary extends OrderSummary {
-   _OrderSummary({required this.country, required this.currency, required this.itemSubtotal, required this.itemSubtotalBeforeDiscount, required this.taxRate, required this.taxSubtotal, required this.taxSubtotalBeforeDiscount, required this.taxType, required this.totalPrice, required this.totalPriceBeforeDiscount, this.discountAmount, this.discountUnits}): super._();
+   _OrderSummary({required this.currency, required this.totalPrice, required this.totalPriceBeforeDiscount}): super._();
   
 
-@override final  String country;
 @override final  String currency;
-@override final  String itemSubtotal;
-@override final  String itemSubtotalBeforeDiscount;
-@override final  String taxRate;
-@override final  String taxSubtotal;
-@override final  String taxSubtotalBeforeDiscount;
-@override final  String taxType;
 @override final  String totalPrice;
 @override final  String totalPriceBeforeDiscount;
-@override final  String? discountAmount;
-@override final  String? discountUnits;
 
 /// Create a copy of OrderSummary
 /// with the given fields replaced by the non-null parameter values.
@@ -243,16 +225,16 @@ _$OrderSummaryCopyWith<_OrderSummary> get copyWith => __$OrderSummaryCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderSummary&&(identical(other.country, country) || other.country == country)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.itemSubtotal, itemSubtotal) || other.itemSubtotal == itemSubtotal)&&(identical(other.itemSubtotalBeforeDiscount, itemSubtotalBeforeDiscount) || other.itemSubtotalBeforeDiscount == itemSubtotalBeforeDiscount)&&(identical(other.taxRate, taxRate) || other.taxRate == taxRate)&&(identical(other.taxSubtotal, taxSubtotal) || other.taxSubtotal == taxSubtotal)&&(identical(other.taxSubtotalBeforeDiscount, taxSubtotalBeforeDiscount) || other.taxSubtotalBeforeDiscount == taxSubtotalBeforeDiscount)&&(identical(other.taxType, taxType) || other.taxType == taxType)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount)&&(identical(other.discountAmount, discountAmount) || other.discountAmount == discountAmount)&&(identical(other.discountUnits, discountUnits) || other.discountUnits == discountUnits));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderSummary&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,country,currency,itemSubtotal,itemSubtotalBeforeDiscount,taxRate,taxSubtotal,taxSubtotalBeforeDiscount,taxType,totalPrice,totalPriceBeforeDiscount,discountAmount,discountUnits);
+int get hashCode => Object.hash(runtimeType,currency,totalPrice,totalPriceBeforeDiscount);
 
 @override
 String toString() {
-  return 'OrderSummary(country: $country, currency: $currency, itemSubtotal: $itemSubtotal, itemSubtotalBeforeDiscount: $itemSubtotalBeforeDiscount, taxRate: $taxRate, taxSubtotal: $taxSubtotal, taxSubtotalBeforeDiscount: $taxSubtotalBeforeDiscount, taxType: $taxType, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount, discountAmount: $discountAmount, discountUnits: $discountUnits)';
+  return 'OrderSummary(currency: $currency, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount)';
 }
 
 
@@ -263,7 +245,7 @@ abstract mixin class _$OrderSummaryCopyWith<$Res> implements $OrderSummaryCopyWi
   factory _$OrderSummaryCopyWith(_OrderSummary value, $Res Function(_OrderSummary) _then) = __$OrderSummaryCopyWithImpl;
 @override @useResult
 $Res call({
- String country, String currency, String itemSubtotal, String itemSubtotalBeforeDiscount, String taxRate, String taxSubtotal, String taxSubtotalBeforeDiscount, String taxType, String totalPrice, String totalPriceBeforeDiscount, String? discountAmount, String? discountUnits
+ String currency, String totalPrice, String totalPriceBeforeDiscount
 });
 
 
@@ -280,21 +262,12 @@ class __$OrderSummaryCopyWithImpl<$Res>
 
 /// Create a copy of OrderSummary
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? country = null,Object? currency = null,Object? itemSubtotal = null,Object? itemSubtotalBeforeDiscount = null,Object? taxRate = null,Object? taxSubtotal = null,Object? taxSubtotalBeforeDiscount = null,Object? taxType = null,Object? totalPrice = null,Object? totalPriceBeforeDiscount = null,Object? discountAmount = freezed,Object? discountUnits = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currency = null,Object? totalPrice = null,Object? totalPriceBeforeDiscount = null,}) {
   return _then(_OrderSummary(
-country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,itemSubtotal: null == itemSubtotal ? _self.itemSubtotal : itemSubtotal // ignore: cast_nullable_to_non_nullable
-as String,itemSubtotalBeforeDiscount: null == itemSubtotalBeforeDiscount ? _self.itemSubtotalBeforeDiscount : itemSubtotalBeforeDiscount // ignore: cast_nullable_to_non_nullable
-as String,taxRate: null == taxRate ? _self.taxRate : taxRate // ignore: cast_nullable_to_non_nullable
-as String,taxSubtotal: null == taxSubtotal ? _self.taxSubtotal : taxSubtotal // ignore: cast_nullable_to_non_nullable
-as String,taxSubtotalBeforeDiscount: null == taxSubtotalBeforeDiscount ? _self.taxSubtotalBeforeDiscount : taxSubtotalBeforeDiscount // ignore: cast_nullable_to_non_nullable
-as String,taxType: null == taxType ? _self.taxType : taxType // ignore: cast_nullable_to_non_nullable
+currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,totalPrice: null == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
 as String,totalPriceBeforeDiscount: null == totalPriceBeforeDiscount ? _self.totalPriceBeforeDiscount : totalPriceBeforeDiscount // ignore: cast_nullable_to_non_nullable
-as String,discountAmount: freezed == discountAmount ? _self.discountAmount : discountAmount // ignore: cast_nullable_to_non_nullable
-as String?,discountUnits: freezed == discountUnits ? _self.discountUnits : discountUnits // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,
   ));
 }
 
