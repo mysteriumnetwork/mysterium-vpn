@@ -14,7 +14,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderSummary {
 
- String get currency; String get totalPrice; String get totalPriceBeforeDiscount;
+ String get currency;/// Total price after discount
+ String get totalPrice;/// Total price before discount
+ String get totalPriceBeforeDiscount;
 /// Create a copy of OrderSummary
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -212,7 +214,9 @@ class _OrderSummary extends OrderSummary {
   
 
 @override final  String currency;
+/// Total price after discount
 @override final  String totalPrice;
+/// Total price before discount
 @override final  String totalPriceBeforeDiscount;
 
 /// Create a copy of OrderSummary

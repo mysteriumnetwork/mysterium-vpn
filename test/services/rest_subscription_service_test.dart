@@ -120,11 +120,7 @@ void main() {
 
       expect(
         sub.orderSummary,
-        OrderSummary(
-          currency: 'USD',
-          totalPrice: '74.23',
-          totalPriceBeforeDiscount: '89.54',
-        ),
+        OrderSummary(currency: 'USD', totalPrice: '74.23', totalPriceBeforeDiscount: '89.54'),
       );
     });
 
