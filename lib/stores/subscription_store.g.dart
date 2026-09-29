@@ -102,20 +102,6 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.favoriteIpsLimit,
     name: '_SubscriptionStore.favoriteIpsLimit',
   )).value;
-  Computed<String?>? _$discountedPriceComputed;
-
-  @override
-  String? get discountedPrice => (_$discountedPriceComputed ??= Computed<String?>(
-    () => super.discountedPrice,
-    name: '_SubscriptionStore.discountedPrice',
-  )).value;
-  Computed<String?>? _$priceBeforeDiscountComputed;
-
-  @override
-  String? get priceBeforeDiscount => (_$priceBeforeDiscountComputed ??= Computed<String?>(
-    () => super.priceBeforeDiscount,
-    name: '_SubscriptionStore.priceBeforeDiscount',
-  )).value;
   Computed<bool>? _$canRedeemCodeComputed;
 
   @override
@@ -281,8 +267,6 @@ productsScreenVariant: ${productsScreenVariant},
 malwareBlockingAllowed: ${malwareBlockingAllowed},
 favoriteIpsAllowed: ${favoriteIpsAllowed},
 favoriteIpsLimit: ${favoriteIpsLimit},
-discountedPrice: ${discountedPrice},
-priceBeforeDiscount: ${priceBeforeDiscount},
 canRedeemCode: ${canRedeemCode}
     ''';
   }

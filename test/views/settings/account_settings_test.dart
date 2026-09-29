@@ -69,8 +69,6 @@ void main() {
     // Keep the card list short so geometry assertions stay unambiguous.
     when(remoteConfigStore.hideDeleteAccount).thenReturn(true);
     when(vpnStore.isConnected).thenReturn(false);
-    when(subscriptionStore.discountedPrice).thenReturn(r'$74.23');
-    when(subscriptionStore.priceBeforeDiscount).thenReturn(r'$89.54');
   });
 
   Widget buildHarness() => ProviderScope(
@@ -108,7 +106,7 @@ void main() {
     await tester.pump();
   }
 
-  // Prices come from `SubscriptionStore.discountedPrice` and `priceBeforeDiscount`.
+  // Prices come from the loaded subscription's order summary.
   final priceIcon = find.byWidgetPredicate(
     (w) => w is Icon && w.icon == UntitledUI.sale_02,
     description: 'discount (sale_02) icon',
@@ -194,8 +192,6 @@ void main() {
       when(
         subscriptionStore.subscriptionFuture,
       ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
-      when(subscriptionStore.discountedPrice).thenReturn(null);
-      when(subscriptionStore.priceBeforeDiscount).thenReturn(null);
 
       await pumpAt(tester, const Size(390, 900));
 

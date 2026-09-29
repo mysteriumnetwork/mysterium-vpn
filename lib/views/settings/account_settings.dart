@@ -402,11 +402,19 @@ class _SubscriptionCard extends StatelessWidget {
         );
       }
 
+      String? discountedPrice;
+      String? originalPrice;
+      final orderSummary = subscription?.orderSummary;
+      if (orderSummary?.hasDiscount ?? false) {
+        discountedPrice = '${orderSummary?.currencySymbol}${orderSummary?.totalPrice}';
+        originalPrice = '${orderSummary?.currencySymbol}${orderSummary?.totalPriceBeforeDiscount}';
+      }
+
       final subtitle = _SubscriptionSubtitle(
         subtitle: planSubtitle,
         isDesktop: isDesktop,
-        discountedPrice: subscriptionStore.discountedPrice,
-        originalPrice: subscriptionStore.priceBeforeDiscount,
+        discountedPrice: discountedPrice,
+        originalPrice: originalPrice,
       );
 
       final showSubtitleInFooter = !isDesktop && (subscription?.orderSummary?.hasDiscount ?? false);
