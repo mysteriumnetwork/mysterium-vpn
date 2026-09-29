@@ -704,4 +704,59 @@ void main() {
       });
     });
   });
+
+  group('discount prices', () {
+    OrderSummary summary({
+      String currency = 'USD',
+      String totalPrice = '74.23',
+      String totalPriceBeforeDiscount = '89.54',
+    }) => OrderSummary(
+      currency: currency,
+      totalPrice: totalPrice,
+      totalPriceBeforeDiscount: totalPriceBeforeDiscount,
+    );
+
+    Future<void> load(OrderSummary? orderSummary) async {
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(
+        mockSubscriptionService.fetchSubscriptionDetails(),
+      ).thenAnswer((_) async => Subscription(active: true, orderSummary: orderSummary));
+      await subscriptionStore.refreshSubscription(force: true);
+    }
+
+    test(r'prefixes a real USD discount with $', () async {
+      await load(summary());
+
+      expect(subscriptionStore.discountedPrice, r'$74.23');
+      expect(subscriptionStore.priceBeforeDiscount, r'$89.54');
+    });
+
+    test('keeps the backend price strings', () async {
+      await load(summary(totalPrice: '74.2300', totalPriceBeforeDiscount: '89.5400'));
+
+      expect(subscriptionStore.discountedPrice, r'$74.2300');
+      expect(subscriptionStore.priceBeforeDiscount, r'$89.5400');
+    });
+
+    test('hides the prices when the currency has no symbol', () async {
+      await load(summary(currency: 'EUR'));
+
+      expect(subscriptionStore.discountedPrice, isNull);
+      expect(subscriptionStore.priceBeforeDiscount, isNull);
+    });
+
+    test('hides the prices when the amounts match after rounding to cents', () async {
+      await load(summary(totalPrice: '9.990000000000001', totalPriceBeforeDiscount: '9.99'));
+
+      expect(subscriptionStore.discountedPrice, isNull);
+      expect(subscriptionStore.priceBeforeDiscount, isNull);
+    });
+
+    test('hides the prices when there is no order summary', () async {
+      await load(null);
+
+      expect(subscriptionStore.discountedPrice, isNull);
+      expect(subscriptionStore.priceBeforeDiscount, isNull);
+    });
+  });
 }

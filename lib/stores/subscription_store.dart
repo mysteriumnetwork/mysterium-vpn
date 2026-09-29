@@ -230,6 +230,26 @@ abstract class _SubscriptionStore with Store {
   int get favoriteIpsLimit => planMetadata?.favoriteIpsLimit?.toInt() ?? defaultFavoriteIpsLimit;
 
   @computed
+  String? get discountedPrice {
+    final orderSummary = _subscriptionFuture.value?.orderSummary;
+    final currencySymbol = orderSummary?.currencySymbol;
+    if (orderSummary == null || !orderSummary.hasDiscount || currencySymbol == null) {
+      return null;
+    }
+    return '$currencySymbol${orderSummary.totalPrice}';
+  }
+
+  @computed
+  String? get priceBeforeDiscount {
+    final orderSummary = _subscriptionFuture.value?.orderSummary;
+    final currencySymbol = orderSummary?.currencySymbol;
+    if (orderSummary == null || !orderSummary.hasDiscount || currencySymbol == null) {
+      return null;
+    }
+    return '$currencySymbol${orderSummary.totalPriceBeforeDiscount}';
+  }
+
+  @computed
   bool get canRedeemCode {
     if (_remoteConfigStore.hideReedemCode) {
       return false;
