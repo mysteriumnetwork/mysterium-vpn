@@ -68,11 +68,11 @@ dependencies:
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: 0.1.2
+      ref: 0.1.3
   package_info_plus: 10.2.1
   reactive_forms: 17.0.1
   retry: 3.1.2
-  sentry_flutter: 9.25.0
+  sentry_flutter: 9.30.1
   shared_preferences: 2.5.5
   shimmer: 3.0.0
   showcaseview: 5.0.2
@@ -92,13 +92,13 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.92
+      ref: 1.0.93
   webview_flutter: 4.14.1
   window_manager: 0.5.2
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: 0.9.14
+      ref: 0.9.15
 
 dev_dependencies:
   build: ^4.0.0
