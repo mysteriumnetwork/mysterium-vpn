@@ -9,7 +9,7 @@ Detect and launch installed mail clients on iOS, macOS, and Android.
   s.license          = { :type => 'MIT' }
   s.author           = { 'Mysterium Network' => 'support@mysterium.network' }
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/**/*.swift'
+  s.source_files     = 'mail_launcher/Sources/mail_launcher/**/*.swift'
   s.dependency 'FlutterMacOS'
   s.platform         = :osx, '12.0'
   s.swift_version    = '5.0'
