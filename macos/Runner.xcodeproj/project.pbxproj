@@ -27,6 +27,7 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		6198FAC921E6966AE77CE567 /* Pods_OVpnExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69537F5D7930AE56CC967958 /* Pods_OVpnExtension.framework */; };
+		AA1A2B3C4D5E6F0000000003 /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA1A2B3C4D5E6F0000000002 /* WireGuardKit */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		7A3FA883AC89AF4BDA273390 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A15643BBB2264B1A29C6CE2 /* Pods_Runner.framework */; };
 		7EF7285C7C37D036965B2CA0 /* Pods_tun.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC821B0DB56E1DD3159DDD5E /* Pods_tun.framework */; };
@@ -183,6 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97C8B25D29D46D680017C38F /* NetworkExtension.framework in Frameworks */,
+				AA1A2B3C4D5E6F0000000003 /* WireGuardKit in Frameworks */,
 				7EF7285C7C37D036965B2CA0 /* Pods_tun.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,6 +366,9 @@
 			productType = "com.apple.product-type.app-extension";
 		};
 		97C8B25A29D46D680017C38F /* tun */ = {
+			packageProductDependencies = (
+				AA1A2B3C4D5E6F0000000002 /* WireGuardKit */,
+			);
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C8B26A29D46D680017C38F /* Build configuration list for PBXNativeTarget "tun" */;
 			buildPhases = (
@@ -425,6 +430,7 @@
 			mainGroup = 33CC10E42044A3C60003C045;
 			packageReferences = (
 				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
+				AA1A2B3C4D5E6F0000000001 /* XCRemoteSwiftPackageReference "wireguard-apple" */,
 			);
 			productRefGroup = 33CC10EE2044A3C60003C045 /* Products */;
 			projectDirPath = "";
@@ -764,7 +770,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
@@ -782,7 +787,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
 					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
 					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_ROOT}/WireGuardKit/Frameworks\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
@@ -957,7 +961,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
@@ -975,7 +978,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
 					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
 					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_ROOT}/WireGuardKit/Frameworks\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
@@ -1038,7 +1040,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
@@ -1056,7 +1057,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
 					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
 					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_ROOT}/WireGuardKit/Frameworks\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
@@ -1790,7 +1790,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
@@ -1808,7 +1807,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
 					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
 					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_ROOT}/WireGuardKit/Frameworks\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
@@ -1970,7 +1968,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
@@ -1988,7 +1985,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
 					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
 					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_ROOT}/WireGuardKit/Frameworks\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
@@ -2147,7 +2143,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/WireGuardKit\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
@@ -2165,7 +2160,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
 					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
 					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_ROOT}/WireGuardKit/Frameworks\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
@@ -2319,7 +2313,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		AA1A2B3C4D5E6F0000000001 /* XCRemoteSwiftPackageReference "wireguard-apple" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mysteriumnetwork/wireguard-apple.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		AA1A2B3C4D5E6F0000000002 /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA1A2B3C4D5E6F0000000001 /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
 		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlutterGeneratedPluginSwiftPackage;
