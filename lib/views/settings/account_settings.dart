@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
@@ -402,19 +403,10 @@ class _SubscriptionCard extends StatelessWidget {
         );
       }
 
-      String? discountedPrice;
-      String? originalPrice;
-      final orderSummary = subscription?.orderSummary;
-      if (orderSummary?.hasDiscount ?? false) {
-        discountedPrice = '${orderSummary?.currencySymbol}${orderSummary?.totalPrice}';
-        originalPrice = '${orderSummary?.currencySymbol}${orderSummary?.totalPriceBeforeDiscount}';
-      }
-
       final subtitle = _SubscriptionSubtitle(
         subtitle: planSubtitle,
         isDesktop: isDesktop,
-        discountedPrice: discountedPrice,
-        originalPrice: originalPrice,
+        orderSummary: subscription?.orderSummary,
       );
 
       final showSubtitleInFooter = !isDesktop && (subscription?.orderSummary?.hasDiscount ?? false);
@@ -439,24 +431,20 @@ class _SubscriptionCard extends StatelessWidget {
 
 class _SubscriptionSubtitle extends StatelessWidget {
   const _SubscriptionSubtitle({
-    required String subtitle,
-    required this.isDesktop,
-    String? discountedPrice,
-    String? originalPrice,
-  }) : _subtitle = subtitle,
-       _discountedPrice = discountedPrice,
-       _originalPrice = originalPrice;
+    required this._subtitle,
+    required this._isDesktop,
+    this._orderSummary,
+  });
 
   final String _subtitle;
-  final bool isDesktop;
-  final String? _discountedPrice;
-  final String? _originalPrice;
+  final bool _isDesktop;
+  final OrderSummary? _orderSummary;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
-      mainAxisAlignment: isDesktop ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: _isDesktop ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
           child: Text(
@@ -466,19 +454,19 @@ class _SubscriptionSubtitle extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        if (_discountedPrice != null && _originalPrice != null)
+        if (_orderSummary?.hasDiscount ?? false)
           Row(
             children: [
               SizedBox(width: theme.spacing.md),
               Icon(UntitledUI.sale_02, size: 20, color: theme.palette.iconPrimary),
               SizedBox(width: theme.spacing.xs),
               Text(
-                _discountedPrice,
+                '${_orderSummary!.currencySymbol}${_orderSummary.totalPrice}',
                 style: theme.textStyles.textSm.semibold.copyWith(color: theme.palette.textPrimary),
               ),
               SizedBox(width: theme.spacing.xs),
               Text(
-                _originalPrice,
+                '${_orderSummary.currencySymbol}${_orderSummary.totalPriceBeforeDiscount}',
                 style: theme.textStyles.textSm.regular.copyWith(
                   color: theme.palette.textTertiary,
                   decoration: TextDecoration.lineThrough,
