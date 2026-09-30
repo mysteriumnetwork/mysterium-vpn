@@ -8,23 +8,10 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:url_launcher_platform_interface/link.dart';
-import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
+import '../../support/fake_url_launcher.dart';
 import '../../support/test_localizations.dart';
 import 'device_limit_dialog_test.mocks.dart';
-
-class _StubUrlLauncher extends UrlLauncherPlatform with MockPlatformInterfaceMixin {
-  @override
-  LinkDelegate? get linkDelegate => null;
-
-  @override
-  Future<bool> canLaunch(String url) async => true;
-
-  @override
-  Future<bool> launchUrl(String url, LaunchOptions options) async => true;
-}
 
 @GenerateNiceMocks([MockSpec<AnalyticsStore>(), MockSpec<AuthSessionStore>()])
 void main() {
@@ -36,7 +23,7 @@ void main() {
   setUp(() {
     analyticsStore = MockAnalyticsStore();
     authSessionStore = MockAuthSessionStore();
-    UrlLauncherPlatform.instance = _StubUrlLauncher();
+    installFakeUrlLauncher();
     when(authSessionStore.accessToken).thenReturn('token');
     when(analyticsStore.logDeviceLimitDialogShown()).thenAnswer((_) async {});
     when(analyticsStore.logDeviceLimitDashboardClicked()).thenAnswer((_) async {});

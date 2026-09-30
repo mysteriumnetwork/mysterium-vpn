@@ -108,13 +108,13 @@ void main() {
 
     await pumpHost(tester);
 
-    verify(analyticsStore.logTunnelPermissionDialogShown()).called(1);
+    verify(vpnStore.onTunnelPermissionDialogShown()).called(1);
     expect(find.text(S.current.setupTunnerPermissionsDialogTitle), findsOneWidget);
 
     await tester.tap(find.text(S.current.allowBtn));
     await tester.pumpAndSettle();
 
-    verify(analyticsStore.logTunnelPermissionDecision(accepted: true)).called(1);
+    verify(vpnStore.onTunnelPermissionDecision(accepted: true)).called(1);
     verify(vpnStore.setupTunnel()).called(1);
   });
 
@@ -134,7 +134,7 @@ void main() {
     await tester.tapAt(const Offset(5, 5));
     await tester.pumpAndSettle();
 
-    verify(analyticsStore.logTunnelPermissionDecision(accepted: false)).called(1);
+    verify(vpnStore.onTunnelPermissionDecision(accepted: false)).called(1);
     verifyNever(vpnStore.setupTunnel());
   });
 

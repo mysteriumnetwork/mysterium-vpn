@@ -4,17 +4,16 @@ Future<bool> Function() useHandleSetupTunnel() {
   final context = useContext();
 
   final vpnStore = useProvider<VpnStore>(vpnStorePOD);
-  final analyticsStore = useProvider<AnalyticsStore>(analyticsStorePOD);
 
   return useCallback(() async {
-    analyticsStore.logTunnelPermissionDialogShown().ignore();
+    vpnStore.onTunnelPermissionDialogShown();
     final permissionsGranted = await showRequestTunnelPermissionsDialog(context);
     final accepted = permissionsGranted ?? false;
-    analyticsStore.logTunnelPermissionDecision(accepted: accepted).ignore();
+    vpnStore.onTunnelPermissionDecision(accepted: accepted);
     if (accepted) {
       await vpnStore.setupTunnel();
       return true;
     }
     return false;
-  }, [vpnStore, analyticsStore]);
+  }, [vpnStore]);
 }

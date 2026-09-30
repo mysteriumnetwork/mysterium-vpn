@@ -212,7 +212,7 @@ void main() {
 
       await expectLater(vpnStore.setupTunnel(), throwsA(isA<PlatformException>()));
 
-      verify(mockAnalytics.logTunnelSetupFailed(reason: 'permission_denied')).called(1);
+      verify(mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_permission_required')).called(1);
       verifyNever(mockAnalytics.logTunnelSetupSucceeded());
     });
 
@@ -221,7 +221,22 @@ void main() {
 
       await expectLater(vpnStore.setupTunnel(), throwsException);
 
-      verify(mockAnalytics.logTunnelSetupFailed(reason: 'setup_failed')).called(1);
+      verify(mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_setup_failed')).called(1);
+    });
+
+    test('onTunnelPermissionDialogShown forwards to analytics', () {
+      vpnStore.onTunnelPermissionDialogShown();
+
+      verify(mockAnalytics.logTunnelPermissionDialogShown()).called(1);
+    });
+
+    test('onTunnelPermissionDecision forwards the decision to analytics', () {
+      vpnStore
+        ..onTunnelPermissionDecision(accepted: true)
+        ..onTunnelPermissionDecision(accepted: false);
+
+      verify(mockAnalytics.logTunnelPermissionDecision(accepted: true)).called(1);
+      verify(mockAnalytics.logTunnelPermissionDecision(accepted: false)).called(1);
     });
 
     test('disconnectTunnel clears state', () async {

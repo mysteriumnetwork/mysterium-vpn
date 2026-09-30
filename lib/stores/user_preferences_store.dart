@@ -276,7 +276,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
       _analyticsStore.logEvent(AnalyticsEvent.updateMarketingContactSuccess);
       getMarketingConsentFuture = ObservableFuture.value(consent);
       if (fromPopup) {
-        _analyticsStore.logMarketingConsentMarked(accepted: consent);
+        _analyticsStore.logMarketingConsentMarked(accepted: consent).ignore();
         setMarketingConsentShown();
       }
     } catch (e) {
