@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -10,6 +12,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> showDeviceLimitDialog(BuildContext context) async {
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logDeviceLimitDialogShown().ignore();
   await showModal(context, builder: (_) => const _DialogContent());
 }
 
@@ -19,8 +25,10 @@ class _DialogContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sessionStore = ref.watch(authSessionStorePOD);
+    final analyticsStore = ref.watch(analyticsStorePOD);
 
     void handleOpenDashboard() {
+      analyticsStore.logDeviceLimitDashboardClicked().ignore();
       final uri = Uri.parse(Env.manageDevicesPage);
       final accessToken = sessionStore.accessToken;
       final queryParameters = (accessToken?.isNotEmpty ?? false)
@@ -48,7 +56,10 @@ class _DialogContent extends HookConsumerWidget {
         child: Text(S.current.deviceLimitReachedOpenDashboard, textAlign: TextAlign.center),
       ),
       secondaryButton: ButtonSecondary(
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          analyticsStore.logDeviceLimitDismissed().ignore();
+          Navigator.of(context).pop();
+        },
         child: Text(S.current.closeBtn, textAlign: TextAlign.center),
       ),
     );

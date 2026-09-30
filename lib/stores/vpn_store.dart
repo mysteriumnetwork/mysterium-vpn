@@ -389,6 +389,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     try {
       await _vpnRepository.setupTunnel();
       await _setupAndListenToConnectionStatus();
+      _analyticsStore.logTunnelSetupSucceeded().ignore();
     } catch (e) {
       _handleTunnelSetupError(e);
       rethrow;
@@ -401,6 +402,9 @@ abstract class _VpnStore extends VpnGuard with Store {
         ((e.message ?? '').contains('Permissions are not given') ||
             (e.message ?? '').contains('permission denied'));
 
+    _analyticsStore
+        .logTunnelSetupFailed(reason: permissionDenied ? 'permission_denied' : 'setup_failed')
+        .ignore();
     _emitConnectionError(
       VpnError(
         permissionDenied ? VpnErrorType.tunnelPermissionRequired : VpnErrorType.tunnelSetupFailed,

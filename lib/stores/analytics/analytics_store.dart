@@ -459,6 +459,40 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logTunnelPermissionDialogShown() async {
+    await logEvent(AnalyticsEvent.tunnelPermissionDialogShown);
+  }
+
+  Future<void> logTunnelPermissionDecision({required bool accepted}) async {
+    await logEvent(
+      accepted ? AnalyticsEvent.tunnelPermissionAccepted : AnalyticsEvent.tunnelPermissionDeclined,
+    );
+  }
+
+  Future<void> logTunnelSetupSucceeded() async {
+    await logEvent(AnalyticsEvent.tunnelSetupSucceeded);
+  }
+
+  Future<void> logTunnelSetupFailed({required String reason}) async {
+    await logEvent(AnalyticsEvent.tunnelSetupFailed, parameters: {'reason': reason});
+  }
+
+  Future<void> logDeviceLimitDialogShown() async {
+    await logEvent(AnalyticsEvent.deviceLimitDialogShown);
+  }
+
+  Future<void> logDeviceLimitDashboardClicked() async {
+    await logEvent(AnalyticsEvent.deviceLimitDashboardClicked);
+  }
+
+  Future<void> logDeviceLimitDismissed() async {
+    await logEvent(AnalyticsEvent.deviceLimitDismissed);
+  }
+
+  Future<void> logMarketingConsentPromptShown() async {
+    await logEvent(AnalyticsEvent.marketingConsentPromptShown);
+  }
+
   Future<void> logPushNotificationsPromptShown() async {
     await logEvent(AnalyticsEvent.pushNotificationsPromptShown);
   }

@@ -90,6 +90,54 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  testWidgets('the tunnel permission gate logs the prompt and the acceptance', (tester) async {
+    var attempts = 0;
+    when(
+      vpnStore.manageConnection(
+        location: anyNamed('location'),
+        intent: anyNamed('intent'),
+        targetIp: anyNamed('targetIp'),
+      ),
+    ).thenAnswer((_) async {
+      attempts++;
+      if (attempts == 1) {
+        throw const TunnelSetupRequiredException();
+      }
+    });
+    when(vpnStore.setupTunnel()).thenAnswer((_) async {});
+
+    await pumpHost(tester);
+
+    verify(analyticsStore.logTunnelPermissionDialogShown()).called(1);
+    expect(find.text(S.current.setupTunnerPermissionsDialogTitle), findsOneWidget);
+
+    await tester.tap(find.text(S.current.allowBtn));
+    await tester.pumpAndSettle();
+
+    verify(analyticsStore.logTunnelPermissionDecision(accepted: true)).called(1);
+    verify(vpnStore.setupTunnel()).called(1);
+  });
+
+  testWidgets('dismissing the tunnel permission gate logs a decline', (tester) async {
+    when(
+      vpnStore.manageConnection(
+        location: anyNamed('location'),
+        intent: anyNamed('intent'),
+        targetIp: anyNamed('targetIp'),
+      ),
+    ).thenThrow(const TunnelSetupRequiredException());
+
+    await pumpHost(tester);
+
+    expect(find.text(S.current.setupTunnerPermissionsDialogTitle), findsOneWidget);
+
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pumpAndSettle();
+
+    verify(analyticsStore.logTunnelPermissionDecision(accepted: false)).called(1);
+    verifyNever(vpnStore.setupTunnel());
+  });
+
   testWidgets('a paused subscription surfaces the resume prompt', (tester) async {
     when(
       vpnStore.manageConnection(

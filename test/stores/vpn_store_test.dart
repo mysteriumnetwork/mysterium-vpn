@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
@@ -190,6 +191,37 @@ void main() {
 
       verify(mockWireguardRepo.setupTunnel()).called(1);
       expect(vpnStore.vpnStatus, VpnConnectionStatus.disconnected);
+    });
+
+    test('setupTunnel logs success', () async {
+      when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
+      when(
+        mockWireguardRepo.currentStatus(),
+      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+
+      await vpnStore.setupTunnel();
+
+      verify(mockAnalytics.logTunnelSetupSucceeded()).called(1);
+    });
+
+    test('setupTunnel logs permission_denied when the OS prompt is refused', () async {
+      when(
+        mockWireguardRepo.setupTunnel(),
+      ).thenThrow(PlatformException(code: 'error', message: 'Permissions are not given'));
+
+      await expectLater(vpnStore.setupTunnel(), throwsA(isA<PlatformException>()));
+
+      verify(mockAnalytics.logTunnelSetupFailed(reason: 'permission_denied')).called(1);
+      verifyNever(mockAnalytics.logTunnelSetupSucceeded());
+    });
+
+    test('setupTunnel logs setup_failed for any other failure', () async {
+      when(mockWireguardRepo.setupTunnel()).thenThrow(Exception('boom'));
+
+      await expectLater(vpnStore.setupTunnel(), throwsException);
+
+      verify(mockAnalytics.logTunnelSetupFailed(reason: 'setup_failed')).called(1);
     });
 
     test('disconnectTunnel clears state', () async {

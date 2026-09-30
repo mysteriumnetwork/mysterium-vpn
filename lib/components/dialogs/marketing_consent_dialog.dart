@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -11,6 +13,10 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logMarketingConsentPromptShown().ignore();
   await showModal<void>(
     context,
     builder: (_) => const _DialogContent(key: Keys.marketingConsentDialog),

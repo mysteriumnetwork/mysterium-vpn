@@ -358,6 +358,77 @@ void main() {
     });
   });
 
+  group('tunnel permission analytics', () {
+    test('logTunnelPermissionDialogShown emits the shown event', () async {
+      final entry = nextLog();
+      await store.logTunnelPermissionDialogShown();
+
+      expect((await entry).message, AnalyticsEvent.tunnelPermissionDialogShown.formattedName);
+    });
+
+    test('logTunnelPermissionDecision accepted → accepted event', () async {
+      final entry = nextLog();
+      await store.logTunnelPermissionDecision(accepted: true);
+
+      expect((await entry).message, AnalyticsEvent.tunnelPermissionAccepted.formattedName);
+    });
+
+    test('logTunnelPermissionDecision declined → declined event', () async {
+      final entry = nextLog();
+      await store.logTunnelPermissionDecision(accepted: false);
+
+      expect((await entry).message, AnalyticsEvent.tunnelPermissionDeclined.formattedName);
+    });
+
+    test('logTunnelSetupSucceeded emits the success event', () async {
+      final entry = nextLog();
+      await store.logTunnelSetupSucceeded();
+
+      expect((await entry).message, AnalyticsEvent.tunnelSetupSucceeded.formattedName);
+    });
+
+    test('logTunnelSetupFailed carries the reason', () async {
+      final entry = nextLog();
+      await store.logTunnelSetupFailed(reason: 'permission_denied');
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.tunnelSetupFailed.formattedName);
+      expect(log.params, {'reason': 'permission_denied'});
+    });
+  });
+
+  group('device limit analytics', () {
+    test('logDeviceLimitDialogShown emits the shown event', () async {
+      final entry = nextLog();
+      await store.logDeviceLimitDialogShown();
+
+      expect((await entry).message, AnalyticsEvent.deviceLimitDialogShown.formattedName);
+    });
+
+    test('logDeviceLimitDashboardClicked emits the click event', () async {
+      final entry = nextLog();
+      await store.logDeviceLimitDashboardClicked();
+
+      expect((await entry).message, AnalyticsEvent.deviceLimitDashboardClicked.formattedName);
+    });
+
+    test('logDeviceLimitDismissed emits the dismiss event', () async {
+      final entry = nextLog();
+      await store.logDeviceLimitDismissed();
+
+      expect((await entry).message, AnalyticsEvent.deviceLimitDismissed.formattedName);
+    });
+  });
+
+  group('logMarketingConsentPromptShown', () {
+    test('emits the prompt shown event', () async {
+      final entry = nextLog();
+      await store.logMarketingConsentPromptShown();
+
+      expect((await entry).message, AnalyticsEvent.marketingConsentPromptShown.formattedName);
+    });
+  });
+
   group('logPushNotificationsPromptShown', () {
     test('emits prompt shown event with no params', () async {
       final entry = nextLog();

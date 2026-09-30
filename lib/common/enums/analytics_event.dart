@@ -181,7 +181,18 @@ enum AnalyticsEvent {
   dpiProtocolFallbackAccepted,
   dpiProtocolFallbackDeclined,
   dpiProtocolFallbackSucceeded,
-  dpiProtocolFallbackFailed;
+  dpiProtocolFallbackFailed,
+  // Tunnel permission gate on first connect: rationale dialog -> accepted /
+  // declined -> OS-level setup succeeded / failed.
+  tunnelPermissionDialogShown,
+  tunnelPermissionAccepted,
+  tunnelPermissionDeclined,
+  tunnelSetupSucceeded,
+  tunnelSetupFailed,
+  deviceLimitDialogShown,
+  deviceLimitDashboardClicked,
+  deviceLimitDismissed,
+  marketingConsentPromptShown;
 
   String get formattedName => name.toSnakeCase;
 }
