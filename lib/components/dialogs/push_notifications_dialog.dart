@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
@@ -9,6 +11,10 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logPushNotificationsPromptShown().ignore();
   await showModal(context, builder: (_) => const _DialogContent(key: K.pushNotificationsDialog));
 }
 

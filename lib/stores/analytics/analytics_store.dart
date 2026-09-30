@@ -459,6 +459,18 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logPushNotificationsPromptShown() async {
+    await logEvent(AnalyticsEvent.pushNotificationsPromptShown);
+  }
+
+  Future<void> logMarketingConsentMarked({required bool accepted}) async {
+    await logEvent(
+      accepted
+          ? AnalyticsEvent.marketingConsentMarkedAccepted
+          : AnalyticsEvent.marketingConsentMarkedDeclined,
+    );
+  }
+
   Future<void> logCancellationConfirmViewed() async {
     await logEvent(AnalyticsEvent.cancellationConfirmViewed);
   }

@@ -358,6 +358,35 @@ void main() {
     });
   });
 
+  group('logPushNotificationsPromptShown', () {
+    test('emits prompt shown event with no params', () async {
+      final entry = nextLog();
+      await store.logPushNotificationsPromptShown();
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.pushNotificationsPromptShown.formattedName);
+      expect(log.params, isNull);
+    });
+  });
+
+  group('logMarketingConsentMarked', () {
+    test('accepted → accepted event', () async {
+      final entry = nextLog();
+      await store.logMarketingConsentMarked(accepted: true);
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.marketingConsentMarkedAccepted.formattedName);
+    });
+
+    test('declined → declined event', () async {
+      final entry = nextLog();
+      await store.logMarketingConsentMarked(accepted: false);
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.marketingConsentMarkedDeclined.formattedName);
+    });
+  });
+
   group('logPushNotificationsPermissionsChanged', () {
     test('granted → granted event + property', () async {
       final logFuture = nextLog();
