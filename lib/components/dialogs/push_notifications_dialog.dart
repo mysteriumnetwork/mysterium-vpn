@@ -9,6 +9,10 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logPushNotificationsPromptShown().ignore();
   await showModal(context, builder: (_) => const _DialogContent(key: K.pushNotificationsDialog));
 }
 
@@ -48,6 +52,10 @@ Future<void> _completePushNotificationsFlow(
   required UserPreferencesStore userPreferencesStore,
   required bool userAllowed,
 }) async {
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logPushNotificationsPromptDecision(accepted: userAllowed).ignore();
   await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
 
   if (context.mounted) {
