@@ -10,15 +10,25 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> showDeviceLimitDialog(BuildContext context) async {
-  ProviderScope.containerOf(
+  final analyticsStore = ProviderScope.containerOf(context, listen: false).read(analyticsStorePOD);
+  analyticsStore.logDeviceLimitDialogShown().ignore();
+  // Tracked here, not on the Close button, so barrier taps and system Back
+  // count too. The dashboard button leaves the dialog open, so a dismissal
+  // after it isn't an abandonment.
+  var openedDashboard = false;
+  await showModal(
     context,
-    listen: false,
-  ).read(analyticsStorePOD).logDeviceLimitDialogShown().ignore();
-  await showModal(context, builder: (_) => const _DialogContent());
+    builder: (_) => _DialogContent(onDashboardOpened: () => openedDashboard = true),
+  );
+  if (!openedDashboard) {
+    analyticsStore.logDeviceLimitDismissed().ignore();
+  }
 }
 
 class _DialogContent extends HookConsumerWidget {
-  const _DialogContent();
+  const _DialogContent({required this.onDashboardOpened});
+
+  final VoidCallback onDashboardOpened;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +37,7 @@ class _DialogContent extends HookConsumerWidget {
 
     void handleOpenDashboard() {
       analyticsStore.logDeviceLimitDashboardClicked().ignore();
+      onDashboardOpened();
       final uri = Uri.parse(Env.manageDevicesPage);
       final accessToken = sessionStore.accessToken;
       final queryParameters = (accessToken?.isNotEmpty ?? false)
@@ -54,10 +65,7 @@ class _DialogContent extends HookConsumerWidget {
         child: Text(S.current.deviceLimitReachedOpenDashboard, textAlign: TextAlign.center),
       ),
       secondaryButton: ButtonSecondary(
-        onPressed: () {
-          analyticsStore.logDeviceLimitDismissed().ignore();
-          Navigator.of(context).pop();
-        },
+        onPressed: () => Navigator.of(context).pop(),
         child: Text(S.current.closeBtn, textAlign: TextAlign.center),
       ),
     );

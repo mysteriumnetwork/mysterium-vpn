@@ -104,7 +104,7 @@ void main() {
         throw const TunnelSetupRequiredException();
       }
     });
-    when(vpnStore.setupTunnel()).thenAnswer((_) async {});
+    when(vpnStore.setupTunnel(trigger: anyNamed('trigger'))).thenAnswer((_) async {});
 
     await pumpHost(tester);
 
@@ -115,7 +115,7 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(vpnStore.onTunnelPermissionDecision(accepted: true)).called(1);
-    verify(vpnStore.setupTunnel()).called(1);
+    verify(vpnStore.setupTunnel(trigger: 'permission_flow')).called(1);
   });
 
   testWidgets('dismissing the tunnel permission gate logs a decline', (tester) async {
@@ -135,7 +135,7 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(vpnStore.onTunnelPermissionDecision(accepted: false)).called(1);
-    verifyNever(vpnStore.setupTunnel());
+    verifyNever(vpnStore.setupTunnel(trigger: anyNamed('trigger')));
   });
 
   testWidgets('a paused subscription surfaces the resume prompt', (tester) async {

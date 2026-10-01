@@ -202,7 +202,7 @@ void main() {
 
       await vpnStore.setupTunnel();
 
-      verify(mockAnalytics.logTunnelSetupSucceeded()).called(1);
+      verify(mockAnalytics.logTunnelSetupSucceeded(trigger: 'auto')).called(1);
     });
 
     test('setupTunnel logs permission_denied when the OS prompt is refused', () async {
@@ -212,8 +212,10 @@ void main() {
 
       await expectLater(vpnStore.setupTunnel(), throwsA(isA<PlatformException>()));
 
-      verify(mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_permission_required')).called(1);
-      verifyNever(mockAnalytics.logTunnelSetupSucceeded());
+      verify(
+        mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_permission_required', trigger: 'auto'),
+      ).called(1);
+      verifyNever(mockAnalytics.logTunnelSetupSucceeded(trigger: anyNamed('trigger')));
     });
 
     test('setupTunnel logs setup_failed for any other failure', () async {
@@ -221,7 +223,21 @@ void main() {
 
       await expectLater(vpnStore.setupTunnel(), throwsException);
 
-      verify(mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_setup_failed')).called(1);
+      verify(
+        mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_setup_failed', trigger: 'auto'),
+      ).called(1);
+    });
+
+    test('setupTunnel tags the permission-flow trigger when the dialog drove it', () async {
+      when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
+      when(
+        mockWireguardRepo.currentStatus(),
+      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+
+      await vpnStore.setupTunnel(trigger: tunnelSetupTriggerPermissionFlow);
+
+      verify(mockAnalytics.logTunnelSetupSucceeded(trigger: 'permission_flow')).called(1);
     });
 
     test('onTunnelPermissionDialogShown forwards to analytics', () {

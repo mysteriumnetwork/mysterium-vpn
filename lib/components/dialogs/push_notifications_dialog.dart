@@ -52,6 +52,10 @@ Future<void> _completePushNotificationsFlow(
   required UserPreferencesStore userPreferencesStore,
   required bool userAllowed,
 }) async {
+  ProviderScope.containerOf(
+    context,
+    listen: false,
+  ).read(analyticsStorePOD).logPushNotificationsPromptDecision(accepted: userAllowed).ignore();
   await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
 
   if (context.mounted) {

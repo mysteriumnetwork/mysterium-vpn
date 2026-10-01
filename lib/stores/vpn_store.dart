@@ -19,6 +19,11 @@ import 'package:vpn_api/vpn_api.dart';
 
 part 'vpn_store.g.dart';
 
+/// Analytics `trigger` values for [VpnStore.setupTunnel]: the permission-dialog
+/// funnel vs the Windows paths that set the tunnel up without a dialog.
+const String tunnelSetupTriggerAuto = 'auto';
+const String tunnelSetupTriggerPermissionFlow = 'permission_flow';
+
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
 
@@ -386,18 +391,20 @@ abstract class _VpnStore extends VpnGuard with Store {
   // ==================== Tunnel Management ====================
 
   @action
-  Future<void> setupTunnel() async {
+  /// [trigger] separates the permission-dialog funnel from the Windows
+  /// auto-setup paths, which run without a dialog.
+  Future<void> setupTunnel({String trigger = tunnelSetupTriggerAuto}) async {
     try {
       await _vpnRepository.setupTunnel();
       await _setupAndListenToConnectionStatus();
-      _analyticsStore.logTunnelSetupSucceeded().ignore();
+      _analyticsStore.logTunnelSetupSucceeded(trigger: trigger).ignore();
     } catch (e) {
-      _handleTunnelSetupError(e);
+      _handleTunnelSetupError(e, trigger);
       rethrow;
     }
   }
 
-  void _handleTunnelSetupError(Object e) {
+  void _handleTunnelSetupError(Object e, String trigger) {
     final permissionDenied =
         e is PlatformException &&
         ((e.message ?? '').contains('Permissions are not given') ||
@@ -406,7 +413,9 @@ abstract class _VpnStore extends VpnGuard with Store {
         ? VpnErrorType.tunnelPermissionRequired
         : VpnErrorType.tunnelSetupFailed;
 
-    _analyticsStore.logTunnelSetupFailed(reason: errorType.name.toSnakeCase).ignore();
+    _analyticsStore
+        .logTunnelSetupFailed(reason: errorType.name.toSnakeCase, trigger: trigger)
+        .ignore();
     _emitConnectionError(VpnError(errorType));
   }
 

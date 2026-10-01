@@ -189,6 +189,8 @@ enum AnalyticsEvent {
   tunnelPermissionDeclined,
   tunnelSetupSucceeded,
   tunnelSetupFailed,
+  pushNotificationsPromptAccepted,
+  pushNotificationsPromptDeclined,
   deviceLimitDialogShown,
   deviceLimitDashboardClicked,
   deviceLimitDismissed,

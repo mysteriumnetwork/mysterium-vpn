@@ -469,12 +469,15 @@ mixin AnalyticsStore {
     );
   }
 
-  Future<void> logTunnelSetupSucceeded() async {
-    await logEvent(AnalyticsEvent.tunnelSetupSucceeded);
+  Future<void> logTunnelSetupSucceeded({required String trigger}) async {
+    await logEvent(AnalyticsEvent.tunnelSetupSucceeded, parameters: {'trigger': trigger});
   }
 
-  Future<void> logTunnelSetupFailed({required String reason}) async {
-    await logEvent(AnalyticsEvent.tunnelSetupFailed, parameters: {'reason': reason});
+  Future<void> logTunnelSetupFailed({required String reason, required String trigger}) async {
+    await logEvent(
+      AnalyticsEvent.tunnelSetupFailed,
+      parameters: {'reason': reason, 'trigger': trigger},
+    );
   }
 
   Future<void> logDeviceLimitDialogShown() async {
@@ -495,6 +498,14 @@ mixin AnalyticsStore {
 
   Future<void> logPushNotificationsPromptShown() async {
     await logEvent(AnalyticsEvent.pushNotificationsPromptShown);
+  }
+
+  Future<void> logPushNotificationsPromptDecision({required bool accepted}) async {
+    await logEvent(
+      accepted
+          ? AnalyticsEvent.pushNotificationsPromptAccepted
+          : AnalyticsEvent.pushNotificationsPromptDeclined,
+    );
   }
 
   Future<void> logMarketingConsentMarked({required bool accepted}) async {

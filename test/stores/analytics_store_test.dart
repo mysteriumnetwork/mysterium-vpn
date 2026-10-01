@@ -380,20 +380,22 @@ void main() {
       expect((await entry).message, AnalyticsEvent.tunnelPermissionDeclined.formattedName);
     });
 
-    test('logTunnelSetupSucceeded emits the success event', () async {
+    test('logTunnelSetupSucceeded carries the trigger', () async {
       final entry = nextLog();
-      await store.logTunnelSetupSucceeded();
+      await store.logTunnelSetupSucceeded(trigger: 'permission_flow');
 
-      expect((await entry).message, AnalyticsEvent.tunnelSetupSucceeded.formattedName);
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.tunnelSetupSucceeded.formattedName);
+      expect(log.params, {'trigger': 'permission_flow'});
     });
 
-    test('logTunnelSetupFailed carries the reason', () async {
+    test('logTunnelSetupFailed carries the reason and the trigger', () async {
       final entry = nextLog();
-      await store.logTunnelSetupFailed(reason: 'permission_denied');
+      await store.logTunnelSetupFailed(reason: 'tunnel_permission_required', trigger: 'auto');
 
       final log = await entry;
       expect(log.message, AnalyticsEvent.tunnelSetupFailed.formattedName);
-      expect(log.params, {'reason': 'permission_denied'});
+      expect(log.params, {'reason': 'tunnel_permission_required', 'trigger': 'auto'});
     });
   });
 
@@ -417,6 +419,22 @@ void main() {
       await store.logDeviceLimitDismissed();
 
       expect((await entry).message, AnalyticsEvent.deviceLimitDismissed.formattedName);
+    });
+  });
+
+  group('logPushNotificationsPromptDecision', () {
+    test('accepted → accepted event', () async {
+      final entry = nextLog();
+      await store.logPushNotificationsPromptDecision(accepted: true);
+
+      expect((await entry).message, AnalyticsEvent.pushNotificationsPromptAccepted.formattedName);
+    });
+
+    test('declined → declined event', () async {
+      final entry = nextLog();
+      await store.logPushNotificationsPromptDecision(accepted: false);
+
+      expect((await entry).message, AnalyticsEvent.pushNotificationsPromptDeclined.formattedName);
     });
   });
 

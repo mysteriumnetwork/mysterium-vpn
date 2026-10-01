@@ -76,6 +76,16 @@ void main() {
     verifyNever(analyticsStore.logDeviceLimitDismissed());
   });
 
+  testWidgets('logs the dismissal when tapped away instead of closed', (tester) async {
+    await openDialog(tester);
+
+    // Barrier tap — the path the Close-button-local log used to miss.
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pumpAndSettle();
+
+    verify(analyticsStore.logDeviceLimitDismissed()).called(1);
+  });
+
   testWidgets('logs the dismissal when closed', (tester) async {
     await openDialog(tester);
 

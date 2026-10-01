@@ -11,7 +11,7 @@ Future<bool> Function() useHandleSetupTunnel() {
     final accepted = permissionsGranted ?? false;
     vpnStore.onTunnelPermissionDecision(accepted: accepted);
     if (accepted) {
-      await vpnStore.setupTunnel();
+      await vpnStore.setupTunnel(trigger: tunnelSetupTriggerPermissionFlow);
       return true;
     }
     return false;

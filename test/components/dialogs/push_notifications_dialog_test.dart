@@ -24,6 +24,9 @@ void main() {
     analyticsStore = MockAnalyticsStore();
     when(analyticsStore.logPushNotificationsPromptShown()).thenAnswer((_) async {});
     when(
+      analyticsStore.logPushNotificationsPromptDecision(accepted: anyNamed('accepted')),
+    ).thenAnswer((_) async {});
+    when(
       userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')),
     ).thenAnswer((_) async {});
   });
@@ -71,6 +74,7 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(userPreferencesStore.setPushNotificationsShown(userAllowed: true)).called(1);
+    verify(analyticsStore.logPushNotificationsPromptDecision(accepted: true)).called(1);
   });
 
   testWidgets('declining records the prompt as shown without consent', (tester) async {
@@ -80,5 +84,6 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(userPreferencesStore.setPushNotificationsShown(userAllowed: false)).called(1);
+    verify(analyticsStore.logPushNotificationsPromptDecision(accepted: false)).called(1);
   });
 }
