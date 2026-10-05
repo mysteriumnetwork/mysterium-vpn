@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -184,6 +186,89 @@ void main() {
     // assert
     verify(cancelStore.setSurvey(reasons: <String>{}, feedback: '')).called(1);
     verify(analyticsStore.logCancellationReasonSkipped()).called(1);
+    verify(cancelStore.canPauseSubscription()).called(1);
+  });
+
+  testWidgets('cannot be dismissed while an action is in flight', (tester) async {
+    // arrange
+    final gate = Completer<bool>();
+    when(cancelStore.canPauseSubscription()).thenAnswer((_) => gate.future);
+    await pumpSurvey(tester);
+
+    // act — press Continue, then try to close while the fetch is pending
+    await tester.tap(find.byType(ButtonPrimary));
+    await tester.pump();
+    await tester.tap(find.byIcon(UntitledUI.x_close));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // assert — still here, so proceed()'s pop can't land on the page below
+    expect(find.byType(CancelSubscriptionSurveyView), findsOneWidget);
+    verifyNever(cancelStore.reset());
+
+    gate.complete(false);
+    await tester.pumpAndSettle();
+    expect(find.text('open'), findsOneWidget);
+  });
+
+  testWidgets('skip spins the skip button, not continue', (tester) async {
+    // arrange
+    final gate = Completer<bool>();
+    when(cancelStore.canPauseSubscription()).thenAnswer((_) => gate.future);
+    await pumpSurvey(tester);
+
+    // act
+    await tester.tap(find.byType(ButtonTertiary));
+    await tester.pump();
+
+    // assert
+    expect(tester.widget<ButtonTertiary>(find.byType(ButtonTertiary)).loading, isNotNull);
+    expect(tester.widget<ButtonPrimary>(find.byType(ButtonPrimary)).loading, isNull);
+
+    gate.complete(false);
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('re-enables the footer when the submission throws', (tester) async {
+    // arrange — proceed() awaits the subscription fetch, which can reject.
+    // Real feedback so the submit path isn't itself counted as a skip.
+    when(cancelStore.canPauseSubscription()).thenThrow(Exception('offline'));
+    when(
+      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
+    ).thenAnswer((_) async => true);
+    await pumpSurvey(tester);
+    await tester.enterText(find.byType(TextField), 'too expensive');
+    await tester.pump();
+
+    // act
+    await tester.tap(find.byType(ButtonPrimary));
+    await tester.pumpAndSettle();
+
+    // assert — still on the survey, and skip works again
+    expect(find.byType(CancelSubscriptionSurveyView), findsOneWidget);
+    await tester.tap(find.byType(ButtonTertiary));
+    await tester.pumpAndSettle();
+    verify(analyticsStore.logCancellationReasonSkipped()).called(1);
+  });
+
+  testWidgets('ignores skip while a survey submission is in flight', (tester) async {
+    // arrange
+    final gate = Completer<bool>();
+    when(
+      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
+    ).thenAnswer((_) => gate.future);
+    await pumpSurvey(tester);
+
+    // act
+    await tester.tap(find.byType(ButtonPrimary));
+    await tester.pump();
+    await tester.tap(find.byType(ButtonTertiary));
+    await tester.pump();
+    gate.complete(true);
+    await tester.pumpAndSettle();
+
+    // assert
+    verifyNever(analyticsStore.logCancellationReasonSkipped());
     verify(cancelStore.canPauseSubscription()).called(1);
   });
 }
