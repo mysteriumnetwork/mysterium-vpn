@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -82,5 +84,64 @@ void main() {
     verify(
       analytics.logEvent(AnalyticsEvent.logOutDisconnectFailed, parameters: {'reason': 'error'}),
     ).called(1);
+  });
+
+  /// Opens the dialog with the store reporting a delete already in flight.
+  /// Fixed pumps, not pumpAndSettle: the button spinner never settles.
+  Future<void> openWhileDeleting(WidgetTester tester, Completer<void> gate) async {
+    // One instance, not a new one per build: a fresh ObservableFuture each
+    // read would keep the Observer rebuilding forever.
+    final deleting = ObservableFuture<void>(gate.future);
+    when(authStore.deleteAccount()).thenAnswer((_) => gate.future);
+    when(authStore.deleteAccountFeature).thenAnswer((_) => deleting);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: DesignSystem.lightTheme,
+        locale: testLocale,
+        localizationsDelegates: testLocalizationsDelegates,
+        supportedLocales: testSupportedLocales,
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () => shownDeleteAccountDialog(
+                context,
+                authStore: authStore,
+                vpnStore: vpnStore,
+                analyticsStore: analytics,
+              ),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('open'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+  }
+
+  testWidgets('cannot be dismissed while the deletion is in flight', (tester) async {
+    final gate = Completer<void>();
+    await openWhileDeleting(tester, gate);
+
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text(S.current.deleteAccountQuestion), findsOneWidget);
+
+    gate.complete();
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('locks the confirmation field while the deletion is in flight', (tester) async {
+    final gate = Completer<void>();
+    await openWhileDeleting(tester, gate);
+
+    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+
+    gate.complete();
+    await tester.pumpAndSettle();
   });
 }

@@ -6,6 +6,7 @@
 // Split out of common/utils so the pure helpers there stay importable from
 // anywhere. Services and repositories must not import this — that is what
 // .github/scripts/check-layering.sh enforces.
+export 'dialog_navigation.dart';
 export 'favorite_ip_snackbars.dart';
 export 'logout.dart';
 export 'media_query.dart';
