@@ -13,12 +13,6 @@ Future<void> showMarketingConsentDialog(BuildContext context) async {
   final container = ProviderScope.containerOf(context, listen: false);
   final userPreferencesStore = container.read(userPreferencesStorePOD);
   container.read(analyticsStorePOD).logMarketingConsentPromptShown().ignore();
-  // Up front, so a dismissal, a failed request or a kill mid-call can't leave
-  // it unset and re-prompt every launch. Settings still toggles the consent.
-  await userPreferencesStore.setMarketingConsentShown();
-  if (!context.mounted) {
-    return;
-  }
 
   Future<void> submit({required bool consent}) async {
     try {
@@ -35,6 +29,10 @@ Future<void> showMarketingConsentDialog(BuildContext context) async {
       image: Asset.images.emailConsent(ctx).image(),
       title: S.current.marketingConsentPopupTitle,
       subtitle: S.current.marketingConsentPopupDesc,
+      // On the impression, not on the answer: a dismissal or a failed request
+      // must not leave it unset and re-prompt every launch. Settings still
+      // toggles the consent.
+      onShown: userPreferencesStore.setMarketingConsentShown,
       primaryKey: Keys.marketingConsentAcceptButton,
       primaryLabel: S.current.allowNotificationsBtn,
       onPrimary: () => submit(consent: true),

@@ -74,6 +74,14 @@ void main() {
     verify(userPreferencesStore.setMarketingConsentShown()).called(1);
   });
 
+  testWidgets('shows the prompt even when recording it as shown fails', (tester) async {
+    when(userPreferencesStore.setMarketingConsentShown()).thenThrow(Exception('disk full'));
+
+    await openDialog(tester);
+
+    expect(find.text(S.current.marketingConsentPopupTitle), findsOneWidget);
+  });
+
   testWidgets('accepting sends consent from the popup', (tester) async {
     await openDialog(tester);
 

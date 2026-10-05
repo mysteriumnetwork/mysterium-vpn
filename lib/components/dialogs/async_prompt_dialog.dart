@@ -11,6 +11,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// the pressed button leaves its sibling live, which lets a second action fire
 /// and a second pop take the route underneath.
 ///
+/// [onShown] fires once the dialog is actually on screen, for best-effort
+/// "we asked" bookkeeping: it runs detached, so a slow or failing write can
+/// neither delay nor block the prompt.
+///
 /// [onPrimary] / [onSecondary] own surfacing their own failures; the dialog
 /// closes either way.
 class AsyncPromptDialog extends HookWidget {
@@ -22,6 +26,7 @@ class AsyncPromptDialog extends HookWidget {
     required this.onPrimary,
     required this.secondaryLabel,
     required this.onSecondary,
+    this.onShown,
     this.primaryKey,
     this.secondaryKey,
     super.key,
@@ -37,6 +42,9 @@ class AsyncPromptDialog extends HookWidget {
   final Future<void> Function() onPrimary;
   final Future<void> Function() onSecondary;
 
+  /// Runs once on mount, detached and with failures suppressed.
+  final Future<void> Function()? onShown;
+
   final Key? primaryKey;
   final Key? secondaryKey;
 
@@ -44,6 +52,16 @@ class AsyncPromptDialog extends HookWidget {
   Widget build(BuildContext context) {
     // Null while idle, otherwise which button is running.
     final pending = useState<bool?>(null);
+
+    final onShown = this.onShown;
+    useEffect(() {
+      if (onShown != null) {
+        // Future(...) so a synchronous throw also lands in the ignored future
+        // rather than failing this build.
+        Future(onShown).ignore();
+      }
+      return null;
+    }, const []);
 
     Future<void> choose({required bool primary}) async {
       // Covers two presses in the same frame, before the buttons go inert.

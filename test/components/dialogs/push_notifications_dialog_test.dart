@@ -71,6 +71,14 @@ void main() {
     verify(userPreferencesStore.markPushPromptShown()).called(1);
   });
 
+  testWidgets('shows the prompt even when starting the cooldown fails', (tester) async {
+    when(userPreferencesStore.markPushPromptShown()).thenThrow(Exception('disk full'));
+
+    await openDialog(tester);
+
+    expect(find.text(S.current.pushNotificationsConsentPopupTitle), findsOneWidget);
+  });
+
   testWidgets('allowing records the prompt as shown with consent', (tester) async {
     await openDialog(tester);
 

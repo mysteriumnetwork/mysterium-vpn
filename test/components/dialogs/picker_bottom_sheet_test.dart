@@ -10,8 +10,8 @@ import '../../support/test_localizations.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  /// Opens a two-item picker whose `onChanged` completes only when [gate] does.
-  Future<List<String>> openPicker(WidgetTester tester, Completer<void> gate) async {
+  /// Opens a two-item picker; [onPick] stands in for the caller's `onChanged`.
+  Future<List<String>> openPicker(WidgetTester tester, Future<void> Function(String) onPick) async {
     final picked = <String>[];
     await tester.pumpWidget(
       MaterialApp(
@@ -30,7 +30,7 @@ void main() {
                 labelOf: (it) => it,
                 onChanged: (it) async {
                   picked.add(it);
-                  await gate.future;
+                  await onPick(it);
                 },
               ),
               child: const Text('open'),
@@ -47,7 +47,7 @@ void main() {
 
   testWidgets('a second tap while in flight is ignored and pops only the sheet', (tester) async {
     final gate = Completer<void>();
-    final picked = await openPicker(tester, gate);
+    final picked = await openPicker(tester, (_) => gate.future);
 
     await tester.tap(find.text('Beta'));
     await tester.pump();
@@ -58,6 +58,26 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(picked, ['Beta']);
+    expect(find.text('Pick one'), findsNothing);
+    expect(find.text('open'), findsOneWidget);
+  });
+
+  testWidgets('cannot be dismissed while a selection is being applied', (tester) async {
+    final gate = Completer<void>();
+    await openPicker(tester, (_) => gate.future);
+
+    await tester.tap(find.text('Beta'));
+    await tester.pump();
+
+    // Barrier tap, then two pumps so a dismissal would have time to finish.
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('Pick one'), findsOneWidget);
+
+    gate.complete();
+    await tester.pumpAndSettle();
     expect(find.text('Pick one'), findsNothing);
     expect(find.text('open'), findsOneWidget);
   });

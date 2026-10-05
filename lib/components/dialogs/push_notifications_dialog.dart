@@ -13,12 +13,6 @@ Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
   final userPreferencesStore = container.read(userPreferencesStorePOD);
   final analyticsStore = container.read(analyticsStorePOD);
   analyticsStore.logPushNotificationsPromptShown().ignore();
-  // Up front, so the cooldown starts even if the app dies while the OS
-  // permission sheet is up.
-  await userPreferencesStore.markPushPromptShown();
-  if (!context.mounted) {
-    return;
-  }
 
   Future<void> complete({required bool userAllowed}) async {
     analyticsStore.logPushNotificationsPromptDecision(accepted: userAllowed).ignore();
@@ -36,6 +30,9 @@ Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
       image: Asset.images.pnConsent(ctx).image(),
       title: S.current.pushNotificationsConsentPopupTitle,
       subtitle: S.current.pushNotificationsConsentPopupDesc,
+      // On the impression, so the cooldown starts even if the app dies while
+      // the OS permission sheet is up.
+      onShown: userPreferencesStore.markPushPromptShown,
       primaryLabel: S.current.allowPushNotificationsBtn,
       onPrimary: () => complete(userAllowed: true),
       secondaryKey: K.pushNotificationsDeclineButton,

@@ -80,27 +80,42 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
       _applying = true;
       _selected = item;
     });
-    await widget.onChanged(item);
+    try {
+      await widget.onChanged(item);
+    } catch (_) {
+      // Leave the sheet usable for a retry, then let the failure surface the
+      // way it did before this guard existed.
+      if (mounted) {
+        setState(() => _applying = false);
+      }
+      rethrow;
+    }
     if (mounted) {
       Navigator.of(context).pop();
     }
   }
 
   @override
-  Widget build(BuildContext context) => BottomSheetDialog(
-    title: widget.title,
-    body: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final item in widget.items)
-          _PickerItem(
-            key: widget.itemKeyOf?.call(item),
-            label: widget.labelOf(item),
-            subtitle: widget.subtitleOf?.call(item),
-            selected: _selected == item,
-            onTap: () => _pick(item),
-          ),
-      ],
+  // canPop keeps the barrier and system Back from dismissing mid-apply: the
+  // state stays mounted through the exit animation, so the completion-time
+  // pop would then take the route underneath.
+  Widget build(BuildContext context) => PopScope(
+    canPop: !_applying,
+    child: BottomSheetDialog(
+      title: widget.title,
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final item in widget.items)
+            _PickerItem(
+              key: widget.itemKeyOf?.call(item),
+              label: widget.labelOf(item),
+              subtitle: widget.subtitleOf?.call(item),
+              selected: _selected == item,
+              onTap: () => _pick(item),
+            ),
+        ],
+      ),
     ),
   );
 }
