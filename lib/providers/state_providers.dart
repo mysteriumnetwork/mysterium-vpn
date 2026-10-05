@@ -9,6 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
+import 'package:mysterium_vpn/repositories/terms_conditions/rest_terms_conditions.dart';
+import 'package:mysterium_vpn/repositories/terms_conditions/terms_conditions_repository.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/remote_config/config_cat_user_store.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
@@ -18,6 +20,7 @@ import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
+import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>(
   (ref) => LocaleStore(settings: ref.watch(appSettingsRepositoryPOD)),
@@ -524,9 +527,16 @@ final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
+  final termsConditionsStore = ref.watch(termsConditionsStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = SmartRefreshStore(locationsStore, subscriptionStore, authSessionStore, logger);
+  final store = SmartRefreshStore(
+    locationsStore,
+    subscriptionStore,
+    authSessionStore,
+    termsConditionsStore,
+    logger,
+  );
 
   ref.onDispose(store.dispose);
 
@@ -604,6 +614,24 @@ final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
   ref.onDispose(store.dispose);
 
   return store;
+});
+
+final termsConditionsRepositoryPOD = Provider<TermsConditionsRepository>((ref) {
+  final api = ref.watch(vpnApiPOD);
+  final logger = ref.watch(loggerPOD);
+  return RestTermsConditionsRepository(api: api, logger: logger);
+});
+
+final termsConditionsStorePOD = Provider<TermsConditionsStore>((ref) {
+  final termsConditionsRepository = ref.watch(termsConditionsRepositoryPOD);
+  final themeStore = ref.watch(themeStorePOD);
+  final termsConditionsStore = TermsConditionsStore(
+    termsConditionsRepository: termsConditionsRepository,
+    themeStore: themeStore,
+    authSessionStore: ref.watch(authSessionStorePOD),
+  );
+  ref.onDispose(termsConditionsStore.dispose);
+  return termsConditionsStore;
 });
 
 bool _isWindowsOrLinux() => Platform.isWindows || Platform.isLinux;

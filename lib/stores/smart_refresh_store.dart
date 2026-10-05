@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 import 'package:talker/talker.dart';
 
 part 'smart_refresh_store.g.dart';
@@ -16,6 +17,7 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
     this._locationsStore,
     this._subscriptionStore,
     this._authSessionStore,
+    this._termsConditionsStore,
     this._logger,
   ) {
     _init();
@@ -24,6 +26,7 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   final LocationsStore _locationsStore;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
+  final TermsConditionsStore _termsConditionsStore;
   final Talker _logger;
   late final List<ReactionDisposer> _disposers;
   late final Debouncer _subscriptionDebouncer;
@@ -79,6 +82,7 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
       // Post-frame so the warm-start frame paints before the network refresh.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         refreshSubscriptionOnResume();
+        _refreshTermsConditions();
       });
     });
   }
@@ -97,6 +101,14 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   Future<void> _refreshLocations({bool invalidate = false}) async {
     try {
       await _locationsStore.refreshAll(invalidate: invalidate);
+    } catch (e, stack) {
+      _logger.handle(e, stack);
+    }
+  }
+
+  Future<void> _refreshTermsConditions() async {
+    try {
+      await _termsConditionsStore.checkForUpdatedTermsConditions();
     } catch (e, stack) {
       _logger.handle(e, stack);
     }

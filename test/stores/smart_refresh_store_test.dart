@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
+import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 import 'package:talker/talker.dart';
 
 import 'smart_refresh_store_test.mocks.dart';
@@ -13,12 +14,14 @@ import 'smart_refresh_store_test.mocks.dart';
   MockSpec<LocationsStore>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<TermsConditionsStore>(),
   MockSpec<Talker>(),
 ])
 void main() {
   late MockLocationsStore locations;
   late MockSubscriptionStore subscriptions;
   late MockAuthSessionStore authSession;
+  late MockTermsConditionsStore termsConditions;
   late MockTalker logger;
 
   setUp(() {
@@ -26,6 +29,7 @@ void main() {
     locations = MockLocationsStore();
     subscriptions = MockSubscriptionStore();
     authSession = MockAuthSessionStore();
+    termsConditions = MockTermsConditionsStore();
     logger = MockTalker();
 
     when(
@@ -39,13 +43,13 @@ void main() {
   });
 
   SmartRefreshStore buildStore() {
-    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
+    final store = SmartRefreshStore(locations, subscriptions, authSession, termsConditions, logger);
     addTearDown(store.dispose);
     return store;
   }
 
   test('constructs and disposes cleanly', () async {
-    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
+    final store = SmartRefreshStore(locations, subscriptions, authSession, termsConditions, logger);
     await store.dispose();
   });
 

@@ -157,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: built_collection
-      sha256: "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100"
+      sha256: "44922ecebd8e3d0cef743dadd3b54df4e87e2a4c52a29465a1872aa9e192caa8"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.1"
+    version: "5.1.2"
   built_value:
     dependency: transitive
     description:
@@ -245,10 +245,10 @@ packages:
     dependency: transitive
     description:
       name: code_assets
-      sha256: "83ccdaa064c980b5596c35dd64a8d3ecc68620174ab9b90b6343b753aa721687"
+      sha256: bf394f466ba9205f1812a0433b392d6af280f155f56651eda7c18cc32ed493b8
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.2.1"
   code_builder:
     dependency: transitive
     description:
@@ -525,10 +525,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: de1e678209a0c974d8aa4cff39f17d61d2dc263aa64993168360f9be4efb8e91
+      sha256: "8ed84f5001dbd7a0390e2818d46bc858ceebb970edededdfc8d6552c76fc2f6e"
       url: "https://pub.dev"
     source: hosted
-    version: "3.11.0"
+    version: "3.12.0"
   firebase_crashlytics:
     dependency: "direct main"
     description:
@@ -708,10 +708,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_secure_storage_platform_interface
-      sha256: "4bc033841169d07f690d46d89dbc3f5305b6562820822445384c82e0866e2719"
+      sha256: "64951127f001f546891c86f414972bf49ef2c4c8a4c92c65f5790cc0c9100045"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   flutter_secure_storage_web:
     dependency: transitive
     description:
@@ -795,10 +795,10 @@ packages:
     dependency: transitive
     description:
       name: get_it
-      sha256: "568d62f0e68666fb5d95519743b3c24a34c7f19d834b0658c46e26d778461f66"
+      sha256: "2b5c6b077aad30bba9782178baff6076a2044141f1d5f2f15b43bca3fbe74874"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.1"
+    version: "9.3.0"
   glob:
     dependency: transitive
     description:
@@ -843,10 +843,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_ios
-      sha256: c2154d2849310a0286aab2e35e3bee585f2034afdf8ac364c4d7b3638e4c40b6
+      sha256: "55e8b7ea216d671f81dd17b0ef535d0a7d239ef1aea4f6f79fbf14abaa9c3687"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.5"
+    version: "6.3.6"
   google_sign_in_platform_interface:
     dependency: transitive
     description:
@@ -915,10 +915,10 @@ packages:
     dependency: transitive
     description:
       name: hooks
-      sha256: "025f060e86d2d4c3c47b56e33caf7f93bf9283340f26d23424ebcfccf34f621e"
+      sha256: "9a62a50b50b769a737bc0a8ff381f333529df3ab746b2f6b02e83760231455ba"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.2"
   hooks_riverpod:
     dependency: "direct main"
     description:
@@ -1288,18 +1288,10 @@ packages:
     description:
       path: "."
       ref: "fix/alert_modal_adjustment"
-      resolved-ref: efa1642e17c28862280ab9e20726e9c3559f1779
+      resolved-ref: "13c8a2ca5f16da034cf89c3abb97f77972e6d887"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
-  native_toolchain_c:
-    dependency: transitive
-    description:
-      name: native_toolchain_c
-      sha256: "6ba77bb18063eebe9de401f5e6437e95e1438af0a87a3a39084fbd37c90df572"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.17.6"
   nested:
     dependency: transitive
     description:
@@ -1328,10 +1320,10 @@ packages:
     dependency: transitive
     description:
       name: objective_c
-      sha256: "100a1c87616ab6ed41ec263b083c0ef3261ee6cd1dc3b0f35f8ddfa4f996fe52"
+      sha256: b7fb95a6d9a4f009edd63dc5ac69f07420b23a16161c6dd8660290b59c602e8e
       url: "https://pub.dev"
     source: hosted
-    version: "9.3.0"
+    version: "9.5.0"
   onesignal_flutter:
     dependency: "direct main"
     description:
@@ -2078,7 +2070,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "281202e2ca79f839b5e009e70a4f4f479a2f4c3c"
+      resolved-ref: c196d5adbae57d6f03dd5f63752fee90f49a530f
       url: "https://github.com/KristijanMitrik/flutter_url_protocol"
     source: git
     version: "1.0.0"
@@ -2142,11 +2134,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.93"
-      resolved-ref: "1b1aa8ed506f445df0963641eccf685ecea3fa94"
+      ref: "1.0.97"
+      resolved-ref: a9bfba15db08a25b25927a56ce8f6947c2012e6d
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.93+73"
+    version: "1.0.97+77"
   watcher:
     dependency: transitive
     description:
@@ -2223,18 +2215,18 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
-      sha256: fe359c7fac1002124b5b9e2ba3a41906bbb9b2d029ccb4a0067404d8f3704730
+      sha256: "0f784be1b080e5b918ef7c2c070c1f4616899fd23f1d001feb74b4978f92bdbc"
       url: "https://pub.dev"
     source: hosted
-    version: "3.26.1"
+    version: "3.26.2"
   win32:
     dependency: transitive
     description:
       name: win32
-      sha256: ba7d5750e3441caa1bbe31d9e516348fcf8dfcb32aa29ef87a844a59f4d1f1d0
+      sha256: a0b93865d5644f11cf6a8c3f6db909f1ec168958b5805f6cc684adea957cd63d
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.4.0"
   win32_registry:
     dependency: transitive
     description:
