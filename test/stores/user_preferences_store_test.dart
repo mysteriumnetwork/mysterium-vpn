@@ -619,6 +619,32 @@ void main() {
       },
     );
 
+    test('updateMarketingContact logs consent accepted when fromPopup is true', () async {
+      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
+
+      await store.updateMarketingContact(consent: true, fromPopup: true);
+
+      verify(mockAnalyticsStore.logMarketingConsentMarked(accepted: true)).called(1);
+    });
+
+    test('updateMarketingContact logs consent declined when fromPopup is true', () async {
+      when(mockApiService.updateMarketingContact(consent: false)).thenAnswer((_) async => {});
+      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
+
+      await store.updateMarketingContact(consent: false, fromPopup: true);
+
+      verify(mockAnalyticsStore.logMarketingConsentMarked(accepted: false)).called(1);
+    });
+
+    test('updateMarketingContact does not log consent marked from the settings toggle', () async {
+      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+
+      await store.updateMarketingContact(consent: true);
+
+      verifyNever(mockAnalyticsStore.logMarketingConsentMarked(accepted: anyNamed('accepted')));
+    });
+
     test('updateMarketingContact does not re-evaluate prompts after setting shown', () async {
       store.nextPromptToShow = UserPromptType.marketingConsent;
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
