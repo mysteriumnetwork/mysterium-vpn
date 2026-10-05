@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/ui/dialog_navigation.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Shows a scrollable single-selection picker as a bottom sheet on mobile
@@ -90,8 +91,11 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
       }
       rethrow;
     }
-    if (mounted) {
-      Navigator.of(context).pop();
+    // Not current means the sheet already left, or onChanged opened something
+    // above it without awaiting. Either way popping would hit the wrong route,
+    // so release the sheet instead of freezing it.
+    if (mounted && !popIfCurrent(context)) {
+      setState(() => _applying = false);
     }
   }
 

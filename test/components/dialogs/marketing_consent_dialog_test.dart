@@ -25,9 +25,6 @@ void main() {
     userPreferencesStore = MockUserPreferencesStore();
     analyticsStore = MockAnalyticsStore();
     when(analyticsStore.logMarketingConsentPromptShown()).thenAnswer((_) async {});
-    when(
-      analyticsStore.logMarketingConsentMarked(accepted: anyNamed('accepted')),
-    ).thenAnswer((_) async {});
     when(userPreferencesStore.setMarketingConsentShown()).thenAnswer((_) async {});
     when(
       userPreferencesStore.updateMarketingContact(

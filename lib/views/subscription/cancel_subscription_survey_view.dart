@@ -12,6 +12,7 @@ import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/subscription/widgets/cancel_subscription_action_footer.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -31,6 +32,7 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
+    final logger = ref.read(loggerPOD);
 
     final reasons = useComputedValue(() {
       final keys = remoteConfigStore.cancelSubscriptionReasonKeys?.shuffled();
@@ -39,12 +41,14 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
     });
 
     final form = _useForm();
-    // Both footer buttons do slow work (survey upload, pause-eligibility
-    // fetch) before navigating; without this the other stays live and runs a
-    // second time.
-    final isSubmitting = useState(false);
+    // Null while idle, otherwise which footer button is running (true = skip).
+    final pending = useState<bool?>(null);
+    final isBusy = pending.value != null;
 
     void handleDismiss() {
+      if (isBusy) {
+        return;
+      }
       cancelSubscriptionStore.reset();
       Navigator.of(context).pop();
     }
@@ -55,7 +59,13 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         return;
       }
 
-      final navigator = Navigator.of(context, rootNavigator: true)..pop();
+      final navigator = Navigator.of(context, rootNavigator: true);
+      // Not current means the user already left; handing off to the next step
+      // would pop whatever they went to.
+      if (!popIfCurrent(context)) {
+        cancelSubscriptionStore.reset();
+        return;
+      }
 
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!navigator.mounted) {
@@ -88,24 +98,6 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
       });
     }
 
-    // First press across both buttons wins. Re-enables on failure: proceed()
-    // awaits the subscription fetch, which can throw, and a stuck flag would
-    // leave the footer dead.
-    Future<void> runOnce(Future<void> Function() action) async {
-      if (isSubmitting.value) {
-        return;
-      }
-      isSubmitting.value = true;
-      try {
-        await action();
-      } catch (_) {
-        if (context.mounted) {
-          isSubmitting.value = false;
-        }
-        showSnackbar(S.current.somethingWentWrong);
-      }
-    }
-
     Future<void> handleSkip() async {
       analyticsStore.logCancellationReasonSkipped().ignore();
       await proceed();
@@ -125,61 +117,83 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
       await proceed();
     }
 
+    // First press across both buttons wins; re-enables on failure, since
+    // proceed() awaits the subscription fetch and that can throw.
+    Future<void> runOnce({required bool secondary}) async {
+      if (pending.value != null) {
+        return;
+      }
+      pending.value = secondary;
+      try {
+        await (secondary ? handleSkip() : handleSubmit());
+      } catch (e, stack) {
+        logger.warning('Cancellation survey action failed', e, stack);
+        if (context.mounted) {
+          pending.value = null;
+          showSnackbar(S.current.somethingWentWrong);
+        }
+      }
+    }
+
     final title = '${S.current.cancelSurveyTitle} (${S.current.optional})';
 
     final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: keyboardInset),
-      child: ModalScaffold(
-        showGradient: false,
-        onModalClose: handleDismiss,
-        appbar: isDesktop()
-            ? ModalAppbar(title: title, onModalClose: handleDismiss)
-            : Header(
-                backgroundColor: theme.palette.bgPopover,
-                backLabel: S.current.back,
-                showBackButton: true,
-                onBackPressed: handleDismiss,
-              ),
-        footer: CancelSubscriptionActionFooter(
-          primaryButtonLabel: S.current.continueBtn,
-          onPrimaryButtonPressed: () => runOnce(handleSubmit),
-          secondaryButtonLabel: S.current.skipBtn,
-          onSecondaryButtonPressed: () => runOnce(handleSkip),
-          isProcessing: isSubmitting.value,
-        ),
-        body: SingleChildScrollView(
-          padding: isDesktop()
-              ? EdgeInsets.all(theme.spacing.xl2)
-              : EdgeInsets.symmetric(horizontal: theme.spacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (!isDesktop()) ...[
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: S.current.cancelSurveyTitle,
-                        style: theme.textStyles.textLg.semibold.copyWith(
-                          fontSize: 24,
-                          color: theme.palette.textPrimary,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' (${S.current.optional})',
-                        style: theme.textStyles.textMd.medium.copyWith(
-                          color: theme.palette.textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
+    return PopScope(
+      canPop: !isBusy,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: keyboardInset),
+        child: ModalScaffold(
+          showGradient: false,
+          onModalClose: handleDismiss,
+          appbar: isDesktop()
+              ? ModalAppbar(title: title, onModalClose: handleDismiss)
+              : Header(
+                  backgroundColor: theme.palette.bgPopover,
+                  backLabel: S.current.back,
+                  showBackButton: true,
+                  onBackPressed: handleDismiss,
                 ),
-                SizedBox(height: theme.spacing.xl2),
+          footer: CancelSubscriptionActionFooter(
+            primaryButtonLabel: S.current.continueBtn,
+            onPrimaryButtonPressed: () => runOnce(secondary: false),
+            secondaryButtonLabel: S.current.skipBtn,
+            onSecondaryButtonPressed: () => runOnce(secondary: true),
+            isProcessing: isBusy,
+            processingIsSecondary: pending.value ?? false,
+          ),
+          body: SingleChildScrollView(
+            padding: isDesktop()
+                ? EdgeInsets.all(theme.spacing.xl2)
+                : EdgeInsets.symmetric(horizontal: theme.spacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!isDesktop()) ...[
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: S.current.cancelSurveyTitle,
+                          style: theme.textStyles.textLg.semibold.copyWith(
+                            fontSize: 24,
+                            color: theme.palette.textPrimary,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' (${S.current.optional})',
+                          style: theme.textStyles.textMd.medium.copyWith(
+                            color: theme.palette.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: theme.spacing.xl2),
+                ],
+                _Form(form: form, items: reasons),
               ],
-              _Form(form: form, items: reasons),
-            ],
+            ),
           ),
         ),
       ),

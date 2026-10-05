@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/ui/keys.dart';
 import 'package:mysterium_vpn/components/dialogs/async_prompt_dialog.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
+import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -12,14 +13,17 @@ Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
   final container = ProviderScope.containerOf(context, listen: false);
   final userPreferencesStore = container.read(userPreferencesStorePOD);
   final analyticsStore = container.read(analyticsStorePOD);
+  final logger = container.read(loggerPOD);
   analyticsStore.logPushNotificationsPromptShown().ignore();
 
   Future<void> complete({required bool userAllowed}) async {
     analyticsStore.logPushNotificationsPromptDecision(accepted: userAllowed).ignore();
     try {
       await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
-    } catch (_) {
-      // The cooldown is already stamped; nothing actionable to tell the user.
+    } catch (e, stack) {
+      // Cooldown is already stamped, so nothing to tell the user — but the
+      // prompt re-evaluation inside can fail too, and that should be visible.
+      logger.warning('Push notifications prompt decision failed', e, stack);
     }
   }
 

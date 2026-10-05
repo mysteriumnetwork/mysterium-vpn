@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mysterium_vpn/common/ui/dialog_navigation.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-/// A [PromptDialog] whose two choices run async work before the dialog closes.
+/// A [PromptDialog] whose two choices run async work before it closes.
 ///
-/// The first press wins: both buttons go inert, only the pressed one spins,
-/// the barrier and system Back stop dismissing, and the dialog pops exactly
-/// once when the work settles. Keeping this in one widget matters because
-/// [Button] scopes its own `loading` [IgnorePointer] to itself — marking just
-/// the pressed button leaves its sibling live, which lets a second action fire
-/// and a second pop take the route underneath.
+/// First press wins: both buttons go inert, the pressed one spins, and the
+/// dialog pops once — needed because [Button] scopes its `loading`
+/// [IgnorePointer] to itself, leaving the sibling live.
 ///
-/// [onShown] fires once the dialog is actually on screen, for best-effort
-/// "we asked" bookkeeping: it runs detached, so a slow or failing write can
-/// neither delay nor block the prompt.
-///
-/// [onPrimary] / [onSecondary] own surfacing their own failures; the dialog
-/// closes either way.
+/// [onShown] runs detached on mount, for best-effort "we asked" bookkeeping.
+/// [onPrimary] / [onSecondary] surface their own failures.
 class AsyncPromptDialog extends HookWidget {
   const AsyncPromptDialog({
     required this.image,
@@ -72,10 +66,9 @@ class AsyncPromptDialog extends HookWidget {
       try {
         await (primary ? onPrimary() : onSecondary());
       } finally {
-        // In a finally so a throwing callback can't wedge the dialog shut with
-        // both buttons inert and no way out.
+        // In a finally so a throwing callback can't wedge the dialog shut.
         if (context.mounted) {
-          Navigator.of(context).pop();
+          popIfCurrent(context);
         }
       }
     }
@@ -83,21 +76,24 @@ class AsyncPromptDialog extends HookWidget {
     final isBusy = pending.value != null;
     return PopScope(
       canPop: !isBusy,
-      child: PromptDialog(
-        image: image,
-        title: title,
-        subtitle: subtitle,
-        primaryButton: ButtonPrimary(
-          key: primaryKey,
-          onPressed: isBusy ? null : () => choose(primary: true),
-          loading: pending.value == true ? const ButtonLoading() : null,
-          child: Text(primaryLabel, textAlign: TextAlign.center),
-        ),
-        secondaryButton: ButtonSecondary(
-          key: secondaryKey,
-          onPressed: isBusy ? null : () => choose(primary: false),
-          loading: pending.value == false ? const ButtonLoading() : null,
-          child: Text(secondaryLabel, textAlign: TextAlign.center),
+      child: AbsorbPointer(
+        absorbing: isBusy,
+        child: PromptDialog(
+          image: image,
+          title: title,
+          subtitle: subtitle,
+          primaryButton: ButtonPrimary(
+            key: primaryKey,
+            onPressed: () => choose(primary: true),
+            loading: pending.value == true ? const ButtonLoading() : null,
+            child: Text(primaryLabel, textAlign: TextAlign.center),
+          ),
+          secondaryButton: ButtonSecondary(
+            key: secondaryKey,
+            onPressed: () => choose(primary: false),
+            loading: pending.value == false ? const ButtonLoading() : null,
+            child: Text(secondaryLabel, textAlign: TextAlign.center),
+          ),
         ),
       ),
     );
