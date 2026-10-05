@@ -129,6 +129,16 @@ mixin _$PushNotificationsStore on _PushNotificationsStore, Store {
     );
   }
 
+  late final _$markPromptShownAsyncAction = AsyncAction(
+    '_PushNotificationsStore.markPromptShown',
+    context: context,
+  );
+
+  @override
+  Future<void> markPromptShown() {
+    return _$markPromptShownAsyncAction.run(() => super.markPromptShown());
+  }
+
   late final _$setPushNotificationsShownAsyncAction = AsyncAction(
     '_PushNotificationsStore.setPushNotificationsShown',
     context: context,

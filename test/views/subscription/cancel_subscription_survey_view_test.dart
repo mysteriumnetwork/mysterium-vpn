@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -184,6 +186,49 @@ void main() {
     // assert
     verify(cancelStore.setSurvey(reasons: <String>{}, feedback: '')).called(1);
     verify(analyticsStore.logCancellationReasonSkipped()).called(1);
+    verify(cancelStore.canPauseSubscription()).called(1);
+  });
+
+  testWidgets('re-enables the footer when the submission throws', (tester) async {
+    // arrange — proceed() awaits the subscription fetch, which can reject.
+    // Real feedback so the submit path isn't itself counted as a skip.
+    when(cancelStore.canPauseSubscription()).thenThrow(Exception('offline'));
+    when(
+      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
+    ).thenAnswer((_) async => true);
+    await pumpSurvey(tester);
+    await tester.enterText(find.byType(TextField), 'too expensive');
+    await tester.pump();
+
+    // act
+    await tester.tap(find.byType(ButtonPrimary));
+    await tester.pumpAndSettle();
+
+    // assert — still on the survey, and skip works again
+    expect(find.byType(CancelSubscriptionSurveyView), findsOneWidget);
+    await tester.tap(find.byType(ButtonTertiary));
+    await tester.pumpAndSettle();
+    verify(analyticsStore.logCancellationReasonSkipped()).called(1);
+  });
+
+  testWidgets('ignores skip while a survey submission is in flight', (tester) async {
+    // arrange
+    final gate = Completer<bool>();
+    when(
+      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
+    ).thenAnswer((_) => gate.future);
+    await pumpSurvey(tester);
+
+    // act
+    await tester.tap(find.byType(ButtonPrimary));
+    await tester.pump();
+    await tester.tap(find.byType(ButtonTertiary));
+    await tester.pump();
+    gate.complete(true);
+    await tester.pumpAndSettle();
+
+    // assert
+    verifyNever(analyticsStore.logCancellationReasonSkipped());
     verify(cancelStore.canPauseSubscription()).called(1);
   });
 }

@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
@@ -25,8 +26,9 @@ void main() {
     analyticsStore = MockAnalyticsStore();
     when(analyticsStore.logMarketingConsentPromptShown()).thenAnswer((_) async {});
     when(
-      userPreferencesStore.updateMarketingConsentFuture,
-    ).thenAnswer((_) => ObservableFuture.value(null));
+      analyticsStore.logMarketingConsentMarked(accepted: anyNamed('accepted')),
+    ).thenAnswer((_) async {});
+    when(userPreferencesStore.setMarketingConsentShown()).thenAnswer((_) async {});
     when(
       userPreferencesStore.updateMarketingContact(
         consent: anyNamed('consent'),
@@ -64,11 +66,12 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('logs the impression when the consent prompt opens', (tester) async {
+  testWidgets('opening the prompt logs the impression and records it as shown', (tester) async {
     await openDialog(tester);
 
     expect(find.text(S.current.marketingConsentPopupTitle), findsOneWidget);
     verify(analyticsStore.logMarketingConsentPromptShown()).called(1);
+    verify(userPreferencesStore.setMarketingConsentShown()).called(1);
   });
 
   testWidgets('accepting sends consent from the popup', (tester) async {
@@ -87,5 +90,87 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(userPreferencesStore.updateMarketingContact(consent: false, fromPopup: true)).called(1);
+  });
+
+  testWidgets('a second press while in flight is ignored and pops only the prompt', (tester) async {
+    final gate = Completer<void>();
+    when(
+      userPreferencesStore.updateMarketingContact(
+        consent: anyNamed('consent'),
+        fromPopup: anyNamed('fromPopup'),
+      ),
+    ).thenAnswer((_) => gate.future);
+
+    await openDialog(tester);
+
+    await tester.tap(find.text(S.current.allowNotificationsBtn));
+    await tester.pump();
+    await tester.tap(find.text(S.current.notNowBtn));
+    await tester.pump();
+
+    gate.complete();
+    await tester.pumpAndSettle();
+
+    verify(userPreferencesStore.updateMarketingContact(consent: true, fromPopup: true)).called(1);
+    verifyNever(userPreferencesStore.updateMarketingContact(consent: false, fromPopup: true));
+    expect(find.text(S.current.marketingConsentPopupTitle), findsNothing);
+    expect(find.text('open'), findsOneWidget);
+  });
+
+  testWidgets('cannot be dismissed while a choice is in flight', (tester) async {
+    final gate = Completer<void>();
+    when(
+      userPreferencesStore.updateMarketingContact(
+        consent: anyNamed('consent'),
+        fromPopup: anyNamed('fromPopup'),
+      ),
+    ).thenAnswer((_) => gate.future);
+
+    await openDialog(tester);
+    await tester.tap(find.text(S.current.allowNotificationsBtn));
+    await tester.pump();
+
+    // Long enough for a dismiss animation to finish, but not pumpAndSettle:
+    // the button spinner never settles while the request is pending.
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text(S.current.marketingConsentPopupTitle), findsOneWidget);
+
+    gate.complete();
+    await tester.pumpAndSettle();
+    expect(find.text(S.current.marketingConsentPopupTitle), findsNothing);
+  });
+
+  testWidgets('closes when dismissed without choosing', (tester) async {
+    await openDialog(tester);
+
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pumpAndSettle();
+
+    expect(find.text(S.current.marketingConsentPopupTitle), findsNothing);
+    verifyNever(
+      userPreferencesStore.updateMarketingContact(
+        consent: anyNamed('consent'),
+        fromPopup: anyNamed('fromPopup'),
+      ),
+    );
+  });
+
+  testWidgets('closes when the request fails', (tester) async {
+    when(
+      userPreferencesStore.updateMarketingContact(
+        consent: anyNamed('consent'),
+        fromPopup: anyNamed('fromPopup'),
+      ),
+    ).thenThrow(Exception('boom'));
+
+    await openDialog(tester);
+
+    await tester.tap(find.text(S.current.notNowBtn));
+    await tester.pumpAndSettle();
+
+    expect(find.text(S.current.marketingConsentPopupTitle), findsNothing);
   });
 }

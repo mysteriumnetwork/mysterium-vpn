@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
@@ -38,6 +39,10 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
     });
 
     final form = _useForm();
+    // Both footer buttons do slow work (survey upload, pause-eligibility
+    // fetch) before navigating; without this the other stays live and runs a
+    // second time.
+    final isSubmitting = useState(false);
 
     void handleDismiss() {
       cancelSubscriptionStore.reset();
@@ -83,6 +88,24 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
       });
     }
 
+    // First press across both buttons wins. Re-enables on failure: proceed()
+    // awaits the subscription fetch, which can throw, and a stuck flag would
+    // leave the footer dead.
+    Future<void> runOnce(Future<void> Function() action) async {
+      if (isSubmitting.value) {
+        return;
+      }
+      isSubmitting.value = true;
+      try {
+        await action();
+      } catch (_) {
+        if (context.mounted) {
+          isSubmitting.value = false;
+        }
+        showSnackbar(S.current.somethingWentWrong);
+      }
+    }
+
     Future<void> handleSkip() async {
       analyticsStore.logCancellationReasonSkipped().ignore();
       await proceed();
@@ -121,9 +144,10 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
               ),
         footer: CancelSubscriptionActionFooter(
           primaryButtonLabel: S.current.continueBtn,
-          onPrimaryButtonPressed: handleSubmit,
+          onPrimaryButtonPressed: () => runOnce(handleSubmit),
           secondaryButtonLabel: S.current.skipBtn,
-          onSecondaryButtonPressed: handleSkip,
+          onSecondaryButtonPressed: () => runOnce(handleSkip),
+          isProcessing: isSubmitting.value,
         ),
         body: SingleChildScrollView(
           padding: isDesktop()

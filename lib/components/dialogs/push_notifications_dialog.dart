@@ -2,63 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/ui/keys.dart';
+import 'package:mysterium_vpn/components/dialogs/async_prompt_dialog.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showPushNotificationsPermissionDialog(BuildContext context) async {
-  ProviderScope.containerOf(
+  final container = ProviderScope.containerOf(context, listen: false);
+  final userPreferencesStore = container.read(userPreferencesStorePOD);
+  final analyticsStore = container.read(analyticsStorePOD);
+  analyticsStore.logPushNotificationsPromptShown().ignore();
+  // Up front, so the cooldown starts even if the app dies while the OS
+  // permission sheet is up.
+  await userPreferencesStore.markPushPromptShown();
+  if (!context.mounted) {
+    return;
+  }
+
+  Future<void> complete({required bool userAllowed}) async {
+    analyticsStore.logPushNotificationsPromptDecision(accepted: userAllowed).ignore();
+    try {
+      await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
+    } catch (_) {
+      // The cooldown is already stamped; nothing actionable to tell the user.
+    }
+  }
+
+  await showModal<void>(
     context,
-    listen: false,
-  ).read(analyticsStorePOD).logPushNotificationsPromptShown().ignore();
-  await showModal(context, builder: (_) => const _DialogContent(key: K.pushNotificationsDialog));
-}
-
-class _DialogContent extends HookConsumerWidget {
-  const _DialogContent({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    return PromptDialog(
-      image: Asset.images.pnConsent(context).image(),
+    builder: (ctx) => AsyncPromptDialog(
+      key: K.pushNotificationsDialog,
+      image: Asset.images.pnConsent(ctx).image(),
       title: S.current.pushNotificationsConsentPopupTitle,
       subtitle: S.current.pushNotificationsConsentPopupDesc,
-      primaryButton: ButtonPrimary(
-        onPressed: () => _completePushNotificationsFlow(
-          context,
-          userPreferencesStore: userPreferencesStore,
-          userAllowed: true,
-        ),
-        child: Text(S.current.allowPushNotificationsBtn, textAlign: TextAlign.center),
-      ),
-      secondaryButton: ButtonSecondary(
-        key: K.pushNotificationsDeclineButton,
-        onPressed: () => _completePushNotificationsFlow(
-          context,
-          userPreferencesStore: userPreferencesStore,
-          userAllowed: false,
-        ),
-        child: Text(S.current.notNowBtn, textAlign: TextAlign.center),
-      ),
-    );
-  }
-}
-
-Future<void> _completePushNotificationsFlow(
-  BuildContext context, {
-  required UserPreferencesStore userPreferencesStore,
-  required bool userAllowed,
-}) async {
-  ProviderScope.containerOf(
-    context,
-    listen: false,
-  ).read(analyticsStorePOD).logPushNotificationsPromptDecision(accepted: userAllowed).ignore();
-  await userPreferencesStore.setPushNotificationsShown(userAllowed: userAllowed);
-
-  if (context.mounted) {
-    Navigator.of(context).pop();
-  }
+      primaryLabel: S.current.allowPushNotificationsBtn,
+      onPrimary: () => complete(userAllowed: true),
+      secondaryKey: K.pushNotificationsDeclineButton,
+      secondaryLabel: S.current.notNowBtn,
+      onSecondary: () => complete(userAllowed: false),
+    ),
+  );
 }

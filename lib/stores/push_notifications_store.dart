@@ -257,6 +257,21 @@ abstract class _PushNotificationsStore with Store, Disposeable {
     }
   }
 
+  /// Starts the cooldown. Called as the prompt goes on screen, so a kill while
+  /// the OS permission sheet is up can't leave it unstamped.
+  @action
+  Future<void> markPromptShown() async {
+    if (!supportsPushNotifications) {
+      return;
+    }
+
+    try {
+      await _prompts.setPushPromptLastShownAt(DateTime.now());
+    } catch (e, stack) {
+      _logger.warning('Error saving push notifications prompt timestamp', e, stack);
+    }
+  }
+
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {
     if (!supportsPushNotifications) {
@@ -272,11 +287,8 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       }
     }
 
-    try {
-      await _prompts.setPushPromptLastShownAt(DateTime.now());
-    } catch (e, stack) {
-      _logger.handle(e, stack, 'Error saving push notifications prompt timestamp');
-    }
+    // Re-stamped so the cooldown runs from the decision, not from the open.
+    await markPromptShown();
   }
 
   @action

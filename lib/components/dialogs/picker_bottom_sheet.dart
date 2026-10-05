@@ -61,10 +61,29 @@ class _PickerSheet<T> extends StatefulWidget {
 class _PickerSheetState<T> extends State<_PickerSheet<T>> {
   late T _selected;
 
+  /// Set on the first pick. [_PickerSheet.onChanged] can be slow (reconnecting
+  /// the tunnel, loading translations), and a second pick would both apply a
+  /// conflicting value and pop the route under the sheet.
+  bool _applying = false;
+
   @override
   void initState() {
     super.initState();
     _selected = widget.value;
+  }
+
+  Future<void> _pick(T item) async {
+    if (_applying) {
+      return;
+    }
+    setState(() {
+      _applying = true;
+      _selected = item;
+    });
+    await widget.onChanged(item);
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -79,13 +98,7 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
             label: widget.labelOf(item),
             subtitle: widget.subtitleOf?.call(item),
             selected: _selected == item,
-            onTap: () async {
-              setState(() => _selected = item);
-              await widget.onChanged(item);
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            },
+            onTap: () => _pick(item),
           ),
       ],
     ),
