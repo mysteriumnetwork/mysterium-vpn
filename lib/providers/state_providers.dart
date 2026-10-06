@@ -629,6 +629,7 @@ final termsConditionsStorePOD = Provider<TermsConditionsStore>((ref) {
     termsConditionsRepository: termsConditionsRepository,
     themeStore: themeStore,
     authSessionStore: ref.watch(authSessionStorePOD),
+    remoteConfigStore: ref.watch(remoteConfigStorePOD),
   );
   ref.onDispose(termsConditionsStore.dispose);
   return termsConditionsStore;

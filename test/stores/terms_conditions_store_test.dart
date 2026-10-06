@@ -15,7 +15,7 @@ import '../support/test_prefs.dart';
 import '../support/test_repositories.dart';
 import 'terms_conditions_store_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<AuthSessionStore>()])
+@GenerateNiceMocks([MockSpec<AuthSessionStore>(), MockSpec<RemoteConfigStore>()])
 class _TermsRepository implements TermsConditionsRepository {
   String? acceptedVersion;
   TermsAndConditions? latest = const TermsAndConditions(content: '<p>terms</p>', version: '2');
@@ -60,7 +60,9 @@ class _TermsRepository implements TermsConditionsRepository {
 
 void main() {
   late Observable<bool> isAuthenticated;
+  late Observable<bool> termsEnabled;
   late MockAuthSessionStore authSession;
+  late MockRemoteConfigStore remoteConfig;
   late _TermsRepository repository;
   late ThemeStore themeStore;
   late TermsConditionsStore store;
@@ -70,6 +72,7 @@ void main() {
       termsConditionsRepository: repository,
       themeStore: themeStore,
       authSessionStore: authSession,
+      remoteConfigStore: remoteConfig,
     );
     addTearDown(built.dispose);
     return built;
@@ -82,8 +85,11 @@ void main() {
 
   setUp(() async {
     isAuthenticated = Observable(false);
+    termsEnabled = Observable(true);
     authSession = MockAuthSessionStore();
+    remoteConfig = MockRemoteConfigStore();
     when(authSession.isAuthenticated).thenAnswer((_) => isAuthenticated.value);
+    when(remoteConfig.termsConditionsEnabled).thenAnswer((_) => termsEnabled.value);
     repository = _TermsRepository();
     themeStore = ThemeStore(settings: appSettings(await initTestPrefs()));
     store = buildStore();
@@ -233,6 +239,43 @@ void main() {
     expect(repository.acceptedVersionCalls, 2);
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.latestTermsConditions?.version, '3');
+  });
+
+  test('does not check while the flag is off', () async {
+    runInAction(() => termsEnabled.value = false);
+    repository.acceptedVersion = '1';
+
+    await signIn();
+
+    expect(repository.acceptedVersionCalls, 0);
+    expect(repository.latestCalls, 0);
+    expect(store.requiresTermsConditionsApproval, isFalse);
+  });
+
+  test('hides the prompt when the flag is turned off', () async {
+    repository.acceptedVersion = '1';
+    await signIn();
+    expect(store.requiresTermsConditionsApproval, isTrue);
+
+    runInAction(() => termsEnabled.value = false);
+
+    expect(store.requiresTermsConditionsApproval, isFalse);
+    expect(store.failure, isNull);
+    expect(store.isLoading, isFalse);
+    expect(store.latestTermsConditions, isNull);
+  });
+
+  test('checks after the flag is turned on for a signed-in user', () async {
+    runInAction(() => termsEnabled.value = false);
+    repository.acceptedVersion = '1';
+    await signIn();
+    expect(repository.acceptedVersionCalls, 0);
+
+    runInAction(() => termsEnabled.value = true);
+    await pumpEventQueue();
+
+    expect(store.requiresTermsConditionsApproval, isTrue);
+    expect(store.latestTermsConditions?.version, '2');
   });
 
   test('a successful reload clears a previous load failure', () async {

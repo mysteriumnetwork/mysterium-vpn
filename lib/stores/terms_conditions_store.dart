@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/models/terms_conditions.dart';
 import 'package:mysterium_vpn/repositories/terms_conditions/terms_conditions_repository.dart';
 import 'package:mysterium_vpn/stores/auth/auth_session_store.dart';
+import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
 
 part 'terms_conditions_store.g.dart';
@@ -18,24 +19,38 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     required this._termsConditionsRepository,
     required this._themeStore,
     required this._authSessionStore,
+    required this._remoteConfigStore,
   }) {
-    _disposer = reaction((_) => _authSessionStore.isAuthenticated, (isAuthenticated) {
-      if (!isAuthenticated) {
-        _userAcceptedVersion = null;
-        _latestTermsConditions = null;
-        _requiresTermsConditionsApproval = false;
-        _failure = null;
-        _isLoading = false;
-        return;
-      }
-      checkForUpdatedTermsConditions();
-    }, fireImmediately: true);
+    _disposer = reaction(
+      (_) => (_authSessionStore.isAuthenticated, _remoteConfigStore.termsConditionsEnabled),
+      (state) {
+        final (isAuthenticated, enabled) = state;
+        if (!isAuthenticated || !enabled) {
+          _clear();
+          return;
+        }
+        checkForUpdatedTermsConditions();
+      },
+      fireImmediately: true,
+    );
   }
 
   late final ReactionDisposer _disposer;
   final TermsConditionsRepository _termsConditionsRepository;
   final AuthSessionStore _authSessionStore;
   final ThemeStore _themeStore;
+  final RemoteConfigStore _remoteConfigStore;
+
+  bool get _canCheck =>
+      _authSessionStore.isAuthenticated && _remoteConfigStore.termsConditionsEnabled;
+
+  void _clear() {
+    _userAcceptedVersion = null;
+    _latestTermsConditions = null;
+    _requiresTermsConditionsApproval = false;
+    _failure = null;
+    _isLoading = false;
+  }
 
   String? _userAcceptedVersion;
 
@@ -60,7 +75,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
 
   @action
   Future<void> checkForUpdatedTermsConditions() async {
-    if (!_authSessionStore.isAuthenticated) {
+    if (!_canCheck) {
       return;
     }
 
@@ -69,8 +84,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     // gets the user accepted version
     if (_userAcceptedVersion == null) {
       final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
-      // if user is not authenticated, stop the flow
-      if (!_authSessionStore.isAuthenticated) {
+      if (!_canCheck) {
         _isLoading = false;
         return;
       }
@@ -82,8 +96,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     // gets the latest T&C version
     final theme = _themeStore.isDarkMode ? 'dark' : 'light';
     final latestTermsConditions = await _termsConditionsRepository.getLatestVersion(theme);
-    // if user is not authenticated, stop the flow
-    if (!_authSessionStore.isAuthenticated) {
+    if (!_canCheck) {
       _isLoading = false;
       return;
     }
