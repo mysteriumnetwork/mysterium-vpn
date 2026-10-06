@@ -135,6 +135,53 @@ void main() {
     await tester.pumpAndSettle();
   });
 
+  /// Opens the dialog with nothing in flight.
+  Future<void> openIdle(WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: DesignSystem.lightTheme,
+        locale: testLocale,
+        localizationsDelegates: testLocalizationsDelegates,
+        supportedLocales: testSupportedLocales,
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () => shownDeleteAccountDialog(
+                context,
+                authStore: authStore,
+                vpnStore: vpnStore,
+                analyticsStore: analytics,
+              ),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('closes without deleting when cancelled', (tester) async {
+    await openIdle(tester);
+
+    await tester.tap(find.text(S.current.cancelBtn));
+    await tester.pumpAndSettle();
+
+    expect(find.text(S.current.deleteAccountQuestion), findsNothing);
+    verifyNever(authStore.deleteAccount());
+  });
+
+  testWidgets('closes on a barrier tap while idle', (tester) async {
+    await openIdle(tester);
+
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pumpAndSettle();
+
+    expect(find.text(S.current.deleteAccountQuestion), findsNothing);
+    verifyNever(authStore.deleteAccount());
+  });
+
   testWidgets('locks the confirmation field while the deletion is in flight', (tester) async {
     final gate = Completer<void>();
     await openWhileDeleting(tester, gate);
