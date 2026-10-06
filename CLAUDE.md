@@ -15,7 +15,7 @@ All Flutter/Dart commands **must** be prefixed with `fvm` (Flutter 3.44.7 is pin
 - `make run-unit-tests` — full unit-test suite; runs once with `.env.dev` and once with `.env.prod` (the second pass only re-runs `env_test.dart`)
 - `make clean` — `flutter clean`
 
-Apple builds are hybrid Swift Package Manager + CocoaPods (`make init` enables SPM explicitly). Do not disable SPM or remove the workarounds documented in the Makefile header (OneSignal embed strip in `ios/Podfile`, PatrolImpl modulemap flag in the macOS Runner configs).
+Apple builds are Swift Package Manager only — no Podfile, no CocoaPods step (`make init` enables SPM). Plugins resolve via `FlutterGeneratedPluginSwiftPackage`; the non-plugin native deps are remote packages declared in the Xcode projects. Do not disable SPM or drop the constraints documented in the Makefile header.
 
 Crashlytics dSYMs are uploaded by CI only (`.github/scripts/upload-crashlytics-symbols.sh`, called from the iOS/macOS build workflows) — the generated Xcode build phase was removed because it pointed at `$PODS_ROOT` and silently uploaded nothing after the SPM migration. A build archived locally from Xcode therefore ships unsymbolized.
 
