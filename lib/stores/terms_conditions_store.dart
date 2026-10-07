@@ -75,7 +75,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
 
   @action
   Future<void> checkForUpdatedTermsConditions() async {
-    if (!_canCheck) {
+    if (!_canCheck || _isLoading) {
       return;
     }
 
@@ -123,7 +123,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
 
   @action
   Future<void> acceptTermsConditions() async {
-    if (_latestTermsConditions == null) {
+    if (_latestTermsConditions == null || _isLoading) {
       return;
     }
 
@@ -133,8 +133,10 @@ abstract class _TermsConditionsStore with Store, Disposeable {
       await _termsConditionsRepository.acceptVersion(
         acceptedVersion: _latestTermsConditions!.version,
       );
-      _userAcceptedVersion = _latestTermsConditions!.version;
-      _requiresTermsConditionsApproval = false;
+      if (_canCheck) {
+        _userAcceptedVersion = _latestTermsConditions!.version;
+        _requiresTermsConditionsApproval = false;
+      }
     } catch (e) {
       _failure = TermsConditionsFailureType.saving;
     } finally {
