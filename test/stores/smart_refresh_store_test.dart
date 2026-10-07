@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
@@ -40,6 +41,7 @@ void main() {
     when(
       subscriptions.refreshSubscription(force: anyNamed('force')),
     ).thenAnswer((_) async => Subscription.empty());
+    when(termsConditions.checkForUpdatedTermsConditions()).thenAnswer((_) async {});
   });
 
   SmartRefreshStore buildStore() {
@@ -47,6 +49,9 @@ void main() {
     addTearDown(store.dispose);
     return store;
   }
+
+  void dispatch(SmartRefreshStore store, AppLifecycleState state) =>
+      store.didChangeAppLifecycleState(state);
 
   test('constructs and disposes cleanly', () async {
     final store = SmartRefreshStore(locations, subscriptions, authSession, termsConditions, logger);
@@ -72,5 +77,19 @@ void main() {
     await store.refreshSubscriptionOnResume();
 
     verify(logger.handle(error, any)).called(1);
+  });
+
+  testWidgets('resume checks terms after the debounce and the next frame', (tester) async {
+    final store = buildStore();
+
+    dispatch(store, AppLifecycleState.resumed);
+
+    verifyNever(termsConditions.checkForUpdatedTermsConditions());
+
+    await tester.pump(const Duration(milliseconds: 500));
+    WidgetsBinding.instance.scheduleFrame();
+    await tester.pump();
+
+    verify(termsConditions.checkForUpdatedTermsConditions()).called(1);
   });
 }

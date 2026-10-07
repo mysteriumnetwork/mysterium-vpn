@@ -83,6 +83,13 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
   ),
 );
 
+final termsConditionsRepositoryPOD = Provider<TermsConditionsRepository>(
+  (ref) => RestTermsConditionsRepository(
+    api: ref.watch(vpnApiPOD),
+    logger: ref.watch(loggerPOD),
+  ),
+);
+
 final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>(
   (ref) => isDesktop()
       ? DesktopNotificationsRepository()

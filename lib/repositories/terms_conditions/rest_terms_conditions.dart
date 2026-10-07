@@ -30,11 +30,11 @@ class RestTermsConditionsRepository implements TermsConditionsRepository {
       if (response.statusCode == 200) {
         return;
       } else {
-        throw Exception('Failed to saved accepted terms and conditions version');
+        throw Exception('Failed to save accepted terms and conditions version');
       }
     } catch (e, stackTrace) {
       _logger.warning('Error accepting terms and conditions version', e, stackTrace);
-      throw Exception('Failed to saved accepted terms and conditions version');
+      throw Exception('Failed to save accepted terms and conditions version');
     }
   }
 
