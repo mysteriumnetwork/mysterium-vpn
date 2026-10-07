@@ -132,6 +132,10 @@ class QAToolbox extends HookConsumerWidget {
           },
         ),
         _QAActionButton(
+          label: 'Show Review Prompt',
+          onPressed: () => showReviewPromptDialog(context),
+        ),
+        _QAActionButton(
           label: 'Reset Review Prompt',
           onPressed: () async {
             await ref.read(reviewPromptStorePOD).resetState();

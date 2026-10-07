@@ -597,8 +597,10 @@ final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
     vpnStore: ref.watch(vpnStorePOD),
     authSessionStore: ref.watch(authSessionStorePOD),
     subscriptionStore: ref.watch(subscriptionStorePOD),
+    abTestingStore: ref.watch(abTestingStorePOD),
     didCrashRecently: () => crashedRecently,
     canShowNativeReview: InAppReviewService().isAvailable,
+    nativeReviewSupported: () => InAppReviewService().supportsNativeReview,
   )..init();
 
   ref.onDispose(store.dispose);
