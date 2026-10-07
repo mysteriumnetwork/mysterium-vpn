@@ -196,15 +196,12 @@ class AppInitializer {
   }
 
   void _configureSystemUI() {
-    SystemChrome.setSystemUIOverlayStyle(
-      Platform.isAndroid
-          ? const SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              systemNavigationBarColor: Colors.transparent,
-              systemNavigationBarDividerColor: Colors.transparent,
-            )
-          : SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
-    );
+    // Pre-first-frame value; MaterialApp (and SystemUiOverlayRegion on Android) then own it.
+    if (!Platform.isAndroid) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.light.copyWith(statusBarIconBrightness: Brightness.light),
+      );
+    }
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

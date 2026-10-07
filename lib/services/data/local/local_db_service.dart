@@ -212,6 +212,13 @@ class LocalDBService implements ResidentialEducationStorage {
     await _saveUserData(userData);
   }
 
+  Future<void> resetMarketingConsentShown() async {
+    final userData = await _loadUserData();
+    userData.marketingConsentShown = false;
+
+    await _saveUserData(userData);
+  }
+
   Future<ProtocolType> getProtocolType() async {
     final userData = await _loadUserData();
     return userData.protocolType;

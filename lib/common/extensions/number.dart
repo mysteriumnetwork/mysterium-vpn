@@ -19,3 +19,7 @@ extension NumberExtensions on double {
   String toPriceString({required String currency}) =>
       price(currencySymbol: currency, currencyCode: currency);
 }
+
+extension NullableDoubleExtensions on double? {
+  bool get isNullOrNotFinite => this == null || !this!.isFinite;
+}

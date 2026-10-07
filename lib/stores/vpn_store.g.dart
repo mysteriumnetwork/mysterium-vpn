@@ -401,8 +401,8 @@ mixin _$VpnStore on _VpnStore, Store {
   late final _$setupTunnelAsyncAction = AsyncAction('_VpnStore.setupTunnel', context: context);
 
   @override
-  Future<void> setupTunnel() {
-    return _$setupTunnelAsyncAction.run(() => super.setupTunnel());
+  Future<void> setupTunnel({String trigger = tunnelSetupTriggerAuto}) {
+    return _$setupTunnelAsyncAction.run(() => super.setupTunnel(trigger: trigger));
   }
 
   late final _$_setupAndListenToConnectionStatusAsyncAction = AsyncAction(

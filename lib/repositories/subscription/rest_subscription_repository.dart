@@ -284,6 +284,13 @@ class RestSubscriptionRepository extends SubscriptionRepository {
         pauseAllowed: data.pauseAllowed,
         pausedFrom: data.pausedFrom,
         pausedUntil: data.pausedUntil,
+        orderSummary: data.orderSummary == null
+            ? null
+            : OrderSummary(
+                currency: data.orderSummary!.currency,
+                totalPrice: data.orderSummary!.totalPrice,
+                totalPriceBeforeDiscount: data.orderSummary!.totalPriceBeforeDiscount,
+              ),
       );
     } on ApiException {
       rethrow;

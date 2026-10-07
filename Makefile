@@ -5,23 +5,16 @@ ANDROID_DEVICE_MODEL = MediumPhone.arm
 ANDROID_DEVICE_VERSION = 34
 FIREBASE_PROJECT_ID = new-mysterium-vpn
 
-# SPM is enabled explicitly so every machine builds the same way regardless of
-# global flutter config. Apple targets use hybrid SPM + CocoaPods: SPM-capable
-# plugins resolve via FlutterGeneratedPluginSwiftPackage, the rest (WireGuardKit,
-# OpenVPNAdapter, OneSignal NSE) stay on CocoaPods. Two workarounds keep this
-# hybrid green — remove them once fixed upstream:
-# 1. ios/Podfile post_integrate strips OneSignal from CocoaPods' embed phase
-#    (SPM already embeds it; two producers = "Multiple commands produce").
-# 2. all macos Runner configs pass patrol's generated PatrolImpl modulemap via
-#    OTHER_SWIFT_FLAGS (https://github.com/leancodepl/patrol/issues/3177).
-# 3. Runner targets set ENABLE_TESTING_SEARCH_PATHS=YES: patrol_cli builds link
-#    XCTest into the app, and SPM (unlike patrol's podspec) can't inject the
-#    developer test-framework search paths.
-# Crashlytics dSYM upload is a consequence of the same migration: the generated
-# Xcode phase pointed at $PODS_ROOT and silently uploaded nothing once Firebase
-# moved to SPM. It now runs in CI only (.github/scripts/upload-crashlytics-symbols.sh),
-# so a build archived locally from Xcode ships without symbols. firebase.json
-# keeps uploadDebugSymbols false so flutterfire configure can't re-add the phase.
+# Apple targets are SPM-only; enabled here so every machine builds the same way.
+# Non-obvious constraints, each invisible until it breaks:
+# - OVpnExtension links SystemConfiguration (+UIKit on iOS) explicitly, because
+#   OpenVPNAdapter's Package.swift declares no system frameworks like its podspec did.
+# - the OneSignal-XCFramework pin must equal onesignal_flutter's Package.swift pin.
+# - macOS Runner configs pass patrol's PatrolImpl modulemap via OTHER_SWIFT_FLAGS
+#   (https://github.com/leancodepl/patrol/issues/3177), and Runner targets set
+#   ENABLE_TESTING_SEARCH_PATHS=YES since SPM can't inject XCTest search paths.
+# - dSYM upload runs in CI only (.github/scripts/upload-crashlytics-symbols.sh);
+#   firebase.json keeps uploadDebugSymbols false so flutterfire can't re-add the phase.
 init:
 	fvm flutter config --enable-swift-package-manager
 	fvm flutter pub get

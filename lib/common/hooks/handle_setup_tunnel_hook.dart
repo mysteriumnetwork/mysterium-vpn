@@ -6,9 +6,12 @@ Future<bool> Function() useHandleSetupTunnel() {
   final vpnStore = useProvider<VpnStore>(vpnStorePOD);
 
   return useCallback(() async {
+    vpnStore.onTunnelPermissionDialogShown();
     final permissionsGranted = await showRequestTunnelPermissionsDialog(context);
-    if (permissionsGranted ?? false) {
-      await vpnStore.setupTunnel();
+    final accepted = permissionsGranted ?? false;
+    vpnStore.onTunnelPermissionDecision(accepted: accepted);
+    if (accepted) {
+      await vpnStore.setupTunnel(trigger: tunnelSetupTriggerPermissionFlow);
       return true;
     }
     return false;

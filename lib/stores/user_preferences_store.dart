@@ -244,7 +244,9 @@ abstract class _UserPreferencesStore with Store, Disposeable {
     return consentValue == false && !consentShown && appOpenCount >= 3;
   }
 
-  @visibleForTesting
+  /// Records that the consent popup was put in front of the user. Written as
+  /// the popup opens, so no exit path can skip it — the answer itself is a
+  /// separate concern ([updateMarketingContact]).
   @action
   Future<void> setMarketingConsentShown() async {
     await _prompts.setMarketingConsentShown();
@@ -276,7 +278,7 @@ abstract class _UserPreferencesStore with Store, Disposeable {
       _analyticsStore.logEvent(AnalyticsEvent.updateMarketingContactSuccess);
       getMarketingConsentFuture = ObservableFuture.value(consent);
       if (fromPopup) {
-        setMarketingConsentShown();
+        _analyticsStore.logMarketingConsentMarked(accepted: consent).ignore();
       }
     } catch (e) {
       _analyticsStore.logEvent(
@@ -313,6 +315,11 @@ abstract class _UserPreferencesStore with Store, Disposeable {
       rethrow;
     }
   }
+
+  /// Starts the push-prompt cooldown as the prompt is displayed, before the
+  /// user acts on it. No re-evaluation — the prompt is already on screen.
+  @action
+  Future<void> markPushPromptShown() async => _pushNotificationsStore.markPromptShown();
 
   @action
   Future<void> setPushNotificationsShown({required bool userAllowed}) async {

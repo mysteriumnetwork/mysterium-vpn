@@ -72,7 +72,7 @@ jobs:
       application_logo: "assets/logo/prod/desktop.png"
       env_file: ".env.prod"
       standalone_sign: true
-      standalone_keyvault_certificate: "mysteriumvpn"
+      standalone_keyvault_certificate: "mysteriumvpn-gogetssl"
       protocol_activation: "mysteriumvpn"
     secrets: inherit
 

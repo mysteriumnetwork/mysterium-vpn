@@ -599,30 +599,45 @@ void main() {
       verify(mockAnalyticsStore.logEvent(AnalyticsEvent.updateMarketingContactSuccess)).called(1);
     });
 
-    test('updateMarketingContact calls setMarketingConsentShown when fromPopup is true', () async {
+    // The popup owns "we asked" — it records it when it closes, however it
+    // closed. Sending the answer must not be what persists it, or a dismissal
+    // or a failed request leaves the prompt re-opening on every launch.
+    test('updateMarketingContact never records the prompt as shown', () async {
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
-      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
+
+      await store.updateMarketingContact(consent: true, fromPopup: true);
+      await store.updateMarketingContact(consent: true);
+
+      verifyNever(mockPrompts.setMarketingConsentShown());
+    });
+
+    test('updateMarketingContact logs consent accepted when fromPopup is true', () async {
+      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
 
       await store.updateMarketingContact(consent: true, fromPopup: true);
 
-      verify(mockPrompts.setMarketingConsentShown()).called(1);
+      verify(mockAnalyticsStore.logMarketingConsentMarked(accepted: true)).called(1);
     });
 
-    test(
-      'updateMarketingContact does not call setMarketingConsentShown when fromPopup is false',
-      () async {
-        when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+    test('updateMarketingContact logs consent declined when fromPopup is true', () async {
+      when(mockApiService.updateMarketingContact(consent: false)).thenAnswer((_) async => {});
 
-        await store.updateMarketingContact(consent: true);
+      await store.updateMarketingContact(consent: false, fromPopup: true);
 
-        verifyNever(mockPrompts.setMarketingConsentShown());
-      },
-    );
+      verify(mockAnalyticsStore.logMarketingConsentMarked(accepted: false)).called(1);
+    });
 
-    test('updateMarketingContact does not re-evaluate prompts after setting shown', () async {
+    test('updateMarketingContact does not log consent marked from the settings toggle', () async {
+      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
+
+      await store.updateMarketingContact(consent: true);
+
+      verifyNever(mockAnalyticsStore.logMarketingConsentMarked(accepted: anyNamed('accepted')));
+    });
+
+    test('updateMarketingContact does not re-evaluate prompts', () async {
       store.nextPromptToShow = UserPromptType.marketingConsent;
       when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
-      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
 
       await store.updateMarketingContact(consent: true, fromPopup: true);
 
@@ -812,26 +827,6 @@ void main() {
 
       // Push can show on any open, not just 3rd
       expect(store.nextPromptToShow, UserPromptType.pushNotifications);
-    });
-  });
-
-  group('Integration - One Popup Per App Open', () {
-    test('closing marketing consent does not trigger push notifications in same session', () async {
-      store
-        ..nextPromptToShow = UserPromptType.marketingConsent
-        ..getMarketingConsentFuture = ObservableFuture.value(false);
-      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-
-      when(mockApiService.updateMarketingContact(consent: true)).thenAnswer((_) async => {});
-      when(mockPrompts.setMarketingConsentShown()).thenAnswer((_) async {});
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => true);
-
-      await store.updateMarketingContact(consent: true, fromPopup: true);
-
-      // nextPromptToShow should NOT change to push notifications
-      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
     });
   });
 

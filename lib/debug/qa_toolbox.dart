@@ -104,6 +104,13 @@ class QAToolbox extends HookConsumerWidget {
           },
         ),
         _QAActionButton(
+          label: 'Reset Marketing Consent Prompt',
+          onPressed: () async {
+            await ref.read(localDBServicePOD).resetMarketingConsentShown();
+            showSnackbar('Marketing consent flag cleared (needs server consent false too)');
+          },
+        ),
+        _QAActionButton(
           label: 'Reset App open count',
           onPressed: () async {
             await ref.read(localDBServicePOD).resetAppOpenCount();

@@ -54,7 +54,7 @@
 
 - [FVM](https://fvm.app) — the Flutter version (currently `3.44.7`) is pinned in `.fvmrc`
 - `make`
-- Platform toolchains: Android Studio/SDK for Android, Xcode + CocoaPods for iOS/macOS
+- Platform toolchains: Android Studio/SDK for Android, Xcode for iOS/macOS
 
 ### Environment
 

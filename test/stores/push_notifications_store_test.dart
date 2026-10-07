@@ -195,6 +195,13 @@ void main() {
       expect(result, isFalse);
     });
 
+    test('markPromptShown stamps the cooldown without touching permissions', () async {
+      await store.markPromptShown();
+
+      verify(mockLocalDb.setPushPromptLastShownAt(any)).called(1);
+      verifyNever(mockNotificationsRepository.requestPermission());
+    });
+
     test('setPushNotificationsShown requests permission when allowed', () async {
       await store.setPushNotificationsShown(userAllowed: true);
 

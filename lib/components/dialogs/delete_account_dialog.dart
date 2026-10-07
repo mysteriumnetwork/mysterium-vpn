@@ -61,54 +61,67 @@ class _DeleteAccountDialog extends HookWidget {
     final textStyles = Theme.of(context).textStyles;
     final spacing = Theme.of(context).spacing;
     return Observer(
-      builder: (context) => AlertModal(
-        type: AlertModalType.error,
-        title: S.current.deleteAccountQuestion,
-        supportingText: '${S.current.cancelYourSubsMess} ${S.current.typeDelete('DELETE')}',
-        input: SizedBox(
-          child: TextField(
-            onChanged: (val) => confirmationMessage.value = val,
-            autocorrect: false,
-            style: textStyles.textMd.regular.copyWith(color: palette.gray.shade800),
-            onTap: () {
-              analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
-            },
-            onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
-            decoration: InputDecoration(
-              hintText: S.current.typeDelete('DELETE'),
-              hintStyle: textStyles.textMd.regular.copyWith(color: palette.gray.shade500),
-              filled: true,
-              fillColor: Palette.white,
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.md),
-              border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.kXs)),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.kXs),
-                borderSide: BorderSide(color: palette.gray.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.kXs),
-                borderSide: BorderSide(color: palette.borderBrand),
+      builder: (context) {
+        final isDeleting = authStore.deleteAccountFeature.status == FutureStatus.pending;
+        // Dismissing mid-delete would still delete but skip the redirect.
+        return PopScope(
+          canPop: !isDeleting,
+          child: AlertModal(
+            type: AlertModalType.error,
+            title: S.current.deleteAccountQuestion,
+            supportingText: '${S.current.cancelYourSubsMess} ${S.current.typeDelete('DELETE')}',
+            input: SizedBox(
+              child: TextField(
+                enabled: !isDeleting,
+                onChanged: (val) => confirmationMessage.value = val,
+                autocorrect: false,
+                style: textStyles.textMd.regular.copyWith(color: palette.gray.shade800),
+                onTap: () {
+                  analyticsStore.logEvent(AnalyticsEvent.deleteAccountInput);
+                },
+                onTapOutside: (_) => FocusScope.of(context, createDependency: false).unfocus(),
+                decoration: InputDecoration(
+                  hintText: S.current.typeDelete('DELETE'),
+                  hintStyle: textStyles.textMd.regular.copyWith(color: palette.gray.shade500),
+                  filled: true,
+                  fillColor: Palette.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: spacing.lg,
+                    vertical: spacing.md,
+                  ),
+                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.kXs)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.kXs),
+                    borderSide: BorderSide(color: palette.gray.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.kXs),
+                    borderSide: BorderSide(color: palette.borderBrand),
+                  ),
+                ),
               ),
             ),
+            primaryButton: ButtonSecondary(
+              onPressed: confirmationMessage.value == 'DELETE'
+                  ? () async {
+                      analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
+                      await authStore.deleteAccount();
+                      if (context.mounted) {
+                        popIfCurrent(context, true);
+                      }
+                    }
+                  : null,
+              loading: isDeleting ? const ButtonLoading() : null,
+              child: Text(S.current.allowBtn),
+            ),
+            secondaryButton: ButtonSecondary(
+              onPressed: isDeleting ? null : () => popIfCurrent(context, false),
+              child: Text(S.current.cancelBtn),
+            ),
           ),
-        ),
-        primaryButton: ButtonSecondary(
-          onPressed: confirmationMessage.value == 'DELETE'
-              ? () async {
-                  analyticsStore.logEvent(AnalyticsEvent.deleteAccountConfirm);
-                  await authStore.deleteAccount();
-                  if (context.mounted) {
-                    Navigator.of(context).pop(true);
-                  }
-                }
-              : null,
-          loading: authStore.deleteAccountFeature.status == FutureStatus.pending
-              ? const ButtonLoading()
-              : null,
-          child: Text(S.current.allowBtn),
-        ),
-      ),
+        );
+      },
     );
   }
 }

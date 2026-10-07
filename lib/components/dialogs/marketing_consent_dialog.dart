@@ -1,70 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/extensions/asset.dart';
 import 'package:mysterium_vpn/common/ui/keys.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
+import 'package:mysterium_vpn/components/dialogs/async_prompt_dialog.dart';
 import 'package:mysterium_vpn/gen/assets.gen.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 Future<void> showMarketingConsentDialog(BuildContext context) async {
+  final container = ProviderScope.containerOf(context, listen: false);
+  final userPreferencesStore = container.read(userPreferencesStorePOD);
+  container.read(analyticsStorePOD).logMarketingConsentPromptShown().ignore();
+
+  Future<void> submit({required bool consent}) async {
+    try {
+      await userPreferencesStore.updateMarketingContact(consent: consent, fromPopup: true);
+    } catch (_) {
+      showSnackbar(S.current.somethingWentWrong);
+    }
+  }
+
   await showModal<void>(
     context,
-    builder: (_) => const _DialogContent(key: Keys.marketingConsentDialog),
+    builder: (ctx) => AsyncPromptDialog(
+      key: Keys.marketingConsentDialog,
+      image: Asset.images.emailConsent(ctx).image(),
+      title: S.current.marketingConsentPopupTitle,
+      subtitle: S.current.marketingConsentPopupDesc,
+      // On the impression, not on the answer: a dismissal or a failed request
+      // must not leave it unset and re-prompt every launch. Settings still
+      // toggles the consent.
+      onShown: userPreferencesStore.setMarketingConsentShown,
+      primaryKey: Keys.marketingConsentAcceptButton,
+      primaryLabel: S.current.allowNotificationsBtn,
+      onPrimary: () => submit(consent: true),
+      secondaryKey: Keys.marketingConsentDeclineButton,
+      secondaryLabel: S.current.notNowBtn,
+      onSecondary: () => submit(consent: false),
+    ),
   );
-}
-
-class _DialogContent extends HookConsumerWidget {
-  const _DialogContent({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userPreferencesStore = ref.watch(userPreferencesStorePOD);
-    final lastClickedConsent = useState<bool?>(null);
-    return Observer(
-      builder: (context) {
-        final isLoading =
-            userPreferencesStore.updateMarketingConsentFuture.status == FutureStatus.pending;
-        return PromptDialog(
-          image: Asset.images.emailConsent(context).image(),
-          title: S.current.marketingConsentPopupTitle,
-          subtitle: S.current.marketingConsentPopupDesc,
-          primaryButton: ButtonPrimary(
-            key: Keys.marketingConsentAcceptButton,
-            onPressed: () {
-              lastClickedConsent.value = true;
-              _updateMarketingConsent(context, consent: true);
-            },
-            loading: isLoading && (lastClickedConsent.value ?? false)
-                ? const ButtonLoading()
-                : null,
-            child: Text(S.current.allowNotificationsBtn, textAlign: TextAlign.center),
-          ),
-          secondaryButton: ButtonSecondary(
-            key: Keys.marketingConsentDeclineButton,
-            onPressed: () {
-              lastClickedConsent.value = false;
-              _updateMarketingConsent(context, consent: false);
-            },
-            loading: isLoading && lastClickedConsent.value == false ? const ButtonLoading() : null,
-            child: Text(S.current.notNowBtn, textAlign: TextAlign.center),
-          ),
-        );
-      },
-    );
-  }
-}
-
-Future<void> _updateMarketingConsent(BuildContext context, {required bool consent}) async {
-  await ProviderScope.containerOf(
-    context,
-    listen: false,
-  ).read(userPreferencesStorePOD).updateMarketingContact(consent: consent, fromPopup: true);
-
-  if (context.mounted) {
-    Navigator.of(context).pop();
-  }
 }
