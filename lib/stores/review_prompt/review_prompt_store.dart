@@ -55,9 +55,8 @@ abstract class _ReviewPromptStore with Store {
   final DateTime Function() _now;
   final bool Function() _didCrashRecently;
 
-  /// Whether the OS will present the native store review prompt right now —
-  /// its quota included. Only gates the store arm; the Trustpilot arm is
-  /// reachable regardless.
+  /// Whether the native review API is usable here. Not the display quota, which
+  /// the OS applies silently at request time. Gates the store arm only.
   final Future<bool> Function() _canShowNativeReview;
 
   /// Whether the platform has a native store review prompt at all (Android,

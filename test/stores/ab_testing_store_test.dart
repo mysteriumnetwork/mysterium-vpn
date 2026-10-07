@@ -81,6 +81,11 @@ void main() {
       expect(store.reviewDestination, ReviewDestination.store);
     });
 
+    test('matches a capitalised variant rather than silently using the control arm', () async {
+      final store = await storeWith({'reviewDestination': 'Trustpilot'});
+      expect(store.reviewDestination, ReviewDestination.trustpilot);
+    });
+
     test('falls back to the store prompt on an unknown variant', () async {
       final store = await storeWith({'reviewDestination': 'yelp'});
       expect(store.reviewDestination, ReviewDestination.store);
