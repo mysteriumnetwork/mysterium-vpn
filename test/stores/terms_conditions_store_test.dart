@@ -25,6 +25,8 @@ class _TermsRepository implements TermsConditionsRepository {
   int latestCalls = 0;
   final List<String> themes = [];
   Exception? acceptError;
+  Exception? acceptedVersionError;
+  Exception? latestError;
   String? savedVersion;
 
   @override
@@ -33,6 +35,10 @@ class _TermsRepository implements TermsConditionsRepository {
     final gate = acceptedVersionGate;
     if (gate != null) {
       return gate.future;
+    }
+    final error = acceptedVersionError;
+    if (error != null) {
+      return Future<String?>.error(error);
     }
     return Future<String?>.value(acceptedVersion);
   }
@@ -44,6 +50,10 @@ class _TermsRepository implements TermsConditionsRepository {
     final gate = latestGate;
     if (gate != null) {
       return gate.future;
+    }
+    final error = latestError;
+    if (error != null) {
+      return Future<TermsAndConditions?>.error(error);
     }
     return Future<TermsAndConditions?>.value(latest);
   }
@@ -139,10 +149,33 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isTrue);
   });
 
-  test('stays quiet when neither version can be loaded', () async {
+  test('shows a load failure when there is no terms text', () async {
     repository
       ..acceptedVersion = null
       ..latest = null;
+
+    await signIn();
+
+    expect(store.requiresTermsConditionsApproval, isTrue);
+    expect(store.failure, TermsConditionsFailureType.loading);
+    expect(store.isLoading, isFalse);
+  });
+
+  test('stays quiet when a request throws', () async {
+    repository.acceptedVersionError = Exception('offline');
+
+    await signIn();
+
+    expect(repository.latestCalls, 0);
+    expect(store.requiresTermsConditionsApproval, isFalse);
+    expect(store.failure, isNull);
+    expect(store.isLoading, isFalse);
+  });
+
+  test('stays quiet when the latest request throws', () async {
+    repository
+      ..acceptedVersion = null
+      ..latestError = Exception('offline');
 
     await signIn();
 

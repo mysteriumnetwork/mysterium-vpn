@@ -18,7 +18,7 @@ class RestTermsConditionsRepository implements TermsConditionsRepository {
       return termsVersion;
     } catch (e, stackTrace) {
       _logger.warning('Error checking user accepted terms and conditions version', e, stackTrace);
-      return null;
+      rethrow;
     }
   }
 
@@ -50,7 +50,7 @@ class RestTermsConditionsRepository implements TermsConditionsRepository {
       return TermsAndConditions(content: content!, version: version!);
     } catch (e, stackTrace) {
       _logger.warning('Error getting latest terms and conditions version', e, stackTrace);
-      return null;
+      rethrow;
     }
   }
 }

@@ -81,45 +81,44 @@ abstract class _TermsConditionsStore with Store, Disposeable {
 
     _isLoading = true;
 
-    // gets the user accepted version
-    if (_userAcceptedVersion == null) {
-      final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
+    try {
+      // fetch user accepted version
+      if (_userAcceptedVersion == null) {
+        final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
+        if (!_canCheck) {
+          return;
+        }
+        if (!checkUserVersion.isNullOrEmpty) {
+          _userAcceptedVersion = checkUserVersion;
+        }
+      }
+
+      // fetch latest terms conditions
+      final theme = _themeStore.isDarkMode ? 'dark' : 'light';
+      final latestTermsConditions = await _termsConditionsRepository.getLatestVersion(theme);
       if (!_canCheck) {
-        _isLoading = false;
         return;
       }
-      if (!checkUserVersion.isNullOrEmpty) {
-        _userAcceptedVersion = checkUserVersion;
+      if (latestTermsConditions != null) {
+        _latestTermsConditions = latestTermsConditions;
       }
-    }
 
-    // gets the latest T&C version
-    final theme = _themeStore.isDarkMode ? 'dark' : 'light';
-    final latestTermsConditions = await _termsConditionsRepository.getLatestVersion(theme);
-    if (!_canCheck) {
-      _isLoading = false;
-      return;
-    }
-    if (latestTermsConditions != null) {
-      _latestTermsConditions = latestTermsConditions;
-    }
+      // if no latest terms conditions, show loading error state
+      if (_latestTermsConditions == null) {
+        _requiresTermsConditionsApproval = true;
+        _failure = TermsConditionsFailureType.loading;
+        return;
+      }
 
-    // if T&C is null and user accepted version is null - no internet connectivity
-    if (_latestTermsConditions == null && _userAcceptedVersion == null) {
-      _isLoading = false;
-      return;
-    }
-    // if T&C is null and user accepted version is not null - load T&C failure
-    else if (_latestTermsConditions == null && _userAcceptedVersion != null) {
-      _isLoading = false;
-      _requiresTermsConditionsApproval = true;
-      _failure = TermsConditionsFailureType.loading;
-      return;
-    }
+      _failure = null;
 
-    _failure = null;
-    _requiresTermsConditionsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
-    _isLoading = false;
+      // check if terms conditions are approved
+      _requiresTermsConditionsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
+    } catch (_) {
+      return;
+    } finally {
+      _isLoading = false;
+    }
   }
 
   @action
