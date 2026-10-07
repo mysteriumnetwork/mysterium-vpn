@@ -20,9 +20,6 @@ Future<void> shownDeleteAccountDialog(
   analyticsStore.logEvent(AnalyticsEvent.deleteAccountPopup);
   final deleted = await showDialog<bool>(
     context: context,
-    // Deleting is irreversible: a barrier tap mid-call would still delete the
-    // account but skip the redirect, stranding the user signed in.
-    barrierDismissible: false,
     builder: (context) => Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -66,6 +63,7 @@ class _DeleteAccountDialog extends HookWidget {
     return Observer(
       builder: (context) {
         final isDeleting = authStore.deleteAccountFeature.status == FutureStatus.pending;
+        // Dismissing mid-delete would still delete but skip the redirect.
         return PopScope(
           canPop: !isDeleting,
           child: AlertModal(
@@ -116,6 +114,10 @@ class _DeleteAccountDialog extends HookWidget {
                   : null,
               loading: isDeleting ? const ButtonLoading() : null,
               child: Text(S.current.allowBtn),
+            ),
+            secondaryButton: ButtonSecondary(
+              onPressed: isDeleting ? null : () => popIfCurrent(context, false),
+              child: Text(S.current.cancelBtn),
             ),
           ),
         );

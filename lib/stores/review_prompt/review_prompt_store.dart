@@ -28,18 +28,22 @@ abstract class _ReviewPromptStore with Store {
     required VpnStore vpnStore,
     required AuthSessionStore authSessionStore,
     required SubscriptionStore subscriptionStore,
+    required ABTestingStore abTestingStore,
     DateTime Function()? now,
     bool Function()? didCrashRecently,
     Future<bool> Function()? canShowNativeReview,
+    bool Function()? nativeReviewSupported,
   }) : _prefs = prefs,
        _remoteConfig = remoteConfigStore,
        _analytics = analyticsStore,
        _vpnStore = vpnStore,
        _authSessionStore = authSessionStore,
        _subscriptionStore = subscriptionStore,
+       _abTesting = abTestingStore,
        _now = now ?? DateTime.now,
        _didCrashRecently = didCrashRecently ?? (() => false),
-       _canShowNativeReview = canShowNativeReview ?? (() async => true);
+       _canShowNativeReview = canShowNativeReview ?? (() async => true),
+       _nativeReviewSupported = nativeReviewSupported ?? (() => true);
 
   final ReviewPromptRepository _prefs;
   final RemoteConfigStore _remoteConfig;
@@ -47,13 +51,25 @@ abstract class _ReviewPromptStore with Store {
   final VpnStore _vpnStore;
   final AuthSessionStore _authSessionStore;
   final SubscriptionStore _subscriptionStore;
+  final ABTestingStore _abTesting;
   final DateTime Function() _now;
   final bool Function() _didCrashRecently;
 
-  /// Whether the platform can actually present the native store review prompt.
-  /// When it can't (e.g. Windows/Linux), there's no point showing the in-app
-  /// flow, so the prompt is suppressed entirely.
+  /// Whether the native review API is usable here. Not the display quota, which
+  /// the OS applies silently at request time. Gates the store arm only.
   final Future<bool> Function() _canShowNativeReview;
+
+  /// Whether the platform has a native store review prompt at all (Android,
+  /// iOS, macOS). Synchronous, so [reviewDestination] can branch on it.
+  final bool Function() _nativeReviewSupported;
+
+  /// Which destination this user's A/B variant assigns for leaving a review.
+  ///
+  /// Where no native prompt exists (Windows, Linux) Trustpilot is forced
+  /// regardless of the variant: the alternative is suppressing the prompt
+  /// outright, which left those users with no way to review at all.
+  ReviewDestination get reviewDestination =>
+      _nativeReviewSupported() ? _abTesting.reviewDestination : ReviewDestination.trustpilot;
 
   ReactionDisposer? _statusDisposer;
   ReactionDisposer? _authDisposer;
@@ -231,7 +247,9 @@ abstract class _ReviewPromptStore with Store {
       return reason;
     }
     // No point starting the flow if we can't ultimately open the native review.
-    if (!await _canShowNativeReview()) {
+    // The Trustpilot arm opens a webview (or the browser on desktop), so it is
+    // always reachable and this gate does not apply to it.
+    if (reviewDestination == ReviewDestination.store && !await _canShowNativeReview()) {
       return 'native_review_unavailable';
     }
     return suppressionReason; // Re-check: the probe above is async.
@@ -385,11 +403,14 @@ abstract class _ReviewPromptStore with Store {
     await _startCooldown(_config.cooldownNegativeMinutes);
   }
 
-  /// User tapped "Leave a review" — the native store prompt opens. Records the
-  /// native-review timestamp and starts the positive cooldown.
+  /// User tapped "Leave a review" — the assigned destination opens. Records the
+  /// review-opened timestamp and starts the positive cooldown.
   @action
   Future<void> onLeaveReview() async {
-    await _analytics.logEvent(AnalyticsEvent.nativeReviewPromptOpened);
+    await _analytics.logEvent(
+      AnalyticsEvent.nativeReviewPromptOpened,
+      parameters: {'destination': reviewDestination.name},
+    );
     await _prefs.setNativeReviewOpenedAt(_nowMs);
     await _startCooldown(_config.cooldownPositiveMinutes);
   }

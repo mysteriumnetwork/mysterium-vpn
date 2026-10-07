@@ -18,6 +18,7 @@ export 'products_screen_variant.dart';
 export 'protocol_type.dart';
 export 'rate_connection.dart';
 export 'redirect_source.dart';
+export 'review_destination.dart';
 export 'routes.dart';
 export 'setting_category.dart';
 export 'storage_keys.dart';

@@ -4,12 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../support/fake_url_launcher.dart';
 import '../support/test_localizations.dart';
 import 'review_prompt_dialog_test.mocks.dart';
 
@@ -32,6 +34,8 @@ void main() {
     analytics = MockAnalyticsStore();
     authSessionStore = MockAuthSessionStore();
     when(authSessionStore.isAuthenticated).thenReturn(true);
+    // Default arm; the Trustpilot group overrides it.
+    when(store.reviewDestination).thenReturn(ReviewDestination.store);
     SharedPreferences.setMockInitialValues({});
     // Keep the native-review side effect silent so the "Leave a review" path
     // doesn't hit a real platform channel.
@@ -140,5 +144,51 @@ void main() {
     await tester.tap(find.byType(ButtonPrimary)); // Leave a review
     await tester.pumpAndSettle();
     verify(store.onLeaveReview()).called(1);
+  });
+
+  group('Trustpilot arm', () {
+    late FakeUrlLauncher launcher;
+
+    setUp(() {
+      when(store.reviewDestination).thenReturn(ReviewDestination.trustpilot);
+      // No webview platform is registered under `flutter test`, so the flow
+      // takes its no-webview branch — which is the path this fake captures.
+      launcher = installFakeUrlLauncher();
+    });
+
+    testWidgets('Yes goes straight to Trustpilot with no second modal', (tester) async {
+      await openFlow(tester);
+      await tester.tap(find.byIcon(UntitledUI.thumbs_up));
+      await tester.pumpAndSettle();
+
+      verify(store.onSatisfactionYes()).called(1);
+      verify(store.onLeaveReview()).called(1);
+      // The intermediate modal would ask the same question the collector asks.
+      expect(find.byType(ButtonPrimary), findsNothing);
+      expect(launcher.launchedUrl, isNotNull);
+    });
+
+    testWidgets('without a webview it opens the public form, never the token url', (tester) async {
+      // Windows/Linux: handing the authenticated url to the OS browser would
+      // put the access token in its history and, on a failed launch, its
+      // clipboard.
+      when(authSessionStore.accessToken).thenReturn('jwt-token');
+      await openFlow(tester);
+      await tester.tap(find.byIcon(UntitledUI.thumbs_up));
+      await tester.pumpAndSettle();
+
+      expect(launcher.launchedUrl, contains('trustpilot.com/evaluate/'));
+      expect(launcher.launchedUrl, isNot(contains('access_token')));
+      expect(launcher.launchedUrl, isNot(contains('/app-review')));
+    });
+  });
+
+  group('store arm', () {
+    testWidgets('Yes still shows the intermediate modal', (tester) async {
+      await openFlow(tester);
+      await tester.tap(find.byIcon(UntitledUI.thumbs_up));
+      await tester.pumpAndSettle();
+      expect(find.byType(ButtonPrimary), findsOneWidget);
+    });
   });
 }

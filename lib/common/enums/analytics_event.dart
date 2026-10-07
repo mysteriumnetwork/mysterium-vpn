@@ -139,6 +139,7 @@ enum AnalyticsEvent {
   nativeReviewPromptOpened,
   reviewPromptNegativeClicked,
   feedbackFlowOpened,
+  reviewCollectorFallback,
   reviewPromptDismissed,
   reviewPromptCooldownStarted,
   ipRefreshExhaustedMessageShown,

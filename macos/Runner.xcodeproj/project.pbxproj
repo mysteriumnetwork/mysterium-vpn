@@ -26,11 +26,7 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
-		6198FAC921E6966AE77CE567 /* Pods_OVpnExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69537F5D7930AE56CC967958 /* Pods_OVpnExtension.framework */; };
-		AA1A2B3C4D5E6F0000000003 /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA1A2B3C4D5E6F0000000002 /* WireGuardKit */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
-		7A3FA883AC89AF4BDA273390 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A15643BBB2264B1A29C6CE2 /* Pods_Runner.framework */; };
-		7EF7285C7C37D036965B2CA0 /* Pods_tun.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC821B0DB56E1DD3159DDD5E /* Pods_tun.framework */; };
 		977662C22ECB8F6800BC54E9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C8B25C29D46D680017C38F /* NetworkExtension.framework */; };
 		977662CA2ECB8F6800BC54E9 /* OVpnExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 977662C12ECB8F6800BC54E9 /* OVpnExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		977D12902D5E4C6A00223A2A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 977D128F2D5E4C6A00223A2A /* StoreKit.framework */; };
@@ -39,6 +35,9 @@
 		97C8B25D29D46D680017C38F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C8B25C29D46D680017C38F /* NetworkExtension.framework */; };
 		97C8B26029D46D680017C38F /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C8B25F29D46D680017C38F /* PacketTunnelProvider.swift */; };
 		97C8B26529D46D680017C38F /* tun.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 97C8B25B29D46D680017C38F /* tun.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA1A2B3C4D5E6F0000000003 /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA1A2B3C4D5E6F0000000002 /* WireGuardKit */; };
+		AA1A2B3C4D5E6F0000000007 /* OpenVPNAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = AA1A2B3C4D5E6F0000000006 /* OpenVPNAdapter */; };
+		AA1A2B3C4D5E6F0000000009 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1A2B3C4D5E6F0000000008 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,9 +80,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0664CAC935AA33899D2083C9 /* Pods-OVpnExtension.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.release-prod.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.release-prod.xcconfig"; sourceTree = "<group>"; };
-		1B0AF861ED7598F38E9514F3 /* Pods-OVpnExtension.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.profile-dev.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.profile-dev.xcconfig"; sourceTree = "<group>"; };
-		2E08FEC24F92124C6D7160DD /* Pods-tun.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug-dev.xcconfig"; sourceTree = "<group>"; };
 		333000ED22D3DE5D00554162 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedPluginRegistrant.swift; sourceTree = "<group>"; };
 		33CC10ED2044A3C60003C045 /* Mysterium VPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mysterium VPN.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,17 +94,7 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
-		390386498A1EB506C0362F4D /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
-		3D285DA735C85069817DC933 /* Pods-tun.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile-prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile-prod.xcconfig"; sourceTree = "<group>"; };
-		4858BF13E46FB883F063E725 /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
-		51B0C54C8AF8BC2E97384C57 /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
-		540BFF559870E1A545E0F191 /* Pods-OVpnExtension.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.debug-dev.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.debug-dev.xcconfig"; sourceTree = "<group>"; };
-		5B08E0D6EDA9068590AA7A10 /* Pods-tun.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release-dev.xcconfig"; sourceTree = "<group>"; };
-		69537F5D7930AE56CC967958 /* Pods_OVpnExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OVpnExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C3E857D1A43D3E99F193490 /* Pods-OVpnExtension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.release-dev.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.release-dev.xcconfig"; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
-		7992B301DE97FDC5C94719E3 /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		7A15643BBB2264B1A29C6CE2 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		9704CC232A6A79F600FD7D99 /* tunTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tunTest.entitlements; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -118,18 +104,11 @@
 		97A706582CE646E400413133 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		97C8B25B29D46D680017C38F /* tun.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tun.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C8B25C29D46D680017C38F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		AA1A2B3C4D5E6F0000000008 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		97C8B25F29D46D680017C38F /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
 		97C8B26129D46D680017C38F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97C8B26229D46D680017C38F /* tun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tun.entitlements; sourceTree = "<group>"; };
-		A0C89C5CCE52EBFBB7B2924F /* Pods-OVpnExtension.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.debug-prod.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		AB691AACA3FA185ADA18EB46 /* Pods-tun.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.profile-dev.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.profile-dev.xcconfig"; sourceTree = "<group>"; };
-		AEA5990198BD482C2D5F0355 /* Pods-tun.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.debug-prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		BC9F853D07F485927383ADDA /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
-		C03067FD6F014CF07C412532 /* Pods-tun.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tun.release-prod.xcconfig"; path = "Target Support Files/Pods-tun/Pods-tun.release-prod.xcconfig"; sourceTree = "<group>"; };
-		DB83271AAF8776C8559C08DD /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
-		DFF7860D4BC3BC0670F9795E /* Pods-OVpnExtension.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OVpnExtension.profile-prod.xcconfig"; path = "Target Support Files/Pods-OVpnExtension/Pods-OVpnExtension.profile-prod.xcconfig"; sourceTree = "<group>"; };
 		F0425E822852949D39D1D7E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FC821B0DB56E1DD3159DDD5E /* Pods_tun.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tun.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -165,7 +144,6 @@
 				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 				977D12902D5E4C6A00223A2A /* StoreKit.framework in Frameworks */,
 				977D12922D5E4C7600223A2A /* AdServices.framework in Frameworks */,
-				7A3FA883AC89AF4BDA273390 /* Pods_Runner.framework in Frameworks */,
 				97A706592CE646E400413133 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,7 +153,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				977662C22ECB8F6800BC54E9 /* NetworkExtension.framework in Frameworks */,
-				6198FAC921E6966AE77CE567 /* Pods_OVpnExtension.framework in Frameworks */,
+				AA1A2B3C4D5E6F0000000007 /* OpenVPNAdapter in Frameworks */,
+				AA1A2B3C4D5E6F0000000009 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +164,6 @@
 			files = (
 				97C8B25D29D46D680017C38F /* NetworkExtension.framework in Frameworks */,
 				AA1A2B3C4D5E6F0000000003 /* WireGuardKit in Frameworks */,
-				7EF7285C7C37D036965B2CA0 /* Pods_tun.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,7 +190,6 @@
 				977662C32ECB8F6800BC54E9 /* OVpnExtension */,
 				33CC10EE2044A3C60003C045 /* Products */,
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
-				A8E52FCFC468ED640E1F661D /* Pods */,
 				F0425E822852949D39D1D7E7 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
@@ -274,31 +251,6 @@
 			path = tun;
 			sourceTree = "<group>";
 		};
-		A8E52FCFC468ED640E1F661D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7992B301DE97FDC5C94719E3 /* Pods-Runner.debug-prod.xcconfig */,
-				DB83271AAF8776C8559C08DD /* Pods-Runner.debug-dev.xcconfig */,
-				390386498A1EB506C0362F4D /* Pods-Runner.release-prod.xcconfig */,
-				4858BF13E46FB883F063E725 /* Pods-Runner.release-dev.xcconfig */,
-				BC9F853D07F485927383ADDA /* Pods-Runner.profile-prod.xcconfig */,
-				51B0C54C8AF8BC2E97384C57 /* Pods-Runner.profile-dev.xcconfig */,
-				AEA5990198BD482C2D5F0355 /* Pods-tun.debug-prod.xcconfig */,
-				2E08FEC24F92124C6D7160DD /* Pods-tun.debug-dev.xcconfig */,
-				C03067FD6F014CF07C412532 /* Pods-tun.release-prod.xcconfig */,
-				5B08E0D6EDA9068590AA7A10 /* Pods-tun.release-dev.xcconfig */,
-				3D285DA735C85069817DC933 /* Pods-tun.profile-prod.xcconfig */,
-				AB691AACA3FA185ADA18EB46 /* Pods-tun.profile-dev.xcconfig */,
-				A0C89C5CCE52EBFBB7B2924F /* Pods-OVpnExtension.debug-prod.xcconfig */,
-				540BFF559870E1A545E0F191 /* Pods-OVpnExtension.debug-dev.xcconfig */,
-				0664CAC935AA33899D2083C9 /* Pods-OVpnExtension.release-prod.xcconfig */,
-				6C3E857D1A43D3E99F193490 /* Pods-OVpnExtension.release-dev.xcconfig */,
-				DFF7860D4BC3BC0670F9795E /* Pods-OVpnExtension.profile-prod.xcconfig */,
-				1B0AF861ED7598F38E9514F3 /* Pods-OVpnExtension.profile-dev.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -306,9 +258,7 @@
 				977D128F2D5E4C6A00223A2A /* StoreKit.framework */,
 				97A706582CE646E400413133 /* AdSupport.framework */,
 				97C8B25C29D46D680017C38F /* NetworkExtension.framework */,
-				7A15643BBB2264B1A29C6CE2 /* Pods_Runner.framework */,
-				FC821B0DB56E1DD3159DDD5E /* Pods_tun.framework */,
-				69537F5D7930AE56CC967958 /* Pods_OVpnExtension.framework */,
+				AA1A2B3C4D5E6F0000000008 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -320,14 +270,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				ACC49430A0D577473095607E /* [CP] Check Pods Manifest.lock */,
 				97C8B26629D46D680017C38F /* Embed Foundation Extensions */,
 				3399D490228B24CF009A79C7 /* ShellScript */,
 				33CC10E92044A3C60003C045 /* Sources */,
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
 				97E13FD52A4F23E6000F2BBF /* Copy Goole-Service info */,
-				BEB7F37DAEF057C6F6C2E176 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -348,7 +296,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 977662D22ECB8F6800BC54E9 /* Build configuration list for PBXNativeTarget "OVpnExtension" */;
 			buildPhases = (
-				203E0B692E5D4C0626D0460B /* [CP] Check Pods Manifest.lock */,
 				977662BD2ECB8F6800BC54E9 /* Sources */,
 				977662BE2ECB8F6800BC54E9 /* Frameworks */,
 				977662BF2ECB8F6800BC54E9 /* Resources */,
@@ -361,18 +308,17 @@
 				977662C32ECB8F6800BC54E9 /* OVpnExtension */,
 			);
 			name = OVpnExtension;
+			packageProductDependencies = (
+				AA1A2B3C4D5E6F0000000006 /* OpenVPNAdapter */,
+			);
 			productName = OVpnExtension;
 			productReference = 977662C12ECB8F6800BC54E9 /* OVpnExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		97C8B25A29D46D680017C38F /* tun */ = {
-			packageProductDependencies = (
-				AA1A2B3C4D5E6F0000000002 /* WireGuardKit */,
-			);
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C8B26A29D46D680017C38F /* Build configuration list for PBXNativeTarget "tun" */;
 			buildPhases = (
-				B49676CBC2461E656A8ABB60 /* [CP] Check Pods Manifest.lock */,
 				97C8B25729D46D680017C38F /* Sources */,
 				97C8B25829D46D680017C38F /* Frameworks */,
 				97C8B25929D46D680017C38F /* Resources */,
@@ -382,6 +328,9 @@
 			dependencies = (
 			);
 			name = tun;
+			packageProductDependencies = (
+				AA1A2B3C4D5E6F0000000002 /* WireGuardKit */,
+			);
 			productName = tun;
 			productReference = 97C8B25B29D46D680017C38F /* tun.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -431,6 +380,7 @@
 			packageReferences = (
 				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
 				AA1A2B3C4D5E6F0000000001 /* XCRemoteSwiftPackageReference "wireguard-apple" */,
+				AA1A2B3C4D5E6F0000000005 /* XCRemoteSwiftPackageReference "OpenVPNAdapter" */,
 			);
 			productRefGroup = 33CC10EE2044A3C60003C045 /* Products */;
 			projectDirPath = "";
@@ -471,28 +421,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		203E0B692E5D4C0626D0460B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OVpnExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		3399D490228B24CF009A79C7 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -548,84 +476,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\n\nif [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp \"${PROJECT_DIR}/config/prod/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/Runner/GoogleService-Info.plist\"\necho \"Production plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\ncp \"${PROJECT_DIR}/config/dev/GoogleService-Info.plist\" \"${PLIST_DESTINATION}/Runner/GoogleService-Info.plist\"\necho \"Development plist copied\"\nfi\n";
-		};
-		ACC49430A0D577473095607E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B49676CBC2461E656A8ABB60 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-tun-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BEB7F37DAEF057C6F6C2E176 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E30DE00726ECCA9339E385BD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -741,8 +591,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
-				ENABLE_TESTING_SEARCH_PATHS = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
@@ -754,51 +602,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FLUTTER_TARGET = lib/main.dart;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/flutter_secure_storage_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_purchase_storekit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/package_info_plus\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/screen_retriever\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sentry_flutter\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/window_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/google_sign_in_ios\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sign_in_with_apple\"",
-				);
 				GOOGLE_CLIENT_ID = "104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -806,6 +611,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
 				PRODUCT_NAME = "Mysterium VPN";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -930,10 +736,7 @@
 		};
 		33CC10FC2044A3C60003C045 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7992B301DE97FDC5C94719E3 /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
-				ENABLE_TESTING_SEARCH_PATHS = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
@@ -945,51 +748,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FLUTTER_TARGET = lib/main.dart;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/flutter_secure_storage_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_purchase_storekit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/package_info_plus\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/screen_retriever\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sentry_flutter\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/window_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/google_sign_in_ios\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sign_in_with_apple\"",
-				);
 				GOOGLE_CLIENT_ID = "104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -997,6 +757,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
 				PRODUCT_NAME = "Mysterium VPN";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1009,10 +770,7 @@
 		};
 		33CC10FD2044A3C60003C045 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 390386498A1EB506C0362F4D /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
-				ENABLE_TESTING_SEARCH_PATHS = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpn;
 				APP_NAME = "Mysterium VPN";
@@ -1024,51 +782,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FLUTTER_TARGET = lib/main.dart;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/flutter_secure_storage_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_purchase_storekit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/package_info_plus\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/screen_retriever\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sentry_flutter\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/window_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/google_sign_in_ios\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sign_in_with_apple\"",
-				);
 				GOOGLE_CLIENT_ID = "104590535697-qlqv1si8krj17nvto6mrfgujhm81inti.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1076,6 +791,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn;
 				PRODUCT_NAME = "Mysterium VPN";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1103,7 +819,6 @@
 		};
 		977662CB2ECB8F6800BC54E9 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0C89C5CCE52EBFBB7B2924F /* Pods-OVpnExtension.debug-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1188,7 +903,6 @@
 		};
 		977662CC2ECB8F6800BC54E9 /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 540BFF559870E1A545E0F191 /* Pods-OVpnExtension.debug-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1273,7 +987,6 @@
 		};
 		977662CD2ECB8F6800BC54E9 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0664CAC935AA33899D2083C9 /* Pods-OVpnExtension.release-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1350,7 +1063,6 @@
 		};
 		977662CE2ECB8F6800BC54E9 /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C3E857D1A43D3E99F193490 /* Pods-OVpnExtension.release-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1427,7 +1139,6 @@
 		};
 		977662CF2ECB8F6800BC54E9 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DFF7860D4BC3BC0670F9795E /* Pods-OVpnExtension.profile-prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1504,7 +1215,6 @@
 		};
 		977662D02ECB8F6800BC54E9 /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B0AF861ED7598F38E9514F3 /* Pods-OVpnExtension.profile-dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1581,7 +1291,6 @@
 		};
 		97C8B26729D46D680017C38F /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEA5990198BD482C2D5F0355 /* Pods-tun.debug-prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1623,7 +1332,6 @@
 		};
 		97C8B26829D46D680017C38F /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C03067FD6F014CF07C412532 /* Pods-tun.release-prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1663,7 +1371,6 @@
 		};
 		97C8B26929D46D680017C38F /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D285DA735C85069817DC933 /* Pods-tun.profile-prod.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1759,10 +1466,7 @@
 		};
 		97E13FCA2A4F1DBD000F2BBF /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB83271AAF8776C8559C08DD /* Pods-Runner.debug-dev.xcconfig */;
 			buildSettings = {
-				ENABLE_TESTING_SEARCH_PATHS = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
@@ -1774,51 +1478,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FLUTTER_TARGET = lib/main.dart;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/flutter_secure_storage_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_purchase_storekit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/package_info_plus\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/screen_retriever\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sentry_flutter\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/window_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/google_sign_in_ios\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sign_in_with_apple\"",
-				);
 				GOOGLE_CLIENT_ID = "139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1826,6 +1487,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
 				PRODUCT_NAME = "Mysterium VPN Test";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1846,7 +1508,6 @@
 		};
 		97E13FCC2A4F1DBD000F2BBF /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E08FEC24F92124C6D7160DD /* Pods-tun.debug-dev.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1939,8 +1600,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
 			buildSettings = {
-				ENABLE_TESTING_SEARCH_PATHS = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
@@ -1952,51 +1611,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FLUTTER_TARGET = lib/main.dart;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/flutter_secure_storage_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_purchase_storekit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/package_info_plus\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/screen_retriever\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sentry_flutter\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/window_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/google_sign_in_ios\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sign_in_with_apple\"",
-				);
 				GOOGLE_CLIENT_ID = "139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2004,6 +1620,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
 				PRODUCT_NAME = "Mysterium VPN Test";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2023,7 +1640,6 @@
 		};
 		97E13FD02A4F1DC4000F2BBF /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB691AACA3FA185ADA18EB46 /* Pods-tun.profile-dev.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2112,10 +1728,7 @@
 		};
 		97E13FD22A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4858BF13E46FB883F063E725 /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
-				ENABLE_TESTING_SEARCH_PATHS = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_CUSTOM_SCHEME_URL = mysteriumvpntest;
 				APP_NAME = "Mysterium VPN Test";
@@ -2127,51 +1740,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 64RCS4PKRN;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FLUTTER_TARGET = lib/main.dart;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Sentry\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SentryPrivate\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/app_links\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_analytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/firebase_crashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/flutter_secure_storage_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_purchase_storekit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/package_info_plus\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/path_provider_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/screen_retriever\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sentry_flutter\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences_foundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/url_launcher_macos\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/window_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/wireguard_dart\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/in_app_review\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/tray_manager\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/google_sign_in_ios\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/sign_in_with_apple\"",
-				);
 				GOOGLE_CLIENT_ID = "139303438361-qi0fhvfmd6jeqef86q0b20dqq5ind2nd.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2179,6 +1749,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(OBJROOT)/GeneratedModuleMaps/PatrolImpl.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mysteriumvpn.test;
 				PRODUCT_NAME = "Mysterium VPN Test";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2198,7 +1769,6 @@
 		};
 		97E13FD42A4F1DCC000F2BBF /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B08E0D6EDA9068590AA7A10 /* Pods-tun.release-dev.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2322,17 +1892,30 @@
 				minimumVersion = 0.6.0;
 			};
 		};
+		AA1A2B3C4D5E6F0000000005 /* XCRemoteSwiftPackageReference "OpenVPNAdapter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ss-abramchuk/OpenVPNAdapter.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlutterGeneratedPluginSwiftPackage;
+		};
 		AA1A2B3C4D5E6F0000000002 /* WireGuardKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AA1A2B3C4D5E6F0000000001 /* XCRemoteSwiftPackageReference "wireguard-apple" */;
 			productName = WireGuardKit;
 		};
-		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
+		AA1A2B3C4D5E6F0000000006 /* OpenVPNAdapter */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = FlutterGeneratedPluginSwiftPackage;
+			package = AA1A2B3C4D5E6F0000000005 /* XCRemoteSwiftPackageReference "OpenVPNAdapter" */;
+			productName = OpenVPNAdapter;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

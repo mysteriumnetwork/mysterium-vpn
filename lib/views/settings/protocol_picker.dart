@@ -51,24 +51,32 @@ class ProtocolPicker extends ConsumerWidget {
     required VpnProtocolStore vpnProtocolStore,
     required AnalyticsStore analyticsStore,
   }) async {
-    if (vpnStore.isConnected) {
-      shownConfirmationDialog(
-        context,
-        confirmText: S.current.confirm,
-        cancelText: S.current.cancelBtn,
-        title: S.current.protocolPickerSettingTitle,
-        supportingText: S.current.protocolPickerSettingDesc,
-        onConfirm: () async {
-          analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
-          await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
-          await vpnProtocolStore.setProtocol(newProtocol);
-        },
-        onCancel: () {
-          analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeDeclined);
-        },
-      );
-    } else {
+    if (!vpnStore.isConnected) {
       await vpnProtocolStore.setProtocol(newProtocol);
+      return;
     }
+
+    // Awaited so the picker sheet pops on the answer, not on an unapplied pick.
+    var confirmed = false;
+    await shownConfirmationDialog(
+      context,
+      confirmText: S.current.confirm,
+      cancelText: S.current.cancelBtn,
+      title: S.current.protocolPickerSettingTitle,
+      supportingText: S.current.protocolPickerSettingDesc,
+      onConfirm: () {
+        analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeApproved);
+        confirmed = true;
+      },
+      onCancel: () {
+        analyticsStore.logEvent(AnalyticsEvent.changeProtocolTypeDeclined);
+      },
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
+    await vpnProtocolStore.setProtocol(newProtocol);
   }
 }
