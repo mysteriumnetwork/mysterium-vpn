@@ -1,0 +1,42 @@
+{
+  "name": "wireguard_dart",
+  "version": "0.0.1",
+  "summary": "Wireguard (darwin)",
+  "description": "Wireguard Dart SDK for iOS/macOS",
+  "homepage": "https://github.com/mysteriumnetwork/wireguard_dart",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Mysterium Network": "mysterium-dev@mysterium.network"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  },
+  "swift_versions": "5.7",
+  "ios": {
+    "dependencies": {
+      "Flutter": []
+    }
+  },
+  "osx": {
+    "dependencies": {
+      "FlutterMacOS": []
+    }
+  },
+  "platforms": {
+    "ios": "15.0",
+    "osx": "12.0"
+  },
+  "dependencies": {
+    "WireGuardKit": [
+      "0.5"
+    ]
+  },
+  "swift_version": "5.7"
+}

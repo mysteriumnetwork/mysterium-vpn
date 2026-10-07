@@ -1,0 +1,6 @@
+framework module openvpn_dart {
+  umbrella header "openvpn_dart-umbrella.h"
+
+  export *
+  module * { export * }
+}

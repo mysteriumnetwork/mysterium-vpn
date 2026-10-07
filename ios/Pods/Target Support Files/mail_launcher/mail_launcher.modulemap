@@ -1,0 +1,6 @@
+framework module mail_launcher {
+  umbrella header "mail_launcher-umbrella.h"
+
+  export *
+  module * { export * }
+}

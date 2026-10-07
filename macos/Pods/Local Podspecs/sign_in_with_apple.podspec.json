@@ -1,0 +1,41 @@
+{
+  "name": "sign_in_with_apple",
+  "version": "0.0.1",
+  "summary": "Flutter plugin for handling Sign in with Apple",
+  "description": "Flutter bridge to initiate Sign in with Apple (currently iOS only). Includes support for keychain entries as well as sign in with an Apple ID.",
+  "homepage": "https://github.com/aboutyou/dart_packages/tree/master/packages/sign_in_with_apple",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Timm Preetz": "timm.preetz@aboutyou.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "sign_in_with_apple/Sources/**/*",
+  "ios": {
+    "dependencies": {
+      "Flutter": [
+
+      ]
+    }
+  },
+  "osx": {
+    "dependencies": {
+      "FlutterMacOS": [
+
+      ]
+    }
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.14"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
+  },
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
+}

@@ -1,0 +1,6 @@
+framework module WireGuardKit {
+  umbrella header "WireGuardKit-umbrella.h"
+
+  export *
+  module * { export * }
+}
