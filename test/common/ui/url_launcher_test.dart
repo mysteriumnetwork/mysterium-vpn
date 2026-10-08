@@ -1,11 +1,14 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/ui/url_launcher.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
-import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 import '../../support/fake_url_launcher.dart';
+import '../../support/test_localizations.dart';
 
 class _FakeAnalyticsStore with AnalyticsStore {
   @override
@@ -55,23 +58,18 @@ void main() {
 
   group('openUrlLink logging', () {
     late _FakeAnalyticsStore analytics;
-    late UrlLauncherPlatform originalLauncher;
-
-    setUpAll(TestWidgetsFlutterBinding.ensureInitialized);
 
     setUp(() {
-      originalLauncher = UrlLauncherPlatform.instance;
       analytics = _FakeAnalyticsStore();
       analyticsStoreRef = analytics;
     });
     tearDown(() {
       analytics.dispose();
       analyticsStoreRef = null;
-      UrlLauncherPlatform.instance = originalLauncher;
     });
 
     test('logs web_redirect with redirect_success true on success', () async {
-      UrlLauncherPlatform.instance = FakeUrlLauncher();
+      installFakeUrlLauncher();
       final next = analytics.watchLogs().first;
 
       await openUrlLink(
@@ -89,7 +87,7 @@ void main() {
     });
 
     test('logs redirect_success false with sanitized error_reason on failure', () async {
-      UrlLauncherPlatform.instance = FakeUrlLauncher(canLaunchResult: false);
+      installFakeUrlLauncher(canLaunchResult: false);
       final next = analytics.watchLogs().first;
 
       await openUrlLink(
@@ -106,7 +104,7 @@ void main() {
     });
 
     test('logs redirect_success false when launchUrl returns false', () async {
-      UrlLauncherPlatform.instance = FakeUrlLauncher(launchResult: false);
+      installFakeUrlLauncher(launchResult: false);
       final next = analytics.watchLogs().first;
 
       await openUrlLink(Uri.parse('https://example.com/p'), source: RedirectSource.external);
@@ -117,7 +115,7 @@ void main() {
     });
 
     test('logs redirect_success false with error_reason when launchUrl throws', () async {
-      UrlLauncherPlatform.instance = FakeUrlLauncher(launchThrows: true);
+      installFakeUrlLauncher(launchThrows: true);
       final next = analytics.watchLogs().first;
 
       await openUrlLink(
@@ -131,6 +129,48 @@ void main() {
       expect(log.params?['error_reason'], isNotNull);
       expect(log.params?['target_url'], 'https://example.com/p');
       expect(log.params?['source'], 'web_checkout');
+    });
+  });
+
+  group('openAppUpdateSource on Windows', () {
+    /// Mounts a host wired to the global [snackbarKey] that runs the Windows
+    /// update path when tapped, mirroring an update button.
+    Future<void> pumpHost(WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          scaffoldMessengerKey: snackbarKey,
+          theme: DesignSystem.lightTheme,
+          locale: testLocale,
+          localizationsDelegates: testLocalizationsDelegates,
+          supportedLocales: testSupportedLocales,
+          home: Scaffold(
+            body: TextButton(
+              onPressed: () => openAppUpdateSource(isWindows: () => true),
+              child: const Text('update'),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('update'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('opens the GitHub MSIX asset and confirms it', (tester) async {
+      final launcher = installFakeUrlLauncher();
+
+      await pumpHost(tester);
+
+      expect(launcher.launchedUrl, windowsGithubDownloadLink);
+      expect(find.text(S.current.updateDownloadStarted), findsOneWidget);
+    });
+
+    testWidgets('offers the link to copy instead when the launch fails', (tester) async {
+      installFakeUrlLauncher(launchThrows: true);
+
+      await pumpHost(tester);
+
+      expect(find.text(S.current.updateDownloadStarted), findsNothing);
+      expect(find.text(S.current.copyLink), findsOneWidget);
     });
   });
 }

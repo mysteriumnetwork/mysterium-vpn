@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/ui/snackbar.dart';
+import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -46,6 +47,8 @@ Future<bool> openUrlLink(
     parameters['error_reason'] = e.toString().replaceAll(url.toString(), sanitizeRedirectUrl(url));
     showSnackbar(
       S.current.copyLink,
+      // Copies the url as-is, so an authenticated one puts its token on the
+      // clipboard — the same trade `navigateToUrl` already makes.
       action: IconButton(
         icon: const Icon(Icons.copy, size: 16),
         onPressed: () => Clipboard.setData(
@@ -68,10 +71,31 @@ Future<void> openAppStorePage() async {
       appStoreId: appStoreId,
       appStoreIdMacOS: appStoreIdMacOS,
       androidAppBundleId: androidAppBundleId,
-      windowsProductId: windowsProductId,
     );
   } catch (_) {
     // The store may be unavailable on this platform; nothing actionable.
+  }
+}
+
+/// Where an "update the app" button sends the user: the direct MSIX download on
+/// Windows, the platform store everywhere else.
+///
+/// [isWindows] is injectable because `Platform.isWindows` is always false on the
+/// test host, so the branch is otherwise unreachable in tests.
+Future<void> openAppUpdateSource({
+  @visibleForTesting bool Function() isWindows = isWindowsPlatform,
+}) => isWindows() ? _downloadWindowsUpdate() : openAppStorePage();
+
+/// Starts the MSIX download in the default browser and confirms it. On a failed
+/// launch [openUrlLink] already offers the link to copy.
+Future<void> _downloadWindowsUpdate() async {
+  final launched = await openUrlLink(
+    Uri.parse(windowsGithubDownloadLink),
+    source: RedirectSource.appUpdate,
+    mode: LaunchMode.externalApplication,
+  );
+  if (launched) {
+    showSnackbar(S.current.updateDownloadStarted, type: SnackbarType.success);
   }
 }
 

@@ -436,6 +436,7 @@ final Map<String, String Function(S)> kTrBridge = {
   'unprotectedLbl': (s) => s.unprotectedLbl,
   'unstableSpeedReason': (s) => s.unstableSpeedReason,
   'updateBtn': (s) => s.updateBtn,
+  'updateDownloadStarted': (s) => s.updateDownloadStarted,
   'userIntentBestSpeed': (s) => s.userIntentBestSpeed,
   'userIntentBestSpeedDesc': (s) => s.userIntentBestSpeedDesc,
   'userIntentLabel': (s) => s.userIntentLabel,

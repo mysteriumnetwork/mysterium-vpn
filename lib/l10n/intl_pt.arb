@@ -948,6 +948,8 @@
   "@unstableSpeedReason": {},
   "updateBtn": "Atualizar",
   "@updateBtn": {},
+  "updateDownloadStarted": "Download iniciado. Abra o arquivo para instalar a atualização.",
+  "@updateDownloadStarted": {},
   "userIntentBestSpeed": "Melhor velocidade",
   "@userIntentBestSpeed": {},
   "userIntentBestSpeedDesc": "Conecte-se ao servidor mais rápido disponível para desempenho ideal",

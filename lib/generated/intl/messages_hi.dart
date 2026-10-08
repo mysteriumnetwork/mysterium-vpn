@@ -816,6 +816,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("असुरक्षित"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("अस्थिर गति"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("अपडेट करें"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
+      "डाउनलोड शुरू हो गया। अपडेट इंस्टॉल करने के लिए फ़ाइल खोलें।",
+    ),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("बेहतरीन गति"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "बेहतरीन प्रदर्शन के लिए सबसे तेज़ उपलब्ध सर्वर से कनेक्ट करें",

@@ -948,6 +948,8 @@
   "@unstableSpeedReason": {},
   "updateBtn": "更新",
   "@updateBtn": {},
+  "updateDownloadStarted": "下载已开始。打开文件以安装更新。",
+  "@updateDownloadStarted": {},
   "userIntentBestSpeed": "最佳速度",
   "@userIntentBestSpeed": {},
   "userIntentBestSpeedDesc": "连接到最快的可用服务器，获得最佳性能",

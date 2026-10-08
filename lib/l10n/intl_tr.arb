@@ -948,6 +948,8 @@
   "@unstableSpeedReason": {},
   "updateBtn": "Güncelle",
   "@updateBtn": {},
+  "updateDownloadStarted": "İndirme başladı. Güncellemeyi yüklemek için dosyayı aç.",
+  "@updateDownloadStarted": {},
   "userIntentBestSpeed": "En iyi hız",
   "@userIntentBestSpeed": {},
   "userIntentBestSpeedDesc": "En iyi performans için mevcut en hızlı sunucuya bağlan",

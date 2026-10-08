@@ -516,6 +516,7 @@ class S {
     'unprotectedLbl': [],
     'unstableSpeedReason': [],
     'updateBtn': [],
+    'updateDownloadStarted': [],
     'userIntentBestSpeed': [],
     'userIntentBestSpeedDesc': [],
     'userIntentLabel': [],
@@ -3894,6 +3895,16 @@ class S {
   /// `Update`
   String get updateBtn {
     return Intl.message('Update', name: 'updateBtn', desc: '', args: []);
+  }
+
+  /// `Download started. Open the file to install the update.`
+  String get updateDownloadStarted {
+    return Intl.message(
+      'Download started. Open the file to install the update.',
+      name: 'updateDownloadStarted',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Best speed`

@@ -817,6 +817,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("KORUMASIZ"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Kararsız hız"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Güncelle"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
+      "İndirme başladı. Güncellemeyi yüklemek için dosyayı aç.",
+    ),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("En iyi hız"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "En iyi performans için mevcut en hızlı sunucuya bağlan",

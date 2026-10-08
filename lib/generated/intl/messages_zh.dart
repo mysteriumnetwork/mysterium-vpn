@@ -627,6 +627,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("未受保护"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("速度不稳定"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("更新"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage("下载已开始。打开文件以安装更新。"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("最佳速度"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage("连接到最快的可用服务器，获得最佳性能"),
     "userIntentLabel": MessageLookupByLibrary.simpleMessage("专用服务器"),

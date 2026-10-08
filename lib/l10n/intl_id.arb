@@ -948,6 +948,8 @@
   "@unstableSpeedReason": {},
   "updateBtn": "Perbarui",
   "@updateBtn": {},
+  "updateDownloadStarted": "Unduhan dimulai. Buka file untuk memasang pembaruan.",
+  "@updateDownloadStarted": {},
   "userIntentBestSpeed": "Kecepatan terbaik",
   "@userIntentBestSpeed": {},
   "userIntentBestSpeedDesc": "Terhubung ke server tercepat yang tersedia untuk performa optimal",

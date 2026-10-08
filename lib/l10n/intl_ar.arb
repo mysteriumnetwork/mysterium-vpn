@@ -948,6 +948,8 @@
   "@unstableSpeedReason": {},
   "updateBtn": "تحديث",
   "@updateBtn": {},
+  "updateDownloadStarted": "بدأ التنزيل. افتح الملف لتثبيت التحديث.",
+  "@updateDownloadStarted": {},
   "userIntentBestSpeed": "أفضل سرعة",
   "@userIntentBestSpeed": {},
   "userIntentBestSpeedDesc": "اتصل بأسرع خادم متاح للحصول على أداء مثالي",

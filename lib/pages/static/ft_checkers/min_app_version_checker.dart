@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/constants/constants.dart';
-import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/colored_scaffold.dart';
@@ -17,7 +14,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
-class MinAppVersionChecker extends HookConsumerWidget {
+class MinAppVersionChecker extends ConsumerWidget {
   const MinAppVersionChecker({required this.child, super.key});
 
   final Widget child;
@@ -26,20 +23,15 @@ class MinAppVersionChecker extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
-    final canContinue = useState(false);
 
     return Observer(
       builder: (context) {
         final currentBuildVersion = Env.buildInfo.buildVersion;
-        final minAppBuildNumber = getMinAppBuildNumber(
-          remoteConfigStore: remoteConfigStore,
-          installerStore: Env.buildInfo.installerStore,
-        );
+        final minAppBuildNumber = getMinAppBuildNumber(remoteConfigStore: remoteConfigStore);
         if (!isCurrentVersionBehind(
-              currentAppVersion: currentBuildVersion,
-              comparisonVersion: minAppBuildNumber,
-            ) ||
-            canContinue.value) {
+          currentAppVersion: currentBuildVersion,
+          comparisonVersion: minAppBuildNumber,
+        )) {
           return child;
         } else {
           return ColoredScaffold(
@@ -63,24 +55,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
                       ),
                       SizedBox(height: theme.spacing.md),
                       ButtonPrimary(
-                        onPressed: () async {
-                          try {
-                            if (Env.buildInfo.installerStore?.toLowerCase().contains(
-                                  windowsStandAloneProductId.toLowerCase(),
-                                ) ??
-                                false) {
-                              await openUrlLink(
-                                Uri.parse(windowsGithubDownloadLink),
-                                source: RedirectSource.appUpdate,
-                              );
-                            } else {
-                              await openAppStorePage();
-                            }
-                          } catch (e) {
-                            // Unable to open the store, unblock the user
-                            canContinue.value = true;
-                          }
-                        },
+                        onPressed: openAppUpdateSource,
                         child: Text(S.current.buttonUpdateApp),
                       ),
                       const Spacer(),
@@ -95,10 +70,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
     );
   }
 
-  String getMinAppBuildNumber({
-    required RemoteConfigStore remoteConfigStore,
-    required String? installerStore,
-  }) {
+  String getMinAppBuildNumber({required RemoteConfigStore remoteConfigStore}) {
     if (Platform.isAndroid) {
       return remoteConfigStore.minAndroidBuildNumber;
     } else if (Platform.isIOS) {
@@ -106,11 +78,7 @@ class MinAppVersionChecker extends HookConsumerWidget {
     } else if (Platform.isMacOS) {
       return remoteConfigStore.minMacosBuildNumber;
     } else if (Platform.isWindows) {
-      if (installerStore?.toLowerCase().contains(windowsStandAloneProductId.toLowerCase()) ??
-          false) {
-        return remoteConfigStore.minWindowsStandAloneBuildNumber;
-      }
-      return remoteConfigStore.minWindowsBuildNumber;
+      return remoteConfigStore.minWindowsStandAloneBuildNumber;
     }
     return '0';
   }
