@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/models/terms_conditions.dart';
 import 'package:mysterium_vpn/repositories/terms_conditions/terms_conditions_repository.dart';

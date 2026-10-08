@@ -307,7 +307,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     if (value is bool) {
       return value;
     }
-    return true;
+    return false;
   }
 
   /// Whether the News Center feature (bell entry point + feed page) is enabled.
