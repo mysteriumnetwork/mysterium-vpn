@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -27,25 +25,10 @@ void main() {
 
   setUp(() => config = MockRemoteConfigStore());
 
-  /// Stubs the min-version key for the host platform the suite runs on, so the
-  /// test exercises the same branch of `getMinAppBuildNumber` the host takes.
-  void stubMinVersion(String version) {
-    if (Platform.isMacOS) {
-      when(config.minMacosBuildNumber).thenReturn(version);
-    } else if (Platform.isWindows) {
-      when(config.minWindowsStandAloneBuildNumber).thenReturn(version);
-    } else if (Platform.isLinux) {
-      // No key for Linux: getMinAppBuildNumber returns '0', never blocking.
-      return;
-    } else if (Platform.isIOS) {
-      when(config.minIosBuildNumber).thenReturn(version);
-    } else {
-      when(config.minAndroidBuildNumber).thenReturn(version);
-    }
-  }
-
+  /// Pins the platform rather than reading the host's: CI runs this suite on
+  /// Linux, which ships no minimum and so could never render the wall.
   Future<void> pumpChecker(WidgetTester tester, {required String minVersion}) async {
-    stubMinVersion(minVersion);
+    when(config.minMacosBuildNumber).thenReturn(minVersion);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [remoteConfigStorePOD.overrideWithValue(config)],
@@ -54,7 +37,7 @@ void main() {
           locale: testLocale,
           localizationsDelegates: testLocalizationsDelegates,
           supportedLocales: testSupportedLocales,
-          home: const MinAppVersionChecker(child: Text('app content')),
+          home: const MinAppVersionChecker(operatingSystem: 'macos', child: Text('app content')),
         ),
       ),
     );
@@ -100,25 +83,28 @@ void main() {
   });
 
   group('getMinAppBuildNumber', () {
-    test('maps the host platform to its own remote-config key', () {
+    setUp(() {
       when(config.minAndroidBuildNumber).thenReturn('1.0.0');
       when(config.minIosBuildNumber).thenReturn('2.0.0');
       when(config.minMacosBuildNumber).thenReturn('3.0.0');
       when(config.minWindowsStandAloneBuildNumber).thenReturn('4.0.0');
+    });
 
-      final resolved = const MinAppVersionChecker(
-        child: SizedBox.shrink(),
-      ).getMinAppBuildNumber(remoteConfigStore: config);
+    String resolveFor(String os) => MinAppVersionChecker(
+      operatingSystem: os,
+      child: const SizedBox.shrink(),
+    ).getMinAppBuildNumber(remoteConfigStore: config);
 
-      final expected = switch (Platform.operatingSystem) {
-        'android' => '1.0.0',
-        'ios' => '2.0.0',
-        'macos' => '3.0.0',
-        'windows' => '4.0.0',
-        // Linux has no key and must never block.
-        _ => '0',
-      };
-      expect(resolved, expected);
+    test('maps each gated platform to its own remote-config key', () {
+      expect(resolveFor('android'), '1.0.0');
+      expect(resolveFor('ios'), '2.0.0');
+      expect(resolveFor('macos'), '3.0.0');
+      expect(resolveFor('windows'), '4.0.0');
+    });
+
+    test('never gates a platform without a minimum, so Linux resolves to 0', () {
+      expect(resolveFor('linux'), '0');
+      expect(resolveFor('fuchsia'), '0');
     });
   });
 }

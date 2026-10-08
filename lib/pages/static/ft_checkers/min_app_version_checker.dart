@@ -16,9 +16,14 @@ const _contentMaxWidth = 420.0;
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
 class MinAppVersionChecker extends ConsumerWidget {
-  const MinAppVersionChecker({required this.child, super.key});
+  const MinAppVersionChecker({required this.child, this.operatingSystem, super.key});
 
   final Widget child;
+
+  /// Overrides `Platform.operatingSystem`. Injectable because the suite runs on
+  /// Linux in CI, which ships no minimum and so can never render the wall.
+  @visibleForTesting
+  final String? operatingSystem;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,18 +44,15 @@ class MinAppVersionChecker extends ConsumerWidget {
     );
   }
 
-  String getMinAppBuildNumber({required RemoteConfigStore remoteConfigStore}) {
-    if (Platform.isAndroid) {
-      return remoteConfigStore.minAndroidBuildNumber;
-    } else if (Platform.isIOS) {
-      return remoteConfigStore.minIosBuildNumber;
-    } else if (Platform.isMacOS) {
-      return remoteConfigStore.minMacosBuildNumber;
-    } else if (Platform.isWindows) {
-      return remoteConfigStore.minWindowsStandAloneBuildNumber;
-    }
-    return '0';
-  }
+  String getMinAppBuildNumber({required RemoteConfigStore remoteConfigStore}) =>
+      switch (operatingSystem ?? Platform.operatingSystem) {
+        'android' => remoteConfigStore.minAndroidBuildNumber,
+        'ios' => remoteConfigStore.minIosBuildNumber,
+        'macos' => remoteConfigStore.minMacosBuildNumber,
+        'windows' => remoteConfigStore.minWindowsStandAloneBuildNumber,
+        // Linux ships no minimum, so it is never gated.
+        _ => '0',
+      };
 }
 
 /// Blocking screen shown when the installed build is below the remote minimum.
