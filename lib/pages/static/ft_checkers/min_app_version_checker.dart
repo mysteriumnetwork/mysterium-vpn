@@ -5,12 +5,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/components/colored_scaffold.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+
+const _contentMaxWidth = 420.0;
 
 /// Checks if the current app version is greater than or equal to the minimum required app version.
 /// Works only with PROD flavor.
@@ -21,7 +22,6 @@ class MinAppVersionChecker extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
 
     return Observer(
@@ -33,39 +33,8 @@ class MinAppVersionChecker extends ConsumerWidget {
           comparisonVersion: minAppBuildNumber,
         )) {
           return child;
-        } else {
-          return ColoredScaffold(
-            body: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(theme.spacing.xl2),
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(height: theme.spacing.xl6),
-                      const Logo(),
-                      const Spacer(),
-                      Text(
-                        S.current.featureToggleMinVersionNotSatisfied,
-                        textAlign: TextAlign.center,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textStyles.textLg.regular.copyWith(
-                          color: theme.palette.textPrimary,
-                        ),
-                      ),
-                      SizedBox(height: theme.spacing.md),
-                      ButtonPrimary(
-                        onPressed: openAppUpdateSource,
-                        child: Text(S.current.buttonUpdateApp),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
         }
+        return _UpdateWall(currentVersion: currentBuildVersion, requiredVersion: minAppBuildNumber);
       },
     );
   }
@@ -81,5 +50,121 @@ class MinAppVersionChecker extends ConsumerWidget {
       return remoteConfigStore.minWindowsStandAloneBuildNumber;
     }
     return '0';
+  }
+}
+
+/// Blocking screen shown when the installed build is below the remote minimum.
+/// States what is wrong, which versions are involved, and the one way out.
+class _UpdateWall extends StatelessWidget {
+  const _UpdateWall({required this.currentVersion, required this.requiredVersion});
+
+  final String currentVersion;
+  final String requiredVersion;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ModalScaffold(
+      appbar: const _LogoBar(),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: _contentMaxWidth),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DecoratedIcon(
+                  icon: UntitledUI.arrow_circle_up,
+                  decoration: IconDecoration(
+                    iconSize: 32,
+                    iconColor: theme.palette.iconBrandPrimary,
+                    backgroundColor: theme.palette.bgBrand,
+                    padding: EdgeInsets.all(theme.spacing.xl),
+                    borderRadius: const BorderRadius.all(Radius.kFull),
+                  ),
+                ),
+                SizedBox(height: theme.spacing.xl2),
+                Text(
+                  S.current.updateRequiredTitle,
+                  textAlign: TextAlign.center,
+                  style: theme.textStyles.displayXlg.bold,
+                ),
+                SizedBox(height: theme.spacing.ms),
+                Text(
+                  S.current.featureToggleMinVersionNotSatisfied,
+                  textAlign: TextAlign.center,
+                  style: theme.textStyles.textMd.regular.copyWith(
+                    color: theme.palette.textSecondary,
+                  ),
+                ),
+                SizedBox(height: theme.spacing.xl3),
+                DetailCard(
+                  title: S.current.updateCurrentVersionLbl,
+                  trailing: Text(
+                    currentVersion,
+                    style: theme.textStyles.textMd.regular.copyWith(
+                      color: theme.palette.textErrorPrimary,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  position: SettingsCardPosition.top,
+                ),
+                DetailCard(
+                  title: S.current.updateRequiredVersionLbl,
+                  trailing: Text(
+                    requiredVersion,
+                    style: theme.textStyles.textMd.semibold.copyWith(
+                      color: theme.palette.textBrandPrimary,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  position: SettingsCardPosition.bottom,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      footer: ModalFooter(
+        children: [
+          ButtonPrimary(
+            size: ButtonSize.large,
+            onPressed: openAppUpdateSource,
+            child: Text(S.current.buttonUpdateApp),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Logo bar for the wall. Deliberately transparent so the scaffold's gradient
+/// runs unbroken behind it, and does no `Navigator.of` lookup — this screen
+/// sits above the router's Navigator.
+class _LogoBar extends StatelessWidget implements PreferredSizeWidget {
+  const _LogoBar();
+
+  @override
+  Size get preferredSize => Size.fromHeight(Header.height + ScreenType.topSafeAreaInset());
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    return Padding(
+      padding: EdgeInsets.only(
+        top: MediaQuery.paddingOf(context).top,
+        left: isDesktop ? theme.spacing.xl3 : theme.spacing.md,
+        right: isDesktop ? theme.spacing.xl3 : theme.spacing.md,
+      ),
+      child: const SizedBox(
+        height: Header.height,
+        child: Align(alignment: Alignment.centerLeft, child: Logo(height: 24)),
+      ),
+    );
   }
 }

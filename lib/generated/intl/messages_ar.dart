@@ -776,9 +776,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("غير محمي"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("سرعة غير مستقرة"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("تحديث"),
+    "updateCurrentVersionLbl": MessageLookupByLibrary.simpleMessage("إصدارك"),
     "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
       "بدأ التنزيل. افتح الملف لتثبيت التحديث.",
     ),
+    "updateRequiredTitle": MessageLookupByLibrary.simpleMessage("التحديث مطلوب"),
+    "updateRequiredVersionLbl": MessageLookupByLibrary.simpleMessage("المطلوب"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("أفضل سرعة"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "اتصل بأسرع خادم متاح للحصول على أداء مثالي",

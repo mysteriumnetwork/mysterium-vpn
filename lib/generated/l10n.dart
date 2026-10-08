@@ -516,6 +516,9 @@ class S {
     'unprotectedLbl': [],
     'unstableSpeedReason': [],
     'updateBtn': [],
+    'updateCurrentVersionLbl': [],
+    'updateRequiredTitle': [],
+    'updateRequiredVersionLbl': [],
     'updateDownloadStarted': [],
     'userIntentBestSpeed': [],
     'userIntentBestSpeedDesc': [],
@@ -3895,6 +3898,21 @@ class S {
   /// `Update`
   String get updateBtn {
     return Intl.message('Update', name: 'updateBtn', desc: '', args: []);
+  }
+
+  /// `Your version`
+  String get updateCurrentVersionLbl {
+    return Intl.message('Your version', name: 'updateCurrentVersionLbl', desc: '', args: []);
+  }
+
+  /// `Update required`
+  String get updateRequiredTitle {
+    return Intl.message('Update required', name: 'updateRequiredTitle', desc: '', args: []);
+  }
+
+  /// `Required`
+  String get updateRequiredVersionLbl {
+    return Intl.message('Required', name: 'updateRequiredVersionLbl', desc: '', args: []);
   }
 
   /// `Download started. Open the file to install the update.`

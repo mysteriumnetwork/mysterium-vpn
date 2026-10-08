@@ -833,9 +833,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("NON PROTETTO"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Velocità instabile"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Aggiorna"),
+    "updateCurrentVersionLbl": MessageLookupByLibrary.simpleMessage("La tua versione"),
     "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
       "Download avviato. Apri il file per installare l\'aggiornamento.",
     ),
+    "updateRequiredTitle": MessageLookupByLibrary.simpleMessage("Aggiornamento necessario"),
+    "updateRequiredVersionLbl": MessageLookupByLibrary.simpleMessage("Necessaria"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("Massima velocità"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "Connettiti al server più veloce disponibile per prestazioni ottimali",
