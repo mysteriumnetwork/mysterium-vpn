@@ -32,12 +32,23 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [remoteConfigStorePOD.overrideWithValue(config)],
+        // `builder`, not `home`: in production FTCheckers is mounted in
+        // MaterialApp.router's builder, i.e. ABOVE the router's Navigator. The
+        // wall must render there, so the test mounts it the same way.
         child: MaterialApp(
           theme: DesignSystem.lightTheme,
           locale: testLocale,
           localizationsDelegates: testLocalizationsDelegates,
           supportedLocales: testSupportedLocales,
-          home: const MinAppVersionChecker(operatingSystem: 'macos', child: Text('app content')),
+          builder: (context, _) => Builder(
+            builder: (inner) {
+              expect(Navigator.maybeOf(inner), isNull);
+              return const MinAppVersionChecker(
+                operatingSystem: 'macos',
+                child: Text('app content'),
+              );
+            },
+          ),
         ),
       ),
     );

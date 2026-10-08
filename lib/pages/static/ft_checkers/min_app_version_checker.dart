@@ -68,7 +68,9 @@ class _UpdateWall extends StatelessWidget {
     final theme = Theme.of(context);
 
     return ModalScaffold(
-      appbar: const _LogoBar(),
+      // Transparent so the scaffold's gradient runs unbroken behind it, the
+      // same reason ModalAppbar uses this colour.
+      appbar: Header.logo(showBackButton: false, backgroundColor: Palette.transparent),
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
@@ -139,33 +141,6 @@ class _UpdateWall extends StatelessWidget {
             child: Text(S.current.buttonUpdateApp),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Logo bar for the wall. Deliberately transparent so the scaffold's gradient
-/// runs unbroken behind it, and does no `Navigator.of` lookup — this screen
-/// sits above the router's Navigator.
-class _LogoBar extends StatelessWidget implements PreferredSizeWidget {
-  const _LogoBar();
-
-  @override
-  Size get preferredSize => Size.fromHeight(Header.height + ScreenType.topSafeAreaInset());
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
-    return Padding(
-      padding: EdgeInsets.only(
-        top: MediaQuery.paddingOf(context).top,
-        left: isDesktop ? theme.spacing.xl3 : theme.spacing.md,
-        right: isDesktop ? theme.spacing.xl3 : theme.spacing.md,
-      ),
-      child: const SizedBox(
-        height: Header.height,
-        child: Align(alignment: Alignment.centerLeft, child: Logo(height: 24)),
       ),
     );
   }
