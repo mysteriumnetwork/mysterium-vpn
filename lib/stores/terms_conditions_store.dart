@@ -24,9 +24,13 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     required this._analyticsStore,
   }) {
     _disposer = reaction(
-      (_) => (_authSessionStore.isAuthenticated, _remoteConfigStore.termsConditionsEnabled),
+      (_) => (
+        _authSessionStore.isAuthenticated,
+        _remoteConfigStore.termsConditionsEnabled,
+        _themeStore.isDarkMode,
+      ),
       (state) {
-        final (isAuthenticated, enabled) = state;
+        final (isAuthenticated, enabled, _) = state;
         if (!isAuthenticated || !enabled) {
           _clear();
           return;
@@ -47,6 +51,8 @@ abstract class _TermsConditionsStore with Store, Disposeable {
 
   bool get _canCheck =>
       _authSessionStore.isAuthenticated && _remoteConfigStore.termsConditionsEnabled;
+
+  String get _termsTheme => _themeStore.isDarkMode ? 'dark' : 'light';
 
   void _clear() {
     _userAcceptedVersion = null;
@@ -85,7 +91,9 @@ abstract class _TermsConditionsStore with Store, Disposeable {
   @computed
   bool get isLoading => _isLoading;
 
+  @observable
   TermsAndConditions? _latestTermsConditions;
+  @computed
   TermsAndConditions? get latestTermsConditions => _latestTermsConditions;
 
   @observable
@@ -101,16 +109,15 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     }
 
     _isLoading = true;
+    final theme = _termsTheme;
 
     try {
       final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
       if (!_canCheck) {
         return;
       }
-      _userAcceptedVersion = checkUserVersion.isNullOrEmpty ? null : checkUserVersion;
+      _userAcceptedVersion = checkUserVersion;
 
-      // fetch latest terms conditions
-      final theme = _themeStore.isDarkMode ? 'dark' : 'light';
       final latestTermsConditions = await _termsConditionsRepository.getLatestVersion(theme);
       if (!_canCheck) {
         return;
@@ -126,23 +133,25 @@ abstract class _TermsConditionsStore with Store, Disposeable {
         _analyticsStore
             .logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name)
             .ignore();
-        return;
-      }
+      } else {
+        _failure = null;
 
-      _failure = null;
-
-      final needsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
-      if (!needsApproval) {
-        _requiresTermsConditionsApproval = false;
-        _loggedTermsOpened = false;
-        return;
+        final needsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
+        if (!needsApproval) {
+          _requiresTermsConditionsApproval = false;
+          _loggedTermsOpened = false;
+        } else {
+          _showPrompt();
+          _openTerms();
+        }
       }
-      _showPrompt();
-      _openTerms();
     } catch (_) {
-      return;
     } finally {
       _isLoading = false;
+    }
+
+    if (_canCheck && _termsTheme != theme) {
+      await checkForUpdatedTermsConditions();
     }
   }
 

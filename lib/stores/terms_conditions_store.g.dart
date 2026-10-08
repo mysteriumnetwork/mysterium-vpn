@@ -24,6 +24,14 @@ mixin _$TermsConditionsStore on _TermsConditionsStore, Store {
     () => super.isLoading,
     name: '_TermsConditionsStore.isLoading',
   )).value;
+  Computed<TermsAndConditions?>? _$latestTermsConditionsComputed;
+
+  @override
+  TermsAndConditions? get latestTermsConditions =>
+      (_$latestTermsConditionsComputed ??= Computed<TermsAndConditions?>(
+        () => super.latestTermsConditions,
+        name: '_TermsConditionsStore.latestTermsConditions',
+      )).value;
   Computed<bool>? _$requiresTermsConditionsApprovalComputed;
 
   @override
@@ -60,6 +68,24 @@ mixin _$TermsConditionsStore on _TermsConditionsStore, Store {
   set _isLoading(bool value) {
     _$_isLoadingAtom.reportWrite(value, super._isLoading, () {
       super._isLoading = value;
+    });
+  }
+
+  late final _$_latestTermsConditionsAtom = Atom(
+    name: '_TermsConditionsStore._latestTermsConditions',
+    context: context,
+  );
+
+  @override
+  TermsAndConditions? get _latestTermsConditions {
+    _$_latestTermsConditionsAtom.reportRead();
+    return super._latestTermsConditions;
+  }
+
+  @override
+  set _latestTermsConditions(TermsAndConditions? value) {
+    _$_latestTermsConditionsAtom.reportWrite(value, super._latestTermsConditions, () {
+      super._latestTermsConditions = value;
     });
   }
 
@@ -112,6 +138,7 @@ mixin _$TermsConditionsStore on _TermsConditionsStore, Store {
     return '''
 failure: ${failure},
 isLoading: ${isLoading},
+latestTermsConditions: ${latestTermsConditions},
 requiresTermsConditionsApproval: ${requiresTermsConditionsApproval}
     ''';
   }

@@ -113,7 +113,7 @@ void main() {
   });
 
   group('acceptVersion', () {
-    test('sends the version and completes on 200', () async {
+    test('sends the version and completes', () async {
       when(
         terms.acceptTerms(authTermsRequest: anyNamed('authTermsRequest')),
       ).thenAnswer((_) async => response(AuthTermsResponse(version: '2')));
@@ -129,38 +129,11 @@ void main() {
       verifyNever(logger.warning(any, any, any));
     });
 
-    test('throws when the response is not 200', () async {
-      when(
-        terms.acceptTerms(authTermsRequest: anyNamed('authTermsRequest')),
-      ).thenAnswer((_) async => response(AuthTermsResponse(version: '2'), statusCode: 500));
-
-      await expectLater(
-        build().acceptVersion(acceptedVersion: '2'),
-        throwsA(
-          isA<Exception>().having(
-            (error) => error.toString(),
-            'message',
-            contains('Failed to save accepted terms and conditions version'),
-          ),
-        ),
-      );
-      verify(logger.warning(any, any, any)).called(1);
-    });
-
-    test('logs and throws when the accept call throws', () async {
+    test('logs and rethrows when the accept call throws', () async {
       final error = Exception('offline');
       when(terms.acceptTerms(authTermsRequest: anyNamed('authTermsRequest'))).thenThrow(error);
 
-      await expectLater(
-        build().acceptVersion(acceptedVersion: '2'),
-        throwsA(
-          isA<Exception>().having(
-            (error) => error.toString(),
-            'message',
-            contains('Failed to save accepted terms and conditions version'),
-          ),
-        ),
-      );
+      await expectLater(build().acceptVersion(acceptedVersion: '2'), throwsA(same(error)));
       verify(logger.warning(any, error, any)).called(1);
     });
   });

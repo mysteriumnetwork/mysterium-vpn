@@ -26,15 +26,10 @@ class RestTermsConditionsRepository implements TermsConditionsRepository {
   Future<void> acceptVersion({required String acceptedVersion}) async {
     try {
       final request = AuthTermsRequest(version: acceptedVersion);
-      final response = await _api.getTerms().acceptTerms(authTermsRequest: request);
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception('Failed to save accepted terms and conditions version');
-      }
+      await _api.getTerms().acceptTerms(authTermsRequest: request);
     } catch (e, stackTrace) {
       _logger.warning('Error accepting terms and conditions version', e, stackTrace);
-      throw Exception('Failed to save accepted terms and conditions version');
+      rethrow;
     }
   }
 

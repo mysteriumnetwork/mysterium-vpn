@@ -229,6 +229,53 @@ void main() {
     expect(repository.themes, ['light']);
   });
 
+  test('refetches themed terms when dark mode changes while the prompt is showing', () async {
+    themeStore.themeMode = ThemeMode.light;
+    repository.acceptedVersion = '1';
+    await signIn();
+    expect(repository.themes, ['light']);
+    expect(store.requiresTermsConditionsApproval, isTrue);
+
+    themeStore.themeMode = ThemeMode.dark;
+    await pumpEventQueue();
+
+    expect(repository.themes, ['light', 'dark']);
+    expect(store.requiresTermsConditionsApproval, isTrue);
+  });
+
+  test('refetches when the theme changes during an in-flight check', () async {
+    themeStore.themeMode = ThemeMode.light;
+    repository
+      ..acceptedVersion = '1'
+      ..latestGate = Completer<TermsAndConditions?>();
+
+    runInAction(() => isAuthenticated.value = true);
+    await pumpEventQueue();
+    expect(repository.themes, ['light']);
+    expect(store.isLoading, isTrue);
+
+    themeStore.themeMode = ThemeMode.dark;
+    repository.latestGate!.complete(
+      const TermsAndConditions(content: '<p>terms</p>', version: '2'),
+    );
+    await pumpEventQueue();
+
+    expect(repository.themes, ['light', 'dark']);
+    expect(store.requiresTermsConditionsApproval, isTrue);
+    expect(store.isLoading, isFalse);
+  });
+
+  test('does not refetch on theme change while signed out', () async {
+    themeStore.themeMode = ThemeMode.light;
+    await pumpEventQueue();
+    expect(repository.latestCalls, 0);
+
+    themeStore.themeMode = ThemeMode.dark;
+    await pumpEventQueue();
+
+    expect(repository.latestCalls, 0);
+  });
+
   test('accepting saves the latest version and hides the prompt', () async {
     repository.acceptedVersion = '1';
     await signIn();
@@ -356,18 +403,22 @@ void main() {
     ).called(1);
   });
 
-  test('a later check sees an acceptance made outside the app', () async {
-    repository.acceptedVersion = '1';
-    await signIn();
-    expect(store.requiresTermsConditionsApproval, isTrue);
+  test(
+    'resume re-check hides the gate after the user accepted the latest version on another client',
+    () async {
+      repository.acceptedVersion = '1';
+      await signIn();
+      expect(store.requiresTermsConditionsApproval, isTrue);
+      expect(store.latestTermsConditions?.version, '2');
 
-    repository.acceptedVersion = '2';
-    await store.checkForUpdatedTermsConditions();
+      repository.acceptedVersion = '2';
+      await store.checkForUpdatedTermsConditions();
 
-    expect(repository.acceptedVersionCalls, 2);
-    expect(store.requiresTermsConditionsApproval, isFalse);
-    expect(store.failure, isNull);
-  });
+      expect(repository.acceptedVersionCalls, 2);
+      expect(store.requiresTermsConditionsApproval, isFalse);
+      expect(store.failure, isNull);
+    },
+  );
 
   test('a matching version hides a prompt that was already showing', () async {
     repository.acceptedVersion = '1';
