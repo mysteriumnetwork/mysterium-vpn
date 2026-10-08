@@ -356,6 +356,19 @@ void main() {
     ).called(1);
   });
 
+  test('a later check sees an acceptance made outside the app', () async {
+    repository.acceptedVersion = '1';
+    await signIn();
+    expect(store.requiresTermsConditionsApproval, isTrue);
+
+    repository.acceptedVersion = '2';
+    await store.checkForUpdatedTermsConditions();
+
+    expect(repository.acceptedVersionCalls, 2);
+    expect(store.requiresTermsConditionsApproval, isFalse);
+    expect(store.failure, isNull);
+  });
+
   test('a matching version hides a prompt that was already showing', () async {
     repository.acceptedVersion = '1';
     await signIn();

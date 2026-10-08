@@ -103,16 +103,11 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     _isLoading = true;
 
     try {
-      // fetch user accepted version
-      if (_userAcceptedVersion == null) {
-        final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
-        if (!_canCheck) {
-          return;
-        }
-        if (!checkUserVersion.isNullOrEmpty) {
-          _userAcceptedVersion = checkUserVersion;
-        }
+      final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
+      if (!_canCheck) {
+        return;
       }
+      _userAcceptedVersion = checkUserVersion.isNullOrEmpty ? null : checkUserVersion;
 
       // fetch latest terms conditions
       final theme = _themeStore.isDarkMode ? 'dark' : 'light';
