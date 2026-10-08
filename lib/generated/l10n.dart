@@ -487,6 +487,10 @@ class S {
     'system': [],
     'takeBackTheInternetLbl': [],
     'termsAndConditions': [],
+    'termsConditionsLoadFailureContent': [],
+    'termsConditionsLoadFailureTitle': [],
+    'termsConditionsSaveFailureContent': [],
+    'termsConditionsSaveFailureTitle': [],
     'title': [],
     'tokenAlreadyUsed': [],
     'toManyRequestsErrorMsg': [],
@@ -3664,6 +3668,46 @@ class S {
   /// `Terms and Conditions`
   String get termsAndConditions {
     return Intl.message('Terms and Conditions', name: 'termsAndConditions', desc: '', args: []);
+  }
+
+  /// `The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.`
+  String get termsConditionsLoadFailureContent {
+    return Intl.message(
+      'The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.',
+      name: 'termsConditionsLoadFailureContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't load the Terms & Conditions`
+  String get termsConditionsLoadFailureTitle {
+    return Intl.message(
+      'We couldn\'t load the Terms & Conditions',
+      name: 'termsConditionsLoadFailureTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong while accepting the updated Terms & Conditions. Please try again to continue using Mysterium VPN.`
+  String get termsConditionsSaveFailureContent {
+    return Intl.message(
+      'Something went wrong while accepting the updated Terms & Conditions. Please try again to continue using Mysterium VPN.',
+      name: 'termsConditionsSaveFailureContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't save your acceptance`
+  String get termsConditionsSaveFailureTitle {
+    return Intl.message(
+      'We couldn\'t save your acceptance',
+      name: 'termsConditionsSaveFailureTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Hello Sir`

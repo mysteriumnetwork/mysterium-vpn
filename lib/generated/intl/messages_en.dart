@@ -754,6 +754,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("Default"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Take back the internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Terms and Conditions"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "We couldn\'t load the Terms & Conditions",
+    ),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Something went wrong while accepting the updated Terms & Conditions. Please try again to continue using Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "We couldn\'t save your acceptance",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Hello Sir"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Too many requests. Please try again later.",

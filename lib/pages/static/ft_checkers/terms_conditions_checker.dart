@@ -164,6 +164,16 @@ class _TermsConditionsError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final (title, content) = switch (failure) {
+      TermsConditionsFailureType.saving => (
+        S.current.termsConditionsSaveFailureTitle,
+        S.current.termsConditionsSaveFailureContent,
+      ),
+      TermsConditionsFailureType.loading => (
+        S.current.termsConditionsLoadFailureTitle,
+        S.current.termsConditionsLoadFailureContent,
+      ),
+    };
     return Column(
       children: [
         SizedBox(height: isDesktop() ? theme.spacing.xl7 : theme.spacing.xl6),
@@ -171,8 +181,8 @@ class _TermsConditionsError extends StatelessWidget {
           icon: UntitledUI.alert_circle,
           screenType: ScreenType.mobile,
           type: AlertModalType.error,
-          title: failure.title,
-          supportingText: failure.content,
+          title: title,
+          supportingText: content,
           backgroundColor: theme.palette.bgPrimary,
           borderColor: theme.palette.borderPrimary,
           primaryButton: Row(
