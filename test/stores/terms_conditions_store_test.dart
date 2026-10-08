@@ -15,7 +15,11 @@ import '../support/test_prefs.dart';
 import '../support/test_repositories.dart';
 import 'terms_conditions_store_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<AuthSessionStore>(), MockSpec<RemoteConfigStore>()])
+@GenerateNiceMocks([
+  MockSpec<AuthSessionStore>(),
+  MockSpec<RemoteConfigStore>(),
+  MockSpec<AnalyticsStore>(),
+])
 class _TermsRepository implements TermsConditionsRepository {
   String? acceptedVersion;
   TermsAndConditions? latest = const TermsAndConditions(content: '<p>terms</p>', version: '2');
@@ -73,6 +77,7 @@ void main() {
   late Observable<bool> termsEnabled;
   late MockAuthSessionStore authSession;
   late MockRemoteConfigStore remoteConfig;
+  late MockAnalyticsStore analytics;
   late _TermsRepository repository;
   late ThemeStore themeStore;
   late TermsConditionsStore store;
@@ -83,6 +88,7 @@ void main() {
       themeStore: themeStore,
       authSessionStore: authSession,
       remoteConfigStore: remoteConfig,
+      analyticsStore: analytics,
     );
     addTearDown(built.dispose);
     return built;
@@ -98,6 +104,7 @@ void main() {
     termsEnabled = Observable(true);
     authSession = MockAuthSessionStore();
     remoteConfig = MockRemoteConfigStore();
+    analytics = MockAnalyticsStore();
     when(authSession.isAuthenticated).thenAnswer((_) => isAuthenticated.value);
     when(remoteConfig.termsConditionsEnabled).thenAnswer((_) => termsEnabled.value);
     repository = _TermsRepository();
@@ -122,6 +129,9 @@ void main() {
     expect(store.failure, isNull);
     expect(store.isLoading, isFalse);
     expect(store.latestTermsConditions?.version, '2');
+    verify(analytics.logTermsAcceptancePromptShown()).called(1);
+    verify(analytics.logTermsAcceptancePromptTermsOpened()).called(1);
+    verifyNever(analytics.logTermsAcceptancePromptError(any));
   });
 
   test('does not ask when the signed-in user already accepted the latest version', () async {
@@ -159,6 +169,11 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.failure, TermsConditionsFailureType.loading);
     expect(store.isLoading, isFalse);
+    verify(analytics.logTermsAcceptancePromptShown()).called(1);
+    verify(
+      analytics.logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name),
+    ).called(1);
+    verifyNever(analytics.logTermsAcceptancePromptTermsOpened());
   });
 
   test('stays quiet when a request throws', () async {
@@ -170,6 +185,8 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isFalse);
     expect(store.failure, isNull);
     expect(store.isLoading, isFalse);
+    verifyNever(analytics.logTermsAcceptancePromptShown());
+    verifyNever(analytics.logTermsAcceptancePromptError(any));
   });
 
   test('stays quiet when the latest request throws', () async {
@@ -222,6 +239,8 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isFalse);
     expect(store.failure, isNull);
     expect(store.isLoading, isFalse);
+    verify(analytics.logTermsAcceptancePromptClicked()).called(1);
+    verify(analytics.logTermsAcceptancePromptSuccess()).called(1);
   });
 
   test('a failed accept keeps the prompt and records a save failure', () async {
@@ -235,6 +254,11 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.failure, TermsConditionsFailureType.saving);
     expect(store.isLoading, isFalse);
+    verify(analytics.logTermsAcceptancePromptClicked()).called(1);
+    verify(
+      analytics.logTermsAcceptancePromptError(TermsConditionsFailureType.saving.name),
+    ).called(1);
+    verifyNever(analytics.logTermsAcceptancePromptSuccess());
   });
 
   test('accept does nothing when there is no latest version', () async {
@@ -242,6 +266,7 @@ void main() {
 
     expect(repository.savedVersion, isNull);
     expect(store.requiresTermsConditionsApproval, isFalse);
+    verifyNever(analytics.logTermsAcceptancePromptClicked());
   });
 
   test('logout hides the prompt', () async {
@@ -324,6 +349,11 @@ void main() {
     expect(store.failure, isNull);
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.latestTermsConditions?.version, '2');
+    verify(analytics.logTermsAcceptancePromptShown()).called(1);
+    verify(analytics.logTermsAcceptancePromptTermsOpened()).called(1);
+    verify(
+      analytics.logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name),
+    ).called(1);
   });
 
   test('a matching version hides a prompt that was already showing', () async {

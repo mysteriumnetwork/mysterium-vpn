@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/disposeable.dart';
 import 'package:mysterium_vpn/models/terms_conditions.dart';
 import 'package:mysterium_vpn/repositories/terms_conditions/terms_conditions_repository.dart';
+import 'package:mysterium_vpn/stores/analytics/analytics_store.dart';
 import 'package:mysterium_vpn/stores/auth/auth_session_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 import 'package:mysterium_vpn/stores/theme_store.dart';
@@ -20,6 +21,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     required this._themeStore,
     required this._authSessionStore,
     required this._remoteConfigStore,
+    required this._analyticsStore,
   }) {
     _disposer = reaction(
       (_) => (_authSessionStore.isAuthenticated, _remoteConfigStore.termsConditionsEnabled),
@@ -40,6 +42,8 @@ abstract class _TermsConditionsStore with Store, Disposeable {
   final AuthSessionStore _authSessionStore;
   final ThemeStore _themeStore;
   final RemoteConfigStore _remoteConfigStore;
+  final AnalyticsStore _analyticsStore;
+  var _loggedTermsOpened = false;
 
   bool get _canCheck =>
       _authSessionStore.isAuthenticated && _remoteConfigStore.termsConditionsEnabled;
@@ -50,6 +54,23 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     _requiresTermsConditionsApproval = false;
     _failure = null;
     _isLoading = false;
+    _loggedTermsOpened = false;
+  }
+
+  void _showPrompt() {
+    if (_requiresTermsConditionsApproval) {
+      return;
+    }
+    _requiresTermsConditionsApproval = true;
+    _analyticsStore.logTermsAcceptancePromptShown().ignore();
+  }
+
+  void _openTerms() {
+    if (_loggedTermsOpened) {
+      return;
+    }
+    _loggedTermsOpened = true;
+    _analyticsStore.logTermsAcceptancePromptTermsOpened().ignore();
   }
 
   String? _userAcceptedVersion;
@@ -105,15 +126,24 @@ abstract class _TermsConditionsStore with Store, Disposeable {
 
       // if no latest terms conditions, show loading error state
       if (_latestTermsConditions == null) {
-        _requiresTermsConditionsApproval = true;
+        _showPrompt();
         _failure = TermsConditionsFailureType.loading;
+        _analyticsStore
+            .logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name)
+            .ignore();
         return;
       }
 
       _failure = null;
 
-      // check if terms conditions are approved
-      _requiresTermsConditionsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
+      final needsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
+      if (!needsApproval) {
+        _requiresTermsConditionsApproval = false;
+        _loggedTermsOpened = false;
+        return;
+      }
+      _showPrompt();
+      _openTerms();
     } catch (_) {
       return;
     } finally {
@@ -128,6 +158,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     }
 
     _isLoading = true;
+    _analyticsStore.logTermsAcceptancePromptClicked().ignore();
 
     try {
       await _termsConditionsRepository.acceptVersion(
@@ -136,9 +167,14 @@ abstract class _TermsConditionsStore with Store, Disposeable {
       if (_canCheck) {
         _userAcceptedVersion = _latestTermsConditions!.version;
         _requiresTermsConditionsApproval = false;
+        _loggedTermsOpened = false;
+        _analyticsStore.logTermsAcceptancePromptSuccess().ignore();
       }
     } catch (e) {
       _failure = TermsConditionsFailureType.saving;
+      _analyticsStore
+          .logTermsAcceptancePromptError(TermsConditionsFailureType.saving.name)
+          .ignore();
     } finally {
       _isLoading = false;
     }

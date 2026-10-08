@@ -195,7 +195,12 @@ enum AnalyticsEvent {
   deviceLimitDialogShown,
   deviceLimitDashboardClicked,
   deviceLimitDismissed,
-  marketingConsentPromptShown;
+  marketingConsentPromptShown,
+  termsAcceptancePromptShown,
+  termsAcceptancePromptTermsOpened,
+  termsAcceptancePromptClicked,
+  termsAcceptancePromptSuccess,
+  termsAcceptancePromptError;
 
   String get formattedName => name.toSnakeCase;
 }

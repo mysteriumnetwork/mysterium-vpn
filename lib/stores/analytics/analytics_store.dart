@@ -496,6 +496,26 @@ mixin AnalyticsStore {
     await logEvent(AnalyticsEvent.marketingConsentPromptShown);
   }
 
+  Future<void> logTermsAcceptancePromptShown() async {
+    await logEvent(AnalyticsEvent.termsAcceptancePromptShown);
+  }
+
+  Future<void> logTermsAcceptancePromptTermsOpened() async {
+    await logEvent(AnalyticsEvent.termsAcceptancePromptTermsOpened);
+  }
+
+  Future<void> logTermsAcceptancePromptClicked() async {
+    await logEvent(AnalyticsEvent.termsAcceptancePromptClicked);
+  }
+
+  Future<void> logTermsAcceptancePromptSuccess() async {
+    await logEvent(AnalyticsEvent.termsAcceptancePromptSuccess);
+  }
+
+  Future<void> logTermsAcceptancePromptError(String reason) async {
+    await logEvent(AnalyticsEvent.termsAcceptancePromptError, parameters: {'reason': reason});
+  }
+
   Future<void> logPushNotificationsPromptShown() async {
     await logEvent(AnalyticsEvent.pushNotificationsPromptShown);
   }
