@@ -1,4 +1,0 @@
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WireGuardKit.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/mail_launcher.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openvpn_dart.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wireguard_dart.framework

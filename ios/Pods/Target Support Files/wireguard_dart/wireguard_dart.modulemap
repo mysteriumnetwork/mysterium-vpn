@@ -1,6 +1,0 @@
-framework module wireguard_dart {
-  umbrella header "wireguard_dart-umbrella.h"
-
-  export *
-  module * { export * }
-}

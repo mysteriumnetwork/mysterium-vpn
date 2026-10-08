@@ -1,6 +1,0 @@
-${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh
-${BUILT_PRODUCTS_DIR}/WireGuardKit/WireGuardKit.framework
-${BUILT_PRODUCTS_DIR}/mail_launcher/mail_launcher.framework
-${BUILT_PRODUCTS_DIR}/openvpn_dart/openvpn_dart.framework
-${BUILT_PRODUCTS_DIR}/wireguard_dart/wireguard_dart.framework
-${BUILT_PRODUCTS_DIR}/OpenVPNAdapter/OpenVPNAdapter.framework
