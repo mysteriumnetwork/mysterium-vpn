@@ -257,18 +257,18 @@ void main() {
       expect(store.termsConditionsEnabled, isFalse);
     });
 
-    test('defaults to true when not in config', () async {
+    test('defaults to false when not in config', () async {
       when(client.getAllValues()).thenAnswer((_) async => {});
       store = createStore();
       await store.configFuture;
-      expect(store.termsConditionsEnabled, isTrue);
+      expect(store.termsConditionsEnabled, isFalse);
     });
 
-    test('defaults to true when value has the wrong type', () async {
+    test('defaults to false when value has the wrong type', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': 'yes'});
       store = createStore();
       await store.configFuture;
-      expect(store.termsConditionsEnabled, isTrue);
+      expect(store.termsConditionsEnabled, isFalse);
     });
   });
 

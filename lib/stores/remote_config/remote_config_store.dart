@@ -300,7 +300,7 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   /// Whether the app checks for updated terms and conditions. Defaults to
-  /// `true`; ConfigCat can set it to `false` to stop the check.
+  /// `false`; ConfigCat can set it to `true` to start the check.
   @computed
   bool get termsConditionsEnabled {
     final value = config[_FeatureToggleKey.termsConditionsEnabled.name];
