@@ -44,7 +44,9 @@ class _TermsConditionsPage extends StatelessWidget {
     final isWide = ScreenType.of(context) >= ScreenType.tablet;
     final insets = EdgeInsets.fromLTRB(
       theme.spacing.md,
-      isWide ? theme.spacing.xl4 : 0,
+      // Figma starts the header at y=54 under a 54px status bar, but a real
+      // inset is ~24 on Android, so a bare 0 hugs the top.
+      isWide ? theme.spacing.xl4 : theme.spacing.md,
       theme.spacing.md,
       0,
     );

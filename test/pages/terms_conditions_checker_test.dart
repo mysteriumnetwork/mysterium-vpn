@@ -194,6 +194,28 @@ void main() {
     });
   }
 
+  // Spacing from the Figma mobile frame (375x812): header -> panel 24,
+  // panel -> bar 8, and the header clear of the status-bar inset.
+  testWidgets('mobile spacing matches the design', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(375, 812);
+    addTearDown(tester.view.reset);
+
+    stubGate(html: '<p>terms</p>');
+    await pumpChecker(tester);
+
+    final icon = tester.getRect(find.byType(DecoratedIcon));
+    final subtitle = tester.getRect(find.text(S.current.termsConditionsUpdatedSubtitle));
+    final panel = tester.getRect(
+      find.ancestor(of: find.byType(HtmlWidget), matching: find.byType(DecoratedBox)).first,
+    );
+    final bar = tester.getRect(find.byType(ButtonPrimary));
+
+    expect(icon.top, greaterThan(0), reason: 'header hugs the top inset');
+    expect(panel.top - subtitle.bottom, 24);
+    expect(bar.top - panel.bottom, greaterThanOrEqualTo(8.0));
+  });
+
   testWidgets('the document panel fills the width while loading', (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(375, 812);

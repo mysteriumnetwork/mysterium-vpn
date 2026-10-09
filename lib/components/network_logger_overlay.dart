@@ -67,24 +67,15 @@ class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayV
         // Own navigator, sibling of `child` so `Navigator.of` still finds the app router.
         if (_loggerOpen)
           Positioned.fill(
-            // Not PopScope: no ModalRoute here, so it would silently no-op.
-            child: BackButtonListener(
-              onBackButtonPressed: () async {
-                final navigator = _loggerNavigatorKey.currentState;
-                if (navigator != null && navigator.canPop()) {
-                  navigator.pop();
-                } else {
-                  _setLoggerOpen(open: false);
-                }
-                return true;
-              },
-              child: Navigator(
-                key: _loggerNavigatorKey,
-                observers: _loggerObservers,
-                onGenerateRoute: (settings) => MaterialPageRoute<void>(
-                  settings: settings,
-                  builder: (_) => NetworkLoggerScreen(),
-                ),
+            // No back-button hook: this sits above the app Router, so neither
+            // PopScope (needs a ModalRoute) nor BackButtonListener (needs a
+            // Router) can bind here. Closing is via the screen's own button.
+            child: Navigator(
+              key: _loggerNavigatorKey,
+              observers: _loggerObservers,
+              onGenerateRoute: (settings) => MaterialPageRoute<void>(
+                settings: settings,
+                builder: (_) => NetworkLoggerScreen(),
               ),
             ),
           ),
