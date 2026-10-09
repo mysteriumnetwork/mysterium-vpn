@@ -500,20 +500,20 @@ mixin AnalyticsStore {
     await logEvent(AnalyticsEvent.termsAcceptancePromptShown);
   }
 
-  Future<void> logTermsAcceptancePromptTermsOpened() async {
-    await logEvent(AnalyticsEvent.termsAcceptancePromptTermsOpened);
+  Future<void> logTermsAcceptanceTermsOpened() async {
+    await logEvent(AnalyticsEvent.termsAcceptanceTermsOpened);
   }
 
-  Future<void> logTermsAcceptancePromptClicked() async {
-    await logEvent(AnalyticsEvent.termsAcceptancePromptClicked);
+  Future<void> logTermsAcceptanceClicked() async {
+    await logEvent(AnalyticsEvent.termsAcceptanceClicked);
   }
 
-  Future<void> logTermsAcceptancePromptSuccess() async {
-    await logEvent(AnalyticsEvent.termsAcceptancePromptSuccess);
+  Future<void> logTermsAcceptanceSuccess() async {
+    await logEvent(AnalyticsEvent.termsAcceptanceSuccess);
   }
 
-  Future<void> logTermsAcceptancePromptError(String reason) async {
-    await logEvent(AnalyticsEvent.termsAcceptancePromptError, parameters: {'reason': reason});
+  Future<void> logTermsAcceptanceError(String reason) async {
+    await logEvent(AnalyticsEvent.termsAcceptanceError, parameters: {'reason': reason});
   }
 
   Future<void> logPushNotificationsPromptShown() async {

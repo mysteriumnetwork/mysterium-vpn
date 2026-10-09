@@ -115,23 +115,30 @@ class MyApp extends HookConsumerWidget {
                                 physics: const BouncingScrollPhysics(),
                               ),
                               child: AppDeferredInitWidget(
-                                child: FTCheckers(
-                                  child: NetworkLoggerOverlayView(
-                                    // Remount the pages when OTA translations arrive
-                                    // or the locale changes, so const widgets re-read
-                                    // the non-observable `S.current`.
-                                    //
-                                    // Scoped BELOW the Beamer `Router` on purpose: a
-                                    // revision bump must NOT rebuild `MaterialApp.router`
-                                    // / the `Router`, otherwise `BeamerDelegate` runs its
-                                    // route restoration and calls `notifyListeners()`
-                                    // during the build phase ("setState() called during
-                                    // build"), which flakily crashes locale switches
-                                    // (debug asserts) — see settings_language_test.
-                                    child: ValueListenableBuilder<int>(
-                                      valueListenable: localizationRevision,
-                                      builder: (_, revision, _) =>
-                                          KeyedSubtree(key: ValueKey(revision), child: child!),
+                                // Remount the pages when OTA translations arrive
+                                // or the locale changes, so const widgets re-read
+                                // the non-observable `S.current`.
+                                //
+                                // Scoped BELOW the Beamer `Router` on purpose: a
+                                // revision bump must NOT rebuild `MaterialApp.router`
+                                // / the `Router`, otherwise `BeamerDelegate` runs its
+                                // route restoration and calls `notifyListeners()`
+                                // during the build phase ("setState() called during
+                                // build"), which flakily crashes locale switches
+                                // (debug asserts).
+                                //
+                                // FTCheckers is inside the revision subtree so the
+                                // gate / maintenance / forced-update screens re-read
+                                // `S.current` too. The logger overlay stays outside
+                                // it: it must survive a checker replacing the router
+                                // subtree, and a revision bump must not reset its
+                                // state or close an open log.
+                                child: NetworkLoggerOverlayView(
+                                  child: ValueListenableBuilder<int>(
+                                    valueListenable: localizationRevision,
+                                    builder: (_, revision, _) => KeyedSubtree(
+                                      key: ValueKey(revision),
+                                      child: FTCheckers(child: child!),
                                     ),
                                   ),
                                 ),

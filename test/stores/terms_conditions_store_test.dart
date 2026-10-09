@@ -23,28 +23,38 @@ import 'terms_conditions_store_test.mocks.dart';
 class _TermsRepository implements TermsConditionsRepository {
   String? acceptedVersion;
   TermsAndConditions? latest = const TermsAndConditions(content: '<p>terms</p>', version: '2');
-  Completer<String?>? acceptedVersionGate;
+
+  /// Version the consent endpoint advertises. Defaults to [latest]'s version;
+  /// set it explicitly to model "a version is due but its text won't load".
+  String? advertisedLatestVersion;
+  Completer<TermsConsent>? consentGate;
   Completer<TermsAndConditions?>? latestGate;
-  int acceptedVersionCalls = 0;
+  int consentCalls = 0;
   int latestCalls = 0;
   final List<String> themes = [];
   Exception? acceptError;
-  Exception? acceptedVersionError;
+  Completer<void>? acceptGate;
+  Exception? consentError;
   Exception? latestError;
   String? savedVersion;
 
   @override
-  Future<String?> checkUserAcceptedVersion() {
-    acceptedVersionCalls++;
-    final gate = acceptedVersionGate;
+  Future<TermsConsent> getConsent() {
+    consentCalls++;
+    final gate = consentGate;
     if (gate != null) {
       return gate.future;
     }
-    final error = acceptedVersionError;
+    final error = consentError;
     if (error != null) {
-      return Future<String?>.error(error);
+      return Future<TermsConsent>.error(error);
     }
-    return Future<String?>.value(acceptedVersion);
+    return Future<TermsConsent>.value(
+      TermsConsent(
+        acceptedVersion: acceptedVersion,
+        latestVersion: advertisedLatestVersion ?? latest?.version,
+      ),
+    );
   }
 
   @override
@@ -64,6 +74,10 @@ class _TermsRepository implements TermsConditionsRepository {
 
   @override
   Future<void> acceptVersion({required String acceptedVersion}) async {
+    final gate = acceptGate;
+    if (gate != null) {
+      await gate.future;
+    }
     final error = acceptError;
     if (error != null) {
       throw error;
@@ -115,7 +129,7 @@ void main() {
   test('does not check while signed out', () async {
     await pumpEventQueue();
 
-    expect(repository.acceptedVersionCalls, 0);
+    expect(repository.consentCalls, 0);
     expect(repository.latestCalls, 0);
     expect(store.requiresTermsConditionsApproval, isFalse);
   });
@@ -130,8 +144,8 @@ void main() {
     expect(store.isLoading, isFalse);
     expect(store.latestTermsConditions?.version, '2');
     verify(analytics.logTermsAcceptancePromptShown()).called(1);
-    verify(analytics.logTermsAcceptancePromptTermsOpened()).called(1);
-    verifyNever(analytics.logTermsAcceptancePromptError(any));
+    verify(analytics.logTermsAcceptanceTermsOpened()).called(1);
+    verifyNever(analytics.logTermsAcceptanceError(any));
   });
 
   test('does not ask when the signed-in user already accepted the latest version', () async {
@@ -159,9 +173,10 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isTrue);
   });
 
-  test('shows a load failure when there is no terms text', () async {
+  test('shows a load failure when the due terms text is missing', () async {
     repository
       ..acceptedVersion = null
+      ..advertisedLatestVersion = '2'
       ..latest = null;
 
     await signIn();
@@ -170,14 +185,12 @@ void main() {
     expect(store.failure, TermsConditionsFailureType.loading);
     expect(store.isLoading, isFalse);
     verify(analytics.logTermsAcceptancePromptShown()).called(1);
-    verify(
-      analytics.logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name),
-    ).called(1);
-    verifyNever(analytics.logTermsAcceptancePromptTermsOpened());
+    verify(analytics.logTermsAcceptanceError(TermsConditionsFailureType.loading.name)).called(1);
+    verifyNever(analytics.logTermsAcceptanceTermsOpened());
   });
 
-  test('stays quiet when a request throws', () async {
-    repository.acceptedVersionError = Exception('offline');
+  test('leaves the app alone when consent cannot be loaded', () async {
+    repository.consentError = Exception('offline');
 
     await signIn();
 
@@ -186,24 +199,25 @@ void main() {
     expect(store.failure, isNull);
     expect(store.isLoading, isFalse);
     verifyNever(analytics.logTermsAcceptancePromptShown());
-    verifyNever(analytics.logTermsAcceptancePromptError(any));
+    verifyNever(analytics.logTermsAcceptanceError(any));
   });
 
-  test('stays quiet when the latest request throws', () async {
+  test('keeps the gate up when the terms text request throws', () async {
     repository
       ..acceptedVersion = null
       ..latestError = Exception('offline');
 
     await signIn();
 
-    expect(store.requiresTermsConditionsApproval, isFalse);
-    expect(store.failure, isNull);
+    expect(store.requiresTermsConditionsApproval, isTrue);
+    expect(store.failure, TermsConditionsFailureType.loading);
     expect(store.isLoading, isFalse);
   });
 
   test('shows a load failure when the user version exists but the latest text does not', () async {
     repository
       ..acceptedVersion = '1'
+      ..advertisedLatestVersion = '2'
       ..latest = null;
 
     await signIn();
@@ -265,6 +279,21 @@ void main() {
     expect(store.isLoading, isFalse);
   });
 
+  test('does not refetch on theme change once the terms are accepted', () async {
+    themeStore.themeMode = ThemeMode.light;
+    repository.acceptedVersion = '2';
+    await signIn();
+    expect(store.requiresTermsConditionsApproval, isFalse);
+    expect(repository.latestCalls, 0);
+    final consentCalls = repository.consentCalls;
+
+    themeStore.themeMode = ThemeMode.dark;
+    await pumpEventQueue();
+
+    expect(repository.consentCalls, consentCalls);
+    expect(repository.latestCalls, 0);
+  });
+
   test('does not refetch on theme change while signed out', () async {
     themeStore.themeMode = ThemeMode.light;
     await pumpEventQueue();
@@ -286,8 +315,9 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isFalse);
     expect(store.failure, isNull);
     expect(store.isLoading, isFalse);
-    verify(analytics.logTermsAcceptancePromptClicked()).called(1);
-    verify(analytics.logTermsAcceptancePromptSuccess()).called(1);
+    expect(store.isAccepting, isFalse);
+    verify(analytics.logTermsAcceptanceClicked()).called(1);
+    verify(analytics.logTermsAcceptanceSuccess()).called(1);
   });
 
   test('a failed accept keeps the prompt and records a save failure', () async {
@@ -301,11 +331,62 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.failure, TermsConditionsFailureType.saving);
     expect(store.isLoading, isFalse);
-    verify(analytics.logTermsAcceptancePromptClicked()).called(1);
-    verify(
-      analytics.logTermsAcceptancePromptError(TermsConditionsFailureType.saving.name),
-    ).called(1);
-    verifyNever(analytics.logTermsAcceptancePromptSuccess());
+    expect(store.isAccepting, isFalse);
+    verify(analytics.logTermsAcceptanceClicked()).called(1);
+    verify(analytics.logTermsAcceptanceError(TermsConditionsFailureType.saving.name)).called(1);
+    verifyNever(analytics.logTermsAcceptanceSuccess());
+  });
+
+  test('a resume re-check never looks like an acceptance in flight', () async {
+    repository.acceptedVersion = '1';
+    await signIn();
+    expect(store.requiresTermsConditionsApproval, isTrue);
+
+    repository.latestGate = Completer<TermsAndConditions?>();
+    final resumeCheck = store.checkForUpdatedTermsConditions();
+
+    expect(store.isLoading, isTrue);
+    expect(store.isAccepting, isFalse);
+
+    repository.latestGate!.complete(
+      const TermsAndConditions(content: '<p>terms</p>', version: '2'),
+    );
+    await resumeCheck;
+
+    expect(store.isLoading, isFalse);
+    expect(store.isAccepting, isFalse);
+  });
+
+  test('accepting reports isAccepting, not isLoading', () async {
+    repository
+      ..acceptedVersion = '1'
+      ..acceptGate = Completer<void>();
+    await signIn();
+
+    final accept = store.acceptTermsConditions();
+    expect(store.isAccepting, isTrue);
+    expect(store.isLoading, isFalse);
+
+    repository.acceptGate!.complete();
+    await accept;
+
+    expect(store.isAccepting, isFalse);
+  });
+
+  test('a check that starts while accepting is ignored', () async {
+    repository
+      ..acceptedVersion = '1'
+      ..acceptGate = Completer<void>();
+    await signIn();
+    final consentCalls = repository.consentCalls;
+
+    final accept = store.acceptTermsConditions();
+    await store.checkForUpdatedTermsConditions();
+
+    expect(repository.consentCalls, consentCalls);
+
+    repository.acceptGate!.complete();
+    await accept;
   });
 
   test('accept does nothing when there is no latest version', () async {
@@ -313,7 +394,7 @@ void main() {
 
     expect(repository.savedVersion, isNull);
     expect(store.requiresTermsConditionsApproval, isFalse);
-    verifyNever(analytics.logTermsAcceptancePromptClicked());
+    verifyNever(analytics.logTermsAcceptanceClicked());
   });
 
   test('logout hides the prompt', () async {
@@ -341,7 +422,7 @@ void main() {
 
     await signIn();
 
-    expect(repository.acceptedVersionCalls, 2);
+    expect(repository.consentCalls, 2);
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.latestTermsConditions?.version, '3');
   });
@@ -352,7 +433,7 @@ void main() {
 
     await signIn();
 
-    expect(repository.acceptedVersionCalls, 0);
+    expect(repository.consentCalls, 0);
     expect(repository.latestCalls, 0);
     expect(store.requiresTermsConditionsApproval, isFalse);
   });
@@ -374,7 +455,7 @@ void main() {
     runInAction(() => termsEnabled.value = false);
     repository.acceptedVersion = '1';
     await signIn();
-    expect(repository.acceptedVersionCalls, 0);
+    expect(repository.consentCalls, 0);
 
     runInAction(() => termsEnabled.value = true);
     await pumpEventQueue();
@@ -386,6 +467,7 @@ void main() {
   test('a successful reload clears a previous load failure', () async {
     repository
       ..acceptedVersion = '1'
+      ..advertisedLatestVersion = '2'
       ..latest = null;
     await signIn();
     expect(store.failure, TermsConditionsFailureType.loading);
@@ -397,10 +479,8 @@ void main() {
     expect(store.requiresTermsConditionsApproval, isTrue);
     expect(store.latestTermsConditions?.version, '2');
     verify(analytics.logTermsAcceptancePromptShown()).called(1);
-    verify(analytics.logTermsAcceptancePromptTermsOpened()).called(1);
-    verify(
-      analytics.logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name),
-    ).called(1);
+    verify(analytics.logTermsAcceptanceTermsOpened()).called(1);
+    verify(analytics.logTermsAcceptanceError(TermsConditionsFailureType.loading.name)).called(1);
   });
 
   test(
@@ -414,7 +494,7 @@ void main() {
       repository.acceptedVersion = '2';
       await store.checkForUpdatedTermsConditions();
 
-      expect(repository.acceptedVersionCalls, 2);
+      expect(repository.consentCalls, 2);
       expect(store.requiresTermsConditionsApproval, isFalse);
       expect(store.failure, isNull);
     },
@@ -436,14 +516,16 @@ void main() {
     'a check that finishes after logout does not show the prompt or keep the old version',
     () async {
       repository
-        ..acceptedVersionGate = Completer<String?>()
+        ..consentGate = Completer<TermsConsent>()
         ..latestGate = Completer<TermsAndConditions?>();
 
       runInAction(() => isAuthenticated.value = true);
       expect(store.isLoading, isTrue);
 
       runInAction(() => isAuthenticated.value = false);
-      repository.acceptedVersionGate!.complete('1');
+      repository.consentGate!.complete(
+        const TermsConsent(acceptedVersion: '1', latestVersion: '2'),
+      );
       repository.latestGate!.complete(
         const TermsAndConditions(content: '<p>terms</p>', version: '2'),
       );
@@ -455,12 +537,12 @@ void main() {
       expect(repository.latestCalls, 0);
 
       repository
-        ..acceptedVersionGate = null
+        ..consentGate = null
         ..latestGate = null
         ..acceptedVersion = null;
       await signIn();
 
-      expect(repository.acceptedVersionCalls, 2);
+      expect(repository.consentCalls, 2);
       expect(store.requiresTermsConditionsApproval, isTrue);
     },
   );

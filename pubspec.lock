@@ -754,6 +754,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_widget_from_html_core:
+    dependency: "direct main"
+    description:
+      name: flutter_widget_from_html_core
+      sha256: "530f2e3cc57be1a00f8bfae1b0000064e8a6df0cf1fb4d48a80f85afde9b39b7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.17.4"
   freezed:
     dependency: "direct dev"
     description:
@@ -1279,8 +1287,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.36"
-      resolved-ref: "1b65afa35dbe19d8912eed3cc772733864b8ce52"
+      ref: "fix/alert_modal_adjustment"
+      resolved-ref: f86c633d58caaf50390bd95fcbf861d3abc560b2
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
@@ -2127,11 +2135,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.93"
-      resolved-ref: "1b1aa8ed506f445df0963641eccf685ecea3fa94"
+      ref: "1.0.100"
+      resolved-ref: ea60fe6fbcb73f834893f5246f379007858da5e5
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.93+73"
+    version: "1.0.100+80"
   watcher:
     dependency: transitive
     description:

@@ -50,9 +50,6 @@ void main() {
     return store;
   }
 
-  void dispatch(SmartRefreshStore store, AppLifecycleState state) =>
-      store.didChangeAppLifecycleState(state);
-
   test('constructs and disposes cleanly', () async {
     final store = SmartRefreshStore(locations, subscriptions, authSession, termsConditions, logger);
     await store.dispose();
@@ -79,16 +76,11 @@ void main() {
     verify(logger.handle(error, any)).called(1);
   });
 
-  testWidgets('resume checks terms after the debounce and the next frame', (tester) async {
-    final store = buildStore();
-
-    dispatch(store, AppLifecycleState.resumed);
-
+  testWidgets('resume checks terms after the debounce', (tester) async {
+    buildStore().didChangeAppLifecycleState(AppLifecycleState.resumed);
     verifyNever(termsConditions.checkForUpdatedTermsConditions());
 
     await tester.pump(const Duration(milliseconds: 500));
-    WidgetsBinding.instance.scheduleFrame();
-    await tester.pump();
 
     verify(termsConditions.checkForUpdatedTermsConditions()).called(1);
   });

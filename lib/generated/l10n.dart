@@ -487,10 +487,17 @@ class S {
     'system': [],
     'takeBackTheInternetLbl': [],
     'termsAndConditions': [],
+    'termsConditionsAcceptBtn': [],
+    'termsConditionsAcceptingBtn': [],
+    'termsConditionsLoading': [],
+    'termsConditionsLoadingBtn': [],
+    'termsConditionsCheckingBtn': [],
     'termsConditionsLoadFailureContent': [],
     'termsConditionsLoadFailureTitle': [],
     'termsConditionsSaveFailureContent': [],
     'termsConditionsSaveFailureTitle': [],
+    'termsConditionsUpdatedSubtitle': [],
+    'termsConditionsUpdatedTitle': [],
     'title': [],
     'tokenAlreadyUsed': [],
     'toManyRequestsErrorMsg': [],
@@ -3674,6 +3681,41 @@ class S {
     return Intl.message('Terms and Conditions', name: 'termsAndConditions', desc: '', args: []);
   }
 
+  /// `Accept`
+  String get termsConditionsAcceptBtn {
+    return Intl.message('Accept', name: 'termsConditionsAcceptBtn', desc: '', args: []);
+  }
+
+  /// `Accepting`
+  String get termsConditionsAcceptingBtn {
+    return Intl.message('Accepting', name: 'termsConditionsAcceptingBtn', desc: '', args: []);
+  }
+
+  /// `Loading Terms & Conditions`
+  String get termsConditionsLoading {
+    return Intl.message(
+      'Loading Terms & Conditions',
+      name: 'termsConditionsLoading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading content`
+  String get termsConditionsLoadingBtn {
+    return Intl.message('Loading content', name: 'termsConditionsLoadingBtn', desc: '', args: []);
+  }
+
+  /// `Checking for updates`
+  String get termsConditionsCheckingBtn {
+    return Intl.message(
+      'Checking for updates',
+      name: 'termsConditionsCheckingBtn',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.`
   String get termsConditionsLoadFailureContent {
     return Intl.message(
@@ -3709,6 +3751,26 @@ class S {
     return Intl.message(
       'We couldn\'t save your acceptance',
       name: 'termsConditionsSaveFailureTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We've updated our Terms & Conditions. Please review and accept the updated Terms to continue using Mysterium VPN.`
+  String get termsConditionsUpdatedSubtitle {
+    return Intl.message(
+      'We\'ve updated our Terms & Conditions. Please review and accept the updated Terms to continue using Mysterium VPN.',
+      name: 'termsConditionsUpdatedSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our Terms & Conditions have changed`
+  String get termsConditionsUpdatedTitle {
+    return Intl.message(
+      'Our Terms & Conditions have changed',
+      name: 'termsConditionsUpdatedTitle',
       desc: '',
       args: [],
     );

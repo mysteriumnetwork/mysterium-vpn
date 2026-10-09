@@ -197,10 +197,10 @@ enum AnalyticsEvent {
   deviceLimitDismissed,
   marketingConsentPromptShown,
   termsAcceptancePromptShown,
-  termsAcceptancePromptTermsOpened,
-  termsAcceptancePromptClicked,
-  termsAcceptancePromptSuccess,
-  termsAcceptancePromptError;
+  termsAcceptanceTermsOpened,
+  termsAcceptanceClicked,
+  termsAcceptanceSuccess,
+  termsAcceptanceError;
 
   String get formattedName => name.toSnakeCase;
 }

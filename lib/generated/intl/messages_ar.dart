@@ -731,6 +731,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("النظام"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("استعد الإنترنت."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("الأحكام والشروط"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("موافق"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("جارٍ القبول"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("جارٍ التحقق من التحديثات"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "يجب أن تكون الأحكام والشروط المحدّثة متاحة لمراجعتها قبل قبولها. يُرجى المحاولة مرة أخرى.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "تعذّر تحميل الأحكام والشروط",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("جارٍ تحميل الأحكام والشروط"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("جارٍ تحميل المحتوى"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ أثناء قبول الأحكام والشروط المحدّثة. يُرجى المحاولة مرة أخرى لمواصلة استخدام Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage("تعذّر حفظ موافقتك"),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "لقد حدّثنا الأحكام والشروط. يُرجى مراجعة الأحكام المحدّثة وقبولها لمواصلة استخدام Mysterium VPN.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "لقد تغيّرت الأحكام والشروط الخاصة بنا",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("مرحبًا"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "طلبات كثيرة جدًا. يُرجى المحاولة لاحقًا.",

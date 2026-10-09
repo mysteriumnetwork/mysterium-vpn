@@ -770,6 +770,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("İnterneti geri al."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Şartlar ve Koşullar"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Kabul et"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Kabul ediliyor"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage(
+      "Güncellemeler denetleniyor",
+    ),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Güncellenen Şartlar ve Koşulları kabul etmeden önce incelemen için bunların erişilebilir olması gerekir. Lütfen tekrar dene.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Şartlar ve Koşullar yüklenemedi",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage(
+      "Şartlar ve Koşullar yükleniyor",
+    ),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("İçerik yükleniyor"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Güncellenen Şartlar ve Koşullar kabul edilirken bir sorun oluştu. Mysterium VPN\'i kullanmaya devam etmek için tekrar dene.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage("Onayın kaydedilemedi"),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Şartlar ve Koşullarımızı güncelledik. Mysterium VPN\'i kullanmaya devam etmek için güncel şartları incele ve kabul et.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Şartlar ve Koşullarımız değişti",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Merhaba"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Çok fazla istek. Lütfen daha sonra tekrar dene.",

@@ -447,28 +447,28 @@ void main() {
 
     test('terms opened uses the ticket name', () async {
       final entry = nextLog();
-      await store.logTermsAcceptancePromptTermsOpened();
-      expect((await entry).message, 'terms_acceptance_prompt_terms_opened');
+      await store.logTermsAcceptanceTermsOpened();
+      expect((await entry).message, 'terms_acceptance_terms_opened');
     });
 
     test('clicked uses the ticket name', () async {
       final entry = nextLog();
-      await store.logTermsAcceptancePromptClicked();
-      expect((await entry).message, 'terms_acceptance_prompt_clicked');
+      await store.logTermsAcceptanceClicked();
+      expect((await entry).message, 'terms_acceptance_clicked');
     });
 
     test('success uses the ticket name', () async {
       final entry = nextLog();
-      await store.logTermsAcceptancePromptSuccess();
-      expect((await entry).message, 'terms_acceptance_prompt_success');
+      await store.logTermsAcceptanceSuccess();
+      expect((await entry).message, 'terms_acceptance_success');
     });
 
     test('error includes the failure reason', () async {
       final entry = nextLog();
-      await store.logTermsAcceptancePromptError('saving');
+      await store.logTermsAcceptanceError('saving');
 
       final log = await entry;
-      expect(log.message, 'terms_acceptance_prompt_error');
+      expect(log.message, 'terms_acceptance_error');
       expect(log.params, {'reason': 'saving'});
     });
   });

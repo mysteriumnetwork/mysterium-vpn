@@ -11,40 +11,41 @@ class RestTermsConditionsRepository implements TermsConditionsRepository {
   final Talker _logger;
 
   @override
-  Future<String?> checkUserAcceptedVersion() async {
-    try {
-      final response = await _api.getAuthentication().checkAuth();
-      final termsVersion = response.data?.termsVersion;
-      return termsVersion;
-    } catch (e, stackTrace) {
-      _logger.warning('Error checking user accepted terms and conditions version', e, stackTrace);
-      rethrow;
-    }
-  }
+  Future<TermsConsent> getConsent() =>
+      _logFailures('Error loading terms and conditions consent', () async {
+        final response = await _api.getTerms().userTerms();
+        return TermsConsent(
+          acceptedVersion: response.data?.acceptedVersion,
+          latestVersion: response.data?.latestVersion,
+        );
+      });
 
   @override
-  Future<void> acceptVersion({required String acceptedVersion}) async {
-    try {
-      final request = AuthTermsRequest(version: acceptedVersion);
-      await _api.getTerms().acceptTerms(authTermsRequest: request);
-    } catch (e, stackTrace) {
-      _logger.warning('Error accepting terms and conditions version', e, stackTrace);
-      rethrow;
-    }
-  }
+  Future<void> acceptVersion({required String acceptedVersion}) =>
+      _logFailures('Error accepting terms and conditions version', () async {
+        final request = AuthTermsRequest(version: acceptedVersion);
+        await _api.getTerms().acceptTerms(authTermsRequest: request);
+      });
 
   @override
-  Future<TermsAndConditions?> getLatestVersion(String theme) async {
+  Future<TermsAndConditions?> getLatestVersion(String theme) =>
+      _logFailures('Error getting latest terms and conditions version', () async {
+        final response = await _api.getTerms().terms(theme: theme);
+        final content = response.data?.content;
+        final version = response.data?.version;
+        if (content.isNullOrEmpty || version.isNullOrEmpty) {
+          return null;
+        }
+        return TermsAndConditions(content: content!, version: version!);
+      });
+
+  /// Expected failures are logged as warnings, never as fatal, then rethrown
+  /// for the store to map.
+  Future<T> _logFailures<T>(String message, Future<T> Function() call) async {
     try {
-      final response = await _api.getTerms().terms(theme: theme);
-      final content = response.data?.content;
-      final version = response.data?.version;
-      if (content.isNullOrEmpty || version.isNullOrEmpty) {
-        return null;
-      }
-      return TermsAndConditions(content: content!, version: version!);
+      return await call();
     } catch (e, stackTrace) {
-      _logger.warning('Error getting latest terms and conditions version', e, stackTrace);
+      _logger.warning(message, e, stackTrace);
       rethrow;
     }
   }

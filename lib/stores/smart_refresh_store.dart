@@ -78,12 +78,13 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   }
 
   Future<void> _onResume() async {
+    // The debounce already lets the warm-start frame paint, so there is no
+    // post-frame hop here: addPostFrameCallback does not request a frame, and
+    // a fully static page (e.g. the terms gate) schedules none of its own, so
+    // the refresh would wait for an unrelated rebuild that may never come.
     _subscriptionDebouncer.debounce(() {
-      // Post-frame so the warm-start frame paints before the network refresh.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        refreshSubscriptionOnResume();
-        _refreshTermsConditions();
-      });
+      refreshSubscriptionOnResume();
+      _refreshTermsConditions();
     });
   }
 
@@ -110,7 +111,7 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
     try {
       await _termsConditionsStore.checkForUpdatedTermsConditions();
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      _logger.warning('Error refreshing terms and conditions on resume', e, stack);
     }
   }
 }

@@ -800,6 +800,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("System"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Hol dir das Internet zurück."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Geschäftsbedingungen"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Akzeptieren"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Wird akzeptiert"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("Wird geprüft"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Die aktualisierten Geschäftsbedingungen müssen verfügbar sein, damit du sie vor dem Akzeptieren lesen kannst. Bitte versuche es erneut.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Geschäftsbedingungen konnten nicht geladen werden",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage(
+      "Geschäftsbedingungen werden geladen",
+    ),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("Inhalt wird geladen"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Beim Akzeptieren der aktualisierten Geschäftsbedingungen ist etwas schiefgelaufen. Bitte versuche es erneut, um Mysterium VPN weiter zu nutzen.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Deine Zustimmung konnte nicht gespeichert werden",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Wir haben unsere Geschäftsbedingungen aktualisiert. Bitte lies sie durch und akzeptiere sie, um Mysterium VPN weiter zu nutzen.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Unsere Geschäftsbedingungen haben sich geändert",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Hallo"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Zu viele Anfragen. Bitte versuche es später erneut.",

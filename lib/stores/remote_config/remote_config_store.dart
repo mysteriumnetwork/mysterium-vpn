@@ -292,14 +292,15 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   }
 
   /// Whether the app checks for updated terms and conditions. Defaults to
-  /// `false`; ConfigCat can set it to `true` to start the check.
+  /// `true` (on in dev and prod); ConfigCat can flip it to `false` as a kill
+  /// switch.
   @computed
   bool get termsConditionsEnabled {
     final value = config[_FeatureToggleKey.termsConditionsEnabled.name];
     if (value is bool) {
       return value;
     }
-    return false;
+    return true;
   }
 
   /// Whether the News Center feature (bell entry point + feed page) is enabled.

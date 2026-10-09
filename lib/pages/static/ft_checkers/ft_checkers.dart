@@ -8,7 +8,9 @@ class FTCheckers extends StatelessWidget {
 
   final Widget child;
   @override
-  Widget build(BuildContext context) => TermsConditionsChecker(
-    child: ServiceAvailabilityChecker(child: MinAppVersionChecker(child: child)),
+  // Terms sit innermost: maintenance and a forced update outrank them, and the
+  // accept call would fail anyway while the service is down.
+  Widget build(BuildContext context) => ServiceAvailabilityChecker(
+    child: MinAppVersionChecker(child: TermsConditionsChecker(child: child)),
   );
 }

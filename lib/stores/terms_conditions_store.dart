@@ -22,31 +22,38 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     required this._remoteConfigStore,
     required this._analyticsStore,
   }) {
-    _disposer = reaction(
-      (_) => (
-        _authSessionStore.isAuthenticated,
-        _remoteConfigStore.termsConditionsEnabled,
-        _themeStore.isDarkMode,
+    _disposers = [
+      reaction(
+        (_) => (_authSessionStore.isAuthenticated, _remoteConfigStore.termsConditionsEnabled),
+        (state) {
+          final (isAuthenticated, enabled) = state;
+          if (!isAuthenticated || !enabled) {
+            _clear();
+            return;
+          }
+          checkForUpdatedTermsConditions();
+        },
+        fireImmediately: true,
       ),
-      (state) {
-        final (isAuthenticated, enabled, _) = state;
-        if (!isAuthenticated || !enabled) {
-          _clear();
-          return;
+      // The terms HTML is themed server-side, so re-fetch it when the theme
+      // flips — but only while the gate is up, to avoid a pointless round trip
+      // on every theme toggle.
+      reaction((_) => _themeStore.isDarkMode, (_) {
+        if (_requiresTermsConditionsApproval) {
+          checkForUpdatedTermsConditions();
         }
-        checkForUpdatedTermsConditions();
-      },
-      fireImmediately: true,
-    );
+      }),
+    ];
   }
 
-  late final ReactionDisposer _disposer;
+  late final List<ReactionDisposer> _disposers;
   final TermsConditionsRepository _termsConditionsRepository;
   final AuthSessionStore _authSessionStore;
   final ThemeStore _themeStore;
   final RemoteConfigStore _remoteConfigStore;
   final AnalyticsStore _analyticsStore;
   var _loggedTermsOpened = false;
+  String? _loadedTheme;
 
   bool get _canCheck =>
       _authSessionStore.isAuthenticated && _remoteConfigStore.termsConditionsEnabled;
@@ -54,11 +61,12 @@ abstract class _TermsConditionsStore with Store, Disposeable {
   String get _termsTheme => _themeStore.isDarkMode ? 'dark' : 'light';
 
   void _clear() {
-    _userAcceptedVersion = null;
     _latestTermsConditions = null;
+    _loadedTheme = null;
     _requiresTermsConditionsApproval = false;
     _failure = null;
     _isLoading = false;
+    _isAccepting = false;
     _loggedTermsOpened = false;
   }
 
@@ -75,35 +83,29 @@ abstract class _TermsConditionsStore with Store, Disposeable {
       return;
     }
     _loggedTermsOpened = true;
-    _analyticsStore.logTermsAcceptancePromptTermsOpened().ignore();
+    _analyticsStore.logTermsAcceptanceTermsOpened().ignore();
   }
 
-  String? _userAcceptedVersion;
-
-  @observable
+  @readonly
   TermsConditionsFailureType? _failure;
-  @computed
-  TermsConditionsFailureType? get failure => _failure;
 
-  @observable
+  /// A terms check is in flight (startup, resume or retry).
+  @readonly
   bool _isLoading = false;
-  @computed
-  bool get isLoading => _isLoading;
 
-  @observable
+  /// The user's acceptance is being submitted.
+  @readonly
+  bool _isAccepting = false;
+
+  @readonly
   TermsAndConditions? _latestTermsConditions;
-  @computed
-  TermsAndConditions? get latestTermsConditions => _latestTermsConditions;
 
-  @observable
+  @readonly
   bool _requiresTermsConditionsApproval = false;
-
-  @computed
-  bool get requiresTermsConditionsApproval => _requiresTermsConditionsApproval;
 
   @action
   Future<void> checkForUpdatedTermsConditions() async {
-    if (!_canCheck || _isLoading) {
+    if (!_canCheck || _isLoading || _isAccepting) {
       return;
     }
 
@@ -111,80 +113,98 @@ abstract class _TermsConditionsStore with Store, Disposeable {
     final theme = _termsTheme;
 
     try {
-      final checkUserVersion = await _termsConditionsRepository.checkUserAcceptedVersion();
+      final TermsConsent consent;
+      try {
+        consent = await _termsConditionsRepository.getConsent();
+      } catch (_) {
+        // Consent state is unknown, so we cannot say acceptance is required.
+        // Leave the app alone rather than locking it behind an error screen.
+        return;
+      }
       if (!_canCheck) {
         return;
       }
-      _userAcceptedVersion = checkUserVersion;
 
-      final latestTermsConditions = await _termsConditionsRepository.getLatestVersion(theme);
-      if (!_canCheck) {
-        return;
-      }
-      if (latestTermsConditions != null) {
-        _latestTermsConditions = latestTermsConditions;
-      }
-
-      // if no latest terms conditions, show loading error state
-      if (_latestTermsConditions == null) {
-        _showPrompt();
-        _failure = TermsConditionsFailureType.loading;
-        _analyticsStore
-            .logTermsAcceptancePromptError(TermsConditionsFailureType.loading.name)
-            .ignore();
-      } else {
+      if (!consent.requiresAcceptance) {
+        _requiresTermsConditionsApproval = false;
+        _latestTermsConditions = null;
+        _loadedTheme = null;
         _failure = null;
-
-        final needsApproval = _latestTermsConditions!.version != _userAcceptedVersion;
-        if (!needsApproval) {
-          _requiresTermsConditionsApproval = false;
-          _loggedTermsOpened = false;
-        } else {
-          _showPrompt();
-          _openTerms();
-        }
+        _loggedTermsOpened = false;
+        return;
       }
-    } catch (_) {
+
+      // Acceptance is confirmed to be required, so from here a failure to load
+      // the terms keeps the gate up with a retry instead of letting the user by.
+      _showPrompt();
+
+      // Already holding this version's text for this theme — a resume re-check
+      // would otherwise re-download the whole document every foreground.
+      if (_latestTermsConditions?.version == consent.latestVersion && _loadedTheme == theme) {
+        _failure = null;
+        return;
+      }
+
+      TermsAndConditions? latest;
+      try {
+        latest = await _termsConditionsRepository.getLatestVersion(theme);
+      } catch (_) {
+        latest = null;
+      }
+      if (!_canCheck) {
+        return;
+      }
+
+      if (latest == null) {
+        _failure = TermsConditionsFailureType.loading;
+        _analyticsStore.logTermsAcceptanceError(TermsConditionsFailureType.loading.name).ignore();
+      } else {
+        _latestTermsConditions = latest;
+        _loadedTheme = theme;
+        _failure = null;
+        _openTerms();
+      }
     } finally {
       _isLoading = false;
     }
 
-    if (_canCheck && _termsTheme != theme) {
+    // The theme flipped mid-flight, so the HTML we just fetched is stale.
+    if (_canCheck && _requiresTermsConditionsApproval && _termsTheme != theme) {
       await checkForUpdatedTermsConditions();
     }
   }
 
   @action
   Future<void> acceptTermsConditions() async {
-    if (_latestTermsConditions == null || _isLoading) {
+    if (_latestTermsConditions == null || _isAccepting || _isLoading) {
       return;
     }
 
-    _isLoading = true;
-    _analyticsStore.logTermsAcceptancePromptClicked().ignore();
+    _isAccepting = true;
+    _analyticsStore.logTermsAcceptanceClicked().ignore();
 
     try {
       await _termsConditionsRepository.acceptVersion(
         acceptedVersion: _latestTermsConditions!.version,
       );
       if (_canCheck) {
-        _userAcceptedVersion = _latestTermsConditions!.version;
         _requiresTermsConditionsApproval = false;
+        _failure = null;
         _loggedTermsOpened = false;
-        _analyticsStore.logTermsAcceptancePromptSuccess().ignore();
+        _analyticsStore.logTermsAcceptanceSuccess().ignore();
       }
-    } catch (e) {
+    } catch (_) {
       _failure = TermsConditionsFailureType.saving;
-      _analyticsStore
-          .logTermsAcceptancePromptError(TermsConditionsFailureType.saving.name)
-          .ignore();
+      _analyticsStore.logTermsAcceptanceError(TermsConditionsFailureType.saving.name).ignore();
     } finally {
-      _isLoading = false;
+      _isAccepting = false;
     }
   }
 
   @override
   FutureOr<void> dispose() {
-    _disposer();
+    for (final disposer in _disposers) {
+      disposer();
+    }
   }
 }
