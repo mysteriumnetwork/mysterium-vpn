@@ -26,5 +26,6 @@ export 'store_state.dart';
 export 'subscription_management_mode.dart';
 export 'subscription_onboarding_step.dart';
 export 'subscription_status.dart';
+export 'terms_conditions_failure_type.dart';
 export 'vpn_connection_status.dart';
 export 'vpn_disconnect_reason.dart';

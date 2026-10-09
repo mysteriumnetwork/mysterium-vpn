@@ -242,6 +242,36 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.termsConditionsEnabled', () {
+    test('returns the config value when present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': true});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isTrue);
+    });
+
+    test('returns false when the flag acts as a kill switch', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isFalse);
+    });
+
+    test('defaults to true when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isTrue);
+    });
+
+    test('defaults to true when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isTrue);
+    });
+  });
+
   group('RemoteConfigStore.newsCenterEnabled', () {
     test('returns the config value when present (false acts as a kill switch)', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'newsCenterEnabled': false});

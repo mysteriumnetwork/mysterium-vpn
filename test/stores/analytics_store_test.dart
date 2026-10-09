@@ -438,6 +438,41 @@ void main() {
     });
   });
 
+  group('terms acceptance prompt', () {
+    test('shown uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptancePromptShown();
+      expect((await entry).message, 'terms_acceptance_prompt_shown');
+    });
+
+    test('terms opened uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceTermsOpened();
+      expect((await entry).message, 'terms_acceptance_terms_opened');
+    });
+
+    test('clicked uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceClicked();
+      expect((await entry).message, 'terms_acceptance_clicked');
+    });
+
+    test('success uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceSuccess();
+      expect((await entry).message, 'terms_acceptance_success');
+    });
+
+    test('error includes the failure reason', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceError('saving');
+
+      final log = await entry;
+      expect(log.message, 'terms_acceptance_error');
+      expect(log.params, {'reason': 'saving'});
+    });
+  });
+
   group('logMarketingConsentPromptShown', () {
     test('emits the prompt shown event', () async {
       final entry = nextLog();

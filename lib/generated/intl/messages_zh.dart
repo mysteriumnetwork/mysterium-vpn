@@ -592,6 +592,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("系统"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("夺回互联网。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("条款和条件"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("接受"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("正在接受"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("正在检查更新"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "更新后的条款和条件需要可供查看才能接受。请重试。",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage("无法加载条款和条件"),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("正在加载条款和条件"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("正在加载内容"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "接受更新后的条款和条件时出现问题。请重试以继续使用 Mysterium VPN。",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage("无法保存你的同意"),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "我们更新了条款和条件。请查看并接受更新后的条款，以继续使用 Mysterium VPN。",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage("我们的条款和条件已变更"),
     "title": MessageLookupByLibrary.simpleMessage("你好先生"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage("请求过多。请稍后重试。"),
     "tokenAlreadyUsed": MessageLookupByLibrary.simpleMessage("令牌已被使用。请重试。\n"),

@@ -189,6 +189,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.favoriteLocationsEnabled,
     name: 'RemoteConfigStoreBase.favoriteLocationsEnabled',
   )).value;
+  Computed<bool>? _$termsConditionsEnabledComputed;
+
+  @override
+  bool get termsConditionsEnabled => (_$termsConditionsEnabledComputed ??= Computed<bool>(
+    () => super.termsConditionsEnabled,
+    name: 'RemoteConfigStoreBase.termsConditionsEnabled',
+  )).value;
   Computed<bool>? _$newsCenterEnabledComputed;
 
   @override
@@ -442,6 +449,7 @@ enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
 favoriteLocationsEnabled: ${favoriteLocationsEnabled},
+termsConditionsEnabled: ${termsConditionsEnabled},
 newsCenterEnabled: ${newsCenterEnabled},
 newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},
