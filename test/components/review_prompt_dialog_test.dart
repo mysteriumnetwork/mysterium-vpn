@@ -165,21 +165,23 @@ void main() {
       verify(store.onLeaveReview()).called(1);
       // The intermediate modal would ask the same question the collector asks.
       expect(find.byType(ButtonPrimary), findsNothing);
-      expect(launcher.launchedUrl, isNotNull);
+      // No session stubbed here, so the url must omit the token, not blank it.
+      expect(launcher.launchedUrl, contains('/app-review'));
+      expect(launcher.launchedUrl, isNot(contains('access_token')));
     });
 
-    testWidgets('without a webview it opens the public form, never the token url', (tester) async {
-      // Windows/Linux: handing the authenticated url to the OS browser would
-      // put the access token in its history and, on a failed launch, its
-      // clipboard.
+    testWidgets('without a webview it opens the authenticated collector in the browser', (
+      tester,
+    ) async {
+      // Windows/Linux: same collector url as the modal, token included, so the
+      // review is verified rather than landing on the anonymous public form.
       when(authSessionStore.accessToken).thenReturn('jwt-token');
       await openFlow(tester);
       await tester.tap(find.byIcon(UntitledUI.thumbs_up));
       await tester.pumpAndSettle();
 
-      expect(launcher.launchedUrl, contains('trustpilot.com/evaluate/'));
-      expect(launcher.launchedUrl, isNot(contains('access_token')));
-      expect(launcher.launchedUrl, isNot(contains('/app-review')));
+      expect(launcher.launchedUrl, contains('/app-review'));
+      expect(launcher.launchedUrl, contains('access_token=jwt-token'));
     });
   });
 

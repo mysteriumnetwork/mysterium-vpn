@@ -16,7 +16,7 @@ class AppVersionUpdateBanner extends HookConsumerWidget {
 
     Future<void> handlePressed() async {
       analyticsStore.logBannerClick(BannerType.appUpdateAvailable);
-      await openAppStorePage();
+      await openAppUpdateSource();
     }
 
     void handleDismiss() {

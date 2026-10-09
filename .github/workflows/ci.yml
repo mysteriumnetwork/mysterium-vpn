@@ -127,7 +127,6 @@ jobs:
       env_file: ".env.dev"
     secrets: inherit
 
-  # Published as build of separate application to https://partner.microsoft.com/en-us/dashboard/apps/9MZRX8P6FXC4/managepackages
   build_windows:
     name: Publish Windows app
     needs: [quality_checks]
@@ -136,12 +135,9 @@ jobs:
     with:
       build_version: ${{ needs.quality_checks.outputs.dev_version }}
       build_number: ${{ needs.quality_checks.outputs.dev_build }}
-      product_store_id: "9MZRX8P6FXC4"
-      product_identity: "UABMNTechnologijos.MysteriumVPNTest"
       application_name: "Mysterium VPN Test"
       application_logo: "assets/logo/dev/desktop.png"
       env_file: ".env.dev"
-      standalone_sign: true
       standalone_keyvault_certificate: "mysteriumvpn-selfsigned"
       protocol_activation: "mysteriumvpntest"
     secrets: inherit

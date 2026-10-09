@@ -47,9 +47,9 @@ Uri reviewWebViewUri({String? accessToken, bool isDarkMode = false, Color? backg
   return Uri.https(Env.webAppUrl, _reviewPath, query);
 }
 
-/// Opens Trustpilot's in-app review collector in a webview modal, falling back
-/// to the default browser where there is no webview (Windows/Linux) — see
-/// [openInAppWebView].
+/// Opens Trustpilot's review collector: a webview modal, or the default browser
+/// where there is no webview (Windows/Linux) — [openInAppWebView] picks. Both
+/// get the same authenticated url, so the review is verified either way.
 ///
 /// The user closes the modal themselves. There is deliberately no auto-close on
 /// a "finished" URL: picking a rating navigates to `/verified-review/...`, which
@@ -60,25 +60,13 @@ Future<void> showTrustpilotReviewWebView(
   String? accessToken,
   @visibleForTesting bool Function() isSupported = supportsInAppWebView,
 }) async {
-  // Windows/Linux have no webview, so the authenticated url would be handed to
-  // the OS browser: the access token would land in its history, and on a failed
-  // launch `openUrlLink` copies that same url to the clipboard. The login-bounce
-  // recovery below cannot run there either, since no screen is built. Send the
-  // public form instead — an unverified review rather than a leaked token.
-  if (!isSupported()) {
-    await analyticsStoreRef?.logEvent(
-      AnalyticsEvent.reviewCollectorFallback,
-      parameters: {'reason': 'no_webview'},
-    );
-    await openUrlLink(_publicReviewUri, source: RedirectSource.reviewPrompt);
-    return;
-  }
-
   final theme = Theme.of(context);
+  final supported = isSupported();
   final uri = reviewWebViewUri(
     accessToken: accessToken,
     isDarkMode: theme.brightness == Brightness.dark,
-    background: theme.palette.bgPopover,
+    // Nothing to blend into when this opens in the browser.
+    background: supported ? theme.palette.bgPopover : null,
   );
   // The app refreshes its token only in response to a 401, so the one we hold
   // here may already have expired; the web app then bounces to a passwordless
@@ -89,7 +77,7 @@ Future<void> showTrustpilotReviewWebView(
     context,
     uri: uri,
     source: RedirectSource.reviewPrompt,
-    isSupported: isSupported,
+    isSupported: () => supported,
     builder: (_) => InAppWebViewScreen(
       uri: uri,
       title: S.current.reviewLeaveReviewBtn,

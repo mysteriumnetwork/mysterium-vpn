@@ -37,7 +37,6 @@ dependencies:
   flutter_secure_storage: 10.3.1
   flutter_svg: 2.3.0
   flutter_udid: 4.1.6
-  flutter_widget_from_html_core: 0.17.4
   freezed_annotation: 3.1.0
   google_fonts: 8.2.0
   google_sign_in: 7.2.0
@@ -61,8 +60,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      # ref: 0.0.34
-      ref: fix/alert_modal_adjustment
+      ref: 0.0.36
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:
@@ -79,8 +77,6 @@ dependencies:
   sign_in_with_apple: 8.1.0
   sliver_tools: 0.2.12
   stack_trace: 1.12.1
-  store_checker_windows:
-    path: ./packages/store_checker_windows
   talker: 5.1.19
   talker_dio_logger: 5.1.19
   tray_manager: 0.5.3
@@ -92,7 +88,7 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.97
+      ref: 1.0.93
   webview_flutter: 4.14.1
   window_manager: 0.5.2
   wireguard_dart:

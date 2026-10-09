@@ -45,13 +45,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.minWindowsStandAloneBuildNumber,
         name: 'RemoteConfigStoreBase.minWindowsStandAloneBuildNumber',
       )).value;
-  Computed<String>? _$minWindowsBuildNumberComputed;
-
-  @override
-  String get minWindowsBuildNumber => (_$minWindowsBuildNumberComputed ??= Computed<String>(
-    () => super.minWindowsBuildNumber,
-    name: 'RemoteConfigStoreBase.minWindowsBuildNumber',
-  )).value;
   Computed<String>? _$minAndroidBuildNumberComputed;
 
   @override
@@ -436,7 +429,6 @@ isServiceAvailableMessage: ${isServiceAvailableMessage},
 hideDeleteAccount: ${hideDeleteAccount},
 minMacosBuildNumber: ${minMacosBuildNumber},
 minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
-minWindowsBuildNumber: ${minWindowsBuildNumber},
 minAndroidBuildNumber: ${minAndroidBuildNumber},
 minIosBuildNumber: ${minIosBuildNumber},
 hideMalwareBlocker: ${hideMalwareBlocker},
