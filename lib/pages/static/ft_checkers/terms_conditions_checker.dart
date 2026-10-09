@@ -154,6 +154,7 @@ class _TermsConditionsPage extends StatelessWidget {
       // Own Observer so loading flags do not rebuild the document.
       Observer(
         builder: (context) => _TermsConditionsAcceptBar(
+          isWide: isWide,
           hasContent: _termsConditionsStore.latestTermsConditions != null,
           isChecking: _termsConditionsStore.isLoading,
           isAccepting: _termsConditionsStore.isAccepting,
@@ -255,11 +256,17 @@ class _TermsConditionsDocument extends HookWidget {
 
 class _TermsConditionsAcceptBar extends StatelessWidget {
   const _TermsConditionsAcceptBar({
+    required this.isWide,
     required this.hasContent,
     required this.isChecking,
     required this.isAccepting,
     required this.onAccept,
   });
+
+  static const _wideButtonWidth = 343.0;
+
+  /// Fixed-width centred button on tablet+, full width on phones.
+  final bool isWide;
 
   /// False only before the first successful fetch.
   final bool hasContent;
@@ -299,7 +306,7 @@ class _TermsConditionsAcceptBar extends StatelessWidget {
           ),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 343),
+              constraints: BoxConstraints(maxWidth: isWide ? _wideButtonWidth : double.infinity),
               child: SizedBox(
                 width: double.infinity,
                 child: ButtonPrimary(

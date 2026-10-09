@@ -175,6 +175,25 @@ void main() {
     expect((alert.center.dy - expectedCentre).abs(), lessThan(24), reason: 'alert is not centred');
   });
 
+  // Figma: mobile bottom bar is `w-full`, desktop a fixed 343 centred. The
+  // 375 artboard makes those identical, so a wider phone is the real check.
+  for (final (name, size, expected) in const [
+    ('a 375 phone', Size(375, 812), 343.0),
+    ('a 430 phone', Size(430, 932), 398.0),
+    ('desktop', Size(1040, 699), 343.0),
+  ]) {
+    testWidgets('Accept is $expected wide on $name', (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = size;
+      addTearDown(tester.view.reset);
+
+      stubGate(html: '<p>terms</p>');
+      await pumpChecker(tester);
+
+      expect(tester.getSize(find.byType(ButtonPrimary)).width, expected);
+    });
+  }
+
   testWidgets('the document panel fills the width while loading', (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(375, 812);
