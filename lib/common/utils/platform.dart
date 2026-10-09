@@ -6,6 +6,9 @@ bool isDesktop() => Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
 bool isMobile() => Platform.isAndroid || Platform.isIOS;
 
+/// Windows takes app updates from GitHub rather than a store.
+bool isWindowsPlatform() => Platform.isWindows;
+
 /// Which subscription-management flow this platform supports.
 SubscriptionManagementMode subscriptionManagementMode() {
   if (Platform.isAndroid) {

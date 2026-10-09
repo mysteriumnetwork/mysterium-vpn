@@ -134,29 +134,34 @@ class InAppWebViewScreen extends HookWidget {
         children: [
           _WebViewBar(title: title ?? pageTitle.value, onClose: () => Navigator.of(context).pop()),
           Expanded(
-            // Mounted immediately so the WebView initializes and
-            // `onPageFinished` fires (an unmounted WebView never loads). The
-            // overlay hides the surface the native view paints while it loads.
-            child: Stack(
-              children: [
-                WebViewWidget(controller: controller),
-                if (load.value != _Load.done)
-                  Positioned.fill(
-                    child: ColoredBox(
-                      color: theme.palette.bgPopover,
-                      child: Center(
-                        child: load.value == _Load.failed
-                            ? _LoadFailed(
-                                onRetry: () {
-                                  load.value = _Load.loading;
-                                  controller.reload();
-                                },
-                              )
-                            : const LoadingIndicator(),
+            // Hosted pages cannot see Android's insets, so their own bottom
+            // controls would sit under the navigation bar. Reserve it here.
+            child: Padding(
+              padding: EdgeInsets.only(bottom: MediaQuery.viewPaddingOf(context).bottom),
+              // Mounted immediately so the WebView initializes and
+              // `onPageFinished` fires (an unmounted WebView never loads). The
+              // overlay hides the surface the native view paints while loading.
+              child: Stack(
+                children: [
+                  WebViewWidget(controller: controller),
+                  if (load.value != _Load.done)
+                    Positioned.fill(
+                      child: ColoredBox(
+                        color: theme.palette.bgPopover,
+                        child: Center(
+                          child: load.value == _Load.failed
+                              ? _LoadFailed(
+                                  onRetry: () {
+                                    load.value = _Load.loading;
+                                    controller.reload();
+                                  },
+                                )
+                              : const LoadingIndicator(),
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

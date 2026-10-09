@@ -34,7 +34,7 @@ These flags allow us to tailor features shown during the app review process. Alw
 
 1. Prepare a short, user-facing changelog for the app release.
 2. Use [this spreadsheet](https://docs.google.com/spreadsheets/d/15Du_g0SD7coaByv-OO8BEe661y-sCnj7FLqolOmgmsQ/edit?usp=sharing) to manage translations.
-3. These notes will be used on all platform stores (iOS, Android, macOS, Microsoft Store). 
+3. These notes will be used on all platform stores (iOS, Android, macOS). 
 
 ---
 
@@ -74,16 +74,15 @@ Link: [Google Play Console – Production](https://play.google.com/console/devel
 
 ### Windows 📦
 
-For Windows, builds are generated automatically but **must be uploaded manually** to Microsoft Partner Center. 📤
+Windows ships from GitHub only — there is no manual step. The CD workflow signs the standalone
+`MysteriumVPN.msix` and attaches it to both the tag in this repo and the public
+[mysterium-vpn-release](https://github.com/mysteriumnetwork/mysterium-vpn-release/releases/latest)
+repo, which is where the in-app update button downloads from.
 
-1. Visit the [CD GitHub Action](https://github.com/mysteriumnetwork/mysterium-vpn/actions/workflows/cd.yml) and find the workflow for the latest version tag.
-2. Under the **Artifacts** section, download the `Windows app (Store)` ZIP file. **Do not use** the `Standalone` build.
-3. Extract the ZIP to access the `.msix` file. This is what gets submitted to the Microsoft Store.
-4. Go to the [Microsoft Partner Center](https://partner.microsoft.com/en-us/dashboard/products/9NGWJCZSB5MK/overview).
-5. Click **Add new package**, then upload the `.msix` file.
-6. Once uploaded, press **Submit for certification**.
+1. Visit the [CD GitHub Action](https://github.com/mysteriumnetwork/mysterium-vpn/actions/workflows/cd.yml) and confirm the workflow for the latest version tag succeeded.
+2. Check the `.msix` is attached to the [latest public release](https://github.com/mysteriumnetwork/mysterium-vpn-release/releases/latest).
 
-This process ensures the Windows Store build is correctly submitted and certified. 
+Updates are no longer distributed through the Microsoft Store.
 
 ---
 

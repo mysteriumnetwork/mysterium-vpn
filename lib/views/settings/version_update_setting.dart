@@ -42,7 +42,7 @@ class AppVersionUpdateSetting extends HookConsumerWidget {
               ),
               onPressed: () {
                 analyticsStore.logEvent(AnalyticsEvent.appVersionSettingClicked);
-                openAppStorePage();
+                openAppUpdateSource();
               },
               child: Text(S.current.updateBtn),
             ),

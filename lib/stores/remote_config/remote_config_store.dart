@@ -16,7 +16,6 @@ enum _FeatureToggleKey {
   hideDeleteAccount,
   minAndroidBuildNumber,
   minIosBuildNumber,
-  minWindowsBuildNumber,
   minWindowsStandAloneBuildNumber,
   minMacosBuildNumber,
   hideMalwareBlocker,
@@ -108,18 +107,11 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     return '0';
   }
 
+  /// Governs every Windows user; the name predates retiring the Store build.
   @computed
   String get minWindowsStandAloneBuildNumber {
     if (config.containsKey(_FeatureToggleKey.minWindowsStandAloneBuildNumber.name)) {
       return config[_FeatureToggleKey.minWindowsStandAloneBuildNumber.name] as String;
-    }
-    return '0';
-  }
-
-  @computed
-  String get minWindowsBuildNumber {
-    if (config.containsKey(_FeatureToggleKey.minWindowsBuildNumber.name)) {
-      return config[_FeatureToggleKey.minWindowsBuildNumber.name] as String;
     }
     return '0';
   }
