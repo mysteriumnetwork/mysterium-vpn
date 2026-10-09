@@ -35,9 +35,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
         },
         fireImmediately: true,
       ),
-      // The terms HTML is themed server-side, so re-fetch it when the theme
-      // flips — but only while the gate is up, to avoid a pointless round trip
-      // on every theme toggle.
+      // Terms HTML is themed server-side; re-fetch only while the gate is up.
       reaction((_) => _themeStore.isDarkMode, (_) {
         if (_requiresTermsConditionsApproval) {
           checkForUpdatedTermsConditions();
@@ -117,8 +115,7 @@ abstract class _TermsConditionsStore with Store, Disposeable {
       try {
         consent = await _termsConditionsRepository.getConsent();
       } catch (_) {
-        // Consent state is unknown, so we cannot say acceptance is required.
-        // Leave the app alone rather than locking it behind an error screen.
+        // Consent unknown, so don't lock the app behind an error screen.
         return;
       }
       if (!_canCheck) {
@@ -134,12 +131,10 @@ abstract class _TermsConditionsStore with Store, Disposeable {
         return;
       }
 
-      // Acceptance is confirmed to be required, so from here a failure to load
-      // the terms keeps the gate up with a retry instead of letting the user by.
+      // Acceptance is required, so a load failure now keeps the gate up.
       _showPrompt();
 
-      // Already holding this version's text for this theme — a resume re-check
-      // would otherwise re-download the whole document every foreground.
+      // Already have this version's text for this theme.
       if (_latestTermsConditions?.version == consent.latestVersion && _loadedTheme == theme) {
         _failure = null;
         return;
@@ -187,15 +182,20 @@ abstract class _TermsConditionsStore with Store, Disposeable {
       await _termsConditionsRepository.acceptVersion(
         acceptedVersion: _latestTermsConditions!.version,
       );
+      // Backend recorded it, so the funnel gets its terminal event regardless.
+      _analyticsStore.logTermsAcceptanceSuccess().ignore();
       if (_canCheck) {
         _requiresTermsConditionsApproval = false;
         _failure = null;
         _loggedTermsOpened = false;
-        _analyticsStore.logTermsAcceptanceSuccess().ignore();
       }
     } catch (_) {
-      _failure = TermsConditionsFailureType.saving;
       _analyticsStore.logTermsAcceptanceError(TermsConditionsFailureType.saving.name).ignore();
+      // A logout mid-accept already cleared the store; don't resurrect a failure.
+      if (!_canCheck) {
+        return;
+      }
+      _failure = TermsConditionsFailureType.saving;
     } finally {
       _isAccepting = false;
     }

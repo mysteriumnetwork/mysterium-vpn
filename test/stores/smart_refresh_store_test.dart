@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/smart_refresh_store.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 import 'package:talker/talker.dart';
 
 import 'smart_refresh_store_test.mocks.dart';
@@ -82,6 +81,9 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 500));
 
+    // Both must fire without a further frame: a post-frame hop would hang on a
+    // static page, and only the terms call would catch a regression otherwise.
     verify(termsConditions.checkForUpdatedTermsConditions()).called(1);
+    verify(subscriptions.refreshSubscription(force: true)).called(1);
   });
 }

@@ -88,32 +88,35 @@ class _TermsConditionsPage extends StatelessWidget {
       ),
     };
 
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(padding: insets, child: constrain(const _TermsConditionsHeader())),
-        ),
-        CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: insets.copyWith(top: 0),
-              sliver: SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: constrain(
-                    _TermsConditionsError(
-                      failure: failure,
-                      isLoading: isRetrying,
-                      onRetry: onRetry,
+    // Flowed, not stacked: a page-centred overlay paints over the header on
+    // short viewports.
+    return Padding(
+      padding: insets,
+      child: Column(
+        children: [
+          constrain(const _TermsConditionsHeader()),
+          Expanded(
+            // minHeight so Center has a bounded box to centre within, while
+            // still scrolling when the alert outgrows the viewport.
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Center(
+                    child: constrain(
+                      _TermsConditionsError(
+                        failure: failure,
+                        isLoading: isRetrying,
+                        onRetry: onRetry,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -129,8 +132,7 @@ class _TermsConditionsPage extends StatelessWidget {
           padding: insets,
           child: constrain(
             Column(
-              // Without this the panel shrink-wraps its content and collapses
-              // while the terms are still loading.
+              // Otherwise the panel collapses while the terms load.
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const _TermsConditionsHeader(),
@@ -149,8 +151,7 @@ class _TermsConditionsPage extends StatelessWidget {
           ),
         ),
       ),
-      // Own Observer so the transient loading flags do not rebuild the
-      // document and re-run HtmlWidget's async build.
+      // Own Observer so loading flags do not rebuild the document.
       Observer(
         builder: (context) => _TermsConditionsAcceptBar(
           hasContent: _termsConditionsStore.latestTermsConditions != null,
@@ -237,8 +238,14 @@ class _TermsConditionsDocument extends HookWidget {
                   textStyle: theme.textStyles.textMd.regular.copyWith(
                     color: theme.palette.textTertiary,
                   ),
-                  onTapUrl: (url) =>
-                      openUrlLink(Uri.parse(url), source: RedirectSource.termsOfService),
+                  onTapUrl: (url) {
+                    final uri = Uri.tryParse(url);
+                    if (uri == null) {
+                      return false;
+                    }
+                    openUrlLink(uri, source: RedirectSource.termsOfService);
+                    return true;
+                  },
                 ),
               ),
             ),
@@ -257,8 +264,7 @@ class _TermsConditionsAcceptBar extends StatelessWidget {
   /// False only before the first successful fetch.
   final bool hasContent;
 
-  /// A consent re-check is in flight — on resume the terms are already on
-  /// screen, so this is a refresh rather than a first load.
+  /// A consent re-check is in flight (a refresh, not a first load).
   final bool isChecking;
   final bool isAccepting;
   final VoidCallback onAccept;
@@ -266,12 +272,16 @@ class _TermsConditionsAcceptBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final loadingText = switch (null) {
-      _ when isAccepting => S.current.termsConditionsAcceptingBtn,
-      _ when !hasContent => S.current.termsConditionsLoadingBtn,
-      _ when isChecking => S.current.termsConditionsCheckingBtn,
-      _ => null,
-    };
+    final String? loadingText;
+    if (isAccepting) {
+      loadingText = S.current.termsConditionsAcceptingBtn;
+    } else if (!hasContent) {
+      loadingText = S.current.termsConditionsLoadingBtn;
+    } else if (isChecking) {
+      loadingText = S.current.termsConditionsCheckingBtn;
+    } else {
+      loadingText = null;
+    }
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -293,8 +303,7 @@ class _TermsConditionsAcceptBar extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ButtonPrimary(
-                  // Disabled, not just tap-swallowed, while there is nothing to
-                  // accept. Accepting keeps the brand fill per the design.
+                  // Disabled, not just tap-swallowed. Accepting keeps the brand fill.
                   onPressed: hasContent && !isChecking ? onAccept : null,
                   loading: loadingText == null ? null : ButtonLoading(text: loadingText),
                   child: Text(S.current.termsConditionsAcceptBtn),

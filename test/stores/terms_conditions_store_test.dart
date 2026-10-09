@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/terms_conditions.dart';
 import 'package:mysterium_vpn/repositories/terms_conditions/terms_conditions_repository.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 
 import '../support/test_prefs.dart';
 import '../support/test_repositories.dart';
@@ -387,6 +386,29 @@ void main() {
 
     repository.acceptGate!.complete();
     await accept;
+  });
+
+  test('a save failure after logout does not gate the next sign-in', () async {
+    repository
+      ..acceptedVersion = '1'
+      ..acceptGate = Completer<void>()
+      ..acceptError = Exception('offline');
+    await signIn();
+
+    final accept = store.acceptTermsConditions();
+    runInAction(() => isAuthenticated.value = false);
+    repository.acceptGate!.complete();
+    await accept;
+
+    expect(store.failure, isNull);
+
+    repository
+      ..acceptGate = null
+      ..acceptError = null;
+    await signIn();
+
+    expect(store.requiresTermsConditionsApproval, isTrue);
+    expect(store.failure, isNull, reason: 'stale save failure resurfaced');
   });
 
   test('accept does nothing when there is no latest version', () async {

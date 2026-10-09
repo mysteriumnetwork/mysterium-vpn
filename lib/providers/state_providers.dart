@@ -18,7 +18,6 @@ import 'package:mysterium_vpn/stores/subscription_config_store.dart';
 import 'package:mysterium_vpn/stores/subscription_limited_time_offer_store.dart';
 import 'package:mysterium_vpn/stores/subscription_plans_store.dart';
 import 'package:mysterium_vpn/stores/subscription_purchase_store.dart';
-import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 
 final localeStorePOD = Provider<LocaleStore>(
   (ref) => LocaleStore(settings: ref.watch(appSettingsRepositoryPOD)),

@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
-import 'package:mysterium_vpn/stores/terms_conditions_store.dart';
 import 'package:talker/talker.dart';
 
 part 'smart_refresh_store.g.dart';
@@ -78,13 +77,11 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   }
 
   Future<void> _onResume() async {
-    // The debounce already lets the warm-start frame paint, so there is no
-    // post-frame hop here: addPostFrameCallback does not request a frame, and
-    // a fully static page (e.g. the terms gate) schedules none of its own, so
-    // the refresh would wait for an unrelated rebuild that may never come.
+    // No post-frame hop: a static page schedules no frame, so it could hang.
     _subscriptionDebouncer.debounce(() {
       refreshSubscriptionOnResume();
-      _refreshTermsConditions();
+      // Swallows its own failures, so nothing to catch here.
+      _termsConditionsStore.checkForUpdatedTermsConditions();
     });
   }
 
@@ -104,14 +101,6 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
       await _locationsStore.refreshAll(invalidate: invalidate);
     } catch (e, stack) {
       _logger.handle(e, stack);
-    }
-  }
-
-  Future<void> _refreshTermsConditions() async {
-    try {
-      await _termsConditionsStore.checkForUpdatedTermsConditions();
-    } catch (e, stack) {
-      _logger.warning('Error refreshing terms and conditions on resume', e, stack);
     }
   }
 }

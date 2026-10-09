@@ -56,30 +56,27 @@ class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayV
     final shouldShowLogger = !kReleaseMode || enableQAHelpers;
 
     if (!shouldShowLogger) {
+      // Flag flipped off mid-session; don't re-open on the way back.
+      _loggerOpen = false;
       return widget.child;
     }
 
     return Stack(
       children: [
         widget.child,
-        // The logger gets its own navigator, mounted only while open. It is a
-        // sibling of `child`, never an ancestor, so app code still resolves
-        // `Navigator.of` to the app router — and it works on the feature-toggle
-        // screens, which replace the router subtree entirely.
+        // Own navigator, sibling of `child` so `Navigator.of` still finds the app router.
         if (_loggerOpen)
           Positioned.fill(
-            child: PopScope(
-              canPop: false,
-              onPopInvokedWithResult: (didPop, _) {
-                if (didPop) {
-                  return;
-                }
+            // Not PopScope: no ModalRoute here, so it would silently no-op.
+            child: BackButtonListener(
+              onBackButtonPressed: () async {
                 final navigator = _loggerNavigatorKey.currentState;
                 if (navigator != null && navigator.canPop()) {
                   navigator.pop();
                 } else {
                   _setLoggerOpen(open: false);
                 }
+                return true;
               },
               child: Navigator(
                 key: _loggerNavigatorKey,

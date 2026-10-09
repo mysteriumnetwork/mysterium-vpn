@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/terms_conditions.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/terms_conditions_checker.dart';
@@ -142,6 +143,36 @@ void main() {
       find.ancestor(of: find.byType(HtmlWidget), matching: find.byType(DecoratedBox)).first,
     );
     expect(panel.width, 680);
+  });
+
+  // Desktop dev minimum is 320x600; the alert is page-centred, so prove it
+  // never paints over the header.
+  testWidgets('the error alert does not overlap the header on a short viewport', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(320, 600);
+    addTearDown(tester.view.reset);
+
+    stubGate(failure: TermsConditionsFailureType.loading);
+    await pumpChecker(tester);
+
+    final headerBottom = tester.getRect(find.text(S.current.termsConditionsUpdatedSubtitle)).bottom;
+    final alertTop = tester.getRect(find.byType(AlertModal)).top;
+    expect(alertTop, greaterThanOrEqualTo(headerBottom));
+  });
+
+  testWidgets('the error alert is centred in the space below the header', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(375, 812);
+    addTearDown(tester.view.reset);
+
+    stubGate(failure: TermsConditionsFailureType.loading);
+    await pumpChecker(tester);
+
+    final headerBottom = tester.getRect(find.text(S.current.termsConditionsUpdatedSubtitle)).bottom;
+    final alert = tester.getRect(find.byType(AlertModal));
+    final page = tester.getRect(find.byType(ColoredScaffold));
+    final expectedCentre = (headerBottom + page.bottom) / 2;
+    expect((alert.center.dy - expectedCentre).abs(), lessThan(24), reason: 'alert is not centred');
   });
 
   testWidgets('the document panel fills the width while loading', (tester) async {
