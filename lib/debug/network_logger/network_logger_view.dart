@@ -157,12 +157,16 @@ class _NetworkLoggerOverlayState extends State<NetworkLoggerOverlay> {
 class NetworkLoggerButton extends StatefulWidget {
   NetworkLoggerButton({
     super.key,
-    this.globalNavKey,
+    this.onPressed,
     this.color = Colors.deepPurple,
     this.blinkPeriod = const Duration(seconds: 1, microseconds: 500),
     this.showOnlyOnDebug = false,
     NetworkEventList? eventList,
   }) : eventList = eventList ?? DioNetworkLogger.instance;
+
+  /// Opens the screen instead of pushing it onto an ancestor [Navigator].
+  /// Needed where no ancestor navigator exists, e.g. above the app router.
+  final VoidCallback? onPressed;
 
   /// Source event list (default: [DioNetworkLogger.instance])
   final NetworkEventList eventList;
@@ -176,8 +180,6 @@ class NetworkLoggerButton extends StatefulWidget {
   /// If set to true this button will be hidden on non-debug builds.
   final bool showOnlyOnDebug;
 
-  final GlobalKey<NavigatorState>? globalNavKey;
-
   @override
   State<NetworkLoggerButton> createState() => _NetworkLoggerButtonState();
 }
@@ -186,6 +188,12 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
   bool _visible = true;
 
   void _press() {
+    final onPressed = widget.onPressed;
+    if (onPressed != null) {
+      onPressed();
+      return;
+    }
+
     if (mounted) {
       setState(() {
         _visible = false;
@@ -194,11 +202,11 @@ class _NetworkLoggerButtonState extends State<NetworkLoggerButton> {
 
     // Use Future.delayed to ensure navigation happens after current frame completes
     Future.delayed(Duration.zero, () async {
+      if (!mounted) {
+        return;
+      }
       try {
-        await NetworkLoggerScreen.open(
-          widget.globalNavKey?.currentState?.context ?? context,
-          eventList: widget.eventList,
-        );
+        await NetworkLoggerScreen.open(context, eventList: widget.eventList);
       } finally {
         if (mounted) {
           setState(() {

@@ -643,6 +643,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("システム"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("インターネットを取り戻そう。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("利用規約"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("同意する"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("同意しています"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("更新を確認しています"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "同意する前に、更新後の利用規約をご確認いただく必要があります。もう一度お試しください。",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage("利用規約を読み込めませんでした"),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("利用規約を読み込んでいます"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("コンテンツを読み込み中"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "更新後の利用規約への同意中に問題が発生しました。Mysterium VPN を引き続き利用するには、もう一度お試しください。",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage("同意を保存できませんでした"),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "利用規約を更新しました。Mysterium VPN を引き続き利用するには、更新後の規約を確認して同意してください。",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage("利用規約が変更されました"),
     "title": MessageLookupByLibrary.simpleMessage("こんにちは"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage("リクエストが多すぎます。後でもう一度お試しください。"),
     "tokenAlreadyUsed": MessageLookupByLibrary.simpleMessage("トークンはすでに使用されています。もう一度お試しください。\n"),

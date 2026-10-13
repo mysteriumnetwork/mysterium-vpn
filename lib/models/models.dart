@@ -21,6 +21,7 @@ export 'review_prompt_config.dart';
 export 'stun_binding_request.dart';
 export 'subscription.dart';
 export 'subscription_plan_features.dart';
+export 'terms_conditions.dart';
 export 'token_request.dart';
 export 'token_response.dart';
 export 'tunnel_stats.dart';

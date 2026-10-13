@@ -747,6 +747,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Rebut kembali internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Syarat dan Ketentuan"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Terima"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Menerima"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("Memeriksa pembaruan"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Syarat dan Ketentuan terbaru harus tersedia agar kamu bisa membacanya sebelum menerimanya. Coba lagi.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Tidak dapat memuat Syarat dan Ketentuan",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("Memuat Syarat dan Ketentuan"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("Memuat konten"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Terjadi kesalahan saat menerima Syarat dan Ketentuan terbaru. Coba lagi untuk terus menggunakan Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Tidak dapat menyimpan persetujuanmu",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Kami telah memperbarui Syarat dan Ketentuan kami. Baca dan terima syarat terbaru untuk terus menggunakan Mysterium VPN.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Syarat dan Ketentuan kami telah berubah",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Halo"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Terlalu banyak permintaan. Coba lagi nanti.",

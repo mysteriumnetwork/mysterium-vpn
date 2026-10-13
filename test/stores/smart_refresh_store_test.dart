@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
@@ -13,12 +14,14 @@ import 'smart_refresh_store_test.mocks.dart';
   MockSpec<LocationsStore>(),
   MockSpec<SubscriptionStore>(),
   MockSpec<AuthSessionStore>(),
+  MockSpec<TermsConditionsStore>(),
   MockSpec<Talker>(),
 ])
 void main() {
   late MockLocationsStore locations;
   late MockSubscriptionStore subscriptions;
   late MockAuthSessionStore authSession;
+  late MockTermsConditionsStore termsConditions;
   late MockTalker logger;
 
   setUp(() {
@@ -26,6 +29,7 @@ void main() {
     locations = MockLocationsStore();
     subscriptions = MockSubscriptionStore();
     authSession = MockAuthSessionStore();
+    termsConditions = MockTermsConditionsStore();
     logger = MockTalker();
 
     when(
@@ -36,16 +40,17 @@ void main() {
     when(
       subscriptions.refreshSubscription(force: anyNamed('force')),
     ).thenAnswer((_) async => Subscription.empty());
+    when(termsConditions.checkForUpdatedTermsConditions()).thenAnswer((_) async {});
   });
 
   SmartRefreshStore buildStore() {
-    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
+    final store = SmartRefreshStore(locations, subscriptions, authSession, termsConditions, logger);
     addTearDown(store.dispose);
     return store;
   }
 
   test('constructs and disposes cleanly', () async {
-    final store = SmartRefreshStore(locations, subscriptions, authSession, logger);
+    final store = SmartRefreshStore(locations, subscriptions, authSession, termsConditions, logger);
     await store.dispose();
   });
 
@@ -68,5 +73,17 @@ void main() {
     await store.refreshSubscriptionOnResume();
 
     verify(logger.handle(error, any)).called(1);
+  });
+
+  testWidgets('resume checks terms after the debounce', (tester) async {
+    buildStore().didChangeAppLifecycleState(AppLifecycleState.resumed);
+    verifyNever(termsConditions.checkForUpdatedTermsConditions());
+
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // Both must fire without a further frame: a post-frame hop would hang on a
+    // static page, and only the terms call would catch a regression otherwise.
+    verify(termsConditions.checkForUpdatedTermsConditions()).called(1);
+    verify(subscriptions.refreshSubscription(force: true)).called(1);
   });
 }

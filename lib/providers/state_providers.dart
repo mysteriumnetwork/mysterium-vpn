@@ -524,9 +524,16 @@ final smartRefreshStorePOD = Provider<SmartRefreshStore>((ref) {
   final locationsStore = ref.watch(locationsStorePOD);
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final authSessionStore = ref.watch(authSessionStorePOD);
+  final termsConditionsStore = ref.watch(termsConditionsStorePOD);
   final logger = ref.watch(loggerPOD);
 
-  final store = SmartRefreshStore(locationsStore, subscriptionStore, authSessionStore, logger);
+  final store = SmartRefreshStore(
+    locationsStore,
+    subscriptionStore,
+    authSessionStore,
+    termsConditionsStore,
+    logger,
+  );
 
   ref.onDispose(store.dispose);
 
@@ -606,6 +613,20 @@ final reviewPromptStorePOD = Provider<ReviewPromptStore>((ref) {
   ref.onDispose(store.dispose);
 
   return store;
+});
+
+final termsConditionsStorePOD = Provider<TermsConditionsStore>((ref) {
+  final termsConditionsRepository = ref.watch(termsConditionsRepositoryPOD);
+  final themeStore = ref.watch(themeStorePOD);
+  final termsConditionsStore = TermsConditionsStore(
+    termsConditionsRepository: termsConditionsRepository,
+    themeStore: themeStore,
+    authSessionStore: ref.watch(authSessionStorePOD),
+    remoteConfigStore: ref.watch(remoteConfigStorePOD),
+    analyticsStore: ref.watch(analyticsStorePOD),
+  );
+  ref.onDispose(termsConditionsStore.dispose);
+  return termsConditionsStore;
 });
 
 bool _isWindowsOrLinux() => Platform.isWindows || Platform.isLinux;

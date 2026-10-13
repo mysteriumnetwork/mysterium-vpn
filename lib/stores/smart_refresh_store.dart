@@ -16,6 +16,7 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
     this._locationsStore,
     this._subscriptionStore,
     this._authSessionStore,
+    this._termsConditionsStore,
     this._logger,
   ) {
     _init();
@@ -24,6 +25,7 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   final LocationsStore _locationsStore;
   final SubscriptionStore _subscriptionStore;
   final AuthSessionStore _authSessionStore;
+  final TermsConditionsStore _termsConditionsStore;
   final Talker _logger;
   late final List<ReactionDisposer> _disposers;
   late final Debouncer _subscriptionDebouncer;
@@ -75,11 +77,11 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
   }
 
   Future<void> _onResume() async {
+    // No post-frame hop: a static page schedules no frame, so it could hang.
     _subscriptionDebouncer.debounce(() {
-      // Post-frame so the warm-start frame paints before the network refresh.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        refreshSubscriptionOnResume();
-      });
+      refreshSubscriptionOnResume();
+      // Swallows its own failures, so nothing to catch here.
+      _termsConditionsStore.checkForUpdatedTermsConditions();
     });
   }
 

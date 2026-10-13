@@ -786,6 +786,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("Sistema"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Retome a internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Termos e Condições"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Aceitar"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Aceitando"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("Buscando atualizações"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Os Termos e Condições atualizados precisam estar disponíveis para você ler antes de aceitá-los. Tente novamente.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível carregar os Termos e Condições",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage(
+      "Carregando os Termos e Condições",
+    ),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("Carregando conteúdo"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Algo deu errado ao aceitar os Termos e Condições atualizados. Tente novamente para continuar usando o Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível salvar sua aceitação",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Atualizamos nossos Termos e Condições. Leia e aceite os termos atualizados para continuar usando o Mysterium VPN.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Nossos Termos e Condições mudaram",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Olá"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Muitas solicitações. Tente novamente mais tarde.",
