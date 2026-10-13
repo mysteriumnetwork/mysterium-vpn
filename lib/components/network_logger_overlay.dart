@@ -70,12 +70,16 @@ class _NetworkLoggerOverlayViewState extends ConsumerState<NetworkLoggerOverlayV
             // No back-button hook: this sits above the app Router, so neither
             // PopScope (needs a ModalRoute) nor BackButtonListener (needs a
             // Router) can bind here. Closing is via the screen's own button.
-            child: Navigator(
-              key: _loggerNavigatorKey,
-              observers: _loggerObservers,
-              onGenerateRoute: (settings) => MaterialPageRoute<void>(
-                settings: settings,
-                builder: (_) => NetworkLoggerScreen(),
+            // .none: the app's HeroController belongs to Beamer's navigator and
+            // cannot be shared with a second one.
+            child: HeroControllerScope.none(
+              child: Navigator(
+                key: _loggerNavigatorKey,
+                observers: _loggerObservers,
+                onGenerateRoute: (settings) => MaterialPageRoute<void>(
+                  settings: settings,
+                  builder: (_) => NetworkLoggerScreen(),
+                ),
               ),
             ),
           ),

@@ -11,20 +11,40 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'network_logger_overlay_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<RemoteConfigStore>()])
+/// Mirrors production: a Router owning the app navigator, with the overlay
+/// mounted in `MaterialApp.router`'s builder — i.e. above that Router.
+class _AppRouterDelegate extends RouterDelegate<Object>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<Object> {
+  @override
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) => Navigator(
+    key: navigatorKey,
+    pages: const [MaterialPage<void>(child: Text('app'))],
+    onDidRemovePage: (_) {},
+  );
+
+  @override
+  Future<void> setNewRoutePath(Object configuration) async {}
+}
+
 void main() {
   late MockRemoteConfigStore remoteConfig;
 
   setUp(() => remoteConfig = MockRemoteConfigStore());
 
-  // No Router/ModalRoute ancestor here, matching where the overlay really
-  // lives: inside MaterialApp.router's builder, above the app Router.
   Future<void> pumpOverlay(WidgetTester tester) async {
+    final delegate = _AppRouterDelegate();
+    addTearDown(delegate.dispose);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [remoteConfigStorePOD.overrideWithValue(remoteConfig)],
-        child: MaterialApp(
+        child: MaterialApp.router(
           theme: DesignSystem.lightTheme,
-          home: const NetworkLoggerOverlayView(child: Text('app')),
+          routerDelegate: delegate,
+          backButtonDispatcher: RootBackButtonDispatcher(),
+          builder: (context, child) => NetworkLoggerOverlayView(child: child!),
         ),
       ),
     );
