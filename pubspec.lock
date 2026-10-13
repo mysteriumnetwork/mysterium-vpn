@@ -1287,8 +1287,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "fix/alert_modal_adjustment"
-      resolved-ref: f86c633d58caaf50390bd95fcbf861d3abc560b2
+      ref: "0.0.37"
+      resolved-ref: "377b07de98168c4e904ce396e8eedb338795490f"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"

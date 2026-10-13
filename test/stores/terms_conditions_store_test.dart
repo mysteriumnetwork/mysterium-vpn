@@ -411,6 +411,35 @@ void main() {
     expect(store.failure, isNull, reason: 'stale save failure resurfaced');
   });
 
+  // Cross-session safety comes from app.dart invalidating the provider on
+  // logout (see app.dart:_authenticationReaction), so the contract the store
+  // owes is that a disposed instance cannot touch its replacement.
+  test('a disposed instance cannot write to the store that replaced it', () async {
+    final userAConsent = Completer<TermsConsent>();
+    repository.consentGate = userAConsent;
+
+    runInAction(() => isAuthenticated.value = true);
+    await pumpEventQueue();
+    expect(store.isLoading, isTrue, reason: "A's check is in flight");
+
+    // Logout invalidates the provider: dispose A, build its replacement.
+    runInAction(() => isAuthenticated.value = false);
+    await store.dispose();
+    repository
+      ..consentGate = null
+      ..acceptedVersion = '2';
+    final replacement = buildStore();
+    await signIn();
+    expect(replacement.requiresTermsConditionsApproval, isFalse);
+
+    // A's stalled response finally arrives, demanding acceptance.
+    userAConsent.complete(const TermsConsent(acceptedVersion: '1', latestVersion: '2'));
+    await pumpEventQueue();
+
+    expect(replacement.requiresTermsConditionsApproval, isFalse, reason: "A's reply gated B");
+    expect(replacement.isLoading, isFalse);
+  });
+
   test('accept does nothing when there is no latest version', () async {
     await store.acceptTermsConditions();
 

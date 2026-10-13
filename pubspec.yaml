@@ -61,7 +61,7 @@ dependencies:
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: fix/alert_modal_adjustment
+      ref: 0.0.37
   onesignal_flutter: 5.6.6
   open_store: 0.5.0
   openvpn_dart:
