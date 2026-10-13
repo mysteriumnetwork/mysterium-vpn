@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
-import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/terms_conditions.dart';
 import 'package:mysterium_vpn/pages/static/ft_checkers/terms_conditions_checker.dart';
@@ -160,19 +159,54 @@ void main() {
     expect(alertTop, greaterThanOrEqualTo(headerBottom));
   });
 
-  testWidgets('the error alert is centred in the space below the header', (tester) async {
-    tester.view.devicePixelRatio = 1;
-    tester.view.physicalSize = const Size(375, 812);
-    addTearDown(tester.view.reset);
+  // Figma: alert sits a fixed 60 (mobile) / 76 (desktop) below the header.
+  for (final (name, size, gap) in const [
+    ('mobile', Size(375, 812), 64.0),
+    ('desktop', Size(1040, 699), 80.0),
+  ]) {
+    testWidgets('the error alert sits $gap below the header on $name', (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = size;
+      addTearDown(tester.view.reset);
 
+      stubGate(failure: TermsConditionsFailureType.loading);
+      await pumpChecker(tester);
+
+      final subtitle = tester.getRect(find.text(S.current.termsConditionsUpdatedSubtitle));
+      final alert = tester.getRect(find.byType(AlertModal));
+      expect(alert.top - subtitle.bottom, gap);
+    });
+  }
+
+  // A resume re-check drives this flag too, so it must read as disabled.
+  testWidgets('Retry is disabled while a check is in flight', (tester) async {
+    stubGate(failure: TermsConditionsFailureType.loading, isLoading: true);
+    await pumpChecker(tester);
+
+    final retry = tester.widget<ButtonTertiary>(find.byType(ButtonTertiary));
+    expect(retry.onPressed, isNull);
+    expect(retry.loading, isNotNull);
+    expect(retry.decoration.foregroundColor, DesignSystem.lightTheme.palette.textDisabled);
+  });
+
+  testWidgets('Retry is enabled once the check settles', (tester) async {
     stubGate(failure: TermsConditionsFailureType.loading);
     await pumpChecker(tester);
 
-    final headerBottom = tester.getRect(find.text(S.current.termsConditionsUpdatedSubtitle)).bottom;
+    final retry = tester.widget<ButtonTertiary>(find.byType(ButtonTertiary));
+    expect(retry.onPressed, isNotNull);
+    expect(retry.loading, isNull);
+    expect(retry.decoration.foregroundColor, isNull, reason: 'should keep the brand colour');
+  });
+
+  testWidgets('Retry is left aligned inside the alert', (tester) async {
+    stubGate(failure: TermsConditionsFailureType.loading);
+    await pumpChecker(tester);
+
     final alert = tester.getRect(find.byType(AlertModal));
-    final page = tester.getRect(find.byType(ColoredScaffold));
-    final expectedCentre = (headerBottom + page.bottom) / 2;
-    expect((alert.center.dy - expectedCentre).abs(), lessThan(24), reason: 'alert is not centred');
+    final retry = tester.getRect(find.text(S.current.retryBtn));
+    // Left-aligned, not centred in the stretched action slot.
+    expect(retry.left - alert.left, lessThan(alert.width / 4));
   });
 
   // Figma: mobile bottom bar is `w-full`, desktop a fixed 343 centred. The

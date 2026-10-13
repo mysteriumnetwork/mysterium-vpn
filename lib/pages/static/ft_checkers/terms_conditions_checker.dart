@@ -65,19 +65,23 @@ class _TermsConditionsPage extends StatelessWidget {
         return ColoredScaffold(
           backgroundColor: theme.palette.bgSidePanel,
           body: failure != null
-              ? _failureBody(failure, insets, constrain)
+              ? _failureBody(theme, failure, insets, constrain, isWide: isWide)
               : _documentBody(theme, insets, constrain, isWide: isWide),
         );
       },
     );
   }
 
-  /// The alert is centred on the page, not below the header.
+  /// Figma puts the alert a fixed gap below the header (60 mobile / 76
+  /// desktop), which also keeps it clear of a header that wrapped onto more
+  /// lines in another locale.
   Widget _failureBody(
+    ThemeData theme,
     TermsConditionsFailureType failure,
     EdgeInsets insets,
-    Widget Function(Widget) constrain,
-  ) {
+    Widget Function(Widget) constrain, {
+    required bool isWide,
+  }) {
     // Retry reruns whichever call failed.
     final (isRetrying, onRetry) = switch (failure) {
       TermsConditionsFailureType.loading => (
@@ -90,34 +94,17 @@ class _TermsConditionsPage extends StatelessWidget {
       ),
     };
 
-    // Flowed, not stacked: a page-centred overlay paints over the header on
-    // short viewports.
-    return Padding(
+    return SingleChildScrollView(
       padding: insets,
-      child: Column(
-        children: [
-          constrain(const _TermsConditionsHeader()),
-          Expanded(
-            // minHeight so Center has a bounded box to centre within, while
-            // still scrolling when the alert outgrows the viewport.
-            child: LayoutBuilder(
-              builder: (context, constraints) => SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: Center(
-                    child: constrain(
-                      _TermsConditionsError(
-                        failure: failure,
-                        isLoading: isRetrying,
-                        onRetry: onRetry,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+      child: constrain(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const _TermsConditionsHeader(),
+            SizedBox(height: isWide ? theme.spacing.xl7 : theme.spacing.xl6),
+            _TermsConditionsError(failure: failure, isLoading: isRetrying, onRetry: onRetry),
+          ],
+        ),
       ),
     );
   }
@@ -359,11 +346,20 @@ class _TermsConditionsError extends StatelessWidget {
       supportingText: content,
       backgroundColor: theme.palette.bgPrimary,
       borderColor: theme.palette.borderPrimary,
-      primaryButton: ButtonTertiary(
-        onPressed: onRetry,
-        loading: isLoading ? const ButtonLoading() : null,
-        decoration: const ButtonDecoration(padding: EdgeInsets.zero, minimumSize: Size.zero),
-        child: Text(S.current.retryBtn),
+      primaryButton: Align(
+        alignment: Alignment.centerLeft,
+        child: ButtonTertiary(
+          // Disabled, not just tap-swallowed: ButtonLoading alone still paints
+          // as enabled, and a resume re-check drives this too.
+          onPressed: isLoading ? null : onRetry,
+          loading: isLoading ? const ButtonLoading() : null,
+          decoration: ButtonDecoration(
+            padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
+            foregroundColor: isLoading ? theme.palette.textDisabled : null,
+          ),
+          child: Text(S.current.retryBtn),
+        ),
       ),
     );
   }
