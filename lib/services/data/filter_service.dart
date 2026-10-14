@@ -19,7 +19,8 @@ class FilterService {
     }
 
     if (shouldSortList) {
-      result = result.sortedBy((it) => it.translations[locale] ?? it.id);
+      // Case-insensitive: server names are inconsistently capitalized (e.g. 'panama').
+      result = result.sortedBy((it) => (it.translations[locale] ?? it.id).toLowerCase());
     }
 
     return result;
