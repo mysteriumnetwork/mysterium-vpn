@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 
 void main() {
@@ -41,6 +43,24 @@ void main() {
       final locations = [Mocks.locationResidentialDE, Mocks.locationResidentialUS];
       final result = filterService.filterLocations(locations, keyword: 'de', locale: locale);
       expect(result, [Mocks.locationResidentialDE]);
+    });
+
+    test('sorts locations alphabetically by translated name', () {
+      final locations = [Mocks.locationResidentialUS, Mocks.locationResidentialDE];
+      final result = filterService.filterLocations(locations, locale: locale, shouldSortList: true);
+      expect(result, [Mocks.locationResidentialDE, Mocks.locationResidentialUS]);
+    });
+
+    test('sorts case insensitively so lowercase server names keep their place', () {
+      const panama = VPNLocation(
+        id: 'PA',
+        ipType: IPType.residential,
+        translations: {'en': 'panama'},
+        countryCode: 'PA',
+      );
+      final locations = [Mocks.locationResidentialUS, panama, Mocks.locationResidentialNL];
+      final result = filterService.filterLocations(locations, locale: locale, shouldSortList: true);
+      expect(result, [Mocks.locationResidentialNL, panama, Mocks.locationResidentialUS]);
     });
   });
 }
