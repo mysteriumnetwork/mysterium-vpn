@@ -4,7 +4,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:store_checker_windows/store_checker_windows.dart';
 
 abstract class Env {
   const Env._();
@@ -77,9 +76,6 @@ abstract class Env {
     _buildInfo = BuildInfo(
       buildNumber: int.tryParse(_packageInfo.buildNumber) ?? 0,
       buildVersion: _packageInfo.version,
-      installerStore: Platform.isWindows
-          ? getCurrentPackageFullName()
-          : _packageInfo.installerStore,
     );
     _userAgent = [
       Env.appName,
@@ -186,11 +182,10 @@ enum Flavor {
 }
 
 class BuildInfo {
-  BuildInfo({required this.buildNumber, required this.buildVersion, this.installerStore});
+  BuildInfo({required this.buildNumber, required this.buildVersion});
 
   final int buildNumber;
   final String buildVersion;
-  final String? installerStore;
 
   @override
   String toString() => 'buildNumber: $buildNumber, buildVersion: $buildVersion';

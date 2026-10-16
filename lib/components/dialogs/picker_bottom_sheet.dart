@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn/common/ui/dialog_navigation.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Shows a scrollable single-selection picker as a bottom sheet on mobile
@@ -61,33 +62,64 @@ class _PickerSheet<T> extends StatefulWidget {
 class _PickerSheetState<T> extends State<_PickerSheet<T>> {
   late T _selected;
 
+  /// Set on the first pick. [_PickerSheet.onChanged] can be slow (reconnecting
+  /// the tunnel, loading translations), and a second pick would both apply a
+  /// conflicting value and pop the route under the sheet.
+  bool _applying = false;
+
   @override
   void initState() {
     super.initState();
     _selected = widget.value;
   }
 
+  Future<void> _pick(T item) async {
+    if (_applying) {
+      return;
+    }
+    setState(() {
+      _applying = true;
+      _selected = item;
+    });
+    try {
+      await widget.onChanged(item);
+    } catch (_) {
+      // Leave the sheet usable for a retry, then let the failure surface the
+      // way it did before this guard existed.
+      if (mounted) {
+        setState(() => _applying = false);
+      }
+      rethrow;
+    }
+    // Not current means the sheet already left, or onChanged opened something
+    // above it without awaiting. Either way popping would hit the wrong route,
+    // so release the sheet instead of freezing it.
+    if (mounted && !popIfCurrent(context)) {
+      setState(() => _applying = false);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) => BottomSheetDialog(
-    title: widget.title,
-    body: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final item in widget.items)
-          _PickerItem(
-            key: widget.itemKeyOf?.call(item),
-            label: widget.labelOf(item),
-            subtitle: widget.subtitleOf?.call(item),
-            selected: _selected == item,
-            onTap: () async {
-              setState(() => _selected = item);
-              await widget.onChanged(item);
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-      ],
+  // canPop keeps the barrier and system Back from dismissing mid-apply: the
+  // state stays mounted through the exit animation, so the completion-time
+  // pop would then take the route underneath.
+  Widget build(BuildContext context) => PopScope(
+    canPop: !_applying,
+    child: BottomSheetDialog(
+      title: widget.title,
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final item in widget.items)
+            _PickerItem(
+              key: widget.itemKeyOf?.call(item),
+              label: widget.labelOf(item),
+              subtitle: widget.subtitleOf?.call(item),
+              selected: _selected == item,
+              onTap: () => _pick(item),
+            ),
+        ],
+      ),
     ),
   );
 }

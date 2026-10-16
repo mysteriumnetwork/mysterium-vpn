@@ -45,13 +45,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.minWindowsStandAloneBuildNumber,
         name: 'RemoteConfigStoreBase.minWindowsStandAloneBuildNumber',
       )).value;
-  Computed<String>? _$minWindowsBuildNumberComputed;
-
-  @override
-  String get minWindowsBuildNumber => (_$minWindowsBuildNumberComputed ??= Computed<String>(
-    () => super.minWindowsBuildNumber,
-    name: 'RemoteConfigStoreBase.minWindowsBuildNumber',
-  )).value;
   Computed<String>? _$minAndroidBuildNumberComputed;
 
   @override
@@ -195,6 +188,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
   bool get favoriteLocationsEnabled => (_$favoriteLocationsEnabledComputed ??= Computed<bool>(
     () => super.favoriteLocationsEnabled,
     name: 'RemoteConfigStoreBase.favoriteLocationsEnabled',
+  )).value;
+  Computed<bool>? _$termsConditionsEnabledComputed;
+
+  @override
+  bool get termsConditionsEnabled => (_$termsConditionsEnabledComputed ??= Computed<bool>(
+    () => super.termsConditionsEnabled,
+    name: 'RemoteConfigStoreBase.termsConditionsEnabled',
   )).value;
   Computed<bool>? _$newsCenterEnabledComputed;
 
@@ -429,7 +429,6 @@ isServiceAvailableMessage: ${isServiceAvailableMessage},
 hideDeleteAccount: ${hideDeleteAccount},
 minMacosBuildNumber: ${minMacosBuildNumber},
 minWindowsStandAloneBuildNumber: ${minWindowsStandAloneBuildNumber},
-minWindowsBuildNumber: ${minWindowsBuildNumber},
 minAndroidBuildNumber: ${minAndroidBuildNumber},
 minIosBuildNumber: ${minIosBuildNumber},
 hideMalwareBlocker: ${hideMalwareBlocker},
@@ -450,6 +449,7 @@ enableQaHelpers: ${enableQaHelpers},
 showCitiesAndStates: ${showCitiesAndStates},
 locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
 favoriteLocationsEnabled: ${favoriteLocationsEnabled},
+termsConditionsEnabled: ${termsConditionsEnabled},
 newsCenterEnabled: ${newsCenterEnabled},
 newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},

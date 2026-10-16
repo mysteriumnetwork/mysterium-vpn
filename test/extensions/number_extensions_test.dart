@@ -27,4 +27,18 @@ void main() {
       expect(result, 'USD120.00');
     });
   });
+
+  group('NullableDoubleExtensions.isNullOrNotFinite', () {
+    test('is true for null, NaN, and infinity', () {
+      expect(null.isNullOrNotFinite, isTrue);
+      expect(double.nan.isNullOrNotFinite, isTrue);
+      expect(double.infinity.isNullOrNotFinite, isTrue);
+      expect(double.negativeInfinity.isNullOrNotFinite, isTrue);
+    });
+
+    test('is false for a normal number', () {
+      expect(74.23.isNullOrNotFinite, isFalse);
+      expect(0.0.isNullOrNotFinite, isFalse);
+    });
+  });
 }

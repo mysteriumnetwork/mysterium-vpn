@@ -1,4 +1,5 @@
 export 'color.dart';
+export 'config_cat_user.dart';
 export 'date.dart';
 export 'debug_logger.dart';
 export 'enum.dart';

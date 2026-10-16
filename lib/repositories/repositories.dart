@@ -6,4 +6,5 @@ export 'news_center/news_center.dart';
 export 'notifications/notifications.dart';
 export 'settings/settings.dart';
 export 'subscription/subscription.dart';
+export 'terms_conditions/terms_conditions.dart';
 export 'vpn/vpn.dart';

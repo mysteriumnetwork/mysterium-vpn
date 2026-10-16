@@ -3,8 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/rest_subscription_repository.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart' as api;
 
@@ -43,6 +45,25 @@ void main() {
   Response<T> response<T>(int code, T data) =>
       Response<T>(requestOptions: RequestOptions(), statusCode: code, data: data);
 
+  group('androidManageSubscriptionUrl', () {
+    test('builds the Play Store subscriptions deep link for the product', () async {
+      PackageInfo.setMockInitialValues(
+        appName: 'Mysterium VPN',
+        packageName: 'com.mysteriumvpn.android',
+        version: '1.0.0',
+        buildNumber: '1',
+        buildSignature: '',
+      );
+
+      final url = await service.androidManageSubscriptionUrl('plan_monthly');
+
+      expect(url.host, 'play.google.com');
+      expect(url.path, '/store/account/subscriptions');
+      expect(url.queryParameters['sku'], 'plan_monthly');
+      expect(url.queryParameters['package'], 'com.mysteriumvpn.android');
+    });
+  });
+
   group('fetchSubscriptionDetails', () {
     test('maps a populated GetSubscriptionResponse into a Subscription', () async {
       final apiResponse = api.GetSubscriptionResponse(
@@ -65,6 +86,42 @@ void main() {
       expect(sub.planId, 'plan_monthly');
       expect(sub.gateway, 'stripe');
       expect(sub.isPauseAllowed, isTrue);
+      expect(sub.orderSummary, isNull);
+    });
+
+    test('copies orderSummary onto the subscription', () async {
+      final apiResponse = api.GetSubscriptionResponse(
+        paused: false,
+        active: true,
+        expired: false,
+        recurring: true,
+        pauseAllowed: true,
+        subscriptionId: 'sub-1',
+        orderSummary: api.GetSubscriptionResponseOrderSummary(
+          country: 'US',
+          currency: 'USD',
+          itemSubtotal: '70.00',
+          itemSubtotalBeforeDiscount: '80.00',
+          taxRate: '0.1',
+          taxSubtotal: '4.23',
+          taxSubtotalBeforeDiscount: '9.54',
+          taxType: 'vat',
+          totalPrice: '74.23',
+          totalPriceBeforeDiscount: '89.54',
+          discountAmount: '15.31',
+          discountUnits: 'usd',
+        ),
+      );
+      when(
+        apiSubscription.subscriptionStatus(),
+      ).thenAnswer((_) async => response(200, apiResponse));
+
+      final sub = await service.fetchSubscriptionDetails();
+
+      expect(
+        sub.orderSummary,
+        OrderSummary(currency: 'USD', totalPrice: '74.23', totalPriceBeforeDiscount: '89.54'),
+      );
     });
 
     test('rethrows arbitrary errors after logging', () async {

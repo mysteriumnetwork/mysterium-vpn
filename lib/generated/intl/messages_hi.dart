@@ -761,6 +761,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("सिस्टम"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("इंटरनेट को वापस पाएँ।"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("नियम और शर्तें"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("स्वीकार करें"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("स्वीकार किया जा रहा है"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("अपडेट जाँचे जा रहे हैं"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "स्वीकार करने से पहले अपडेटेड नियम और शर्तें पढ़ने के लिए उनका उपलब्ध होना ज़रूरी है। कृपया फिर से प्रयास करें।",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "हम नियम और शर्तें लोड नहीं कर सके",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("नियम और शर्तें लोड हो रही हैं"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("सामग्री लोड हो रही है"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "अपडेटेड नियम और शर्तें स्वीकार करते समय कुछ गड़बड़ हो गई। Mysterium VPN का उपयोग जारी रखने के लिए कृपया फिर से प्रयास करें।",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "हम आपकी स्वीकृति सहेज नहीं सके",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "हमने अपने नियम और शर्तें अपडेट की हैं। Mysterium VPN का उपयोग जारी रखने के लिए अपडेटेड नियम पढ़ें और स्वीकार करें।",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "हमारे नियम और शर्तें बदल गई हैं",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("नमस्ते"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "बहुत अधिक अनुरोध। कृपया बाद में फिर से प्रयास करें।",
@@ -816,6 +839,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("असुरक्षित"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("अस्थिर गति"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("अपडेट करें"),
+    "updateCurrentVersionLbl": MessageLookupByLibrary.simpleMessage("आपका वर्शन"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
+      "डाउनलोड शुरू हो गया। अपडेट इंस्टॉल करने के लिए फ़ाइल खोलें।",
+    ),
+    "updateRequiredTitle": MessageLookupByLibrary.simpleMessage("अपडेट आवश्यक"),
+    "updateRequiredVersionLbl": MessageLookupByLibrary.simpleMessage("आवश्यक"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("बेहतरीन गति"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "बेहतरीन प्रदर्शन के लिए सबसे तेज़ उपलब्ध सर्वर से कनेक्ट करें",

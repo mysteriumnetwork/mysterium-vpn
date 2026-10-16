@@ -5,9 +5,6 @@
       location = "group:Runner.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:../dev.xctestplan">
    </FileRef>
 </Workspace>

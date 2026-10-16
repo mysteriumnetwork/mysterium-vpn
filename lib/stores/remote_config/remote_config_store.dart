@@ -16,7 +16,6 @@ enum _FeatureToggleKey {
   hideDeleteAccount,
   minAndroidBuildNumber,
   minIosBuildNumber,
-  minWindowsBuildNumber,
   minWindowsStandAloneBuildNumber,
   minMacosBuildNumber,
   hideMalwareBlocker,
@@ -65,6 +64,7 @@ enum _FeatureToggleKey {
   locationsRefreshButtonEnabled,
   newsCenterEnabled,
   newsCenterRefreshIntervalMinutes,
+  termsConditionsEnabled,
   showApiVersion,
   favoriteLocationsEnabled,
 }
@@ -108,18 +108,11 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     return '0';
   }
 
+  /// Governs every Windows user; the name predates retiring the Store build.
   @computed
   String get minWindowsStandAloneBuildNumber {
     if (config.containsKey(_FeatureToggleKey.minWindowsStandAloneBuildNumber.name)) {
       return config[_FeatureToggleKey.minWindowsStandAloneBuildNumber.name] as String;
-    }
-    return '0';
-  }
-
-  @computed
-  String get minWindowsBuildNumber {
-    if (config.containsKey(_FeatureToggleKey.minWindowsBuildNumber.name)) {
-      return config[_FeatureToggleKey.minWindowsBuildNumber.name] as String;
     }
     return '0';
   }
@@ -296,6 +289,18 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return value;
     }
     return false;
+  }
+
+  /// Whether the app checks for updated terms and conditions. Defaults to
+  /// `true` (on in dev and prod); ConfigCat can flip it to `false` as a kill
+  /// switch.
+  @computed
+  bool get termsConditionsEnabled {
+    final value = config[_FeatureToggleKey.termsConditionsEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return true;
   }
 
   /// Whether the News Center feature (bell entry point + feed page) is enabled.

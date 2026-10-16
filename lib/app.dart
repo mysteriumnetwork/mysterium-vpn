@@ -13,8 +13,9 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/config_cat_user_updater_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/hooks/subscription_watcher_hook.dart';
+import 'package:mysterium_vpn/common/layout_builders/system_ui_overlay_region.dart';
 import 'package:mysterium_vpn/common/router/route_delegate.dart';
-import 'package:mysterium_vpn/common/utils/snackbar.dart';
+import 'package:mysterium_vpn/common/ui/snackbar.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
@@ -102,34 +103,27 @@ class MyApp extends HookConsumerWidget {
                       supportedLocales: S.delegate.supportedLocales,
                       locale: localStore.currentLocale,
                       backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routeDelegate),
-                      builder: (context, child) => ScreenTypeObserver(
-                        child: MediaQuery(
-                          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                          child: ScrollConfiguration(
-                            behavior: ScrollConfiguration.of(context).copyWith(
-                              dragDevices: PointerDeviceKind.values.toSet(),
-                              scrollbars: false,
-                              overscroll: true,
-                              physics: const BouncingScrollPhysics(),
-                            ),
-                            child: AppDeferredInitWidget(
-                              child: FTCheckers(
+                      builder: (context, child) => SystemUiOverlayRegion(
+                        child: ScreenTypeObserver(
+                          child: MediaQuery(
+                            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                            child: ScrollConfiguration(
+                              behavior: ScrollConfiguration.of(context).copyWith(
+                                dragDevices: PointerDeviceKind.values.toSet(),
+                                scrollbars: false,
+                                overscroll: true,
+                                physics: const BouncingScrollPhysics(),
+                              ),
+                              child: AppDeferredInitWidget(
+                                // Remounts pages so const widgets re-read `S.current`.
+                                // Must stay below the `Router`; FTCheckers in, overlay out.
                                 child: NetworkLoggerOverlayView(
-                                  // Remount the pages when OTA translations arrive
-                                  // or the locale changes, so const widgets re-read
-                                  // the non-observable `S.current`.
-                                  //
-                                  // Scoped BELOW the Beamer `Router` on purpose: a
-                                  // revision bump must NOT rebuild `MaterialApp.router`
-                                  // / the `Router`, otherwise `BeamerDelegate` runs its
-                                  // route restoration and calls `notifyListeners()`
-                                  // during the build phase ("setState() called during
-                                  // build"), which flakily crashes locale switches
-                                  // (debug asserts) — see settings_language_test.
                                   child: ValueListenableBuilder<int>(
                                     valueListenable: localizationRevision,
-                                    builder: (_, revision, _) =>
-                                        KeyedSubtree(key: ValueKey(revision), child: child!),
+                                    builder: (_, revision, _) => KeyedSubtree(
+                                      key: ValueKey(revision),
+                                      child: FTCheckers(child: child!),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -165,6 +159,7 @@ class MyApp extends HookConsumerWidget {
     _invalidateIfExists(ref, subscriptionStorePOD);
     _invalidateIfExists(ref, recentLocationsStorePOD);
     _invalidateIfExists(ref, favoriteIpsStorePOD);
+    _invalidateIfExists(ref, termsConditionsStorePOD);
     // The Favorite tab is hidden when signed out; drop the selection so the
     // query store's `tab` keeps matching what the UI shows.
     if (ref.exists(locationsQueryStorePOD)) {

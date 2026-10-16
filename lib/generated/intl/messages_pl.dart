@@ -788,6 +788,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("System"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Odzyskaj internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Regulamin"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Akceptuję"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Akceptowanie"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("Sprawdzanie aktualizacji"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Zaktualizowany regulamin musi być dostępny, abyś mógł zapoznać się z nim przed akceptacją. Spróbuj ponownie.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Nie udało się wczytać regulaminu",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("Wczytywanie regulaminu"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("Wczytywanie treści"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Coś poszło nie tak podczas akceptowania zaktualizowanego regulaminu. Spróbuj ponownie, aby dalej korzystać z Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Nie udało się zapisać Twojej akceptacji",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Zaktualizowaliśmy nasz regulamin. Zapoznaj się z nim i zaakceptuj go, aby dalej korzystać z Mysterium VPN.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Nasz regulamin uległ zmianie",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Witaj"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Zbyt wiele żądań. Spróbuj ponownie później.",
@@ -839,6 +862,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("NIECHRONIONY"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Niestabilna prędkość"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Zaktualizuj"),
+    "updateCurrentVersionLbl": MessageLookupByLibrary.simpleMessage("Twoja wersja"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
+      "Pobieranie rozpoczęte. Otwórz plik, aby zainstalować aktualizację.",
+    ),
+    "updateRequiredTitle": MessageLookupByLibrary.simpleMessage("Wymagana aktualizacja"),
+    "updateRequiredVersionLbl": MessageLookupByLibrary.simpleMessage("Wymagana"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("Najlepsza prędkość"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "Połącz z najszybszym dostępnym serwerem dla optymalnej wydajności",

@@ -242,6 +242,36 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.termsConditionsEnabled', () {
+    test('returns the config value when present', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': true});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isTrue);
+    });
+
+    test('returns false when the flag acts as a kill switch', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isFalse);
+    });
+
+    test('defaults to true when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isTrue);
+    });
+
+    test('defaults to true when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'termsConditionsEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.termsConditionsEnabled, isTrue);
+    });
+  });
+
   group('RemoteConfigStore.newsCenterEnabled', () {
     test('returns the config value when present (false acts as a kill switch)', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'newsCenterEnabled': false});
@@ -846,6 +876,35 @@ void main() {
       when(client.getAllValues()).thenAnswer((_) async => {'isProtocolPickerAvailable': 1});
       await store.configFuture;
       expect(() => store.isProtocolPickerAvailable, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
+  // The single Windows min-version key since the Microsoft Store build was
+  // retired; it now gates every Windows user, not just standalone installs.
+  group('RemoteConfigStore.minWindowsStandAloneBuildNumber', () {
+    test('returns the configured value', () async {
+      store = createStore();
+
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'minWindowsStandAloneBuildNumber': '2.5.0'});
+      await store.configFuture;
+      expect(store.minWindowsStandAloneBuildNumber, '2.5.0');
+    });
+
+    test("defaults to '0' when not in config", () async {
+      store = createStore();
+
+      await store.configFuture;
+      expect(store.minWindowsStandAloneBuildNumber, '0');
+    });
+
+    test('throws on a wrong-typed value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'minWindowsStandAloneBuildNumber': 2});
+      await store.configFuture;
+      expect(() => store.minWindowsStandAloneBuildNumber, throwsA(isA<MobXCaughtException>()));
     });
   });
 }

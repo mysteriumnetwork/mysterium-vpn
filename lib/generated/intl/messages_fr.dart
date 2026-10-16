@@ -810,6 +810,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "Reprends le contrôle d\'Internet.",
     ),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Conditions générales"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Accepter"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Acceptation en cours"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("Recherche de mises à jour"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Les conditions générales mises à jour doivent être disponibles pour que tu puisses les lire avant de les accepter. Réessaie.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Impossible de charger les conditions générales",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage(
+      "Chargement des conditions générales",
+    ),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("Chargement du contenu"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Une erreur s\'est produite lors de l\'acceptation des conditions générales mises à jour. Réessaie pour continuer à utiliser Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "Impossible d\'enregistrer ton acceptation",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Nous avons mis à jour nos conditions générales. Lis-les et accepte-les pour continuer à utiliser Mysterium VPN.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Nos conditions générales ont changé",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Bonjour"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Trop de requêtes. Réessaie plus tard.",
@@ -859,6 +884,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("NON PROTÉGÉ"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Vitesse instable"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Mettre à jour"),
+    "updateCurrentVersionLbl": MessageLookupByLibrary.simpleMessage("Ta version"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
+      "Téléchargement lancé. Ouvre le fichier pour installer la mise à jour.",
+    ),
+    "updateRequiredTitle": MessageLookupByLibrary.simpleMessage("Mise à jour requise"),
+    "updateRequiredVersionLbl": MessageLookupByLibrary.simpleMessage("Requise"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("Meilleure vitesse"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "Connecte-toi au serveur le plus rapide disponible pour des performances optimales",

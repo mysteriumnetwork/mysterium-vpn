@@ -754,6 +754,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("Default"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("Take back the internet."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Terms and Conditions"),
+    "termsConditionsAcceptBtn": MessageLookupByLibrary.simpleMessage("Accept"),
+    "termsConditionsAcceptingBtn": MessageLookupByLibrary.simpleMessage("Accepting"),
+    "termsConditionsCheckingBtn": MessageLookupByLibrary.simpleMessage("Checking for updates"),
+    "termsConditionsLoadFailureContent": MessageLookupByLibrary.simpleMessage(
+      "The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.",
+    ),
+    "termsConditionsLoadFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "We couldn\'t load the Terms & Conditions",
+    ),
+    "termsConditionsLoading": MessageLookupByLibrary.simpleMessage("Loading Terms & Conditions"),
+    "termsConditionsLoadingBtn": MessageLookupByLibrary.simpleMessage("Loading content"),
+    "termsConditionsSaveFailureContent": MessageLookupByLibrary.simpleMessage(
+      "Something went wrong while accepting the updated Terms & Conditions. Please try again to continue using Mysterium VPN.",
+    ),
+    "termsConditionsSaveFailureTitle": MessageLookupByLibrary.simpleMessage(
+      "We couldn\'t save your acceptance",
+    ),
+    "termsConditionsUpdatedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "We\'ve updated our Terms & Conditions. Please review and accept the updated Terms to continue using Mysterium VPN.",
+    ),
+    "termsConditionsUpdatedTitle": MessageLookupByLibrary.simpleMessage(
+      "Our Terms & Conditions have changed",
+    ),
     "title": MessageLookupByLibrary.simpleMessage("Hello Sir"),
     "toManyRequestsErrorMsg": MessageLookupByLibrary.simpleMessage(
       "Too many requests. Please try again later.",
@@ -807,6 +830,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "unprotectedLbl": MessageLookupByLibrary.simpleMessage("UNPROTECTED"),
     "unstableSpeedReason": MessageLookupByLibrary.simpleMessage("Unstable speed"),
     "updateBtn": MessageLookupByLibrary.simpleMessage("Update"),
+    "updateCurrentVersionLbl": MessageLookupByLibrary.simpleMessage("Your version"),
+    "updateDownloadStarted": MessageLookupByLibrary.simpleMessage(
+      "Download started. Open the file to install the update.",
+    ),
+    "updateRequiredTitle": MessageLookupByLibrary.simpleMessage("Update required"),
+    "updateRequiredVersionLbl": MessageLookupByLibrary.simpleMessage("Required"),
     "userIntentBestSpeed": MessageLookupByLibrary.simpleMessage("Best speed"),
     "userIntentBestSpeedDesc": MessageLookupByLibrary.simpleMessage(
       "Connect to the fastest available server for optimal performance",

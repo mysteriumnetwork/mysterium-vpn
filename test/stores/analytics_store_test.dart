@@ -358,6 +358,159 @@ void main() {
     });
   });
 
+  group('tunnel permission analytics', () {
+    test('logTunnelPermissionDialogShown emits the shown event', () async {
+      final entry = nextLog();
+      await store.logTunnelPermissionDialogShown();
+
+      expect((await entry).message, AnalyticsEvent.tunnelPermissionDialogShown.formattedName);
+    });
+
+    test('logTunnelPermissionDecision accepted → accepted event', () async {
+      final entry = nextLog();
+      await store.logTunnelPermissionDecision(accepted: true);
+
+      expect((await entry).message, AnalyticsEvent.tunnelPermissionAccepted.formattedName);
+    });
+
+    test('logTunnelPermissionDecision declined → declined event', () async {
+      final entry = nextLog();
+      await store.logTunnelPermissionDecision(accepted: false);
+
+      expect((await entry).message, AnalyticsEvent.tunnelPermissionDeclined.formattedName);
+    });
+
+    test('logTunnelSetupSucceeded carries the trigger', () async {
+      final entry = nextLog();
+      await store.logTunnelSetupSucceeded(trigger: 'permission_flow');
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.tunnelSetupSucceeded.formattedName);
+      expect(log.params, {'trigger': 'permission_flow'});
+    });
+
+    test('logTunnelSetupFailed carries the reason and the trigger', () async {
+      final entry = nextLog();
+      await store.logTunnelSetupFailed(reason: 'tunnel_permission_required', trigger: 'auto');
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.tunnelSetupFailed.formattedName);
+      expect(log.params, {'reason': 'tunnel_permission_required', 'trigger': 'auto'});
+    });
+  });
+
+  group('device limit analytics', () {
+    test('logDeviceLimitDialogShown emits the shown event', () async {
+      final entry = nextLog();
+      await store.logDeviceLimitDialogShown();
+
+      expect((await entry).message, AnalyticsEvent.deviceLimitDialogShown.formattedName);
+    });
+
+    test('logDeviceLimitDashboardClicked emits the click event', () async {
+      final entry = nextLog();
+      await store.logDeviceLimitDashboardClicked();
+
+      expect((await entry).message, AnalyticsEvent.deviceLimitDashboardClicked.formattedName);
+    });
+
+    test('logDeviceLimitDismissed emits the dismiss event', () async {
+      final entry = nextLog();
+      await store.logDeviceLimitDismissed();
+
+      expect((await entry).message, AnalyticsEvent.deviceLimitDismissed.formattedName);
+    });
+  });
+
+  group('logPushNotificationsPromptDecision', () {
+    test('accepted → accepted event', () async {
+      final entry = nextLog();
+      await store.logPushNotificationsPromptDecision(accepted: true);
+
+      expect((await entry).message, AnalyticsEvent.pushNotificationsPromptAccepted.formattedName);
+    });
+
+    test('declined → declined event', () async {
+      final entry = nextLog();
+      await store.logPushNotificationsPromptDecision(accepted: false);
+
+      expect((await entry).message, AnalyticsEvent.pushNotificationsPromptDeclined.formattedName);
+    });
+  });
+
+  group('terms acceptance prompt', () {
+    test('shown uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptancePromptShown();
+      expect((await entry).message, 'terms_acceptance_prompt_shown');
+    });
+
+    test('terms opened uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceTermsOpened();
+      expect((await entry).message, 'terms_acceptance_terms_opened');
+    });
+
+    test('clicked uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceClicked();
+      expect((await entry).message, 'terms_acceptance_clicked');
+    });
+
+    test('success uses the ticket name', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceSuccess();
+      expect((await entry).message, 'terms_acceptance_success');
+    });
+
+    test('error includes the failure reason', () async {
+      final entry = nextLog();
+      await store.logTermsAcceptanceError('saving');
+
+      final log = await entry;
+      expect(log.message, 'terms_acceptance_error');
+      expect(log.params, {'reason': 'saving'});
+    });
+  });
+
+  group('logMarketingConsentPromptShown', () {
+    test('emits the prompt shown event', () async {
+      final entry = nextLog();
+      await store.logMarketingConsentPromptShown();
+
+      expect((await entry).message, AnalyticsEvent.marketingConsentPromptShown.formattedName);
+    });
+  });
+
+  group('logPushNotificationsPromptShown', () {
+    test('emits prompt shown event with no params', () async {
+      final entry = nextLog();
+      await store.logPushNotificationsPromptShown();
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.pushNotificationsPromptShown.formattedName);
+      expect(log.params, isNull);
+    });
+  });
+
+  group('logMarketingConsentMarked', () {
+    test('accepted → accepted event', () async {
+      final entry = nextLog();
+      await store.logMarketingConsentMarked(accepted: true);
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.marketingConsentMarkedAccepted.formattedName);
+    });
+
+    test('declined → declined event', () async {
+      final entry = nextLog();
+      await store.logMarketingConsentMarked(accepted: false);
+
+      final log = await entry;
+      expect(log.message, AnalyticsEvent.marketingConsentMarkedDeclined.formattedName);
+    });
+  });
+
   group('logPushNotificationsPermissionsChanged', () {
     test('granted → granted event + property', () async {
       final logFuture = nextLog();

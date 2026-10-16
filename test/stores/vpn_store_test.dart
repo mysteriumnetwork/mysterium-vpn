@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
@@ -190,6 +191,68 @@ void main() {
 
       verify(mockWireguardRepo.setupTunnel()).called(1);
       expect(vpnStore.vpnStatus, VpnConnectionStatus.disconnected);
+    });
+
+    test('setupTunnel logs success', () async {
+      when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
+      when(
+        mockWireguardRepo.currentStatus(),
+      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+
+      await vpnStore.setupTunnel();
+
+      verify(mockAnalytics.logTunnelSetupSucceeded(trigger: 'auto')).called(1);
+    });
+
+    test('setupTunnel logs permission_denied when the OS prompt is refused', () async {
+      when(
+        mockWireguardRepo.setupTunnel(),
+      ).thenThrow(PlatformException(code: 'error', message: 'Permissions are not given'));
+
+      await expectLater(vpnStore.setupTunnel(), throwsA(isA<PlatformException>()));
+
+      verify(
+        mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_permission_required', trigger: 'auto'),
+      ).called(1);
+      verifyNever(mockAnalytics.logTunnelSetupSucceeded(trigger: anyNamed('trigger')));
+    });
+
+    test('setupTunnel logs setup_failed for any other failure', () async {
+      when(mockWireguardRepo.setupTunnel()).thenThrow(Exception('boom'));
+
+      await expectLater(vpnStore.setupTunnel(), throwsException);
+
+      verify(
+        mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_setup_failed', trigger: 'auto'),
+      ).called(1);
+    });
+
+    test('setupTunnel tags the permission-flow trigger when the dialog drove it', () async {
+      when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
+      when(
+        mockWireguardRepo.currentStatus(),
+      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
+
+      await vpnStore.setupTunnel(trigger: tunnelSetupTriggerPermissionFlow);
+
+      verify(mockAnalytics.logTunnelSetupSucceeded(trigger: 'permission_flow')).called(1);
+    });
+
+    test('onTunnelPermissionDialogShown forwards to analytics', () {
+      vpnStore.onTunnelPermissionDialogShown();
+
+      verify(mockAnalytics.logTunnelPermissionDialogShown()).called(1);
+    });
+
+    test('onTunnelPermissionDecision forwards the decision to analytics', () {
+      vpnStore
+        ..onTunnelPermissionDecision(accepted: true)
+        ..onTunnelPermissionDecision(accepted: false);
+
+      verify(mockAnalytics.logTunnelPermissionDecision(accepted: true)).called(1);
+      verify(mockAnalytics.logTunnelPermissionDecision(accepted: false)).called(1);
     });
 
     test('disconnectTunnel clears state', () async {

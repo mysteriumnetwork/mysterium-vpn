@@ -15,6 +15,7 @@ enum RedirectSource {
   googlePlaySubscriptions,
   cancelSubscription,
   newsCenter,
+  reviewPrompt,
   external;
 
   String get formattedName => name.toSnakeCase;

@@ -487,6 +487,17 @@ class S {
     'system': [],
     'takeBackTheInternetLbl': [],
     'termsAndConditions': [],
+    'termsConditionsAcceptBtn': [],
+    'termsConditionsAcceptingBtn': [],
+    'termsConditionsLoading': [],
+    'termsConditionsLoadingBtn': [],
+    'termsConditionsCheckingBtn': [],
+    'termsConditionsLoadFailureContent': [],
+    'termsConditionsLoadFailureTitle': [],
+    'termsConditionsSaveFailureContent': [],
+    'termsConditionsSaveFailureTitle': [],
+    'termsConditionsUpdatedSubtitle': [],
+    'termsConditionsUpdatedTitle': [],
     'title': [],
     'tokenAlreadyUsed': [],
     'toManyRequestsErrorMsg': [],
@@ -516,6 +527,10 @@ class S {
     'unprotectedLbl': [],
     'unstableSpeedReason': [],
     'updateBtn': [],
+    'updateCurrentVersionLbl': [],
+    'updateRequiredTitle': [],
+    'updateRequiredVersionLbl': [],
+    'updateDownloadStarted': [],
     'userIntentBestSpeed': [],
     'userIntentBestSpeedDesc': [],
     'userIntentLabel': [],
@@ -3666,6 +3681,101 @@ class S {
     return Intl.message('Terms and Conditions', name: 'termsAndConditions', desc: '', args: []);
   }
 
+  /// `Accept`
+  String get termsConditionsAcceptBtn {
+    return Intl.message('Accept', name: 'termsConditionsAcceptBtn', desc: '', args: []);
+  }
+
+  /// `Accepting`
+  String get termsConditionsAcceptingBtn {
+    return Intl.message('Accepting', name: 'termsConditionsAcceptingBtn', desc: '', args: []);
+  }
+
+  /// `Loading Terms & Conditions`
+  String get termsConditionsLoading {
+    return Intl.message(
+      'Loading Terms & Conditions',
+      name: 'termsConditionsLoading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading content`
+  String get termsConditionsLoadingBtn {
+    return Intl.message('Loading content', name: 'termsConditionsLoadingBtn', desc: '', args: []);
+  }
+
+  /// `Checking for updates`
+  String get termsConditionsCheckingBtn {
+    return Intl.message(
+      'Checking for updates',
+      name: 'termsConditionsCheckingBtn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.`
+  String get termsConditionsLoadFailureContent {
+    return Intl.message(
+      'The updated Terms & Conditions need to be available for you to review before you can accept them. Please try again.',
+      name: 'termsConditionsLoadFailureContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't load the Terms & Conditions`
+  String get termsConditionsLoadFailureTitle {
+    return Intl.message(
+      'We couldn\'t load the Terms & Conditions',
+      name: 'termsConditionsLoadFailureTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong while accepting the updated Terms & Conditions. Please try again to continue using Mysterium VPN.`
+  String get termsConditionsSaveFailureContent {
+    return Intl.message(
+      'Something went wrong while accepting the updated Terms & Conditions. Please try again to continue using Mysterium VPN.',
+      name: 'termsConditionsSaveFailureContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't save your acceptance`
+  String get termsConditionsSaveFailureTitle {
+    return Intl.message(
+      'We couldn\'t save your acceptance',
+      name: 'termsConditionsSaveFailureTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We've updated our Terms & Conditions. Please review and accept the updated Terms to continue using Mysterium VPN.`
+  String get termsConditionsUpdatedSubtitle {
+    return Intl.message(
+      'We\'ve updated our Terms & Conditions. Please review and accept the updated Terms to continue using Mysterium VPN.',
+      name: 'termsConditionsUpdatedSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our Terms & Conditions have changed`
+  String get termsConditionsUpdatedTitle {
+    return Intl.message(
+      'Our Terms & Conditions have changed',
+      name: 'termsConditionsUpdatedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Hello Sir`
   String get title {
     return Intl.message('Hello Sir', name: 'title', desc: '', args: []);
@@ -3894,6 +4004,31 @@ class S {
   /// `Update`
   String get updateBtn {
     return Intl.message('Update', name: 'updateBtn', desc: '', args: []);
+  }
+
+  /// `Your version`
+  String get updateCurrentVersionLbl {
+    return Intl.message('Your version', name: 'updateCurrentVersionLbl', desc: '', args: []);
+  }
+
+  /// `Update required`
+  String get updateRequiredTitle {
+    return Intl.message('Update required', name: 'updateRequiredTitle', desc: '', args: []);
+  }
+
+  /// `Required`
+  String get updateRequiredVersionLbl {
+    return Intl.message('Required', name: 'updateRequiredVersionLbl', desc: '', args: []);
+  }
+
+  /// `Download started. Open the file to install the update.`
+  String get updateDownloadStarted {
+    return Intl.message(
+      'Download started. Open the file to install the update.',
+      name: 'updateDownloadStarted',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Best speed`

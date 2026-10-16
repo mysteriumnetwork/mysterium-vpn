@@ -209,7 +209,6 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   );
 
   @override
-  @visibleForTesting
   Future<void> setMarketingConsentShown() {
     return _$setMarketingConsentShownAsyncAction.run(() => super.setMarketingConsentShown());
   }
@@ -244,6 +243,16 @@ mixin _$UserPreferencesStore on _UserPreferencesStore, Store {
   @override
   Future<bool> getMarketingConsent() {
     return _$getMarketingConsentAsyncAction.run(() => super.getMarketingConsent());
+  }
+
+  late final _$markPushPromptShownAsyncAction = AsyncAction(
+    '_UserPreferencesStore.markPushPromptShown',
+    context: context,
+  );
+
+  @override
+  Future<void> markPushPromptShown() {
+    return _$markPushPromptShownAsyncAction.run(() => super.markPushPromptShown());
   }
 
   late final _$setPushNotificationsShownAsyncAction = AsyncAction(

@@ -8,7 +8,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -104,6 +104,13 @@ class QAToolbox extends HookConsumerWidget {
           },
         ),
         _QAActionButton(
+          label: 'Reset Marketing Consent Prompt',
+          onPressed: () async {
+            await ref.read(localDBServicePOD).resetMarketingConsentShown();
+            showSnackbar('Marketing consent flag cleared (needs server consent false too)');
+          },
+        ),
+        _QAActionButton(
           label: 'Reset App open count',
           onPressed: () async {
             await ref.read(localDBServicePOD).resetAppOpenCount();
@@ -123,6 +130,10 @@ class QAToolbox extends HookConsumerWidget {
             await ref.read(residentialEducationStorePOD).reset();
             showSnackbar('Residential education reset — modal shows on 2nd connect again');
           },
+        ),
+        _QAActionButton(
+          label: 'Show Review Prompt',
+          onPressed: () => showReviewPromptDialog(context),
         ),
         _QAActionButton(
           label: 'Reset Review Prompt',

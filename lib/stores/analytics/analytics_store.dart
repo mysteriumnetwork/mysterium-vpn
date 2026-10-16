@@ -497,6 +497,83 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logTunnelPermissionDialogShown() async {
+    await logEvent(AnalyticsEvent.tunnelPermissionDialogShown);
+  }
+
+  Future<void> logTunnelPermissionDecision({required bool accepted}) async {
+    await logEvent(
+      accepted ? AnalyticsEvent.tunnelPermissionAccepted : AnalyticsEvent.tunnelPermissionDeclined,
+    );
+  }
+
+  Future<void> logTunnelSetupSucceeded({required String trigger}) async {
+    await logEvent(AnalyticsEvent.tunnelSetupSucceeded, parameters: {'trigger': trigger});
+  }
+
+  Future<void> logTunnelSetupFailed({required String reason, required String trigger}) async {
+    await logEvent(
+      AnalyticsEvent.tunnelSetupFailed,
+      parameters: {'reason': reason, 'trigger': trigger},
+    );
+  }
+
+  Future<void> logDeviceLimitDialogShown() async {
+    await logEvent(AnalyticsEvent.deviceLimitDialogShown);
+  }
+
+  Future<void> logDeviceLimitDashboardClicked() async {
+    await logEvent(AnalyticsEvent.deviceLimitDashboardClicked);
+  }
+
+  Future<void> logDeviceLimitDismissed() async {
+    await logEvent(AnalyticsEvent.deviceLimitDismissed);
+  }
+
+  Future<void> logMarketingConsentPromptShown() async {
+    await logEvent(AnalyticsEvent.marketingConsentPromptShown);
+  }
+
+  Future<void> logTermsAcceptancePromptShown() async {
+    await logEvent(AnalyticsEvent.termsAcceptancePromptShown);
+  }
+
+  Future<void> logTermsAcceptanceTermsOpened() async {
+    await logEvent(AnalyticsEvent.termsAcceptanceTermsOpened);
+  }
+
+  Future<void> logTermsAcceptanceClicked() async {
+    await logEvent(AnalyticsEvent.termsAcceptanceClicked);
+  }
+
+  Future<void> logTermsAcceptanceSuccess() async {
+    await logEvent(AnalyticsEvent.termsAcceptanceSuccess);
+  }
+
+  Future<void> logTermsAcceptanceError(String reason) async {
+    await logEvent(AnalyticsEvent.termsAcceptanceError, parameters: {'reason': reason});
+  }
+
+  Future<void> logPushNotificationsPromptShown() async {
+    await logEvent(AnalyticsEvent.pushNotificationsPromptShown);
+  }
+
+  Future<void> logPushNotificationsPromptDecision({required bool accepted}) async {
+    await logEvent(
+      accepted
+          ? AnalyticsEvent.pushNotificationsPromptAccepted
+          : AnalyticsEvent.pushNotificationsPromptDeclined,
+    );
+  }
+
+  Future<void> logMarketingConsentMarked({required bool accepted}) async {
+    await logEvent(
+      accepted
+          ? AnalyticsEvent.marketingConsentMarkedAccepted
+          : AnalyticsEvent.marketingConsentMarkedDeclined,
+    );
+  }
+
   Future<void> logCancellationConfirmViewed() async {
     await logEvent(AnalyticsEvent.cancellationConfirmViewed);
   }

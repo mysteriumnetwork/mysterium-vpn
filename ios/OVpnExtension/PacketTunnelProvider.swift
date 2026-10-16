@@ -7,7 +7,7 @@ import NetworkExtension
 import OpenVPNAdapter
 import os.log
 
-extension NEPacketTunnelFlow: OpenVPNAdapterPacketFlow {}
+extension NEPacketTunnelFlow: @retroactive OpenVPNAdapterPacketFlow {}
 
 class PacketTunnelProvider: NEPacketTunnelProvider {
 

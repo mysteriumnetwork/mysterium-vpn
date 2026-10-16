@@ -7,12 +7,6 @@ on:
       build_number:
         required: true
         type: string
-      product_store_id:
-        required: true
-        type: string
-      product_identity:
-        required: true
-        type: string
       application_name:
         required: true
         type: string
@@ -25,10 +19,6 @@ on:
         required: true
         type: string
         default: ".env.dev"
-      standalone_sign:
-        required: true
-        type: boolean
-        default: false
       standalone_keyvault_certificate:
         required: true
         type: string
@@ -82,7 +72,6 @@ jobs:
         run: fvm flutter build windows --no-pub --release --dart-define-from-file="${{ inputs.env_file }}"
 
       - name: Build Windows installer
-        if: ${{ inputs.standalone_sign == true }}
         shell: pwsh
         run: |
           Install-Module -Name Az.KeyVault -Scope CurrentUser -Force 
@@ -132,31 +121,3 @@ jobs:
           path: build/windows/x64/runner/Release/MysteriumVPN.msix
           if-no-files-found: error
 
-      - name: Build Windows installer
-        run: |
-          fvm dart run msix:create `
-            --build-windows false --install-certificate false --output-name "MysteriumVPN" `
-            --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
-            --store --identity-name "${{ inputs.product_identity }}" --publisher "CN=B6C98289-B62E-4315-9F65-9B59DB0FC5AC" --publisher-display-name "UAB MN Technologijos" --protocol-activation "${{ inputs.protocol_activation }}"
-
-      - name: Upload to Github
-        uses: actions/upload-artifact@v5
-        with:
-          name: Windows app (Store)
-          path: build/windows/x64/runner/Release/MysteriumVPN.msix
-          if-no-files-found: error
-
-      - name: Download Microsoft Store Developer CLI
-        uses: microsoft/setup-msstore-cli@v1
-      - name: Setup Microsoft Store Developer CLI
-        run: |
-          msstore reconfigure --tenantId "${{ vars.MICROSOFT_AZURE_AD_TENANT_ID }}" --clientId "${{ vars.MICROSOFT_AZURE_AD_ClIENT_ID }}" --clientSecret "${{ secrets.MICROSOFT_AZURE_AD_CLIENT_SECRET }}" --sellerId "${{ vars.MICROSOFT_PARTNER_CENTER_SELLER_ID }}"
-          msstore info
-      - name: Publish to Microsoft Store
-        run: |
-          msstore submission status ${{ inputs.product_store_id }} -v
-          msstore publish --inputDirectory "build/windows/x64/runner/Release" --appId ${{ inputs.product_store_id }} --noCommit -v
-          msstore submission status ${{ inputs.product_store_id }} -v
-#      - name: Publish to Microsoft Store (commit right away)
-#        run: msstore submission publish ${{ inputs.product_store_id }}
-#        continue-on-error: true

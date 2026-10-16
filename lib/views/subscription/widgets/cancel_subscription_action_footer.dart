@@ -12,6 +12,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
     this.secondaryButtonLabel,
     this.onSecondaryButtonPressed,
     this.isProcessing = false,
+    this.processingIsSecondary = false,
     super.key,
   });
 
@@ -20,6 +21,10 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
   final VoidCallback onPrimaryButtonPressed;
   final VoidCallback? onSecondaryButtonPressed;
   final bool isProcessing;
+
+  /// Puts the [isProcessing] spinner on the secondary button instead.
+  final bool processingIsSecondary;
+
   final bool primaryButtonEnabled;
 
   @override
@@ -29,7 +34,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
     final primaryButton = IgnorePointer(
       ignoring: !primaryButtonEnabled || isProcessing,
       child: ButtonPrimary(
-        loading: isProcessing ? const ButtonLoading() : null,
+        loading: isProcessing && !processingIsSecondary ? const ButtonLoading() : null,
         onPressed: isProcessing || !primaryButtonEnabled ? () {} : onPrimaryButtonPressed,
         decoration: ButtonDecoration(
           decorationColor: primaryButtonEnabled ? null : theme.palette.bgDisabled,
@@ -49,6 +54,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
     final secondaryButton = secondaryButtonLabel != null && onSecondaryButtonPressed != null
         ? ButtonTertiary(
             onPressed: isProcessing ? null : onSecondaryButtonPressed,
+            loading: isProcessing && processingIsSecondary ? const ButtonLoading() : null,
             child: Text(
               secondaryButtonLabel!,
               style: theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textSecondary),

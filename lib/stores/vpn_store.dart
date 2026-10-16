@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/extensions/string.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -17,6 +18,11 @@ import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 part 'vpn_store.g.dart';
+
+/// Analytics `trigger` values for [VpnStore.setupTunnel]: the permission-dialog
+/// funnel vs the Windows paths that set the tunnel up without a dialog.
+const String tunnelSetupTriggerAuto = 'auto';
+const String tunnelSetupTriggerPermissionFlow = 'permission_flow';
 
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
@@ -385,28 +391,40 @@ abstract class _VpnStore extends VpnGuard with Store {
   // ==================== Tunnel Management ====================
 
   @action
-  Future<void> setupTunnel() async {
+  /// [trigger] separates the permission-dialog funnel from the Windows
+  /// auto-setup paths, which run without a dialog.
+  Future<void> setupTunnel({String trigger = tunnelSetupTriggerAuto}) async {
     try {
       await _vpnRepository.setupTunnel();
       await _setupAndListenToConnectionStatus();
+      _analyticsStore.logTunnelSetupSucceeded(trigger: trigger).ignore();
     } catch (e) {
-      _handleTunnelSetupError(e);
+      _handleTunnelSetupError(e, trigger);
       rethrow;
     }
   }
 
-  void _handleTunnelSetupError(Object e) {
+  void _handleTunnelSetupError(Object e, String trigger) {
     final permissionDenied =
         e is PlatformException &&
         ((e.message ?? '').contains('Permissions are not given') ||
             (e.message ?? '').contains('permission denied'));
+    final errorType = permissionDenied
+        ? VpnErrorType.tunnelPermissionRequired
+        : VpnErrorType.tunnelSetupFailed;
 
-    _emitConnectionError(
-      VpnError(
-        permissionDenied ? VpnErrorType.tunnelPermissionRequired : VpnErrorType.tunnelSetupFailed,
-      ),
-    );
+    _analyticsStore
+        .logTunnelSetupFailed(reason: errorType.name.toSnakeCase, trigger: trigger)
+        .ignore();
+    _emitConnectionError(VpnError(errorType));
   }
+
+  /// Stages 1-2 of the `tunnel_*` funnel, kept here with the setup outcome so
+  /// the whole funnel is defined in one place.
+  void onTunnelPermissionDialogShown() => _analyticsStore.logTunnelPermissionDialogShown().ignore();
+
+  void onTunnelPermissionDecision({required bool accepted}) =>
+      _analyticsStore.logTunnelPermissionDecision(accepted: accepted).ignore();
 
   @action
   Future<void> _setupAndListenToConnectionStatus() async {

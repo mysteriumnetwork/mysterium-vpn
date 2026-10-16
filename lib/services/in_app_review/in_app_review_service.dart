@@ -13,7 +13,7 @@ class InAppReviewService {
   /// a supported platform (Android/iOS/macOS — not Windows/Linux) where the
   /// OS reports the review API as available.
   Future<bool> isAvailable() async {
-    if (!_isSupportedPlatform) {
+    if (!supportsNativeReview) {
       return false;
     }
     return InAppReview.instance.isAvailable();
@@ -33,9 +33,13 @@ class InAppReviewService {
     return true;
   }
 
-  /// `in_app_review` only ships Android, iOS and macOS implementations; calling
-  /// it on Windows/Linux throws a `MissingPluginException`.
-  bool get _isSupportedPlatform => Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
+  /// Whether the platform ships a native review implementation at all — not
+  /// Windows or Linux, where `in_app_review` throws `MissingPluginException`.
+  ///
+  /// Deliberately excludes Samsung: those devices keep the store arm and fall
+  /// through [requestReview] to the store page, rather than being reassigned to
+  /// the other A/B arm behind ConfigCat's back.
+  bool get supportsNativeReview => Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
 
   /// On Samsung devices the in-app review dialog does not work properly.
   bool isSamsung() {

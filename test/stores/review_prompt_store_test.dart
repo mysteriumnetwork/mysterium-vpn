@@ -16,6 +16,7 @@ import 'review_prompt_store_test.mocks.dart';
   MockSpec<VpnStore>(),
   MockSpec<AuthSessionStore>(),
   MockSpec<SubscriptionStore>(),
+  MockSpec<ABTestingStore>(),
 ])
 void main() {
   late MockReviewPromptRepository prefs;
@@ -24,6 +25,7 @@ void main() {
   late MockVpnStore vpnStore;
   late MockAuthSessionStore authSessionStore;
   late MockSubscriptionStore subscriptionStore;
+  late MockABTestingStore abTestingStore;
 
   // Fixed clock so age/cooldown maths are deterministic.
   final fixedNow = DateTime.utc(2026, 6, 10);
@@ -33,6 +35,7 @@ void main() {
   ReviewPromptStore createStore({
     bool Function()? didCrashRecently,
     Future<bool> Function()? canShowNativeReview,
+    bool Function()? nativeReviewSupported,
   }) => ReviewPromptStore(
     prefs: prefs,
     remoteConfigStore: remoteConfig,
@@ -40,9 +43,11 @@ void main() {
     vpnStore: vpnStore,
     authSessionStore: authSessionStore,
     subscriptionStore: subscriptionStore,
+    abTestingStore: abTestingStore,
     now: () => fixedNow,
     didCrashRecently: didCrashRecently,
     canShowNativeReview: canShowNativeReview,
+    nativeReviewSupported: nativeReviewSupported,
   );
 
   /// Configure all mocks so the user is eligible and nothing suppresses.
@@ -65,6 +70,9 @@ void main() {
     // The prompt is evaluated after a session completes, i.e. while
     // disconnected — that is the unsuppressed baseline.
     when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
+
+    // Default arm: the native store prompt.
+    when(abTestingStore.reviewDestination).thenReturn(ReviewDestination.store);
   }
 
   setUp(() {
@@ -74,6 +82,7 @@ void main() {
     vpnStore = MockVpnStore();
     authSessionStore = MockAuthSessionStore();
     subscriptionStore = MockSubscriptionStore();
+    abTestingStore = MockABTestingStore();
     makeEligibleAndClear();
   });
 
@@ -320,9 +329,58 @@ void main() {
       verify(analytics.logEvent(AnalyticsEvent.reviewPromptCooldownStarted)).called(1);
     });
 
+    test('forces Trustpilot where the platform has no native prompt', () {
+      when(abTestingStore.reviewDestination).thenReturn(ReviewDestination.store);
+      final store = createStore(nativeReviewSupported: () => false);
+      expect(store.reviewDestination, ReviewDestination.trustpilot);
+    });
+
+    test('honours the assigned variant where a native prompt exists', () {
+      when(abTestingStore.reviewDestination).thenReturn(ReviewDestination.store);
+      final store = createStore(nativeReviewSupported: () => true);
+      expect(store.reviewDestination, ReviewDestination.store);
+    });
+
+    test('a forced Trustpilot arm still arms the prompt on a native-less platform', () async {
+      // Regression: Windows/Linux used to be suppressed outright, so those
+      // users never saw the prompt at all.
+      when(abTestingStore.reviewDestination).thenReturn(ReviewDestination.store);
+      final store = createStore(
+        nativeReviewSupported: () => false,
+        canShowNativeReview: () async => false,
+      );
+      await store.evaluate();
+      expect(store.pendingPrompt, isTrue);
+    });
+
+    test('the Trustpilot arm is not suppressed when the native prompt is unavailable', () async {
+      when(abTestingStore.reviewDestination).thenReturn(ReviewDestination.trustpilot);
+      final store = createStore(canShowNativeReview: () async => false);
+      await store.evaluate();
+      expect(store.pendingPrompt, isTrue);
+    });
+
     test('onLeaveReview records native open and starts positive cooldown', () async {
       await createStore().onLeaveReview();
-      verify(analytics.logEvent(AnalyticsEvent.nativeReviewPromptOpened)).called(1);
+      verify(
+        analytics.logEvent(
+          AnalyticsEvent.nativeReviewPromptOpened,
+          parameters: {'destination': 'store'},
+        ),
+      ).called(1);
+      verify(prefs.setNativeReviewOpenedAt(nowMs)).called(1);
+      verify(prefs.setCooldownUntil(nowMs + 105 * dayMs)).called(1);
+    });
+
+    test('onLeaveReview tags the Trustpilot destination and keeps the cooldown', () async {
+      when(abTestingStore.reviewDestination).thenReturn(ReviewDestination.trustpilot);
+      await createStore().onLeaveReview();
+      verify(
+        analytics.logEvent(
+          AnalyticsEvent.nativeReviewPromptOpened,
+          parameters: {'destination': 'trustpilot'},
+        ),
+      ).called(1);
       verify(prefs.setNativeReviewOpenedAt(nowMs)).called(1);
       verify(prefs.setCooldownUntil(nowMs + 105 * dayMs)).called(1);
     });

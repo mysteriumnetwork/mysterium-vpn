@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
+import 'package:mysterium_vpn/models/order_summary.dart';
 
 part 'subscription.freezed.dart';
 
@@ -23,6 +24,7 @@ abstract class Subscription with _$Subscription {
     DateTime? pausedUntil,
     String? storePlanId,
     DateTime? periodStart,
+    OrderSummary? orderSummary,
   }) = _Subscription;
 
   Subscription._();

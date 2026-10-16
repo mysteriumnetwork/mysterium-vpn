@@ -8,10 +8,13 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/future_status_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
+import 'package:mysterium_vpn/common/ui/keys.dart';
+import 'package:mysterium_vpn/common/ui/ui.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/components.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/settings/settings_action_button.dart';
@@ -296,6 +299,8 @@ class _SubscriptionCard extends StatelessWidget {
       String? badgeText;
       var badgeType = BadgeType.warning;
 
+      final spacing = Theme.of(context).spacing;
+
       // Active subscription can be recurring or cancelled
       if (isSubscriptionActive) {
         // subscription paused
@@ -322,8 +327,6 @@ class _SubscriptionCard extends StatelessWidget {
       } else {
         planSubtitle = S.current.noActiveSubsDesc;
       }
-
-      final spacing = Theme.of(context).spacing;
 
       Widget actionPair(Widget first, Widget second) => isDesktop
           ? Row(mainAxisSize: MainAxisSize.min, spacing: spacing.md, children: [first, second])
@@ -400,9 +403,23 @@ class _SubscriptionCard extends StatelessWidget {
         );
       }
 
+      final subtitle = _SubscriptionSubtitle(
+        subtitle: planSubtitle,
+        isDesktop: isDesktop,
+        orderSummary: subscription?.orderSummary,
+      );
+
+      final showSubtitleInFooter = !isDesktop && (subscription?.orderSummary?.hasDiscount ?? false);
+
       return SettingsCard(
         title: planTitle,
-        subtitle: planSubtitle,
+        subtitleWidget: showSubtitleInFooter ? null : subtitle,
+        footer: showSubtitleInFooter
+            ? Padding(
+                padding: EdgeInsets.only(top: spacing.s),
+                child: Align(alignment: Alignment.centerRight, child: subtitle),
+              )
+            : null,
         position: position,
         trailing: trailing,
         badgeText: badgeText,
@@ -410,4 +427,55 @@ class _SubscriptionCard extends StatelessWidget {
       );
     },
   );
+}
+
+class _SubscriptionSubtitle extends StatelessWidget {
+  const _SubscriptionSubtitle({
+    required this._subtitle,
+    required this._isDesktop,
+    this._orderSummary,
+  });
+
+  final String _subtitle;
+  final bool _isDesktop;
+  final OrderSummary? _orderSummary;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: _isDesktop ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            _subtitle,
+            style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        if (_orderSummary?.hasDiscount ?? false)
+          Row(
+            children: [
+              SizedBox(width: theme.spacing.md),
+              Icon(UntitledUI.sale_02, size: 20, color: theme.palette.iconPrimary),
+              SizedBox(width: theme.spacing.xs),
+              Text(
+                '${_orderSummary!.currencySymbol}${_orderSummary.totalPrice}',
+                style: theme.textStyles.textSm.semibold.copyWith(color: theme.palette.textPrimary),
+              ),
+              SizedBox(width: theme.spacing.xs),
+              Text(
+                '${_orderSummary.currencySymbol}${_orderSummary.totalPriceBeforeDiscount}',
+                style: theme.textStyles.textSm.regular.copyWith(
+                  color: theme.palette.textTertiary,
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: theme.palette.textTertiary,
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
 }

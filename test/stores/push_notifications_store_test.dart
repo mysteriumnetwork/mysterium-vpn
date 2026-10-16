@@ -134,6 +134,13 @@ void main() {
   });
 
   group('requesting permission', () {
+    test('markPromptShown stamps the cooldown without touching permissions', () async {
+      await store.markPromptShown();
+
+      verify(prompts.setPushPromptLastShownAt(any)).called(1);
+      verifyNever(repository.requestPermission());
+    });
+
     test('setPushNotificationsShown requests permission when the user allowed it', () async {
       await store.setPushNotificationsShown(userAllowed: true);
 

@@ -5,7 +5,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 
 part 'ab_testing_store.g.dart';
 
-// enum _ABKey { subscriptionFlow, tunnelConsent }
+enum _ABKey { reviewDestination }
 
 class ABTestingStore = ABTestingStoreBase with _$ABTestingStore;
 
@@ -20,6 +20,12 @@ abstract class ABTestingStoreBase extends ConfigCatStore with Store {
   }
 
   final AnalyticsStore _analytics;
+
+  /// Which destination the review prompt's "Leave a review" button opens.
+  /// Falls back to [ReviewDestination.store] when the variant is absent or not
+  /// a string, so a malformed flag can never strand users without a review path.
+  ReviewDestination get reviewDestination =>
+      ReviewDestination.fromName(config[_ABKey.reviewDestination.name]?.toString());
 
   Map<String, String> get asUserProperties =>
       config.map((key, value) => MapEntry('group_${key.toSnakeCase}', value.toString()));
