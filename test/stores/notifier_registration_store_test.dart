@@ -491,6 +491,30 @@ void main() {
       await start();
 
       verify(analyticsStore.logPushDeviceRegistrationFailed(errorCategory: 'unknown')).called(1);
+      verify(
+        analyticsStore.logNonFatal(
+          err: anyNamed('err'),
+          stack: anyNamed('stack'),
+          reason: anyNamed('reason'),
+        ),
+      ).called(1);
+    });
+
+    test('a NotifierException is evented but not reported as a bug', () async {
+      await start();
+
+      verify(
+        analyticsStore.logPushDeviceRegistrationFailed(errorCategory: 'server', status: 503),
+      ).called(1);
+      // Expected transport outcomes are retried, so reporting each one would
+      // bury the Crashlytics dashboard.
+      verifyNever(
+        analyticsStore.logNonFatal(
+          err: anyNamed('err'),
+          stack: anyNamed('stack'),
+          reason: anyNamed('reason'),
+        ),
+      );
     });
   });
 
@@ -648,6 +672,37 @@ void main() {
       await pumpEventQueue();
 
       expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('logs push_device_deleted on success', () async {
+      await start();
+      clearInteractions(analyticsStore);
+
+      await revokePermission();
+
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushDeviceDeleted, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('a non-Notifier delete error is still reported, as unknown', () async {
+      await start();
+      when(
+        service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+      ).thenThrow(StateError('boom'));
+
+      await revokePermission();
+
+      verify(analyticsStore.logPushDeviceDeleteFailed(errorCategory: 'unknown')).called(1);
+      // A bug on our side, unlike a NotifierException — so it also goes to
+      // Crashlytics and Sentry rather than only the event stream.
+      verify(
+        analyticsStore.logNonFatal(
+          err: anyNamed('err'),
+          stack: anyNamed('stack'),
+          reason: anyNamed('reason'),
+        ),
+      ).called(1);
     });
 
     test('an owed delete is finished before registering again', () async {

@@ -95,6 +95,37 @@ void main() {
 
       verify(pushNotificationsStore.updatePushNotificationsPermissions()).called(1);
     });
+
+    testWidgets('tapping it logs the toggle event with both values', (tester) async {
+      await pumpAt(tester, const Size(1200, 900));
+
+      await tester.tap(find.text(S.current.openSystemSettingsBtn));
+      await tester.pumpAndSettle();
+
+      verify(
+        analyticsStore.logEvent(
+          AnalyticsEvent.togglePushNotifications,
+          parameters: {'currentValue': 'false', 'newValue': 'true'},
+        ),
+      ).called(1);
+    });
+
+    testWidgets('a failing store call is surfaced, not evented', (tester) async {
+      when(
+        pushNotificationsStore.updatePushNotificationsPermissions(),
+      ).thenThrow(StateError('boom'));
+      await pumpAt(tester, const Size(1200, 900));
+
+      await tester.tap(find.text(S.current.openSystemSettingsBtn));
+      await tester.pumpAndSettle();
+
+      verifyNever(
+        analyticsStore.logEvent(
+          AnalyticsEvent.togglePushNotifications,
+          parameters: anyNamed('parameters'),
+        ),
+      );
+    });
   });
 
   group('visibility', () {
