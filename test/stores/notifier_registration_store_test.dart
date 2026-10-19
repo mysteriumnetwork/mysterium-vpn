@@ -681,7 +681,10 @@ void main() {
       await revokePermission();
 
       verify(
-        analyticsStore.logEvent(AnalyticsEvent.pushDeviceDeleted, parameters: anyNamed('parameters')),
+        analyticsStore.logEvent(
+          AnalyticsEvent.pushDeviceDeleted,
+          parameters: anyNamed('parameters'),
+        ),
       ).called(1);
     });
 
