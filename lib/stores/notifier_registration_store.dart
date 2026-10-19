@@ -229,9 +229,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     if (Zone.current[_queueZoneKey] == true) {
       return action();
     }
-    final next = _queue.then(
-      (_) => runZoned(action, zoneValues: {_queueZoneKey: true}),
-    );
+    final next = _queue.then((_) => runZoned(action, zoneValues: {_queueZoneKey: true}));
     // Swallowed on the chain only, so one failure cannot poison later work
     // while the caller still sees its own error.
     _queue = next.catchError((Object _) {});
