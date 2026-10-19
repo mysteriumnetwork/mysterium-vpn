@@ -80,12 +80,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
 
   bool _disposed = false;
 
-  bool _attributesInFlight = false;
-
-  /// Set when an attribute change arrives mid-merge, so the newer map is sent
-  /// once the current request finishes rather than being lost.
-  bool _attributesStale = false;
-
   /// Whether this launch has already re-registered. The backend wants one
   /// register per launch even when nothing changed, but only one.
   bool _registeredThisLaunch = false;
@@ -114,13 +108,16 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   void _setupReactions() {
     _disposers.addAll([
       _createAuthReaction(),
+      // Serialized: a settled record from a previous launch makes these fire as
+      // soon as the data resolves, which otherwise races this launch's
+      // re-register and sends the merge first.
       reaction(
         (_) => _ipInfoStore.infoFuture.value.toLocationData(),
-        (_) async => _syncAttributes(),
+        (_) async => _serialized(_syncAttributes),
       ),
       reaction(
         (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
-        (_) async => _syncAttributes(),
+        (_) async => _serialized(_syncAttributes),
       ),
     ]);
   }
@@ -146,19 +143,26 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   }
 
   void _setupStreamListeners() {
+    String? seenToken;
     _subscriptions.addAll([
-      _repository.tokenStream.listen((_) async {
-        _analyticsStore.logEvent(AnalyticsEvent.pushTokenRefreshed);
+      // tokenStream replays its current value to every new subscriber, and the
+      // store is rebuilt on each logout — so only an actual change is a refresh.
+      _repository.tokenStream.listen((token) async {
+        if (seenToken != null && token != seenToken) {
+          _analyticsStore.logEvent(AnalyticsEvent.pushTokenRefreshed);
+        }
+        seenToken = token;
         await syncRegistration();
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'token stream')),
-      // The repository emits only on change and only from a fresh platform
-      // read, so a value here *is* a trustworthy transition: granting is a
-      // registration trigger, revoking a delete trigger.
+      // A value here is not necessarily a transition: the stream replays its
+      // current value to each new subscriber, and at startup that is the
+      // pre-init `false`. Granting is safe to act on directly; revoking is
+      // destructive, so it goes through a definitive read first.
       _repository.getPermissionStatusStream().listen((granted) async {
         if (granted) {
           await syncRegistration();
         } else {
-          await _deleteStoredDevice();
+          await _reconcilePermission();
         }
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'permission stream')),
       _connectivity.onConnectivityChanged.listen((results) async {
@@ -196,9 +200,14 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// Only the revoked direction needs handling at startup: granting either
   /// already agreed with the cache, or changed it and emitted on the
   /// permission stream, and both are triggers. Resume is different — see
-  /// [didChangeAppLifecycleState].
+  /// [didChangeAppLifecycleState]. Also the confirmation step for a `false`
+  /// arriving on the permission stream.
   Future<void> _reconcilePermission() async {
-    if (!await _repository.refreshPermissionStatus()) {
+    // Only an explicit denial unregisters. A null means the read failed or the
+    // user was never asked — on a cold start or hot restart the cache is still
+    // `false`, and treating that as a revocation deletes a perfectly good
+    // device registration.
+    if (await _repository.refreshPermissionStatus() == false) {
       await _deleteStoredDevice();
     }
   }
@@ -295,6 +304,12 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
         token: desired.token,
         platform: desired.platform,
       );
+      // A logout can have marked a delete while this call was in flight.
+      // Saving a settled record over it would strand the departing user's
+      // device: nothing retries a record that no longer owes anything.
+      if (_registration.read()?.state == NotifierSyncState.pendingDelete) {
+        return;
+      }
       await _registration.save(desired);
       _analyticsStore.logEvent(AnalyticsEvent.pushDeviceRegistrationSucceeded);
       _registeredThisLaunch = true;
@@ -319,6 +334,15 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   Future<void> handleLogout() async {
     _sentAttributes = null;
     _registeredThisLaunch = false;
+
+    // Recorded before the request, and outside the queue, because logout
+    // invalidates stores this one depends on: Riverpod can dispose this
+    // instance mid-delete, and a disposed store runs no queued work. The mark
+    // is what lets the next instance finish the job.
+    final owed = _registration.read();
+    if (owed != null && owed.state != NotifierSyncState.pendingDelete) {
+      await _mark(owed, NotifierSyncState.pendingDelete);
+    }
 
     // Independent, and the delete is a network round trip while clearing the
     // tray is local — so run them concurrently, each contained so one failing
@@ -410,14 +434,14 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     if (!Env.notifierConfigured) {
       return;
     }
-    if (_attributesInFlight) {
-      // A reaction fired mid-request; the map it saw is newer than the one in
-      // flight, so re-run once that finishes instead of dropping it.
-      _attributesStale = true;
-      return;
-    }
     final stored = known ?? _registration.read();
     if (stored == null || stored.isPending) {
+      return;
+    }
+    // The attributes below describe the current session, so they may only go to
+    // the user actually signed in. A stored record can still name the previous
+    // one — an account switch registers B but a reaction can fire first.
+    if (stored.externalUserId != _authSessionStore.userFuture.value?.userId) {
       return;
     }
 
@@ -443,7 +467,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
 
-    _attributesInFlight = true;
     try {
       await _service.mergeAttributes(externalUserId: stored.externalUserId, attributes: attributes);
       _sentAttributes = attributes;
@@ -453,13 +476,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       if (e is! NotifierException) {
         _reportUnexpected(e, stack, 'merging attributes');
       }
-    } finally {
-      _attributesInFlight = false;
-    }
-
-    if (_attributesStale) {
-      _attributesStale = false;
-      await _syncAttributes(known);
     }
   }
 

@@ -24,7 +24,11 @@ abstract class NotificationsRepository {
   /// Re-reads the platform's authorization state and emits it on
   /// [getPermissionStatusStream] if it changed. Called on app resume, since
   /// the user can flip the switch in system settings while we're backgrounded.
-  Future<bool> refreshPermissionStatus();
+  ///
+  /// Null means undetermined — the read failed, or the user has never been
+  /// asked. Neither is a revocation, and callers that act destructively on a
+  /// denial must treat only an explicit `false` as one.
+  Future<bool?> refreshPermissionStatus();
 
   /// Whether the system prompt has never been answered, so requesting it would
   /// actually show something.

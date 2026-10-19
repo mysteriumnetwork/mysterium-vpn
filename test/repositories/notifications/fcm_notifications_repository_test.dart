@@ -237,12 +237,14 @@ void main() {
       expect(await repository.refreshPermissionStatus(), isFalse);
     });
 
-    test('notDetermined maps to not granted', () async {
+    test('notDetermined is not granted, but is reported as undetermined', () async {
       when(
         messaging.getNotificationSettings(),
       ).thenAnswer((_) async => settings(AuthorizationStatus.notDetermined));
 
-      expect(await repository.refreshPermissionStatus(), isFalse);
+      // Null rather than false: never-asked must not read as a revocation.
+      expect(await repository.refreshPermissionStatus(), isNull);
+      expect(repository.getPermissionStatus(), isFalse);
     });
 
     test('a status change is emitted on the permission stream', () async {
@@ -250,10 +252,25 @@ void main() {
         messaging.getNotificationSettings(),
       ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
 
-      final emitted = repository.getPermissionStatusStream().first;
+      // The replayed current status comes first, then the change.
+      final emitted = repository.getPermissionStatusStream().take(2).toList();
       await repository.refreshPermissionStatus();
 
-      expect(await emitted, isTrue);
+      expect(await emitted, [false, true]);
+    });
+
+    test('a failed read reports undetermined, not denied', () async {
+      when(messaging.getNotificationSettings()).thenThrow(StateError('no firebase app'));
+
+      expect(await repository.refreshPermissionStatus(), isNull);
+    });
+
+    test('an explicit denial reports false', () async {
+      when(
+        messaging.getNotificationSettings(),
+      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+
+      expect(await repository.refreshPermissionStatus(), isFalse);
     });
 
     test('canRequestPermission is true only while undetermined', () async {
@@ -441,6 +458,52 @@ void main() {
 
     test('cannot request when provisionally authorized', () async {
       expect(await canRequestWith(AuthorizationStatus.provisional), isFalse);
+    });
+  });
+
+  group('permission status stream', () {
+    late FcmNotificationsRepository repository;
+
+    setUp(() => repository = build());
+    tearDown(() => repository.dispose());
+
+    test('replays the current status to a late subscriber', () async {
+      when(
+        messaging.getNotificationSettings(),
+      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      // The emission happens here, before anything is listening.
+      await repository.refreshPermissionStatus();
+
+      expect(await repository.getPermissionStatusStream().first, isTrue);
+    });
+
+    test('a late subscriber on a denied device sees false, not nothing', () async {
+      when(
+        messaging.getNotificationSettings(),
+      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      await repository.refreshPermissionStatus();
+
+      expect(await repository.getPermissionStatusStream().first, isFalse);
+    });
+
+    test('still delivers later changes after the replay', () async {
+      when(
+        messaging.getNotificationSettings(),
+      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      await repository.refreshPermissionStatus();
+
+      final seen = <bool>[];
+      final sub = repository.getPermissionStatusStream().listen(seen.add);
+      await pumpEventQueue();
+
+      when(
+        messaging.getNotificationSettings(),
+      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      await repository.refreshPermissionStatus();
+      await pumpEventQueue();
+
+      expect(seen, [false, true]);
+      await sub.cancel();
     });
   });
 

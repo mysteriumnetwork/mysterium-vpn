@@ -18,7 +18,7 @@ class DesktopNotificationsRepository implements NotificationsRepository {
   bool getPermissionStatus() => false;
 
   @override
-  Future<bool> refreshPermissionStatus() async => false;
+  Future<bool?> refreshPermissionStatus() async => false;
 
   @override
   Future<bool> canRequestPermission() async => false;

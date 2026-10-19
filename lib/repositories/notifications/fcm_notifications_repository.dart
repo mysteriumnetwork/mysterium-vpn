@@ -60,7 +60,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
   bool _initialized = false;
 
   /// In-flight permission read, shared by concurrent callers.
-  Future<bool>? _permissionRefresh;
+  Future<bool?>? _permissionRefresh;
 
   /// In-flight token request, shared by concurrent callers.
   Future<void>? _tokenRequest;
@@ -81,12 +81,34 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// not fire for the initial token. Registration would then wait for an app
   /// resume, which is exactly the cold-start case it must cover.
   @override
-  Stream<String> get tokenStream async* {
-    final current = _currentToken;
-    if (current.isNotNullOrEmpty) {
-      yield current!;
-    }
-    yield* _tokenController.stream;
+  Stream<String> get tokenStream =>
+      _replaying(_tokenController, () => _currentToken.isNotNullOrEmpty ? _currentToken : null);
+
+  /// Per-subscriber view of [source] that first replays whatever [current]
+  /// returns, or nothing when it returns null.
+  ///
+  /// Subscribes to [source] *before* replaying, because an `async*` prologue
+  /// leaves a gap between its first `yield` and reaching `yield*` during which
+  /// an event would be dropped.
+  Stream<T> _replaying<T extends Object>(StreamController<T> source, T? Function() current) {
+    late StreamController<T> out;
+    StreamSubscription<T>? subscription;
+    out = StreamController<T>(
+      onListen: () {
+        subscription = source.stream.listen(out.add, onError: out.addError, onDone: out.close);
+        final value = current();
+        if (value != null) {
+          out.add(value);
+        }
+      },
+      onCancel: () async {
+        await subscription?.cancel();
+        if (!out.isClosed) {
+          await out.close();
+        }
+      },
+    );
+    return out.stream;
   }
 
   @override
@@ -279,25 +301,31 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// Shared so overlapping callers make one platform round trip, not two. Both
   /// [init] and `NotifierRegistrationStore` refresh on startup, and they race.
   @override
-  Future<bool> refreshPermissionStatus() =>
+  Future<bool?> refreshPermissionStatus() =>
       _permissionRefresh ??= _refreshPermissionStatus().whenComplete(() {
         _permissionRefresh = null;
       });
 
-  Future<bool> _refreshPermissionStatus() async {
-    bool granted;
+  Future<bool?> _refreshPermissionStatus() async {
+    final NotificationSettings settings;
     try {
-      granted = _applySettings(await _messaging.getNotificationSettings());
+      settings = await _messaging.getNotificationSettings();
     } catch (e, stack) {
+      // A read that never happened says nothing about the user's choice. The
+      // cached value would be a fresh store's `false`, which a caller could
+      // mistake for a revocation.
       _report(e, stack, 'reading push permission status');
-      return _permissionGranted;
+      return null;
     }
+    final granted = _applySettings(settings);
     // Permission may have been granted in system settings while backgrounded,
     // which is the point at which APNs can finally issue a token.
     if (granted) {
       await _ensureToken();
+      return true;
     }
-    return granted;
+    // Never asked is not denied.
+    return settings.authorizationStatus == AuthorizationStatus.notDetermined ? null : false;
   }
 
   /// Whether showing the system prompt would actually surface something.
@@ -324,8 +352,15 @@ class FcmNotificationsRepository implements NotificationsRepository {
     }
   }
 
+  /// Replays the current status to a new subscriber before streaming changes.
+  ///
+  /// [init] resolves the first real value asynchronously, and `_applySettings`
+  /// emits only on change — so a subscriber attaching afterwards would see
+  /// nothing until the user next toggled the permission. A view binding this
+  /// through a cached computed would stay stuck on the pre-init `false`.
   @override
-  Stream<bool> getPermissionStatusStream() => _permissionController.stream;
+  Stream<bool> getPermissionStatusStream() =>
+      _replaying(_permissionController, () => _permissionGranted);
 
   @override
   Future<void> openAppNotificationsSettings() =>

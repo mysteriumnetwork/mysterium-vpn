@@ -112,6 +112,8 @@ void main() {
   /// flips, then the stream emits the transition.
   Future<void> revokePermission() async {
     when(repository.getPermissionStatus()).thenReturn(false);
+    // A real revoke is confirmed by a definitive platform read.
+    when(repository.refreshPermissionStatus()).thenAnswer((_) async => false);
     permissionController.add(false);
     await pumpEventQueue();
   }
@@ -379,6 +381,10 @@ void main() {
   group('triggers', () {
     test('a refreshed FCM token re-registers and is reported', () async {
       await start();
+      // The real tokenStream replays the current token on subscribe; this
+      // controller does not, so stand in for it before the actual refresh.
+      tokenController.add('fcm-token');
+      await pumpEventQueue();
       clearInteractions(service);
       clearInteractions(analyticsStore);
 
@@ -589,6 +595,55 @@ void main() {
       verify(repository.cancelDisplayedNotifications()).called(1);
     });
 
+    test('records the owed delete before calling Notifier', () async {
+      final store = await start();
+      final gate = Completer<void>();
+      when(
+        service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+      ).thenAnswer((_) async => gate.future);
+
+      final logout = store.handleLogout();
+      await pumpEventQueue();
+
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
+      gate.complete();
+      await logout;
+    });
+
+    test('a store disposed mid-logout leaves the delete recoverable', () async {
+      final first = await start();
+      final gate = Completer<void>();
+      when(
+        service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+      ).thenAnswer((_) async => gate.future);
+
+      // Logout invalidates subscriptionStorePOD, which this store watches, so
+      // Riverpod disposes it while the delete is still in flight.
+      final logout = first.handleLogout();
+      await first.dispose();
+      gate.complete();
+      await logout;
+
+      // The replacement instance must still find work to do.
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
+      clearInteractions(service);
+      stubServiceSuccess();
+
+      // The replacement comes up signed out, which is the real post-logout
+      // state — otherwise it would legitimately register the same user again.
+      when(authSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(null));
+      // start() replaces the store the teardown disposes.
+      await start();
+      // The real tokenStream replays the cached token to a new subscriber; this
+      // controller does not, so stand in for it. That replay is what triggers
+      // the retry on a signed-out launch, where the auth reaction stays quiet.
+      tokenController.add('fcm-token');
+      await pumpEventQueue();
+
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      expect(prefs.getNotifierRegistration(), isNull);
+    });
+
     test('does nothing on the initial fire when never authenticated', () async {
       when(authSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(null));
 
@@ -691,6 +746,44 @@ void main() {
 
       expectNoRegisterCall();
       expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('an unreadable permission status does not unregister', () async {
+      // A hot restart resets the repository cache to false before the platform
+      // has answered; treating that as a revocation deleted a live device.
+      await prefs.setNotifierRegistration(registration());
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.refreshPermissionStatus()).thenAnswer((_) async => null);
+
+      await start();
+
+      expectNoDeleteCall();
+      expect(prefs.getNotifierRegistration(), isNotNull);
+    });
+
+    test('a never-asked permission status does not unregister', () async {
+      await prefs.setNotifierRegistration(registration());
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.refreshPermissionStatus()).thenAnswer((_) async => null);
+
+      await start();
+
+      expectNoDeleteCall();
+    });
+
+    test('the pre-init false replayed on subscribe does not unregister', () async {
+      // The permission stream replays its current value to each subscriber, so
+      // a startup `false` is the uninitialized cache, not a revocation.
+      await prefs.setNotifierRegistration(registration());
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.refreshPermissionStatus()).thenAnswer((_) async => null);
+
+      await start();
+      permissionController.add(false);
+      await pumpEventQueue();
+
+      expectNoDeleteCall();
+      expect(prefs.getNotifierRegistration(), isNotNull);
     });
 
     test('revoking permission unregisters the device', () async {
@@ -876,6 +969,33 @@ void main() {
       expect(prefs.getNotifierRegistration(), isNull);
     });
 
+    test('a logout mid-register is not overwritten by the register', () async {
+      final gate = stallRegister();
+      final store = await start();
+
+      final logout = store.handleLogout();
+      await pumpEventQueue();
+      gate.complete();
+      await logout;
+      await pumpEventQueue();
+
+      // Either the delete finished, or the owed delete survives for a retry —
+      // never a settled record for the departed user.
+      final stored = prefs.getNotifierRegistration();
+      expect(stored == null || stored.state == NotifierSyncState.pendingDelete, isTrue);
+    });
+
+    test('the replayed token is not reported as a refresh', () async {
+      await start();
+
+      verifyNever(
+        analyticsStore.logEvent(
+          AnalyticsEvent.pushTokenRefreshed,
+          parameters: anyNamed('parameters'),
+        ),
+      );
+    });
+
     test('a token refresh during a registration is not dropped', () async {
       final gate = stallRegister();
       await start();
@@ -975,6 +1095,25 @@ void main() {
               ).captured.single
               as Map<String, Object?>;
       expect(sent['country'], 'FR');
+    });
+
+    test('attributes are not merged onto the previous user', () async {
+      // A settled record from the last launch names user-1 while the session is
+      // already user-2; the data below describes user-2.
+      await prefs.setNotifierRegistration(registration());
+      when(
+        authSessionStore.userFuture,
+      ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: 'user-2', username: 'c@d.com')));
+      // Fail the register so the stale record is the only one on disk.
+      stubRegisterFailure(const NotifierException(category: 'network'));
+      stubDeleteFailure(const NotifierException(category: 'network'));
+
+      await start();
+      await pumpEventQueue();
+
+      verifyNever(
+        service.mergeAttributes(externalUserId: 'user-1', attributes: anyNamed('attributes')),
+      );
     });
 
     test('a change arriving mid-merge is sent once that merge finishes', () async {
