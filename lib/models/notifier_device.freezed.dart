@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NotifierRegistration {
 
- String get externalUserId; String get token; NotifierPlatform get platform; int get contractVersion; bool get pending;
+ String get externalUserId; String get token; NotifierPlatform get platform; int get contractVersion; NotifierSyncState get state;
 /// Create a copy of NotifierRegistration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $NotifierRegistrationCopyWith<NotifierRegistration> get copyWith => _$NotifierRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.pending, pending) || other.pending == pending));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.state, state) || other.state == state));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,externalUserId,token,platform,contractVersion,pending);
+int get hashCode => Object.hash(runtimeType,externalUserId,token,platform,contractVersion,state);
 
 @override
 String toString() {
-  return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, pending: $pending)';
+  return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, state: $state)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $NotifierRegistrationCopyWith<$Res>  {
   factory $NotifierRegistrationCopyWith(NotifierRegistration value, $Res Function(NotifierRegistration) _then) = _$NotifierRegistrationCopyWithImpl;
 @useResult
 $Res call({
- String externalUserId, String token, NotifierPlatform platform, int contractVersion, bool pending
+ String externalUserId, String token, NotifierPlatform platform, int contractVersion, NotifierSyncState state
 });
 
 
@@ -65,14 +65,14 @@ class _$NotifierRegistrationCopyWithImpl<$Res>
 
 /// Create a copy of NotifierRegistration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? externalUserId = null,Object? token = null,Object? platform = null,Object? contractVersion = null,Object? pending = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? externalUserId = null,Object? token = null,Object? platform = null,Object? contractVersion = null,Object? state = null,}) {
   return _then(_self.copyWith(
 externalUserId: null == externalUserId ? _self.externalUserId : externalUserId // ignore: cast_nullable_to_non_nullable
 as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
 as NotifierPlatform,contractVersion: null == contractVersion ? _self.contractVersion : contractVersion // ignore: cast_nullable_to_non_nullable
-as int,pending: null == pending ? _self.pending : pending // ignore: cast_nullable_to_non_nullable
-as bool,
+as int,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as NotifierSyncState,
   ));
 }
 
@@ -157,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String externalUserId,  String token,  NotifierPlatform platform,  int contractVersion,  bool pending)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String externalUserId,  String token,  NotifierPlatform platform,  int contractVersion,  NotifierSyncState state)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NotifierRegistration() when $default != null:
-return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVersion,_that.pending);case _:
+return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVersion,_that.state);case _:
   return orElse();
 
 }
@@ -178,10 +178,10 @@ return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String externalUserId,  String token,  NotifierPlatform platform,  int contractVersion,  bool pending)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String externalUserId,  String token,  NotifierPlatform platform,  int contractVersion,  NotifierSyncState state)  $default,) {final _that = this;
 switch (_that) {
 case _NotifierRegistration():
-return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVersion,_that.pending);case _:
+return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVersion,_that.state);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +198,10 @@ return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String externalUserId,  String token,  NotifierPlatform platform,  int contractVersion,  bool pending)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String externalUserId,  String token,  NotifierPlatform platform,  int contractVersion,  NotifierSyncState state)?  $default,) {final _that = this;
 switch (_that) {
 case _NotifierRegistration() when $default != null:
-return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVersion,_that.pending);case _:
+return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVersion,_that.state);case _:
   return null;
 
 }
@@ -213,14 +213,14 @@ return $default(_that.externalUserId,_that.token,_that.platform,_that.contractVe
 @JsonSerializable()
 
 class _NotifierRegistration implements NotifierRegistration {
-  const _NotifierRegistration({required this.externalUserId, required this.token, required this.platform, required this.contractVersion, this.pending = false});
+  const _NotifierRegistration({required this.externalUserId, required this.token, required this.platform, required this.contractVersion, this.state = NotifierSyncState.settled});
   factory _NotifierRegistration.fromJson(Map<String, dynamic> json) => _$NotifierRegistrationFromJson(json);
 
 @override final  String externalUserId;
 @override final  String token;
 @override final  NotifierPlatform platform;
 @override final  int contractVersion;
-@override@JsonKey() final  bool pending;
+@override@JsonKey() final  NotifierSyncState state;
 
 /// Create a copy of NotifierRegistration
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.pending, pending) || other.pending == pending));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.state, state) || other.state == state));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,externalUserId,token,platform,contractVersion,pending);
+int get hashCode => Object.hash(runtimeType,externalUserId,token,platform,contractVersion,state);
 
 @override
 String toString() {
-  return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, pending: $pending)';
+  return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, state: $state)';
 }
 
 
@@ -255,7 +255,7 @@ abstract mixin class _$NotifierRegistrationCopyWith<$Res> implements $NotifierRe
   factory _$NotifierRegistrationCopyWith(_NotifierRegistration value, $Res Function(_NotifierRegistration) _then) = __$NotifierRegistrationCopyWithImpl;
 @override @useResult
 $Res call({
- String externalUserId, String token, NotifierPlatform platform, int contractVersion, bool pending
+ String externalUserId, String token, NotifierPlatform platform, int contractVersion, NotifierSyncState state
 });
 
 
@@ -272,14 +272,14 @@ class __$NotifierRegistrationCopyWithImpl<$Res>
 
 /// Create a copy of NotifierRegistration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? externalUserId = null,Object? token = null,Object? platform = null,Object? contractVersion = null,Object? pending = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? externalUserId = null,Object? token = null,Object? platform = null,Object? contractVersion = null,Object? state = null,}) {
   return _then(_NotifierRegistration(
 externalUserId: null == externalUserId ? _self.externalUserId : externalUserId // ignore: cast_nullable_to_non_nullable
 as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
 as NotifierPlatform,contractVersion: null == contractVersion ? _self.contractVersion : contractVersion // ignore: cast_nullable_to_non_nullable
-as int,pending: null == pending ? _self.pending : pending // ignore: cast_nullable_to_non_nullable
-as bool,
+as int,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as NotifierSyncState,
   ));
 }
 

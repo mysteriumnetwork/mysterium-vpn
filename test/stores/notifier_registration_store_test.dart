@@ -70,13 +70,13 @@ void main() {
     String token = 'fcm-token',
     NotifierPlatform platform = NotifierPlatform.android,
     int contractVersion = kNotifierContractVersion,
-    bool pending = false,
+    NotifierSyncState state = NotifierSyncState.settled,
   }) => NotifierRegistration(
     externalUserId: externalUserId,
     token: token,
     platform: platform,
     contractVersion: contractVersion,
-    pending: pending,
+    state: state,
   );
 
   void expectNoRegisterCall() => verifyNever(
@@ -102,7 +102,26 @@ void main() {
         attributes: anyNamed('attributes'),
       ),
     ).thenAnswer((_) async {});
+    when(
+      service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+    ).thenAnswer((_) async {});
   }
+
+  /// Revokes permission the way the repository reports it: the cached status
+  /// flips, then the stream emits the transition.
+  Future<void> revokePermission() async {
+    when(repository.getPermissionStatus()).thenReturn(false);
+    permissionController.add(false);
+    await pumpEventQueue();
+  }
+
+  void stubDeleteFailure(NotifierException failure) => when(
+    service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+  ).thenThrow(failure);
+
+  void expectNoDeleteCall() => verifyNever(
+    service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+  );
 
   void stubRegisterFailure(NotifierException failure) => when(
     service.registerDevice(
@@ -132,7 +151,9 @@ void main() {
     when(repository.tokenStream).thenAnswer((_) => tokenController.stream);
     when(repository.getPermissionStatusStream()).thenAnswer((_) => permissionController.stream);
     when(repository.currentToken).thenReturn('fcm-token');
-    when(repository.clearToken()).thenAnswer((_) async {});
+    when(repository.cancelDisplayedNotifications()).thenAnswer((_) async {});
+    // Registration is gated on permission, so the happy path has it granted.
+    when(repository.getPermissionStatus()).thenReturn(true);
     when(repository.refreshPermissionStatus()).thenAnswer((_) async => true);
     when(connectivity.onConnectivityChanged).thenAnswer((_) => connectivityController.stream);
 
@@ -195,7 +216,7 @@ void main() {
 
       expect(prefs.getNotifierRegistration()?.externalUserId, 'user-1');
       expect(prefs.getNotifierRegistration()?.token, 'fcm-token');
-      expect(prefs.getNotifierRegistration()?.pending, isFalse);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
     });
 
     test('logs started and succeeded', () async {
@@ -215,12 +236,20 @@ void main() {
       ).called(1);
     });
 
-    test('a stored identical registration makes no request at all', () async {
+    test('a stored identical registration still re-registers once per launch', () async {
       await prefs.setNotifierRegistration(registration());
 
       await start();
 
-      expectNoRegisterCall();
+      // The backend asks for this: it repairs a device row left wrong by
+      // requests that arrived out of order.
+      verify(
+        service.registerDevice(
+          externalUserId: 'user-1',
+          token: 'fcm-token',
+          platform: NotifierPlatform.android,
+        ),
+      ).called(1);
     });
   });
 
@@ -286,7 +315,7 @@ void main() {
     });
 
     test('a stored pending registration is re-attempted even when unchanged', () async {
-      await prefs.setNotifierRegistration(registration(pending: true));
+      await prefs.setNotifierRegistration(registration(state: NotifierSyncState.pendingRegister));
 
       await start();
 
@@ -297,7 +326,7 @@ void main() {
           platform: anyNamed('platform'),
         ),
       ).called(1);
-      expect(prefs.getNotifierRegistration()?.pending, isFalse);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
     });
   });
 
@@ -375,26 +404,26 @@ void main() {
       stubRegisterFailure(const NotifierException(category: 'network'));
 
       await start();
-      expect(prefs.getNotifierRegistration()?.pending, isTrue);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingRegister);
 
       stubServiceSuccess();
       permissionController.add(true);
       await pumpEventQueue();
 
-      expect(prefs.getNotifierRegistration()?.pending, isFalse);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
     });
 
     test('restored connectivity retries a pending registration', () async {
       stubRegisterFailure(const NotifierException(category: 'network'));
 
       await start();
-      expect(prefs.getNotifierRegistration()?.pending, isTrue);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingRegister);
 
       stubServiceSuccess();
       connectivityController.add([ConnectivityResult.wifi]);
       await pumpEventQueue();
 
-      expect(prefs.getNotifierRegistration()?.pending, isFalse);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
     });
 
     test('connectivity changes do not retry when nothing is pending', () async {
@@ -428,7 +457,7 @@ void main() {
     test('marks the registration pending without throwing', () async {
       await expectLater(start(), completes);
 
-      expect(prefs.getNotifierRegistration()?.pending, isTrue);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingRegister);
     });
 
     test('reports a coarse error category and the status', () async {
@@ -495,35 +524,147 @@ void main() {
 
       await start();
 
-      expect(prefs.getNotifierRegistration()?.pending, isFalse);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
     });
   });
 
   group('logout', () {
-    test('clears the stored registration and deletes the token', () async {
+    test('unregisters the device and clears the stored registration', () async {
       final store = await start();
 
       await store.handleLogout();
 
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
       expect(prefs.getNotifierRegistration(), isNull);
-      verify(repository.clearToken()).called(1);
     });
 
-    test('still clears local state when deleting the token fails', () async {
+    test('clears the tray', () async {
       final store = await start();
-      when(repository.clearToken()).thenThrow(StateError('boom'));
+
+      await store.handleLogout();
+
+      verify(repository.cancelDisplayedNotifications()).called(1);
+    });
+
+    test('a failed delete keeps the record so a later trigger retries it', () async {
+      final store = await start();
+      stubDeleteFailure(const NotifierException(category: 'network'));
 
       await expectLater(store.handleLogout(), completes);
 
-      expect(prefs.getNotifierRegistration(), isNull);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
     });
 
-    test('does not clear anything on the initial fire when never authenticated', () async {
+    test('still clears the tray when the delete fails', () async {
+      final store = await start();
+      stubDeleteFailure(const NotifierException(category: 'network'));
+
+      await store.handleLogout();
+
+      verify(repository.cancelDisplayedNotifications()).called(1);
+    });
+
+    test('does nothing on the initial fire when never authenticated', () async {
       when(authSessionStore.userFuture).thenAnswer((_) => ObservableFuture.value(null));
 
       await start();
 
-      verifyNever(repository.clearToken());
+      expectNoDeleteCall();
+      verifyNever(repository.cancelDisplayedNotifications());
+    });
+  });
+
+  group('permission gate', () {
+    test('does not register while permission is denied', () async {
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.refreshPermissionStatus()).thenAnswer((_) async => false);
+
+      await start();
+
+      expectNoRegisterCall();
+      expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('revoking permission unregisters the device', () async {
+      await start();
+      expect(prefs.getNotifierRegistration(), isNotNull);
+
+      await revokePermission();
+
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('granting permission again re-registers', () async {
+      await start();
+      await revokePermission();
+      clearInteractions(service);
+
+      when(repository.getPermissionStatus()).thenReturn(true);
+      permissionController.add(true);
+      await pumpEventQueue();
+
+      verify(
+        service.registerDevice(
+          externalUserId: 'user-1',
+          token: 'fcm-token',
+          platform: anyNamed('platform'),
+        ),
+      ).called(1);
+    });
+
+    test('a revocation made while the app was closed is reconciled on launch', () async {
+      await prefs.setNotifierRegistration(registration());
+      // Nothing emits for a change made outside the app, so the store has to
+      // read the platform itself at startup.
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.refreshPermissionStatus()).thenAnswer((_) async => false);
+
+      await start();
+
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('reports the delete failure category and status', () async {
+      await start();
+      stubDeleteFailure(const NotifierException(category: 'server', statusCode: 503));
+
+      await revokePermission();
+
+      verify(
+        analyticsStore.logPushDeviceDeleteFailed(errorCategory: 'server', status: 503),
+      ).called(1);
+    });
+
+    test('a failed delete is retried when connectivity returns', () async {
+      await start();
+      stubDeleteFailure(const NotifierException(category: 'network'));
+      await revokePermission();
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
+
+      stubServiceSuccess();
+      connectivityController.add([ConnectivityResult.wifi]);
+      await pumpEventQueue();
+
+      expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('an owed delete is finished before registering again', () async {
+      await prefs.setNotifierRegistration(registration(state: NotifierSyncState.pendingDelete));
+
+      await start();
+
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      // Permission is granted, so the self-heal continues into a fresh register.
+      verify(
+        service.registerDevice(
+          externalUserId: 'user-1',
+          token: 'fcm-token',
+          platform: anyNamed('platform'),
+        ),
+      ).called(1);
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
     });
   });
 
@@ -535,7 +676,7 @@ void main() {
     });
 
     test('a round trip preserves every field', () async {
-      final value = registration(token: 'abc', pending: true);
+      final value = registration(token: 'abc', state: NotifierSyncState.pendingDelete);
       await prefs.setNotifierRegistration(value);
 
       expect(prefs.getNotifierRegistration(), value);
@@ -544,7 +685,10 @@ void main() {
 
   group('matches', () {
     test('ignores the pending flag', () {
-      expect(registration().matches(registration(pending: true)), isTrue);
+      expect(
+        registration().matches(registration(state: NotifierSyncState.pendingRegister)),
+        isTrue,
+      );
     });
 
     test('is false when the token differs', () {

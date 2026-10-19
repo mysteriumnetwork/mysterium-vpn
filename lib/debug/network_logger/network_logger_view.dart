@@ -1110,7 +1110,7 @@ String describeNotifierRegistration(
     'token: $shortToken',
     'platform: ${registration.platform.name}',
     'contract: v${registration.contractVersion}',
-    if (registration.pending) 'PENDING RETRY',
+    if (registration.isPending) 'PENDING RETRY (${registration.state.name})',
     'permission: $permissionGranted',
   ].join('\n');
 }

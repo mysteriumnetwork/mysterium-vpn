@@ -30,6 +30,15 @@ class RestNotifierService implements NotifierService {
   );
 
   @override
+  Future<void> deleteDevice({required String token, required String externalUserId}) => _send(
+    'deleteDevice',
+    () => _dio.delete<Object?>(
+      '/public/devices',
+      data: {'token': token, 'externalUserId': externalUserId},
+    ),
+  );
+
+  @override
   Future<void> mergeAttributes({
     required String externalUserId,
     required Map<String, Object?> attributes,
@@ -78,17 +87,12 @@ class RestNotifierService implements NotifierService {
     }
   }
 
-  /// Notifier's `Platform` enum is `ios | android | windows | web` — it has no
-  /// `macos` and validates the field, so a Mac registers as `ios`. Delivery is
-  /// unaffected (Notifier sends through FCM by token, which routes to APNs
-  /// regardless), but campaign platform targeting and segments count Macs as
-  /// iOS until the API adds `macos`. When it does, map it through and bump
-  /// [kNotifierContractVersion] so every device re-registers correctly.
-  ///
-  /// An exhaustive switch, so adding an enum value breaks the build here rather
-  /// than silently sending a name the API rejects.
+  /// Notifier validates this field against `ios | android | windows | macos |
+  /// web`, so an exhaustive switch keeps a new enum value a build error here
+  /// rather than a name the API rejects at runtime.
   String _wireValue(NotifierPlatform platform) => switch (platform) {
-    NotifierPlatform.macos || NotifierPlatform.ios => 'ios',
+    NotifierPlatform.ios => 'ios',
+    NotifierPlatform.macos => 'macos',
     NotifierPlatform.android => 'android',
   };
 

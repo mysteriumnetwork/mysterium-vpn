@@ -38,7 +38,7 @@ class DesktopNotificationsRepository implements NotificationsRepository {
   Stream<String> get tokenStream => const Stream<String>.empty();
 
   @override
-  Future<void> clearToken() async {
+  Future<void> cancelDisplayedNotifications() async {
     // no-op
   }
 

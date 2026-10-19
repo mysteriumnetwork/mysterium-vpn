@@ -12,7 +12,9 @@ _NotifierRegistration _$NotifierRegistrationFromJson(Map<String, dynamic> json) 
       token: json['token'] as String,
       platform: $enumDecode(_$NotifierPlatformEnumMap, json['platform']),
       contractVersion: (json['contractVersion'] as num).toInt(),
-      pending: json['pending'] as bool? ?? false,
+      state:
+          $enumDecodeNullable(_$NotifierSyncStateEnumMap, json['state']) ??
+          NotifierSyncState.settled,
     );
 
 Map<String, dynamic> _$NotifierRegistrationToJson(_NotifierRegistration instance) =>
@@ -21,11 +23,17 @@ Map<String, dynamic> _$NotifierRegistrationToJson(_NotifierRegistration instance
       'token': instance.token,
       'platform': _$NotifierPlatformEnumMap[instance.platform]!,
       'contractVersion': instance.contractVersion,
-      'pending': instance.pending,
+      'state': _$NotifierSyncStateEnumMap[instance.state]!,
     };
 
 const _$NotifierPlatformEnumMap = {
   NotifierPlatform.ios: 'ios',
   NotifierPlatform.android: 'android',
   NotifierPlatform.macos: 'macos',
+};
+
+const _$NotifierSyncStateEnumMap = {
+  NotifierSyncState.settled: 'settled',
+  NotifierSyncState.pendingRegister: 'pendingRegister',
+  NotifierSyncState.pendingDelete: 'pendingDelete',
 };

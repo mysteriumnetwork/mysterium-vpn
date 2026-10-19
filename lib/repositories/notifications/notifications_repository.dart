@@ -3,10 +3,11 @@ import 'package:mysterium_vpn/models/models.dart';
 /// Platform push-messaging wrapper: permissions, the device token, and the
 /// streams of notifications received and opened.
 ///
-/// Also reports delivery/open events, because those are keyed by the device
-/// token this class owns — see [reportEvent]. Device registration and user
-/// attributes live in `NotifierService`, driven by `NotifierRegistrationStore`,
-/// which needs the token for its dedupe fingerprint anyway.
+/// Also reports delivery/open events — see [reportEvent] — because they are
+/// fire-and-forget with the token as their only input. Device registration and
+/// deletion are keyed by the token too, but are half of a persisted state
+/// machine, so they live in `NotifierService` driven by
+/// `NotifierRegistrationStore`, which owns that record.
 abstract class NotificationsRepository {
   Future<void> init();
 
@@ -42,11 +43,11 @@ abstract class NotificationsRepository {
   /// Emits whenever the platform issues a new token.
   Stream<String> get tokenStream;
 
-  /// Deletes the token so the old device→user association becomes
-  /// undeliverable. A fresh token is minted on the next token request.
-  Future<void> clearToken();
-
   // ─── Notifications ───────────────────────────────────────────────────────
+
+  /// Dismisses anything this app still has in the notification tray. Leaves
+  /// the device token alone.
+  Future<void> cancelDisplayedNotifications();
 
   /// Notifications the user opened, from the foreground, the background, or a
   /// cold launch.

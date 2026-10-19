@@ -110,6 +110,8 @@ enum AnalyticsEvent {
   pushDeviceRegistrationStarted,
   pushDeviceRegistrationSucceeded,
   pushDeviceRegistrationFailed,
+  pushDeviceDeleted,
+  pushDeviceDeleteFailed,
   pushTokenRefreshed,
   subUpgradeBannerClick,
   subUpgradePopupShow,

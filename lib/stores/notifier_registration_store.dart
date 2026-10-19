@@ -25,9 +25,14 @@ class NotifierRegistrationStore = _NotifierRegistrationStore with _$NotifierRegi
 ///
 /// The registration identity is (`externalUserId`, `token`, `platform`,
 /// [kNotifierContractVersion]). It is persisted after a successful call, so an
-/// unchanged identity makes no request. A failed call persists `pending: true`
-/// and is re-attempted on the next trigger — login, a new token, app resume,
-/// restored connectivity, or permission being granted — never on a timer.
+/// unchanged identity makes no request beyond the one re-register per launch.
+/// A failed call is persisted as pending and re-attempted on the next trigger —
+/// login, a new token, app resume, restored connectivity, or permission being
+/// granted — never on a timer.
+///
+/// Notification permission is the gate: Notifier should only hold devices that
+/// can actually display what it sends. Revoking permission deletes the device,
+/// granting it again re-registers it.
 abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindingObserver {
   _NotifierRegistrationStore(
     this._authSessionStore,
@@ -65,6 +70,10 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   bool _inFlight = false;
   bool _attributesInFlight = false;
 
+  /// Whether this launch has already re-registered. The backend wants one
+  /// register per launch even when nothing changed, but only one.
+  bool _registeredThisLaunch = false;
+
   /// Last attribute map successfully merged, so repeated reaction firings with
   /// an unchanged payload make no request.
   Map<String, Object?>? _sentAttributes;
@@ -78,6 +87,9 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       WidgetsBinding.instance.addObserver(this);
       _setupReactions();
       _setupStreamListeners();
+      // A revoke made while the app was not running emits nothing, so the
+      // platform has to be read directly.
+      unawaited(_guard('reconciling permission', _reconcilePermission));
     } catch (e, stack) {
       _reportUnexpected(e, stack, 'store init');
     }
@@ -123,16 +135,19 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
         _analyticsStore.logEvent(AnalyticsEvent.pushTokenRefreshed);
         await syncRegistration();
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'token stream')),
-      // The repository emits only on change, so a `true` here *is* the
-      // granted transition — re-enabling notifications is a registration trigger.
+      // The repository emits only on change and only from a fresh platform
+      // read, so a value here *is* a trustworthy transition: granting is a
+      // registration trigger, revoking a delete trigger.
       _repository.getPermissionStatusStream().listen((granted) async {
         if (granted) {
           await syncRegistration();
+        } else {
+          await _deleteStoredDevice();
         }
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'permission stream')),
       _connectivity.onConnectivityChanged.listen((results) async {
         // Only worth retrying if something is actually outstanding.
-        if (results.hasConnectivity && (_registration.read()?.pending ?? false)) {
+        if (results.hasConnectivity && (_registration.read()?.isPending ?? false)) {
           await syncRegistration();
         }
       }, onError: (Object e, StackTrace s) => _reportUnexpected(e, s, 'connectivity stream')),
@@ -144,16 +159,60 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     if (state != AppLifecycleState.resumed) {
       return;
     }
-    // Permission can have been flipped in system settings while backgrounded;
-    // refreshing emits on the permission stream, which is itself a trigger.
-    unawaited(_repository.refreshPermissionStatus().then((_) => syncRegistration()));
+    // Permission can have been flipped in system settings while backgrounded.
+    unawaited(_guard('reconciling permission', _reconcilePermission));
   }
 
-  /// Registers or updates the device when — and only when — every required
-  /// value is available and the identity actually changed (or is pending).
+  /// Unregisters the device when a fresh platform read says permission is off.
+  ///
+  /// Reads through to the platform rather than trusting
+  /// [NotificationsRepository.getPermissionStatus], whose cache starts `false`
+  /// on a cold start — deleting on its say-so would unregister on every launch.
+  ///
+  /// Only the revoked direction needs handling: granting either already agreed
+  /// with the cache, or changed it and emitted on the permission stream.
+  Future<void> _reconcilePermission() async {
+    if (!await _repository.refreshPermissionStatus()) {
+      await _deleteStoredDevice();
+    }
+  }
+
+  /// Unregisters whatever is on record, if anything.
+  Future<void> _deleteStoredDevice() async {
+    final stored = _registration.read();
+    if (stored != null) {
+      await _deleteDevice(stored);
+    }
+  }
+
+  /// Persists [state] against [record] so a retry trigger can pick it up.
+  Future<void> _mark(NotifierRegistration record, NotifierSyncState state) =>
+      _guard('persisting ${state.name}', () => _registration.save(record.copyWith(state: state)));
+
+  /// Brings Notifier in line with this device: registers when permission and
+  /// every required value are there, deletes when they are not.
   @action
   Future<void> syncRegistration() async {
     if (_inFlight || !Env.notifierConfigured) {
+      return;
+    }
+
+    var stored = _registration.read();
+
+    // Finish an owed delete first, then carry on and register again below.
+    if (stored?.state == NotifierSyncState.pendingDelete) {
+      if (!await _deleteDevice(stored!)) {
+        // Still owed; don't register over it.
+        return;
+      }
+      stored = null;
+    }
+
+    // Permission is the gate: a device that cannot display a notification has
+    // no business being in Notifier's send list. A stale `false` here only
+    // defers the register — whatever refreshes it emits, and that re-triggers
+    // us. Revoking is never decided from this cache: see [_reconcilePermission].
+    if (!_repository.getPermissionStatus()) {
       return;
     }
 
@@ -162,8 +221,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
 
-    final stored = _registration.read();
-    if (stored != null && !stored.pending && stored.matches(desired)) {
+    if (stored != null && !stored.isPending && stored.matches(desired) && _registeredThisLaunch) {
       return;
     }
 
@@ -178,22 +236,13 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       );
       await _registration.save(desired);
       _analyticsStore.logEvent(AnalyticsEvent.pushDeviceRegistrationSucceeded);
+      _registeredThisLaunch = true;
       registered = desired;
     } catch (e, stack) {
-      await _markPending(desired);
-      final failure = e is NotifierException ? e : null;
-      final category = failure?.category ?? 'unknown';
-      _analyticsStore.logPushDeviceRegistrationFailed(
-        errorCategory: category,
-        status: failure?.statusCode,
-      );
-      _logger.warning('Notifier device registration failed ($category)');
-      // A NotifierException is an expected, already-evented outcome (a 4xx, a
-      // timeout) and is retried — reporting each one would bury the dashboard.
-      // Anything else is a bug on our side.
-      if (failure == null) {
-        _reportUnexpected(e, stack, 'device registration');
-      }
+      await _mark(desired, NotifierSyncState.pendingRegister);
+      _reportCallFailure(e, stack, 'device registration', (category, status) {
+        _analyticsStore.logPushDeviceRegistrationFailed(errorCategory: category, status: status);
+      });
       return;
     } finally {
       _inFlight = false;
@@ -202,19 +251,73 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     await _syncAttributes(registered);
   }
 
-  /// Clears the local state and deletes the FCM token, so the departing user's
-  /// device row in Notifier is left holding a token that can no longer be
-  /// delivered to. The public API has no device-delete endpoint.
+  /// Unregisters the device so the departing user stops receiving pushes, and
+  /// clears whatever is still in the tray.
+  ///
+  /// The FCM token is deliberately kept — Notifier identifies the device by it,
+  /// so dropping it locally would strand the very row this call removes.
   @action
   Future<void> handleLogout() async {
     _sentAttributes = null;
-    // Independent, and clearToken is a network round trip while the prefs write
-    // is local — so run them concurrently, each guarded so one failing cannot
-    // skip the other.
+    _registeredThisLaunch = false;
+
+    // Independent, and the delete is a network round trip while clearing the
+    // tray is local — so run them concurrently, each contained so one failing
+    // cannot skip the other.
     await Future.wait([
-      _guard('Clearing Notifier registration state', _registration.clear),
-      _guard('Clearing the push token', _repository.clearToken),
+      _deleteStoredDevice(),
+      _guard('clearing displayed notifications', _repository.cancelDisplayedNotifications),
     ]);
+  }
+
+  /// Removes the device from Notifier and drops the local record. Returns
+  /// whether the record is gone, so a caller can tell a still-owed delete from
+  /// a finished one.
+  ///
+  /// A failure leaves the record as [NotifierSyncState.pendingDelete], which
+  /// the triggers in [syncRegistration] pick up.
+  Future<bool> _deleteDevice(NotifierRegistration stored) async {
+    if (_inFlight || !Env.notifierConfigured) {
+      return false;
+    }
+
+    _inFlight = true;
+    try {
+      await _service.deleteDevice(token: stored.token, externalUserId: stored.externalUserId);
+      await _guard('clearing Notifier registration state', _registration.clear);
+      _sentAttributes = null;
+      _registeredThisLaunch = false;
+      _analyticsStore.logEvent(AnalyticsEvent.pushDeviceDeleted);
+      return true;
+    } catch (e, stack) {
+      await _mark(stored, NotifierSyncState.pendingDelete);
+      _reportCallFailure(e, stack, 'device delete', (category, status) {
+        _analyticsStore.logPushDeviceDeleteFailed(errorCategory: category, status: status);
+      });
+      return false;
+    } finally {
+      _inFlight = false;
+    }
+  }
+
+  /// Events a failed Notifier call and decides whether it is also a bug.
+  ///
+  /// A [NotifierException] is an expected transport outcome (a 4xx, a timeout)
+  /// that gets retried, and is already evented — reporting each one would bury
+  /// the dashboard. Anything else is a bug on our side.
+  void _reportCallFailure(
+    Object error,
+    StackTrace stack,
+    String what,
+    void Function(String category, int? status) event,
+  ) {
+    final failure = error is NotifierException ? error : null;
+    final category = failure?.category ?? 'unknown';
+    event(category, failure?.statusCode);
+    _logger.warning('Notifier $what failed ($category)');
+    if (failure == null) {
+      _reportUnexpected(error, stack, what);
+    }
   }
 
   /// Logs and reports a failure that indicates a bug rather than a transport
@@ -248,7 +351,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
     final stored = known ?? _registration.read();
-    if (stored == null || stored.pending) {
+    if (stored == null || stored.isPending) {
       return;
     }
 
@@ -307,15 +410,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       platform: platform,
       contractVersion: kNotifierContractVersion,
     );
-  }
-
-  Future<void> _markPending(NotifierRegistration desired) async {
-    try {
-      await _registration.save(desired.copyWith(pending: true));
-    } catch (e, stack) {
-      // Losing this flag loses the retry, so it is not merely cosmetic.
-      _reportUnexpected(e, stack, 'persisting pending registration');
-    }
   }
 
   @override

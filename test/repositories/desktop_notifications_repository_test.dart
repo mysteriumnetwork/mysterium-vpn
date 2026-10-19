@@ -8,9 +8,9 @@ void main() {
     repo = DesktopNotificationsRepository();
   });
 
-  test('init / clearToken / openAppNotificationsSettings are no-ops', () async {
+  test('init / cancelDisplayedNotifications / openAppNotificationsSettings are no-ops', () async {
     await repo.init();
-    await repo.clearToken();
+    await repo.cancelDisplayedNotifications();
     await repo.openAppNotificationsSettings();
     await repo.dispose();
     // None of the above should throw.

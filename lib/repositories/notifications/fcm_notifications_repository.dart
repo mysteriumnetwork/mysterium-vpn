@@ -58,6 +58,12 @@ class FcmNotificationsRepository implements NotificationsRepository {
   bool _permissionGranted = false;
   bool _initialized = false;
 
+  /// In-flight permission read, shared by concurrent callers.
+  Future<bool>? _permissionRefresh;
+
+  /// In-flight token request, shared by concurrent callers.
+  Future<void>? _tokenRequest;
+
   /// A tap that arrived before anything was listening — in practice the cold
   /// launch from a terminated state, where `getInitialMessage` resolves during
   /// [init] and the broadcast controller would otherwise drop the event.
@@ -186,10 +192,16 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// token from inside `getToken` itself — it flags a refresh only while FCM's
   /// token is still nil — so a single failed attempt at [init] would mean
   /// `onTokenRefresh` never fires and the device never gets a token at all.
-  Future<void> _ensureToken() async {
+  Future<void> _ensureToken() {
     if (_currentToken.isNotNullOrEmpty) {
-      return;
+      return Future<void>.value();
     }
+    return _tokenRequest ??= _requestToken().whenComplete(() {
+      _tokenRequest = null;
+    });
+  }
+
+  Future<void> _requestToken() async {
     await _logApnsState();
     try {
       final token = await _messaging.getToken();
@@ -247,8 +259,15 @@ class FcmNotificationsRepository implements NotificationsRepository {
   @override
   bool getPermissionStatus() => _permissionGranted;
 
+  /// Shared so overlapping callers make one platform round trip, not two. Both
+  /// [init] and `NotifierRegistrationStore` refresh on startup, and they race.
   @override
-  Future<bool> refreshPermissionStatus() async {
+  Future<bool> refreshPermissionStatus() =>
+      _permissionRefresh ??= _refreshPermissionStatus().whenComplete(() {
+        _permissionRefresh = null;
+      });
+
+  Future<bool> _refreshPermissionStatus() async {
     bool granted;
     try {
       granted = _applySettings(await _messaging.getNotificationSettings());
@@ -310,16 +329,12 @@ class FcmNotificationsRepository implements NotificationsRepository {
     return granted;
   }
 
-  // ─── Token ───────────────────────────────────────────────────────────────
+  // ─── Notifications ───────────────────────────────────────────────────────
 
   @override
-  Future<void> clearToken() async {
-    _currentToken = null;
-    await _guard('delete token', _messaging.deleteToken);
+  Future<void> cancelDisplayedNotifications() async {
     await _guard('cancel notifications', _localNotifications.cancelAll);
   }
-
-  // ─── Notifications ───────────────────────────────────────────────────────
 
   @override
   Stream<PushNotification> getNotificationsStream() async* {

@@ -39,7 +39,13 @@ enum NotifierEventType { open, delivered }
 /// Version of the registration contract this build sends. Bump to invalidate
 /// every stored registration and force a re-register on the next sync — e.g.
 /// when the request body gains a field Notifier needs.
-const int kNotifierContractVersion = 1;
+///
+/// v2: macOS registers as `macos` rather than `ios`, which Notifier added.
+const int kNotifierContractVersion = 2;
+
+/// What this device still owes Notifier. A settled delete keeps no record at
+/// all — it is cleared — so there is no `deleted` value.
+enum NotifierSyncState { settled, pendingRegister, pendingDelete }
 
 /// Locally persisted snapshot of the last device registration attempt.
 ///
@@ -52,7 +58,7 @@ abstract class NotifierRegistration with _$NotifierRegistration {
     required String token,
     required NotifierPlatform platform,
     required int contractVersion,
-    @Default(false) bool pending,
+    @Default(NotifierSyncState.settled) NotifierSyncState state,
   }) = _NotifierRegistration;
 
   factory NotifierRegistration.fromJson(Map<String, dynamic> json) =>
@@ -60,7 +66,10 @@ abstract class NotifierRegistration with _$NotifierRegistration {
 }
 
 extension NotifierRegistrationMatch on NotifierRegistration {
-  /// True when the registered identity is unchanged. Ignores [pending], which
+  /// Whether a call is still owed to Notifier for this record.
+  bool get isPending => state != NotifierSyncState.settled;
+
+  /// True when the registered identity is unchanged. Ignores [state], which
   /// tracks delivery rather than identity.
   bool matches(NotifierRegistration other) =>
       externalUserId == other.externalUserId &&

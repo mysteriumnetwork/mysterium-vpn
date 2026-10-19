@@ -304,24 +304,30 @@ void main() {
       expect(repository.currentToken, isNull);
     });
 
-    test('clearToken deletes the FCM token and cancels shown notifications', () async {
-      when(messaging.deleteToken()).thenAnswer((_) async {});
+    test('cancelDisplayedNotifications clears the tray', () async {
       when(localNotifications.cancelAll()).thenAnswer((_) async {});
 
-      await repository.clearToken();
+      await repository.cancelDisplayedNotifications();
 
-      verify(messaging.deleteToken()).called(1);
       verify(localNotifications.cancelAll()).called(1);
-      expect(repository.currentToken, isNull);
     });
 
-    test('clearToken still cancels notifications when deleting the token fails', () async {
-      when(messaging.deleteToken()).thenThrow(StateError('boom'));
+    test('cancelDisplayedNotifications keeps the FCM token', () async {
+      when(messaging.getToken()).thenAnswer((_) async => 'fcm-token');
+      when(messaging.onTokenRefresh).thenAnswer((_) => const Stream<String>.empty());
       when(localNotifications.cancelAll()).thenAnswer((_) async {});
+      await repository.primeTokenForTest();
 
-      await expectLater(repository.clearToken(), completes);
+      await repository.cancelDisplayedNotifications();
 
-      verify(localNotifications.cancelAll()).called(1);
+      expect(repository.currentToken, 'fcm-token');
+      verifyNever(messaging.deleteToken());
+    });
+
+    test('a failing tray clear does not escape', () async {
+      when(localNotifications.cancelAll()).thenThrow(StateError('boom'));
+
+      await expectLater(repository.cancelDisplayedNotifications(), completes);
     });
   });
 

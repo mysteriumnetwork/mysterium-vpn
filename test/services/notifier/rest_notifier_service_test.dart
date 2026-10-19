@@ -71,7 +71,7 @@ void main() {
 
     test('every platform serializes to a value the API accepts', () async {
       when(dio.post<Object?>(any, data: anyNamed('data'))).thenAnswer((_) async => ok());
-      const accepted = {'ios', 'android', 'windows', 'web'};
+      const accepted = {'ios', 'android', 'windows', 'macos', 'web'};
 
       for (final platform in NotifierPlatform.values) {
         await service.registerDevice(externalUserId: 'u', token: 't', platform: platform);
@@ -84,7 +84,7 @@ void main() {
       }
     });
 
-    test('registers macOS as ios, because the API has no macos value', () async {
+    test('registers macOS as its own platform, not as ios', () async {
       when(dio.post<Object?>(any, data: anyNamed('data'))).thenAnswer((_) async => ok());
 
       await service.registerDevice(
@@ -94,7 +94,7 @@ void main() {
       );
 
       final data = verify(dio.post<Object?>(any, data: captureAnyNamed('data'))).captured.single;
-      expect((data as Map)['platform'], 'ios');
+      expect((data as Map)['platform'], 'macos');
     });
 
     test('401 surfaces an unauthorized failure carrying the status', () async {
@@ -160,6 +160,53 @@ void main() {
       await expectLater(
         service.registerDevice(externalUserId: 'u', token: 't', platform: NotifierPlatform.android),
         throwsA(isA<NotifierException>().having((e) => e.category, 'category', 'unknown')),
+      );
+    });
+  });
+
+  group('deleteDevice', () {
+    test('sends the token and externalUserId to /public/devices', () async {
+      when(dio.delete<Object?>(any, data: anyNamed('data'))).thenAnswer((_) async => ok(204));
+
+      await service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1');
+
+      final captured = verify(
+        dio.delete<Object?>(captureAny, data: captureAnyNamed('data')),
+      ).captured;
+      expect(captured[0], '/public/devices');
+      expect(captured[1], {'token': 'fcm-token', 'externalUserId': 'user-1'});
+    });
+
+    test('accepts the 204 the endpoint always answers with', () async {
+      when(dio.delete<Object?>(any, data: anyNamed('data'))).thenAnswer((_) async => ok(204));
+
+      await expectLater(
+        service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1'),
+        completes,
+      );
+    });
+
+    test('throws a categorized NotifierException on failure', () async {
+      when(dio.delete<Object?>(any, data: anyNamed('data'))).thenThrow(badResponse(503));
+
+      await expectLater(
+        service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1'),
+        throwsA(
+          isA<NotifierException>()
+              .having((e) => e.category, 'category', 'server')
+              .having((e) => e.statusCode, 'statusCode', 503),
+        ),
+      );
+    });
+
+    test('maps a timeout to the timeout category', () async {
+      when(
+        dio.delete<Object?>(any, data: anyNamed('data')),
+      ).thenThrow(ofType(DioExceptionType.sendTimeout));
+
+      await expectLater(
+        service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1'),
+        throwsA(isA<NotifierException>().having((e) => e.category, 'category', 'timeout')),
       );
     });
   });

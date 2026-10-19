@@ -497,6 +497,13 @@ mixin AnalyticsStore {
     );
   }
 
+  Future<void> logPushDeviceDeleteFailed({required String errorCategory, int? status}) async {
+    await logEvent(
+      AnalyticsEvent.pushDeviceDeleteFailed,
+      parameters: {'error_category': errorCategory, 'status': ?status?.toString()},
+    );
+  }
+
   Future<void> logTunnelPermissionDialogShown() async {
     await logEvent(AnalyticsEvent.tunnelPermissionDialogShown);
   }
