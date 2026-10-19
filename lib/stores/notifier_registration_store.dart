@@ -73,6 +73,13 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// during a first registration, both land correctly.
   Future<void> _queue = Future<void>.value();
 
+  /// Marks the zone a queued action runs in. Zone values propagate to async
+  /// callees, so this distinguishes a genuinely re-entrant call from an outside
+  /// trigger that merely overlaps one — a plain flag cannot.
+  static const Object _queueZoneKey = #notifierQueue;
+
+  bool _disposed = false;
+
   bool _attributesInFlight = false;
 
   /// Set when an attribute change arrives mid-merge, so the newer map is sent
@@ -212,7 +219,19 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
 
   /// Runs [action] after any Notifier call already in flight.
   Future<void> _serialized(Future<void> Function() action) {
-    final next = _queue.then((_) => action());
+    if (_disposed) {
+      return Future<void>.value();
+    }
+    // A call from inside the queue is already in the critical section. Queueing
+    // it would wait on an entry that cannot drain until this one returns, which
+    // deadlocks the chain permanently — every later trigger would hang with no
+    // diagnostic. Running inline keeps the ordering guarantee instead.
+    if (Zone.current[_queueZoneKey] == true) {
+      return action();
+    }
+    final next = _queue.then(
+      (_) => runZoned(action, zoneValues: {_queueZoneKey: true}),
+    );
     // Swallowed on the chain only, so one failure cannot poison later work
     // while the caller still sees its own error.
     _queue = next.catchError((Object _) {});
@@ -251,6 +270,19 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     final desired = _desiredRegistration();
     if (desired == null) {
       return;
+    }
+
+    // Notifier keys rows by (token, externalUserId), so registering B over A
+    // leaves A's row pointing at this still-valid token and A's campaigns keep
+    // arriving. Only a user change needs this: a refreshed token invalidates
+    // the old row on its own.
+    if (stored != null && stored.externalUserId != desired.externalUserId) {
+      if (!await _delete(stored)) {
+        // Retained as pendingDelete; a later trigger finishes it before B
+        // registers.
+        return;
+      }
+      stored = null;
     }
 
     if (stored != null && !stored.isPending && stored.matches(desired) && _registeredThisLaunch) {
@@ -310,6 +342,10 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return false;
     }
 
+    // Marked before the request: a process death mid-DELETE would otherwise
+    // leave a settled record for a signed-out user, and the auth reaction skips
+    // logout on a signed-out launch, so nothing would ever retry it.
+    await _mark(stored, NotifierSyncState.pendingDelete);
     try {
       await _service.deleteDevice(token: stored.token, externalUserId: stored.externalUserId);
       await _guard('clearing Notifier registration state', _registration.clear);
@@ -318,7 +354,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       _analyticsStore.logEvent(AnalyticsEvent.pushDeviceDeleted);
       return true;
     } catch (e, stack) {
-      await _mark(stored, NotifierSyncState.pendingDelete);
+      // Already marked above, so the record is left owing the delete.
       _reportCallFailure(e, stack, 'device delete', (category, status) {
         _analyticsStore.logPushDeviceDeleteFailed(errorCategory: category, status: status);
       });
@@ -451,6 +487,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
 
   @override
   Future<void> dispose() async {
+    _disposed = true;
     try {
       WidgetsBinding.instance.removeObserver(this);
     } catch (e) {

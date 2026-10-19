@@ -393,7 +393,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
     }
     _emit(_receivedController, notification);
     if (!_isApple) {
-      unawaited(_displayLocally(message, notification));
+      unawaited(_displayLocally(message.hashCode, notification));
     }
   }
 
@@ -418,13 +418,17 @@ class FcmNotificationsRepository implements NotificationsRepository {
     _emit(_openedController, notification);
   }
 
-  Future<void> _displayLocally(RemoteMessage message, PushNotification notification) async {
+  @visibleForTesting
+  Future<void> displayLocallyForTest(int id, PushNotification notification) =>
+      _displayLocally(id, notification);
+
+  Future<void> _displayLocally(int id, PushNotification notification) async {
     if (notification.title == null && notification.body == null) {
       return;
     }
     await _guard('display notification', () async {
       await _localNotifications.show(
-        id: message.hashCode,
+        id: id,
         title: notification.title,
         body: notification.body,
         notificationDetails: const NotificationDetails(
@@ -438,7 +442,9 @@ class FcmNotificationsRepository implements NotificationsRepository {
         // The whole notification, not just the deep link: the tap handler needs
         // the campaign id to report the open, and a push without a link must
         // still reach the inbox fallback.
-        payload: jsonEncode(notification.toJson()),
+        // rawPayload is diagnostics-only and duplicates additionalData, so it
+        // is dropped rather than carried through an Intent extra.
+        payload: jsonEncode(notification.copyWith(rawPayload: null).toJson()),
       );
     });
   }
@@ -460,13 +466,15 @@ class FcmNotificationsRepository implements NotificationsRepository {
     if (payload.isNullOrEmpty) {
       return null;
     }
-    try {
-      final decoded = jsonDecode(payload!);
-      if (decoded is Map<String, dynamic>) {
-        return PushNotification.fromJson(decoded);
+    if (payload!.startsWith('{')) {
+      try {
+        final decoded = jsonDecode(payload);
+        if (decoded is Map<String, dynamic>) {
+          return PushNotification.fromJson(decoded);
+        }
+      } catch (e) {
+        _logger.warning('Local notification payload was not a notification: $e');
       }
-    } catch (e) {
-      _logger.warning('Local notification payload was not a notification: $e');
     }
     return PushNotification(
       id: null,

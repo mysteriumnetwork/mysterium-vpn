@@ -599,6 +599,89 @@ void main() {
     });
   });
 
+  group('account switch', () {
+    void signInAs(String userId) => when(authSessionStore.userFuture).thenAnswer(
+      (_) => ObservableFuture.value(AuthUser(userId: userId, username: '$userId@b.com')),
+    );
+
+    test('a different user on the same device unregisters the previous one', () async {
+      final store = await start();
+      clearInteractions(service);
+
+      signInAs('user-2');
+      await store.syncRegistration();
+      await pumpEventQueue();
+
+      // Notifier keys by (token, externalUserId), so without this user-1's row
+      // keeps delivering to a token that is still valid.
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      verify(
+        service.registerDevice(
+          externalUserId: 'user-2',
+          token: 'fcm-token',
+          platform: anyNamed('platform'),
+        ),
+      ).called(1);
+      expect(prefs.getNotifierRegistration()?.externalUserId, 'user-2');
+    });
+
+    test('a failed unregister blocks the new user until it succeeds', () async {
+      final store = await start();
+      clearInteractions(service);
+      stubDeleteFailure(const NotifierException(category: 'network'));
+
+      signInAs('user-2');
+      await store.syncRegistration();
+      await pumpEventQueue();
+
+      expectNoRegisterCall();
+      final stored = prefs.getNotifierRegistration();
+      expect(stored?.state, NotifierSyncState.pendingDelete);
+      expect(stored?.externalUserId, 'user-1');
+    });
+
+    test('the owed delete is finished on the next trigger, then B registers', () async {
+      final store = await start();
+      stubDeleteFailure(const NotifierException(category: 'network'));
+      signInAs('user-2');
+      await store.syncRegistration();
+      await pumpEventQueue();
+
+      clearInteractions(service);
+      stubServiceSuccess();
+      await store.syncRegistration();
+      await pumpEventQueue();
+
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      verify(
+        service.registerDevice(
+          externalUserId: 'user-2',
+          token: 'fcm-token',
+          platform: anyNamed('platform'),
+        ),
+      ).called(1);
+      expect(prefs.getNotifierRegistration()?.externalUserId, 'user-2');
+    });
+
+    test('the owed delete is persisted before the request, not after', () async {
+      final store = await start();
+      final gate = Completer<void>();
+      when(
+        service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+      ).thenAnswer((_) async => gate.future);
+
+      signInAs('user-2');
+      final sync = store.syncRegistration();
+      await pumpEventQueue();
+
+      // A kill here must leave something for the next launch to retry.
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
+
+      gate.complete();
+      await sync;
+    });
+  });
+
   group('permission gate', () {
     test('does not register while permission is denied', () async {
       when(repository.getPermissionStatus()).thenReturn(false);
@@ -811,6 +894,21 @@ void main() {
           platform: anyNamed('platform'),
         ),
       ).called(1);
+    });
+
+    test('a dispose mid-flight stops queued work from running', () async {
+      final gate = stallRegister();
+      final store = await start();
+
+      final disposed = store.dispose();
+      gate.complete();
+      await disposed;
+      clearInteractions(service);
+
+      await store.syncRegistration();
+      await pumpEventQueue();
+
+      expectNoRegisterCall();
     });
 
     test('resume retries a registration left pending', () async {

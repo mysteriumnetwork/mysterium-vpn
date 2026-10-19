@@ -525,6 +525,47 @@ void main() {
       expect(opened.launchUrl, isNull);
     });
 
+    test('the stored payload drops the diagnostics-only raw blob', () async {
+      when(
+        localNotifications.show(
+          id: anyNamed('id'),
+          title: anyNamed('title'),
+          body: anyNamed('body'),
+          notificationDetails: anyNamed('notificationDetails'),
+          payload: anyNamed('payload'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await repository.displayLocallyForTest(
+        1,
+        PushNotification(
+          id: 'msg-1',
+          title: 'T',
+          body: 'B',
+          launchUrl: null,
+          additionalData: const {'campaignId': 'c1'},
+          rawPayload: const {'data': 'big'},
+          category: 'c1',
+        ),
+      );
+
+      final payload =
+          verify(
+                localNotifications.show(
+                  id: anyNamed('id'),
+                  title: anyNamed('title'),
+                  body: anyNamed('body'),
+                  notificationDetails: anyNamed('notificationDetails'),
+                  payload: captureAnyNamed('payload'),
+                ),
+              ).captured.single
+              as String;
+      final decoded = jsonDecode(payload) as Map<String, dynamic>;
+      expect(decoded['rawPayload'], isNull);
+      // The part the tap handler actually needs survives.
+      expect(decoded['category'], 'c1');
+    });
+
     test('a bare deep link from an older build still routes', () async {
       final onTap = await initAndCaptureTap();
 
