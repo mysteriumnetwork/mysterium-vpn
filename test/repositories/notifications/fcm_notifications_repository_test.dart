@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -443,6 +444,131 @@ void main() {
     });
   });
 
+  group('locally displayed notifications', () {
+    late FcmNotificationsRepository repository;
+
+    setUp(() {
+      repository = build(isApple: false);
+      when(
+        localNotifications.initialize(
+          settings: anyNamed('settings'),
+          onDidReceiveNotificationResponse: anyNamed('onDidReceiveNotificationResponse'),
+        ),
+      ).thenAnswer((_) async => true);
+    });
+
+    tearDown(() => repository.dispose());
+
+    /// Runs init far enough to read the launch details, with the tap callback
+    /// captured so a tap can be driven directly.
+    Future<void Function(NotificationResponse)?> initAndCaptureTap() async {
+      await repository.initLocalNotificationsForTest();
+      final captured = verify(
+        localNotifications.initialize(
+          settings: anyNamed('settings'),
+          onDidReceiveNotificationResponse: captureAnyNamed('onDidReceiveNotificationResponse'),
+        ),
+      ).captured.single;
+      return captured as void Function(NotificationResponse)?;
+    }
+
+    test('a tap restores the campaign id, so the open can be reported', () async {
+      final onTap = await initAndCaptureTap();
+      final payload = jsonEncode(
+        PushNotification(
+          id: 'msg-1',
+          title: 'T',
+          body: 'B',
+          launchUrl: 'https://example.com',
+          additionalData: const {'campaignId': 'campaign-1'},
+          rawPayload: null,
+          category: 'campaign-1',
+        ).toJson(),
+      );
+
+      onTap!(
+        NotificationResponse(
+          notificationResponseType: NotificationResponseType.selectedNotification,
+          payload: payload,
+        ),
+      );
+
+      final opened = await repository.getNotificationsStream().first;
+      expect(opened.category, 'campaign-1');
+      expect(opened.launchUrl, 'https://example.com');
+    });
+
+    test('a tap on a push with no deep link still opens', () async {
+      final onTap = await initAndCaptureTap();
+      final payload = jsonEncode(
+        PushNotification(
+          id: 'msg-2',
+          title: 'T',
+          body: 'B',
+          launchUrl: null,
+          additionalData: const {},
+          rawPayload: null,
+          category: 'campaign-2',
+        ).toJson(),
+      );
+
+      onTap!(
+        NotificationResponse(
+          notificationResponseType: NotificationResponseType.selectedNotification,
+          payload: payload,
+        ),
+      );
+
+      // Previously dropped, so the inbox fallback never ran.
+      final opened = await repository.getNotificationsStream().first;
+      expect(opened.category, 'campaign-2');
+      expect(opened.launchUrl, isNull);
+    });
+
+    test('a bare deep link from an older build still routes', () async {
+      final onTap = await initAndCaptureTap();
+
+      onTap!(
+        const NotificationResponse(
+          notificationResponseType: NotificationResponseType.selectedNotification,
+          payload: 'https://example.com/legacy',
+        ),
+      );
+
+      final opened = await repository.getNotificationsStream().first;
+      expect(opened.launchUrl, 'https://example.com/legacy');
+    });
+
+    test('a tap that cold-launched the app is recovered', () async {
+      when(localNotifications.getNotificationAppLaunchDetails()).thenAnswer(
+        (_) async => NotificationAppLaunchDetails(
+          true,
+          notificationResponse: NotificationResponse(
+            notificationResponseType: NotificationResponseType.selectedNotification,
+            payload: jsonEncode(
+              PushNotification(
+                id: 'msg-3',
+                title: 'T',
+                body: 'B',
+                launchUrl: 'https://example.com/cold',
+                additionalData: const {},
+                rawPayload: null,
+                category: 'campaign-3',
+              ).toJson(),
+            ),
+          ),
+        ),
+      );
+
+      // getInitialMessage only recovers FCM-displayed notifications, so without
+      // the launch-details read this tap is lost entirely.
+      await repository.initLocalNotificationsForTest();
+
+      final opened = await repository.getNotificationsStream().first;
+      expect(opened.category, 'campaign-3');
+    });
+  });
+
   group('reportEvent', () {
     late FcmNotificationsRepository repository;
 
@@ -468,6 +594,32 @@ void main() {
       rawPayload: null,
       category: campaignId,
     );
+
+    test('forwards the journey step so journey events keep attribution', () async {
+      when(messaging.getToken()).thenAnswer((_) async => 'fcm-token');
+      when(messaging.onTokenRefresh).thenAnswer((_) => const Stream<String>.empty());
+      await repository.primeTokenForTest();
+      final notification = PushNotification(
+        id: 'msg-1',
+        title: 'T',
+        body: 'B',
+        launchUrl: null,
+        additionalData: const {'journeyStepId': 'step-7'},
+        rawPayload: null,
+        category: 'campaign-1',
+      );
+
+      await repository.reportEvent(notification, NotifierEventType.open);
+
+      verify(
+        notifierService.recordEvent(
+          token: anyNamed('token'),
+          type: NotifierEventType.open,
+          campaignId: 'campaign-1',
+          journeyStepId: 'step-7',
+        ),
+      ).called(1);
+    });
 
     test('skips reporting when the payload carries no campaign', () async {
       await repository.reportEvent(withCampaign(null), NotifierEventType.open);

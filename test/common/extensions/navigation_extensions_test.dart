@@ -8,6 +8,7 @@ import 'package:mysterium_vpn/common/extensions/navigation_extensions.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
+import '../../support/fake_url_launcher.dart';
 import 'navigation_extensions_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<RemoteConfigStore>()])
@@ -34,6 +35,39 @@ void main() {
     await tester.pumpAndSettle();
     return (delegate, tester.element(find.byKey(const Key('probe'))));
   }
+
+  group('external links', () {
+    testWidgets('a launched external link reports handled', (tester) async {
+      final launcher = installFakeUrlLauncher();
+      final (delegate, context) = await pumpNav(tester);
+
+      final handled = await delegate.navigateToUrl(
+        url: 'https://example.com/promo',
+        context: context,
+        isAuthenticated: true,
+        accessToken: null,
+      );
+
+      expect(handled, isTrue);
+      expect(launcher.launchedUrl, contains('example.com/promo'));
+    });
+
+    testWidgets('an external link that will not launch reports unhandled', (tester) async {
+      // Reporting success here would make openPushNotificationTarget skip its
+      // inbox fallback even though nothing opened.
+      installFakeUrlLauncher(canLaunchResult: false);
+      final (delegate, context) = await pumpNav(tester);
+
+      final handled = await delegate.navigateToUrl(
+        url: 'https://example.com/promo',
+        context: context,
+        isAuthenticated: true,
+        accessToken: null,
+      );
+
+      expect(handled, isFalse);
+    });
+  });
 
   group('navigateToUrl', () {
     testWidgets('ignores a News Center deep link when newsCenterEnabled is false', (tester) async {

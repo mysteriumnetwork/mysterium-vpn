@@ -67,8 +67,17 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   final List<ReactionDisposer> _disposers = [];
   final List<StreamSubscription<dynamic>> _subscriptions = [];
 
-  bool _inFlight = false;
+  /// Serializes Notifier calls. A trigger arriving mid-request queues behind
+  /// the current one instead of being dropped, so it re-reads the desired
+  /// identity afterwards — a token refresh during a register, or a logout
+  /// during a first registration, both land correctly.
+  Future<void> _queue = Future<void>.value();
+
   bool _attributesInFlight = false;
+
+  /// Set when an attribute change arrives mid-merge, so the newer map is sent
+  /// once the current request finishes rather than being lost.
+  bool _attributesStale = false;
 
   /// Whether this launch has already re-registered. The backend wants one
   /// register per launch even when nothing changed, but only one.
@@ -160,7 +169,15 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
     // Permission can have been flipped in system settings while backgrounded.
-    unawaited(_guard('reconciling permission', _reconcilePermission));
+    // The sync is unconditional because nothing else re-runs on resume: an
+    // unchanged `true` emits nothing, so a registration left pending by an
+    // earlier failure would otherwise never be retried.
+    unawaited(
+      _guard('reconciling permission', () async {
+        await _reconcilePermission();
+        await syncRegistration();
+      }),
+    );
   }
 
   /// Unregisters the device when a fresh platform read says permission is off.
@@ -169,31 +186,46 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// [NotificationsRepository.getPermissionStatus], whose cache starts `false`
   /// on a cold start — deleting on its say-so would unregister on every launch.
   ///
-  /// Only the revoked direction needs handling: granting either already agreed
-  /// with the cache, or changed it and emitted on the permission stream.
+  /// Only the revoked direction needs handling at startup: granting either
+  /// already agreed with the cache, or changed it and emitted on the
+  /// permission stream, and both are triggers. Resume is different — see
+  /// [didChangeAppLifecycleState].
   Future<void> _reconcilePermission() async {
     if (!await _repository.refreshPermissionStatus()) {
       await _deleteStoredDevice();
     }
   }
 
-  /// Unregisters whatever is on record, if anything.
-  Future<void> _deleteStoredDevice() async {
+  /// Unregisters whatever is on record, if anything. Queued, so a logout or a
+  /// revoke that lands mid-registration deletes the record that register just
+  /// wrote rather than finding nothing.
+  Future<void> _deleteStoredDevice() => _serialized(() async {
     final stored = _registration.read();
     if (stored != null) {
-      await _deleteDevice(stored);
+      await _delete(stored);
     }
-  }
+  });
 
   /// Persists [state] against [record] so a retry trigger can pick it up.
   Future<void> _mark(NotifierRegistration record, NotifierSyncState state) =>
       _guard('persisting ${state.name}', () => _registration.save(record.copyWith(state: state)));
 
+  /// Runs [action] after any Notifier call already in flight.
+  Future<void> _serialized(Future<void> Function() action) {
+    final next = _queue.then((_) => action());
+    // Swallowed on the chain only, so one failure cannot poison later work
+    // while the caller still sees its own error.
+    _queue = next.catchError((Object _) {});
+    return next;
+  }
+
   /// Brings Notifier in line with this device: registers when permission and
   /// every required value are there, deletes when they are not.
   @action
-  Future<void> syncRegistration() async {
-    if (_inFlight || !Env.notifierConfigured) {
+  Future<void> syncRegistration() => _serialized(_syncRegistration);
+
+  Future<void> _syncRegistration() async {
+    if (!Env.notifierConfigured) {
       return;
     }
 
@@ -201,7 +233,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
 
     // Finish an owed delete first, then carry on and register again below.
     if (stored?.state == NotifierSyncState.pendingDelete) {
-      if (!await _deleteDevice(stored!)) {
+      if (!await _delete(stored!)) {
         // Still owed; don't register over it.
         return;
       }
@@ -225,7 +257,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
 
-    _inFlight = true;
     NotifierRegistration? registered;
     try {
       _analyticsStore.logEvent(AnalyticsEvent.pushDeviceRegistrationStarted);
@@ -244,8 +275,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
         _analyticsStore.logPushDeviceRegistrationFailed(errorCategory: category, status: status);
       });
       return;
-    } finally {
-      _inFlight = false;
     }
 
     await _syncAttributes(registered);
@@ -276,12 +305,11 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   ///
   /// A failure leaves the record as [NotifierSyncState.pendingDelete], which
   /// the triggers in [syncRegistration] pick up.
-  Future<bool> _deleteDevice(NotifierRegistration stored) async {
-    if (_inFlight || !Env.notifierConfigured) {
+  Future<bool> _delete(NotifierRegistration stored) async {
+    if (!Env.notifierConfigured) {
       return false;
     }
 
-    _inFlight = true;
     try {
       await _service.deleteDevice(token: stored.token, externalUserId: stored.externalUserId);
       await _guard('clearing Notifier registration state', _registration.clear);
@@ -295,8 +323,6 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
         _analyticsStore.logPushDeviceDeleteFailed(errorCategory: category, status: status);
       });
       return false;
-    } finally {
-      _inFlight = false;
     }
   }
 
@@ -347,7 +373,13 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// Merges user attributes so Notifier segments can target them. Only after a
   /// settled registration — the endpoint 404s for a user Notifier has not seen.
   Future<void> _syncAttributes([NotifierRegistration? known]) async {
-    if (_attributesInFlight || !Env.notifierConfigured) {
+    if (!Env.notifierConfigured) {
+      return;
+    }
+    if (_attributesInFlight) {
+      // A reaction fired mid-request; the map it saw is newer than the one in
+      // flight, so re-run once that finishes instead of dropping it.
+      _attributesStale = true;
       return;
     }
     final stored = known ?? _registration.read();
@@ -389,6 +421,11 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       }
     } finally {
       _attributesInFlight = false;
+    }
+
+    if (_attributesStale) {
+      _attributesStale = false;
+      await _syncAttributes(known);
     }
   }
 

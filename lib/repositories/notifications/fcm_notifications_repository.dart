@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
@@ -121,6 +122,16 @@ class FcmNotificationsRepository implements NotificationsRepository {
       ),
       onDidReceiveNotificationResponse: _onLocalNotificationTapped,
     );
+    // A tap that launched the process is not delivered to the callback above —
+    // and getInitialMessage only recovers FCM-displayed notifications, not the
+    // ones we showed ourselves in the foreground.
+    final launch = await _localNotifications.getNotificationAppLaunchDetails();
+    if (launch?.didNotificationLaunchApp ?? false) {
+      final response = launch!.notificationResponse;
+      if (response != null) {
+        _onLocalNotificationTapped(response);
+      }
+    }
     await _localNotifications
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(
@@ -151,6 +162,12 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// cannot be injected.
   @visibleForTesting
   Future<void> primeTokenForTest() => _initToken();
+
+  /// Visible for testing for the same reason as [primeTokenForTest]: [init]'s
+  /// other steps touch static `FirebaseMessaging` streams that cannot be
+  /// injected.
+  @visibleForTesting
+  Future<void> initLocalNotificationsForTest() => _initLocalNotifications();
 
   Future<void> _initToken() async {
     _subscriptions.add(
@@ -357,7 +374,12 @@ class FcmNotificationsRepository implements NotificationsRepository {
       return;
     }
     try {
-      await _notifierService.recordEvent(token: token!, type: type, campaignId: campaignId);
+      await _notifierService.recordEvent(
+        token: token!,
+        type: type,
+        campaignId: campaignId,
+        journeyStepId: _string(notification.additionalData?['journeyStepId']),
+      );
     } catch (e) {
       // Reporting is best-effort; it must never affect the notification itself.
       _logger.warning('Reporting the ${type.name} event to Notifier failed: $e');
@@ -413,27 +435,47 @@ class FcmNotificationsRepository implements NotificationsRepository {
             priority: Priority.high,
           ),
         ),
-        payload: notification.launchUrl,
+        // The whole notification, not just the deep link: the tap handler needs
+        // the campaign id to report the open, and a push without a link must
+        // still reach the inbox fallback.
+        payload: jsonEncode(notification.toJson()),
       );
     });
   }
 
-  /// Tap on a notification we displayed ourselves while in the foreground.
+  /// Tap on a notification we displayed ourselves, either while running or on
+  /// a cold launch from the tray.
   void _onLocalNotificationTapped(NotificationResponse response) {
-    final launchUrl = response.payload;
-    if (launchUrl.isNullOrEmpty) {
-      return;
+    final notification = _decodeLocalPayload(response.payload);
+    if (notification != null) {
+      _emitOpened(notification);
     }
-    _emitOpened(
-      PushNotification(
-        id: response.id?.toString(),
-        title: null,
-        body: null,
-        launchUrl: launchUrl,
-        additionalData: null,
-        rawPayload: null,
-        category: null,
-      ),
+  }
+
+  /// Rebuilds the notification stored in a local payload.
+  ///
+  /// Tolerates the bare deep link older builds wrote, so a notification already
+  /// sitting in the tray across an upgrade still routes.
+  PushNotification? _decodeLocalPayload(String? payload) {
+    if (payload.isNullOrEmpty) {
+      return null;
+    }
+    try {
+      final decoded = jsonDecode(payload!);
+      if (decoded is Map<String, dynamic>) {
+        return PushNotification.fromJson(decoded);
+      }
+    } catch (e) {
+      _logger.warning('Local notification payload was not a notification: $e');
+    }
+    return PushNotification(
+      id: null,
+      title: null,
+      body: null,
+      launchUrl: payload,
+      additionalData: null,
+      rawPayload: null,
+      category: null,
     );
   }
 

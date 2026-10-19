@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
@@ -762,6 +763,69 @@ void main() {
     });
   });
 
+  group('concurrent triggers', () {
+    /// Makes registerDevice hang until the returned completer is opened.
+    Completer<void> stallRegister() {
+      final gate = Completer<void>();
+      when(
+        service.registerDevice(
+          externalUserId: anyNamed('externalUserId'),
+          token: anyNamed('token'),
+          platform: anyNamed('platform'),
+        ),
+      ).thenAnswer((_) async => gate.future);
+      return gate;
+    }
+
+    test('a logout during a first registration still unregisters the device', () async {
+      final gate = stallRegister();
+      final store = await start();
+      // Nothing is persisted until registerDevice returns, so a naive logout
+      // finds no record and the register then saves one for the departed user.
+      expect(prefs.getNotifierRegistration(), isNull);
+
+      final logout = store.handleLogout();
+      gate.complete();
+      await logout;
+      await pumpEventQueue();
+
+      verify(service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1')).called(1);
+      expect(prefs.getNotifierRegistration(), isNull);
+    });
+
+    test('a token refresh during a registration is not dropped', () async {
+      final gate = stallRegister();
+      await start();
+
+      when(repository.currentToken).thenReturn('fcm-token-2');
+      tokenController.add('fcm-token-2');
+      await pumpEventQueue();
+
+      gate.complete();
+      await pumpEventQueue();
+
+      verify(
+        service.registerDevice(
+          externalUserId: 'user-1',
+          token: 'fcm-token-2',
+          platform: anyNamed('platform'),
+        ),
+      ).called(1);
+    });
+
+    test('resume retries a registration left pending', () async {
+      stubRegisterFailure(const NotifierException(category: 'network'));
+      final store = await start();
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingRegister);
+
+      stubServiceSuccess();
+      store.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      await pumpEventQueue();
+
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.settled);
+    });
+  });
+
   group('attribute deduplication', () {
     test('sends attributes once on startup, not once per reaction', () async {
       await start();
@@ -813,6 +877,38 @@ void main() {
               ).captured.single
               as Map<String, Object?>;
       expect(sent['country'], 'FR');
+    });
+
+    test('a change arriving mid-merge is sent once that merge finishes', () async {
+      // A real ObservableFuture, so the location reaction genuinely fires while
+      // the first merge is still awaiting its response.
+      final ip = Completer<IPInfo>();
+      // The same instance every read, so the reaction tracks one observable.
+      final location = ObservableFuture(ip.future);
+      when(ipInfoStore.infoFuture).thenAnswer((_) => location);
+      final mergeGate = Completer<void>();
+      when(
+        service.mergeAttributes(
+          externalUserId: anyNamed('externalUserId'),
+          attributes: anyNamed('attributes'),
+        ),
+      ).thenAnswer((_) async => mergeGate.future);
+
+      await start();
+      ip.complete(const IPInfo(city: 'Paris', country: 'FR', ip: '5.6.7.8'));
+      await pumpEventQueue();
+
+      mergeGate.complete();
+      await pumpEventQueue();
+
+      final sent = verify(
+        service.mergeAttributes(
+          externalUserId: anyNamed('externalUserId'),
+          attributes: captureAnyNamed('attributes'),
+        ),
+      ).captured;
+      expect(sent, hasLength(2));
+      expect((sent.last as Map<String, Object?>)['country'], 'FR');
     });
 
     test('logout drops the cache so the next login re-sends', () async {

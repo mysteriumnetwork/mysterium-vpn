@@ -51,8 +51,9 @@ extension NavigationExtensions on BeamerDelegate {
         queryParameters: queryParameters,
       );
 
-      await openUrlLink(httpsUri, source: RedirectSource.external);
-      return true;
+      // The result matters: on failure the caller falls back to the inbox, so
+      // reporting success here would swallow a link that never opened.
+      return openUrlLink(httpsUri, source: RedirectSource.external);
     }
 
     // Match in-app routes on the URI path so query params, fragments, and a
