@@ -148,6 +148,28 @@ void main() {
       verify(prompts.setPushPromptLastShownAt(any)).called(1);
     });
 
+    test('a denial that leaves the status unchanged is still evented', () async {
+      // The repository emits on its stream only when the value changes, so
+      // without this the prompt's grant rate cannot be computed.
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.requestPermission()).thenAnswer((_) async => false);
+
+      await store.setPushNotificationsShown(userAllowed: true);
+
+      verify(
+        analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: false),
+      ).called(1);
+    });
+
+    test('a grant is left to the permission stream, not double-counted', () async {
+      when(repository.getPermissionStatus()).thenReturn(false);
+      when(repository.requestPermission()).thenAnswer((_) async => true);
+
+      await store.setPushNotificationsShown(userAllowed: true);
+
+      verifyNever(analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true));
+    });
+
     test('logs push_permission_requested before showing the system prompt', () async {
       await store.setPushNotificationsShown(userAllowed: true);
 
@@ -233,6 +255,23 @@ void main() {
       await Future<void>.delayed(Duration.zero);
 
       verify(repository.reportEvent(sent, NotifierEventType.delivered)).called(1);
+    });
+
+    test('a failing report is evented so broken reporting is visible', () async {
+      when(
+        repository.reportEvent(any, any),
+      ).thenThrow(const NotifierException(category: 'server', statusCode: 503));
+
+      receivedController.add(notification(campaignId: 'campaign-1'));
+      await pumpEventQueue();
+
+      verify(
+        analyticsStore.logPushEventReportFailed(
+          errorCategory: 'server',
+          eventType: 'delivered',
+          status: 503,
+        ),
+      ).called(1);
     });
 
     test('a failing report does not escape the listener', () async {

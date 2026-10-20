@@ -504,6 +504,33 @@ mixin AnalyticsStore {
     );
   }
 
+  /// Attribute merges drive Notifier campaign segmentation, so a persistent
+  /// failure silently mistargets campaigns rather than breaking anything
+  /// visible.
+  Future<void> logPushAttributesMergeFailed({required String errorCategory, int? status}) async {
+    await logEvent(
+      AnalyticsEvent.pushAttributesMergeFailed,
+      parameters: {'error_category': errorCategory, 'status': ?status?.toString()},
+    );
+  }
+
+  /// Delivery/open reporting feeds Notifier's campaign metrics; a failure here
+  /// shows up as under-reported engagement, not as a broken notification.
+  Future<void> logPushEventReportFailed({
+    required String errorCategory,
+    required String eventType,
+    int? status,
+  }) async {
+    await logEvent(
+      AnalyticsEvent.pushEventReportFailed,
+      parameters: {
+        'error_category': errorCategory,
+        'event_type': eventType,
+        'status': ?status?.toString(),
+      },
+    );
+  }
+
   Future<void> logTunnelPermissionDialogShown() async {
     await logEvent(AnalyticsEvent.tunnelPermissionDialogShown);
   }

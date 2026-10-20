@@ -750,7 +750,7 @@ void main() {
       );
     });
 
-    test('a failing report is swallowed — it must not affect the notification', () async {
+    test('a failing report propagates so the caller can event it', () async {
       when(
         notifierService.recordEvent(
           token: anyNamed('token'),
@@ -759,9 +759,13 @@ void main() {
         ),
       ).thenThrow(const NotifierException(category: 'network'));
 
+      when(messaging.getToken()).thenAnswer((_) async => 'fcm-token');
+      when(messaging.onTokenRefresh).thenAnswer((_) => const Stream<String>.empty());
+      await repository.primeTokenForTest();
+
       await expectLater(
         repository.reportEvent(withCampaign('campaign-1'), NotifierEventType.open),
-        completes,
+        throwsA(isA<NotifierException>()),
       );
     });
   });

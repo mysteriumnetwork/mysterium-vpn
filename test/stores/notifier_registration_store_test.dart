@@ -545,6 +545,21 @@ void main() {
       expect(captured.containsKey('subscription_exp_date'), isTrue);
     });
 
+    test('a failing merge is evented so mistargeting is visible', () async {
+      when(
+        service.mergeAttributes(
+          externalUserId: anyNamed('externalUserId'),
+          attributes: anyNamed('attributes'),
+        ),
+      ).thenThrow(const NotifierException(category: 'not_found', statusCode: 404));
+
+      await start();
+
+      verify(
+        analyticsStore.logPushAttributesMergeFailed(errorCategory: 'not_found', status: 404),
+      ).called(1);
+    });
+
     test('a failing merge does not mark the registration pending', () async {
       when(
         service.mergeAttributes(

@@ -408,17 +408,14 @@ class FcmNotificationsRepository implements NotificationsRepository {
     if (token.isNullOrEmpty || campaignId.isNullOrEmpty) {
       return;
     }
-    try {
-      await _notifierService.recordEvent(
-        token: token!,
-        type: type,
-        campaignId: campaignId,
-        journeyStepId: _string(notification.additionalData?['journeyStepId']),
-      );
-    } catch (e) {
-      // Reporting is best-effort; it must never affect the notification itself.
-      _logger.warning('Reporting the ${type.name} event to Notifier failed: $e');
-    }
+    // Failures propagate: the caller contains them and owns analytics. Handling
+    // them here too would swallow the only signal that reporting is broken.
+    await _notifierService.recordEvent(
+      token: token!,
+      type: type,
+      campaignId: campaignId,
+      journeyStepId: _string(notification.additionalData?['journeyStepId']),
+    );
   }
 
   void _onForegroundMessage(RemoteMessage message) {

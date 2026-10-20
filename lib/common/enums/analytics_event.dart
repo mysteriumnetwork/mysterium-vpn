@@ -112,6 +112,8 @@ enum AnalyticsEvent {
   pushDeviceRegistrationFailed,
   pushDeviceDeleted,
   pushDeviceDeleteFailed,
+  pushAttributesMergeFailed,
+  pushEventReportFailed,
   pushTokenRefreshed,
   subUpgradeBannerClick,
   subUpgradePopupShow,

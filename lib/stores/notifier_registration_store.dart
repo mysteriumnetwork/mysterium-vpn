@@ -472,10 +472,11 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       _sentAttributes = attributes;
     } catch (e, stack) {
       // Attributes are best-effort: never escalate into the registration flow.
-      _logger.warning('Merging Notifier attributes failed: $e');
-      if (e is! NotifierException) {
-        _reportUnexpected(e, stack, 'merging attributes');
-      }
+      // Evented all the same — a persistent failure mistargets campaigns
+      // without breaking anything a user or a crash report would show.
+      _reportCallFailure(e, stack, 'merging attributes', (category, status) {
+        _analyticsStore.logPushAttributesMergeFailed(errorCategory: category, status: status);
+      });
     }
   }
 

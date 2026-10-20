@@ -65,6 +65,10 @@ abstract class NotificationsRepository {
   /// Lives here rather than in a store because it is keyed by the device token,
   /// which this repository owns. Silently skipped when the token or the
   /// notification's campaign id is missing — there is nothing to attribute.
+  ///
+  /// Throws on a transport failure. The caller decides what that means: it is
+  /// best-effort for the notification, but it is the only signal that Notifier
+  /// is under-counting engagement.
   Future<void> reportEvent(PushNotification notification, NotifierEventType type);
 
   Future<void> dispose();

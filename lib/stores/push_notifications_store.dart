@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/models/models.dart' hide UserData;
 import 'package:mysterium_vpn/repositories/repositories.dart';
@@ -131,6 +132,13 @@ abstract class _PushNotificationsStore with Store, Disposeable {
       await _notificationsRepository.reportEvent(notification, type);
     } catch (e) {
       _logger.warning('Reporting the ${type.name} event failed: $e');
+      final category = e is NotifierException ? e.category : 'unknown';
+      final status = e is NotifierException ? e.statusCode : null;
+      unawaited(
+        _analyticsStore
+            .logPushEventReportFailed(errorCategory: category, eventType: type.name, status: status)
+            .catchError((Object _) {}),
+      );
     }
   }
 
@@ -214,7 +222,15 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   Future<bool> _requestPermission() async {
     _analyticsStore.logEvent(AnalyticsEvent.pushPermissionRequested);
-    return _notificationsRepository.requestPermission();
+    final before = _notificationsRepository.getPermissionStatus();
+    final granted = await _notificationsRepository.requestPermission();
+    // The repository emits on the permission stream only when the value
+    // changes, so a denial — which leaves it `false` — never reaches analytics
+    // and the prompt's grant rate cannot be computed.
+    if (granted == before) {
+      await _analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: granted);
+    }
+    return granted;
   }
 
   @action
