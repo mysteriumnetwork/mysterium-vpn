@@ -20,6 +20,7 @@ export 'mqtt_store.dart';
 export 'network_statistics_store.dart';
 export 'news_center_refresh_store.dart';
 export 'news_center_store.dart';
+export 'notifier_registration_store.dart';
 export 'promotional_content_store.dart';
 export 'push_notifications_store.dart';
 export 'rate_connection_store.dart';

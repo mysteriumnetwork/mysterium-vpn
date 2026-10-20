@@ -35,13 +35,16 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
     if (Platform.isWindows) _initWindows(),
   ]);
 
-  // Construct pushNotificationsStorePOD here rather than in MyApp.build:
-  // its repository.init() touches OneSignal singletons that are only ready
-  // after deferredInitFuturePOD resolves.
+  // Construct pushNotificationsStorePOD here rather than in MyApp.build: its
+  // repository.init() touches Firebase Messaging, which is only ready after
+  // deferredInitFuturePOD resolves. notifierRegistrationStorePOD is read right
+  // after so its auth reaction is live from startup — that reaction is what
+  // registers an already-authenticated user's device in the background.
   ref
     ..read(smartRefreshStorePOD)
     ..read(realIPInfoStorePOD)
-    ..read(pushNotificationsStorePOD);
+    ..read(pushNotificationsStorePOD)
+    ..read(notifierRegistrationStorePOD);
 
   // Start MQTT here — after the Future.wait above, remote config is loaded so
   // `mqttExperiment` holds its real value (not the default false). Not awaited:

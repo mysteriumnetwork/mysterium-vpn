@@ -153,6 +153,11 @@ class MyApp extends HookConsumerWidget {
       return;
     }
 
+    // Captured before the invalidations below dispose it. Only a store that
+    // was already live needs rebuilding; creating one here on a signed-out cold
+    // start would reach FirebaseMessaging before deferred init runs.
+    final notifierStoreWasLive = ref.exists(notifierRegistrationStorePOD);
+
     await _disposeStore(ref, vpnStorePOD, dispose: (VpnStore s) => s.disposeStore());
     await _disposeStore(ref, dnsStorePOD, dispose: (DNSStore s) => s.disposeStore());
     _invalidateIfExists(ref, locationsStorePOD);
@@ -182,6 +187,14 @@ class MyApp extends HookConsumerWidget {
     ref
       ..read(smartRefreshStorePOD)
       ..read(newsCenterRefreshStorePOD);
+
+    // NotifierRegistrationStore watches subscriptionStorePOD for its attribute
+    // sync, so it is invalidated above too. Re-reading it rebuilds the instance
+    // that finishes the owed device delete and registers the next user to sign
+    // in; without it both wait for an app restart.
+    if (notifierStoreWasLive) {
+      ref.read(notifierRegistrationStorePOD);
+    }
   }
 
   Future<void> _disposeStore<T>(

@@ -32,26 +32,43 @@ class PushNotificationsSetting extends ConsumerWidget {
           return const SizedBox.shrink();
         }
 
-        final subtitleWidget = isDesktop
-            ? null
-            : GestureDetector(
-                onTap: () => _updatePushNotificationsPermissions(
-                  pushNotificationsStore: pushNotificationsStore,
-                  currentValue: pushNotificationsStore.pushNotificationsPermissionGranted,
-                  analyticsStore: analyticsStore,
-                ),
-                child: Text(
-                  S.current.openSystemSettingsBtn,
-                  style: theme.textStyles.textXs.semibold.copyWith(
-                    color: theme.palette.textBrandPrimary,
-                  ),
-                ),
-              );
+        // The trailing switch is read-only — the OS owns this permission — so
+        // this link is the only way to act on the setting. It must render on
+        // every platform the card is visible on, which now includes macOS.
+        final openSystemSettings = GestureDetector(
+          onTap: () => _updatePushNotificationsPermissions(
+            pushNotificationsStore: pushNotificationsStore,
+            currentValue: pushNotificationsStore.pushNotificationsPermissionGranted,
+            analyticsStore: analyticsStore,
+          ),
+          child: Text(
+            S.current.openSystemSettingsBtn,
+            style: theme.textStyles.textXs.semibold.copyWith(color: theme.palette.textBrandPrimary),
+          ),
+        );
 
         return SettingsCard(
           title: S.current.pushNotificationsSetting,
-          subtitle: isDesktop ? S.current.pushNotificationsSettingDesc : null,
-          subtitleWidget: subtitleWidget,
+          // SettingsCard's `subtitle` is ignored when `subtitleWidget` is set,
+          // so wide layouts stack the description above the link rather than
+          // trading one for the other.
+          subtitleWidget: isDesktop
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.current.pushNotificationsSettingDesc,
+                      style: theme.textStyles.textXs.regular.copyWith(
+                        color: theme.palette.textTertiary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: theme.spacing.xxs),
+                    openSystemSettings,
+                  ],
+                )
+              : openSystemSettings,
           position: position,
           trailing: ReadOnlySwitch(
             value: pushNotificationsStore.pushNotificationsPermissionGranted,

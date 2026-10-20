@@ -83,12 +83,20 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
   ),
 );
 
+final notifierRegistrationRepositoryPOD = Provider<NotifierRegistrationRepository>(
+  (ref) => LocalNotifierRegistrationRepository(ref.watch(sharedPreferenceServicePOD)),
+);
+
 final termsConditionsRepositoryPOD = Provider<TermsConditionsRepository>(
   (ref) => RestTermsConditionsRepository(api: ref.watch(vpnApiPOD), logger: ref.watch(loggerPOD)),
 );
 
 final pushNotificationsRepositoryPOD = Provider<NotificationsRepository>(
-  (ref) => isDesktop()
-      ? DesktopNotificationsRepository()
-      : OnesignalNotificationsRepository(logger: ref.watch(loggerPOD)),
+  (ref) => isPushSupported()
+      ? FcmNotificationsRepository(
+          logger: ref.watch(loggerPOD),
+          notifierService: ref.watch(notifierServicePOD),
+          logNonFatal: ref.watch(analyticsStorePOD).logNonFatal,
+        )
+      : DesktopNotificationsRepository(),
 );

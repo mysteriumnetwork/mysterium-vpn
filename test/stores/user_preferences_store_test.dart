@@ -32,6 +32,19 @@ void main() {
   late MockSubscriptionStore mockSubscriptionStore;
   late MockSubscriptionOnboardingStore mockSubscriptionOnboardingStore;
   late MockRemoteConfigStore mockRemoteConfigStore;
+  UserPreferencesStore buildStore({bool supportsPush = true}) => UserPreferencesStore(
+    apiService: mockApiService,
+    analyticsStore: mockAnalyticsStore,
+    realIPInfo: mockRealIPInfoStore,
+    prompts: mockPrompts,
+    pushNotificationsStore: mockPushNotificationsStore,
+    authSessionStore: mockAuthSessionStore,
+    subscriptionStore: mockSubscriptionStore,
+    subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
+    remoteConfigStore: mockRemoteConfigStore,
+    supportsPush: () => supportsPush,
+  );
+
   setUp(() {
     mockApiService = MockApiService();
     mockAnalyticsStore = MockAnalyticsStore();
@@ -72,17 +85,7 @@ void main() {
     when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
     when(mockRemoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
 
-    store = UserPreferencesStore(
-      apiService: mockApiService,
-      analyticsStore: mockAnalyticsStore,
-      realIPInfo: mockRealIPInfoStore,
-      prompts: mockPrompts,
-      pushNotificationsStore: mockPushNotificationsStore,
-      authSessionStore: mockAuthSessionStore,
-      subscriptionStore: mockSubscriptionStore,
-      subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-      remoteConfigStore: mockRemoteConfigStore,
-    )..testIsMobile = true;
+    store = buildStore();
   });
 
   group('Initialization', () {
@@ -94,17 +97,7 @@ void main() {
       ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction with new mocks
-      store = UserPreferencesStore(
-        apiService: mockApiService,
-        analyticsStore: mockAnalyticsStore,
-        realIPInfo: mockRealIPInfoStore,
-        prompts: mockPrompts,
-        pushNotificationsStore: mockPushNotificationsStore,
-        authSessionStore: mockAuthSessionStore,
-        subscriptionStore: mockSubscriptionStore,
-        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-        remoteConfigStore: mockRemoteConfigStore,
-      )..testIsMobile = true;
+      store = buildStore();
 
       // Wait for futures to complete
       await store.setMarketingConsentFuture;
@@ -129,17 +122,7 @@ void main() {
       ).thenAnswer((_) async => false);
 
       // Recreate store to trigger auth reaction
-      store = UserPreferencesStore(
-        apiService: mockApiService,
-        analyticsStore: mockAnalyticsStore,
-        realIPInfo: mockRealIPInfoStore,
-        prompts: mockPrompts,
-        pushNotificationsStore: mockPushNotificationsStore,
-        authSessionStore: mockAuthSessionStore,
-        subscriptionStore: mockSubscriptionStore,
-        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-        remoteConfigStore: mockRemoteConfigStore,
-      )..testIsMobile = true;
+      store = buildStore();
 
       // Wait for auth reaction and initStore to complete
       await pumpEventQueue();
@@ -162,17 +145,7 @@ void main() {
       ).thenThrow(Exception('Network error'));
 
       // Recreate store to trigger auth reaction
-      store = UserPreferencesStore(
-        apiService: mockApiService,
-        analyticsStore: mockAnalyticsStore,
-        realIPInfo: mockRealIPInfoStore,
-        prompts: mockPrompts,
-        pushNotificationsStore: mockPushNotificationsStore,
-        authSessionStore: mockAuthSessionStore,
-        subscriptionStore: mockSubscriptionStore,
-        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-        remoteConfigStore: mockRemoteConfigStore,
-      )..testIsMobile = true;
+      store = buildStore();
 
       // Should not throw
       await pumpEventQueue();
@@ -690,17 +663,7 @@ void main() {
       ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction
-      store = UserPreferencesStore(
-        apiService: mockApiService,
-        analyticsStore: mockAnalyticsStore,
-        realIPInfo: mockRealIPInfoStore,
-        prompts: mockPrompts,
-        pushNotificationsStore: mockPushNotificationsStore,
-        authSessionStore: mockAuthSessionStore,
-        subscriptionStore: mockSubscriptionStore,
-        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-        remoteConfigStore: mockRemoteConfigStore,
-      )..testIsMobile = true;
+      store = buildStore();
 
       await store.setMarketingConsentFuture;
       expect(setCompleted, isTrue);
@@ -787,8 +750,7 @@ void main() {
     });
 
     test('evaluatePromptToShow shows marketing on non-mobile', () async {
-      store
-        ..testIsMobile = false
+      store = buildStore(supportsPush: false)
         ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
@@ -841,17 +803,7 @@ void main() {
       ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction
-      final newStore = UserPreferencesStore(
-        apiService: mockApiService,
-        analyticsStore: mockAnalyticsStore,
-        realIPInfo: mockRealIPInfoStore,
-        prompts: mockPrompts,
-        pushNotificationsStore: mockPushNotificationsStore,
-        authSessionStore: mockAuthSessionStore,
-        subscriptionStore: mockSubscriptionStore,
-        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-        remoteConfigStore: mockRemoteConfigStore,
-      )..testIsMobile = true;
+      final newStore = buildStore();
 
       // Wait for auth reaction and initStore to complete
       await pumpEventQueue();
@@ -869,17 +821,7 @@ void main() {
       ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
       // Recreate store to trigger auth reaction
-      final newStore = UserPreferencesStore(
-        apiService: mockApiService,
-        analyticsStore: mockAnalyticsStore,
-        realIPInfo: mockRealIPInfoStore,
-        prompts: mockPrompts,
-        pushNotificationsStore: mockPushNotificationsStore,
-        authSessionStore: mockAuthSessionStore,
-        subscriptionStore: mockSubscriptionStore,
-        subscriptionOnboardingStore: mockSubscriptionOnboardingStore,
-        remoteConfigStore: mockRemoteConfigStore,
-      )..testIsMobile = true;
+      final newStore = buildStore();
 
       // Wait for auth reaction and initStore to complete
       await pumpEventQueue();
