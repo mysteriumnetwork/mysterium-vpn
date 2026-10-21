@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:mysterium_vpn/common/observers/background_duration_observer.dart';
 import 'package:mysterium_vpn/stores/news_center_store.dart';
 import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 
@@ -8,9 +9,9 @@ import 'package:mysterium_vpn/stores/remote_config/remote_config_store.dart';
 /// after being backgrounded longer than
 /// [RemoteConfigStore.newsCenterRefreshIntervalMinutes].
 ///
-/// Tracks the last lifecycle transition and when the app was paused; on resume
-/// it refreshes only if the previous state was paused and enough time elapsed.
-class NewsCenterRefreshStore with WidgetsBindingObserver {
+/// Backgrounded-duration detection comes from [BackgroundDurationObserver];
+/// this only decides whether the gap was long enough to act on.
+class NewsCenterRefreshStore with WidgetsBindingObserver, BackgroundDurationObserver {
   NewsCenterRefreshStore(this._newsCenterStore, this._config, {DateTime Function()? clock})
     : _clock = clock ?? DateTime.now {
     WidgetsBinding.instance.addObserver(this);
@@ -20,28 +21,11 @@ class NewsCenterRefreshStore with WidgetsBindingObserver {
   final RemoteConfigStore _config;
   final DateTime Function() _clock;
 
-  AppLifecycleState? _lastState;
-  DateTime? _backgroundedAt;
+  @override
+  DateTime Function() get clock => _clock;
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final previous = _lastState;
-    _lastState = state;
-    final now = _clock();
-
-    switch (state) {
-      case AppLifecycleState.paused:
-        _backgroundedAt = now;
-      case AppLifecycleState.resumed:
-        final backgroundedAt = _backgroundedAt;
-        _backgroundedAt = null;
-        if (previous == AppLifecycleState.paused && backgroundedAt != null) {
-          _maybeRefresh(now.difference(backgroundedAt));
-        }
-      default:
-        break;
-    }
-  }
+  void onReturnedToForeground(Duration backgroundedFor) => _maybeRefresh(backgroundedFor);
 
   void _maybeRefresh(Duration inactiveFor) {
     // Respect the feature kill switch — no background network calls when the

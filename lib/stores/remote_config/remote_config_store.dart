@@ -67,6 +67,7 @@ enum _FeatureToggleKey {
   termsConditionsEnabled,
   showApiVersion,
   favoriteLocationsEnabled,
+  tunnelHealthConfig,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -327,6 +328,24 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       return value;
     }
     return defaultMinutes;
+  }
+
+  /// Tunables for the resume-time tunnel health check, as one JSON value.
+  /// A payload that cannot be decoded logs and yields the defaults, which ship
+  /// the feature disabled.
+  @computed
+  TunnelHealthConfig get tunnelHealthConfig {
+    if (config.containsKey(_FeatureToggleKey.tunnelHealthConfig.name)) {
+      final raw = config[_FeatureToggleKey.tunnelHealthConfig.name];
+      try {
+        final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
+        return TunnelHealthConfig.fromJson(decoded);
+      } catch (e) {
+        // Expected failure for a malformed remote payload — not a crash.
+        logger.warning('Could not decode tunnelHealthConfig: $e');
+      }
+    }
+    return const TunnelHealthConfig();
   }
 
   /// Whether the per-tab refresh icon button on the locations list is enabled.

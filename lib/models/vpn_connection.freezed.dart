@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VpnConnection {
 
- String get connectionIP; VPNLocation get location;
+ String get connectionIP; VPNLocation get location; String? get sessionId; String? get hash;
 /// Create a copy of VpnConnection
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $VpnConnectionCopyWith<VpnConnection> get copyWith => _$VpnConnectionCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.hash, hash) || other.hash == hash));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,connectionIP,location);
+int get hashCode => Object.hash(runtimeType,connectionIP,location,sessionId,hash);
 
 @override
 String toString() {
-  return 'VpnConnection(connectionIP: $connectionIP, location: $location)';
+  return 'VpnConnection(connectionIP: $connectionIP, location: $location, sessionId: $sessionId, hash: $hash)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $VpnConnectionCopyWith<$Res>  {
   factory $VpnConnectionCopyWith(VpnConnection value, $Res Function(VpnConnection) _then) = _$VpnConnectionCopyWithImpl;
 @useResult
 $Res call({
- String connectionIP, VPNLocation location
+ String connectionIP, VPNLocation location, String? sessionId, String? hash
 });
 
 
@@ -62,11 +62,13 @@ class _$VpnConnectionCopyWithImpl<$Res>
 
 /// Create a copy of VpnConnection
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? connectionIP = null,Object? location = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? connectionIP = null,Object? location = null,Object? sessionId = freezed,Object? hash = freezed,}) {
   return _then(_self.copyWith(
 connectionIP: null == connectionIP ? _self.connectionIP : connectionIP // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as VPNLocation,
+as VPNLocation,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
+as String?,hash: freezed == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of VpnConnection
@@ -160,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String connectionIP,  VPNLocation location)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String connectionIP,  VPNLocation location,  String? sessionId,  String? hash)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VpnConnection() when $default != null:
-return $default(_that.connectionIP,_that.location);case _:
+return $default(_that.connectionIP,_that.location,_that.sessionId,_that.hash);case _:
   return orElse();
 
 }
@@ -181,10 +183,10 @@ return $default(_that.connectionIP,_that.location);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String connectionIP,  VPNLocation location)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String connectionIP,  VPNLocation location,  String? sessionId,  String? hash)  $default,) {final _that = this;
 switch (_that) {
 case _VpnConnection():
-return $default(_that.connectionIP,_that.location);case _:
+return $default(_that.connectionIP,_that.location,_that.sessionId,_that.hash);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +203,10 @@ return $default(_that.connectionIP,_that.location);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String connectionIP,  VPNLocation location)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String connectionIP,  VPNLocation location,  String? sessionId,  String? hash)?  $default,) {final _that = this;
 switch (_that) {
 case _VpnConnection() when $default != null:
-return $default(_that.connectionIP,_that.location);case _:
+return $default(_that.connectionIP,_that.location,_that.sessionId,_that.hash);case _:
   return null;
 
 }
@@ -216,11 +218,13 @@ return $default(_that.connectionIP,_that.location);case _:
 
 
 class _VpnConnection extends VpnConnection {
-  const _VpnConnection({required this.connectionIP, required this.location}): super._();
+  const _VpnConnection({required this.connectionIP, required this.location, this.sessionId, this.hash}): super._();
   
 
 @override final  String connectionIP;
 @override final  VPNLocation location;
+@override final  String? sessionId;
+@override final  String? hash;
 
 /// Create a copy of VpnConnection
 /// with the given fields replaced by the non-null parameter values.
@@ -232,16 +236,16 @@ _$VpnConnectionCopyWith<_VpnConnection> get copyWith => __$VpnConnectionCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.hash, hash) || other.hash == hash));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,connectionIP,location);
+int get hashCode => Object.hash(runtimeType,connectionIP,location,sessionId,hash);
 
 @override
 String toString() {
-  return 'VpnConnection(connectionIP: $connectionIP, location: $location)';
+  return 'VpnConnection(connectionIP: $connectionIP, location: $location, sessionId: $sessionId, hash: $hash)';
 }
 
 
@@ -252,7 +256,7 @@ abstract mixin class _$VpnConnectionCopyWith<$Res> implements $VpnConnectionCopy
   factory _$VpnConnectionCopyWith(_VpnConnection value, $Res Function(_VpnConnection) _then) = __$VpnConnectionCopyWithImpl;
 @override @useResult
 $Res call({
- String connectionIP, VPNLocation location
+ String connectionIP, VPNLocation location, String? sessionId, String? hash
 });
 
 
@@ -269,11 +273,13 @@ class __$VpnConnectionCopyWithImpl<$Res>
 
 /// Create a copy of VpnConnection
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? connectionIP = null,Object? location = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? connectionIP = null,Object? location = null,Object? sessionId = freezed,Object? hash = freezed,}) {
   return _then(_VpnConnection(
 connectionIP: null == connectionIP ? _self.connectionIP : connectionIP // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as VPNLocation,
+as VPNLocation,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
+as String?,hash: freezed == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

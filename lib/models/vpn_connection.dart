@@ -5,8 +5,12 @@ part 'vpn_connection.freezed.dart';
 
 @freezed
 abstract class VpnConnection with _$VpnConnection {
-  const factory VpnConnection({required String connectionIP, required VPNLocation location}) =
-      _VpnConnection;
+  const factory VpnConnection({
+    required String connectionIP,
+    required VPNLocation location,
+    String? sessionId,
+    String? hash,
+  }) = _VpnConnection;
 
   const VpnConnection._();
 

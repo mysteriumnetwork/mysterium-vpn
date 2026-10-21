@@ -907,4 +907,136 @@ void main() {
       expect(() => store.minWindowsStandAloneBuildNumber, throwsA(isA<MobXCaughtException>()));
     });
   });
+
+  group('RemoteConfigStore.tunnelHealthConfig', () {
+    void expectDefaults(TunnelHealthConfig config) {
+      expect(config.enabled, isFalse);
+      expect(config.minBackgroundSeconds, 300);
+      expect(config.degradedFloorMs, 1500);
+      expect(config.latencyRatioPercent, 200);
+    }
+
+    test('returns defaults when the key is absent — the feature ships dark', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expectDefaults(config);
+    });
+
+    test('reads every field from a full payload', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          'tunnelHealthConfig':
+              '{"enabled":true,"minBackgroundSeconds":15,"degradedFloorMs":3000,'
+              '"latencyRatioPercent":300}',
+        },
+      );
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expect(config.enabled, isTrue);
+      expect(config.minBackgroundSeconds, 15);
+      expect(config.degradedFloorMs, 3000);
+      expect(config.latencyRatioPercent, 300);
+    });
+
+    test('a partial payload keeps defaults for the fields it omits', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"enabled":true}'});
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expect(config.enabled, isTrue);
+      expect(config.minBackgroundSeconds, 300);
+      expect(config.degradedFloorMs, 1500);
+      expect(config.latencyRatioPercent, 200);
+    });
+
+    test('each wrong-typed field falls back on its own', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          // latencyRatioPercent as a double is the exact foot-gun the int
+          // percentage exists to avoid.
+          'tunnelHealthConfig':
+              '{"enabled":"yes","minBackgroundSeconds":"15","degradedFloorMs":true,'
+              '"latencyRatioPercent":2.0}',
+        },
+      );
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expectDefaults(config);
+    });
+
+    test('zero disables the check but is rejected for the thresholds', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          'tunnelHealthConfig':
+              '{"minBackgroundSeconds":0,"degradedFloorMs":0,"latencyRatioPercent":0}',
+        },
+      );
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expect(config.minBackgroundSeconds, 0);
+      expect(config.degradedFloorMs, 1500);
+      expect(config.latencyRatioPercent, 200);
+    });
+
+    test('a latency floor at or above the probe timeout is out of range', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        // 5000 == the probe timeout, so no successful leg could ever reach it.
+        (_) async => {'tunnelHealthConfig': '{"degradedFloorMs":5000}'},
+      );
+      await store.configFuture;
+      expect(store.tunnelHealthConfig.degradedFloorMs, 1500);
+    });
+
+    test('negative values are out of range for every numeric field', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          'tunnelHealthConfig':
+              '{"minBackgroundSeconds":-1,"degradedFloorMs":-1,"latencyRatioPercent":-1}',
+        },
+      );
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expect(config.minBackgroundSeconds, 300);
+      expect(config.degradedFloorMs, 1500);
+      expect(config.latencyRatioPercent, 200);
+    });
+
+    test('reads a control IP from the payload', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIp":"1.2.3.4"}'});
+      await store.configFuture;
+      expect(store.tunnelHealthConfig.controlIp, '1.2.3.4');
+    });
+
+    test('an unparseable control IP falls back, since it gates the check', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIp":"not-an-ip"}'});
+      await store.configFuture;
+      expect(store.tunnelHealthConfig.controlIp, '159.69.15.34');
+    });
+
+    test('malformed JSON yields the defaults rather than throwing', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': 'not json at all'});
+      await store.configFuture;
+      final config = store.tunnelHealthConfig;
+      expect(config.enabled, isFalse);
+      expect(config.minBackgroundSeconds, 300);
+    });
+  });
 }

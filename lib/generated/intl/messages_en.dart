@@ -801,6 +801,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage(
       "Try searching for another location",
     ),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "The IP you\'re connected to may be having problems. Try refreshing it, or close this and pick another country.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "The IP you\'re connected to may be having problems. No other IPs are available for this location — close this and pick another country.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("Refresh IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("Connection may be degraded"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("No internet connection detected."),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "You need to grant permission to start VPN tunnel.",
     ),

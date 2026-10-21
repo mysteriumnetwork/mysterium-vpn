@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mysterium_vpn/common/observers/background_duration_observer.dart';
 
-class PerformanceMonitor with WidgetsBindingObserver {
+class PerformanceMonitor with WidgetsBindingObserver, BackgroundDurationObserver {
   PerformanceMonitor._();
   static final PerformanceMonitor instance = PerformanceMonitor._();
 
   bool _activated = false;
-  AppLifecycleState? _lastState;
   Trace? _warmStartTrace;
 
   Future<void> activate() async {
@@ -40,14 +40,7 @@ class PerformanceMonitor with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final wasBackgrounded =
-        _lastState == AppLifecycleState.paused || _lastState == AppLifecycleState.hidden;
-    if (state == AppLifecycleState.resumed && wasBackgrounded) {
-      unawaited(_traceWarmStart());
-    }
-    _lastState = state;
-  }
+  void onReturnedToForeground(Duration backgroundedFor) => unawaited(_traceWarmStart());
 
   Future<void> _traceWarmStart() async {
     if (_warmStartTrace != null) {

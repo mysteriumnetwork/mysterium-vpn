@@ -82,14 +82,28 @@ void main() {
     verifyNever(news.refresh());
   });
 
-  test('does not refresh on an inactive -> resumed transition', () {
+  // This previously asserted the opposite, which locked in a bug: Flutter
+  // expands paused -> resumed into hidden -> inactive -> resumed, so this is
+  // the only sequence a real device produces, and the feature never fired.
+  test('refreshes across the full transition a real device emits', () {
     final store = build();
 
     dispatch(store, AppLifecycleState.paused);
     now = now.add(const Duration(hours: 1));
+    dispatch(store, AppLifecycleState.hidden);
     dispatch(store, AppLifecycleState.inactive);
     dispatch(store, AppLifecycleState.resumed);
 
-    verifyNever(news.refresh());
+    verify(news.refresh()).called(1);
+  });
+
+  test('refreshes on desktop, where paused may never arrive', () {
+    final store = build();
+
+    dispatch(store, AppLifecycleState.inactive);
+    now = now.add(const Duration(hours: 1));
+    dispatch(store, AppLifecycleState.resumed);
+
+    verify(news.refresh()).called(1);
   });
 }

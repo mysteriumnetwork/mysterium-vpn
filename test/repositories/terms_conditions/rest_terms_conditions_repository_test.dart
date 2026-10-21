@@ -34,7 +34,7 @@ void main() {
   group('getConsent', () {
     test('maps the accepted and latest versions', () async {
       when(terms.userTerms()).thenAnswer(
-        (_) async => response(UserTermsResponse(acceptedVersion: '1', latestVersion: '2')),
+        (_) async => response(UserTermsResponse(acceptedVersion: '1', currentVersion: '2')),
       );
 
       expect(
@@ -47,7 +47,7 @@ void main() {
     test('maps a user who has never accepted a version', () async {
       when(
         terms.userTerms(),
-      ).thenAnswer((_) async => response(UserTermsResponse(latestVersion: '2')));
+      ).thenAnswer((_) async => response(UserTermsResponse(currentVersion: '2')));
 
       final consent = await build().getConsent();
       expect(consent.acceptedVersion, isNull);
@@ -56,7 +56,7 @@ void main() {
 
     test('does not require acceptance when the versions match', () async {
       when(terms.userTerms()).thenAnswer(
-        (_) async => response(UserTermsResponse(acceptedVersion: '2', latestVersion: '2')),
+        (_) async => response(UserTermsResponse(acceptedVersion: '2', currentVersion: '2')),
       );
 
       expect((await build().getConsent()).requiresAcceptance, isFalse);

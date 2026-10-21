@@ -927,6 +927,7 @@ void main() {
             config: 'cfg',
             exitIp: '2.2.2.2',
             hash: 'hash',
+            sessionId: 'sess-initial',
             country: country,
             city: city,
             ipType: ipType ?? IPType.datacenter.key,
@@ -1328,17 +1329,28 @@ void main() {
 
         tearDown(() async => updates.close());
 
-        String payload({required String ip, required String country, required String city}) =>
-            json.encode({
-              'location': {'ip': ip, 'country': country, 'city': city, 'node_type': 'hosting'},
-            });
+        String payload({
+          required String ip,
+          required String country,
+          required String city,
+          String? sessionId,
+        }) => json.encode({
+          'location': {
+            'ip': ip,
+            'country': country,
+            'city': city,
+            'node_type': 'hosting',
+            'session_id': ?sessionId,
+          },
+        });
 
         Future<void> publish({
           required String ip,
           String from = 'US',
           String fromCity = 'texas',
+          String? sessionId,
         }) async {
-          updates.add(payload(ip: ip, country: from, city: fromCity));
+          updates.add(payload(ip: ip, country: from, city: fromCity, sessionId: sessionId));
           await pumpEventQueue();
         }
 
@@ -1360,6 +1372,35 @@ void main() {
           await publish(ip: '2.2.2.2');
 
           verifyNever(mockAnalytics.logEvent(AnalyticsEvent.ipChanged));
+        });
+
+        test('the connection is seeded with the session id from the config', () {
+          expect(vpnStore.vpnConnection?.sessionId, 'sess-initial');
+        });
+
+        test('a renewal carrying a session id applies it', () async {
+          await publish(ip: '3.3.3.3', sessionId: 'sess-renewed');
+
+          expect(vpnStore.vpnConnection?.sessionId, 'sess-renewed');
+        });
+
+        test('a renewal drops the hash rather than blaming the old provider', () async {
+          // The payload carries no hash, and the renewal may have moved us to
+          // another node, so the previous one must not be reported.
+          expect(vpnStore.vpnConnection?.hash, 'hash');
+
+          await publishEcho();
+          await publish(ip: '3.3.3.3');
+
+          expect(vpnStore.vpnConnection?.hash, isNull);
+        });
+
+        test('a renewal omitting the session id keeps the one already held', () async {
+          await publishEcho();
+          await publish(ip: '3.3.3.3');
+
+          expect(vpnStore.vpnConnection?.sessionId, 'sess-initial');
+          expect(vpnStore.vpnConnection?.connectionIP, '3.3.3.3');
         });
 
         test('the first update may refine the location without logging', () async {

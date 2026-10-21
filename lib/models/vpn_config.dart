@@ -10,6 +10,7 @@ abstract class VpnConfig with _$VpnConfig {
     required String config, // either wgConfig or ovpnConfig
     required String hash,
     String? exitIp,
+    String? sessionId,
     bool? limitExceeded,
     String? ipType,
     String? country,
@@ -23,6 +24,7 @@ abstract class VpnConfig with _$VpnConfig {
     config: wg.wgConfig,
     hash: wg.hash,
     exitIp: wg.exitIp,
+    sessionId: wg.sessionId,
     limitExceeded: wg.limitExceeded,
     ipType: wg.ipType,
     country: wg.country,
@@ -36,6 +38,7 @@ abstract class VpnConfig with _$VpnConfig {
     config: ovpn.ovpnConfig,
     hash: ovpn.hash,
     exitIp: ovpn.exitIp,
+    sessionId: ovpn.sessionId,
     limitExceeded: ovpn.limitExceeded,
     ipType: ovpn.ipType,
     country: ovpn.country,

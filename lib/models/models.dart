@@ -24,6 +24,7 @@ export 'subscription_plan_features.dart';
 export 'terms_conditions.dart';
 export 'token_request.dart';
 export 'token_response.dart';
+export 'tunnel_health_config.dart';
 export 'tunnel_stats.dart';
 export 'user_data.dart';
 export 'user_intent.dart';

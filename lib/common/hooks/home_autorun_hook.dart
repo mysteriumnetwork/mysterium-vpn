@@ -29,6 +29,10 @@ void useHomeAutorun() {
   final udpBlockedSuggestionStore = useProvider<UdpBlockedSuggestionStore>(
     udpBlockedSuggestionStorePOD,
   );
+  final tunnelHealthStore = useProvider<TunnelHealthStore>(tunnelHealthStorePOD);
+  final analyticsStore = useProvider<AnalyticsStore>(analyticsStorePOD);
+  final connectionDisplayStore = useProvider<ConnectionDisplayStore>(connectionDisplayStorePOD);
+  final selectedLocationStore = useProvider<SelectedLocationStore>(selectedLocationStorePOD);
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
@@ -171,6 +175,37 @@ void useHomeAutorun() {
             }
             return null;
           });
+        }),
+        // Tunnel found degraded on resume. A reaction on a counter for the same
+        // reason as the UDP one above.
+        reaction((_) => tunnelHealthStore.degradationEpoch, (int _) {
+          controller.add(() async {
+            if (!context.mounted) {
+              return null;
+            }
+            tunnelHealthStore.onDialogShown();
+            final refresh = await showTunnelDegradedDialog(
+              context,
+              canRefresh: tunnelHealthStore.canRefreshIp,
+            );
+            tunnelHealthStore.onAction(refreshed: refresh);
+            if (!refresh) {
+              return null;
+            }
+            try {
+              analyticsStore.logRefreshIP(connectionDisplayStore.connectionIP);
+              selectedLocationStore.value = null;
+              await vpnStore.manageConnection(refreshIP: true);
+            } catch (e) {
+              showSnackbar(S.current.somethingWentWrong);
+            }
+            return null;
+          });
+        }),
+        // Ungated: the store's confirm step already filters blips, and there is
+        // no action to offer for a flat connection.
+        reaction((_) => tunnelHealthStore.noNetworkEpoch, (int _) {
+          showSnackbar(S.current.tunnelNoNetwork);
         }),
         autorun((_) {
           if (!reviewPromptStore.pendingPrompt) {

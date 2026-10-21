@@ -923,7 +923,12 @@ abstract class _VpnStore extends VpnGuard with Store {
   }) async {
     await _recentLocationsStore.add(location);
     _connectionSession++;
-    _vpnConnection = VpnConnection(connectionIP: '', location: location);
+    _vpnConnection = VpnConnection(
+      connectionIP: '',
+      location: location,
+      sessionId: _vpnConfig?.sessionId,
+      hash: hash,
+    );
     await checkLocation();
   }
 
@@ -1053,6 +1058,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     _vpnConnection = current.copyWith(
       connectionIP: payload.ip,
       location: resolved ?? current.location,
+      // Optional in the payload; keep the id we already hold.
+      sessionId: payload.sessionId ?? current.sessionId,
+      // A renewal carries no hash, and it may have moved us to another
+      // provider. Reporting the old one would blame the wrong node, so drop it.
+      hash: null,
     );
 
     if (!isFirstUpdate && payload.ip != current.connectionIP) {

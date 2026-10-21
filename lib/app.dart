@@ -184,9 +184,12 @@ class MyApp extends HookConsumerWidget {
     // NewsCenterRefreshStore is the News Center lifecycle observer; reading it
     // here starts auto-refreshing the feed after the app is backgrounded past
     // the configured interval.
+    // TunnelHealthStore watches vpnStorePOD, so the dispose above invalidated
+    // it; re-read to register a fresh lifecycle observer for the next session.
     ref
       ..read(smartRefreshStorePOD)
-      ..read(newsCenterRefreshStorePOD);
+      ..read(newsCenterRefreshStorePOD)
+      ..read(tunnelHealthStorePOD);
 
     // NotifierRegistrationStore watches subscriptionStorePOD for its attribute
     // sync, so it is invalidated above too. Re-reading it rebuilds the instance

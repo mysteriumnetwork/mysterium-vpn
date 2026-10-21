@@ -29,6 +29,7 @@ enum StorageKeys {
   reviewSuccessfulConnections,
   reviewRecentSessionOutcomes,
   reviewCooldownUntil,
+  tunnelHealthPendingReports,
   reviewPromptShownTimestamps,
   reviewNativeReviewOpenedAt,
   newsCenterReadIds,
