@@ -14,5 +14,4 @@ export 'locations_refresh_button.dart';
 export 'locations_search.dart';
 export 'locations_sliver_list.dart';
 export 'locations_sliver_loading.dart';
-export 'locations_tappable_search.dart';
 export 'recent_locations_loading.dart';

@@ -21,20 +21,14 @@ class SubscriptionPrivacyAndTerms extends StatelessWidget {
       openUrlLink(Uri.parse(termsOfServiceUrl), source: RedirectSource.termsOfService);
     }
 
-    return Text.rich(
-      TextSpan(
-        children: [
-          LinkSpan(text: S.current.privacyPolicy, onTap: handleShowPrivacyPolicy, style: style),
-          TextSpan(text: S.current.and),
-          LinkSpan(
-            text: S.current.termsAndConditions,
-            onTap: handleShowTermsAndConditions,
-            style: style,
-          ),
-        ],
-      ),
-      textAlign: TextAlign.center,
+    return LinkText(
       style: style,
+      textAlign: TextAlign.center,
+      builder: (link) => [
+        link(S.current.privacyPolicy, handleShowPrivacyPolicy),
+        TextSpan(text: S.current.and),
+        link(S.current.termsAndConditions, handleShowTermsAndConditions),
+      ],
     );
   }
 }

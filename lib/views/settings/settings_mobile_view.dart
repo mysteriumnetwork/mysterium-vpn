@@ -46,28 +46,19 @@ class _SettingsMainList extends HookConsumerWidget {
     final analyticsStore = ref.read(analyticsStorePOD);
     final theme = Theme.of(context);
 
-    Widget categoryCard(SettingCategory category, SettingsCardPosition position) {
-      void onTap() => tabsStore.openSettingsSubPage(category);
-      return GestureDetector(
-        key: switch (category) {
-          SettingCategory.account => K.settingsAccountCategory,
-          SettingCategory.connection => K.settingsConnectionCategory,
-          SettingCategory.preferences => K.settingsPreferencesCategory,
-          _ => null,
-        },
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: SettingsCard(
-          position: position,
-          icon: Icon(category.icon, size: 20),
-          title: category.label,
-          trailing: IconButton(
-            onPressed: onTap,
-            icon: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
-          ),
-        ),
-      );
-    }
+    Widget categoryCard(SettingCategory category, SettingsCardPosition position) => SettingsCard(
+      key: switch (category) {
+        SettingCategory.account => K.settingsAccountCategory,
+        SettingCategory.connection => K.settingsConnectionCategory,
+        SettingCategory.preferences => K.settingsPreferencesCategory,
+        _ => null,
+      },
+      position: position,
+      onTap: () => tabsStore.openSettingsSubPage(category),
+      icon: Icon(category.icon, size: 20),
+      title: category.label,
+      trailing: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,23 +75,16 @@ class _SettingsMainList extends HookConsumerWidget {
                     category,
                     index == 0 ? SettingsCardPosition.top : SettingsCardPosition.middle,
                   ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
+                SettingsCard(
+                  icon: const Icon(UntitledUI.message_question_square, size: 20),
+                  title: S.current.helpSupportLbl,
+                  position: SettingsCardPosition.bottom,
                   onTap: () =>
                       handleOnSupportPage(context: context, analyticsStore: analyticsStore),
-                  child: SettingsCard(
-                    icon: const Icon(UntitledUI.message_question_square, size: 20),
-                    title: S.current.helpSupportLbl,
-                    position: SettingsCardPosition.bottom,
-                    trailing: IconButton(
-                      onPressed: () =>
-                          handleOnSupportPage(context: context, analyticsStore: analyticsStore),
-                      icon: Icon(
-                        UntitledUI.link_external_02,
-                        size: 24,
-                        color: theme.palette.iconTertiary,
-                      ),
-                    ),
+                  trailing: Icon(
+                    UntitledUI.link_external_02,
+                    size: 24,
+                    color: theme.palette.iconTertiary,
                   ),
                 ),
                 if (enableQaHelpers)
