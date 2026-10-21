@@ -42,7 +42,6 @@ class SettingsPickerCard<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
-    final theme = Theme.of(context);
 
     if (isDesktop) {
       return SettingsCard(
@@ -86,20 +85,14 @@ class SettingsPickerCard<T> extends StatelessWidget {
 
     final tap = enabled && !isLoading ? onTap : null;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
+    return SettingsCard(
+      title: title,
+      subtitle: labelOf(value),
+      position: position,
       onTap: tap,
-      child: SettingsCard(
-        title: title,
-        subtitle: labelOf(value),
-        position: position,
-        trailing: isLoading
-            ? const LoadingIndicator()
-            : IconButton(
-                icon: Icon(UntitledUI.chevron_right, size: 24, color: theme.palette.iconTertiary),
-                onPressed: tap,
-              ),
-      ),
+      trailing: isLoading
+          ? const LoadingIndicator()
+          : Icon(UntitledUI.chevron_right, size: 24, color: Theme.of(context).palette.iconTertiary),
     );
   }
 }

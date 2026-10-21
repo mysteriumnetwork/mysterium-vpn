@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/components/components.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
-import 'package:mysterium_vpn/views/locations/components/locations_tappable_search.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -30,7 +30,9 @@ class HomeMapTab extends HookConsumerWidget {
               globalKey: homeState
                   .subscriptionOnboardingKeys[SubscriptionOnboardingStep.search.platformIndex],
               tooltipPosition: TooltipPosition.bottom,
-              child: LocationsTappableSearch(
+              // Hands off to the Locations tab with the real field focused.
+              child: SearchField(
+                placeholder: S.current.searchForLocations,
                 enabled: !locationsStore.hasNoServers,
                 onTap: () => ref.read(homeTabsStorePOD).openLocationsSearch(),
               ),

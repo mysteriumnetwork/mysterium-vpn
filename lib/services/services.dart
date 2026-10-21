@@ -19,5 +19,7 @@ export 'location/locations_service.dart';
 export 'location/ping.dart';
 export 'mqtt/mqtt_experiment_flag.dart';
 export 'mqtt/mqtt_service.dart';
+export 'notifier/notifier_service.dart';
+export 'notifier/rest_notifier_service.dart';
 export 'performance/performance_monitor.dart';
 export 'residential_education_storage.dart';

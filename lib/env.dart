@@ -30,7 +30,11 @@ abstract class Env {
   static const bool isAutomated = bool.fromEnvironment('IS_AUTOMATED');
   static const String manageDevicesPage = String.fromEnvironment('MANAGE_DEVICES_PAGE');
   static const String appCustomSchemeUrl = String.fromEnvironment('APP_CUSTOM_SCHEME_URL');
-  static const String oneSignalAppId = String.fromEnvironment('ONE_SIGNAL_APP_ID');
+  static const String notifierBaseUrl = String.fromEnvironment('NOTIFIER_BASE_URL');
+
+  /// Static public API key for the Notifier SDK surface. Deliberately absent
+  /// from [stringify] and [asMap] so it never reaches logs or analytics.
+  static const String notifierPublicApiKey = String.fromEnvironment('NOTIFIER_PUBLIC_API_KEY');
   static const String localizelySdkToken = String.fromEnvironment('LOCALIZELY_SDK_TOKEN');
   static const String localizelyDistributionId = String.fromEnvironment(
     'LOCALIZELY_DISTRIBUTION_ID',
@@ -47,6 +51,10 @@ abstract class Env {
   static late String _deviceName;
   static late String _deviceModel;
   static late String _deviceManufacturer;
+
+  /// Both defines are required before any Notifier request is attempted.
+  static bool get notifierConfigured =>
+      notifierBaseUrl.isNotEmpty && notifierPublicApiKey.isNotEmpty;
 
   static PackageInfo get packageInfo => _packageInfo;
 
@@ -114,7 +122,7 @@ abstract class Env {
   }
 
   static String stringify() =>
-      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, cancelSubscriptionPage: $cancelSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}, oneSignalAppId: $oneSignalAppId, localizelyDistributionId: $localizelyDistributionId';
+      'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, cancelSubscriptionPage: $cancelSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}, notifierBaseUrl: $notifierBaseUrl, localizelyDistributionId: $localizelyDistributionId';
 
   static String _getBundleId() {
     if (Platform.isIOS || Platform.isMacOS) {
@@ -149,7 +157,7 @@ abstract class Env {
     'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
     'MANAGE_DEVICES_PAGE': manageDevicesPage,
     'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
-    'ONE_SIGNAL_APP_ID': oneSignalAppId,
+    'NOTIFIER_BASE_URL': notifierBaseUrl,
     'LOCALIZELY_SDK_TOKEN': localizelySdkToken,
     'LOCALIZELY_DISTRIBUTION_ID': localizelyDistributionId,
   };

@@ -9,7 +9,6 @@ FIREBASE_PROJECT_ID = new-mysterium-vpn
 # Non-obvious constraints, each invisible until it breaks:
 # - OVpnExtension links SystemConfiguration (+UIKit on iOS) explicitly, because
 #   OpenVPNAdapter's Package.swift declares no system frameworks like its podspec did.
-# - the OneSignal-XCFramework pin must equal onesignal_flutter's Package.swift pin.
 # - macOS Runner configs pass patrol's PatrolImpl modulemap via OTHER_SWIFT_FLAGS
 #   (https://github.com/leancodepl/patrol/issues/3177), and Runner targets set
 #   ENABLE_TESTING_SEARCH_PATHS=YES since SPM can't inject XCTest search paths.

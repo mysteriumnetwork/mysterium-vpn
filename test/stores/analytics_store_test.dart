@@ -519,7 +519,7 @@ void main() {
       await store.logPushNotificationsPermissionsChanged(permissionsGranted: true);
 
       final log = await logFuture;
-      expect(log.message, AnalyticsEvent.pushNotificationsPermissionsGranted.formattedName);
+      expect(log.message, AnalyticsEvent.pushPermissionGranted.formattedName);
       expect(log.params, {'permission': 'true'});
 
       final prop = await propFuture;
@@ -533,7 +533,7 @@ void main() {
       await store.logPushNotificationsPermissionsChanged(permissionsGranted: false);
 
       final log = await logFuture;
-      expect(log.message, AnalyticsEvent.pushNotificationsPermissionsDenied.formattedName);
+      expect(log.message, AnalyticsEvent.pushPermissionDenied.formattedName);
       expect((await propFuture).value, 'false');
     });
   });

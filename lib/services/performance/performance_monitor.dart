@@ -23,7 +23,6 @@ class PerformanceMonitor with WidgetsBindingObserver {
 
   Future<void> recordDeferredInit({
     required int firebaseInitMs,
-    required int oneSignalInitMs,
     required int totalMs,
     Map<String, String> attributes = const {},
   }) async {
@@ -33,7 +32,6 @@ class PerformanceMonitor with WidgetsBindingObserver {
       await trace.start();
       trace
         ..setMetric('firebase_init_ms', firebaseInitMs)
-        ..setMetric('onesignal_init_ms', oneSignalInitMs)
         ..setMetric('total_ms', totalMs);
       await trace.stop();
     } catch (_) {

@@ -45,7 +45,7 @@ Localizely management commands need a **management** API token via `LOCALIZELY_A
 
 ## Flavors & environment
 
-Two build flavors, `dev` and `production`, selected at compile time via `--dart-define ENV_APP=<flavor>` and fed config from `--dart-define-from-file .env.<flavor>`. `Env` (`lib/env.dart`) reads all runtime config (base URLs, Sentry DSN, ConfigCat SDK keys, OneSignal app id, Apple client id, etc.). `Env.flavor` drives Firebase options, desktop window sizing, and test-vs-prod bundle ids.
+Two build flavors, `dev` and `production`, selected at compile time via `--dart-define ENV_APP=<flavor>` and fed config from `--dart-define-from-file .env.<flavor>`. `Env` (`lib/env.dart`) reads all runtime config (base URLs, Sentry DSN, ConfigCat SDK keys, Notifier base URL + public API key, Apple client id, etc.). `Env.flavor` drives Firebase options, desktop window sizing, and test-vs-prod bundle ids.
 
 ## Architecture
 
@@ -61,7 +61,7 @@ Stores stay translation-free: they emit typed errors/state, and the **view layer
 
 **Networking:** a single Dio instance (`vpnApiDioPOD`) wires a fixed interceptor chain — connection-error handling, bearer-token injection, `RefreshTokenInterceptor`, retry, dev/debug logging, then API-error mapping. The backend client is the external `vpn_api` git package.
 
-**Startup:** `main.dart` → `Env.init()` → Sentry → `AppInitializer` (`lib/entrypoints/app_initializer.dart`). `AppInitializer` owns the Riverpod `ProviderContainer`, initializes local storage/prefs/secure-storage/Hive + preloads localizations before the first frame, then runs Firebase + OneSignal + OTA translations as **deferred** init past the first frame (the splash awaits `deferredInitFuturePOD`).
+**Startup:** `main.dart` → `Env.init()` → Sentry → `AppInitializer` (`lib/entrypoints/app_initializer.dart`). `AppInitializer` owns the Riverpod `ProviderContainer`, initializes local storage/prefs/secure-storage/Hive + preloads localizations before the first frame, then runs Firebase + OTA translations as **deferred** init past the first frame (the splash awaits `deferredInitFuturePOD`).
 
 **Routing:** Beamer. Routes are enumerated in `lib/common/enums/routes.dart`; the delegate/parser live in `lib/common/router/`. Auth status changes trigger `routeDelegate.update()`.
 

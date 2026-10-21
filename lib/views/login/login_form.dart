@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -314,70 +313,34 @@ class _EmailField extends StatelessWidget {
   }
 }
 
-class _Disclaimer extends StatefulWidget {
+class _Disclaimer extends StatelessWidget {
   const _Disclaimer({required this.analyticsStore});
 
   final AnalyticsStore analyticsStore;
 
   @override
-  State<_Disclaimer> createState() => _DisclaimerState();
-}
-
-class _DisclaimerState extends State<_Disclaimer> {
-  late final TapGestureRecognizer _termsRecognizer;
-  late final TapGestureRecognizer _privacyRecognizer;
-
-  @override
-  void initState() {
-    super.initState();
-    _termsRecognizer = TapGestureRecognizer()
-      ..onTap = () {
-        openUrlLink(Uri.parse(termsOfServiceUrl), source: RedirectSource.termsOfService);
-        widget.analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
-      };
-    _privacyRecognizer = TapGestureRecognizer()
-      ..onTap = () {
-        openUrlLink(Uri.parse(privacyPolicyUrl), source: RedirectSource.privacyPolicy);
-        widget.analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
-      };
-  }
-
-  @override
-  void dispose() {
-    _termsRecognizer.dispose();
-    _privacyRecognizer.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final palette = theme.palette;
-    final textStyles = theme.textStyles;
-    final baseStyle = textStyles.textXs.regular.copyWith(color: palette.textTertiary);
-    final linkStyle = baseStyle.copyWith(decoration: TextDecoration.underline);
 
-    return RichText(
-      text: TextSpan(
-        style: baseStyle,
-        children: [
-          TextSpan(text: '${S.current.signInDisclaimer} '),
-          TextSpan(
-            text: S.current.termsAndConditions,
-            style: linkStyle,
-            mouseCursor: WidgetStateMouseCursor.clickable,
-            recognizer: _termsRecognizer,
-          ),
-          TextSpan(text: ' ${S.current.and} '),
-          TextSpan(
-            text: S.current.privacyPolicy,
-            style: linkStyle,
-            mouseCursor: WidgetStateMouseCursor.clickable,
-            recognizer: _privacyRecognizer,
-          ),
-          const TextSpan(text: '.'),
-        ],
-      ),
+    void openTerms() {
+      openUrlLink(Uri.parse(termsOfServiceUrl), source: RedirectSource.termsOfService);
+      analyticsStore.logEvent(AnalyticsEvent.tcsClickLoginScreen);
+    }
+
+    void openPrivacy() {
+      openUrlLink(Uri.parse(privacyPolicyUrl), source: RedirectSource.privacyPolicy);
+      analyticsStore.logEvent(AnalyticsEvent.ppClickLoginScreen);
+    }
+
+    return LinkText(
+      style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
+      builder: (link) => [
+        TextSpan(text: '${S.current.signInDisclaimer} '),
+        link(S.current.termsAndConditions, openTerms),
+        TextSpan(text: ' ${S.current.and} '),
+        link(S.current.privacyPolicy, openPrivacy),
+        const TextSpan(text: '.'),
+      ],
     );
   }
 }
