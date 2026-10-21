@@ -62,7 +62,6 @@ abstract class _SmartRefreshStore
   @override
   void onReturnedToForeground(Duration backgroundedFor) => _onResume();
 
-
   @override
   Future<void> dispose() async {
     WidgetsBinding.instance.removeObserver(this);

@@ -71,7 +71,16 @@ mixin _$TunnelHealthStore on _TunnelHealthStore, Store {
   }
 
   @override
-  void _onDegraded(_Evaluation evaluation) {
+  void _onDegraded(
+    ({
+      DateTime? handshake,
+      int? rxDelta,
+      TunnelHealthSample sample,
+      int? txDelta,
+      TunnelHealthVerdict verdict,
+    })
+    evaluation,
+  ) {
     final _$actionInfo = _$_TunnelHealthStoreActionController.startAction(
       name: '_TunnelHealthStore._onDegraded',
     );

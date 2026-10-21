@@ -55,8 +55,7 @@ void main() {
   Future<TunnelHealthSample> anyProbe() =>
       probe.probe(exitIp: anyNamed('exitIp'), controlIp: anyNamed('controlIp'));
 
-  void stubProbe(TunnelHealthSample sample) =>
-      when(anyProbe()).thenAnswer((_) async => sample);
+  void stubProbe(TunnelHealthSample sample) => when(anyProbe()).thenAnswer((_) async => sample);
 
   Future<void> anyReport() => reporter.report(
     sessionId: anyNamed('sessionId'),
@@ -164,9 +163,7 @@ void main() {
       final store = build();
       await resumeAfter(store, const Duration(minutes: 10));
 
-      verify(
-        anyProbe(),
-      ).called(greaterThanOrEqualTo(1));
+      verify(anyProbe()).called(greaterThanOrEqualTo(1));
     });
 
     test('does not probe on a resume that was not preceded by a pause', () async {
@@ -231,9 +228,7 @@ void main() {
 
     test('a degraded verdict that does not reconfirm stays silent', () async {
       var call = 0;
-      when(
-        anyProbe(),
-      ).thenAnswer((_) async => call++ == 0 ? degraded : healthy);
+      when(anyProbe()).thenAnswer((_) async => call++ == 0 ? degraded : healthy);
       final store = build();
       await resumeAfter(store, const Duration(minutes: 10));
 
@@ -242,9 +237,7 @@ void main() {
     });
 
     test('disconnecting during the confirm delay aborts', () async {
-      when(anyProbe()).thenAnswer((
-        _,
-      ) async {
+      when(anyProbe()).thenAnswer((_) async {
         when(vpnStore.isConnected).thenReturn(false);
         return degraded;
       });
