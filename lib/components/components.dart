@@ -27,7 +27,6 @@ export 'retry_widget.dart';
 export 'shortcuts.dart';
 export 'social_login_button.dart';
 export 'spans/character_span.dart';
-export 'spans/link_span.dart';
 export 'svg_icon.dart';
 export 'unauthenticated_header.dart';
 export 'user_intent_picker.dart';
