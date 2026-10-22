@@ -592,9 +592,9 @@ PushNotification? mapRemoteMessage(
       id: message.messageId,
       title: notification?.title ?? _string(data['title']),
       body: notification?.body ?? _string(data['body']),
-      // Notifier sends `deepLink`; `redirect_url` is the OneSignal-era key,
-      // kept so campaigns authored before the migration still route.
-      launchUrl: _string(data['deepLink']) ?? _string(data['redirect_url']),
+      // Notifier sends `deepLink`; `redirect_url` and `url` are OneSignal-era
+      // keys, kept so campaigns authored before the migration still route.
+      launchUrl: _string(data['deepLink']) ?? _string(data['redirect_url']) ?? _string(data['url']),
       additionalData: data,
       rawPayload: {
         'messageId': message.messageId,
