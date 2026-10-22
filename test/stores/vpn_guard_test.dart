@@ -45,6 +45,39 @@ void main() {
     completer.complete(Subscription.empty());
   });
 
+  test('does not wait on a refresh when entitlement is already loaded', () async {
+    // The resume refresh case. ObservableFuture.replace carries the previous
+    // status forward, so an in-flight refresh still reads as fulfilled — the
+    // pending guard never fires and the guard would otherwise await the whole
+    // request. On a degraded tunnel that is slow or failing, which is exactly
+    // when the user presses Refresh IP.
+    final inFlight = Completer<Subscription>();
+    when(subscription.subscriptionFuture).thenAnswer(
+      (_) => ObservableFuture.value(
+        Subscription(active: true, expired: false, recurring: true),
+      ).replace(inFlight.future),
+    );
+
+    await newGuard().checkVpnGuards().timeout(
+      const Duration(seconds: 1),
+      onTimeout: () => fail('checkVpnGuards blocked on the in-flight refresh'),
+    );
+
+    inFlight.complete(Subscription.empty());
+  });
+
+  test('still refuses when the loaded entitlement does not grant access', () async {
+    final inFlight = Completer<Subscription>();
+    when(subscription.subscriptionFuture).thenAnswer(
+      (_) => ObservableFuture.value(Subscription.empty()).replace(inFlight.future),
+    );
+
+    final guarded = newGuard().checkVpnGuards();
+    inFlight.complete(Subscription.empty());
+
+    await expectLater(guarded, throwsA(isA<SubscriptionRequiredException>()));
+  });
+
   test('throws SubscriptionRequiredException when subscription is inactive', () async {
     when(
       subscription.subscriptionFuture,

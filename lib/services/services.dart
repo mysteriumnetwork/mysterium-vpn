@@ -19,6 +19,7 @@ export 'location/locations_service.dart';
 export 'location/ping.dart';
 export 'mqtt/mqtt_experiment_flag.dart';
 export 'mqtt/mqtt_service.dart';
+export 'network_health/test_traffic_service.dart';
 export 'network_health/tunnel_health_classifier.dart';
 export 'network_health/tunnel_health_probe.dart';
 export 'network_health/tunnel_health_report_queue.dart';

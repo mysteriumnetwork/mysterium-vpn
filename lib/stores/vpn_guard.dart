@@ -28,6 +28,17 @@ abstract class VpnGuard {
     if (!_session.isAuthenticated) {
       throw AuthenticationRequiredException();
     }
+    // A loaded entitlement is enough; never wait on a refresh to confirm it.
+    // ObservableFuture.replace carries the previous status forward, so a
+    // refresh in flight still reads as fulfilled and would be awaited here —
+    // blocking the connect for the whole request. On a degraded tunnel that
+    // request is slow or failing, which is exactly when the user is pressing
+    // Refresh IP to fix it.
+    final loaded = _subscription.subscriptionFuture.value;
+    if (loaded != null && loaded.grantsVpnAccess) {
+      return;
+    }
+
     if (_subscription.subscriptionFuture.status == FutureStatus.pending) {
       return;
     }

@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -43,6 +44,10 @@ class QAToolbox extends HookConsumerWidget {
           children: [
             _buildConnectionLimitAction(context, ref),
             _buildTunnelStatusAction(context, ref),
+            _buildDropTrafficAction(context, ref),
+            _buildDelayTrafficAction(context, ref),
+            _buildProviderDisappearanceAction(context, ref),
+            _buildTunnelHealthCheckAction(context, ref),
             _buildFetchConfigAction(context, ref),
             _buildInvalidLocationsAction(context, ref),
             if (Platform.isWindows) _buildOpenVPNLogsAction(context),
@@ -289,6 +294,89 @@ class QAToolbox extends HookConsumerWidget {
         onPressed: () async {
           final status = await ref.read(vpnStorePOD).checkTunnelStatus();
           showSnackbar('Tunnel status: $status');
+        },
+      ),
+    ],
+  );
+
+  /// Kills all tunnel traffic for the chosen window. DNS dies with it, so both
+  /// probes fail and the TCP control is what proves the node is at fault.
+  ///
+  /// While dropped the whole app is offline — Reset cannot get through either,
+  /// so the duration has to run out. It clears itself server-side regardless.
+  Widget _buildDropTrafficAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.network_locked,
+    title: 'Drop tunnel traffic (testnet)',
+    subtitle:
+        'Expect: degraded, with controlReachable=true. The app is offline for the whole window, '
+        'so pick a duration you are willing to wait out.',
+    actions: [
+      for (final seconds in kTestTrafficDurations)
+        _TestTrafficButton(
+          label: _durationLabel(seconds),
+          action: 'Drop ${_durationLabel(seconds)}',
+          run: (service) => service.drop(durationSeconds: seconds),
+        ),
+      const _TestTrafficResetButton(),
+    ],
+  );
+
+  /// Adds per-packet latency in each direction, clearing itself after a minute.
+  /// The tunnel stays usable, so Reset works during this one.
+  Widget _buildDelayTrafficAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.slow_motion_video,
+    title: 'Slow the tunnel (testnet)',
+    subtitle:
+        'Expect: healthy at 150ms (under the floor) and degraded from 400ms up. That pair is what '
+        'exercises the floor/ratio comparison rather than the dead-tunnel path. Above ~1000ms the '
+        'probe leg times out and you are back to the dead-tunnel branch.',
+    actions: [
+      for (final ms in kTestTrafficDelaysMs)
+        _TestTrafficButton(
+          label: '${ms}ms',
+          action: 'Delay ${ms}ms',
+          run: (service) => service.delay(delayMs: ms, durationSeconds: 60),
+        ),
+      const _TestTrafficResetButton(),
+    ],
+  );
+
+  static String _durationLabel(int seconds) => seconds >= 60 ? '${seconds ~/ 60}m' : '${seconds}s';
+
+  Widget _buildProviderDisappearanceAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.swap_horiz,
+    title: 'Swap the provider (testnet)',
+    subtitle:
+        'Tears down the upstream session. The tunnel is NOT dropped — the backend replaces the '
+        'provider and keeps the connection alive, so expect a new exit IP and session_id over MQTT '
+        'rather than an outage. It only really drops when nothing can replace it, which is rare. '
+        'The new session_id re-arms the once-per-session dialog gate, so use this to see the '
+        'degraded dialog again on a tunnel that has already shown it. Not a toggle: each press '
+        'swaps again.',
+    actions: [
+      _TestTrafficButton(
+        label: 'Drop provider',
+        action: 'Provider swap',
+        run: (service) => service.disconnectProvider(),
+      ),
+    ],
+  );
+
+  Widget _buildTunnelHealthCheckAction(BuildContext context, WidgetRef ref) => _QAActionItem(
+    icon: Icons.health_and_safety_outlined,
+    title: 'Run tunnel health check',
+    subtitle:
+        'Simulates a resume so the check runs now instead of after the background interval. '
+        'Needs the tunnelHealthConfig flag enabled in ConfigCat.',
+    actions: [
+      _QAActionButton(
+        label: 'Check now',
+        onPressed: () {
+          // The production resume entry point, handed a gap long enough to pass
+          // the interval gate. Keeps every other gate — including the
+          // minBackgroundSeconds <= 0 kill switch — exactly as shipped.
+          ref.read(tunnelHealthStorePOD).onReturnedToForeground(const Duration(hours: 1));
+          showSnackbar('Health check triggered - watch the logs for the verdict');
         },
       ),
     ],
@@ -890,13 +978,17 @@ class _ResidentialTooltipQAButton extends HookWidget {
 
 /// Shared visual chrome for QA action buttons.
 class _QAButtonChrome extends StatelessWidget {
-  const _QAButtonChrome({required this.label, required this.onTap, super.key});
+  const _QAButtonChrome({required this.label, required this.onTap, this.busy = false, super.key});
   final String label;
   final VoidCallback onTap;
 
+  /// Swaps the label for a spinner and refuses taps. Sized to the label so the
+  /// button does not resize mid-action and shift the row under the cursor.
+  final bool busy;
+
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
+    onTap: busy ? null : onTap,
     borderRadius: BorderRadius.circular(6),
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -905,10 +997,85 @@ class _QAButtonChrome extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: Palette.brand),
       ),
-      child: Text(
-        label,
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Palette.white),
+      child: Opacity(
+        opacity: busy ? 0.6 : 1,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Opacity(
+              opacity: busy ? 0 : 1,
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Palette.white,
+                ),
+              ),
+            ),
+            if (busy)
+              const SizedBox(
+                width: 12,
+                height: 12,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Palette.white),
+              ),
+          ],
+        ),
       ),
     ),
   );
+}
+
+/// Reset appears under both condition groups; one widget so they cannot drift.
+class _TestTrafficResetButton extends StatelessWidget {
+  const _TestTrafficResetButton();
+
+  @override
+  Widget build(BuildContext context) =>
+      _TestTrafficButton(label: 'Reset', action: 'Reset', run: (service) => service.reset());
+}
+
+/// A test-traffic action that owns its own in-flight state, so the spinner
+/// lands on the button the tester pressed rather than on the whole group.
+class _TestTrafficButton extends HookConsumerWidget {
+  const _TestTrafficButton({required this.label, required this.action, required this.run});
+
+  final String label;
+
+  /// Names the action in the snackbar, e.g. "Drop 60s".
+  final String action;
+
+  final Future<TestTrafficOutcome> Function(TestTrafficService service) run;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final busy = useState(false);
+
+    return _QAButtonChrome(
+      label: label,
+      busy: busy.value,
+      onTap: () async {
+        busy.value = true;
+        try {
+          final outcome = await run(ref.read(testTrafficServicePOD));
+          // An action that kills the tunnel kills its own answer with it. That
+          // is what a working drop looks like from here, not a failure.
+          showSnackbar(
+            outcome == TestTrafficOutcome.unconfirmed
+                ? '$action applied. No reply - the tunnel is down, which is the point.'
+                : '$action done.',
+            type: SnackbarType.success,
+          );
+        } catch (e) {
+          showSnackbar(describeTestTrafficError(e));
+        } finally {
+          // The sheet can be closed mid-request; writing to a disposed
+          // ValueNotifier throws.
+          if (context.mounted) {
+            busy.value = false;
+          }
+        }
+      },
+    );
+  }
 }

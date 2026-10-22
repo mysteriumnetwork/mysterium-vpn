@@ -203,6 +203,12 @@ final tunnelHealthProbePOD = Provider<TunnelHealthProbe>((ref) {
   return HttpTunnelHealthProbe(dio, ref.watch(loggerPOD), timeout: timeout);
 });
 
+/// Dev-only QA tooling. Harmless in production: the endpoints are not mounted
+/// there, so every call returns 404.
+final testTrafficServicePOD = Provider<TestTrafficService>(
+  (ref) => TestTrafficService(ref.watch(vpnApiPOD).getConnection()),
+);
+
 final tunnelHealthReporterPOD = Provider<TunnelHealthReporter>(
   (ref) => RestTunnelHealthReporter(
     api: ref.watch(vpnApiPOD).getConnection(),
