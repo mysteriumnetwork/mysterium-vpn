@@ -145,13 +145,46 @@ void main() {
       expect(result?.launchUrl, '/main/settings');
     });
 
-    test('prefers deepLink when both keys are present', () {
+    test('accepts the url key when deepLink and redirect_url are absent', () {
       final result = mapRemoteMessage(
-        const RemoteMessage(messageId: 'msg-1', data: {'deepLink': '/a', 'redirect_url': '/b'}),
+        const RemoteMessage(messageId: 'msg-1', data: {'url': 'https://example.com/promo'}),
+        logger: logger,
+      );
+
+      expect(result?.launchUrl, 'https://example.com/promo');
+    });
+
+    test('prefers deepLink over redirect_url and url', () {
+      final result = mapRemoteMessage(
+        const RemoteMessage(
+          messageId: 'msg-1',
+          data: {'deepLink': '/a', 'redirect_url': '/b', 'url': '/c'},
+        ),
         logger: logger,
       );
 
       expect(result?.launchUrl, '/a');
+    });
+
+    test('prefers redirect_url over url when deepLink is absent', () {
+      final result = mapRemoteMessage(
+        const RemoteMessage(messageId: 'msg-1', data: {'redirect_url': '/b', 'url': '/c'}),
+        logger: logger,
+      );
+
+      expect(result?.launchUrl, '/b');
+    });
+
+    test('falls through to url when the earlier keys are unusable', () {
+      final result = mapRemoteMessage(
+        const RemoteMessage(
+          messageId: 'msg-1',
+          data: {'deepLink': '', 'redirect_url': 42, 'url': '/c'},
+        ),
+        logger: logger,
+      );
+
+      expect(result?.launchUrl, '/c');
     });
 
     test('an empty payload maps to nulls rather than throwing', () {
@@ -177,6 +210,15 @@ void main() {
     test('an empty-string deepLink is treated as absent', () {
       final result = mapRemoteMessage(
         const RemoteMessage(messageId: 'msg-1', data: {'deepLink': ''}),
+        logger: logger,
+      );
+
+      expect(result?.launchUrl, isNull);
+    });
+
+    test('a wrong-typed url is treated as absent, not coerced', () {
+      final result = mapRemoteMessage(
+        const RemoteMessage(messageId: 'msg-1', data: {'url': 42}),
         logger: logger,
       );
 
