@@ -1012,9 +1012,9 @@ void main() {
 
     test('reads a list of control IPs from the payload', () async {
       store = createStore();
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","5.6.7.8"]}'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","5.6.7.8"]}'});
       await store.configFuture;
       expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4', '5.6.7.8']);
     });
@@ -1030,9 +1030,9 @@ void main() {
 
     test('keeps only the parseable members', () async {
       store = createStore();
-      when(client.getAllValues()).thenAnswer(
-        (_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","not-an-ip"]}'},
-      );
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","not-an-ip"]}'});
       await store.configFuture;
       expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4']);
     });
