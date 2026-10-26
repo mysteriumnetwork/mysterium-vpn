@@ -103,7 +103,7 @@ android {
 dependencies {
     androidTestUtil "androidx.test:orchestrator:1.6.1"
     // Version the flutter_local_notifications example pins; AGP 8.13 supports 2.x.
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 }
 
 flutter {
