@@ -101,20 +101,25 @@ class FcmNotificationsRepository implements NotificationsRepository {
 
   /// Per-subscriber view of [source] that first replays whatever [current]
   /// returns, or nothing when it returns null.
+  Stream<T> _replaying<T extends Object>(StreamController<T> source, T? Function() current) =>
+      _replayingAll(source, () {
+        final value = current();
+        return value == null ? null : [value];
+      });
+
+  /// Per-subscriber view of [source] that first replays everything [drain]
+  /// hands back. [drain] is expected to clear whatever it returns.
   ///
   /// Subscribes to [source] *before* replaying, because an `async*` prologue
   /// leaves a gap between its first `yield` and reaching `yield*` during which
   /// an event would be dropped.
-  Stream<T> _replaying<T extends Object>(StreamController<T> source, T? Function() current) {
+  Stream<T> _replayingAll<T extends Object>(StreamController<T> source, List<T>? Function() drain) {
     late StreamController<T> out;
     StreamSubscription<T>? subscription;
     out = StreamController<T>(
       onListen: () {
         subscription = source.stream.listen(out.add, onError: out.addError, onDone: out.close);
-        final value = current();
-        if (value != null) {
-          out.add(value);
-        }
+        drain()?.forEach(out.add);
       },
       onCancel: () async {
         await subscription?.cancel();
@@ -425,14 +430,11 @@ class FcmNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<PushNotification> getReceivedStream() async* {
+  Stream<PushNotification> getReceivedStream() => _replayingAll(_receivedController, () {
     final pending = _pendingReceived;
     _pendingReceived = null;
-    if (pending != null) {
-      yield* Stream<PushNotification>.fromIterable(pending);
-    }
-    yield* _receivedController.stream;
-  }
+    return pending;
+  });
 
   @override
   Future<void> reportEvent(PushNotification notification, NotifierEventType type) async {
