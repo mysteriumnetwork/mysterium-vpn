@@ -24,7 +24,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
     required String apiSecret,
     required DeviceIDStore deviceIDStore,
   }) : _deviceIDStore = deviceIDStore,
-       _session = AnalyticsSession(measurementId, apiSecret) {
+       _session = AnalyticsSession(measurementId, apiSecret, deviceIDStore.deviceIdFuture) {
     logAppLaunchEvent();
     setDeviceInfo();
   }
@@ -132,19 +132,34 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
 }
 
 class AnalyticsSession {
-  AnalyticsSession(this.measurementId, this.apiSecret) {
-    _sessionId = sessionStarted.toIso8601String();
+  AnalyticsSession(
+    this.measurementId,
+    this.apiSecret,
+    this._clientIdFuture, {
+    this.sessionTimeout = const Duration(minutes: 30),
+  }) {
+    final launchedAt = DateTime.now().toUtc();
+    _lastEventAt = launchedAt;
+    _startSession(launchedAt);
   }
 
   final String measurementId;
   final String apiSecret;
+  final Future<String> _clientIdFuture;
+
+  /// Idle gap after which GA4 treats the session as closed.
+  final Duration sessionTimeout;
+
   String? userId;
   Map<String, dynamic> userProperties = {};
 
-  final DateTime sessionStarted = DateTime.now().toUtc();
+  late DateTime _lastEventAt;
 
   String get sessionId => _sessionId;
-  String _sessionId = '';
+  late String _sessionId;
+
+  // GA4 stores session_id as an int64, so it must be numeric.
+  void _startSession(DateTime at) => _sessionId = (at.millisecondsSinceEpoch ~/ 1000).toString();
 
   final dio = Dio(
     BaseOptions(
@@ -173,24 +188,33 @@ class AnalyticsSession {
       'Event name should start with a letter and contain only letters, numbers, and underscores. $eventName',
     );
 
+    final now = DateTime.now().toUtc();
+    final idleFor = now.difference(_lastEventAt);
+    // A long idle gap closes the session rather than stretching it.
+    final rolledOver = idleFor >= sessionTimeout;
+    if (rolledOver) {
+      _startSession(now);
+    }
+
     final defParams = <String, Object?>{
-      'engagement_time_msec': DateTime.now().toUtc().difference(sessionStarted).inMilliseconds,
+      // Engagement since the preceding event; a fresh session starts at zero.
+      'engagement_time_msec': rolledOver ? 0 : idleFor.inMilliseconds,
       'session_id': sessionId,
     };
+    _lastEventAt = now;
     if (params != null) {
       defParams.addAll(params);
     }
 
-    final body = jsonEncode({
-      'client_id': defaultTargetPlatform.name,
-      'user_id': userId,
-      'user_properties': userProperties,
-      'events': [
-        {'name': eventName.truncate(40), 'params': defParams},
-      ],
-    });
-
     try {
+      final body = jsonEncode({
+        'client_id': await _clientIdFuture,
+        'user_id': userId,
+        'user_properties': userProperties,
+        'events': [
+          {'name': eventName.truncate(40), 'params': defParams},
+        ],
+      });
       await dio.post('/mp/collect?measurement_id=$measurementId&api_secret=$apiSecret', data: body);
     } catch (e) {
       debugPrint(e.toString());
