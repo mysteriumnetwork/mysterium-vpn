@@ -1058,13 +1058,16 @@ class _TestTrafficButton extends HookConsumerWidget {
         busy.value = true;
         try {
           final outcome = await run(ref.read(testTrafficServicePOD));
-          // An action that kills the tunnel kills its own answer with it. That
-          // is what a working drop looks like from here, not a failure.
+          // Unconfirmed is genuinely unknown: the ack window can elapse before
+          // the request lands, so saying "applied" would invite QA to validate
+          // a scenario that never started. Report the uncertainty instead.
+          final unconfirmed = outcome == TestTrafficOutcome.unconfirmed;
           showSnackbar(
-            outcome == TestTrafficOutcome.unconfirmed
-                ? '$action applied. No reply - the tunnel is down, which is the point.'
+            unconfirmed
+                ? '$action sent, no reply yet. Expected if the tunnel is down - '
+                      'check the symptom before trusting it.'
                 : '$action done.',
-            type: SnackbarType.success,
+            type: unconfirmed ? SnackbarType.warning : SnackbarType.success,
           );
         } catch (e) {
           showSnackbar(describeTestTrafficError(e));

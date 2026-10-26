@@ -179,8 +179,16 @@ void useHomeAutorun() {
         // Tunnel found degraded on resume. A reaction on a counter for the same
         // reason as the UDP one above.
         reaction((_) => tunnelHealthStore.degradationEpoch, (int _) {
+          final diagnosed = tunnelHealthStore.degradedSession;
           controller.add(() async {
             if (!context.mounted) {
+              return null;
+            }
+            // The queue can hold this behind another dialog. By the time it
+            // opens the connection may have been replaced or deliberately
+            // dropped, and prompting would describe a session that is gone
+            // while spending the replacement's one allowance.
+            if (!tunnelHealthStore.isCurrentSession(diagnosed)) {
               return null;
             }
             tunnelHealthStore.onDialogShown();
@@ -190,6 +198,11 @@ void useHomeAutorun() {
             );
             tunnelHealthStore.onAction(refreshed: refresh);
             if (!refresh) {
+              return null;
+            }
+            // Re-checked: the dialog itself can sit open for a while, and a
+            // refresh must not act on a connection the user has since changed.
+            if (!tunnelHealthStore.isCurrentSession(diagnosed) || !vpnStore.isConnected) {
               return null;
             }
             try {

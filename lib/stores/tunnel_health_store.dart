@@ -45,8 +45,14 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     _logger.debug('Tunnel health store constructed, lifecycle observer registered');
   }
 
-  static void _postFrame(VoidCallback callback) =>
-      WidgetsBinding.instance.addPostFrameCallback((_) => callback());
+  static void _postFrame(VoidCallback callback) {
+    // scheduleFrame because addPostFrameCallback does not request one. A
+    // desktop window regaining focus with nothing to repaint would otherwise
+    // leave the check queued until some unrelated redraw came along.
+    WidgetsBinding.instance
+      ..addPostFrameCallback((_) => callback())
+      ..scheduleFrame();
+  }
 
   final TunnelHealthProbe _probe;
   final TunnelHealthReporter _reporter;
@@ -84,6 +90,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// flag — see UdpBlockedSuggestionStore for why.
   @observable
   int degradationEpoch = 0;
+
+  /// The session [degradationEpoch] last described. Plain field, not observable:
+  /// the view reads it inside the reaction on the counter, never as a trigger.
+  String? degradedSession;
 
   /// Bumped on every confirmed no-network verdict. Drives the snackbar.
   @observable
@@ -146,6 +156,12 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   }
 
   Future<void> _run() async {
+    // Probing plus the confirm delay spans seconds, and a reconnect or an MQTT
+    // provider renewal in that window does not dispose the store. Acting on
+    // the result afterwards would attribute old measurements to the new
+    // session and spend its one report and one dialog on them.
+    final startedOn = _gateKey;
+
     try {
       final first = await _evaluate();
       _logVerdict(first);
@@ -187,6 +203,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       // The confirming probe can take seconds; a logout in that window must not
       // attribute analytics to a session the user already left.
       if (_disposed) {
+        return;
+      }
+      if (_gateKey != startedOn) {
+        _logSuppressed('session changed mid-check');
         return;
       }
       if (second.verdict != first.verdict) {
@@ -302,9 +322,18 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     }
 
     if (gateKey != null && !_dialogShownSessions.contains(gateKey)) {
+      // Recorded before the counter so the reaction can read it, and so the
+      // view can tell whether the connection it is about to describe is still
+      // the one that was diagnosed.
+      degradedSession = gateKey;
       degradationEpoch++;
     }
   }
+
+  /// Whether [session] is still the connection this store is attached to.
+  /// The dialog can queue behind another one, by which point the session it
+  /// describes may have been replaced or deliberately disconnected.
+  bool isCurrentSession(String? session) => session != null && session == _gateKey;
 
   /// Called by the view once the dialog is actually on screen. Marked on open,
   /// not on refresh success — a user who dismisses still counts as prompted.

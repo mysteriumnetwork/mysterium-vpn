@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/services/api/rest_external_api_service.dart';
 import 'package:mysterium_vpn/services/network_health/tunnel_health_types.dart';
 import 'package:talker/talker.dart';
@@ -44,7 +46,14 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
     final controlReachable = bothLegsFailed && await _controlReachable(controlIp);
 
     if (tunnelled.ip != null && exitIp != null && exitIp.isNotEmpty && tunnelled.ip != exitIp) {
-      _logger.warning('Tunnelled probe returned ${tunnelled.ip}, expected exit $exitIp');
+      // Addresses only in dev. CrashlyticsLoggerObserver forwards every level,
+      // and this fires exactly when the probe escaped the tunnel - so
+      // tunnelled.ip is the user's real public IP.
+      _logger.warning(
+        kDebugMode || Env.flavor.isDev
+            ? 'Tunnelled probe returned ${tunnelled.ip}, expected exit $exitIp'
+            : 'Tunnelled probe returned an address other than the tunnel exit',
+      );
     }
 
     return TunnelHealthSample(

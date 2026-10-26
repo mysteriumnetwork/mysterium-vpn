@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/services/network_health/tunnel_health_report_queue.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -90,29 +91,38 @@ class RestTunnelHealthReporter implements TunnelHealthReporter {
   @override
   Future<void> flushPending() async {
     final pending = await _queue.drain(now: _clock());
-    for (final request in pending) {
+    for (final queued in pending) {
       try {
-        await _send(request);
+        // Carries the original timestamp so a requeue keeps the report's age;
+        // otherwise a report retried often enough never reaches _maxAge.
+        await _send(queued.request, queuedAt: queued.queuedAt);
       } catch (e) {
         // Keep going: drain() already emptied the queue, so abandoning the
         // loop here would discard every report after the first failure.
         // A transport failure re-queues inside _send; anything else is a
         // rejection that would fail identically next time.
-        _logger.warning('Queued report for ${request.sessionId} still failing: $e');
+        _logger.warning('Queued report for ${queued.request.sessionId} still failing: $e');
       }
     }
   }
 
-  /// Queues only transport failures. An HTTP status means the request reached
-  /// the backend and was rejected on its merits, so retrying it unchanged
-  /// would fail the same way forever.
-  Future<void> _send(ReportBrokenNodeRequest request) async {
+  /// Queues only transport failures. A backend answer means the request
+  /// arrived and was rejected on its merits, so retrying it unchanged would
+  /// fail the same way forever.
+  ///
+  /// [queuedAt] is set when replaying an already-queued report, to preserve its
+  /// original age.
+  Future<void> _send(ReportBrokenNodeRequest request, {DateTime? queuedAt}) async {
     try {
       await _api.reportBrokenNode(reportBrokenNodeRequest: request);
       _logger.info('Reported broken node for session ${request.sessionId}');
     } on DioException catch (e) {
-      if (e.response == null) {
-        await _queue.add(request, now: _clock());
+      // ApiErrorsInterceptor turns any response it could read into an
+      // ApiException and drops `response`, so checking `response` alone reads
+      // every rejection as a transport failure and queues permanent 4xx
+      // forever. An ApiException means the backend answered.
+      if (e is! ApiException && e.response == null) {
+        await _queue.add(request, now: _clock(), queuedAt: queuedAt);
       }
       rethrow;
     }

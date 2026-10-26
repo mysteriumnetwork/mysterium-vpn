@@ -1384,6 +1384,15 @@ void main() {
           expect(vpnStore.vpnConnection?.sessionId, 'sess-renewed');
         });
 
+        test('the retained first update keeps the hash, since nothing changed', () async {
+          // The broker replays the connection we just made. Dropping the hash
+          // there would leave every health report hash-less despite no
+          // provider renewal having happened.
+          await publishEcho();
+
+          expect(vpnStore.vpnConnection?.hash, 'hash');
+        });
+
         test('a renewal drops the hash rather than blaming the old provider', () async {
           // The payload carries no hash, and the renewal may have moved us to
           // another node, so the previous one must not be reported.

@@ -33,7 +33,7 @@ void main() {
 
     final drained = await queue.drain(now: now);
 
-    expect(drained.map((it) => it.sessionId), ['sess-1']);
+    expect(drained.map((it) => it.request.sessionId), ['sess-1']);
   });
 
   test('draining empties the queue, so a report is not sent twice', () async {
@@ -66,8 +66,21 @@ void main() {
     final drained = await queue.drain(now: now);
 
     expect(drained, hasLength(20));
-    expect(drained.first.sessionId, 'sess-5');
-    expect(drained.last.sessionId, 'sess-24');
+    expect(drained.first.request.sessionId, 'sess-5');
+    expect(drained.last.request.sessionId, 'sess-24');
+  });
+
+  test('a requeued report keeps its original age instead of resetting it', () async {
+    // Without this a report retried often enough never reaches _maxAge: each
+    // retry drains it and re-adds it with the current time.
+    await queue.add(request('sess-1'), now: now);
+    final drained = (await queue.drain(now: now)).single;
+
+    final twoDaysLater = now.add(const Duration(days: 2));
+    await queue.add(drained.request, now: twoDaysLater, queuedAt: drained.queuedAt);
+
+    final fourDaysLater = now.add(const Duration(days: 4));
+    expect(await queue.drain(now: fourDaysLater), isEmpty);
   });
 
   test('the full payload survives a round trip', () async {
@@ -75,6 +88,6 @@ void main() {
 
     final drained = (await queue.drain(now: now)).single;
 
-    expect(drained.toJson(), request('sess-1').toJson());
+    expect(drained.request.toJson(), request('sess-1').toJson());
   });
 }

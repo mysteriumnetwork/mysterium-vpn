@@ -1055,14 +1055,25 @@ abstract class _VpnStore extends VpnGuard with Store {
       return;
     }
 
+    // The broker retains the last message, so the first update after
+    // connecting is usually a replay of the connection we just made rather
+    // than a renewal. Matching IP and session mean the provider has not
+    // changed and the hash we already hold is still the right one.
+    final isRetainedReplay =
+        isFirstUpdate &&
+        payload.ip == current.connectionIP &&
+        (payload.sessionId == null || payload.sessionId == current.sessionId);
+
     _vpnConnection = current.copyWith(
       connectionIP: payload.ip,
       location: resolved ?? current.location,
       // Optional in the payload; keep the id we already hold.
       sessionId: payload.sessionId ?? current.sessionId,
-      // A renewal carries no hash, and it may have moved us to another
-      // provider. Reporting the old one would blame the wrong node, so drop it.
-      hash: null,
+      // A renewal carries no hash and may have moved us to another provider,
+      // so reporting the old one would blame the wrong node. Dropping it on
+      // the retained replay too would leave every report hash-less for no
+      // reason, since nothing changed.
+      hash: isRetainedReplay ? current.hash : null,
     );
 
     if (!isFirstUpdate && payload.ip != current.connectionIP) {

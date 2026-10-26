@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/services/network_health/tunnel_health_report_queue.dart';
 import 'package:mysterium_vpn/services/network_health/tunnel_health_reporter.dart';
 import 'package:talker/talker.dart';
@@ -118,7 +120,29 @@ void main() {
 
       await reportAndSwallow();
 
-      expect((await queue.drain(now: now)).single.sessionId, 'sess-q');
+      expect((await queue.drain(now: now)).single.request.sessionId, 'sess-q');
+    });
+
+    test('a mapped HTTP rejection is not queued, despite carrying no response', () async {
+      // ApiErrorsInterceptor drops `response` when it builds ApiException, so a
+      // response-only check read every 4xx as a transport failure and queued
+      // permanent rejections forever.
+      when(
+        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
+      ).thenThrow(
+        ApiException(
+          RequestOptions(),
+          'rejected',
+          code: 400,
+          identifier: 'test',
+          endpoint: '/connection/report-broken-node',
+          severity: ExceptionSeverity.low,
+        ),
+      );
+
+      await reportAndSwallow();
+
+      expect(await queue.drain(now: now), isEmpty);
     });
 
     test('a rejected request is not queued — retrying would fail the same way', () async {

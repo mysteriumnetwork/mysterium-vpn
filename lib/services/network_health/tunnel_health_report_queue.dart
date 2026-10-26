@@ -27,10 +27,18 @@ class TunnelHealthReportQueue {
   final Talker _logger;
 
   /// Queues [request], replacing any earlier entry for the same session.
-  Future<void> add(ReportBrokenNodeRequest request, {required DateTime now}) async {
+  ///
+  /// [queuedAt] carries the original timestamp when a drained report is being
+  /// put back. Without it every retry would reset the clock and a report
+  /// retried often enough would outlive [_maxAge] indefinitely.
+  Future<void> add(
+    ReportBrokenNodeRequest request, {
+    required DateTime now,
+    DateTime? queuedAt,
+  }) async {
     final entries = _read(now: now)
       ..removeWhere((it) => it.request.sessionId == request.sessionId)
-      ..add(_Entry(request: request, queuedAt: now));
+      ..add(_Entry(request: request, queuedAt: queuedAt ?? now));
 
     while (entries.length > _maxEntries) {
       entries.removeAt(0);
@@ -44,14 +52,14 @@ class TunnelHealthReportQueue {
   /// Entries are removed before the caller tries to send them: a failed send
   /// re-queues through [add], so a permanently undeliverable report cannot pin
   /// the queue open.
-  Future<List<ReportBrokenNodeRequest>> drain({required DateTime now}) async {
+  Future<List<QueuedReport>> drain({required DateTime now}) async {
     final entries = _read(now: now);
     if (entries.isEmpty) {
       return const [];
     }
     await _write(const []);
 
-    return entries.map((it) => it.request).toList();
+    return entries.map((it) => QueuedReport(it.request, it.queuedAt)).toList();
   }
 
   List<_Entry> _read({required DateTime now}) {
@@ -70,6 +78,14 @@ class TunnelHealthReportQueue {
       entries.map((it) => jsonEncode(it.toJson())).toList(),
     );
   }
+}
+
+/// A drained report and when it first failed, so a requeue can keep its age.
+class QueuedReport {
+  const QueuedReport(this.request, this.queuedAt);
+
+  final ReportBrokenNodeRequest request;
+  final DateTime queuedAt;
 }
 
 class _Entry {

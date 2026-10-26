@@ -76,6 +76,16 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// Replayed to the first subscriber so the target survives.
   PushNotification? _pendingOpened;
 
+  /// Foreground messages that arrived before anything subscribed.
+  ///
+  /// [_registerMessageListeners] runs first in [init] so no message is missed
+  /// at the Firebase end, but PushNotificationsStore only subscribes once
+  /// [init] has finished every remaining step. Anything delivered in between
+  /// would hit a broadcast controller with no listener and be dropped.
+  /// Null once the stream has been taken; a late second subscriber is a
+  /// different conversation and gets live messages only.
+  List<PushNotification>? _pendingReceived = [];
+
   @override
   String? get currentToken => _currentToken;
 
@@ -415,7 +425,14 @@ class FcmNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<PushNotification> getReceivedStream() => _receivedController.stream;
+  Stream<PushNotification> getReceivedStream() async* {
+    final pending = _pendingReceived;
+    _pendingReceived = null;
+    if (pending != null) {
+      yield* Stream<PushNotification>.fromIterable(pending);
+    }
+    yield* _receivedController.stream;
+  }
 
   @override
   Future<void> reportEvent(PushNotification notification, NotifierEventType type) async {
@@ -439,7 +456,14 @@ class FcmNotificationsRepository implements NotificationsRepository {
     if (notification == null) {
       return;
     }
-    _emit(_receivedController, notification);
+    final pending = _pendingReceived;
+    if (pending != null && !_receivedController.hasListener) {
+      // Bounded: a burst before the first subscriber is a handful at most, and
+      // the list is released the moment the stream is taken.
+      pending.add(notification);
+    } else {
+      _emit(_receivedController, notification);
+    }
     if (!_isApple) {
       unawaited(_displayLocally(message.hashCode, notification));
     }
