@@ -42,6 +42,8 @@ class _FakeConnection extends Fake implements Connection {
   }
 }
 
+/// A rejection as the interceptor chain builds it: the response is what
+/// distinguishes "the backend answered" from "nothing got through".
 ApiException _rejected(int code) => ApiException(
   RequestOptions(),
   'nope',
@@ -49,6 +51,7 @@ ApiException _rejected(int code) => ApiException(
   identifier: 'test',
   endpoint: '/connection/test-traffic/drop',
   severity: ExceptionSeverity.low,
+  response: Response<void>(requestOptions: RequestOptions(), statusCode: code),
 );
 
 void main() {
@@ -73,8 +76,19 @@ void main() {
   });
 
   test('a transport failure with no response is unconfirmed', () async {
+    // ConnectionErrorsInterceptor wraps these into ApiException with no
+    // response, so the type alone cannot be used to tell them apart.
     final service = TestTrafficService(
-      _FakeConnection(throws: DioException(requestOptions: RequestOptions())),
+      _FakeConnection(
+        throws: ApiException(
+          RequestOptions(),
+          'unreachable',
+          code: 1,
+          identifier: 'test',
+          endpoint: '/connection/test-traffic/drop',
+          severity: ExceptionSeverity.low,
+        ),
+      ),
     );
 
     expect(await service.drop(durationSeconds: 60), TestTrafficOutcome.unconfirmed);

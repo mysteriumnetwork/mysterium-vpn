@@ -109,14 +109,47 @@ void main() {
       }
     }
 
+    /// The shapes the real interceptor chain produces. ConnectionErrors wraps
+    /// transport failures into ApiException before ApiErrors ever sees them, so
+    /// a bare DioException never escapes it — a test that throws one certifies
+    /// a path production cannot take.
+    ApiException transportFailure(int code) => ApiException(
+      RequestOptions(),
+      'unreachable',
+      code: code,
+      identifier: 'test',
+      endpoint: '/connection/report-broken-node',
+      severity: ExceptionSeverity.low,
+    );
+
     test('a transport failure is queued for retry', () async {
       // The report travels through the very tunnel it is reporting, so this is
       // the common case, not an edge one.
       when(
         api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-      ).thenThrow(
-        DioException.connectionError(requestOptions: RequestOptions(), reason: 'unreachable'),
-      );
+      ).thenThrow(transportFailure(1));
+
+      await reportAndSwallow();
+
+      expect((await queue.drain(now: now)).single.request.sessionId, 'sess-q');
+    });
+
+    test('no connectivity at request time is queued', () async {
+      // ConnectionErrorsInterceptor rejects before the request leaves.
+      when(
+        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
+      ).thenThrow(transportFailure(0));
+
+      await reportAndSwallow();
+
+      expect((await queue.drain(now: now)).single.request.sessionId, 'sess-q');
+    });
+
+    test('a timeout is queued, since nothing reached the backend', () async {
+      // ApiErrorsInterceptor maps a response-less failure to code 500.
+      when(
+        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
+      ).thenThrow(transportFailure(500));
 
       await reportAndSwallow();
 
@@ -137,6 +170,8 @@ void main() {
           identifier: 'test',
           endpoint: '/connection/report-broken-node',
           severity: ExceptionSeverity.low,
+          // The response is what tells a rejection from a transport failure.
+          response: Response<void>(requestOptions: RequestOptions(), statusCode: 400),
         ),
       );
 

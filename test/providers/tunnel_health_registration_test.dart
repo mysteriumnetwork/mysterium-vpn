@@ -71,7 +71,7 @@ void main() {
     );
     when(vpnStore.tunnelStatistics()).thenAnswer((_) async => null);
     when(
-      probe.probe(exitIp: anyNamed('exitIp'), controlIp: anyNamed('controlIp')),
+      probe.probe(exitIp: anyNamed('exitIp'), controlIps: anyNamed('controlIps')),
     ).thenAnswer((_) async => degraded);
   });
 
@@ -105,6 +105,6 @@ void main() {
       ..didChangeAppLifecycleState(AppLifecycleState.resumed);
     await store.pendingCheck;
 
-    verifyNever(probe.probe(exitIp: anyNamed('exitIp'), controlIp: anyNamed('controlIp')));
+    verifyNever(probe.probe(exitIp: anyNamed('exitIp'), controlIps: anyNamed('controlIps')));
   });
 }

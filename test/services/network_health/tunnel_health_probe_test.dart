@@ -56,7 +56,7 @@ void main() {
       return _ok(jsonEncode({'ip': '203.0.113.9'}));
     });
 
-    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIp: '127.0.0.1');
+    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIps: const ['127.0.0.1']);
 
     expect(sample.tunnelled.ip, '10.0.0.1');
     expect(sample.direct.ip, '203.0.113.9');
@@ -73,7 +73,7 @@ void main() {
       return _ok(jsonEncode({'ip': '10.0.0.1'}));
     });
 
-    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIp: '127.0.0.1');
+    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIps: const ['127.0.0.1']);
 
     expect(sample.bypassVerified, isFalse);
   });
@@ -86,7 +86,7 @@ void main() {
       return _ok(jsonEncode({'ip': '203.0.113.9'}));
     });
 
-    final sample = await build(adapter).probe(exitIp: null, controlIp: '127.0.0.1');
+    final sample = await build(adapter).probe(exitIp: null, controlIps: const ['127.0.0.1']);
 
     expect(sample.bypassVerified, isFalse);
     expect(sample.tunnelled.elapsed, isNotNull);
@@ -96,7 +96,7 @@ void main() {
   test('an empty exit IP is treated the same as null', () async {
     final adapter = _StubAdapter((options) async => _ok('10.0.0.1'));
 
-    final sample = await build(adapter).probe(exitIp: '', controlIp: '127.0.0.1');
+    final sample = await build(adapter).probe(exitIp: '', controlIps: const ['127.0.0.1']);
 
     expect(sample.bypassVerified, isFalse);
   });
@@ -109,7 +109,7 @@ void main() {
       return _ok(jsonEncode({'ip': '203.0.113.9'}));
     });
 
-    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIp: '127.0.0.1');
+    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIps: const ['127.0.0.1']);
 
     expect(sample.tunnelled.elapsed, isNull);
     expect(sample.tunnelled.error, isNotNull);
@@ -119,7 +119,7 @@ void main() {
   test('an unparseable control IP is reported unreachable, not thrown', () async {
     final adapter = _StubAdapter((options) async => _ok('10.0.0.1'));
 
-    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIp: 'nonsense');
+    final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIps: const ['nonsense']);
 
     expect(sample.controlReachable, isFalse);
   });
@@ -131,7 +131,7 @@ void main() {
       return _ok(jsonEncode({'ip': '203.0.113.9'}));
     });
 
-    final future = build(adapter).probe(exitIp: '10.0.0.1', controlIp: '127.0.0.1');
+    final future = build(adapter).probe(exitIp: '10.0.0.1', controlIps: const ['127.0.0.1']);
     await Future<void>.delayed(const Duration(milliseconds: 50));
 
     expect(adapter.started.length, 2, reason: 'legs must run in parallel');

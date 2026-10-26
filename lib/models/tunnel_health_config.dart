@@ -2,14 +2,20 @@ import 'dart:io';
 
 import 'package:mysterium_vpn/services/network_health/tunnel_health_probe.dart';
 
-/// Literal address of `location.mysterium.network`, the host the backend
+/// Literal addresses of `location.mysterium.network`, the host the backend
 /// excludes from the tunnel route.
 ///
+/// A list because the host is geo/multi-addressed — resolvers hand back
+/// different members — so pinning a single literal bets on one box staying in
+/// the pool and staying excluded. Any one answering is enough to prove the
+/// device has a network, and `controlIps` in ConfigCat can add or replace
+/// members without an app release.
+///
 /// Must stay in step with `kDirectProbeUrl` in `tunnel_health_probe.dart` —
-/// they are the same host, named there and numeric here. If the box moves, the
-/// A record follows automatically but this does not, and a stale value turns
-/// every genuinely degraded tunnel into a "no internet" snackbar.
-const kDefaultControlIp = '159.69.15.34';
+/// the same host, named there and numeric here. A list that is entirely stale
+/// or not route-excluded turns every genuinely degraded tunnel into a "no
+/// internet" snackbar, which is the inversion this check exists to prevent.
+const kDefaultControlIps = <String>['159.69.15.34', '46.224.211.253', '116.203.130.98'];
 
 /// Tunables for the resume-time tunnel health check, delivered as a single
 /// ConfigCat JSON value (`tunnelHealthConfig`). Each field falls back to its
@@ -25,7 +31,7 @@ class TunnelHealthConfig {
     this.minBackgroundSeconds = 300,
     this.degradedFloorMs = 1500,
     this.latencyRatioPercent = 200,
-    this.controlIp = kDefaultControlIp,
+    this.controlIps = kDefaultControlIps,
   });
 
   factory TunnelHealthConfig.fromJson(Map<String, dynamic> json) {
@@ -46,9 +52,17 @@ class TunnelHealthConfig {
 
     // A control IP that does not parse would silently disable the check that
     // separates a bad node from a bad connection.
-    String ip(String key, String fallback) {
+    // Accepts a list, or a bare string for the single-address form.
+    List<String> ips(String key, List<String> fallback) {
       final value = json[key];
-      return value is String && InternetAddress.tryParse(value) != null ? value : fallback;
+      final candidates = switch (value) {
+        final String one => [one],
+        final List<dynamic> many => many.whereType<String>().toList(),
+        _ => const <String>[],
+      };
+      final valid = candidates.where((it) => InternetAddress.tryParse(it) != null).toList();
+
+      return valid.isEmpty ? fallback : valid;
     }
 
     final enabled = json['enabled'];
@@ -62,7 +76,7 @@ class TunnelHealthConfig {
         max: kProbeTimeout.inMilliseconds,
       ),
       latencyRatioPercent: positive('latencyRatioPercent', defaults.latencyRatioPercent),
-      controlIp: ip('controlIp', defaults.controlIp),
+      controlIps: ips('controlIps', defaults.controlIps),
     );
   }
 
@@ -87,6 +101,7 @@ class TunnelHealthConfig {
 
   /// Literal IP of the control host, connected to over raw TCP so the check
   /// survives the tunnel's DNS being broken. Must stay in step with whatever
-  /// the backend excludes from the tunnel route.
-  final String controlIp;
+  /// the backend excludes from the tunnel route. Any one answering proves the
+  /// device has a network.
+  final List<String> controlIps;
 }

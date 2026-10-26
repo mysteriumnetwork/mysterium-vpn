@@ -442,6 +442,7 @@ final tunnelHealthStorePOD = Provider<TunnelHealthStore>((ref) {
     ref.watch(remoteConfigStorePOD),
     ref.watch(analyticsStorePOD),
     ref.watch(loggerPOD),
+    () => ref.read(authSessionStorePOD).isAuthenticated,
   );
 
   // Not optional: without it an invalidate leaves the observer on

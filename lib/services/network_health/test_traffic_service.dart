@@ -90,11 +90,7 @@ class TestTrafficService {
   }
 
   /// Whether the failure means "no answer" rather than "rejected".
-  ///
-  /// ApiErrorsInterceptor converts any response it could read into an
-  /// [ApiException] carrying the status in `code` and dropping `response`, so
-  /// checking `response` alone would read every rejection as silence.
-  bool _ackCouldNotArrive(DioException e) => e is! ApiException && e.response == null;
+  bool _ackCouldNotArrive(DioException e) => e.response == null;
 }
 
 /// Turns a failure into something a tester can act on. A 404 and a 502 mean

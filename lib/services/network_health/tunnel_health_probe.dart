@@ -17,7 +17,7 @@ const kDirectProbeUrl = 'https://location.mysterium.network/api/v1/ip';
 
 // ignore: one_member_abstracts
 abstract class TunnelHealthProbe {
-  Future<TunnelHealthSample> probe({required String? exitIp, required String controlIp});
+  Future<TunnelHealthSample> probe({required String? exitIp, required List<String> controlIps});
 }
 
 /// Times a tunnelled request against one the backend excludes from the tunnel
@@ -30,7 +30,10 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
   final Duration timeout;
 
   @override
-  Future<TunnelHealthSample> probe({required String? exitIp, required String controlIp}) async {
+  Future<TunnelHealthSample> probe({
+    required String? exitIp,
+    required List<String> controlIps,
+  }) async {
     final legs = await Future.wait([
       _timed(kTunnelledProbeUrl, _plainIp),
       _timed(kDirectProbeUrl, _jsonIp),
@@ -43,7 +46,7 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
     // a handshake and a radio wake on every healthy resume for a value nothing
     // reads. Nothing is racing here either: both legs have already timed out.
     final bothLegsFailed = tunnelled.elapsed == null && direct.elapsed == null;
-    final controlReachable = bothLegsFailed && await _controlReachable(controlIp);
+    final controlReachable = bothLegsFailed && await _anyControlReachable(controlIps);
 
     if (tunnelled.ip != null && exitIp != null && exitIp.isNotEmpty && tunnelled.ip != exitIp) {
       // Addresses only in dev. CrashlyticsLoggerObserver forwards every level,
@@ -67,6 +70,19 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
 
   /// Raw TCP to the control IP: no DNS, no TLS, no HTTP.
   /// See [TunnelHealthSample.controlReachable] for why that matters.
+  /// Any one answering proves the device has a network. Raced rather than
+  /// tried in turn: the whole point is to answer fast while both HTTP legs
+  /// have already timed out, and a dead address costs the full timeout.
+  Future<bool> _anyControlReachable(List<String> ips) async {
+    if (ips.isEmpty) {
+      _logger.warning('No control IPs configured, cannot tell a bad node from no network');
+      return false;
+    }
+    final results = await Future.wait(ips.map(_controlReachable));
+
+    return results.any((it) => it);
+  }
+
   Future<bool> _controlReachable(String ip) async {
     final address = InternetAddress.tryParse(ip);
     if (address == null) {

@@ -1055,12 +1055,14 @@ abstract class _VpnStore extends VpnGuard with Store {
       return;
     }
 
-    // The broker retains the last message, so the first update after
-    // connecting is usually a replay of the connection we just made rather
-    // than a renewal. Matching IP and session mean the provider has not
-    // changed and the hash we already hold is still the right one.
-    final isRetainedReplay =
-        isFirstUpdate &&
+    // The broker retains the last message and replays it on every subscribe -
+    // after the initial connect and again on each MQTT auto-reconnect, which
+    // happens on resume. Matching IP and session mean no provider change, so
+    // this is a replay rather than a renewal. Keyed on the content and not on
+    // isFirstUpdate: a reconnect replay is indistinguishable from the first
+    // one, and treating it as a renewal would wipe the hash on every resume -
+    // exactly when the health check runs and needs it.
+    final describesSameConnection =
         payload.ip == current.connectionIP &&
         (payload.sessionId == null || payload.sessionId == current.sessionId);
 
@@ -1073,7 +1075,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       // so reporting the old one would blame the wrong node. Dropping it on
       // the retained replay too would leave every report hash-less for no
       // reason, since nothing changed.
-      hash: isRetainedReplay ? current.hash : null,
+      hash: describesSameConnection ? current.hash : null,
     );
 
     if (!isFirstUpdate && payload.ip != current.connectionIP) {

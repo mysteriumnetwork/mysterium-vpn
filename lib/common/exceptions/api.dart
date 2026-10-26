@@ -10,6 +10,7 @@ class ApiException extends DioException {
     required this.endpoint,
     required this.severity,
     this.errorCode,
+    super.response,
   }) : super(requestOptions: requestOptions, message: message);
   @override
   String get message => super.message!;

@@ -1010,22 +1010,40 @@ void main() {
       expect(config.latencyRatioPercent, 200);
     });
 
-    test('reads a control IP from the payload', () async {
+    test('reads a list of control IPs from the payload', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIp":"1.2.3.4"}'});
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","5.6.7.8"]}'},
+      );
       await store.configFuture;
-      expect(store.tunnelHealthConfig.controlIp, '1.2.3.4');
+      expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4', '5.6.7.8']);
     });
 
-    test('an unparseable control IP falls back, since it gates the check', () async {
+    test('accepts a bare string for the single-address form', () async {
       store = createStore();
       when(
         client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIp":"not-an-ip"}'});
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":"1.2.3.4"}'});
       await store.configFuture;
-      expect(store.tunnelHealthConfig.controlIp, '159.69.15.34');
+      expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4']);
+    });
+
+    test('keeps only the parseable members', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","not-an-ip"]}'},
+      );
+      await store.configFuture;
+      expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4']);
+    });
+
+    test('an all-unparseable list falls back, since it gates the check', () async {
+      store = createStore();
+      when(
+        client.getAllValues(),
+      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["not-an-ip"]}'});
+      await store.configFuture;
+      expect(store.tunnelHealthConfig.controlIps, kDefaultControlIps);
     });
 
     test('malformed JSON yields the defaults rather than throwing', () async {

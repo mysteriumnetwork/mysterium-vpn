@@ -50,10 +50,13 @@ void main() {
   late MockVpnProtocolStore protocolStore;
   late DateTime now;
 
+  /// Flipped by the signed-out test; every other test runs authenticated.
+  late bool authenticated;
+
   // Matcher registration happens during argument evaluation, so wrapping the
   // call keeps `verify`/`when` working while naming it once.
   Future<TunnelHealthSample> anyProbe() =>
-      probe.probe(exitIp: anyNamed('exitIp'), controlIp: anyNamed('controlIp'));
+      probe.probe(exitIp: anyNamed('exitIp'), controlIps: anyNamed('controlIps'));
 
   void stubProbe(TunnelHealthSample sample) => when(anyProbe()).thenAnswer((_) async => sample);
 
@@ -65,6 +68,7 @@ void main() {
   );
 
   setUp(() {
+    authenticated = true;
     probe = MockTunnelHealthProbe();
     reporter = MockTunnelHealthReporter();
     config = MockRemoteConfigStore();
@@ -93,7 +97,7 @@ void main() {
     when(anyReport()).thenAnswer((_) async {});
   });
 
-  TunnelHealthStore build() {
+  TunnelHealthStore build({void Function(VoidCallback)? schedule}) {
     final store = TunnelHealthStore(
       probe,
       reporter,
@@ -102,10 +106,11 @@ void main() {
       config,
       analytics,
       Talker(),
+      () => authenticated,
       clock: () => now,
       confirmDelay: Duration.zero,
       // Run inline: a plain test() never pumps a frame.
-      schedule: (callback) => callback(),
+      schedule: schedule ?? (callback) => callback(),
     );
     addTearDown(store.dispose);
     return store;
@@ -143,6 +148,43 @@ void main() {
       when(config.tunnelHealthConfig).thenReturn(const TunnelHealthConfig());
       final store = build();
       await resumeAfter(store, const Duration(minutes: 10));
+
+      verifyNever(anyProbe());
+    });
+
+    test('does not probe while signed out', () async {
+      // The store is constructed at startup, so the observer is live on the
+      // login screen. Probing there is pointless, and flushing would drain the
+      // queue only to have every report rejected as unauthenticated.
+      authenticated = false;
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      verifyNever(anyProbe());
+    });
+
+    test('a callback queued before backgrounding is dropped, not run late', () async {
+      // Backgrounding cannot cancel a queued post-frame callback and no frame
+      // paints while away, so it survives to the next resume. Without a
+      // generation token it would run then, alongside the fresh one.
+      // Driven directly rather than via resumeAfter, which awaits
+      // pendingCheck - and nothing completes it while the callback is held.
+      final pending = <VoidCallback>[];
+      final store = build(schedule: pending.add);
+
+      void lifecycle(AppLifecycleState state) => store.didChangeAppLifecycleState(state);
+
+      lifecycle(AppLifecycleState.paused);
+      now = now.add(const Duration(minutes: 10));
+      lifecycle(AppLifecycleState.hidden);
+      lifecycle(AppLifecycleState.inactive);
+      lifecycle(AppLifecycleState.resumed);
+      expect(pending, hasLength(1));
+
+      lifecycle(AppLifecycleState.paused);
+
+      pending.single();
+      await pumpEventQueue();
 
       verifyNever(anyProbe());
     });

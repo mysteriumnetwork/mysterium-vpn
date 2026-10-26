@@ -1393,6 +1393,17 @@ void main() {
           expect(vpnStore.vpnConnection?.hash, 'hash');
         });
 
+        test('a reconnect replay keeps the hash, not just the first one', () async {
+          // MQTT auto-reconnects on resume and the broker replays the retained
+          // message, so this arrives with isFirstUpdate false. Treating it as a
+          // renewal wiped the hash on every resume - exactly when the health
+          // check runs and reports.
+          await publishEcho();
+          await publishEcho();
+
+          expect(vpnStore.vpnConnection?.hash, 'hash');
+        });
+
         test('a renewal drops the hash rather than blaming the old provider', () async {
           // The payload carries no hash, and the renewal may have moved us to
           // another node, so the previous one must not be reported.

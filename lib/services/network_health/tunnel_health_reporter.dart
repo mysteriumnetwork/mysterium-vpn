@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/services/network_health/tunnel_health_report_queue.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -117,11 +116,10 @@ class RestTunnelHealthReporter implements TunnelHealthReporter {
       await _api.reportBrokenNode(reportBrokenNodeRequest: request);
       _logger.info('Reported broken node for session ${request.sessionId}');
     } on DioException catch (e) {
-      // ApiErrorsInterceptor turns any response it could read into an
-      // ApiException and drops `response`, so checking `response` alone reads
-      // every rejection as a transport failure and queues permanent 4xx
-      // forever. An ApiException means the backend answered.
-      if (e is! ApiException && e.response == null) {
+      // No response means nothing reached the backend, so a retry is worth
+      // having. The interceptors wrap everything into ApiException, which is
+      // why that type carries the response through rather than dropping it.
+      if (e.response == null) {
         await _queue.add(request, now: _clock(), queuedAt: queuedAt);
       }
       rethrow;

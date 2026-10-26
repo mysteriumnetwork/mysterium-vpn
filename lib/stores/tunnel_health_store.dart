@@ -32,7 +32,8 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     this._protocolStore,
     this._config,
     this._analytics,
-    this._logger, {
+    this._logger,
+    this._isAuthenticated, {
     DateTime Function()? clock,
     Duration confirmDelay = const Duration(seconds: 3),
     void Function(VoidCallback)? schedule,
@@ -61,6 +62,11 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   final RemoteConfigStore _config;
   final AnalyticsStore _analytics;
   final Talker _logger;
+
+  /// Signed-in state. Probing and flushing both need a session: the probes are
+  /// pointless on the login screen, and a flush there drains the queue only to
+  /// have every report rejected as unauthenticated and dropped.
+  final bool Function() _isAuthenticated;
   final DateTime Function() _clock;
 
   @override
@@ -78,6 +84,11 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// are mutually exclusive.
   bool _scheduled = false;
   bool _running = false;
+
+  /// Bumped on leaving the foreground. A post-frame callback queued before
+  /// that cannot be cancelled and no frame paints while backgrounded, so it
+  /// would otherwise still be waiting when a later resume queues another one.
+  int _generation = 0;
 
   /// Test seam: the in-flight check, so tests can await it without sleeping.
   @visibleForTesting
@@ -109,7 +120,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// Releases a check that was queued but never ran — without this, no frame
   /// after a resume would latch it for the rest of the process.
   @override
-  void onLeftForeground() => _scheduled = false;
+  void onLeftForeground() {
+    _scheduled = false;
+    _generation++;
+  }
 
   @override
   void onReturnedToForeground(Duration backgroundedFor) => _maybeCheck(backgroundedFor);
@@ -120,6 +134,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     // a check that ran and found nothing.
     if (_disposed || !settings.enabled) {
       _logger.debug('Tunnel health skipped: ${_disposed ? 'disposed' : 'flag disabled'}');
+      return;
+    }
+    if (!_isAuthenticated()) {
+      _logger.debug('Tunnel health skipped: signed out');
       return;
     }
     final seconds = settings.minBackgroundSeconds;
@@ -138,12 +156,26 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     _scheduled = true;
     // Post-frame so the warm-start frame paints before any network work.
     final completer = Completer<void>();
+    final generation = _generation;
     pendingCheck = completer.future;
     _schedule(() {
       _scheduled = false;
+      // Stale: we left the foreground after this was queued, and a later
+      // resume has its own callback. That one measures the current state.
+      if (generation != _generation) {
+        completer.complete();
+        return;
+      }
       // Re-checked: _postFrame defers to the next frame, and a logout landing
       // in that window would otherwise probe a disposed VpnStore.
       if (_disposed) {
+        completer.complete();
+        return;
+      }
+      // Re-checked here, not just at the gate: backgrounding clears _scheduled
+      // but cannot cancel an already-queued callback, and no frame paints while
+      // backgrounded - so a second resume can queue a second one beside it.
+      if (_running) {
         completer.complete();
         return;
       }
@@ -249,7 +281,7 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     // both reads are a platform round-trip for a value nothing reads.
     final before = connected ? await _readStats() : null;
     final settings = _config.tunnelHealthConfig;
-    final sample = await _probe.probe(exitIp: exitIp, controlIp: settings.controlIp);
+    final sample = await _probe.probe(exitIp: exitIp, controlIps: settings.controlIps);
     final after = connected ? await _readStats() : null;
 
     final tx = _bytes(before, after, upload: true);
@@ -297,7 +329,11 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// two can never drift apart and silently break the once-per-session rule.
   String? get _gateKey {
     final connection = _vpnStore.vpnConnection;
-    return connection?.sessionId ?? connection?.connectionIP;
+    final key = connection?.sessionId ?? connection?.connectionIP;
+    // The connection is briefly created with an empty IP, and recording '' in
+    // the shown/reported sets would suppress every later connection observed
+    // in that same transient state.
+    return (key?.isNotEmpty ?? false) ? key : null;
   }
 
   @action
