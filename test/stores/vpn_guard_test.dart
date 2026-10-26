@@ -68,9 +68,9 @@ void main() {
 
   test('still refuses when the loaded entitlement does not grant access', () async {
     final inFlight = Completer<Subscription>();
-    when(subscription.subscriptionFuture).thenAnswer(
-      (_) => ObservableFuture.value(Subscription.empty()).replace(inFlight.future),
-    );
+    when(
+      subscription.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()).replace(inFlight.future));
 
     final guarded = newGuard().checkVpnGuards();
     inFlight.complete(Subscription.empty());
