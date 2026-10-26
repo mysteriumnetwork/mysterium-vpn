@@ -59,14 +59,16 @@ void main() {
     providesAppNotificationSettings: AppleNotificationSetting.disabled,
   );
 
-  FcmNotificationsRepository build({bool isApple = true}) => FcmNotificationsRepository(
-    logger: logger,
-    messaging: messaging,
-    localNotifications: localNotifications,
-    notifierService: notifierService,
-    logNonFatal: analyticsStore.logNonFatal,
-    isApple: isApple,
-  );
+  FcmNotificationsRepository build({bool isApple = true, Duration? stepTimeout}) =>
+      FcmNotificationsRepository(
+        logger: logger,
+        messaging: messaging,
+        localNotifications: localNotifications,
+        notifierService: notifierService,
+        logNonFatal: analyticsStore.logNonFatal,
+        isApple: isApple,
+        stepTimeout: stepTimeout,
+      );
 
   void stubPermissionRequest({NotificationSettings? result, Object? error}) {
     final stub = when(
@@ -965,6 +967,41 @@ void main() {
       await repository.primeTokenForTest();
 
       expect(repository.currentToken, 'fcm-token');
+    });
+  });
+
+  group('init resilience', () {
+    late FcmNotificationsRepository repository;
+
+    setUp(() {
+      // Authorized means init takes the branch that fetches a token, which is
+      // the call that hangs on Apple while APNs has not answered.
+      when(
+        messaging.getNotificationSettings(),
+      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.setAutoInitEnabled(any)).thenAnswer((_) async {});
+      when(messaging.getToken()).thenAnswer((_) => Completer<String>().future);
+      repository = build(stepTimeout: const Duration(milliseconds: 20));
+    });
+
+    tearDown(() => repository.dispose());
+
+    test('a platform call that never answers does not stall the steps after it', () async {
+      // init() hanging is invisible — nothing awaits it — and it would leave
+      // PushNotificationsStore without any of its stream listeners.
+      await expectLater(repository.init(), completes);
+    });
+
+    test('a step that times out is reported rather than silently dropped', () async {
+      await repository.init();
+
+      verify(
+        analyticsStore.logNonFatal(
+          err: argThat(isA<TimeoutException>(), named: 'err'),
+          stack: anyNamed('stack'),
+          reason: anyNamed('reason'),
+        ),
+      ).called(greaterThan(0));
     });
   });
 

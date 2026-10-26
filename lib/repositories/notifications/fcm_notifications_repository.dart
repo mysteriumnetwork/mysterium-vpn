@@ -32,12 +32,14 @@ class FcmNotificationsRepository implements NotificationsRepository {
     FirebaseMessaging? messaging,
     FlutterLocalNotificationsPlugin? localNotifications,
     bool? isApple,
+    Duration? stepTimeout,
   }) : _logger = logger,
        _notifierService = notifierService,
        _logNonFatal = logNonFatal,
        _messaging = messaging ?? FirebaseMessaging.instance,
        _localNotifications = localNotifications ?? FlutterLocalNotificationsPlugin(),
-       _isApple = isApple ?? (Platform.isIOS || Platform.isMacOS);
+       _isApple = isApple ?? (Platform.isIOS || Platform.isMacOS),
+       _stepTimeout = stepTimeout ?? const Duration(seconds: 10);
 
   final Talker _logger;
   final NotifierService _notifierService;
@@ -45,6 +47,9 @@ class FcmNotificationsRepository implements NotificationsRepository {
   final FirebaseMessaging _messaging;
   final FlutterLocalNotificationsPlugin _localNotifications;
   final bool _isApple;
+
+  /// Ceiling on each [_guard]ed platform call — see [_guard].
+  final Duration _stepTimeout;
 
   final StreamController<PushNotification> _openedController =
       StreamController<PushNotification>.broadcast();
@@ -118,6 +123,11 @@ class FcmNotificationsRepository implements NotificationsRepository {
     }
     _initialized = true;
 
+    // Before anything that crosses a platform channel: subscribing is local
+    // and cannot fail slowly, and a step that answers late must not cost us
+    // the messages arriving while it does.
+    await _guard('message listeners', _registerMessageListeners);
+
     await _guard('foreground presentation options', () async {
       if (_isApple) {
         await _messaging.setForegroundNotificationPresentationOptions(
@@ -130,7 +140,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
 
     await _guard('local notifications init', _initLocalNotifications);
     await _guard('permission status', refreshPermissionStatus);
-    await _guard('message listeners', _initMessageListeners);
+    await _guard('initial message', _drainInitialMessage);
     await _guard('token', _initToken);
   }
 
@@ -165,14 +175,20 @@ class FcmNotificationsRepository implements NotificationsRepository {
         );
   }
 
-  Future<void> _initMessageListeners() async {
+  void _registerMessageListeners() {
     _subscriptions.addAll([
       FirebaseMessaging.onMessage.listen(_onForegroundMessage, onError: _onStreamError),
       FirebaseMessaging.onMessageOpenedApp.listen(handleOpened, onError: _onStreamError),
     ]);
+  }
 
-    // Cold launch from a notification tap. Nothing is listening yet, so this
-    // lands in _pendingOpened and is replayed by getNotificationsStream.
+  /// Cold launch from a notification tap. Nothing is listening yet, so this
+  /// lands in _pendingOpened and is replayed by getNotificationsStream.
+  ///
+  /// Kept after the local-notification launch check, which fills the same
+  /// single slot: a tap on an FCM-displayed notification is the more specific
+  /// answer to what launched the app.
+  Future<void> _drainInitialMessage() async {
     final initial = await _messaging.getInitialMessage();
     if (initial != null) {
       handleOpened(initial);
@@ -553,9 +569,16 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// that can fail in ways we cannot enumerate — a missing plugin on a new
   /// platform, an OS refusing a capability. Reported non-fatally so the failure
   /// is visible in Crashlytics and Sentry without counting as a crash.
-  Future<void> _guard(String what, Future<void> Function() action) async {
+  ///
+  /// Timed out rather than merely caught, because the failure mode that
+  /// matters here is a channel that never answers at all: `getToken` does
+  /// exactly that on Apple platforms while APNs has issued no device token.
+  /// An unbounded step would hang [init], and with it the caller waiting to
+  /// attach its stream listeners — leaving push silently dead for the session.
+  /// The step is abandoned, not cancelled; a late answer still lands.
+  Future<void> _guard(String what, FutureOr<void> Function() action) async {
     try {
-      await action();
+      await Future<void>.sync(action).timeout(_stepTimeout);
     } catch (e, stack) {
       _report(e, stack, what);
     }
