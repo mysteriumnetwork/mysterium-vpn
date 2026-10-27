@@ -209,6 +209,7 @@ enum AnalyticsEvent {
   deviceLimitDismissed,
   tunnelHealthDegraded,
   tunnelHealthNoNetwork,
+  tunnelHealthControlIpStale,
   tunnelHealthSuppressed,
   tunnelHealthDialogShown,
   tunnelHealthAction,

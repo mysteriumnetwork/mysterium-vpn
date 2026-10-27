@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -23,11 +24,27 @@ abstract class TunnelHealthProbe {
 /// Times a tunnelled request against one the backend excludes from the tunnel
 /// route. Both legs run in parallel so they see the same network conditions.
 class HttpTunnelHealthProbe implements TunnelHealthProbe {
-  const HttpTunnelHealthProbe(this._dio, this._logger, {required this.timeout});
+  const HttpTunnelHealthProbe(
+    this._dio,
+    this._logger, {
+    required this.timeout,
+    this.onControlAddressesStale,
+    this.resolve = InternetAddress.lookup,
+  });
 
   final Dio _dio;
   final Talker _logger;
   final Duration timeout;
+
+  /// Called with the host's current addresses when none of the configured
+  /// control IPs appear among them. A stale control IP is otherwise silent:
+  /// the dial fails, every degraded tunnel reports as no network, and nothing
+  /// says why. Fires only while DNS is healthy, so it cannot cry wolf during
+  /// the outage it exists to describe.
+  final void Function(List<String> resolved)? onControlAddressesStale;
+
+  /// Injectable so tests do not depend on live DNS.
+  final Future<List<InternetAddress>> Function(String host) resolve;
 
   @override
   Future<TunnelHealthSample> probe({
@@ -45,6 +62,13 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
     // Only consulted when both legs failed, so connecting otherwise would cost
     // a handshake and a radio wake on every healthy resume for a value nothing
     // reads. Nothing is racing here either: both legs have already timed out.
+    // The direct leg answering means DNS is healthy, which is the only moment
+    // the configured control IPs can be checked against reality. Not awaited:
+    // the sample does not depend on it.
+    if (direct.elapsed != null && onControlAddressesStale != null) {
+      unawaited(_reportIfControlAddressesStale(controlIps));
+    }
+
     final bothLegsFailed = tunnelled.elapsed == null && direct.elapsed == null;
     final controlReachable = bothLegsFailed && await _anyControlReachable(controlIps);
 
@@ -70,6 +94,33 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
 
   /// Raw TCP to the control IP: no DNS, no TLS, no HTTP.
   /// See [TunnelHealthSample.controlReachable] for why that matters.
+  /// The control IPs are set in ConfigCat and the backend changes them rarely,
+  /// so the risk is not that they rotate often — it is that when they do, we
+  /// find out from a dashboard shape months later instead of an alarm.
+  Future<void> _reportIfControlAddressesStale(List<String> controlIps) async {
+    try {
+      final host = Uri.parse(kDirectProbeUrl).host;
+      final lookup = await resolve(host).timeout(timeout);
+      final resolved = lookup
+          .where((it) => it.type == InternetAddressType.IPv4)
+          .map((it) => it.address)
+          .toList();
+      // The host is load-balanced and answers differently per resolver, so one
+      // overlapping address is enough to say the config is still live.
+      if (resolved.isEmpty || controlIps.any(resolved.contains)) {
+        return;
+      }
+      _logger.warning(
+        'Control IPs $controlIps are no longer in DNS for $host (now $resolved) - '
+        'a degraded tunnel will report as no network until ConfigCat is updated',
+      );
+      onControlAddressesStale?.call(resolved);
+    } catch (e) {
+      // Inconclusive, not stale: never raise the alarm on a failed lookup.
+      _logger.debug('Could not check control addresses: $e');
+    }
+  }
+
   /// Any one answering proves the device has a network. Raced rather than
   /// tried in turn: the whole point is to answer fast while both HTTP legs
   /// have already timed out, and a dead address costs the full timeout.

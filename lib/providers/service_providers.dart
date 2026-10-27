@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
@@ -200,7 +201,19 @@ final tunnelHealthProbePOD = Provider<TunnelHealthProbe>((ref) {
     dio.interceptors.add(DioNetworkLoggerInterceptor());
   }
 
-  return HttpTunnelHealthProbe(dio, ref.watch(loggerPOD), timeout: timeout);
+  return HttpTunnelHealthProbe(
+    dio,
+    ref.watch(loggerPOD),
+    timeout: timeout,
+    // Server addresses, not the user's — safe to report, and the only warning
+    // anyone gets that the configured control IP has moved.
+    onControlAddressesStale: (resolved) => ref
+        .read(analyticsStorePOD)
+        .logEvent(
+          AnalyticsEvent.tunnelHealthControlIpStale,
+          parameters: {'resolved': resolved.join(',')},
+        ),
+  );
 });
 
 /// Dev-only QA tooling. Harmless in production: the endpoints are not mounted

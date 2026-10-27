@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -43,9 +44,19 @@ void main() {
 
   setUp(() => logger = Talker());
 
-  HttpTunnelHealthProbe build(_StubAdapter adapter) {
+  HttpTunnelHealthProbe build(
+    _StubAdapter adapter, {
+    void Function(List<String>)? onStale,
+    List<String> dns = const ['198.51.100.7'],
+  }) {
     final dio = Dio()..httpClientAdapter = adapter;
-    return HttpTunnelHealthProbe(dio, logger, timeout: const Duration(seconds: 5));
+    return HttpTunnelHealthProbe(
+      dio,
+      logger,
+      timeout: const Duration(seconds: 5),
+      onControlAddressesStale: onStale,
+      resolve: (_) async => dns.map(InternetAddress.new).toList(),
+    );
   }
 
   test('times both legs and verifies the bypass', () async {
@@ -122,6 +133,54 @@ void main() {
     final sample = await build(adapter).probe(exitIp: '10.0.0.1', controlIps: const ['nonsense']);
 
     expect(sample.controlReachable, isFalse);
+  });
+
+  test('reports a stale control IP while DNS still works', () async {
+    // Silent otherwise: the dial just fails, every degraded tunnel reports as
+    // no network, and nothing says the configured address has moved.
+    final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
+    List<String>? reported;
+
+    await build(
+      adapter,
+      onStale: (resolved) => reported = resolved,
+    ).probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+
+    expect(reported, ['198.51.100.7']);
+  });
+
+  test('stays quiet when a configured control IP is still in DNS', () async {
+    final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
+    var reported = false;
+
+    await build(
+      adapter,
+      onStale: (_) => reported = true,
+      // The host is load-balanced, so one overlapping answer is enough.
+      dns: const ['198.51.100.7', '192.0.2.1'],
+    ).probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+
+    expect(reported, isFalse);
+  });
+
+  test('a failed lookup is inconclusive, never reported as stale', () async {
+    final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
+    var reported = false;
+    final dio = Dio()..httpClientAdapter = adapter;
+    final probe = HttpTunnelHealthProbe(
+      dio,
+      logger,
+      timeout: const Duration(seconds: 5),
+      onControlAddressesStale: (_) => reported = true,
+      resolve: (_) async => throw const SocketException('no dns'),
+    );
+
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+
+    expect(reported, isFalse);
   });
 
   test('both legs are dispatched before either completes', () async {
