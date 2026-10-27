@@ -72,9 +72,8 @@ class TestTrafficService {
 
   /// Sends a request whose *delivery* is the side effect.
   ///
-  /// Retries are disabled: a resend is not free here, and for provider
-  /// disappearance each one disconnects again. The bytes are on the wire before
-  /// the wait begins, so giving up on the answer costs nothing.
+  /// Retries are off: a resend is not free, and for provider disappearance
+  /// each one disconnects again.
   Future<TestTrafficOutcome> _send(Future<void> Function(Map<String, dynamic> extra) call) async {
     try {
       await call(kNoRetryExtra).timeout(_ackWindow);
@@ -89,8 +88,12 @@ class TestTrafficService {
     }
   }
 
-  /// Whether the failure means "no answer" rather than "rejected".
-  bool _ackCouldNotArrive(DioException e) => e.response == null;
+  /// Whether the failure means "no answer" rather than "rejected" or "never
+  /// sent". Code 0 is ConnectionErrorsInterceptor rejecting before dispatch,
+  /// so nothing reached the backend and no condition was applied — reporting
+  /// that as unconfirmed would have the tester wait out a change never made.
+  bool _ackCouldNotArrive(DioException e) =>
+      e.response == null && !(e is ApiException && e.code == 0);
 }
 
 /// Turns a failure into something a tester can act on. A 404 and a 502 mean
@@ -100,6 +103,7 @@ String describeTestTrafficError(Object error) {
     return resolveErrorMessage(error);
   }
   return switch (error.code) {
+    0 => 'No network — the request never left the device',
     404 => 'Not deployed here — TEST_TRAFFIC_TOKEN is unset on this environment',
     502 => 'Reached the API, but the upstream traffic-control call failed',
     400 => 'Rejected: ${error.message}',

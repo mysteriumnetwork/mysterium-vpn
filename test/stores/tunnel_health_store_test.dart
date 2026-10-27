@@ -129,7 +129,68 @@ void main() {
     await store.pendingCheck;
   }
 
+  group('queued report flush', () {
+    test('flushes on construction, the only retry a force quit leaves', () async {
+      build();
+      await pumpEventQueue();
+
+      verify(reporter.flushPending()).called(1);
+    });
+
+    test('does not flush while signed out — every report would be rejected', () async {
+      authenticated = false;
+      build();
+      await pumpEventQueue();
+
+      verifyNever(reporter.flushPending());
+    });
+
+    test('a failing flush never escapes into the zone', () async {
+      when(reporter.flushPending()).thenThrow(Exception('offline'));
+
+      expect(build, returnsNormally);
+      await pumpEventQueue();
+    });
+  });
+
   group('trigger', () {
+    test('a check cancelled by a momentary inactive is still owed', () async {
+      // The shade pulled down between the resume and its frame bumps the
+      // generation; the resume that follows is far too short to earn another.
+      // resumeAfter is unusable here — it awaits a callback we hold back.
+      stubProbe(healthy);
+      final queued = <VoidCallback>[];
+      final store = build(schedule: queued.add);
+      void lifecycle(List<AppLifecycleState> states) =>
+          states.forEach(store.didChangeAppLifecycleState);
+      void runQueued() {
+        final pending = [...queued];
+        queued.clear();
+        for (final callback in pending) {
+          callback();
+        }
+      }
+
+      lifecycle([AppLifecycleState.paused]);
+      now = now.add(const Duration(minutes: 10));
+      lifecycle([
+        AppLifecycleState.hidden,
+        AppLifecycleState.inactive,
+        AppLifecycleState.resumed,
+        // The shade, before the earned check's frame ever paints.
+        AppLifecycleState.inactive,
+      ]);
+      runQueued();
+      verifyNever(anyProbe());
+
+      now = now.add(const Duration(seconds: 2));
+      lifecycle([AppLifecycleState.resumed]);
+      runQueued();
+      await store.pendingCheck;
+
+      verify(anyProbe()).called(1);
+    });
+
     test('probes on resume after the minimum background duration', () async {
       final store = build();
       await resumeAfter(store, const Duration(minutes: 10));
@@ -447,14 +508,16 @@ void main() {
       expect(store.degradationEpoch, 1);
     });
 
-    test('bumps again if the dialog never opened', () async {
+    test('claims the session when the prompt is queued, not when it opens', () async {
+      // The view can be holding the first prompt behind another dialog, so a
+      // gate that waited for onDialogShown would queue a second one.
       stubProbe(degraded);
       final store = build();
 
       await resumeAfter(store, const Duration(minutes: 10));
       await resumeAfter(store, const Duration(minutes: 10));
 
-      expect(store.degradationEpoch, 2);
+      expect(store.degradationEpoch, 1);
     });
   });
 

@@ -94,6 +94,26 @@ void main() {
     expect(await service.drop(durationSeconds: 60), TestTrafficOutcome.unconfirmed);
   });
 
+  test('an offline pre-flight rejection is an error, not silence', () async {
+    // ConnectionErrorsInterceptor.onRequest rejects with code 0 before the
+    // request is dispatched. Nothing was applied, so reporting it as
+    // unconfirmed would have the tester wait out a condition never set.
+    final service = TestTrafficService(
+      _FakeConnection(
+        throws: ApiException(
+          RequestOptions(),
+          'Internet connection unavailable.',
+          code: 0,
+          identifier: 'test',
+          endpoint: '/connection/test-traffic/drop',
+          severity: ExceptionSeverity.low,
+        ),
+      ),
+    );
+
+    await expectLater(service.drop(durationSeconds: 60), throwsA(isA<ApiException>()));
+  });
+
   test('a rejection is reported, never passed off as applied', () async {
     // Regression guard. ApiErrorsInterceptor drops `response` and carries the
     // status in `code`, so a response-only check read every rejection as
@@ -105,6 +125,7 @@ void main() {
 
   group('describeTestTrafficError', () {
     test('tells a missing deployment apart from an upstream failure', () {
+      expect(describeTestTrafficError(_rejected(0)), contains('never left the device'));
       expect(describeTestTrafficError(_rejected(404)), contains('TEST_TRAFFIC_TOKEN'));
       expect(describeTestTrafficError(_rejected(502)), contains('upstream'));
     });

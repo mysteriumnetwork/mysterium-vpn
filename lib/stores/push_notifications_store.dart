@@ -113,16 +113,20 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   /// Only foreground pushes reach FCM's `onMessage`, so for everything
   /// delivered to the tray the tap is the first evidence the notification
   /// arrived at all — counting the open without it would let the funnel show
-  /// more opens than deliveries. The id set keeps a foreground push that is
+  /// more opens than deliveries. The key set keeps a foreground push that is
   /// then tapped from being counted twice.
   bool _registerDelivery(PushNotification notification) {
-    final id = notification.id;
-    if (id != null && !_deliveredReported.add(id)) {
+    if (!_deliveredReported.add(_deliveryKey(notification))) {
       return false;
     }
     _analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: _params(notification));
     return true;
   }
+
+  /// Falls back to the payload's identifying fields when the push carries no
+  /// id: skipping the set entirely would count every id-less delivery twice.
+  String _deliveryKey(PushNotification notification) =>
+      notification.id ?? '${notification.category}|${notification.launchUrl}|${notification.title}';
 
   /// Chained so a back-filled delivery reaches Notifier before the open it was
   /// inferred from. [_report] contains its own failures, so the open is still

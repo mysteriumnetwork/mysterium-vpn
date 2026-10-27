@@ -1,6 +1,8 @@
 import 'dart:io';
 
-import 'package:mysterium_vpn/services/network_health/tunnel_health_probe.dart';
+/// Per-leg timeout for a health probe, and the ceiling for any latency floor
+/// configured against it.
+const kProbeTimeout = Duration(seconds: 5);
 
 /// Literal addresses of `location.mysterium.network`, the host the backend
 /// excludes from the tunnel route.

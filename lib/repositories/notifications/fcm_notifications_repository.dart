@@ -420,14 +420,11 @@ class FcmNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<PushNotification> getNotificationsStream() async* {
+  Stream<PushNotification> getNotificationsStream() => _replaying(_openedController, () {
     final pending = _pendingOpened;
     _pendingOpened = null;
-    if (pending != null) {
-      yield pending;
-    }
-    yield* _openedController.stream;
-  }
+    return pending;
+  });
 
   @override
   Stream<PushNotification> getReceivedStream() => _replayingAll(_receivedController, () {

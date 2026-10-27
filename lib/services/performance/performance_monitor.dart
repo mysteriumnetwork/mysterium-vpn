@@ -12,6 +12,10 @@ class PerformanceMonitor with WidgetsBindingObserver, BackgroundDurationObserver
   bool _activated = false;
   Trace? _warmStartTrace;
 
+  /// Below this the app never really left: a notification shade, a permission
+  /// dialog or an app-switcher glance all deliver a lifecycle round trip.
+  static const _minBackground = Duration(seconds: 10);
+
   Future<void> activate() async {
     if (_activated) {
       return;
@@ -40,7 +44,12 @@ class PerformanceMonitor with WidgetsBindingObserver, BackgroundDurationObserver
   }
 
   @override
-  void onReturnedToForeground(Duration backgroundedFor) => unawaited(_traceWarmStart());
+  void onReturnedToForeground(Duration backgroundedFor) {
+    if (backgroundedFor < _minBackground) {
+      return;
+    }
+    unawaited(_traceWarmStart());
+  }
 
   Future<void> _traceWarmStart() async {
     if (_warmStartTrace != null) {

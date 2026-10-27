@@ -1,21 +1,15 @@
 import 'package:flutter/widgets.dart';
 
-/// Reports how long the app spent away from the foreground.
+/// Reports how long the app spent away from the foreground. Mix in alongside
+/// [WidgetsBindingObserver]; the host still owns `addObserver`.
 ///
-/// Mix in alongside [WidgetsBindingObserver] and implement
-/// [onReturnedToForeground]; the host still owns `addObserver` /
-/// `removeObserver`.
+/// Any non-`resumed` state starts the clock, first one wins. Gating on a
+/// previous `paused` never matches — `ServicesBinding` expands
+/// `paused -> resumed` into `hidden -> inactive -> resumed`, and on desktop
+/// `paused` may never arrive at all.
 ///
-/// Detection lives here because getting it wrong is silent. Gating on the
-/// previous state being `paused` never matches: `ServicesBinding` expands
-/// `paused -> resumed` into `hidden -> inactive -> resumed`, so the
-/// predecessor is always `inactive`. On desktop it is worse — switching away
-/// or minimising delivers `inactive`/`hidden` and `paused` may never arrive at
-/// all, which is why `LifecycleListener` uses `windowManager` events there.
-///
-/// So any non-`resumed` state starts the clock and the first one wins. A brief
-/// `inactive` (notification shade, a system dialog) is therefore reported as a
-/// short duration rather than ignored — callers apply their own minimum.
+/// A brief `inactive` is reported as a short duration, not ignored: callers
+/// apply their own minimum.
 mixin BackgroundDurationObserver on WidgetsBindingObserver {
   DateTime? _backgroundedAt;
 

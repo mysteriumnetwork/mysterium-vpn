@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
@@ -194,6 +195,9 @@ final tunnelHealthProbePOD = Provider<TunnelHealthProbe>((ref) {
   // baseUrl and JSON headers, none of which apply to these absolute, plain
   // text URLs. receiveTimeout is set per request by the probe itself.
   final dio = Dio(BaseOptions(connectTimeout: timeout));
+  // The store below is re-created on every logout, so without this each cycle
+  // abandons a client holding its keep-alive sockets open.
+  ref.onDispose(() => dio.close(force: true));
 
   // The logger only observes — it never retries or mutates — so it is safe on
   // a measuring client, unlike the retry interceptor above.

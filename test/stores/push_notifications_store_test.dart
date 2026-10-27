@@ -31,7 +31,7 @@ void main() {
   late StreamController<PushNotification> openedController;
   late StreamController<PushNotification> receivedController;
 
-  PushNotification notification({String id = 'notif_1', String? campaignId}) => PushNotification(
+  PushNotification notification({String? id = 'notif_1', String? campaignId}) => PushNotification(
     id: id,
     title: 'Test',
     body: 'Body',
@@ -342,6 +342,21 @@ void main() {
 
       verify(repository.reportEvent(sent, NotifierEventType.delivered)).called(1);
       verify(repository.reportEvent(sent, NotifierEventType.open)).called(1);
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('an id-less delivery that is then tapped is still reported once', () async {
+      // The id short-circuited the dedupe set, so every id-less push counted
+      // its delivery twice - more deliveries than the funnel ever saw opens.
+      final sent = notification(id: null, campaignId: 'campaign-1');
+      receivedController.add(sent);
+      await pumpEventQueue();
+      openedController.add(sent);
+      await pumpEventQueue();
+
+      verify(repository.reportEvent(sent, NotifierEventType.delivered)).called(1);
       verify(
         analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
       ).called(1);

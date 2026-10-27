@@ -19,6 +19,7 @@ import 'tunnel_health_registration_test.mocks.dart';
   MockSpec<AnalyticsStore>(),
   MockSpec<VpnStore>(),
   MockSpec<VpnProtocolStore>(),
+  MockSpec<AuthSessionStore>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +51,8 @@ void main() {
         vpnProtocolStorePOD.overrideWithValue(MockVpnProtocolStore()),
         remoteConfigStorePOD.overrideWithValue(config),
         analyticsStorePOD.overrideWithValue(MockAnalyticsStore()),
+        // The store reads auth as soon as it is built, to flush queued reports.
+        authSessionStorePOD.overrideWithValue(MockAuthSessionStore()),
       ],
     );
     addTearDown(container.dispose);

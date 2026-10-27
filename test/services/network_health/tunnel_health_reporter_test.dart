@@ -31,15 +31,17 @@ void main() {
     String deviceId = 'device-1',
     String originCountry = 'lt',
     String internetType = 'wifi',
+    Future<String> Function()? publicKeyOverride,
+    Future<String> Function()? internetTypeOverride,
   }) => RestTunnelHealthReporter(
     api: api,
     logger: Talker(),
     queue: queue,
     clock: () => now,
-    publicKey: () async => publicKey,
+    publicKey: publicKeyOverride ?? () async => publicKey,
     deviceId: () => deviceId,
     originCountry: () => originCountry,
-    internetType: () async => internetType,
+    internetType: internetTypeOverride ?? () async => internetType,
     osType: 'macos',
     appVersion: '2.5.0',
   );
@@ -93,6 +95,25 @@ void main() {
     );
 
     expect(captureRequest().publicKey, '');
+  });
+
+  test('a context lookup that throws still sends the report', () async {
+    // The caller has already spent this session's one report, so a throw from
+    // secure storage or the connectivity channel would lose it outright.
+    await build(
+      publicKeyOverride: () async => throw Exception('keychain locked'),
+      internetTypeOverride: () async => throw Exception('channel died'),
+    ).report(
+      sessionId: 'sess-ctx',
+      hash: 'hash-ctx',
+      destinationCountry: 'de',
+      trigger: TunnelHealthTrigger.auto,
+    );
+
+    final request = captureRequest();
+    expect(request.sessionId, 'sess-ctx');
+    expect(request.publicKey, '');
+    expect(request.internetType, '');
   });
 
   group('queueing', () {

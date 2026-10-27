@@ -63,8 +63,13 @@ class RestTunnelHealthReporter implements TunnelHealthReporter {
     required String destinationCountry,
     required TunnelHealthTrigger trigger,
   }) async {
-    // Independent lookups — secure storage and a platform channel.
-    final context = await Future.wait([_publicKey(), _internetType()]);
+    // Independent lookups — secure storage and a platform channel. Contained
+    // because the caller has already spent this session's one report: a throw
+    // here would lose it without even queueing it.
+    final context = await Future.wait([
+      _read(_publicKey, 'public key'),
+      _read(_internetType, 'internet type'),
+    ]);
 
     // Every field is required and non-nullable: the backend contract has no
     // `omitempty`, so an unknown value is sent as '' rather than omitted.
@@ -102,6 +107,17 @@ class RestTunnelHealthReporter implements TunnelHealthReporter {
         // rejection that would fail identically next time.
         _logger.warning('Queued report for ${queued.request.sessionId} still failing: $e');
       }
+    }
+  }
+
+  /// Falls back to the empty string the contract already uses for an unknown
+  /// value, rather than failing the report.
+  Future<String> _read(Future<String> Function() lookup, String what) async {
+    try {
+      return await lookup();
+    } catch (e) {
+      _logger.warning('Could not read the $what for a broken node report: $e');
+      return '';
     }
   }
 

@@ -165,6 +165,59 @@ void main() {
     expect(reported, isFalse);
   });
 
+  test('reports a stale control IP once, not on every probe', () async {
+    final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
+    var reports = 0;
+    final probe = build(adapter, onStale: (_) => reports++);
+
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+
+    expect(reports, 1, reason: 'every resume would otherwise re-report the same answer');
+  });
+
+  test('a changed control IP config is checked again', () async {
+    final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
+    var reports = 0;
+    final probe = build(adapter, onStale: (_) => reports++);
+
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.2']);
+    await pumpEventQueue();
+
+    expect(reports, 2);
+  });
+
+  test('a failed lookup leaves the check armed for the next resume', () async {
+    final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
+    var reports = 0;
+    var failNext = true;
+    final dio = Dio()..httpClientAdapter = adapter;
+    final probe = HttpTunnelHealthProbe(
+      dio,
+      logger,
+      timeout: const Duration(seconds: 5),
+      onControlAddressesStale: (_) => reports++,
+      resolve: (_) async {
+        if (failNext) {
+          failNext = false;
+          throw const SocketException('no dns');
+        }
+        return [InternetAddress('198.51.100.7')];
+      },
+    );
+
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+    await probe.probe(exitIp: '10.0.0.1', controlIps: const ['192.0.2.1']);
+    await pumpEventQueue();
+
+    expect(reports, 1, reason: 'the inconclusive first attempt must not latch');
+  });
+
   test('a failed lookup is inconclusive, never reported as stale', () async {
     final adapter = _StubAdapter((options) async => _ok(jsonEncode({'ip': '203.0.113.9'})));
     var reported = false;

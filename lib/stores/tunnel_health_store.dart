@@ -44,6 +44,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
        _schedule = schedule ?? _postFrame {
     WidgetsBinding.instance.addObserver(this);
     _logger.debug('Tunnel health store constructed, lifecycle observer registered');
+    // Built once per signed-in session, which is the only retry a queued
+    // report gets after a force quit — the resume check needs five minutes in
+    // the background first, and the queue expires entries after three days.
+    unawaited(_flush());
   }
 
   static void _postFrame(VoidCallback callback) {
@@ -79,16 +83,17 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
 
   bool _disposed = false;
 
-  /// Queued but not yet started; released on leaving the foreground so a check
-  /// that never ran cannot latch. [_running] is the started half, and the two
-  /// are mutually exclusive.
+  /// Queued but not started, and started: mutually exclusive.
   bool _scheduled = false;
   bool _running = false;
 
-  /// Bumped on leaving the foreground. A post-frame callback queued before
-  /// that cannot be cancelled and no frame paints while backgrounded, so it
-  /// would otherwise still be waiting when a later resume queues another one.
+  /// Bumped on leaving the foreground, to retire a post-frame callback that
+  /// cannot be cancelled and no frame will run while backgrounded.
   int _generation = 0;
+
+  /// A check earned but retired before it ran; the next resume is usually far
+  /// too short to earn another, so the debt carries.
+  bool _owed = false;
 
   /// Test seam: the in-flight check, so tests can await it without sleeping.
   @visibleForTesting
@@ -121,6 +126,7 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// after a resume would latch it for the rest of the process.
   @override
   void onLeftForeground() {
+    _owed = _owed || _scheduled;
     _scheduled = false;
     _generation++;
   }
@@ -141,10 +147,13 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       return;
     }
     final seconds = settings.minBackgroundSeconds;
-    if (seconds <= 0 || inactiveFor < Duration(seconds: seconds)) {
+    if (seconds <= 0) {
+      _logger.debug('Tunnel health skipped: minBackgroundSeconds is 0, which disables it');
+      return;
+    }
+    if (!_owed && inactiveFor < Duration(seconds: seconds)) {
       _logger.debug(
-        'Tunnel health skipped: backgrounded ${inactiveFor.inSeconds}s, '
-        'needs ${seconds}s${seconds <= 0 ? ' (0 disables)' : ''}',
+        'Tunnel health skipped: backgrounded ${inactiveFor.inSeconds}s, needs ${seconds}s',
       );
       return;
     }
@@ -153,6 +162,7 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       return;
     }
     _logger.debug('Tunnel health check starting after ${inactiveFor.inSeconds}s backgrounded');
+    _owed = false;
     _scheduled = true;
     // Post-frame so the warm-start frame paints before any network work.
     final completer = Completer<void>();
@@ -160,21 +170,17 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     pendingCheck = completer.future;
     _schedule(() {
       _scheduled = false;
-      // Stale: we left the foreground after this was queued, and a later
-      // resume has its own callback. That one measures the current state.
+      // Retired: a later resume queued its own callback, which measures now.
       if (generation != _generation) {
         completer.complete();
         return;
       }
-      // Re-checked: _postFrame defers to the next frame, and a logout landing
-      // in that window would otherwise probe a disposed VpnStore.
+      // A logout in the deferred frame would otherwise probe a dead VpnStore.
       if (_disposed) {
         completer.complete();
         return;
       }
-      // Re-checked here, not just at the gate: backgrounding clears _scheduled
-      // but cannot cancel an already-queued callback, and no frame paints while
-      // backgrounded - so a second resume can queue a second one beside it.
+      // Not just at the gate: two resumes can queue two callbacks.
       if (_running) {
         completer.complete();
         return;
@@ -188,25 +194,14 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   }
 
   Future<void> _run() async {
-    // Probing plus the confirm delay spans seconds, and a reconnect or an MQTT
-    // provider renewal in that window does not dispose the store. Acting on
-    // the result afterwards would attribute old measurements to the new
-    // session and spend its one report and one dialog on them.
+    // A reconnect mid-check must not spend the new session's report on the
+    // old one's measurements.
     final startedOn = _gateKey;
 
     try {
       final first = await _evaluate();
       _logVerdict(first);
-      // Gated on the direct leg rather than on a verdict: that leg answering
-      // is the actual precondition for delivery, and it answers on healthy,
-      // inconclusive and bypassUnavailable alike.
-      if (first.sample.direct.elapsed != null) {
-        unawaited(
-          _reporter.flushPending().catchError(
-            (Object e) => _logger.warning('Flushing queued reports failed: $e'),
-          ),
-        );
-      }
+      unawaited(_flush());
       switch (first.verdict) {
         // The overwhelmingly common outcome; logging it would make this the
         // highest-volume event in the app.
@@ -357,7 +352,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       );
     }
 
-    if (gateKey != null && !_dialogShownSessions.contains(gateKey)) {
+    // Claimed here rather than when the view opens the dialog: it can sit in
+    // the dialog queue behind another one, and a second degradation meanwhile
+    // would otherwise pass this gate and prompt twice for one session.
+    if (gateKey != null && _dialogShownSessions.add(gateKey)) {
       // Recorded before the counter so the reaction can read it, and so the
       // view can tell whether the connection it is about to describe is still
       // the one that was diagnosed.
@@ -371,15 +369,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// describes may have been replaced or deliberately disconnected.
   bool isCurrentSession(String? session) => session != null && session == _gateKey;
 
-  /// Called by the view once the dialog is actually on screen. Marked on open,
-  /// not on refresh success — a user who dismisses still counts as prompted.
-  void onDialogShown() {
-    final gateKey = _gateKey;
-    if (gateKey != null) {
-      _dialogShownSessions.add(gateKey);
-    }
-    _analytics.logEvent(AnalyticsEvent.tunnelHealthDialogShown);
-  }
+  /// Called by the view once the dialog is actually on screen. The session was
+  /// already claimed when the prompt was queued; this only records that it was
+  /// shown.
+  void onDialogShown() => _analytics.logEvent(AnalyticsEvent.tunnelHealthDialogShown);
 
   void onAction({required bool refreshed}) => _analytics.logEvent(
     AnalyticsEvent.tunnelHealthAction,
@@ -436,6 +429,19 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
 
   int? _handshakeAge(DateTime? handshake) =>
       handshake == null ? null : _clock().difference(handshake).inSeconds;
+
+  /// Retries queued reports. Needs a session: without one the queue drains
+  /// only for every report to be rejected as unauthenticated and dropped.
+  Future<void> _flush() async {
+    if (_disposed || !_isAuthenticated()) {
+      return;
+    }
+    try {
+      await _reporter.flushPending();
+    } catch (e) {
+      _logger.warning('Flushing queued reports failed: $e');
+    }
+  }
 
   void dispose() {
     _disposed = true;
