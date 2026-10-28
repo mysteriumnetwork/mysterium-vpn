@@ -923,7 +923,12 @@ abstract class _VpnStore extends VpnGuard with Store {
   }) async {
     await _recentLocationsStore.add(location);
     _connectionSession++;
-    _vpnConnection = VpnConnection(connectionIP: '', location: location);
+    _vpnConnection = VpnConnection(
+      connectionIP: '',
+      location: location,
+      sessionId: _vpnConfig?.sessionId,
+      hash: hash,
+    );
     await checkLocation();
   }
 
@@ -1050,9 +1055,30 @@ abstract class _VpnStore extends VpnGuard with Store {
       return;
     }
 
+    // The broker replays its retained message on every subscribe, including
+    // the auto-reconnect on resume, so isFirstUpdate cannot tell a replay from
+    // a renewal - keying on it wiped the hash on every resume.
+    //
+    // Only a value known on both sides is evidence of a move: connectionIP is
+    // empty until the exit IP lands, and sessionId is absent when the connect
+    // response omitted it.
+    final movedIp = current.connectionIP.isNotEmpty && payload.ip != current.connectionIP;
+    final movedSession =
+        payload.sessionId != null &&
+        current.sessionId != null &&
+        payload.sessionId != current.sessionId;
+    final describesSameConnection = !movedIp && !movedSession;
+
     _vpnConnection = current.copyWith(
       connectionIP: payload.ip,
       location: resolved ?? current.location,
+      // Optional in the payload; keep the id we already hold.
+      sessionId: payload.sessionId ?? current.sessionId,
+      // A renewal carries no hash and may have moved us to another provider,
+      // so reporting the old one would blame the wrong node. Dropping it on
+      // the retained replay too would leave every report hash-less for no
+      // reason, since nothing changed.
+      hash: describesSameConnection ? current.hash : null,
     );
 
     if (!isFirstUpdate && payload.ip != current.connectionIP) {

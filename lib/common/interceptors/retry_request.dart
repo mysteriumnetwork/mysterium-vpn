@@ -85,6 +85,12 @@ class RetryRequestInterceptor extends Interceptor {
 
 const _kDisableRetryKey = 'ro_disable_retry';
 
+/// Opts a request out of [RetryRequestInterceptor]. For callers that can only
+/// supply a raw `extra` map — generated API clients take no [Options] — so the
+/// key itself stays private and [OptionsX.disableRetry] remains the only
+/// spelling of it. Required for any request whose delivery is the side effect.
+const kNoRetryExtra = <String, dynamic>{_kDisableRetryKey: true};
+
 extension RequestOptionsX on RequestOptions {
   static const _kAttemptKey = 'ro_attempt';
 

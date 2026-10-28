@@ -32,12 +32,14 @@ class FcmNotificationsRepository implements NotificationsRepository {
     FirebaseMessaging? messaging,
     FlutterLocalNotificationsPlugin? localNotifications,
     bool? isApple,
+    Duration? stepTimeout,
   }) : _logger = logger,
        _notifierService = notifierService,
        _logNonFatal = logNonFatal,
        _messaging = messaging ?? FirebaseMessaging.instance,
        _localNotifications = localNotifications ?? FlutterLocalNotificationsPlugin(),
-       _isApple = isApple ?? (Platform.isIOS || Platform.isMacOS);
+       _isApple = isApple ?? (Platform.isIOS || Platform.isMacOS),
+       _stepTimeout = stepTimeout ?? const Duration(seconds: 10);
 
   final Talker _logger;
   final NotifierService _notifierService;
@@ -45,6 +47,9 @@ class FcmNotificationsRepository implements NotificationsRepository {
   final FirebaseMessaging _messaging;
   final FlutterLocalNotificationsPlugin _localNotifications;
   final bool _isApple;
+
+  /// Ceiling on each [_guard]ed platform call — see [_guard].
+  final Duration _stepTimeout;
 
   final StreamController<PushNotification> _openedController =
       StreamController<PushNotification>.broadcast();
@@ -71,6 +76,16 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// Replayed to the first subscriber so the target survives.
   PushNotification? _pendingOpened;
 
+  /// Foreground messages that arrived before anything subscribed.
+  ///
+  /// [_registerMessageListeners] runs first in [init] so no message is missed
+  /// at the Firebase end, but PushNotificationsStore only subscribes once
+  /// [init] has finished every remaining step. Anything delivered in between
+  /// would hit a broadcast controller with no listener and be dropped.
+  /// Null once the stream has been taken; a late second subscriber is a
+  /// different conversation and gets live messages only.
+  List<PushNotification>? _pendingReceived = [];
+
   @override
   String? get currentToken => _currentToken;
 
@@ -86,20 +101,25 @@ class FcmNotificationsRepository implements NotificationsRepository {
 
   /// Per-subscriber view of [source] that first replays whatever [current]
   /// returns, or nothing when it returns null.
+  Stream<T> _replaying<T extends Object>(StreamController<T> source, T? Function() current) =>
+      _replayingAll(source, () {
+        final value = current();
+        return value == null ? null : [value];
+      });
+
+  /// Per-subscriber view of [source] that first replays everything [drain]
+  /// hands back. [drain] is expected to clear whatever it returns.
   ///
   /// Subscribes to [source] *before* replaying, because an `async*` prologue
   /// leaves a gap between its first `yield` and reaching `yield*` during which
   /// an event would be dropped.
-  Stream<T> _replaying<T extends Object>(StreamController<T> source, T? Function() current) {
+  Stream<T> _replayingAll<T extends Object>(StreamController<T> source, List<T>? Function() drain) {
     late StreamController<T> out;
     StreamSubscription<T>? subscription;
     out = StreamController<T>(
       onListen: () {
         subscription = source.stream.listen(out.add, onError: out.addError, onDone: out.close);
-        final value = current();
-        if (value != null) {
-          out.add(value);
-        }
+        drain()?.forEach(out.add);
       },
       onCancel: () async {
         await subscription?.cancel();
@@ -118,6 +138,11 @@ class FcmNotificationsRepository implements NotificationsRepository {
     }
     _initialized = true;
 
+    // Before anything that crosses a platform channel: subscribing is local
+    // and cannot fail slowly, and a step that answers late must not cost us
+    // the messages arriving while it does.
+    await _guard('message listeners', _registerMessageListeners);
+
     await _guard('foreground presentation options', () async {
       if (_isApple) {
         await _messaging.setForegroundNotificationPresentationOptions(
@@ -130,7 +155,7 @@ class FcmNotificationsRepository implements NotificationsRepository {
 
     await _guard('local notifications init', _initLocalNotifications);
     await _guard('permission status', refreshPermissionStatus);
-    await _guard('message listeners', _initMessageListeners);
+    await _guard('initial message', _drainInitialMessage);
     await _guard('token', _initToken);
   }
 
@@ -165,14 +190,20 @@ class FcmNotificationsRepository implements NotificationsRepository {
         );
   }
 
-  Future<void> _initMessageListeners() async {
+  void _registerMessageListeners() {
     _subscriptions.addAll([
       FirebaseMessaging.onMessage.listen(_onForegroundMessage, onError: _onStreamError),
       FirebaseMessaging.onMessageOpenedApp.listen(handleOpened, onError: _onStreamError),
     ]);
+  }
 
-    // Cold launch from a notification tap. Nothing is listening yet, so this
-    // lands in _pendingOpened and is replayed by getNotificationsStream.
+  /// Cold launch from a notification tap. Nothing is listening yet, so this
+  /// lands in _pendingOpened and is replayed by getNotificationsStream.
+  ///
+  /// Kept after the local-notification launch check, which fills the same
+  /// single slot: a tap on an FCM-displayed notification is the more specific
+  /// answer to what launched the app.
+  Future<void> _drainInitialMessage() async {
     final initial = await _messaging.getInitialMessage();
     if (initial != null) {
       handleOpened(initial);
@@ -389,17 +420,18 @@ class FcmNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<PushNotification> getNotificationsStream() async* {
+  Stream<PushNotification> getNotificationsStream() => _replaying(_openedController, () {
     final pending = _pendingOpened;
     _pendingOpened = null;
-    if (pending != null) {
-      yield pending;
-    }
-    yield* _openedController.stream;
-  }
+    return pending;
+  });
 
   @override
-  Stream<PushNotification> getReceivedStream() => _receivedController.stream;
+  Stream<PushNotification> getReceivedStream() => _replayingAll(_receivedController, () {
+    final pending = _pendingReceived;
+    _pendingReceived = null;
+    return pending;
+  });
 
   @override
   Future<void> reportEvent(PushNotification notification, NotifierEventType type) async {
@@ -423,7 +455,14 @@ class FcmNotificationsRepository implements NotificationsRepository {
     if (notification == null) {
       return;
     }
-    _emit(_receivedController, notification);
+    final pending = _pendingReceived;
+    if (pending != null && !_receivedController.hasListener) {
+      // Bounded: a burst before the first subscriber is a handful at most, and
+      // the list is released the moment the stream is taken.
+      pending.add(notification);
+    } else {
+      _emit(_receivedController, notification);
+    }
     if (!_isApple) {
       unawaited(_displayLocally(message.hashCode, notification));
     }
@@ -553,9 +592,16 @@ class FcmNotificationsRepository implements NotificationsRepository {
   /// that can fail in ways we cannot enumerate — a missing plugin on a new
   /// platform, an OS refusing a capability. Reported non-fatally so the failure
   /// is visible in Crashlytics and Sentry without counting as a crash.
-  Future<void> _guard(String what, Future<void> Function() action) async {
+  ///
+  /// Timed out rather than merely caught, because the failure mode that
+  /// matters here is a channel that never answers at all: `getToken` does
+  /// exactly that on Apple platforms while APNs has issued no device token.
+  /// An unbounded step would hang [init], and with it the caller waiting to
+  /// attach its stream listeners — leaving push silently dead for the session.
+  /// The step is abandoned, not cancelled; a late answer still lands.
+  Future<void> _guard(String what, FutureOr<void> Function() action) async {
     try {
-      await action();
+      await Future<void>.sync(action).timeout(_stepTimeout);
     } catch (e, stack) {
       _report(e, stack, what);
     }

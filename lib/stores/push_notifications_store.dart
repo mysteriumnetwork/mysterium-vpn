@@ -47,6 +47,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
 
   String? lastShownPushNotificationId;
 
+  /// Ids already counted as delivered — see [_registerDelivery].
+  final Set<String> _deliveredReported = {};
+
   Future<void> _init() async {
     try {
       await _notificationsRepository.init();
@@ -86,12 +89,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   StreamSubscription<PushNotification> _createReceivedListener() =>
       _notificationsRepository.getReceivedStream().listen(
         (notification) {
-          // No token or payload body in analytics parameters.
-          _analyticsStore.logEvent(
-            AnalyticsEvent.pushReceived,
-            parameters: {'notification_id': notification.id, 'campaign_id': notification.category},
-          );
-          unawaited(_report(notification, NotifierEventType.delivered));
+          if (_registerDelivery(notification)) {
+            unawaited(_report(notification, NotifierEventType.delivered));
+          }
         },
         onError: (Object error, StackTrace stack) =>
             _reportFailure(error, stack, 'received stream'),
@@ -100,14 +100,49 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   StreamSubscription<PushNotification> _createNotificationClickListener() =>
       _notificationsStream.listen(
         (notification) {
-          _analyticsStore.logEvent(
-            AnalyticsEvent.pushOpened,
-            parameters: {'notification_id': notification.id, 'campaign_id': notification.category},
-          );
-          unawaited(_report(notification, NotifierEventType.open));
+          final backfill = _registerDelivery(notification);
+          _analyticsStore.logEvent(AnalyticsEvent.pushOpened, parameters: _params(notification));
+          unawaited(_reportOpen(notification, backfill: backfill));
         },
         onError: (Object error, StackTrace stack) => _reportFailure(error, stack, 'opened stream'),
       );
+
+  /// Records a delivery once per notification, returning whether this is the
+  /// first sighting and the delivered event is therefore still owed.
+  ///
+  /// Only foreground pushes reach FCM's `onMessage`, so for everything
+  /// delivered to the tray the tap is the first evidence the notification
+  /// arrived at all — counting the open without it would let the funnel show
+  /// more opens than deliveries. The key set keeps a foreground push that is
+  /// then tapped from being counted twice.
+  bool _registerDelivery(PushNotification notification) {
+    if (!_deliveredReported.add(_deliveryKey(notification))) {
+      return false;
+    }
+    _analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: _params(notification));
+    return true;
+  }
+
+  /// Falls back to the payload's identifying fields when the push carries no
+  /// id: skipping the set entirely would count every id-less delivery twice.
+  String _deliveryKey(PushNotification notification) =>
+      notification.id ?? '${notification.category}|${notification.launchUrl}|${notification.title}';
+
+  /// Chained so a back-filled delivery reaches Notifier before the open it was
+  /// inferred from. [_report] contains its own failures, so the open is still
+  /// reported when the delivery fails.
+  Future<void> _reportOpen(PushNotification notification, {required bool backfill}) async {
+    if (backfill) {
+      await _report(notification, NotifierEventType.delivered);
+    }
+    await _report(notification, NotifierEventType.open);
+  }
+
+  // No token or payload body in analytics parameters.
+  Map<String, dynamic> _params(PushNotification notification) => {
+    'notification_id': notification.id,
+    'campaign_id': notification.category,
+  };
 
   /// Logs and reports a handled failure without marking it a crash, so a
   /// platform surprise is visible in Crashlytics and Sentry rather than silent.

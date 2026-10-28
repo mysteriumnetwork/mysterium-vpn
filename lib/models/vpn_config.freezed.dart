@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 mixin _$VpnConfig {
 
  String get id; String get config;// either wgConfig or ovpnConfig
- String get hash; String? get exitIp; bool? get limitExceeded; String? get ipType; String? get country; String? get city; String? get type;
+ String get hash; String? get exitIp; String? get sessionId; bool? get limitExceeded; String? get ipType; String? get country; String? get city; String? get type;
 /// Create a copy of VpnConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $VpnConfigCopyWith<VpnConfig> get copyWith => _$VpnConfigCopyWithImpl<VpnConfig>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,config,hash,exitIp,limitExceeded,ipType,country,city,type);
+int get hashCode => Object.hash(runtimeType,id,config,hash,exitIp,sessionId,limitExceeded,ipType,country,city,type);
 
 @override
 String toString() {
-  return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
+  return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, sessionId: $sessionId, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $VpnConfigCopyWith<$Res>  {
   factory $VpnConfigCopyWith(VpnConfig value, $Res Function(VpnConfig) _then) = _$VpnConfigCopyWithImpl;
 @useResult
 $Res call({
- String id, String config, String hash, String? exitIp, bool? limitExceeded, String? ipType, String? country, String? city, String? type
+ String id, String config, String hash, String? exitIp, String? sessionId, bool? limitExceeded, String? ipType, String? country, String? city, String? type
 });
 
 
@@ -63,12 +63,13 @@ class _$VpnConfigCopyWithImpl<$Res>
 
 /// Create a copy of VpnConfig
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? config = null,Object? hash = null,Object? exitIp = freezed,Object? limitExceeded = freezed,Object? ipType = freezed,Object? country = freezed,Object? city = freezed,Object? type = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? config = null,Object? hash = null,Object? exitIp = freezed,Object? sessionId = freezed,Object? limitExceeded = freezed,Object? ipType = freezed,Object? country = freezed,Object? city = freezed,Object? type = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,config: null == config ? _self.config : config // ignore: cast_nullable_to_non_nullable
 as String,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
 as String,exitIp: freezed == exitIp ? _self.exitIp : exitIp // ignore: cast_nullable_to_non_nullable
+as String?,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
 as String?,limitExceeded: freezed == limitExceeded ? _self.limitExceeded : limitExceeded // ignore: cast_nullable_to_non_nullable
 as bool?,ipType: freezed == ipType ? _self.ipType : ipType // ignore: cast_nullable_to_non_nullable
 as String?,country: freezed == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String config,  String hash,  String? exitIp,  bool? limitExceeded,  String? ipType,  String? country,  String? city,  String? type)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String config,  String hash,  String? exitIp,  String? sessionId,  bool? limitExceeded,  String? ipType,  String? country,  String? city,  String? type)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VpnConfig() when $default != null:
-return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.limitExceeded,_that.ipType,_that.country,_that.city,_that.type);case _:
+return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.sessionId,_that.limitExceeded,_that.ipType,_that.country,_that.city,_that.type);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.limitExceede
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String config,  String hash,  String? exitIp,  bool? limitExceeded,  String? ipType,  String? country,  String? city,  String? type)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String config,  String hash,  String? exitIp,  String? sessionId,  bool? limitExceeded,  String? ipType,  String? country,  String? city,  String? type)  $default,) {final _that = this;
 switch (_that) {
 case _VpnConfig():
-return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.limitExceeded,_that.ipType,_that.country,_that.city,_that.type);case _:
+return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.sessionId,_that.limitExceeded,_that.ipType,_that.country,_that.city,_that.type);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.limitExceede
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String config,  String hash,  String? exitIp,  bool? limitExceeded,  String? ipType,  String? country,  String? city,  String? type)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String config,  String hash,  String? exitIp,  String? sessionId,  bool? limitExceeded,  String? ipType,  String? country,  String? city,  String? type)?  $default,) {final _that = this;
 switch (_that) {
 case _VpnConfig() when $default != null:
-return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.limitExceeded,_that.ipType,_that.country,_that.city,_that.type);case _:
+return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.sessionId,_that.limitExceeded,_that.ipType,_that.country,_that.city,_that.type);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.id,_that.config,_that.hash,_that.exitIp,_that.limitExceede
 
 
 class _VpnConfig implements VpnConfig {
-  const _VpnConfig({required this.id, required this.config, required this.hash, this.exitIp, this.limitExceeded, this.ipType, this.country, this.city, this.type});
+  const _VpnConfig({required this.id, required this.config, required this.hash, this.exitIp, this.sessionId, this.limitExceeded, this.ipType, this.country, this.city, this.type});
   
 
 @override final  String id;
@@ -223,6 +224,7 @@ class _VpnConfig implements VpnConfig {
 // either wgConfig or ovpnConfig
 @override final  String hash;
 @override final  String? exitIp;
+@override final  String? sessionId;
 @override final  bool? limitExceeded;
 @override final  String? ipType;
 @override final  String? country;
@@ -239,16 +241,16 @@ _$VpnConfigCopyWith<_VpnConfig> get copyWith => __$VpnConfigCopyWithImpl<_VpnCon
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,config,hash,exitIp,limitExceeded,ipType,country,city,type);
+int get hashCode => Object.hash(runtimeType,id,config,hash,exitIp,sessionId,limitExceeded,ipType,country,city,type);
 
 @override
 String toString() {
-  return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
+  return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, sessionId: $sessionId, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$VpnConfigCopyWith<$Res> implements $VpnConfigCopyWith<$Re
   factory _$VpnConfigCopyWith(_VpnConfig value, $Res Function(_VpnConfig) _then) = __$VpnConfigCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String config, String hash, String? exitIp, bool? limitExceeded, String? ipType, String? country, String? city, String? type
+ String id, String config, String hash, String? exitIp, String? sessionId, bool? limitExceeded, String? ipType, String? country, String? city, String? type
 });
 
 
@@ -276,12 +278,13 @@ class __$VpnConfigCopyWithImpl<$Res>
 
 /// Create a copy of VpnConfig
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? config = null,Object? hash = null,Object? exitIp = freezed,Object? limitExceeded = freezed,Object? ipType = freezed,Object? country = freezed,Object? city = freezed,Object? type = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? config = null,Object? hash = null,Object? exitIp = freezed,Object? sessionId = freezed,Object? limitExceeded = freezed,Object? ipType = freezed,Object? country = freezed,Object? city = freezed,Object? type = freezed,}) {
   return _then(_VpnConfig(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,config: null == config ? _self.config : config // ignore: cast_nullable_to_non_nullable
 as String,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
 as String,exitIp: freezed == exitIp ? _self.exitIp : exitIp // ignore: cast_nullable_to_non_nullable
+as String?,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
 as String?,limitExceeded: freezed == limitExceeded ? _self.limitExceeded : limitExceeded // ignore: cast_nullable_to_non_nullable
 as bool?,ipType: freezed == ipType ? _self.ipType : ipType // ignore: cast_nullable_to_non_nullable
 as String?,country: freezed == country ? _self.country : country // ignore: cast_nullable_to_non_nullable

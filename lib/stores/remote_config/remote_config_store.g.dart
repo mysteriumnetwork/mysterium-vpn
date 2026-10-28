@@ -211,6 +211,14 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.newsCenterRefreshIntervalMinutes,
         name: 'RemoteConfigStoreBase.newsCenterRefreshIntervalMinutes',
       )).value;
+  Computed<TunnelHealthConfig>? _$tunnelHealthConfigComputed;
+
+  @override
+  TunnelHealthConfig get tunnelHealthConfig =>
+      (_$tunnelHealthConfigComputed ??= Computed<TunnelHealthConfig>(
+        () => super.tunnelHealthConfig,
+        name: 'RemoteConfigStoreBase.tunnelHealthConfig',
+      )).value;
   Computed<bool>? _$locationsRefreshButtonEnabledComputed;
 
   @override
@@ -452,6 +460,7 @@ favoriteLocationsEnabled: ${favoriteLocationsEnabled},
 termsConditionsEnabled: ${termsConditionsEnabled},
 newsCenterEnabled: ${newsCenterEnabled},
 newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
+tunnelHealthConfig: ${tunnelHealthConfig},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},

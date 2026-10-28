@@ -16,7 +16,8 @@ class RestTermsConditionsRepository implements TermsConditionsRepository {
         final response = await _api.getTerms().userTerms();
         return TermsConsent(
           acceptedVersion: response.data?.acceptedVersion,
-          latestVersion: response.data?.latestVersion,
+          // vpn_api 1.0.102 renamed latest_version -> current_version.
+          latestVersion: response.data?.currentVersion,
         );
       });
 

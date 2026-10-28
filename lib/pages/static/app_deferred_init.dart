@@ -44,7 +44,8 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
     ..read(smartRefreshStorePOD)
     ..read(realIPInfoStorePOD)
     ..read(pushNotificationsStorePOD)
-    ..read(notifierRegistrationStorePOD);
+    ..read(notifierRegistrationStorePOD)
+    ..read(tunnelHealthStorePOD);
 
   // Start MQTT here — after the Future.wait above, remote config is loaded so
   // `mqttExperiment` holds its real value (not the default false). Not awaited:

@@ -76,7 +76,10 @@ void main() {
   });
 
   testWidgets('resume checks terms after the debounce', (tester) async {
-    buildStore().didChangeAppLifecycleState(AppLifecycleState.resumed);
+    // Cold start is excluded now, so the app has to have left first.
+    buildStore()
+      ..didChangeAppLifecycleState(AppLifecycleState.paused)
+      ..didChangeAppLifecycleState(AppLifecycleState.resumed);
     verifyNever(termsConditions.checkForUpdatedTermsConditions());
 
     await tester.pump(const Duration(milliseconds: 500));

@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/interceptors/api_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
@@ -15,6 +17,7 @@ import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
@@ -183,6 +186,62 @@ final externalNetworkServicePOD = Provider<NetworkService>((ref) {
 
   return DioNetworkService(dio);
 });
+
+final tunnelHealthProbePOD = Provider<TunnelHealthProbe>((ref) {
+  // Deliberately interceptor-free: RetryRequestInterceptor would retry a
+  // failing leg and report the sum of the attempts as the latency.
+  const timeout = kProbeTimeout;
+  // Its own BaseOptions, not dioOptionsPOD's: that carries the VPN API's
+  // baseUrl and JSON headers, none of which apply to these absolute, plain
+  // text URLs. receiveTimeout is set per request by the probe itself.
+  final dio = Dio(BaseOptions(connectTimeout: timeout));
+  // The store below is re-created on every logout, so without this each cycle
+  // abandons a client holding its keep-alive sockets open.
+  ref.onDispose(() => dio.close(force: true));
+
+  // The logger only observes — it never retries or mutates — so it is safe on
+  // a measuring client, unlike the retry interceptor above.
+  if (kDebugMode || Env.flavor == Flavor.dev) {
+    dio.interceptors.add(DioNetworkLoggerInterceptor());
+  }
+
+  return HttpTunnelHealthProbe(
+    dio,
+    ref.watch(loggerPOD),
+    timeout: timeout,
+    // Server addresses, not the user's — safe to report, and the only warning
+    // anyone gets that the configured control IP has moved.
+    onControlAddressesStale: (resolved) => ref
+        .read(analyticsStorePOD)
+        .logEvent(
+          AnalyticsEvent.tunnelHealthControlIpStale,
+          parameters: {'resolved': resolved.join(',')},
+        ),
+  );
+});
+
+/// Dev-only QA tooling. Harmless in production: the endpoints are not mounted
+/// there, so every call returns 404.
+final testTrafficServicePOD = Provider<TestTrafficService>(
+  (ref) => TestTrafficService(ref.watch(vpnApiPOD).getConnection()),
+);
+
+final tunnelHealthReporterPOD = Provider<TunnelHealthReporter>(
+  (ref) => RestTunnelHealthReporter(
+    api: ref.watch(vpnApiPOD).getConnection(),
+    logger: ref.watch(loggerPOD),
+    queue: TunnelHealthReportQueue(ref.watch(sharedPreferenceServicePOD), ref.watch(loggerPOD)),
+    clock: DateTime.now,
+    // Read-only on purpose: getWireguardKey() mints and persists a keypair on
+    // a miss, which a telemetry field must never do. OpenVPN sends ''.
+    publicKey: () async => await ref.read(secureStorageServicePOD).getWireguardPublicKey() ?? '',
+    deviceId: () => ref.read(deviceIDStorePOD).deviceId,
+    originCountry: () => ref.read(realIPInfoStorePOD).info?.country ?? '',
+    internetType: () async => (await Connectivity().checkConnectivity()).reportLabel,
+    osType: Platform.operatingSystem,
+    appVersion: Env.buildInfo.buildVersion,
+  ),
+);
 
 final authServicePOD = Provider<AuthRepository>((ref) {
   final api = ref.watch(vpnApiPOD);

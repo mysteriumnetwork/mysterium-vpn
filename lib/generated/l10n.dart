@@ -510,6 +510,11 @@ class S {
     'tr': [],
     'tryAgainBtn': [],
     'tryAnotherLocation': [],
+    'tunnelDegradedDesc': [],
+    'tunnelDegradedDescNoRefresh': [],
+    'tunnelDegradedRefresh': [],
+    'tunnelDegradedTitle': [],
+    'tunnelNoNetwork': [],
     'tunnelPermissionRequired': [],
     'tunnelSetupError': [],
     'typeDelete': ['word'],
@@ -3871,6 +3876,51 @@ class S {
     return Intl.message(
       'Try searching for another location',
       name: 'tryAnotherLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The IP you're connected to may be having problems. Try refreshing it, or close this and pick another country.`
+  String get tunnelDegradedDesc {
+    return Intl.message(
+      'The IP you\'re connected to may be having problems. Try refreshing it, or close this and pick another country.',
+      name: 'tunnelDegradedDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The IP you're connected to may be having problems. No other IPs are available for this location — close this and pick another country.`
+  String get tunnelDegradedDescNoRefresh {
+    return Intl.message(
+      'The IP you\'re connected to may be having problems. No other IPs are available for this location — close this and pick another country.',
+      name: 'tunnelDegradedDescNoRefresh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refresh IP`
+  String get tunnelDegradedRefresh {
+    return Intl.message('Refresh IP', name: 'tunnelDegradedRefresh', desc: '', args: []);
+  }
+
+  /// `Connection may be degraded`
+  String get tunnelDegradedTitle {
+    return Intl.message(
+      'Connection may be degraded',
+      name: 'tunnelDegradedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection detected.`
+  String get tunnelNoNetwork {
+    return Intl.message(
+      'No internet connection detected.',
+      name: 'tunnelNoNetwork',
       desc: '',
       args: [],
     );

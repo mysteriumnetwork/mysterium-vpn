@@ -157,6 +157,7 @@ class MyApp extends HookConsumerWidget {
     // was already live needs rebuilding; creating one here on a signed-out cold
     // start would reach FirebaseMessaging before deferred init runs.
     final notifierStoreWasLive = ref.exists(notifierRegistrationStorePOD);
+    final vpnStoreWasLive = ref.exists(vpnStorePOD);
 
     await _disposeStore(ref, vpnStorePOD, dispose: (VpnStore s) => s.disposeStore());
     await _disposeStore(ref, dnsStorePOD, dispose: (DNSStore s) => s.disposeStore());
@@ -187,6 +188,13 @@ class MyApp extends HookConsumerWidget {
     ref
       ..read(smartRefreshStorePOD)
       ..read(newsCenterRefreshStorePOD);
+
+    // Watches vpnStorePOD, so the dispose above invalidated it; re-read to
+    // register a fresh lifecycle observer. Guarded because reading it rebuilds
+    // the whole VpnStore graph, which a signed-out cold start never had.
+    if (vpnStoreWasLive) {
+      ref.read(tunnelHealthStorePOD);
+    }
 
     // NotifierRegistrationStore watches subscriptionStorePOD for its attribute
     // sync, so it is invalidated above too. Re-reading it rebuilds the instance

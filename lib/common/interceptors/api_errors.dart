@@ -47,6 +47,10 @@ class ApiErrorsInterceptor extends Interceptor {
           endpoint: endpoint,
           severity: errorCode >= 500 ? ExceptionSeverity.high : ExceptionSeverity.medium,
           errorCode: errorBodyCode,
+          // Kept so callers can still tell a rejection from a transport
+          // failure; ConnectionErrorsInterceptor has none to pass, and a
+          // timeout has none either.
+          response: err.response,
         ),
       );
     }
@@ -59,6 +63,7 @@ class ApiErrorsInterceptor extends Interceptor {
         identifier: 'Dio Exception ${err.message} \nat  $endpoint',
         endpoint: endpoint,
         severity: ExceptionSeverity.high,
+        response: err.response,
       ),
     );
   }

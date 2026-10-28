@@ -29,6 +29,10 @@ void useHomeAutorun() {
   final udpBlockedSuggestionStore = useProvider<UdpBlockedSuggestionStore>(
     udpBlockedSuggestionStorePOD,
   );
+  final tunnelHealthStore = useProvider<TunnelHealthStore>(tunnelHealthStorePOD);
+  final analyticsStore = useProvider<AnalyticsStore>(analyticsStorePOD);
+  final connectionDisplayStore = useProvider<ConnectionDisplayStore>(connectionDisplayStorePOD);
+  final selectedLocationStore = useProvider<SelectedLocationStore>(selectedLocationStorePOD);
   // Captured against the home view's context so it survives the onboarding
   // dialog being popped — invoking it inside the dialog would race with the
   // route's disposal and short-circuit at `context.mounted`.
@@ -171,6 +175,50 @@ void useHomeAutorun() {
             }
             return null;
           });
+        }),
+        // Tunnel found degraded on resume. A reaction on a counter for the same
+        // reason as the UDP one above.
+        reaction((_) => tunnelHealthStore.degradationEpoch, (int _) {
+          final diagnosed = tunnelHealthStore.degradedSession;
+          controller.add(() async {
+            if (!context.mounted) {
+              return null;
+            }
+            // The queue can hold this behind another dialog. By the time it
+            // opens the connection may have been replaced or deliberately
+            // dropped, and prompting would describe a session that is gone
+            // while spending the replacement's one allowance.
+            if (!tunnelHealthStore.isCurrentSession(diagnosed)) {
+              return null;
+            }
+            tunnelHealthStore.onDialogShown();
+            final refresh = await showTunnelDegradedDialog(
+              context,
+              canRefresh: tunnelHealthStore.canRefreshIp,
+            );
+            tunnelHealthStore.onAction(refreshed: refresh);
+            if (!refresh) {
+              return null;
+            }
+            // Re-checked: the dialog itself can sit open for a while, and a
+            // refresh must not act on a connection the user has since changed.
+            if (!tunnelHealthStore.isCurrentSession(diagnosed) || !vpnStore.isConnected) {
+              return null;
+            }
+            try {
+              analyticsStore.logRefreshIP(connectionDisplayStore.connectionIP);
+              selectedLocationStore.value = null;
+              await vpnStore.manageConnection(refreshIP: true);
+            } catch (e) {
+              showSnackbar(S.current.somethingWentWrong);
+            }
+            return null;
+          });
+        }),
+        // Ungated: the store's confirm step already filters blips, and there is
+        // no action to offer for a flat connection.
+        reaction((_) => tunnelHealthStore.noNetworkEpoch, (int _) {
+          showSnackbar(S.current.tunnelNoNetwork);
         }),
         autorun((_) {
           if (!reviewPromptStore.pendingPrompt) {

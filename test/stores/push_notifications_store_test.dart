@@ -31,7 +31,7 @@ void main() {
   late StreamController<PushNotification> openedController;
   late StreamController<PushNotification> receivedController;
 
-  PushNotification notification({String id = 'notif_1', String? campaignId}) => PushNotification(
+  PushNotification notification({String? id = 'notif_1', String? campaignId}) => PushNotification(
     id: id,
     title: 'Test',
     body: 'Body',
@@ -306,6 +306,79 @@ void main() {
       final sent = notification(campaignId: 'campaign-1');
       openedController.add(sent);
       await Future<void>.delayed(Duration.zero);
+
+      verify(repository.reportEvent(sent, NotifierEventType.open)).called(1);
+    });
+
+    test('back-fills the delivery it never saw, before the open', () async {
+      final sent = notification(campaignId: 'campaign-1');
+      openedController.add(sent);
+      await pumpEventQueue();
+
+      // A background push never reaches onMessage, so the tap is the first
+      // evidence it arrived — without this the funnel shows opens with no
+      // matching delivery.
+      verifyInOrder([
+        repository.reportEvent(sent, NotifierEventType.delivered),
+        repository.reportEvent(sent, NotifierEventType.open),
+      ]);
+    });
+
+    test('the back-filled delivery is logged to analytics too', () async {
+      openedController.add(notification(campaignId: 'campaign-1'));
+      await pumpEventQueue();
+
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('a foreground delivery that is then tapped is reported once', () async {
+      final sent = notification(campaignId: 'campaign-1');
+      receivedController.add(sent);
+      await pumpEventQueue();
+      openedController.add(sent);
+      await pumpEventQueue();
+
+      verify(repository.reportEvent(sent, NotifierEventType.delivered)).called(1);
+      verify(repository.reportEvent(sent, NotifierEventType.open)).called(1);
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('an id-less delivery that is then tapped is still reported once', () async {
+      // The id short-circuited the dedupe set, so every id-less push counted
+      // its delivery twice - more deliveries than the funnel ever saw opens.
+      final sent = notification(id: null, campaignId: 'campaign-1');
+      receivedController.add(sent);
+      await pumpEventQueue();
+      openedController.add(sent);
+      await pumpEventQueue();
+
+      verify(repository.reportEvent(sent, NotifierEventType.delivered)).called(1);
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
+
+    test('two different notifications each report their own delivery', () async {
+      openedController.add(notification(id: 'notif_2', campaignId: 'campaign-1'));
+      await pumpEventQueue();
+      openedController.add(notification(id: 'notif_3', campaignId: 'campaign-1'));
+      await pumpEventQueue();
+
+      verify(repository.reportEvent(any, NotifierEventType.delivered)).called(2);
+    });
+
+    test('an open still reports when a back-filled delivery fails', () async {
+      final sent = notification(campaignId: 'campaign-1');
+      when(
+        repository.reportEvent(sent, NotifierEventType.delivered),
+      ).thenThrow(const NotifierException(category: 'network'));
+
+      openedController.add(sent);
+      await pumpEventQueue();
 
       verify(repository.reportEvent(sent, NotifierEventType.open)).called(1);
     });

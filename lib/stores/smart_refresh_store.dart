@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/observers/background_duration_observer.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:talker/talker.dart';
@@ -11,7 +12,8 @@ part 'smart_refresh_store.g.dart';
 // ignore: library_private_types_in_public_api
 class SmartRefreshStore = _SmartRefreshStore with _$SmartRefreshStore;
 
-abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserver {
+abstract class _SmartRefreshStore
+    with Store, Disposeable, WidgetsBindingObserver, BackgroundDurationObserver {
   _SmartRefreshStore(
     this._locationsStore,
     this._subscriptionStore,
@@ -53,19 +55,12 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
     WidgetsBinding.instance.addObserver(this);
   }
 
+  /// No minimum: any return to the foreground re-checks. Cold start is
+  /// deliberately excluded — SubscriptionStore and TermsConditionsStore both
+  /// fetch from their own `fireImmediately` auth reactions, so firing here too
+  /// would just duplicate both calls on every launch.
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        _onResume();
-        break;
-      case AppLifecycleState.paused:
-        _onPause();
-        break;
-      default:
-        break;
-    }
-  }
+  void onReturnedToForeground(Duration backgroundedFor) => _onResume();
 
   @override
   Future<void> dispose() async {
@@ -93,8 +88,6 @@ abstract class _SmartRefreshStore with Store, Disposeable, WidgetsBindingObserve
       _logger.handle(e, stack);
     }
   }
-
-  Future<void> _onPause() async {}
 
   Future<void> _refreshLocations({bool invalidate = false}) async {
     try {

@@ -433,6 +433,25 @@ final newsCenterRefreshStorePOD = Provider<NewsCenterRefreshStore>((ref) {
   return store;
 });
 
+final tunnelHealthStorePOD = Provider<TunnelHealthStore>((ref) {
+  final store = TunnelHealthStore(
+    ref.watch(tunnelHealthProbePOD),
+    ref.watch(tunnelHealthReporterPOD),
+    ref.watch(vpnStorePOD),
+    ref.watch(vpnProtocolStorePOD),
+    ref.watch(remoteConfigStorePOD),
+    ref.watch(analyticsStorePOD),
+    ref.watch(loggerPOD),
+    () => ref.read(authSessionStorePOD).isAuthenticated,
+  );
+
+  // Not optional: without it an invalidate leaves the observer on
+  // WidgetsBinding, so every logout/login cycle adds another live one.
+  ref.onDispose(store.dispose);
+
+  return store;
+});
+
 final subscriptionUpgradeStorePOD = Provider<SubscriptionUpgradeStore>(
   (ref) => SubscriptionUpgradeStore(
     ref.watch(subscriptionStorePOD),
