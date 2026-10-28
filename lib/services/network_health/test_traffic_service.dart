@@ -6,9 +6,7 @@ import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/utils/resolve_error_msg.dart';
 import 'package:vpn_api/vpn_api.dart';
 
-/// Durations the QA toolbox offers. The backend floor is 30s — the generated
-/// client's doc comment still says 10 because 1.0.104 predates that change, so
-/// nothing here may go below 30 or the request is rejected.
+/// Durations the QA toolbox offers, spanning the backend's whole 30-300s range.
 const kTestTrafficDurations = <int>[30, 60, 120, 300];
 
 /// Delays that land the tunnelled probe leg inside the window the classifier
@@ -29,7 +27,7 @@ enum TestTrafficOutcome {
 
   /// No answer inside the ack window. Expected when the action kills the tunnel
   /// the answer would come back through — the condition is applied regardless,
-  /// and the backend arms its undo before applying precisely for this case.
+  /// and its expiry is applied with it upstream, so it still clears itself.
   unconfirmed,
 }
 

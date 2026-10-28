@@ -303,7 +303,7 @@ class QAToolbox extends HookConsumerWidget {
   /// probes fail and the TCP control is what proves the node is at fault.
   ///
   /// While dropped the whole app is offline — Reset cannot get through either,
-  /// so the duration has to run out. It clears itself server-side regardless.
+  /// so the duration has to run out. It expires upstream regardless.
   Widget _buildDropTrafficAction(BuildContext context, WidgetRef ref) => _QAActionItem(
     icon: Icons.network_locked,
     title: 'Drop tunnel traffic (testnet)',
