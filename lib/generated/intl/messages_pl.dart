@@ -833,6 +833,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("Turecki"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Spróbuj ponownie"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Spróbuj wyszukać inną lokalizację"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "IP, z którym masz połączenie, może mieć problemy. Spróbuj je odświeżyć albo zamknij to okno i wybierz inny kraj.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "IP, z którym masz połączenie, może mieć problemy. Brak innych IP dla tej lokalizacji — zamknij to okno i wybierz inny kraj.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("Odśwież IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("Połączenie może być pogorszone"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("Nie wykryto połączenia z internetem."),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "Musisz udzielić pozwolenia, aby uruchomić tunel VPN.",
     ),
