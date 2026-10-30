@@ -98,6 +98,20 @@ void main() {
       verifyNever(locations.refreshAll(invalidate: anyNamed('invalidate')));
     });
 
+    testWidgets('detects a plan change when the subscription loaded before construction', (
+      tester,
+    ) async {
+      // Deferred init can construct this store after the subscription resolved;
+      // the baseline has to come from the current value, not the first event.
+      emitSubscription(Subscription(active: true, planId: 'pro'));
+      buildStore();
+
+      emitSubscription(Subscription(active: true, planId: 'ultra'));
+      await settle(tester);
+
+      verify(locations.refreshAll(invalidate: argThat(isFalse, named: 'invalidate'))).called(1);
+    });
+
     testWidgets('a plan change refetches locations', (tester) async {
       buildStore();
 

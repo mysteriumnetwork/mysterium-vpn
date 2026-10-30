@@ -149,7 +149,12 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     }
   }
 
-  final onToggle = isLoading || isSubscriptionLoading
+  // Only starting a connection depends on the entitlement. The card routes
+  // disconnect through this same callback, and a live tunnel is proof enough —
+  // the config reloads on every access-token change, so gating it there would
+  // let a slow request strand the user connected.
+  final entitlementUnknown = isSubscriptionLoading && !isConnected;
+  final onToggle = isLoading || entitlementUnknown
       ? null
       : needsUpgrade
       ? handleUpgradePlan

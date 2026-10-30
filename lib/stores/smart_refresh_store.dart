@@ -37,6 +37,10 @@ abstract class _SmartRefreshStore
 
   void _init() {
     _subscriptionDebouncer = Debouncer();
+    // Seed the baseline: this store is constructed in deferred init, by which
+    // point the subscription may already have resolved. Without it the first
+    // plan change afterwards reads as the initial load and is skipped.
+    _lastSubscription = _subscriptionStore.subscriptionFuture.value;
 
     _disposers = [
       // Tracks the subscription itself, not its planId: a plan-less
