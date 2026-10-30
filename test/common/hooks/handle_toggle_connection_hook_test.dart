@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -116,6 +117,36 @@ void main() {
 
     verify(vpnStore.onTunnelPermissionDecision(accepted: true)).called(1);
     verify(vpnStore.setupTunnel(trigger: 'permission_flow')).called(1);
+  });
+
+  testWidgets('a failed tunnel check never opens the permission gate', (tester) async {
+    when(
+      vpnStore.manageConnection(
+        location: anyNamed('location'),
+        intent: anyNamed('intent'),
+        targetIp: anyNamed('targetIp'),
+      ),
+    ).thenThrow(const TunnelCheckFailedException());
+
+    await pumpHost(tester);
+
+    expect(find.text(S.current.setupTunnerPermissionsDialogTitle), findsNothing);
+    verifyNever(vpnStore.onTunnelPermissionDialogShown());
+  });
+
+  testWidgets('an unexpected failure does not escape the toggle', (tester) async {
+    when(
+      vpnStore.manageConnection(
+        location: anyNamed('location'),
+        intent: anyNamed('intent'),
+        targetIp: anyNamed('targetIp'),
+      ),
+    ).thenThrow(PlatformException(code: 'NATIVE_ERR', message: 'boom'));
+
+    // Would fail the test as an unhandled async error without the catch-all.
+    await pumpHost(tester);
+
+    expect(find.text(S.current.setupTunnerPermissionsDialogTitle), findsNothing);
   });
 
   testWidgets('dismissing the tunnel permission gate logs a decline', (tester) async {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -24,6 +25,16 @@ void main() {
   late MockTermsConditionsStore termsConditions;
   late MockTalker logger;
 
+  /// Indirection so a test can swap the store's future and have the plan
+  /// reaction observe it — a mock getter is not itself observable.
+  late Observable<ObservableFuture<Subscription>> subscriptionFuture;
+
+  void emitSubscription(Subscription? subscription) => runInAction(
+    () => subscriptionFuture.value = subscription == null
+        ? ObservableFuture(Completer<Subscription>().future)
+        : ObservableFuture.value(subscription),
+  );
+
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
     locations = MockLocationsStore();
@@ -32,11 +43,10 @@ void main() {
     termsConditions = MockTermsConditionsStore();
     logger = MockTalker();
 
-    when(
-      subscriptions.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    subscriptionFuture = Observable(ObservableFuture(Completer<Subscription>().future));
+    when(subscriptions.subscriptionFuture).thenAnswer((_) => subscriptionFuture.value);
+    when(locations.refreshAll(invalidate: anyNamed('invalidate'))).thenAnswer((_) async {});
     when(authSession.isAuthenticated).thenReturn(false);
-    when(locations.refreshAll()).thenAnswer((_) async {});
     when(
       subscriptions.refreshSubscription(force: anyNamed('force')),
     ).thenAnswer((_) async => Subscription.empty());
@@ -73,6 +83,57 @@ void main() {
     await store.refreshSubscriptionOnResume();
 
     verify(logger.handle(error, any)).called(1);
+  });
+
+  group('plan changes', () {
+    /// The reaction is debounced by 200ms.
+    Future<void> settle(WidgetTester tester) => tester.pump(const Duration(milliseconds: 300));
+
+    testWidgets('the first resolved plan does not refetch locations', (tester) async {
+      buildStore();
+
+      emitSubscription(Subscription(active: true, planId: 'pro'));
+      await settle(tester);
+
+      verifyNever(locations.refreshAll(invalidate: anyNamed('invalidate')));
+    });
+
+    testWidgets('a plan change refetches locations', (tester) async {
+      buildStore();
+
+      emitSubscription(Subscription(active: true, planId: 'pro'));
+      await settle(tester);
+      emitSubscription(Subscription(active: true, planId: 'ultra'));
+      await settle(tester);
+
+      verify(locations.refreshAll(invalidate: argThat(isFalse, named: 'invalidate'))).called(1);
+    });
+
+    testWidgets('subscribing with no previous plan refetches locations', (tester) async {
+      buildStore();
+
+      // A loaded subscription with no plan reports a null planId, same as an
+      // unresolved one — only the first of these two may be treated as a load.
+      emitSubscription(Subscription.empty());
+      await settle(tester);
+      emitSubscription(Subscription(active: true, planId: 'pro'));
+      await settle(tester);
+
+      verify(locations.refreshAll(invalidate: argThat(isFalse, named: 'invalidate'))).called(1);
+    });
+
+    testWidgets('reloading the same plan does not refetch locations', (tester) async {
+      buildStore();
+
+      emitSubscription(Subscription(active: true, planId: 'pro'));
+      await settle(tester);
+      emitSubscription(null);
+      await settle(tester);
+      emitSubscription(Subscription(active: true, planId: 'pro'));
+      await settle(tester);
+
+      verifyNever(locations.refreshAll(invalidate: anyNamed('invalidate')));
+    });
   });
 
   testWidgets('resume checks terms after the debounce', (tester) async {

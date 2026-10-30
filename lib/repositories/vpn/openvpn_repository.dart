@@ -90,7 +90,7 @@ class OpenVpnRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<bool> isTunnelConfigured() => _service.checkTunnelConfiguration();
+  Future<bool> isTunnelConfigured() => singleFlightTunnelCheck(_service.checkTunnelConfiguration);
 
   @override
   Stream<VpnConnectionStatus> statusStream() =>

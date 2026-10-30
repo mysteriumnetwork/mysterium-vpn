@@ -106,8 +106,9 @@ class WireguardRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<bool> isTunnelConfigured() =>
-      _service.checkTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName);
+  Future<bool> isTunnelConfigured() => singleFlightTunnelCheck(
+    () => _service.checkTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName),
+  );
 
   @override
   Stream<VpnConnectionStatus> statusStream() =>

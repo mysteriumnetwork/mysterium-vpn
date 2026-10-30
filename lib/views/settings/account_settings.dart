@@ -124,7 +124,11 @@ class _Authenticated extends HookConsumerWidget {
     final vpnStore = ref.read(vpnStorePOD);
 
     useEffect(() {
-      subscriptionStore.refreshSubscription(force: true).ignore();
+      // Skip when a load is already running — on desktop this view is mounted
+      // during startup, where it would just duplicate the auth-driven fetch.
+      if (!subscriptionStore.isSubscriptionLoading) {
+        subscriptionStore.refreshSubscription(force: true).ignore();
+      }
       return null;
     }, const []);
 
