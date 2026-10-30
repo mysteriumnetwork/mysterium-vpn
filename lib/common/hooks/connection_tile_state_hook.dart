@@ -41,6 +41,10 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final connectedLocation = useComputedValue(() => vpnStore.location);
   final isConnected = useComputedValue(() => vpnStore.isConnected);
   final isLoading = useComputedValue(() => connectionDisplayStore.isLoading);
+  // Gates the button without claiming "Connecting…": until the first
+  // subscription load lands we cannot tell a connect from an upsell, which is
+  // what the "getting plan information" banner is reporting alongside it.
+  final isSubscriptionLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
   final ipInfo = useComputedValue(() => connectionDisplayStore.connectionIP);
   final targetLocation = useComputedValue(() => connectionDisplayStore.targetLocation);
   final intent = useComputedValue(() => connectionDisplayStore.connectionIntent);
@@ -145,7 +149,12 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     }
   }
 
-  final onToggle = isLoading
+  // Only starting a connection depends on the entitlement. The card routes
+  // disconnect through this same callback, and a live tunnel is proof enough —
+  // the config reloads on every access-token change, so gating it there would
+  // let a slow request strand the user connected.
+  final entitlementUnknown = isSubscriptionLoading && !isConnected;
+  final onToggle = isLoading || entitlementUnknown
       ? null
       : needsUpgrade
       ? handleUpgradePlan

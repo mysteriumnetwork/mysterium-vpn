@@ -825,6 +825,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage(
       "Prova a cercare un\'altra posizione",
     ),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "L\'IP a cui sei connesso potrebbe avere problemi. Prova ad aggiornarlo, oppure chiudi e scegli un altro paese.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "L\'IP a cui sei connesso potrebbe avere problemi. Non ci sono altri IP disponibili per questa posizione — chiudi e scegli un altro paese.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("Aggiorna IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage(
+      "La connessione potrebbe essere degradata",
+    ),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage(
+      "Nessuna connessione a internet rilevata.",
+    ),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "Devi concedere l\'autorizzazione per avviare il tunnel VPN.",
     ),

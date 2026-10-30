@@ -841,6 +841,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("Turco"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Reintentar"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Prueba a buscar otra ubicación"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "La IP a la que estás conectado puede tener problemas. Prueba a actualizarla, o cierra esto y elige otro país.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "La IP a la que estás conectado puede tener problemas. No hay otras IP disponibles para esta ubicación — cierra esto y elige otro país.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("Actualizar IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage(
+      "La conexión puede estar degradada",
+    ),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage(
+      "No se ha detectado conexión a internet.",
+    ),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "Debes conceder permiso para iniciar el túnel VPN.",
     ),

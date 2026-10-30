@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/repositories/vpn/vpn_repository.dart';
 import 'package:mysterium_vpn/services/api/api_service.dart';
@@ -10,6 +11,15 @@ abstract class BaseVpnRepository implements VpnRepository {
 
   final Talker logger;
   final ApiService apiService;
+
+  Future<bool>? _tunnelCheck;
+
+  /// Collapses concurrent [isTunnelConfigured] calls onto one. On Apple the
+  /// check is a NetworkExtension preferences round-trip, and parallel ones go
+  /// stale — which the plugin reports back as "tunnel not configured".
+  @protected
+  Future<bool> singleFlightTunnelCheck(Future<bool> Function() check) =>
+      _tunnelCheck ??= check().whenComplete(() => _tunnelCheck = null);
 
   /// Rate the VPN connection by sending the relevant data to the API.
   @override

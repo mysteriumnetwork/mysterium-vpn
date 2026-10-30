@@ -66,7 +66,7 @@ class MQTTService {
         _logger.warning('MQTT connecting.. Attempt $attempt');
       };
     if (kDebugMode) {
-      _mqtt.logging(on: true);
+      _mqtt.logging(on: false);
     }
   }
 

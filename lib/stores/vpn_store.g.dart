@@ -342,6 +342,24 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
+  late final _$_isManagingConnectionAtom = Atom(
+    name: '_VpnStore._isManagingConnection',
+    context: context,
+  );
+
+  @override
+  bool get _isManagingConnection {
+    _$_isManagingConnectionAtom.reportRead();
+    return super._isManagingConnection;
+  }
+
+  @override
+  set _isManagingConnection(bool value) {
+    _$_isManagingConnectionAtom.reportWrite(value, super._isManagingConnection, () {
+      super._isManagingConnection = value;
+    });
+  }
+
   late final _$_connectionErrorAtom = Atom(name: '_VpnStore._connectionError', context: context);
 
   VpnError? get connectionError {

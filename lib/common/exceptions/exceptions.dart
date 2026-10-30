@@ -21,6 +21,7 @@ export 'subscription_required_exception.dart';
 export 'subscription_verification.dart';
 
 export 'token_already_used.dart';
+export 'tunnel_check_failed_exception.dart';
 export 'tunnel_setup_required_exception.dart';
 export 'unavailable_location_exception.dart';
 export 'vpn_connect_exception.dart';

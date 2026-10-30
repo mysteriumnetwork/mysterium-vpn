@@ -142,6 +142,28 @@ void main() {
       ).called(1);
     });
 
+    test('isTunnelConfigured collapses concurrent calls onto one', () async {
+      final check = Completer<bool>();
+      when(
+        mockService.checkTunnelConfiguration(
+          bundleId: anyNamed('bundleId'),
+          tunnelName: anyNamed('tunnelName'),
+        ),
+      ).thenAnswer((_) => check.future);
+
+      final first = repository.isTunnelConfigured();
+      final second = repository.isTunnelConfigured();
+      check.complete(true);
+
+      expect(await Future.wait([first, second]), [true, true]);
+      verify(
+        mockService.checkTunnelConfiguration(
+          bundleId: anyNamed('bundleId'),
+          tunnelName: anyNamed('tunnelName'),
+        ),
+      ).called(1);
+    });
+
     test('isTunnelConfigured calls service.checkTunnelConfiguration', () async {
       when(
         mockService.checkTunnelConfiguration(
