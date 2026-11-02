@@ -4,6 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/ui/keys.dart';
 import 'package:mysterium_vpn/components/components.dart';
@@ -84,7 +85,7 @@ class HomeMobileScaffold extends HookConsumerWidget {
               final tab = tabs[i];
               // Re-tapping the active Locations tab returns the list to the top.
               if (tab == HomeTab.locations && store.selected == tab) {
-                scrollLocationsToTop(homeState.scrollController);
+                unawaited(homeState.locationsScrollController?.animateToTop() ?? Future.value());
                 return;
               }
               if (!store.trySelect(tab)) {
@@ -97,24 +98,6 @@ class HomeMobileScaffold extends HookConsumerWidget {
       ),
     );
   }
-}
-
-/// Offset beyond which the return-to-top animation starts from, so a long
-/// list does not build every intervening row on the way up.
-const _maxScrollToTopExtent = 2000.0;
-
-/// Animates [controller] back to the top. No-op when it is unattached or
-/// already there.
-void scrollLocationsToTop(ScrollController? controller) {
-  if (controller == null || !controller.hasClients || controller.offset <= 0) {
-    return;
-  }
-  if (controller.offset > _maxScrollToTopExtent) {
-    controller.jumpTo(_maxScrollToTopExtent);
-  }
-  unawaited(
-    controller.animateTo(0, duration: const Duration(milliseconds: 450), curve: Curves.easeOut),
-  );
 }
 
 class _MobileTabHeader extends StatelessWidget {

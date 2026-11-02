@@ -98,7 +98,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
       homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
-      final sc = homeState.scrollController;
+      final sc = homeState.locationsScrollController;
       if (sc == null) {
         return null;
       }

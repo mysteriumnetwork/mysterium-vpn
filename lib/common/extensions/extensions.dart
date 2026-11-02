@@ -10,6 +10,7 @@ export 'ip_type.dart';
 export 'list.dart';
 export 'location_data.dart';
 export 'number.dart';
+export 'scroll_controller_extensions.dart';
 export 'string.dart';
 export 'subscription.dart';
 export 'user_data.dart';
