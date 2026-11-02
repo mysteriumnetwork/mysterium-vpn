@@ -70,29 +70,28 @@ abstract class _SubscriptionOnboardingStore with Store {
   void trackStarted() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedStarted).ignore();
 
-  void trackStepViewed(int? index, {required bool wideLayout}) => _analyticsStore
+  void trackStepViewed(int? index, SubscriptionOnboardingStep? step) => _analyticsStore
       .logEvent(
         AnalyticsEvent.onboardingSubscribedStepViewed,
-        parameters: _stepAnalyticsParams(index, wideLayout: wideLayout),
+        parameters: _stepAnalyticsParams(index, step),
       )
       .ignore();
 
-  void trackStepCompleted(int? index, {required bool wideLayout}) => _analyticsStore
+  void trackStepCompleted(int? index, SubscriptionOnboardingStep? step) => _analyticsStore
       .logEvent(
         AnalyticsEvent.onboardingSubscribedStepCompleted,
-        parameters: _stepAnalyticsParams(index, wideLayout: wideLayout),
+        parameters: _stepAnalyticsParams(index, step),
       )
       .ignore();
 
   void trackFinished() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedFinished).ignore();
 
-  Map<String, dynamic>? _stepAnalyticsParams(int? index, {required bool wideLayout}) {
+  Map<String, dynamic>? _stepAnalyticsParams(int? index, SubscriptionOnboardingStep? step) {
     if (index == null) {
       return null;
     }
 
-    final step = SubscriptionOnboardingStep.fromPlatformIndex(index, wideLayout: wideLayout);
     return {'step': index + 1, if (step != null) 'step_name': step.name.toSnakeCase};
   }
 }

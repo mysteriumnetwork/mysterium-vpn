@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/home_tab.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_onboarding_dialog.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
@@ -24,9 +24,14 @@ class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
 class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnboardingShowcase> {
   SubscriptionOnboardingStore get _store => ref.read(subscriptionOnboardingStorePOD);
 
-  /// Refreshed every build. The Showcase callbacks below are memoized once,
-  /// so capturing the value instead would go stale across a resize.
-  bool _wideLayout = false;
+  /// Resolved at callback time: the Showcase callbacks are memoized once, so
+  /// a value captured here would go stale across a resize.
+  SubscriptionOnboardingStep? _stepAt(int? index) => index == null
+      ? null
+      : SubscriptionOnboardingStep.fromPlatformIndex(
+          index,
+          wideLayout: ScreenType.of(context) >= ScreenType.tablet,
+        );
 
   @override
   void dispose() {
@@ -39,7 +44,6 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
     final subscriptionOnboardingStore = ref.watch<SubscriptionOnboardingStore>(
       subscriptionOnboardingStorePOD,
     );
-    _wideLayout = ScreenType.of(context) >= ScreenType.tablet;
 
     final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
 
@@ -59,8 +63,8 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
             icon: Icons.close,
           ),
         ),
-        onStart: (index, key) => _store.trackStepViewed(index, wideLayout: _wideLayout),
-        onComplete: (index, key) => _store.trackStepCompleted(index, wideLayout: _wideLayout),
+        onStart: (index, key) => _store.trackStepViewed(index, _stepAt(index)),
+        onComplete: (index, key) => _store.trackStepCompleted(index, _stepAt(index)),
         onFinish: () {
           _store.trackFinished();
           _markOnboardingAsShown().then((_) {

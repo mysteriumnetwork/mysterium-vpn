@@ -187,7 +187,7 @@ void main() {
 
   test('trackStepViewed logs one-based step parameter', () {
     // act
-    store.trackStepViewed(2, wideLayout: false);
+    store.trackStepViewed(2, SubscriptionOnboardingStep.products);
 
     // assert
     verify(
@@ -200,7 +200,7 @@ void main() {
 
   test('trackStepCompleted logs one-based step parameter', () {
     // act
-    store.trackStepCompleted(3, wideLayout: false);
+    store.trackStepCompleted(3, SubscriptionOnboardingStep.settings);
 
     // assert
     verify(

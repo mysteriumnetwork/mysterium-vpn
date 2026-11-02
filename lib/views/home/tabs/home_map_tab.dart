@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_connection_view.dart';
-import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -17,7 +16,6 @@ class HomeMapTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final locationsStore = ref.watch(locationsStorePOD);
-    final homeState = ref.read(homeStateProvider);
 
     return Column(
       children: [
@@ -27,9 +25,6 @@ class HomeMapTab extends HookConsumerWidget {
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: ArrowedProgressCard(
               step: SubscriptionOnboardingStep.search,
-              globalKey:
-                  homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep.search
-                      .platformIndex(wideLayout: ScreenType.of(context) >= ScreenType.tablet)],
               tooltipPosition: TooltipPosition.bottom,
               // Hands off to the Locations tab with the real field focused.
               child: SearchField(

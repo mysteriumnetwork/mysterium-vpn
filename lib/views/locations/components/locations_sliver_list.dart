@@ -61,8 +61,6 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
         : items.indexWhere((it) => it.countryCode == effectivePriorityCountryCode);
 
     final isDesktop = screenType == ScreenType.desktop;
-    // The tour follows the scaffold, which switches at tablet.
-    final wideLayout = screenType >= ScreenType.tablet;
 
     final homeState = ref.read(homeStateProvider);
 
@@ -172,14 +170,11 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
             if (showcaseTargetRect != null)
               SliverPositioned.fromRect(
                 rect: showcaseTargetRect,
-                child: IgnorePointer(
+                child: const IgnorePointer(
                   child: ArrowedProgressCard(
-                    globalKey:
-                        homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep.locations
-                            .platformIndex(wideLayout: wideLayout)],
                     step: SubscriptionOnboardingStep.locations,
                     tooltipPosition: TooltipPosition.top,
-                    child: const SizedBox.expand(),
+                    child: SizedBox.expand(),
                   ),
                 ),
               ),

@@ -7,7 +7,6 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/home/arrowed_progress_card.dart';
 import 'package:mysterium_vpn/views/home/home_desktop_view.dart';
-import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/home/home_tab_labels.dart';
 import 'package:mysterium_vpn/views/home/tabs/home_products_tab/home_products_tab.dart';
 import 'package:mysterium_vpn/views/settings/settings_desktop_view.dart';
@@ -60,9 +59,6 @@ class HomeDesktopScaffold extends HookConsumerWidget {
               height: 32,
               child: ArrowedProgressCard(
                 step: step,
-                globalKey: ref
-                    .read(homeStateProvider)
-                    .subscriptionOnboardingKeys[step.platformIndex(wideLayout: true)],
                 tooltipPosition: TooltipPosition.right,
                 child: child,
               ),

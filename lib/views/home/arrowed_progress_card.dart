@@ -6,6 +6,7 @@ import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
+import 'package:mysterium_vpn/views/home/home_state.dart';
 import 'package:mysterium_vpn/views/subscription_onboarding_step_labels.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -15,7 +16,6 @@ export 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
 class ArrowedProgressCard extends HookConsumerWidget {
   const ArrowedProgressCard({
     required this.child,
-    required this.globalKey,
     required this.step,
     required this.tooltipPosition,
     this.showcasePadding,
@@ -23,7 +23,6 @@ class ArrowedProgressCard extends HookConsumerWidget {
   });
 
   final Widget child;
-  final GlobalKey globalKey;
   final SubscriptionOnboardingStep step;
   final TooltipPosition tooltipPosition;
 
@@ -32,12 +31,6 @@ class ArrowedProgressCard extends HookConsumerWidget {
 
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
   static const double _cornerInset = 24;
-
-  bool _isLastStep({required bool wideLayout}) =>
-      step.platformIndex(wideLayout: wideLayout) == (SubscriptionOnboardingStep.values.length - 1);
-
-  String _actionLabel({required bool wideLayout}) =>
-      _isLastStep(wideLayout: wideLayout) ? S.current.completeBtn : S.current.continueBtn;
 
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;
@@ -113,9 +106,11 @@ class ArrowedProgressCard extends HookConsumerWidget {
     }
 
     final wideLayout = ScreenType.of(context) >= ScreenType.tablet;
+    final index = step.platformIndex(wideLayout: wideLayout);
+    final isLastStep = index == step.totalSteps - 1;
 
     return Showcase.withWidget(
-      key: globalKey,
+      key: ref.watch(homeStateProvider).subscriptionOnboardingKeys[index],
       tooltipPosition: tooltipPosition,
       onTargetRectUpdate: updateArrowPosition,
       disposeOnTap: false,
@@ -128,12 +123,12 @@ class ArrowedProgressCard extends HookConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ProgressCard(
-              icon: step.icon(wideLayout: wideLayout),
-              progressLabel: '${step.platformIndex(wideLayout: wideLayout) + 1}/${step.totalSteps}',
-              progressValue: (step.platformIndex(wideLayout: wideLayout) + 1) / step.totalSteps,
+              icon: step.icon,
+              progressLabel: '${index + 1}/${step.totalSteps}',
+              progressValue: (index + 1) / step.totalSteps,
               title: step.title(wideLayout: wideLayout),
               description: step.description(wideLayout: wideLayout),
-              actionLabel: _actionLabel(wideLayout: wideLayout),
+              actionLabel: isLastStep ? S.current.completeBtn : S.current.continueBtn,
               onActionPressed: () => ShowcaseView.get().next(),
             ),
             _TooltipArrow(
