@@ -12,11 +12,7 @@ class HapticsSetting extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.watch(hapticsStorePOD);
-
-    if (!store.isSupported) {
-      return const SizedBox.shrink();
-    }
+    final store = ref.read(hapticsStorePOD);
 
     return Observer(
       builder: (_) => SettingsCard(

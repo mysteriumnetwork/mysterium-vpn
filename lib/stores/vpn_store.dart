@@ -13,6 +13,7 @@ import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/vpn_error.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -297,6 +298,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     } else {
       _connectedAt = DateTime.now();
       _settings.setConnectedAt(_connectedAt!).ignore();
+      // Only a fresh connect — a tunnel already up at launch is not an outcome
+      // the user just caused, so it must not buzz.
+      HapticLevel.success.fire();
     }
   }
 

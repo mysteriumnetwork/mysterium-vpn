@@ -110,12 +110,6 @@ void useHomeAutorun() {
             vpnStore.consumeConnectionError();
           }
         }),
-        // The outcome, not the button press — the tunnel is actually up.
-        reaction<VpnConnectionStatus>((_) => vpnStore.vpnStatus, (status) {
-          if (status == VpnConnectionStatus.connected) {
-            HapticLevel.success.fire();
-          }
-        }),
         autorun((_) {
           final notification = pushNotificationsStore.lastNotification;
           if (notification?.id == pushNotificationsStore.lastShownPushNotificationId) {

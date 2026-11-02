@@ -18,11 +18,12 @@ import 'package:mysterium_vpn/entrypoints/firebase/firebase_options_prod.dart' a
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/l10n/arb_locale.dart';
 import 'package:mysterium_vpn/l10n/ota_translations.dart';
+import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:mysterium_vpn/stores/analytics/analytics_store_firebase.dart';
+import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:talker/talker.dart';
 import 'package:window_manager/window_manager.dart';
@@ -72,6 +73,10 @@ class AppInitializer {
       // (a no-op when it resolves to the same ARB locale).
       loadLocalizations(kFallbackLocale),
     ]);
+
+    // Before the first frame: the store that owns this preference is built
+    // lazily when Settings opens, which is far too late.
+    restoreHapticsPreference(providerContainer.read(appSettingsRepositoryPOD));
 
     logger = providerContainer.read(loggerPOD);
 

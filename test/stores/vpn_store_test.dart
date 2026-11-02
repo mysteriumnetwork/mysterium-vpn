@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/vpn_error.dart';
 import 'package:talker/talker.dart';
 
+import '../support/haptics_recorder.dart';
 import '../support/test_prefs.dart';
 
 @GenerateNiceMocks([
@@ -833,6 +834,7 @@ void main() {
       });
 
       test('restores the persisted connectedAt when the tunnel is already up at launch', () async {
+        final fired = recordHaptics();
         final storedAt = DateTime.now().subtract(const Duration(minutes: 5));
         await prefsService.setInt(StorageKeys.connectedAt.name, storedAt.millisecondsSinceEpoch);
         when(
@@ -844,6 +846,8 @@ void main() {
 
         expect(store.vpnStatus, VpnConnectionStatus.connected);
         expect(store.connectedAt?.millisecondsSinceEpoch, storedAt.millisecondsSinceEpoch);
+        // Already up before launch — not an outcome the user just caused.
+        expect(fired, isEmpty);
 
         await store.disposeStore();
       });
@@ -867,6 +871,7 @@ void main() {
       });
 
       test('stamps and persists a fresh connectedAt when no stamp is stored', () async {
+        final fired = recordHaptics();
         when(
           mockWireguardRepo.currentStatus(),
         ).thenAnswer((_) async => VpnConnectionStatus.connected);
@@ -881,6 +886,7 @@ void main() {
           prefsService.getInt(StorageKeys.connectedAt.name),
           store.connectedAt!.millisecondsSinceEpoch,
         );
+        expect(fired, ['HapticFeedbackType.successNotification']);
 
         await store.disposeStore();
       });

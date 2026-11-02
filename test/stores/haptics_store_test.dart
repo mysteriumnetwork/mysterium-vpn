@@ -23,14 +23,28 @@ void main() {
       final store = HapticsStore(settings: _FakeSettings());
 
       expect(store.enabled, isTrue);
-      expect(HapticLevel.enabled, isTrue);
     });
 
-    test('restores a stored off preference into the design system', () {
+    test('reflects a stored off preference', () {
       final store = HapticsStore(settings: _FakeSettings(enabled: false));
 
       expect(store.enabled, isFalse);
+    });
+
+    // The store is built lazily when Settings opens, so startup — not the
+    // constructor — is what has to carry the preference into the design system.
+    test('restoreHapticsPreference applies a stored off without the store', () {
+      restoreHapticsPreference(_FakeSettings(enabled: false));
+
       expect(HapticLevel.enabled, isFalse);
+    });
+
+    test('restoreHapticsPreference defaults to on when nothing is stored', () {
+      HapticLevel.enabled = false;
+
+      restoreHapticsPreference(_FakeSettings());
+
+      expect(HapticLevel.enabled, isTrue);
     });
 
     test('toggling persists and mirrors into the design system', () async {
