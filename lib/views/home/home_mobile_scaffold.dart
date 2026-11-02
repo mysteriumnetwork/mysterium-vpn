@@ -71,7 +71,8 @@ class HomeMobileScaffold extends HookConsumerWidget {
                 SubscriptionOnboardingStep.products,
                 SubscriptionOnboardingStep.settings,
               ][index];
-              final globalKey = homeState.subscriptionOnboardingKeys[step.platformIndex];
+              final globalKey =
+                  homeState.subscriptionOnboardingKeys[step.platformIndex(wideLayout: false)];
               const tabKeys = [K.mapTab, K.locationsTab, K.productsTab, K.settingsTab];
               return ArrowedProgressCard(
                 key: tabKeys[index],

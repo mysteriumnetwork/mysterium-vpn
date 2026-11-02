@@ -8,7 +8,7 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
-import 'package:mysterium_vpn_design/widgets/floating_button.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
@@ -24,6 +24,10 @@ class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
 class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnboardingShowcase> {
   SubscriptionOnboardingStore get _store => ref.read(subscriptionOnboardingStorePOD);
 
+  /// Refreshed every build. The Showcase callbacks below are memoized once,
+  /// so capturing the value instead would go stale across a resize.
+  bool _wideLayout = false;
+
   @override
   void dispose() {
     ShowcaseView.get().unregister();
@@ -35,6 +39,7 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
     final subscriptionOnboardingStore = ref.watch<SubscriptionOnboardingStore>(
       subscriptionOnboardingStorePOD,
     );
+    _wideLayout = ScreenType.of(context) >= ScreenType.tablet;
 
     final startTour = useComputedValue(() => subscriptionOnboardingStore.startTour);
 
@@ -54,8 +59,8 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
             icon: Icons.close,
           ),
         ),
-        onStart: (index, key) => _store.trackStepViewed(index),
-        onComplete: (index, key) => _store.trackStepCompleted(index),
+        onStart: (index, key) => _store.trackStepViewed(index, wideLayout: _wideLayout),
+        onComplete: (index, key) => _store.trackStepCompleted(index, wideLayout: _wideLayout),
         onFinish: () {
           _store.trackFinished();
           _markOnboardingAsShown().then((_) {

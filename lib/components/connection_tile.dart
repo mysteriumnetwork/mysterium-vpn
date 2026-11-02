@@ -96,17 +96,20 @@ class ConnectionTile extends HookConsumerWidget {
       }
     }
 
-    Widget buttonWrapper({required BuildContext context, required Widget child}) =>
-        ArrowedProgressCard(
-          key: K.connectButton,
-          step: SubscriptionOnboardingStep.connectButton,
-          globalKey: ref
-              .read(homeStateProvider)
-              .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
-          tooltipPosition: TooltipPosition.top,
-          showcasePadding: const EdgeInsets.all(8),
-          child: child,
-        );
+    Widget buttonWrapper({required BuildContext context, required Widget child}) {
+      final wideLayout = ScreenType.of(context) >= ScreenType.tablet;
+      return ArrowedProgressCard(
+        key: K.connectButton,
+        step: SubscriptionOnboardingStep.connectButton,
+        globalKey:
+            ref.read(homeStateProvider).subscriptionOnboardingKeys[SubscriptionOnboardingStep
+                .connectButton
+                .platformIndex(wideLayout: wideLayout)],
+        tooltipPosition: TooltipPosition.top,
+        showcasePadding: const EdgeInsets.all(8),
+        child: child,
+      );
+    }
 
     return Column(
       children: [

@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/ui/ui.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/l10n/tr_bridge.dart';
@@ -29,6 +28,7 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
@@ -146,7 +146,7 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
         child: ModalScaffold(
           showGradient: false,
           onModalClose: handleDismiss,
-          appbar: isDesktop()
+          appbar: isDesktop
               ? ModalAppbar(title: title, onModalClose: handleDismiss)
               : Header(
                   backgroundColor: theme.palette.bgPopover,
@@ -163,13 +163,13 @@ class CancelSubscriptionSurveyView extends HookConsumerWidget {
             processingIsSecondary: pending.value ?? false,
           ),
           body: SingleChildScrollView(
-            padding: isDesktop()
+            padding: isDesktop
                 ? EdgeInsets.all(theme.spacing.xl2)
                 : EdgeInsets.symmetric(horizontal: theme.spacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (!isDesktop()) ...[
+                if (!isDesktop) ...[
                   Text.rich(
                     TextSpan(
                       children: [

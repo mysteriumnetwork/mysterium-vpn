@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class CancelSubscriptionActionFooter extends StatelessWidget {
@@ -30,6 +29,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
 
     final primaryButton = IgnorePointer(
       ignoring: !primaryButtonEnabled || isProcessing,
@@ -72,7 +72,7 @@ class CancelSubscriptionActionFooter extends StatelessWidget {
         left: theme.spacing.xl2,
         right: theme.spacing.xl2,
       ),
-      child: isDesktop()
+      child: isDesktop
           ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

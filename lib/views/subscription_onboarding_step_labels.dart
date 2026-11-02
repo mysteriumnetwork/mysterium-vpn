@@ -1,13 +1,12 @@
 import 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 
 extension SubscriptionOnboardingStepLabels on SubscriptionOnboardingStep {
-  String get title => switch (this) {
+  String title({required bool wideLayout}) => switch (this) {
     SubscriptionOnboardingStep.connectButton => S.current.subscriptionOnboardingConnectTitle,
     SubscriptionOnboardingStep.locations => S.current.subscriptionOnboardingVPNLocationsTitle,
     SubscriptionOnboardingStep.map =>
-      isDesktop()
+      wideLayout
           ? S.current.subscriptionOnboardingMapDesktopTitle
           : S.current.subscriptionOnboardingMapMobileTitle,
     SubscriptionOnboardingStep.products => S.current.subscriptionOnboardingManagePlanTitle,
@@ -15,14 +14,14 @@ extension SubscriptionOnboardingStepLabels on SubscriptionOnboardingStep {
     SubscriptionOnboardingStep.settings => S.current.subscriptionOnboardingBoostProtectionTitle,
   };
 
-  String get description => switch (this) {
+  String description({required bool wideLayout}) => switch (this) {
     SubscriptionOnboardingStep.connectButton => S.current.subscriptionOnboardingConnectDescription,
     SubscriptionOnboardingStep.locations =>
-      isDesktop()
+      wideLayout
           ? S.current.subscriptionOnboardingVPNLocationsDesktopDescription
           : S.current.subscriptionOnboardingVPNLocationsMobileDescription,
     SubscriptionOnboardingStep.map =>
-      isDesktop()
+      wideLayout
           ? S.current.subscriptionOnboardingMapDesktopDescription
           : S.current.subscriptionOnboardingMapMobileDescription,
     SubscriptionOnboardingStep.products => S.current.subscriptionOnboardingManagePlanDescription,

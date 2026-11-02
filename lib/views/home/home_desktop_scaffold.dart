@@ -62,7 +62,7 @@ class HomeDesktopScaffold extends HookConsumerWidget {
                 step: step,
                 globalKey: ref
                     .read(homeStateProvider)
-                    .subscriptionOnboardingKeys[step.platformIndex],
+                    .subscriptionOnboardingKeys[step.platformIndex(wideLayout: true)],
                 tooltipPosition: TooltipPosition.right,
                 child: child,
               ),

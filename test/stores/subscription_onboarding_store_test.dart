@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mysterium_vpn/common/enums/analytics_event.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -187,7 +187,7 @@ void main() {
 
   test('trackStepViewed logs one-based step parameter', () {
     // act
-    store.trackStepViewed(2);
+    store.trackStepViewed(2, wideLayout: false);
 
     // assert
     verify(
@@ -200,7 +200,7 @@ void main() {
 
   test('trackStepCompleted logs one-based step parameter', () {
     // act
-    store.trackStepCompleted(3);
+    store.trackStepCompleted(3, wideLayout: false);
 
     // assert
     verify(
@@ -209,5 +209,18 @@ void main() {
         parameters: argThat(containsPair('step', 4), named: 'parameters'),
       ),
     ).called(1);
+  });
+
+  // Tour order differs between the two scaffolds, so the same index is a
+  // different step. Index 1 is where they diverge.
+  test('fromPlatformIndex resolves against the rendered layout', () {
+    expect(
+      SubscriptionOnboardingStep.fromPlatformIndex(1, wideLayout: false),
+      SubscriptionOnboardingStep.locations,
+    );
+    expect(
+      SubscriptionOnboardingStep.fromPlatformIndex(1, wideLayout: true),
+      SubscriptionOnboardingStep.products,
+    );
   });
 }

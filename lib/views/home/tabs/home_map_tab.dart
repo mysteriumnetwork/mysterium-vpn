@@ -27,8 +27,9 @@ class HomeMapTab extends HookConsumerWidget {
             padding: EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.ms),
             child: ArrowedProgressCard(
               step: SubscriptionOnboardingStep.search,
-              globalKey: homeState
-                  .subscriptionOnboardingKeys[SubscriptionOnboardingStep.search.platformIndex],
+              globalKey:
+                  homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep.search
+                      .platformIndex(wideLayout: ScreenType.of(context) >= ScreenType.tablet)],
               tooltipPosition: TooltipPosition.bottom,
               // Hands off to the Locations tab with the real field focused.
               child: SearchField(

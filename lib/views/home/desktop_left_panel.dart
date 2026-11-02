@@ -79,9 +79,8 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                       child: Observer(
                         builder: (context) => ArrowedProgressCard(
                           globalKey:
-                              homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep
-                                  .search
-                                  .platformIndex],
+                              homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep.search
+                                  .platformIndex(wideLayout: true)],
                           step: SubscriptionOnboardingStep.search,
                           tooltipPosition: TooltipPosition.bottom,
                           child: LocationsSearch(enabled: !locationsStore.hasNoServers),

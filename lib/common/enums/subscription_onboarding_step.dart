@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn/common/utils/platform.dart';
 import 'package:mysterium_vpn_design/icons/untitled_ui.dart';
 
 enum SubscriptionOnboardingStep {
@@ -54,10 +53,12 @@ enum SubscriptionOnboardingStep {
 
   int get totalSteps => SubscriptionOnboardingStep.values.length;
 
-  int get platformIndex => isDesktop() ? desktopIndex : mobileIndex;
+  /// Tour position for the rendered layout. [wideLayout] is the tablet/desktop
+  /// scaffold — the one `ScreenTypeLayoutBuilder` picks, not the host OS.
+  int platformIndex({required bool wideLayout}) => wideLayout ? desktopIndex : mobileIndex;
 
-  static SubscriptionOnboardingStep? fromPlatformIndex(int index) =>
-      values.where((step) => step.platformIndex == index).firstOrNull;
+  static SubscriptionOnboardingStep? fromPlatformIndex(int index, {required bool wideLayout}) =>
+      values.where((step) => step.platformIndex(wideLayout: wideLayout) == index).firstOrNull;
 
-  IconData get icon => isDesktop() ? desktopIcon : mobileIcon;
+  IconData icon({required bool wideLayout}) => wideLayout ? desktopIcon : mobileIcon;
 }

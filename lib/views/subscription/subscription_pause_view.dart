@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/ui/ui.dart';
-import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -20,6 +19,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final cancelSubscriptionStore = ref.read(subscriptionCancellationStorePOD);
     final analyticsStore = ref.read(analyticsStorePOD);
     final selectedPauseDuration = useState<String?>(null);
@@ -75,7 +75,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
     return ModalScaffold(
       showGradient: false,
       onModalClose: handleDismiss,
-      appbar: isDesktop()
+      appbar: isDesktop
           ? ModalAppbar(title: title, onModalClose: handleDismiss)
           : Header(
               backgroundColor: theme.palette.bgPopover,
@@ -94,13 +94,13 @@ class SubscriptionPauseView extends HookConsumerWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: isDesktop()
+        padding: isDesktop
             ? EdgeInsets.all(theme.spacing.xl2)
             : EdgeInsets.symmetric(horizontal: theme.spacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!isDesktop()) ...[
+            if (!isDesktop) ...[
               Text(
                 title,
                 style: theme.textStyles.textLg.semibold.copyWith(
@@ -120,7 +120,7 @@ class SubscriptionPauseView extends HookConsumerWidget {
                       if (periodCode.numeric case final months?)
                         RadioListTile(
                           value: periodCode,
-                          horizontalTitleGap: isDesktop() ? theme.spacing.s : theme.spacing.none,
+                          horizontalTitleGap: isDesktop ? theme.spacing.s : theme.spacing.none,
                           contentPadding: EdgeInsets.zero,
                           title: Text(S.current.pauseForMonths(months)),
                         ),

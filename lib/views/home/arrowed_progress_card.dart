@@ -7,8 +7,7 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn/views/subscription_onboarding_step_labels.dart';
-import 'package:mysterium_vpn_design/styles/colors/palette.dart';
-import 'package:mysterium_vpn_design/widgets/progress_card.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 export 'package:mysterium_vpn/common/enums/subscription_onboarding_step.dart';
@@ -34,9 +33,11 @@ class ArrowedProgressCard extends HookConsumerWidget {
   // safety margin to keep the arrow away from the rounded corners of the ProgressCard
   static const double _cornerInset = 24;
 
-  bool get _isLastStep => step.platformIndex == (SubscriptionOnboardingStep.values.length - 1);
+  bool _isLastStep({required bool wideLayout}) =>
+      step.platformIndex(wideLayout: wideLayout) == (SubscriptionOnboardingStep.values.length - 1);
 
-  String get _actionLabel => _isLastStep ? S.current.completeBtn : S.current.continueBtn;
+  String _actionLabel({required bool wideLayout}) =>
+      _isLastStep(wideLayout: wideLayout) ? S.current.completeBtn : S.current.continueBtn;
 
   bool get _isHorizontal =>
       tooltipPosition == TooltipPosition.left || tooltipPosition == TooltipPosition.right;
@@ -111,6 +112,8 @@ class ArrowedProgressCard extends HookConsumerWidget {
       });
     }
 
+    final wideLayout = ScreenType.of(context) >= ScreenType.tablet;
+
     return Showcase.withWidget(
       key: globalKey,
       tooltipPosition: tooltipPosition,
@@ -125,12 +128,12 @@ class ArrowedProgressCard extends HookConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ProgressCard(
-              icon: step.icon,
-              progressLabel: '${step.platformIndex + 1}/${step.totalSteps}',
-              progressValue: (step.platformIndex + 1) / step.totalSteps,
-              title: step.title,
-              description: step.description,
-              actionLabel: _actionLabel,
+              icon: step.icon(wideLayout: wideLayout),
+              progressLabel: '${step.platformIndex(wideLayout: wideLayout) + 1}/${step.totalSteps}',
+              progressValue: (step.platformIndex(wideLayout: wideLayout) + 1) / step.totalSteps,
+              title: step.title(wideLayout: wideLayout),
+              description: step.description(wideLayout: wideLayout),
+              actionLabel: _actionLabel(wideLayout: wideLayout),
               onActionPressed: () => ShowcaseView.get().next(),
             ),
             _TooltipArrow(
