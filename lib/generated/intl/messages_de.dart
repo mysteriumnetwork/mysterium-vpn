@@ -313,6 +313,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP-Adresse wird abgerufen..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Zurück"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Zur Anmeldung"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage(
+      "Vibration beim Verbinden, Trennen und Auswählen",
+    ),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("Haptisches Feedback"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Hilfe & Support"),
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Verborgen"),

@@ -303,6 +303,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP adresi alınıyor..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Geri dön"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Girişe git"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage(
+      "Bağlanırken, bağlantı kesilirken ve seçim yaparken titreşim",
+    ),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("Dokunsal geri bildirim"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Yardım ve Destek"),
     "hi": MessageLookupByLibrary.simpleMessage("Hintçe"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Gizli"),

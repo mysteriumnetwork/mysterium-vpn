@@ -268,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP アドレスを取得中…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("戻る"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("ログインへ"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage("接続、切断、選択時に振動します"),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("触覚フィードバック"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("ヘルプとサポート"),
     "hi": MessageLookupByLibrary.simpleMessage("ヒンディー語"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("非表示"),
