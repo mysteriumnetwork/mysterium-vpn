@@ -1352,7 +1352,7 @@ packages:
     description:
       path: "."
       ref: "feat/haptic-feedback"
-      resolved-ref: "6540783b23152da7e5f78bf830aabec2e0056fee"
+      resolved-ref: "7861eecc8525e75fea638aa9280f278d9f838bf2"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"

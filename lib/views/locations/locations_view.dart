@@ -103,6 +103,9 @@ class _Body extends HookConsumerWidget {
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
     );
+    final connectingLocation = useComputedValue(
+      () => vpnStore.isLoading ? vpnStore.location : null,
+    );
     final locationsStore = ref.watch(locationsStorePOD);
     final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
@@ -151,6 +154,7 @@ class _Body extends HookConsumerWidget {
                   recentLocations: recentLocations,
                   onLocationTapped: onRecentLocationTapped,
                   connectedLocation: connectedLocation,
+                  connectingLocation: connectingLocation,
                 ),
               ),
               SizedBox(height: sectionGap),
@@ -258,11 +262,13 @@ class _RecentLocations extends StatelessWidget {
     required this.recentLocations,
     required this.onLocationTapped,
     this.connectedLocation,
+    this.connectingLocation,
   });
 
   final List<VPNLocation> recentLocations;
   final void Function(VPNLocation) onLocationTapped;
   final VPNLocation? connectedLocation;
+  final VPNLocation? connectingLocation;
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
@@ -271,6 +277,7 @@ class _RecentLocations extends StatelessWidget {
       items: recentLocations,
       onItemPressed: onLocationTapped,
       connectedLocation: connectedLocation,
+      connectingLocation: connectingLocation,
     ),
   );
 }

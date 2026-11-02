@@ -13,6 +13,7 @@ class LocationsHorizontalList extends HookWidget {
     required this.items,
     required this.onItemPressed,
     this.connectedLocation,
+    this.connectingLocation,
     this.listConstraints = const BoxConstraints(maxHeight: 66),
     super.key,
   });
@@ -21,6 +22,10 @@ class LocationsHorizontalList extends HookWidget {
   final List<VPNLocation> items;
   final void Function(VPNLocation) onItemPressed;
   final VPNLocation? connectedLocation;
+
+  /// Location a connection is being established to (or torn down from). While
+  /// non-null every card is non-interactive, mirroring the expandable list.
+  final VPNLocation? connectingLocation;
   final BoxConstraints listConstraints;
 
   @override
@@ -37,13 +42,19 @@ class LocationsHorizontalList extends HookWidget {
         separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.ms),
         itemBuilder: (_, index) {
           final item = items[index];
+          final isLoading = connectingLocation != null;
+          final isConnecting = isLoading && connectingLocation!.id == item.id;
           final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
           return LocationCard(
             icon: CircleFlag(item.countryCode, size: 24),
             name: item.getName(context),
             subtitle: item.ipType.localizedLabel,
-            onTap: () => onItemPressed(item),
-            status: isConnected ? LocationCardStatus.selected : LocationCardStatus.idle,
+            onTap: isLoading ? null : () => onItemPressed(item),
+            status: switch ((isConnecting, isConnected)) {
+              (true, _) => LocationCardStatus.connecting,
+              (_, true) => LocationCardStatus.selected,
+              _ => LocationCardStatus.idle,
+            },
           );
         },
       ),
