@@ -30,6 +30,13 @@ mixin _$VpnStore on _VpnStore, Store {
     () => super.isLoading,
     name: '_VpnStore.isLoading',
   )).value;
+  Computed<bool>? _$isDisconnectingComputed;
+
+  @override
+  bool get isDisconnecting => (_$isDisconnectingComputed ??= Computed<bool>(
+    () => super.isDisconnecting,
+    name: '_VpnStore.isDisconnecting',
+  )).value;
   Computed<bool>? _$isFetchingLocationComputed;
 
   @override
@@ -342,21 +349,18 @@ mixin _$VpnStore on _VpnStore, Store {
     });
   }
 
-  late final _$_isManagingConnectionAtom = Atom(
-    name: '_VpnStore._isManagingConnection',
-    context: context,
-  );
+  late final _$_inFlightActionAtom = Atom(name: '_VpnStore._inFlightAction', context: context);
 
   @override
-  bool get _isManagingConnection {
-    _$_isManagingConnectionAtom.reportRead();
-    return super._isManagingConnection;
+  ConnectionAction? get _inFlightAction {
+    _$_inFlightActionAtom.reportRead();
+    return super._inFlightAction;
   }
 
   @override
-  set _isManagingConnection(bool value) {
-    _$_isManagingConnectionAtom.reportWrite(value, super._isManagingConnection, () {
-      super._isManagingConnection = value;
+  set _inFlightAction(ConnectionAction? value) {
+    _$_inFlightActionAtom.reportWrite(value, super._inFlightAction, () {
+      super._inFlightAction = value;
     });
   }
 
@@ -649,6 +653,7 @@ connectionRated: ${connectionRated},
 vpnStatus: ${vpnStatus},
 isConnected: ${isConnected},
 isLoading: ${isLoading},
+isDisconnecting: ${isDisconnecting},
 isFetchingLocation: ${isFetchingLocation},
 isFetchingConfig: ${isFetchingConfig},
 location: ${location},

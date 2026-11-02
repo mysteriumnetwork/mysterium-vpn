@@ -188,11 +188,12 @@ abstract class _VpnStore extends VpnGuard with Store {
   @observable
   bool _isDeviceLimitErrorShown = false;
 
-  /// True for the whole of [manageConnection], including the guard and tunnel
-  /// checks that run before any future or status reports loading — without it
-  /// a second tap during that window starts a parallel attempt.
+  /// The toggle currently running, for the whole of [manageConnection] —
+  /// including the guard and tunnel checks that precede any future or status
+  /// reporting loading, where a second tap would otherwise start a parallel
+  /// attempt. Carries the action so the UI can name what it is waiting on.
   @observable
-  bool _isManagingConnection = false;
+  ConnectionAction? _inFlightAction;
 
   // Computed Properties
   @computed
@@ -207,11 +208,19 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @computed
   bool get isLoading =>
-      _isManagingConnection ||
+      _inFlightAction != null ||
       _connectionStatus == VpnConnectionStatus.connecting ||
       isFetchingConfig ||
       isFetchingLocation ||
       _connectionStatus == VpnConnectionStatus.disconnecting;
+
+  /// Whether the work in flight is a teardown. The tunnel reports
+  /// `disconnected` before [disconnectTunnel] has notified the API, so the raw
+  /// status stops saying `disconnecting` while the teardown is still running.
+  @computed
+  bool get isDisconnecting =>
+      _connectionStatus == VpnConnectionStatus.disconnecting ||
+      _inFlightAction == ConnectionAction.disconnect;
 
   @computed
   bool get isFetchingLocation => _fetchLocationFuture?.status == FutureStatus.pending;
@@ -530,21 +539,20 @@ abstract class _VpnStore extends VpnGuard with Store {
     bool refreshIP = false,
     String? targetIp,
   }) async {
-    if (_isManagingConnection) {
+    if (_inFlightAction != null) {
       return;
     }
-    _isManagingConnection = true;
+    final action = _connectionDecisionStore.determineToggleAction(
+      currentStatus: _connectionStatus,
+      currentLocation: _vpnConnection?.location,
+      requestedLocation: location,
+      requestedIntent: intent,
+      isRefreshIP: refreshIP,
+      requestedTargetIp: targetIp,
+      currentIp: _vpnConnection?.connectionIP,
+    );
+    _inFlightAction = action;
     try {
-      final action = _connectionDecisionStore.determineToggleAction(
-        currentStatus: _connectionStatus,
-        currentLocation: _vpnConnection?.location,
-        requestedLocation: location,
-        requestedIntent: intent,
-        isRefreshIP: refreshIP,
-        requestedTargetIp: targetIp,
-        currentIp: _vpnConnection?.connectionIP,
-      );
-
       switch (action) {
         case ConnectionAction.disconnect:
           await disconnectTunnel(reason: VpnDisconnectReason.user);
@@ -569,7 +577,7 @@ abstract class _VpnStore extends VpnGuard with Store {
           break;
       }
     } finally {
-      _isManagingConnection = false;
+      _inFlightAction = null;
     }
   }
 

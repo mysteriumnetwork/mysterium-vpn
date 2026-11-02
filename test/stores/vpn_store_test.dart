@@ -2137,6 +2137,28 @@ void main() {
         expect(vpnStore.connectionError, isNull);
       });
 
+      test('stays disconnecting until the teardown finishes, never connecting', () async {
+        // The tunnel reports `disconnected` before notifyApiVpnDisconnected
+        // returns; isLoading stays true across that gap, so without the action
+        // the card relabels itself "Connecting" mid-teardown.
+        when(anyToggleAction()).thenReturn(ConnectionAction.disconnect);
+        final notify = Completer<void>();
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) => notify.future);
+
+        final disconnecting = vpnStore.manageConnection();
+        await pumpEventQueue();
+
+        expect(vpnStore.isLoading, isTrue);
+        expect(vpnStore.isDisconnecting, isTrue);
+
+        notify.complete();
+        await disconnecting;
+
+        expect(vpnStore.isLoading, isFalse);
+        expect(vpnStore.isDisconnecting, isFalse);
+      });
+
       test('reports loading while the prerequisites are still being checked', () async {
         final connecting = vpnStore.manageConnection(location: location);
         await pumpEventQueue();
