@@ -177,6 +177,36 @@ void main() {
       expect(capturedState!.status, isA<MainIpCardConnecting>());
     });
 
+    testWidgets('a pending first subscription load disables the toggle', (tester) async {
+      when(mockConnectionDisplayStore.displayLocation).thenReturn(testLocation);
+      when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+      when(mockSubscriptionStore.isSubscriptionLoading).thenReturn(true);
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(capturedState!.onToggle, isNull);
+      // Still the idle card: the plan is loading, the tunnel is not connecting.
+      expect(capturedState!.status, isA<MainIpCardLocationSelected>());
+    });
+
+    testWidgets('a pending subscription load leaves disconnect available', (tester) async {
+      // The card routes disconnect through the same callback, and the config
+      // reloads on every access-token change — gating it would strand a
+      // connected user.
+      when(mockVpnStore.isConnected).thenReturn(true);
+      when(mockConnectionDisplayStore.isConnected).thenReturn(true);
+      when(mockConnectionDisplayStore.isLoading).thenReturn(false);
+      when(mockConnectionDisplayStore.displayLocation).thenReturn(testLocation);
+      when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+      when(mockSubscriptionStore.isSubscriptionLoading).thenReturn(true);
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(capturedState!.onToggle, isNotNull);
+    });
+
     testWidgets('location selected (not loading, not connected) → MainIpCardLocationSelected', (
       tester,
     ) async {

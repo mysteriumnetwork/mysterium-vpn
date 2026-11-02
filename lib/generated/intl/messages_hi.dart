@@ -812,6 +812,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage(
       "कोई दूसरी लोकेशन खोजने का प्रयास करें",
     ),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "जिस IP से आप जुड़े हैं उसमें समस्या हो सकती है। इसे रिफ्रेश करके देखें, या इसे बंद करके कोई दूसरा देश चुनें।",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "जिस IP से आप जुड़े हैं उसमें समस्या हो सकती है। इस स्थान के लिए कोई अन्य IP उपलब्ध नहीं है — इसे बंद करके कोई दूसरा देश चुनें।",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("IP रिफ्रेश करें"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("कनेक्शन में समस्या हो सकती है"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("इंटरनेट कनेक्शन नहीं मिला।"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "VPN टनल शुरू करने के लिए आपको अनुमति देनी होगी।",
     ),

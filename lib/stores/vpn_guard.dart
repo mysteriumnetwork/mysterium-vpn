@@ -39,9 +39,8 @@ abstract class VpnGuard {
       return;
     }
 
-    if (_subscription.subscriptionFuture.status == FutureStatus.pending) {
-      return;
-    }
+    // The first load has no cached entitlement to fall back on, so wait for it
+    // rather than letting an unentitled user through.
     try {
       final subscription = await _subscription.subscriptionFuture;
       if (subscription.grantsVpnAccess) {

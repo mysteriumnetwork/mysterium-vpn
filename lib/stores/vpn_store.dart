@@ -187,6 +187,12 @@ abstract class _VpnStore extends VpnGuard with Store {
   @observable
   bool _isDeviceLimitErrorShown = false;
 
+  /// True for the whole of [manageConnection], including the guard and tunnel
+  /// checks that run before any future or status reports loading — without it
+  /// a second tap during that window starts a parallel attempt.
+  @observable
+  bool _isManagingConnection = false;
+
   // Computed Properties
   @computed
   VpnConnectionStatus get vpnStatus => _connectionStatus == VpnConnectionStatus.unknown
@@ -200,6 +206,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @computed
   bool get isLoading =>
+      _isManagingConnection ||
       _connectionStatus == VpnConnectionStatus.connecting ||
       isFetchingConfig ||
       isFetchingLocation ||
@@ -519,38 +526,46 @@ abstract class _VpnStore extends VpnGuard with Store {
     bool refreshIP = false,
     String? targetIp,
   }) async {
-    final action = _connectionDecisionStore.determineToggleAction(
-      currentStatus: _connectionStatus,
-      currentLocation: _vpnConnection?.location,
-      requestedLocation: location,
-      requestedIntent: intent,
-      isRefreshIP: refreshIP,
-      requestedTargetIp: targetIp,
-      currentIp: _vpnConnection?.connectionIP,
-    );
+    if (_isManagingConnection) {
+      return;
+    }
+    _isManagingConnection = true;
+    try {
+      final action = _connectionDecisionStore.determineToggleAction(
+        currentStatus: _connectionStatus,
+        currentLocation: _vpnConnection?.location,
+        requestedLocation: location,
+        requestedIntent: intent,
+        isRefreshIP: refreshIP,
+        requestedTargetIp: targetIp,
+        currentIp: _vpnConnection?.connectionIP,
+      );
 
-    switch (action) {
-      case ConnectionAction.disconnect:
-        await disconnectTunnel(reason: VpnDisconnectReason.user);
-        break;
+      switch (action) {
+        case ConnectionAction.disconnect:
+          await disconnectTunnel(reason: VpnDisconnectReason.user);
+          break;
 
-      case ConnectionAction.connect:
-      case ConnectionAction.reconnect:
-        await _startConnection(
-          location: location,
-          intent: intent,
-          isRetrying: isRetrying,
-          refreshIP: refreshIP,
-          targetIp: targetIp,
-        );
-        break;
+        case ConnectionAction.connect:
+        case ConnectionAction.reconnect:
+          await _startConnection(
+            location: location,
+            intent: intent,
+            isRetrying: isRetrying,
+            refreshIP: refreshIP,
+            targetIp: targetIp,
+          );
+          break;
 
-      case ConnectionAction.refreshIP:
-        await _startConnection(
-          refreshIP: true,
-          location: _requestedLocation ?? _vpnConnection?.location,
-        );
-        break;
+        case ConnectionAction.refreshIP:
+          await _startConnection(
+            refreshIP: true,
+            location: _requestedLocation ?? _vpnConnection?.location,
+          );
+          break;
+      }
+    } finally {
+      _isManagingConnection = false;
     }
   }
 
@@ -587,7 +602,19 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<void> _validateConnectionPrerequisites() async {
     await checkVpnGuards();
 
-    if (!(await _vpnRepository.isTunnelConfigured())) {
+    final bool isConfigured;
+    try {
+      isConfigured = await _vpnRepository.isTunnelConfigured();
+    } catch (e, stackTrace) {
+      // A check that failed is not a missing configuration. Treating the two
+      // alike is what asked users to re-grant permission they already had.
+      _logger.warning('Tunnel configuration check failed: $e');
+      Sentry.captureException(e, stackTrace: stackTrace);
+      _emitConnectionError(const VpnError(VpnErrorType.tunnelSetupFailed));
+      throw const TunnelCheckFailedException();
+    }
+
+    if (!isConfigured) {
       if (Platform.isWindows) {
         await setupTunnel();
       } else {

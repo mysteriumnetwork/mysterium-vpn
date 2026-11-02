@@ -772,6 +772,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("التركية"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("حاول مرة أخرى"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("حاول البحث عن موقع آخر"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "قد يواجه عنوان IP المتصل به مشكلات. جرّب تحديثه، أو أغلق هذه الرسالة واختر دولة أخرى.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "قد يواجه عنوان IP المتصل به مشكلات. لا تتوفر عناوين IP أخرى لهذا الموقع — أغلق هذه الرسالة واختر دولة أخرى.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("تحديث IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("قد يكون الاتصال متدهورًا"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("لم يتم اكتشاف اتصال بالإنترنت."),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("يجب منح الإذن لبدء نفق VPN."),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء إعداد النفق"),
     "typeDelete": m31,

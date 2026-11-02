@@ -625,6 +625,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("土耳其语"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("重试"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("尝试搜索其他地点"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "当前连接的 IP 可能存在问题。可尝试刷新，或关闭此窗口并选择其他国家/地区。",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "当前连接的 IP 可能存在问题。此位置没有其他可用的 IP。请关闭此窗口并选择其他国家/地区。",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("刷新 IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("连接质量可能下降"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("未检测到互联网连接。"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("启动 VPN 隧道需要授予权限。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("设置隧道时发生错误"),
     "typeDelete": m31,

@@ -676,6 +676,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("トルコ語"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("もう一度試す"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("別のロケーションを検索してみてください"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "接続中の IP に問題がある可能性があります。更新するか、これを閉じて別の国を選んでください。",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "接続中の IP に問題がある可能性があります。この場所には他の IP がありません。これを閉じて別の国を選んでください。",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("IP を更新"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("接続が不安定な可能性があります"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("インターネット接続が検出されません。"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("VPNトンネルを開始するには許可が必要です。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("トンネルの設定中にエラーが発生しました"),
     "typeDelete": m31,

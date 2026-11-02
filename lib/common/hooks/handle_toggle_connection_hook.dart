@@ -47,6 +47,12 @@ useHandleToggleConnection() {
       if (permissionsGiven) {
         await vpnStore.manageConnection(location: location, intent: intent, targetIp: targetIp);
       }
+    } on TunnelCheckFailedException catch (_) {
+      // Already surfaced through connectionError by the store.
+    } catch (e, stackTrace) {
+      // Without this the connect aborts with no feedback at all: the store
+      // reports its own failures, so anything landing here is unexpected.
+      ref.read(loggerPOD).warning('Connection toggle failed: $e', e, stackTrace);
     }
   }, [handleSubscribe, handleSetupTunnel]);
 }

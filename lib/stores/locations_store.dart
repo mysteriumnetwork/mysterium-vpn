@@ -167,7 +167,8 @@ abstract class _LocationsStore with Store {
 
   /// Refreshes location data from the backend for the specified IP type.
   /// If no IP type is provided, it refreshes the currently selected type.
-  /// If a refresh is already in progress, it returns the existing future to avoid duplicate requests.
+  /// A fetch already in flight is awaited first so the two cannot interleave,
+  /// and a new one is then issued — this never joins the in-flight request.
   /// This method is useful for ensuring the app has the latest location data, either on-demand or via auto-refresh.
   ///
   /// Returns `true` when fresh data was fetched and committed, `false` when the

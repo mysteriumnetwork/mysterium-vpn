@@ -29,20 +29,42 @@ void main() {
   _TestVpnGuard newGuard() =>
       _TestVpnGuard(subscriptionStore: subscription, authSessionStore: session);
 
+  /// Stubs a subscription that has never resolved; complete the returned
+  /// completer to settle it.
+  Completer<Subscription> stubPendingSubscription() {
+    final completer = Completer<Subscription>();
+    when(
+      subscription.subscriptionFuture,
+    ).thenAnswer((_) => ObservableFuture<Subscription>(completer.future));
+    return completer;
+  }
+
   test('throws AuthenticationRequiredException when not authenticated', () async {
     when(session.isAuthenticated).thenReturn(false);
 
     await expectLater(newGuard().checkVpnGuards(), throwsA(isA<AuthenticationRequiredException>()));
   });
 
-  test('returns silently while subscription is still pending', () async {
-    final completer = Completer<Subscription>();
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture<Subscription>(completer.future));
+  test('waits for the first subscription load instead of letting it through', () async {
+    final completer = stubPendingSubscription();
 
-    await newGuard().checkVpnGuards();
+    var settled = false;
+    final guarded = newGuard().checkVpnGuards().whenComplete(() => settled = true);
+
+    await pumpEventQueue();
+    expect(settled, isFalse, reason: 'the guard passed before the entitlement was known');
+
+    completer.complete(Subscription(active: true, expired: false, recurring: true));
+    await guarded;
+  });
+
+  test('refuses once the first subscription load comes back without access', () async {
+    final completer = stubPendingSubscription();
+
+    final guarded = newGuard().checkVpnGuards();
     completer.complete(Subscription.empty());
+
+    await expectLater(guarded, throwsA(isA<SubscriptionRequiredException>()));
   });
 
   test('does not wait on a refresh when entitlement is already loaded', () async {

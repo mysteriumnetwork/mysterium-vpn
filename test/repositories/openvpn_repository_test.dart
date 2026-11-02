@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -103,6 +104,27 @@ void main() {
     test('isTunnelConfigured delegates to service', () async {
       when(service.checkTunnelConfiguration()).thenAnswer((_) async => true);
       expect(await repo.isTunnelConfigured(), isTrue);
+    });
+
+    test('isTunnelConfigured collapses concurrent calls onto one', () async {
+      final check = Completer<bool>();
+      when(service.checkTunnelConfiguration()).thenAnswer((_) => check.future);
+
+      final first = repo.isTunnelConfigured();
+      final second = repo.isTunnelConfigured();
+      check.complete(true);
+
+      expect(await Future.wait([first, second]), [true, true]);
+      verify(service.checkTunnelConfiguration()).called(1);
+    });
+
+    test('isTunnelConfigured starts a new call once the previous one settled', () async {
+      when(service.checkTunnelConfiguration()).thenAnswer((_) async => true);
+
+      await repo.isTunnelConfigured();
+      await repo.isTunnelConfigured();
+
+      verify(service.checkTunnelConfiguration()).called(2);
     });
 
     test('removeTunnelConfiguration delegates and rethrows on error', () async {

@@ -788,6 +788,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("Turki"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Coba lagi"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Coba cari lokasi lain"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "IP yang kamu gunakan mungkin bermasalah. Coba segarkan, atau tutup ini dan pilih negara lain.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "IP yang kamu gunakan mungkin bermasalah. Tidak ada IP lain untuk lokasi ini — tutup ini dan pilih negara lain.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("Segarkan IP"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("Koneksi mungkin menurun"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage(
+      "Tidak ada koneksi internet terdeteksi.",
+    ),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "Kamu perlu memberikan izin untuk memulai tunnel VPN.",
     ),

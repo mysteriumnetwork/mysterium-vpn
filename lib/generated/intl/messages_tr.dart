@@ -815,6 +815,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "tr": MessageLookupByLibrary.simpleMessage("Türkçe"),
     "tryAgainBtn": MessageLookupByLibrary.simpleMessage("Tekrar dene"),
     "tryAnotherLocation": MessageLookupByLibrary.simpleMessage("Başka bir konum aramayı dene"),
+    "tunnelDegradedDesc": MessageLookupByLibrary.simpleMessage(
+      "Bağlı olduğun IP sorun yaşıyor olabilir. Yenilemeyi dene ya da bunu kapatıp başka bir ülke seç.",
+    ),
+    "tunnelDegradedDescNoRefresh": MessageLookupByLibrary.simpleMessage(
+      "Bağlı olduğun IP sorun yaşıyor olabilir. Bu konum için başka IP yok — bunu kapatıp başka bir ülke seç.",
+    ),
+    "tunnelDegradedRefresh": MessageLookupByLibrary.simpleMessage("IP\'yi yenile"),
+    "tunnelDegradedTitle": MessageLookupByLibrary.simpleMessage("Bağlantı bozulmuş olabilir"),
+    "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("İnternet bağlantısı algılanmadı."),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage(
       "VPN tünelini başlatmak için izin vermen gerekiyor.",
     ),
