@@ -28,7 +28,7 @@ class ApplicationSettings extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const LanguagePicker(position: SettingsCardPosition.top),
-        if (isMobile()) ...[
+        if (hapticsSupported()) ...[
           const ThemePicker(position: SettingsCardPosition.middle),
           const HapticsSetting(position: SettingsCardPosition.bottom),
         ] else
