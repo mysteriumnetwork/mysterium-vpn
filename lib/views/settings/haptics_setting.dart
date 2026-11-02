@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +23,10 @@ class HapticsSetting extends ConsumerWidget {
         position: position,
         trailing: Switch(
           value: store.enabled,
-          onChanged: (value) => store.setEnabled(value: value),
+          onChanged: (value) {
+            unawaited(store.setEnabled(value: value));
+            HapticLevel.selection.fire();
+          },
         ),
       ),
     );

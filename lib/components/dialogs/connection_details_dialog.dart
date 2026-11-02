@@ -134,6 +134,7 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
     }) => ButtonTertiary(
       onPressed: onPressed,
       size: ButtonSize.small,
+      haptic: HapticLevel.impact,
       decoration: ButtonDecoration(
         foregroundColor: color,
         minimumSize: Size.zero,

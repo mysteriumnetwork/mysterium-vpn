@@ -78,6 +78,7 @@ class ConnectionSettings extends HookConsumerWidget {
                       onChanged: disableSettings
                           ? null
                           : (val) async {
+                              HapticLevel.selection.fire();
                               await refreshIPStore.toggleRefreshIPWhenConnecting();
                               analyticsStore.logEvent(
                                 val

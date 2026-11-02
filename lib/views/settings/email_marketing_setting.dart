@@ -41,6 +41,7 @@ class EmailMarketingSetting extends HookConsumerWidget {
               : Switch(
                   value: userPreferencesStore.marketingConsent!,
                   onChanged: (val) async {
+                    HapticLevel.selection.fire();
                     try {
                       await userPreferencesStore.updateMarketingContact(consent: val);
                       analyticsStore.logEvent(

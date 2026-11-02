@@ -25,10 +25,25 @@ Future<void> shownConfirmationDialog(
     }
 
     final confirmLabel = Text(confirmText ?? S.current.yes);
+    // Confirming a warning dialog commits something consequential — resetting
+    // the app, deleting an account, swapping protocol on a live tunnel.
+    const confirmHaptic = HapticLevel.impact;
     final confirmButton = switch (confirmVariant) {
-      ButtonVariant.primary => ButtonPrimary(onPressed: handleConfirm, child: confirmLabel),
-      ButtonVariant.secondary => ButtonSecondary(onPressed: handleConfirm, child: confirmLabel),
-      ButtonVariant.tertiary => ButtonTertiary(onPressed: handleConfirm, child: confirmLabel),
+      ButtonVariant.primary => ButtonPrimary(
+        onPressed: handleConfirm,
+        haptic: confirmHaptic,
+        child: confirmLabel,
+      ),
+      ButtonVariant.secondary => ButtonSecondary(
+        onPressed: handleConfirm,
+        haptic: confirmHaptic,
+        child: confirmLabel,
+      ),
+      ButtonVariant.tertiary => ButtonTertiary(
+        onPressed: handleConfirm,
+        haptic: confirmHaptic,
+        child: confirmLabel,
+      ),
     };
 
     return Dialog(
