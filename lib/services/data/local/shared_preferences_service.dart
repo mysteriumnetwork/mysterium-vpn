@@ -77,6 +77,11 @@ class SharedPreferenceService {
   Future<bool> setThemeType(ThemeMode themeMode) async =>
       setString(StorageKeys.themeMype.name, themeMode.name);
 
+  bool? getHapticsEnabled() => getBool(StorageKeys.hapticsEnabled.name);
+
+  Future<bool> setHapticsEnabled({required bool value}) async =>
+      setBool(StorageKeys.hapticsEnabled.name, value: value);
+
   Future<bool> setAppInstallDay(int value) async => setInt(StorageKeys.appInstallDay.name, value);
   int? getAppInstallDay() => getInt(StorageKeys.appInstallDay.name);
 

@@ -70,6 +70,8 @@ class S {
     'allowPushNotificationsBtn': [],
     'and': [],
     'appearanceSettingLbl': [],
+    'hapticFeedbackSettingLbl': [],
+    'hapticFeedbackSettingDesc': [],
     'appUpdateAvailableDesc': [],
     'appUpdateAvailableSetting': [],
     'appUpdateAvailableTitle': [],
@@ -649,6 +651,21 @@ class S {
   /// `Appearance`
   String get appearanceSettingLbl {
     return Intl.message('Appearance', name: 'appearanceSettingLbl', desc: '', args: []);
+  }
+
+  /// `Haptic feedback`
+  String get hapticFeedbackSettingLbl {
+    return Intl.message('Haptic feedback', name: 'hapticFeedbackSettingLbl', desc: '', args: []);
+  }
+
+  /// `Vibrate on connect, disconnect and selection`
+  String get hapticFeedbackSettingDesc {
+    return Intl.message(
+      'Vibrate on connect, disconnect and selection',
+      name: 'hapticFeedbackSettingDesc',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `The new app version is here! Update now for the latest features and improvements.`

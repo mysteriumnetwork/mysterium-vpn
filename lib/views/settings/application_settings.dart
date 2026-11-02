@@ -5,6 +5,7 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/views/settings/email_marketing_setting.dart';
+import 'package:mysterium_vpn/views/settings/haptics_setting.dart';
 import 'package:mysterium_vpn/views/settings/language_picker.dart';
 import 'package:mysterium_vpn/views/settings/push_notifications_settings.dart';
 import 'package:mysterium_vpn/views/settings/theme_picker.dart';
@@ -26,7 +27,12 @@ class ApplicationSettings extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const LanguagePicker(position: SettingsCardPosition.top),
-        const ThemePicker(position: SettingsCardPosition.bottom),
+        ThemePicker(
+          position: ref.watch(hapticsStorePOD).isSupported
+              ? SettingsCardPosition.middle
+              : SettingsCardPosition.bottom,
+        ),
+        const HapticsSetting(position: SettingsCardPosition.bottom),
         Observer(
           builder: (_) {
             final isAuthenticated = authSessionStore.status == AuthStatus.authenticated;

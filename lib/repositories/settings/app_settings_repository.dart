@@ -15,6 +15,10 @@ abstract class AppSettingsRepository {
   IPType? ipType();
 
   Future<void> setIpType(IPType type);
+
+  bool? hapticsEnabled();
+
+  Future<void> setHapticsEnabled({required bool value});
 }
 
 /// [AppSettingsRepository] backed by [SharedPreferenceService].
@@ -40,4 +44,10 @@ class LocalAppSettingsRepository implements AppSettingsRepository {
 
   @override
   Future<void> setIpType(IPType type) => _prefs.setIPType(type);
+
+  @override
+  bool? hapticsEnabled() => _prefs.getHapticsEnabled();
+
+  @override
+  Future<void> setHapticsEnabled({required bool value}) => _prefs.setHapticsEnabled(value: value);
 }

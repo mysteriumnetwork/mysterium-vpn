@@ -70,6 +70,10 @@ final themeStorePOD = Provider<ThemeStore>(
   (ref) => ThemeStore(settings: ref.watch(appSettingsRepositoryPOD)),
 );
 
+final hapticsStorePOD = Provider<HapticsStore>(
+  (ref) => HapticsStore(settings: ref.watch(appSettingsRepositoryPOD)),
+);
+
 final homeTabsStorePOD = Provider<HomeTabsStore>((ref) {
   final store = HomeTabsStore(
     ref.watch(authSessionStorePOD),

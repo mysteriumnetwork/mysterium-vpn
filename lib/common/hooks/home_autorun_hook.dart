@@ -105,8 +105,15 @@ void useHomeAutorun() {
         // out of context when it remounts — it only fires on new emissions.
         reaction((_) => vpnStore.connectionError, (error) {
           if (error != null) {
+            HapticLevel.error.fire();
             showSnackbar(vpnErrorMessage(error));
             vpnStore.consumeConnectionError();
+          }
+        }),
+        // The outcome, not the button press — the tunnel is actually up.
+        reaction<VpnConnectionStatus>((_) => vpnStore.vpnStatus, (status) {
+          if (status == VpnConnectionStatus.connected) {
+            HapticLevel.success.fire();
           }
         }),
         autorun((_) {
