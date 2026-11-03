@@ -23,10 +23,10 @@ class HomeLocationsTab extends HookConsumerWidget {
     final focusNode = useFocusNode();
 
     useEffect(() {
-      final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
+      final homeState = ref.read(homeStateProvider)..locationsScrollController = scrollController;
       return () {
-        if (homeState.scrollController == scrollController) {
-          homeState.scrollController = null;
+        if (homeState.locationsScrollController == scrollController) {
+          homeState.locationsScrollController = null;
         }
       };
     }, [scrollController]);

@@ -100,9 +100,6 @@ class ConnectionTile extends HookConsumerWidget {
         ArrowedProgressCard(
           key: K.connectButton,
           step: SubscriptionOnboardingStep.connectButton,
-          globalKey: ref
-              .read(homeStateProvider)
-              .subscriptionOnboardingKeys[SubscriptionOnboardingStep.connectButton.platformIndex],
           tooltipPosition: TooltipPosition.top,
           showcasePadding: const EdgeInsets.all(8),
           child: child,

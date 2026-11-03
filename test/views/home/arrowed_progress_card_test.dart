@@ -30,7 +30,6 @@ void main() {
   late MockThemeStore themeStore;
   late MockRemoteConfigStore remoteConfigStore;
   late SubscriptionOnboardingStore subscriptionOnboardingStore;
-  late GlobalKey<State<StatefulWidget>> showcaseKey;
 
   setUp(() {
     analyticsStore = MockAnalyticsStore();
@@ -38,7 +37,6 @@ void main() {
     prompts = MockPromptsRepository();
     themeStore = MockThemeStore();
     remoteConfigStore = MockRemoteConfigStore();
-    showcaseKey = GlobalKey<State<StatefulWidget>>();
 
     when(themeStore.isDarkMode).thenReturn(false);
 
@@ -77,11 +75,10 @@ void main() {
     testWidgets('returns child without Showcase when startTour is false', (tester) async {
       await tester.pumpWidget(
         buildHarness(
-          child: ArrowedProgressCard(
-            globalKey: showcaseKey,
+          child: const ArrowedProgressCard(
             step: SubscriptionOnboardingStep.map,
             tooltipPosition: TooltipPosition.top,
-            child: const Text('showcase-target'),
+            child: Text('showcase-target'),
           ),
         ),
       );
@@ -96,11 +93,10 @@ void main() {
 
       await tester.pumpWidget(
         buildHarness(
-          child: ArrowedProgressCard(
-            globalKey: showcaseKey,
+          child: const ArrowedProgressCard(
             step: SubscriptionOnboardingStep.map,
             tooltipPosition: TooltipPosition.top,
-            child: const Text('showcase-target'),
+            child: Text('showcase-target'),
           ),
         ),
       );
@@ -115,11 +111,10 @@ void main() {
 
       await tester.pumpWidget(
         buildHarness(
-          child: ArrowedProgressCard(
-            globalKey: showcaseKey,
+          child: const ArrowedProgressCard(
             step: SubscriptionOnboardingStep.map,
             tooltipPosition: TooltipPosition.top,
-            child: const Text('showcase-target'),
+            child: Text('showcase-target'),
           ),
         ),
       );

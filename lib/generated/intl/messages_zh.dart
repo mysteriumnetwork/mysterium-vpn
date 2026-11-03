@@ -247,6 +247,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("正在获取 IP 地址…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("返回"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("前往登录"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage("连接、断开连接和选择时振动"),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("触感反馈"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("帮助与支持"),
     "hi": MessageLookupByLibrary.simpleMessage("印地语"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("已隐藏"),

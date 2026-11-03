@@ -105,6 +105,7 @@ void useHomeAutorun() {
         // out of context when it remounts — it only fires on new emissions.
         reaction((_) => vpnStore.connectionError, (error) {
           if (error != null) {
+            HapticLevel.error.fire();
             showSnackbar(vpnErrorMessage(error));
             vpnStore.consumeConnectionError();
           }

@@ -17,6 +17,7 @@ import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/stores/vpn_error.dart';
 import 'package:talker/talker.dart';
 
+import '../support/haptics_recorder.dart';
 import '../support/test_prefs.dart';
 
 @GenerateNiceMocks([
@@ -833,6 +834,7 @@ void main() {
       });
 
       test('restores the persisted connectedAt when the tunnel is already up at launch', () async {
+        final fired = recordHaptics();
         final storedAt = DateTime.now().subtract(const Duration(minutes: 5));
         await prefsService.setInt(StorageKeys.connectedAt.name, storedAt.millisecondsSinceEpoch);
         when(
@@ -844,6 +846,8 @@ void main() {
 
         expect(store.vpnStatus, VpnConnectionStatus.connected);
         expect(store.connectedAt?.millisecondsSinceEpoch, storedAt.millisecondsSinceEpoch);
+        // Already up before launch — not an outcome the user just caused.
+        expect(fired, isEmpty);
 
         await store.disposeStore();
       });
@@ -863,6 +867,42 @@ void main() {
         await pumpEventQueue();
 
         expect(store.disconnectReason, VpnDisconnectReason.user);
+        await store.disposeStore();
+      });
+
+      // Launching onto a live tunnel with no stamp (e.g. upgrading from a
+      // build that never wrote one) must not feel like a connection.
+      test('a connect started in this run fires success feedback', () async {
+        stubConnectFlow();
+        when(anyToggleAction()).thenReturn(ConnectionAction.connect);
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        final store = buildStore();
+        await pumpEventQueue();
+        final fired = recordHaptics();
+
+        await store.manageConnection(location: loc);
+        statusController.add(VpnConnectionStatus.connected);
+        await pumpEventQueue();
+
+        expect(fired, ['HapticFeedbackType.successNotification']);
+
+        await store.disposeStore();
+      });
+
+      test('an already-up tunnel with no stored stamp stays silent', () async {
+        final fired = recordHaptics();
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+
+        final store = buildStore();
+        await pumpEventQueue();
+
+        expect(store.connectedAt, isNotNull);
+        expect(fired, isEmpty);
+
         await store.disposeStore();
       });
 
@@ -2129,6 +2169,28 @@ void main() {
           throwsA(isA<TunnelSetupRequiredException>()),
         );
         expect(vpnStore.connectionError, isNull);
+      });
+
+      test('stays disconnecting until the teardown finishes, never connecting', () async {
+        // The tunnel reports `disconnected` before notifyApiVpnDisconnected
+        // returns; isLoading stays true across that gap, so without the action
+        // the card relabels itself "Connecting" mid-teardown.
+        when(anyToggleAction()).thenReturn(ConnectionAction.disconnect);
+        final notify = Completer<void>();
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) => notify.future);
+
+        final disconnecting = vpnStore.manageConnection();
+        await pumpEventQueue();
+
+        expect(vpnStore.isLoading, isTrue);
+        expect(vpnStore.isDisconnecting, isTrue);
+
+        notify.complete();
+        await disconnecting;
+
+        expect(vpnStore.isLoading, isFalse);
+        expect(vpnStore.isDisconnecting, isFalse);
       });
 
       test('reports loading while the prerequisites are still being checked', () async {

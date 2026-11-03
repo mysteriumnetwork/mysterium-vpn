@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysterium_vpn/common/enums/home_tab.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/components/dialogs/subscription_onboarding_dialog.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn/views/home/home_state.dart';
-import 'package:mysterium_vpn_design/widgets/floating_button.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
@@ -23,6 +23,15 @@ class SubscriptionOnboardingShowcase extends StatefulHookConsumerWidget {
 
 class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnboardingShowcase> {
   SubscriptionOnboardingStore get _store => ref.read(subscriptionOnboardingStorePOD);
+
+  /// Resolved at callback time: the Showcase callbacks are memoized once, so
+  /// a value captured here would go stale across a resize.
+  SubscriptionOnboardingStep? _stepAt(int? index) => index == null
+      ? null
+      : SubscriptionOnboardingStep.fromPlatformIndex(
+          index,
+          wideLayout: ScreenType.of(context) >= ScreenType.tablet,
+        );
 
   @override
   void dispose() {
@@ -54,8 +63,8 @@ class _SubscriptionOnboardingShowcaseState extends ConsumerState<SubscriptionOnb
             icon: Icons.close,
           ),
         ),
-        onStart: (index, key) => _store.trackStepViewed(index),
-        onComplete: (index, key) => _store.trackStepCompleted(index),
+        onStart: (index, key) => _store.trackStepViewed(index, _stepAt(index)),
+        onComplete: (index, key) => _store.trackStepCompleted(index, _stepAt(index)),
         onFinish: () {
           _store.trackFinished();
           _markOnboardingAsShown().then((_) {

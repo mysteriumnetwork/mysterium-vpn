@@ -144,7 +144,7 @@ class _PickerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return GestureDetector(
-      onTap: onTap,
+      onTap: HapticLevel.selection.wrap(onTap),
       behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: theme.spacing.xl),

@@ -23,13 +23,12 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
     final scrollController = useScrollController()
       ..addListener(analyticsStore.logLocationsListScroll);
     final brightness = useScaffoldBrightness();
-    final homeState = ref.read(homeStateProvider);
 
     useEffect(() {
-      final homeState = ref.read(homeStateProvider)..scrollController = scrollController;
+      final homeState = ref.read(homeStateProvider)..locationsScrollController = scrollController;
       return () {
-        if (homeState.scrollController == scrollController) {
-          homeState.scrollController = null;
+        if (homeState.locationsScrollController == scrollController) {
+          homeState.locationsScrollController = null;
         }
       };
     }, [scrollController]);
@@ -78,10 +77,6 @@ class HomeDesktopLeftPanel extends HookConsumerWidget {
                       ),
                       child: Observer(
                         builder: (context) => ArrowedProgressCard(
-                          globalKey:
-                              homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep
-                                  .search
-                                  .platformIndex],
                           step: SubscriptionOnboardingStep.search,
                           tooltipPosition: TooltipPosition.bottom,
                           child: LocationsSearch(enabled: !locationsStore.hasNoServers),

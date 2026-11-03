@@ -70,29 +70,28 @@ abstract class _SubscriptionOnboardingStore with Store {
   void trackStarted() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedStarted).ignore();
 
-  void trackStepViewed(int? index) => _analyticsStore
+  void trackStepViewed(int? index, SubscriptionOnboardingStep? step) => _analyticsStore
       .logEvent(
         AnalyticsEvent.onboardingSubscribedStepViewed,
-        parameters: _stepAnalyticsParams(index),
+        parameters: _stepAnalyticsParams(index, step),
       )
       .ignore();
 
-  void trackStepCompleted(int? index) => _analyticsStore
+  void trackStepCompleted(int? index, SubscriptionOnboardingStep? step) => _analyticsStore
       .logEvent(
         AnalyticsEvent.onboardingSubscribedStepCompleted,
-        parameters: _stepAnalyticsParams(index),
+        parameters: _stepAnalyticsParams(index, step),
       )
       .ignore();
 
   void trackFinished() =>
       _analyticsStore.logEvent(AnalyticsEvent.onboardingSubscribedFinished).ignore();
 
-  Map<String, dynamic>? _stepAnalyticsParams(int? index) {
+  Map<String, dynamic>? _stepAnalyticsParams(int? index, SubscriptionOnboardingStep? step) {
     if (index == null) {
       return null;
     }
 
-    final step = SubscriptionOnboardingStep.fromPlatformIndex(index);
     return {'step': index + 1, if (step != null) 'step_name': step.name.toSnakeCase};
   }
 }

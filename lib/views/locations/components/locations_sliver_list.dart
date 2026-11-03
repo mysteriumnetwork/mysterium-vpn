@@ -98,7 +98,7 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
 
       homeState.lastScrolledCountryCode = effectivePriorityCountryCode;
 
-      final sc = homeState.scrollController;
+      final sc = homeState.locationsScrollController;
       if (sc == null) {
         return null;
       }
@@ -170,15 +170,11 @@ class ScrollableLocationsSliverList extends HookConsumerWidget {
             if (showcaseTargetRect != null)
               SliverPositioned.fromRect(
                 rect: showcaseTargetRect,
-                child: IgnorePointer(
+                child: const IgnorePointer(
                   child: ArrowedProgressCard(
-                    globalKey:
-                        homeState.subscriptionOnboardingKeys[SubscriptionOnboardingStep
-                            .locations
-                            .platformIndex],
                     step: SubscriptionOnboardingStep.locations,
                     tooltipPosition: TooltipPosition.top,
-                    child: const SizedBox.expand(),
+                    child: SizedBox.expand(),
                   ),
                 ),
               ),

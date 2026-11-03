@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/ui/keys.dart';
 import 'package:mysterium_vpn/components/components.dart';
@@ -68,18 +71,22 @@ class HomeMobileScaffold extends HookConsumerWidget {
                 SubscriptionOnboardingStep.products,
                 SubscriptionOnboardingStep.settings,
               ][index];
-              final globalKey = homeState.subscriptionOnboardingKeys[step.platformIndex];
               const tabKeys = [K.mapTab, K.locationsTab, K.productsTab, K.settingsTab];
               return ArrowedProgressCard(
                 key: tabKeys[index],
-                globalKey: globalKey,
                 step: step,
                 tooltipPosition: TooltipPosition.top,
                 child: child,
               );
             },
             onDestinationSelected: (i) {
-              if (!store.trySelect(tabs[i])) {
+              final tab = tabs[i];
+              // Re-tapping the active Locations tab returns the list to the top.
+              if (tab == HomeTab.locations && store.selected == tab) {
+                unawaited(homeState.locationsScrollController?.animateToTop() ?? Future.value());
+                return;
+              }
+              if (!store.trySelect(tab)) {
                 Beamer.of(context).beamToNamed(Routes.platformLogin.path);
               }
             },

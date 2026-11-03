@@ -1,5 +1,6 @@
 enum StorageKeys {
   languageCode,
+  hapticsEnabled,
   themeMype,
   subscriptionPlanProductId,
   subscriptionPlanPurchaseId,

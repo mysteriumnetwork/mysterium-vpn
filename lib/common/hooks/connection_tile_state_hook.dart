@@ -51,7 +51,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final displayLocation = useComputedValue(() => connectionDisplayStore.displayLocation);
   final parentLocation = useComputedValue(() => connectionDisplayStore.parentLocation);
   final isLocationAvailable = useComputedValue(() => connectionDisplayStore.isLocationAvailable);
-  final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
+  final isDisconnecting = useComputedValue(() => vpnStore.isDisconnecting);
   final needsUpgrade = useComputedValue(() {
     // Read directly from MobX stores so the Computed tracks these dependencies.
     // Capturing intermediate hook variables would be stale (closure is fixed at initHook).
@@ -168,9 +168,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     status: status,
     connectLabel: connectLabel,
     disconnectLabel: disconnectLabel,
-    connectingLabel: vpnStatus == VpnConnectionStatus.disconnecting
-        ? S.current.disconnecting
-        : S.current.connecting,
+    connectingLabel: isDisconnecting ? S.current.disconnecting : S.current.connecting,
     noConnectionTitle: noConnectionTitle,
     noConnectionDescription: noConnectionDescription,
     onToggle: onToggle,

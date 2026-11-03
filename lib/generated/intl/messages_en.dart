@@ -301,6 +301,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Getting IP address..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Go Back"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Go to log in"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage(
+      "Vibrate on connect, disconnect and selection",
+    ),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("Haptic feedback"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Help & Support"),
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Hidden"),

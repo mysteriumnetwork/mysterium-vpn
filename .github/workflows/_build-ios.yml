@@ -107,6 +107,7 @@ jobs:
         run: bash .github/scripts/upload-crashlytics-symbols.sh ios "${{ inputs.flavor }}"
 
       - name: Upload dSYMs to GitHub
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v5
         with:
           name: iOS dSYMs (${{ inputs.flavor }} ${{ inputs.build_version }}+${{ inputs.build_number }})

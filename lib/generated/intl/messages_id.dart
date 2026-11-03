@@ -298,6 +298,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("Mengambil alamat IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Kembali"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Ke halaman masuk"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage(
+      "Getar saat menghubungkan, memutuskan, dan memilih",
+    ),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("Umpan balik haptik"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("Bantuan & Dukungan"),
     "hi": MessageLookupByLibrary.simpleMessage("Hindi"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("Tersembunyi"),

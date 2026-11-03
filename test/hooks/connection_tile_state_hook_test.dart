@@ -287,15 +287,31 @@ void main() {
       },
     );
 
-    testWidgets('connectingLabel is "Disconnecting" when vpnStatus == disconnecting', (
-      tester,
-    ) async {
-      when(mockVpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnecting);
+    testWidgets('connectingLabel is "Disconnecting" while a teardown is in flight', (tester) async {
+      when(mockVpnStore.isDisconnecting).thenReturn(true);
 
       await tester.pumpWidget(buildHarness());
       await tester.pump();
 
       expect(capturedState, isNotNull);
+      expect(capturedState!.connectingLabel.toLowerCase(), contains('disconnecting'));
+    });
+
+    testWidgets("a teardown past the tunnel's own status still reads as disconnecting", (
+      tester,
+    ) async {
+      // The tunnel reports `disconnected` before the API notification finishes,
+      // so the card stayed loading while the label flipped to "Connecting".
+      when(mockVpnStore.vpnStatus).thenReturn(VpnConnectionStatus.disconnected);
+      when(mockVpnStore.isDisconnecting).thenReturn(true);
+      when(mockConnectionDisplayStore.isLoading).thenReturn(true);
+      when(mockConnectionDisplayStore.displayLocation).thenReturn(testLocation);
+      when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(capturedState!.status, isA<MainIpCardConnecting>());
       expect(capturedState!.connectingLabel.toLowerCase(), contains('disconnecting'));
     });
 

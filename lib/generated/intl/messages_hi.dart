@@ -306,6 +306,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP पता प्राप्त हो रहा है…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("वापस जाएँ"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("लॉग इन पर जाएँ"),
+    "hapticFeedbackSettingDesc": MessageLookupByLibrary.simpleMessage(
+      "कनेक्ट, डिस्कनेक्ट और चयन पर वाइब्रेशन",
+    ),
+    "hapticFeedbackSettingLbl": MessageLookupByLibrary.simpleMessage("हैप्टिक फ़ीडबैक"),
     "helpSupportLbl": MessageLookupByLibrary.simpleMessage("मदद और सहायता"),
     "hi": MessageLookupByLibrary.simpleMessage("हिन्दी"),
     "hiddenLbl": MessageLookupByLibrary.simpleMessage("छिपा हुआ"),

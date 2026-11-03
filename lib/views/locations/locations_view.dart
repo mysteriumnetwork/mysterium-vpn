@@ -102,7 +102,15 @@ class _Body extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
+      [vpnStore],
     );
+    // `location` still reports the old tunnel while switching, so prefer the
+    // one being connected to; fall back for a plain disconnect.
+    final connectingLocation = useComputedValue(
+      () => vpnStore.isLoading ? (vpnStore.connectingLocation ?? vpnStore.location) : null,
+      [vpnStore],
+    );
+    final connectionInFlight = useComputedValue(() => vpnStore.isLoading, [vpnStore]);
     final locationsStore = ref.watch(locationsStorePOD);
     final recentLocationsStore = ref.watch(recentLocationsStorePOD);
     final remoteConfigStore = ref.watch(remoteConfigStorePOD);
@@ -151,6 +159,8 @@ class _Body extends HookConsumerWidget {
                   recentLocations: recentLocations,
                   onLocationTapped: onRecentLocationTapped,
                   connectedLocation: connectedLocation,
+                  connectingLocation: connectingLocation,
+                  isLoading: connectionInFlight,
                 ),
               ),
               SizedBox(height: sectionGap),
@@ -258,11 +268,15 @@ class _RecentLocations extends StatelessWidget {
     required this.recentLocations,
     required this.onLocationTapped,
     this.connectedLocation,
+    this.connectingLocation,
+    this.isLoading = false,
   });
 
   final List<VPNLocation> recentLocations;
   final void Function(VPNLocation) onLocationTapped;
   final VPNLocation? connectedLocation;
+  final VPNLocation? connectingLocation;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
@@ -271,6 +285,8 @@ class _RecentLocations extends StatelessWidget {
       items: recentLocations,
       onItemPressed: onLocationTapped,
       connectedLocation: connectedLocation,
+      connectingLocation: connectingLocation,
+      isLoading: isLoading,
     ),
   );
 }

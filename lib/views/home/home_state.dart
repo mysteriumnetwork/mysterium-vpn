@@ -13,7 +13,8 @@ class _HomeState extends ChangeNotifier {
   /// card on the map.
   final connectedCardKey = GlobalKey();
 
-  ScrollController? scrollController;
+  /// The Locations list, registered by whichever layout renders it.
+  ScrollController? locationsScrollController;
 
   /// Indexed by [SubscriptionOnboardingStep.platformIndex] (tour order),
   /// not by enum declaration order.
