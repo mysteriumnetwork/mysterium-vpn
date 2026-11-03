@@ -1351,8 +1351,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feat/haptic-feedback"
-      resolved-ref: "7861eecc8525e75fea638aa9280f278d9f838bf2"
+      ref: "0.0.40"
+      resolved-ref: a60e4f5ed40bfdd70bcef3981bef38b11fba75b8
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-design.git"
     source: git
     version: "0.0.4"
