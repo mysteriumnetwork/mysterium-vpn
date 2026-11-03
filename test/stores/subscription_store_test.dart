@@ -175,6 +175,107 @@ void main() {
     });
   });
 
+  // The account-settings widget tests stub billingPeriodMonths, so only these
+  // exercise the lookup that supplies the tooltip's billing claim.
+  group('billingPeriodMonths', () {
+    Future<void> primeWithInterval({
+      required String planId,
+      required String subscriptionPlanId,
+      required String unit,
+      required num amount,
+      bool active = true,
+    }) async {
+      final configWithPlan = vpn_api.SubscriptionConfigResponse(
+        gateways: const [],
+        plans: [
+          vpn_api.SubscriptionConfigResponsePlansInner(
+            id: planId,
+            interval: vpn_api.SubscriptionConfigResponsePlansInnerInterval(
+              unit: vpn_api.SubscriptionConfigResponsePlansInnerIntervalUnitEnum.values.firstWhere(
+                (u) => u.value == unit,
+              ),
+              amount: amount,
+            ),
+            price: vpn_api.SubscriptionConfigResponsePlansInnerPrice(USD: 0),
+            prices: const [],
+            supportedGateways: const ['stripe'],
+            metadata: vpn_api.SubscriptionConfigResponsePlansInnerMetadata(),
+          ),
+        ],
+        countries: const [],
+        stripePublishableKey: '',
+        stripeReturnUrl: '',
+      );
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlan));
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(
+        mockSubscriptionService.fetchSubscriptionDetails(),
+      ).thenAnswer((_) async => Subscription(active: active, planId: subscriptionPlanId));
+      await subscriptionStore.refreshSubscription();
+    }
+
+    // The plan id is not the source of truth; the configured interval is.
+    test('prefers the configured interval over what the plan id reads like', () async {
+      await primeWithInterval(
+        planId: 'plan_yearly_pro',
+        subscriptionPlanId: 'plan_yearly_pro',
+        unit: 'month',
+        amount: 6,
+      );
+
+      expect(subscriptionStore.billingPeriodMonths, 6);
+    });
+
+    test('converts a year interval into months', () async {
+      await primeWithInterval(
+        planId: 'plan_2_years',
+        subscriptionPlanId: 'plan_2_years',
+        unit: 'year',
+        amount: 2,
+      );
+
+      expect(subscriptionStore.billingPeriodMonths, 24);
+    });
+
+    test('reads a month interval as given', () async {
+      await primeWithInterval(
+        planId: 'plan_monthly',
+        subscriptionPlanId: 'plan_monthly',
+        unit: 'month',
+        amount: 1,
+      );
+
+      expect(subscriptionStore.billingPeriodMonths, 1);
+    });
+
+    test('is null when the config has no plan matching the subscription', () async {
+      await primeWithInterval(
+        planId: 'plan_other',
+        subscriptionPlanId: 'plan_missing',
+        unit: 'year',
+        amount: 1,
+      );
+
+      expect(subscriptionStore.billingPeriodMonths, isNull);
+    });
+
+    test('is null for an inactive subscription', () async {
+      await primeWithInterval(
+        planId: 'plan_monthly',
+        subscriptionPlanId: 'plan_monthly',
+        unit: 'month',
+        amount: 1,
+        active: false,
+      );
+
+      expect(subscriptionStore.billingPeriodMonths, isNull);
+    });
+
+    test('is null before the config resolves', () {
+      expect(subscriptionStore.billingPeriodMonths, isNull);
+    });
+  });
+
   group('SubscriptionStore', () {
     test('fetches subscription config successfully', () async {
       when(mockConfigStore.refreshConfig()).thenAnswer((_) async => config());

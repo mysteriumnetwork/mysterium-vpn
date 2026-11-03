@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/rest_subscription_repository.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
@@ -122,6 +123,59 @@ void main() {
         sub.orderSummary,
         OrderSummary(currency: 'USD', totalPrice: '74.23', totalPriceBeforeDiscount: '89.54'),
       );
+    });
+
+    // The widget tests build domain ExtraDuration values directly, so only these
+    // cover the wire enum -> ExtraDurationUnit mapping.
+    for (final (wire, expected) in [
+      ('day', ExtraDurationUnit.day),
+      ('week', ExtraDurationUnit.week),
+      ('month', ExtraDurationUnit.month),
+      ('year', ExtraDurationUnit.year),
+    ]) {
+      test('maps an extra duration in $wire onto ${expected.name}', () async {
+        final apiResponse = api.GetSubscriptionResponse(
+          paused: false,
+          active: true,
+          expired: false,
+          recurring: true,
+          pauseAllowed: true,
+          subscriptionId: 'sub-1',
+          extraDuration: api.SubscriptionConfigResponsePlansInnerExtraDuration(
+            amount: 3,
+            unit: api.SubscriptionConfigResponsePlansInnerExtraDurationUnitEnum.values.firstWhere(
+              (u) => u.value == wire,
+            ),
+          ),
+        );
+        when(
+          apiSubscription.subscriptionStatus(),
+        ).thenAnswer((_) async => response(200, apiResponse));
+
+        final sub = await service.fetchSubscriptionDetails();
+
+        expect(sub.extraDuration, ExtraDuration(amount: 3, unit: expected));
+        expect(sub.bonusDuration, isNotNull);
+      });
+    }
+
+    test('leaves extraDuration null when the response carries no bonus', () async {
+      final apiResponse = api.GetSubscriptionResponse(
+        paused: false,
+        active: true,
+        expired: false,
+        recurring: true,
+        pauseAllowed: true,
+        subscriptionId: 'sub-1',
+      );
+      when(
+        apiSubscription.subscriptionStatus(),
+      ).thenAnswer((_) async => response(200, apiResponse));
+
+      final sub = await service.fetchSubscriptionDetails();
+
+      expect(sub.extraDuration, isNull);
+      expect(sub.bonusDuration, isNull);
     });
 
     test('rethrows arbitrary errors after logging', () async {
