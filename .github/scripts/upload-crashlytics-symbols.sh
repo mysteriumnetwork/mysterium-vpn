@@ -43,17 +43,44 @@ if [ ${#dsym_paths[@]} -eq 0 ]; then
   exit 1
 fi
 
-gsp="$platform/config/$flavor/GoogleService-Info.plist"
-
-printf 'Uploading %s dSYMs using %s:\n' "${#dsym_paths[@]}" "$gsp"
-printf '  %s\n' "${dsym_paths[@]}"
-"$upload_symbols" -gsp "$gsp" -p "$upload_platform" -- "${dsym_paths[@]}"
-
-# Share the resolved paths so the artifact step cannot drift from what was uploaded.
+# Shared before the upload, not after: upload-symbols has segfaulted mid-run,
+# and the artifact step is the only thing that makes those dSYMs recoverable.
 if [ -n "${GITHUB_OUTPUT:-}" ]; then
   {
     echo 'paths<<DSYM_PATHS'
     printf '%s\n' "${dsym_paths[@]}"
     echo 'DSYM_PATHS'
   } >> "$GITHUB_OUTPUT"
+fi
+
+gsp="$platform/config/$flavor/GoogleService-Info.plist"
+
+printf 'Uploading %s dSYMs using %s:\n' "${#dsym_paths[@]}" "$gsp"
+printf '  %s\n' "${dsym_paths[@]}"
+
+# One bundle per invocation, retried: a crash then costs one dSYM, not all of them.
+attempts=3
+failed=""
+failed_count=0
+
+for dsym in "${dsym_paths[@]}"; do
+  attempt=1
+  while [ "$attempt" -le "$attempts" ]; do
+    if "$upload_symbols" -gsp "$gsp" -p "$upload_platform" -- "$dsym"; then
+      break
+    fi
+    echo "WARN: upload failed (attempt $attempt/$attempts): $dsym" >&2
+    if [ "$attempt" -eq "$attempts" ]; then
+      failed="$failed  $dsym"$'\n'
+      failed_count=$((failed_count + 1))
+    else
+      sleep 5
+    fi
+    attempt=$((attempt + 1))
+  done
+done
+
+if [ "$failed_count" -gt 0 ]; then
+  printf 'ERROR: %s dSYM(s) not uploaded after %s attempts:\n%s' "$failed_count" "$attempts" "$failed" >&2
+  exit 1
 fi
