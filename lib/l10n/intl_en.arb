@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "Blocker",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} bonus days} one{{count} bonus day} other{{count} bonus days}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "Your first subscription period includes {duration}. After that, your plan renews every {interval} at the standard price.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "Your first subscription period includes {duration}. After that, your plan renews at the standard price.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "Your subscription period includes {duration}.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} bonus months} one{{count} bonus month} other{{count} bonus months}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} bonus weeks} one{{count} bonus week} other{{count} bonus weeks}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} bonus years} one{{count} bonus year} other{{count} bonus years}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} months} one{{count} month} other{{count} months}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "Update now",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "Bypass restrictions",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "We could not resume your subscription. Please try again.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "Resumes on {date}",
+  "@resumesOn": {},
   "retryBtn": "Retry",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Leave a review",

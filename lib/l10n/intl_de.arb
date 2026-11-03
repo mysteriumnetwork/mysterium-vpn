@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "Blocker",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} Bonustage} one{{count} Bonustag} other{{count} Bonustage}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "Dein erster Abrechnungszeitraum enthält {duration}. Danach verlängert sich dein Tarif alle {interval} zum Standardpreis.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "Dein erster Abrechnungszeitraum enthält {duration}. Danach verlängert sich dein Tarif zum Standardpreis.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "Dein Abrechnungszeitraum enthält {duration}.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} Bonusmonate} one{{count} Bonusmonat} other{{count} Bonusmonate}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} Bonuswochen} one{{count} Bonuswoche} other{{count} Bonuswochen}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} Bonusjahre} one{{count} Bonusjahr} other{{count} Bonusjahre}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} Monate} one{{count} Monat} other{{count} Monate}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "Jetzt aktualisieren",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "Einschränkungen umgehen",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "Dein Abo konnte nicht fortgesetzt werden. Bitte versuche es erneut.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "Fortgesetzt am {date}",
+  "@resumesOn": {},
   "retryBtn": "Wiederholen",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Bewertung abgeben",

@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "拦截器",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{赠送 {count} 天} other{赠送 {count} 天}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "你的首个订阅周期包含{duration}。之后，套餐将每 {interval} 按标准价格续订。",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "你的首个订阅周期包含{duration}。之后，套餐将按标准价格续订。",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "你的订阅周期包含{duration}。",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{赠送 {count} 个月} other{赠送 {count} 个月}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{赠送 {count} 周} other{赠送 {count} 周}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{赠送 {count} 年} other{赠送 {count} 年}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} 个月} other{{count} 个月}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "立即更新",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "绕过限制",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "无法恢复订阅。请重试。",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "{date} 恢复",
+  "@resumesOn": {},
   "retryBtn": "重试",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "留下评价",

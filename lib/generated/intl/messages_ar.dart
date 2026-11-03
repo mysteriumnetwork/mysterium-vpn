@@ -28,68 +28,95 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(amount, period) => "${amount}/شهر — يُحصَّل ${period}";
 
-  static String m4(location) => "الاتصال بـ ${location}";
+  static String m4(duration) => "+${duration}";
 
-  static String m5(couponCode) => "تم نسخ ${couponCode} إلى الحافظة!";
+  static String m5(count) =>
+      "${Intl.plural(count, zero: '${count} يوم إضافي', one: 'يوم إضافي واحد', two: 'يومان إضافيان', few: '${count} أيام إضافية', many: '${count} يومًا إضافيًا', other: '${count} يوم إضافي')}";
 
-  static String m6(email) => "أرسلنا بريدًا إلكترونيًا إلى ${email}";
+  static String m6(duration, interval) =>
+      "تتضمن فترة اشتراكك الأولى ${duration}. بعد ذلك، يتجدد اشتراكك كل ${interval} بالسعر العادي.";
 
-  static String m7(email) => "قد يكون لديك بالفعل اشتراك مدفوع باستخدام “${email}”";
+  static String m7(duration) =>
+      "تتضمن فترة اشتراكك الأولى ${duration}. بعد ذلك، يتجدد اشتراكك بالسعر العادي.";
 
-  static String m8(errorCode) => "فشل الاتصال. يُرجى المحاولة مرة أخرى [الخطأ: ${errorCode}]";
+  static String m8(duration) => "تتضمن فترة اشتراكك ${duration}.";
 
-  static String m9(plan) => "احصل على ${plan}";
+  static String m9(count) =>
+      "${Intl.plural(count, zero: '${count} شهر إضافي', one: 'شهر إضافي واحد', two: 'شهران إضافيان', few: '${count} أشهر إضافية', many: '${count} شهرًا إضافيًا', other: '${count} شهر إضافي')}";
 
-  static String m10(plan) => "احصل على خطة اشتراك ${plan}";
+  static String m10(count) =>
+      "${Intl.plural(count, zero: '${count} أسبوع إضافي', one: 'أسبوع إضافي واحد', two: 'أسبوعان إضافيان', few: '${count} أسابيع إضافية', many: '${count} أسبوعًا إضافيًا', other: '${count} أسبوع إضافي')}";
 
-  static String m11(count) => "${count} :مجموعة IP";
+  static String m11(count) =>
+      "${Intl.plural(count, zero: '${count} سنة إضافية', one: 'سنة إضافية واحدة', two: 'سنتان إضافيتان', few: '${count} سنوات إضافية', many: '${count} سنة إضافية', other: '${count} سنة إضافية')}";
 
-  static String m12(location) =>
+  static String m12(count) =>
+      "${Intl.plural(count, zero: '${count} شهر', one: 'شهر واحد', two: 'شهرين', few: '${count} أشهر', many: '${count} شهرًا', other: '${count} شهر')}";
+
+  static String m13(location) => "الاتصال بـ ${location}";
+
+  static String m14(couponCode) => "تم نسخ ${couponCode} إلى الحافظة!";
+
+  static String m15(email) => "أرسلنا بريدًا إلكترونيًا إلى ${email}";
+
+  static String m16(email) => "قد يكون لديك بالفعل اشتراك مدفوع باستخدام “${email}”";
+
+  static String m17(errorCode) => "فشل الاتصال. يُرجى المحاولة مرة أخرى [الخطأ: ${errorCode}]";
+
+  static String m18(plan) => "احصل على ${plan}";
+
+  static String m19(plan) => "احصل على خطة اشتراك ${plan}";
+
+  static String m20(count) => "${count} :مجموعة IP";
+
+  static String m21(location) =>
       "لا تتوفر عناوين IP بديلة في ${location}. اختر دولة أو مدينة أخرى للحصول على عنوان IP مختلف في المرة القادمة.";
 
-  static String m13(location) =>
+  static String m22(location) =>
       "لا تتوفر عناوين IP بديلة في ${location}. اختر دولة أخرى للحصول على عنوان IP مختلف في المرة القادمة.";
 
-  static String m14(count) =>
+  static String m23(count) =>
       "${Intl.plural(count, zero: '${count} مدينة', one: 'مدينة واحدة', two: 'مدينتان', few: '${count} مدن', many: '${count} مدينة', other: '${count} مدينة')}";
 
-  static String m15(count) =>
+  static String m24(count) =>
       "${Intl.plural(count, zero: '${count} IP', one: 'IP واحد', two: 'عنوانا IP', few: '${count} عناوين IP', many: '${count} عنوان IP', other: '${count} IP')}";
 
-  static String m16(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: '${count} ولاية', one: 'ولاية واحدة', two: 'ولايتان', few: '${count} ولايات', many: '${count} ولاية', other: '${count} ولاية')}";
 
-  static String m17(location) => "${location} غير متاح";
+  static String m26(location) => "${location} غير متاح";
 
-  static String m18(location) => "تعذّر تحديث ${location}";
+  static String m27(location) => "تعذّر تحديث ${location}";
 
-  static String m19(location) => "تم تحديث ${location}";
+  static String m28(location) => "تم تحديث ${location}";
 
-  static String m20(date) => "الفوترة التالية: ${date}";
+  static String m29(date) => "الفوترة التالية: ${date}";
 
-  static String m21(count) =>
+  static String m30(count) =>
       "${Intl.plural(count, zero: 'إيقاف مؤقت لمدة ${count} شهر', one: 'إيقاف مؤقت لمدة شهر', two: 'إيقاف مؤقت لمدة شهرين', few: 'إيقاف مؤقت لمدة ${count} أشهر', many: 'إيقاف مؤقت لمدة ${count} شهرًا', other: 'إيقاف مؤقت لمدة ${count} شهر')}";
 
-  static String m22(date) => "متوقف مؤقتًا حتى ${date}";
+  static String m31(date) => "متوقف مؤقتًا حتى ${date}";
 
-  static String m23(location) => "تحديث ${location}";
+  static String m32(location) => "تحديث ${location}";
 
-  static String m24(date) => "يتجدد في ${date}";
+  static String m33(date) => "يتجدد في ${date}";
 
-  static String m25(count) =>
+  static String m34(date) => "يُستأنف في ${date}";
+
+  static String m35(count) =>
       "${Intl.plural(count, zero: 'إعادة الإرسال', one: 'إعادة الإرسال', two: 'إعادة الإرسال', few: 'إعادة الإرسال (${count})', many: 'إعادة الإرسال (${count})', other: 'إعادة الإرسال (${count})')}";
 
-  static String m26(percent) => "وفّر ${percent}%";
+  static String m36(percent) => "وفّر ${percent}%";
 
-  static String m27(percent, planId) => "وفّر ${percent}% مع خطة ${planId}";
+  static String m37(percent, planId) => "وفّر ${percent}% مع خطة ${planId}";
 
-  static String m28(plan) => "الترقية إلى ${plan}";
+  static String m38(plan) => "الترقية إلى ${plan}";
 
-  static String m29(plan) => "الترقية إلى خطة ${plan}";
+  static String m39(plan) => "الترقية إلى خطة ${plan}";
 
-  static String m30(location) => "التبديل إلى ${location}";
+  static String m40(location) => "التبديل إلى ${location}";
 
-  static String m31(word) => "اكتب ${word}";
+  static String m41(word) => "اكتب ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -125,6 +152,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "billedInTotal": m2,
     "billedPerMonth": m3,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("المانع"),
+    "bonusDurationBadge": m4,
+    "bonusDurationDays": m5,
+    "bonusDurationExplanation": m6,
+    "bonusDurationExplanationNoInterval": m7,
+    "bonusDurationExplanationNoRenewal": m8,
+    "bonusDurationMonths": m9,
+    "bonusDurationWeeks": m10,
+    "bonusDurationYears": m11,
+    "bonusRenewalInterval": m12,
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("حدّث الآن"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("تجاوز القيود"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("إلغاء"),
@@ -173,7 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
     "connect": MessageLookupByLibrary.simpleMessage("اتصال"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("أفضل خادم"),
-    "connectToLocationBtn": m4,
+    "connectToLocationBtn": m13,
     "connected": MessageLookupByLibrary.simpleMessage("متصل"),
     "connectedSince": MessageLookupByLibrary.simpleMessage("مدة الاتصال"),
     "connecting": MessageLookupByLibrary.simpleMessage("جارٍ الاتصال"),
@@ -203,7 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("المتابعة عبر البريد الإلكتروني"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("المتابعة عبر Google"),
     "copyLink": MessageLookupByLibrary.simpleMessage("انسخ الرابط والصقه في متصفحك"),
-    "couponCodeCopied": m5,
+    "couponCodeCopied": m14,
     "dark": MessageLookupByLibrary.simpleMessage("داكن"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("سهلة الاكتشاف"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage(
@@ -237,14 +273,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("عنوان البريد الإلكتروني غير صالح"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("عنوان البريد الإلكتروني مطلوب"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("إشعارات البريد الإلكتروني"),
-    "emailSentTo": m6,
+    "emailSentTo": m15,
     "en": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
     "es": MessageLookupByLibrary.simpleMessage("الإسبانية"),
-    "existingSubscriptionDesc": m7,
+    "existingSubscriptionDesc": m16,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
       "يمكنك تسجيل الخروج والمحاولة ببريدك الإلكتروني أو تجاهل هذا التحذير",
     ),
-    "failedToConnectError": m8,
+    "failedToConnectError": m17,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage(
       "فشل إرسال الملاحظات. يُرجى المحاولة مرة أخرى.",
     ),
@@ -295,8 +331,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "أمّن اتصالك واستمتع بتصفح خاص فورًا",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m18,
+    "getSubscriptionPlanBtn": m19,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("جارٍ الحصول على عنوان IP..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("رجوع"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("الانتقال إلى تسجيل الدخول"),
@@ -318,9 +354,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("عنوان IP"),
     "ipDetails": MessageLookupByLibrary.simpleMessage("تفاصيل IP"),
     "ipPool": MessageLookupByLibrary.simpleMessage("مجموعة IP"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m20,
+    "ipRefreshExhaustedCity": m21,
+    "ipRefreshExhaustedCountry": m22,
     "ipType": MessageLookupByLibrary.simpleMessage("نوع IP"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("عناوين IP لمراكز البيانات"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -353,17 +389,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "تنتهي صلاحية الرابط خلال 30 دقيقة ويمكن استخدامه مرة واحدة فقط.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m23,
+    "locationItemNodeCount": m24,
+    "locationItemStatesCount": m25,
     "locationLbl": MessageLookupByLibrary.simpleMessage("الموقع"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("الاتصال بأقرب عنوان IP"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "اتصل بأقرب عنوان IP — أو اختره يدويًا",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m26,
+    "locationsUpdateFailed": m27,
+    "locationsUpdated": m28,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "انتهت صلاحية جلستك. يُرجى تسجيل الدخول مرة أخرى.",
     ),
@@ -393,7 +429,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("المواقع"),
     "navMap": MessageLookupByLibrary.simpleMessage("الخريطة"),
     "navProducts": MessageLookupByLibrary.simpleMessage("المنتجات"),
-    "nextBilling": m20,
+    "nextBilling": m29,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("تاريخ الفوترة التالي:"),
     "no": MessageLookupByLibrary.simpleMessage("لا"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("ليس لديك اشتراك نشط"),
@@ -433,7 +469,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
       "يرجى اختيار مدة الإيقاف المؤقت.",
     ),
-    "pauseForMonths": m21,
+    "pauseForMonths": m30,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("إيقاف الاشتراك مؤقتًا"),
     "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "تعذّر إيقاف اشتراكك مؤقتًا. يُرجى المحاولة مرة أخرى.",
@@ -442,7 +478,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "يمكنك إيقاف خطتك مؤقتًا مرة واحدة لكل دورة فوترة.",
     ),
     "paused": MessageLookupByLibrary.simpleMessage("متوقف مؤقتًا"),
-    "pausedUntil": m22,
+    "pausedUntil": m31,
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "لديك بالفعل عملية دفع جارية. يُرجى إكمالها قبل بدء عملية جديدة.",
     ),
@@ -524,8 +560,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("تحديث IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("تحديث عنوان IP"),
-    "refreshLocationsTooltip": m23,
-    "renewsOn": m24,
+    "refreshLocationsTooltip": m32,
+    "renewsOn": m33,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("أعد الضبط عندما لا يعمل شيء ما"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "إذا تابعت إعادة ضبط التطبيق، فسيتم فصلك عن Mysterium VPN.",
@@ -572,6 +608,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "سيتم استئناف اشتراكك فورًا.",
     ),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("استئناف الاشتراك؟"),
+    "resumesOn": m34,
     "retryBtn": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("اترك تقييمًا"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage("رائع! هل تمانع في ترك تقييم لنا؟"),
@@ -582,7 +619,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("عرض الخطط"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("اختر تطبيق البريد الإلكتروني للمتابعة"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("نصف سنوي"),
-    "sendAgain": m25,
+    "sendAgain": m35,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "نواجه مشكلات مؤقتة في الشبكة. يُرجى المحاولة لاحقًا..",
     ),
@@ -710,8 +747,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "اظهر كمستخدم منزلي عادي، مما يتيح لك الوصول إلى خدمات البث وتجنّب اكتشاف VPN.",
     ),
-    "subscriptionPlanSavePercent": m26,
-    "subscriptionPlanSaveWith": m27,
+    "subscriptionPlanSavePercent": m36,
+    "subscriptionPlanSaveWith": m37,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("الخوادم"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("الدول المدعومة"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("بروتوكول VPN"),
@@ -723,15 +760,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("اشتراكك نشط مرة أخرى."),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("ترقية"),
-    "subscriptionUpgradeCTA": m28,
+    "subscriptionUpgradeCTA": m38,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "للوصول إلى أكثر من 7,500 عنوان IP سكني",
     ),
-    "subscriptionUpgradeModalTitle": m29,
+    "subscriptionUpgradeModalTitle": m39,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("عرض جميع الخطط"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("إعادة محاولة التحقق"),
     "subscripton": MessageLookupByLibrary.simpleMessage("الاشتراك"),
-    "switchToLocationBtn": m30,
+    "switchToLocationBtn": m40,
     "system": MessageLookupByLibrary.simpleMessage("النظام"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("استعد الإنترنت."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("الأحكام والشروط"),
@@ -787,7 +824,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("لم يتم اكتشاف اتصال بالإنترنت."),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("يجب منح الإذن لبدء نفق VPN."),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء إعداد النفق"),
-    "typeDelete": m31,
+    "typeDelete": m41,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("اكتب ملاحظاتك هنا..."),
     "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("التبديل إلى OpenVPN"),
     "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(

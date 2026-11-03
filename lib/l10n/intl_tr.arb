@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "Engelleyici",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} bonus gün} one{{count} bonus gün} other{{count} bonus gün}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "İlk abonelik dönemin {duration} içeriyor. Sonrasında planın {interval} standart fiyattan yenilenir.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "İlk abonelik dönemin {duration} içeriyor. Sonrasında planın standart fiyattan yenilenir.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "Abonelik dönemin {duration} içeriyor.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} bonus ay} one{{count} bonus ay} other{{count} bonus ay}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} bonus hafta} one{{count} bonus hafta} other{{count} bonus hafta}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} bonus yıl} one{{count} bonus yıl} other{{count} bonus yıl}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} ayda bir} one{{count} ayda bir} other{{count} ayda bir}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "Şimdi güncelle",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "Kısıtlamaları aş",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "Aboneliğin sürdürilemedi. Lütfen tekrar dene.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "{date} tarihinde devam eder",
+  "@resumesOn": {},
   "retryBtn": "Yeniden dene",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Yorum bırak",

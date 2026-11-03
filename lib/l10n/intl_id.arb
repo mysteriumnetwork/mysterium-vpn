@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "Pemblokir",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} hari bonus} other{{count} hari bonus}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "Periode langganan pertamamu mencakup {duration}. Setelah itu, paketmu diperpanjang setiap {interval} dengan harga standar.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "Periode langganan pertamamu mencakup {duration}. Setelah itu, paketmu diperpanjang dengan harga standar.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "Periode langgananmu mencakup {duration}.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} bulan bonus} other{{count} bulan bonus}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} minggu bonus} other{{count} minggu bonus}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} tahun bonus} other{{count} tahun bonus}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} bulan} other{{count} bulan}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "Perbarui sekarang",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "Lewati pembatasan",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "Langganan tidak bisa dilanjutkan. Coba lagi.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "Dilanjutkan pada {date}",
+  "@resumesOn": {},
   "retryBtn": "Coba lagi",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Beri ulasan",

@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "المانع",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} يوم إضافي} one{يوم إضافي واحد} two{يومان إضافيان} few{{count} أيام إضافية} many{{count} يومًا إضافيًا} other{{count} يوم إضافي}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "تتضمن فترة اشتراكك الأولى {duration}. بعد ذلك، يتجدد اشتراكك كل {interval} بالسعر العادي.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "تتضمن فترة اشتراكك الأولى {duration}. بعد ذلك، يتجدد اشتراكك بالسعر العادي.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "تتضمن فترة اشتراكك {duration}.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} شهر إضافي} one{شهر إضافي واحد} two{شهران إضافيان} few{{count} أشهر إضافية} many{{count} شهرًا إضافيًا} other{{count} شهر إضافي}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} أسبوع إضافي} one{أسبوع إضافي واحد} two{أسبوعان إضافيان} few{{count} أسابيع إضافية} many{{count} أسبوعًا إضافيًا} other{{count} أسبوع إضافي}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} سنة إضافية} one{سنة إضافية واحدة} two{سنتان إضافيتان} few{{count} سنوات إضافية} many{{count} سنة إضافية} other{{count} سنة إضافية}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} شهر} one{شهر واحد} two{شهرين} few{{count} أشهر} many{{count} شهرًا} other{{count} شهر}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "حدّث الآن",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "تجاوز القيود",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "تعذّر استئناف اشتراكك. يُرجى المحاولة مرة أخرى.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "يُستأنف في {date}",
+  "@resumesOn": {},
   "retryBtn": "إعادة المحاولة",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "اترك تقييمًا",

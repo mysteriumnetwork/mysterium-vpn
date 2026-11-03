@@ -299,33 +299,34 @@ class _SubscriptionCard extends StatelessWidget {
           ? (Tr.byKeyOrNull(planId) ?? planId)
           : S.current.subscripton;
 
-      final String planSubtitle;
-      String? badgeText;
-      var badgeType = BadgeType.warning;
+      String? planSubtitle;
+      ({String label, Color color})? status;
 
-      final spacing = Theme.of(context).spacing;
+      final theme = Theme.of(context);
+      final spacing = theme.spacing;
 
-      // Active subscription can be recurring or cancelled
+      // Active subscription can be recurring, paused or cancelled
       if (isSubscriptionActive) {
+        final active = subscription!;
+
         // subscription paused
         if (isSubscriptionInPauseState) {
-          planSubtitle = S.current.pausedUntil(
-            subscription!.pausedUntil?.toLocal().formatWithDay() ?? '',
+          status = (label: S.current.paused, color: theme.palette.textWarningPrimary);
+          planSubtitle = S.current.resumesOn(
+            active.pausedUntil?.toLocal().formatWithDayMonthYear() ?? '',
           );
-          badgeText = S.current.paused;
 
           // subscription recurring
-        } else if (subscription?.recurring ?? false) {
+        } else if (active.recurring ?? false) {
           planSubtitle = S.current.renewsOn(
-            subscription!.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
+            active.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
           );
           // subscription cancelled
         } else {
+          status = (label: S.current.cancelled, color: theme.palette.textErrorPrimary);
           planSubtitle = S.current.accessUntil(
-            subscription!.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
+            active.activeUntil?.toLocal().formatWithDayMonthYear() ?? '',
           );
-          badgeText = S.current.cancelled;
-          badgeType = BadgeType.error;
         }
         // Inactive subscription -> unsubscribed
       } else {
@@ -408,6 +409,7 @@ class _SubscriptionCard extends StatelessWidget {
       }
 
       final subtitle = _SubscriptionSubtitle(
+        status: status,
         subtitle: planSubtitle,
         isDesktop: isDesktop,
         orderSummary: subscription?.orderSummary,
@@ -417,6 +419,9 @@ class _SubscriptionCard extends StatelessWidget {
 
       return SettingsCard(
         title: planTitle,
+        badge: isSubscriptionActive
+            ? _bonusBadge(subscription!, subscriptionStore.billingPeriodMonths)
+            : null,
         subtitleWidget: showSubtitleInFooter ? null : subtitle,
         footer: showSubtitleInFooter
             ? Padding(
@@ -426,8 +431,6 @@ class _SubscriptionCard extends StatelessWidget {
             : null,
         position: position,
         trailing: trailing,
-        badgeText: badgeText,
-        badgeType: badgeType,
       );
     },
   );
@@ -435,27 +438,44 @@ class _SubscriptionCard extends StatelessWidget {
 
 class _SubscriptionSubtitle extends StatelessWidget {
   const _SubscriptionSubtitle({
-    required this._subtitle,
     required this._isDesktop,
+    this._status,
+    this._subtitle,
     this._orderSummary,
   });
 
-  final String _subtitle;
+  /// Status word, coloured ahead of [_subtitle], per the Figma account designs,
+  /// which colour the status instead of badging it.
+  final ({String label, Color color})? _status;
+  final String? _subtitle;
   final bool _isDesktop;
   final OrderSummary? _orderSummary;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final style = theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary);
+    // Two lines, because at 320pt the date does not fit even on a line of its own.
+    Widget run(String text, Color? colour) => Text(
+      text,
+      style: style.copyWith(color: colour),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
+
     return Row(
       mainAxisAlignment: _isDesktop ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          child: Text(
-            _subtitle,
-            style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          // Wrap: the date moves under the status rather than being ellipsized.
+          // Separate runs, so no separator is left stranded on a line of its own.
+          child: Wrap(
+            spacing: theme.spacing.s,
+            runSpacing: theme.spacing.xxs,
+            children: [
+              if (_status case final status?) run(status.label, status.color),
+              if (_subtitle != null) run(_subtitle, null),
+            ],
           ),
         ),
         if (_orderSummary?.hasDiscount ?? false)
@@ -482,4 +502,42 @@ class _SubscriptionSubtitle extends StatelessWidget {
       ],
     );
   }
+}
+
+/// The bonus-period pill for a subscription that carries one, or `null`.
+///
+/// Lives in the view layer because stores stay translation-free.
+Widget? _bonusBadge(Subscription subscription, int? periodMonths) {
+  final extra = subscription.bonusDuration;
+  if (extra == null) {
+    return null;
+  }
+
+  final duration = switch (extra.unit) {
+    ExtraDurationUnit.day => S.current.bonusDurationDays(extra.amount),
+    ExtraDurationUnit.week => S.current.bonusDurationWeeks(extra.amount),
+    ExtraDurationUnit.month => S.current.bonusDurationMonths(extra.amount),
+    ExtraDurationUnit.year => S.current.bonusDurationYears(extra.amount),
+  };
+
+  // A plan that will not renew must not carry the renewal sentence.
+  final String explanation;
+  if (!(subscription.recurring ?? false)) {
+    explanation = S.current.bonusDurationExplanationNoRenewal(duration);
+  } else if (periodMonths == null) {
+    explanation = S.current.bonusDurationExplanationNoInterval(duration);
+  } else {
+    explanation = S.current.bonusDurationExplanation(
+      duration,
+      S.current.bonusRenewalInterval(periodMonths),
+    );
+  }
+
+  return AppBadge(
+    text: S.current.bonusDurationBadge(duration),
+    icon: UntitledUI.gift_02,
+    type: BadgeType.brand,
+    size: BadgeSize.small,
+    tooltip: explanation,
+  );
 }

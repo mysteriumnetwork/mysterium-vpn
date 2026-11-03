@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "Bloqueur",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} jours offerts} one{{count} jour offert} other{{count} jours offerts}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "Ta première période d’abonnement inclut {duration}. Ensuite, ton forfait se renouvelle tous les {interval} au prix standard.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "Ta première période d’abonnement inclut {duration}. Ensuite, ton forfait se renouvelle au prix standard.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "Ta période d’abonnement inclut {duration}.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} mois offerts} one{{count} mois offert} other{{count} mois offerts}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} semaines offertes} one{{count} semaine offerte} other{{count} semaines offertes}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} ans offerts} one{{count} an offert} other{{count} ans offerts}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} mois} one{{count} mois} other{{count} mois}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "Mettre à jour",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "Contourner les restrictions",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "Impossible de reprendre ton abonnement. Réessaie.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "Reprend le {date}",
+  "@resumesOn": {},
   "retryBtn": "Réessayer",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Laisser un avis",

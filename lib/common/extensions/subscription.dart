@@ -29,7 +29,7 @@ extension SubscriptionExtensions on Subscription? {
         gateway: this!.gatewayName,
         plan: this!.planId!,
         expirationDate: this!.activeUntil?.toUnixTimestampSeconds() ?? 'null',
-        duration: this!.durationInMonthsBasedOnPlanId ?? 'null',
+        duration: this!.standardPeriodMonths?.toString() ?? 'null',
         recurring: this!.recurring?.toString() ?? 'null',
         startDate: this!.periodStart?.toUnixTimestampSeconds() ?? 'null',
         active: this!.active.toString(),

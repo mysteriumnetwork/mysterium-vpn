@@ -5,6 +5,7 @@ export 'banner_type.dart';
 export 'blocker_type.dart';
 export 'connection_action.dart';
 export 'exception_severity.dart';
+export 'extra_duration_unit.dart';
 export 'grant_type.dart';
 export 'home_tab.dart';
 export 'ip_type.dart';

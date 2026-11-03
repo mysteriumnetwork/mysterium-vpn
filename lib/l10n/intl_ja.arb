@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "ブロッカー",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{ボーナス{count}日} other{ボーナス{count}日}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "最初のご契約期間には{duration}が含まれます。その後は{interval}ごとに通常価格で更新されます。",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "最初のご契約期間には{duration}が含まれます。その後は通常価格で更新されます。",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "ご契約期間には{duration}が含まれます。",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{ボーナス{count}か月} other{ボーナス{count}か月}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{ボーナス{count}週間} other{ボーナス{count}週間}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{ボーナス{count}年} other{ボーナス{count}年}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count}か月} other{{count}か月}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "今すぐアップデート",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "制限を回避",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "サブスクリプションを再開できませんでした。もう一度お試しください。",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "{date} に再開",
+  "@resumesOn": {},
   "retryBtn": "再試行",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "レビューを書く",
