@@ -37,6 +37,14 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.storeState,
     name: '_SubscriptionStore.storeState',
   )).value;
+  Computed<api.SubscriptionConfigResponsePlansInner?>? _$currentPlanComputed;
+
+  @override
+  api.SubscriptionConfigResponsePlansInner? get currentPlan =>
+      (_$currentPlanComputed ??= Computed<api.SubscriptionConfigResponsePlansInner?>(
+        () => super.currentPlan,
+        name: '_SubscriptionStore.currentPlan',
+      )).value;
   Computed<api.SubscriptionConfigResponsePlansInnerMetadata?>? _$planMetadataComputed;
 
   @override
@@ -45,6 +53,13 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
         () => super.planMetadata,
         name: '_SubscriptionStore.planMetadata',
       )).value;
+  Computed<int?>? _$billingPeriodMonthsComputed;
+
+  @override
+  int? get billingPeriodMonths => (_$billingPeriodMonthsComputed ??= Computed<int?>(
+    () => super.billingPeriodMonths,
+    name: '_SubscriptionStore.billingPeriodMonths',
+  )).value;
   Computed<bool>? _$residentialIPsAllowedComputed;
 
   @override
@@ -258,7 +273,9 @@ isSubscribed: ${isSubscribed},
 isPaused: ${isPaused},
 isSubscriptionLoading: ${isSubscriptionLoading},
 storeState: ${storeState},
+currentPlan: ${currentPlan},
 planMetadata: ${planMetadata},
+billingPeriodMonths: ${billingPeriodMonths},
 residentialIPsAllowed: ${residentialIPsAllowed},
 useWebFlow: ${useWebFlow},
 isStoreSubOnForeignPlatform: ${isStoreSubOnForeignPlatform},

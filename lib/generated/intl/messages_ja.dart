@@ -28,62 +28,86 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(amount, period) => "${amount}/月 — ${period}請求";
 
-  static String m4(location) => "${location} に接続する";
+  static String m4(duration) => "+${duration}";
 
-  static String m5(couponCode) => "${couponCode} をクリップボードにコピーしました";
+  static String m5(count) => "${Intl.plural(count, zero: 'ボーナス${count}日', other: 'ボーナス${count}日')}";
 
-  static String m6(email) => "${email} にメールを送信しました";
+  static String m6(duration, interval) =>
+      "最初のご契約期間には${duration}が含まれます。その後は${interval}ごとに通常価格で更新されます。";
 
-  static String m7(email) => "「${email}」で有料サブスクリプションをすでにお持ちの可能性があります";
+  static String m7(duration) => "最初のご契約期間には${duration}が含まれます。その後は通常価格で更新されます。";
 
-  static String m8(errorCode) => "接続に失敗しました。もう一度お試しください [エラー: ${errorCode}]";
+  static String m8(duration) => "ご契約期間には${duration}が含まれます。";
 
-  static String m9(plan) => "${plan} を入手";
+  static String m9(count) =>
+      "${Intl.plural(count, zero: 'ボーナス${count}か月', other: 'ボーナス${count}か月')}";
 
-  static String m10(plan) => "${plan} プランを入手";
+  static String m10(count) =>
+      "${Intl.plural(count, zero: 'ボーナス${count}週間', other: 'ボーナス${count}週間')}";
 
-  static String m11(count) => "IP プール: ${count}";
+  static String m11(count) =>
+      "${Intl.plural(count, zero: 'ボーナス${count}年', other: 'ボーナス${count}年')}";
 
-  static String m12(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国または都市を選んでください。";
+  static String m12(count) => "${Intl.plural(count, zero: '${count}か月', other: '${count}か月')}";
 
-  static String m13(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国を選んでください。";
+  static String m13(location) => "${location} に接続する";
 
-  static String m14(count) => "${Intl.plural(count, zero: '${count} 都市', other: '${count} 都市')}";
+  static String m14(couponCode) => "${couponCode} をクリップボードにコピーしました";
 
-  static String m15(count) => "${Intl.plural(count, zero: '${count} IP', other: '${count} IP')}";
+  static String m15(email) => "${email} にメールを送信しました";
 
-  static String m16(count) => "${Intl.plural(count, zero: '${count} 州', other: '${count} 州')}";
+  static String m16(email) => "「${email}」で有料サブスクリプションをすでにお持ちの可能性があります";
 
-  static String m17(location) => "${location} は利用できません";
+  static String m17(errorCode) => "接続に失敗しました。もう一度お試しください [エラー: ${errorCode}]";
 
-  static String m18(location) => "${location} を更新できませんでした";
+  static String m18(plan) => "${plan} を入手";
 
-  static String m19(location) => "${location} を更新しました";
+  static String m19(plan) => "${plan} プランを入手";
 
-  static String m20(date) => "次回の請求: ${date}";
+  static String m20(count) => "IP プール: ${count}";
 
-  static String m21(count) =>
+  static String m21(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国または都市を選んでください。";
+
+  static String m22(location) => "${location} では代替の IP がありません。次回別の IP を取得するには、別の国を選んでください。";
+
+  static String m23(count) => "${Intl.plural(count, zero: '${count} 都市', other: '${count} 都市')}";
+
+  static String m24(count) => "${Intl.plural(count, zero: '${count} IP', other: '${count} IP')}";
+
+  static String m25(count) => "${Intl.plural(count, zero: '${count} 州', other: '${count} 州')}";
+
+  static String m26(location) => "${location} は利用できません";
+
+  static String m27(location) => "${location} を更新できませんでした";
+
+  static String m28(location) => "${location} を更新しました";
+
+  static String m29(date) => "次回の請求: ${date}";
+
+  static String m30(count) =>
       "${Intl.plural(count, zero: '${count}か月一時停止', other: '${count}か月一時停止')}";
 
-  static String m22(date) => "${date} まで一時停止中";
+  static String m31(date) => "${date} まで一時停止中";
 
-  static String m23(location) => "${location} を更新";
+  static String m32(location) => "${location} を更新";
 
-  static String m24(date) => "${date} に更新";
+  static String m33(date) => "${date} に更新";
 
-  static String m25(count) => "${Intl.plural(count, zero: '再送信', other: '再送信 (${count})')}";
+  static String m34(date) => "${date} に再開";
 
-  static String m26(percent) => "${percent}% お得";
+  static String m35(count) => "${Intl.plural(count, zero: '再送信', other: '再送信 (${count})')}";
 
-  static String m27(percent, planId) => "${planId} プランで ${percent}% お得";
+  static String m36(percent) => "${percent}% お得";
 
-  static String m28(plan) => "${plan} にアップグレード";
+  static String m37(percent, planId) => "${planId} プランで ${percent}% お得";
 
-  static String m29(plan) => "${plan} プランにアップグレード";
+  static String m38(plan) => "${plan} にアップグレード";
 
-  static String m30(location) => "${location} に切り替える";
+  static String m39(plan) => "${plan} プランにアップグレード";
 
-  static String m31(word) => "${word} を入力";
+  static String m40(location) => "${location} に切り替える";
+
+  static String m41(word) => "${word} を入力";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -115,6 +139,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "billedInTotal": m2,
     "billedPerMonth": m3,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("ブロッカー"),
+    "bonusDurationBadge": m4,
+    "bonusDurationDays": m5,
+    "bonusDurationExplanation": m6,
+    "bonusDurationExplanationNoInterval": m7,
+    "bonusDurationExplanationNoRenewal": m8,
+    "bonusDurationMonths": m9,
+    "bonusDurationWeeks": m10,
+    "bonusDurationYears": m11,
+    "bonusRenewalInterval": m12,
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("今すぐアップデート"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("制限を回避"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("キャンセル"),
@@ -153,7 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm": MessageLookupByLibrary.simpleMessage("確認"),
     "connect": MessageLookupByLibrary.simpleMessage("接続"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("最適なサーバー"),
-    "connectToLocationBtn": m4,
+    "connectToLocationBtn": m13,
     "connected": MessageLookupByLibrary.simpleMessage("接続済み"),
     "connectedSince": MessageLookupByLibrary.simpleMessage("接続時間"),
     "connecting": MessageLookupByLibrary.simpleMessage("接続中…"),
@@ -179,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("メールで続行"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Google で続行"),
     "copyLink": MessageLookupByLibrary.simpleMessage("リンクをコピーしてブラウザに貼り付けてください"),
-    "couponCodeCopied": m5,
+    "couponCodeCopied": m14,
     "dark": MessageLookupByLibrary.simpleMessage("ダーク"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("検出されやすい"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("サイトでブロックされがち"),
@@ -209,12 +242,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("メールアドレスが無効です"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("メールアドレスは必須です"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("メール通知"),
-    "emailSentTo": m6,
+    "emailSentTo": m15,
     "en": MessageLookupByLibrary.simpleMessage("英語"),
     "es": MessageLookupByLibrary.simpleMessage("スペイン語"),
-    "existingSubscriptionDesc": m7,
+    "existingSubscriptionDesc": m16,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage("ログアウトしてメールで試すか、この警告を無視できます"),
-    "failedToConnectError": m8,
+    "failedToConnectError": m17,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage(
       "フィードバックの送信に失敗しました。もう一度お試しください。",
     ),
@@ -263,8 +296,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "接続を保護し、すぐにプライベートな閲覧をお楽しみください",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m18,
+    "getSubscriptionPlanBtn": m19,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP アドレスを取得中…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("戻る"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("ログインへ"),
@@ -282,9 +315,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP アドレス"),
     "ipDetails": MessageLookupByLibrary.simpleMessage("IP の詳細"),
     "ipPool": MessageLookupByLibrary.simpleMessage("IP プール"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m20,
+    "ipRefreshExhaustedCity": m21,
+    "ipRefreshExhaustedCountry": m22,
     "ipType": MessageLookupByLibrary.simpleMessage("IP タイプ"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("データセンター IP"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -311,17 +344,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "linkCopied": MessageLookupByLibrary.simpleMessage("リンクをクリップボードにコピーしました"),
     "linkExpires": MessageLookupByLibrary.simpleMessage("このリンクは 30 分で期限切れになり、1 回だけ使用できます。"),
     "location": MessageLookupByLibrary.simpleMessage("ロケーション"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m23,
+    "locationItemNodeCount": m24,
+    "locationItemStatesCount": m25,
     "locationLbl": MessageLookupByLibrary.simpleMessage("ロケーション"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("最寄りの IP に接続"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "最寄りの IP に接続するか、手動で選択してください",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m26,
+    "locationsUpdateFailed": m27,
+    "locationsUpdated": m28,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage("セッションの有効期限が切れました。もう一度ログインしてください。"),
     "loginSignupLabel": MessageLookupByLibrary.simpleMessage("ログインまたは新規登録"),
     "logout": MessageLookupByLibrary.simpleMessage("ログアウト"),
@@ -345,7 +378,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("ロケーション"),
     "navMap": MessageLookupByLibrary.simpleMessage("地図"),
     "navProducts": MessageLookupByLibrary.simpleMessage("製品"),
-    "nextBilling": m20,
+    "nextBilling": m29,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("次回請求日:"),
     "no": MessageLookupByLibrary.simpleMessage("いいえ"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("有効なサブスクリプションがありません"),
@@ -383,14 +416,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("その他…"),
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage("一時停止の期間を選択"),
-    "pauseForMonths": m21,
+    "pauseForMonths": m30,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("一時停止する"),
     "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "サブスクリプションを一時停止できませんでした。もう一度お試しください。",
     ),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage("プランは請求サイクルごとに1回まで一時停止できます。"),
     "paused": MessageLookupByLibrary.simpleMessage("一時停止中"),
-    "pausedUntil": m22,
+    "pausedUntil": m31,
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "進行中の決済がすでにあります。新しい決済を開始する前に完了してください。",
     ),
@@ -460,8 +493,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("更新"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP を更新"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP アドレスを更新"),
-    "refreshLocationsTooltip": m23,
-    "renewsOn": m24,
+    "refreshLocationsTooltip": m32,
+    "renewsOn": m33,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("うまく動作しないときにリセット"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "アプリのリセットを続行すると、Mysterium VPN から切断されます。",
@@ -500,6 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("サブスクリプションはすぐに再開されます。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("サブスクリプションを再開しますか？"),
+    "resumesOn": m34,
     "retryBtn": MessageLookupByLibrary.simpleMessage("再試行"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("レビューを書く"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage("素晴らしいですね。よろしければレビューを書いていただけますか？"),
@@ -508,7 +542,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("プランを見る"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("続行するにはメールアプリを選択"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("半年ごと"),
-    "sendAgain": m25,
+    "sendAgain": m35,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "一時的なネットワークの問題が発生しています。後でもう一度お試しください。",
     ),
@@ -622,8 +656,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "通常の家庭ユーザーのように見せることで、ストリーミングサービスにアクセスでき、VPN の検出を回避できます。",
     ),
-    "subscriptionPlanSavePercent": m26,
-    "subscriptionPlanSaveWith": m27,
+    "subscriptionPlanSavePercent": m36,
+    "subscriptionPlanSaveWith": m37,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("サーバー"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("対応国"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN プロトコル"),
@@ -633,15 +667,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("サブスクリプションの変更が完了していません。"),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("サブスクリプションが再び有効になりました。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("アップグレード"),
-    "subscriptionUpgradeCTA": m28,
+    "subscriptionUpgradeCTA": m38,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7,500 以上の レジデンシャル IP にアクセス",
     ),
-    "subscriptionUpgradeModalTitle": m29,
+    "subscriptionUpgradeModalTitle": m39,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("すべてのプランを見る"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("確認を再試行"),
     "subscripton": MessageLookupByLibrary.simpleMessage("サブスクリプション"),
-    "switchToLocationBtn": m30,
+    "switchToLocationBtn": m40,
     "system": MessageLookupByLibrary.simpleMessage("システム"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("インターネットを取り戻そう。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("利用規約"),
@@ -689,7 +723,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("インターネット接続が検出されません。"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("VPNトンネルを開始するには許可が必要です。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("トンネルの設定中にエラーが発生しました"),
-    "typeDelete": m31,
+    "typeDelete": m41,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("ここにフィードバックを入力…"),
     "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("OpenVPN に切り替える"),
     "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(

@@ -122,11 +122,11 @@ abstract class _SubscriptionStore with Store {
       subscriptionConfigFuture.value != null ? StoreState.available : StoreState.notAvailable,
   };
 
-  /// Plan metadata for the current subscription's `planId`, resolved from the
-  /// static subscription config. Returns null if the subscription is inactive,
-  /// has no planId, or the config doesn't contain that plan.
+  /// Plan for the current subscription's `planId`, resolved from the static
+  /// subscription config. Returns null if the subscription is inactive, has no
+  /// planId, or the config doesn't contain that plan.
   @computed
-  api.SubscriptionConfigResponsePlansInnerMetadata? get planMetadata {
+  api.SubscriptionConfigResponsePlansInner? get currentPlan {
     final subscription = _subscriptionFuture.value;
     if (subscription == null || !subscription.active) {
       return null;
@@ -136,7 +136,25 @@ abstract class _SubscriptionStore with Store {
       return null;
     }
     final plans = subscriptionConfigFuture.value?.plans ?? const [];
-    return plans.firstWhereOrNull((plan) => plan.id == planId)?.metadata;
+    return plans.firstWhereOrNull((plan) => plan.id == planId);
+  }
+
+  @computed
+  api.SubscriptionConfigResponsePlansInnerMetadata? get planMetadata => currentPlan?.metadata;
+
+  /// Billing period in months as the backend states it. Null until the config
+  /// resolves the plan — the renewal interval is shown to the user, so it is
+  /// read from the plan rather than guessed from the plan id.
+  @computed
+  int? get billingPeriodMonths {
+    final interval = currentPlan?.interval;
+    if (interval == null) {
+      return null;
+    }
+    final amount = interval.amount.toInt();
+    return interval.unit == api.SubscriptionConfigResponsePlansInnerIntervalUnitEnum.year
+        ? amount * 12
+        : amount;
   }
 
   @computed

@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "ब्लॉकर",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} बोनस दिन} one{{count} बोनस दिन} other{{count} बोनस दिन}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "आपकी पहली सदस्यता अवधि में {duration} शामिल हैं। इसके बाद, आपका प्लान हर {interval} में मानक कीमत पर नवीनीकृत होगा।",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "आपकी पहली सदस्यता अवधि में {duration} शामिल हैं। इसके बाद, आपका प्लान मानक कीमत पर नवीनीकृत होगा।",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "आपकी सदस्यता अवधि में {duration} शामिल हैं।",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} बोनस महीने} one{{count} बोनस महीना} other{{count} बोनस महीने}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} बोनस सप्ताह} one{{count} बोनस सप्ताह} other{{count} बोनस सप्ताह}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} बोनस वर्ष} one{{count} बोनस वर्ष} other{{count} बोनस वर्ष}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} महीने} one{{count} महीना} other{{count} महीने}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "अभी अपडेट करें",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "प्रतिबंध बायपास करना",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "आपकी सदस्यता फिर से शुरू नहीं हो सकी। कृपया फिर से प्रयास करें।",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "{date} को फिर से शुरू होगा",
+  "@resumesOn": {},
   "retryBtn": "फिर से प्रयास करें",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "समीक्षा दें",

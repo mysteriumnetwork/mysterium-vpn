@@ -28,63 +28,86 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(amount, period) => "${amount}/月 — 按${period}计费";
 
-  static String m4(location) => "连接到 ${location}";
+  static String m4(duration) => "+${duration}";
 
-  static String m5(couponCode) => "${couponCode} 已复制到剪贴板！";
+  static String m5(count) => "${Intl.plural(count, zero: '赠送 ${count} 天', other: '赠送 ${count} 天')}";
 
-  static String m6(email) => "我们已向 ${email} 发送了一封电子邮件";
+  static String m6(duration, interval) => "你的首个订阅周期包含${duration}。之后，套餐将每 ${interval} 按标准价格续订。";
 
-  static String m7(email) => "你可能已使用“${email}”购买了付费订阅";
+  static String m7(duration) => "你的首个订阅周期包含${duration}。之后，套餐将按标准价格续订。";
 
-  static String m8(errorCode) => "连接失败。请重试 [错误：${errorCode}]";
+  static String m8(duration) => "你的订阅周期包含${duration}。";
 
-  static String m9(plan) => "获取 ${plan}";
+  static String m9(count) =>
+      "${Intl.plural(count, zero: '赠送 ${count} 个月', other: '赠送 ${count} 个月')}";
 
-  static String m10(plan) => "获取 ${plan} 套餐";
+  static String m10(count) =>
+      "${Intl.plural(count, zero: '赠送 ${count} 周', other: '赠送 ${count} 周')}";
 
-  static String m11(count) => "IP 池：${count}";
+  static String m11(count) =>
+      "${Intl.plural(count, zero: '赠送 ${count} 年', other: '赠送 ${count} 年')}";
 
-  static String m12(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区或城市，下次即可获得不同的 IP。";
+  static String m12(count) => "${Intl.plural(count, zero: '${count} 个月', other: '${count} 个月')}";
 
-  static String m13(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区，下次即可获得不同的 IP。";
+  static String m13(location) => "连接到 ${location}";
 
-  static String m14(count) => "${Intl.plural(count, zero: '${count} 个城市', other: '${count} 个城市')}";
+  static String m14(couponCode) => "${couponCode} 已复制到剪贴板！";
 
-  static String m15(count) =>
+  static String m15(email) => "我们已向 ${email} 发送了一封电子邮件";
+
+  static String m16(email) => "你可能已使用“${email}”购买了付费订阅";
+
+  static String m17(errorCode) => "连接失败。请重试 [错误：${errorCode}]";
+
+  static String m18(plan) => "获取 ${plan}";
+
+  static String m19(plan) => "获取 ${plan} 套餐";
+
+  static String m20(count) => "IP 池：${count}";
+
+  static String m21(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区或城市，下次即可获得不同的 IP。";
+
+  static String m22(location) => "${location} 没有其他可用的 IP。请选择其他国家/地区，下次即可获得不同的 IP。";
+
+  static String m23(count) => "${Intl.plural(count, zero: '${count} 个城市', other: '${count} 个城市')}";
+
+  static String m24(count) =>
       "${Intl.plural(count, zero: '${count} 个 IP', other: '${count} 个 IP')}";
 
-  static String m16(count) => "${Intl.plural(count, zero: '${count} 个州', other: '${count} 个州')}";
+  static String m25(count) => "${Intl.plural(count, zero: '${count} 个州', other: '${count} 个州')}";
 
-  static String m17(location) => "${location} 当前不可用";
+  static String m26(location) => "${location} 当前不可用";
 
-  static String m18(location) => "无法更新 ${location}";
+  static String m27(location) => "无法更新 ${location}";
 
-  static String m19(location) => "${location} 已更新";
+  static String m28(location) => "${location} 已更新";
 
-  static String m20(date) => "下次计费：${date}";
+  static String m29(date) => "下次计费：${date}";
 
-  static String m21(count) =>
+  static String m30(count) =>
       "${Intl.plural(count, zero: '暂停 ${count} 个月', other: '暂停 ${count} 个月')}";
 
-  static String m22(date) => "已暂停至 ${date}";
+  static String m31(date) => "已暂停至 ${date}";
 
-  static String m23(location) => "刷新 ${location}";
+  static String m32(location) => "刷新 ${location}";
 
-  static String m24(date) => "${date} 续订";
+  static String m33(date) => "${date} 续订";
 
-  static String m25(count) => "${Intl.plural(count, zero: '重新发送', other: '重新发送 (${count})')}";
+  static String m34(date) => "${date} 恢复";
 
-  static String m26(percent) => "节省 ${percent}%";
+  static String m35(count) => "${Intl.plural(count, zero: '重新发送', other: '重新发送 (${count})')}";
 
-  static String m27(percent, planId) => "选择 ${planId} 套餐可节省 ${percent}%";
+  static String m36(percent) => "节省 ${percent}%";
 
-  static String m28(plan) => "升级到 ${plan}";
+  static String m37(percent, planId) => "选择 ${planId} 套餐可节省 ${percent}%";
 
-  static String m29(plan) => "升级到 ${plan} 套餐";
+  static String m38(plan) => "升级到 ${plan}";
 
-  static String m30(location) => "切换到 ${location}";
+  static String m39(plan) => "升级到 ${plan} 套餐";
 
-  static String m31(word) => "输入 ${word}";
+  static String m40(location) => "切换到 ${location}";
+
+  static String m41(word) => "输入 ${word}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -114,6 +137,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "billedInTotal": m2,
     "billedPerMonth": m3,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("拦截器"),
+    "bonusDurationBadge": m4,
+    "bonusDurationDays": m5,
+    "bonusDurationExplanation": m6,
+    "bonusDurationExplanationNoInterval": m7,
+    "bonusDurationExplanationNoRenewal": m8,
+    "bonusDurationMonths": m9,
+    "bonusDurationWeeks": m10,
+    "bonusDurationYears": m11,
+    "bonusRenewalInterval": m12,
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("立即更新"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("绕过限制"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("取消"),
@@ -150,7 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm": MessageLookupByLibrary.simpleMessage("确认"),
     "connect": MessageLookupByLibrary.simpleMessage("连接"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("最佳服务器"),
-    "connectToLocationBtn": m4,
+    "connectToLocationBtn": m13,
     "connected": MessageLookupByLibrary.simpleMessage("已连接"),
     "connectedSince": MessageLookupByLibrary.simpleMessage("已连接时长"),
     "connecting": MessageLookupByLibrary.simpleMessage("正在连接"),
@@ -172,7 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("使用电子邮件继续"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("使用 Google 继续"),
     "copyLink": MessageLookupByLibrary.simpleMessage("复制链接并粘贴到浏览器中"),
-    "couponCodeCopied": m5,
+    "couponCodeCopied": m14,
     "dark": MessageLookupByLibrary.simpleMessage("深色"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("易被检测"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("常被网站屏蔽"),
@@ -202,12 +234,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("电子邮件地址无效"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("电子邮件地址为必填项"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("电子邮件通知"),
-    "emailSentTo": m6,
+    "emailSentTo": m15,
     "en": MessageLookupByLibrary.simpleMessage("英语"),
     "es": MessageLookupByLibrary.simpleMessage("西班牙语"),
-    "existingSubscriptionDesc": m7,
+    "existingSubscriptionDesc": m16,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage("你可以登出并改用你的电子邮件，或忽略此警告"),
-    "failedToConnectError": m8,
+    "failedToConnectError": m17,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage("反馈提交失败。请重试。"),
     "failedToSubscribe": MessageLookupByLibrary.simpleMessage("你的订阅出现问题。请重试！"),
     "failedToVerifySubs": MessageLookupByLibrary.simpleMessage("我们无法验证你上次的订阅购买。请点击下方按钮重试。"),
@@ -242,8 +274,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getAPlanBtn": MessageLookupByLibrary.simpleMessage("获取套餐"),
     "getNewIPAddress": MessageLookupByLibrary.simpleMessage("刷新时获取新的 IP 地址"),
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage("保护你的连接，立即享受私密浏览"),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m18,
+    "getSubscriptionPlanBtn": m19,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("正在获取 IP 地址…"),
     "goBackButton": MessageLookupByLibrary.simpleMessage("返回"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("前往登录"),
@@ -261,9 +293,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP 地址"),
     "ipDetails": MessageLookupByLibrary.simpleMessage("IP 详情"),
     "ipPool": MessageLookupByLibrary.simpleMessage("IP 池"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m20,
+    "ipRefreshExhaustedCity": m21,
+    "ipRefreshExhaustedCountry": m22,
     "ipType": MessageLookupByLibrary.simpleMessage("IP 类型"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("数据中心 IP"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage("数据中心 IP，针对速度和性能进行了优化。"),
@@ -286,15 +318,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "linkCopied": MessageLookupByLibrary.simpleMessage("链接已复制到剪贴板！"),
     "linkExpires": MessageLookupByLibrary.simpleMessage("该链接将在 30 分钟后失效，且只能使用一次。"),
     "location": MessageLookupByLibrary.simpleMessage("地点"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m23,
+    "locationItemNodeCount": m24,
+    "locationItemStatesCount": m25,
     "locationLbl": MessageLookupByLibrary.simpleMessage("地点"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("连接到最近的 IP"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage("连接到最近的 IP，或手动选择"),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m26,
+    "locationsUpdateFailed": m27,
+    "locationsUpdated": m28,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage("你的会话已过期。请重新登录。"),
     "loginSignupLabel": MessageLookupByLibrary.simpleMessage("登录或注册"),
     "logout": MessageLookupByLibrary.simpleMessage("登出"),
@@ -318,7 +350,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("地点"),
     "navMap": MessageLookupByLibrary.simpleMessage("地图"),
     "navProducts": MessageLookupByLibrary.simpleMessage("产品"),
-    "nextBilling": m20,
+    "nextBilling": m29,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("下次账单日期："),
     "no": MessageLookupByLibrary.simpleMessage("否"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("你没有有效的订阅"),
@@ -350,12 +382,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "otherReason": MessageLookupByLibrary.simpleMessage("其他…"),
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage("请选择一个暂停时长。"),
-    "pauseForMonths": m21,
+    "pauseForMonths": m30,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("暂停订阅"),
     "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage("无法暂停订阅。请重试。"),
     "pauseSubscriptionInfoDesc": MessageLookupByLibrary.simpleMessage("每个账单周期只能暂停计划一次。"),
     "paused": MessageLookupByLibrary.simpleMessage("已暂停"),
-    "pausedUntil": m22,
+    "pausedUntil": m31,
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage("你已有一笔进行中的付款交易。请先完成后再发起新交易。"),
     "perMonth": MessageLookupByLibrary.simpleMessage("月"),
     "pl": MessageLookupByLibrary.simpleMessage("波兰语"),
@@ -417,8 +449,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("刷新"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("刷新 IP"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("刷新 IP 地址"),
-    "refreshLocationsTooltip": m23,
-    "renewsOn": m24,
+    "refreshLocationsTooltip": m32,
+    "renewsOn": m33,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("出现异常时进行重置"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "若继续重置应用，你将与 Mysterium VPN 断开连接。",
@@ -455,6 +487,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage("无法恢复订阅。请重试。"),
     "resumeSubscriptionPromptDesc": MessageLookupByLibrary.simpleMessage("你的订阅将立即恢复。"),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("恢复订阅？"),
+    "resumesOn": m34,
     "retryBtn": MessageLookupByLibrary.simpleMessage("重试"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("留下评价"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage("太好了！方便给我们留个评价吗？"),
@@ -463,7 +496,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "seePlansBtn": MessageLookupByLibrary.simpleMessage("查看套餐"),
     "selectEmailApp": MessageLookupByLibrary.simpleMessage("选择电子邮件应用以继续"),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("每半年"),
-    "sendAgain": m25,
+    "sendAgain": m35,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage("我们遇到临时网络问题。请稍后重试。"),
     "settingManageBtn": MessageLookupByLibrary.simpleMessage("管理"),
     "settings": MessageLookupByLibrary.simpleMessage("设置"),
@@ -571,8 +604,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "让你看起来像普通家庭用户，从而访问流媒体服务并避免被检测为 VPN。",
     ),
-    "subscriptionPlanSavePercent": m26,
-    "subscriptionPlanSaveWith": m27,
+    "subscriptionPlanSavePercent": m36,
+    "subscriptionPlanSaveWith": m37,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("服务器"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage("支持的国家/地区"),
     "subscriptionPlanWireGuard": MessageLookupByLibrary.simpleMessage("VPN 协议"),
@@ -582,15 +615,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionProcessCanceled": MessageLookupByLibrary.simpleMessage("你尚未完成订阅更改。"),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("你的订阅已重新激活。"),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("升级"),
-    "subscriptionUpgradeCTA": m28,
+    "subscriptionUpgradeCTA": m38,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "以访问 7,500+ 个住宅 IP",
     ),
-    "subscriptionUpgradeModalTitle": m29,
+    "subscriptionUpgradeModalTitle": m39,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("查看所有套餐"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage("重试验证"),
     "subscripton": MessageLookupByLibrary.simpleMessage("订阅"),
-    "switchToLocationBtn": m30,
+    "switchToLocationBtn": m40,
     "system": MessageLookupByLibrary.simpleMessage("系统"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("夺回互联网。"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("条款和条件"),
@@ -638,7 +671,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tunnelNoNetwork": MessageLookupByLibrary.simpleMessage("未检测到互联网连接。"),
     "tunnelPermissionRequired": MessageLookupByLibrary.simpleMessage("启动 VPN 隧道需要授予权限。"),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("设置隧道时发生错误"),
-    "typeDelete": m31,
+    "typeDelete": m41,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("在此输入你的反馈…"),
     "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("切换到 OpenVPN"),
     "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(

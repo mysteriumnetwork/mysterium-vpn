@@ -54,6 +54,54 @@
   "@billedPerMonth": {},
   "blockerSettingLbl": "Bloker",
   "@blockerSettingLbl": {},
+  "bonusDurationBadge": "+{duration}",
+  "@bonusDurationBadge": {},
+  "bonusDurationDays": "{count, plural, zero{{count} dni bonusowych} one{{count} dzień bonusowy} few{{count} dni bonusowe} many{{count} dni bonusowych} other{{count} dni bonusowych}}",
+  "@bonusDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationExplanation": "Twój pierwszy okres subskrypcji obejmuje {duration}. Potem plan odnawia się co {interval} w cenie standardowej.",
+  "@bonusDurationExplanation": {},
+  "bonusDurationExplanationNoInterval": "Twój pierwszy okres subskrypcji obejmuje {duration}. Potem plan odnawia się w cenie standardowej.",
+  "@bonusDurationExplanationNoInterval": {},
+  "bonusDurationExplanationNoRenewal": "Twój okres subskrypcji obejmuje {duration}.",
+  "@bonusDurationExplanationNoRenewal": {},
+  "bonusDurationMonths": "{count, plural, zero{{count} miesięcy bonusowych} one{{count} miesiąc bonusowy} few{{count} miesiące bonusowe} many{{count} miesięcy bonusowych} other{{count} miesięcy bonusowych}}",
+  "@bonusDurationMonths": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationWeeks": "{count, plural, zero{{count} tygodni bonusowych} one{{count} tydzień bonusowy} few{{count} tygodnie bonusowe} many{{count} tygodni bonusowych} other{{count} tygodni bonusowych}}",
+  "@bonusDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusDurationYears": "{count, plural, zero{{count} lat bonusowych} one{{count} rok bonusowy} few{{count} lata bonusowe} many{{count} lat bonusowych} other{{count} lat bonusowych}}",
+  "@bonusDurationYears": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "bonusRenewalInterval": "{count, plural, zero{{count} miesięcy} one{{count} miesiąc} few{{count} miesiące} many{{count} miesięcy} other{{count} miesięcy}}",
+  "@bonusRenewalInterval": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
   "buttonUpdateApp": "Zaktualizuj teraz",
   "@buttonUpdateApp": {},
   "bypassRestrictionsReason": "Omijanie ograniczeń",
@@ -686,6 +734,8 @@
   "@resumeSubscriptionTitle": {},
   "resumeSubscriptionFailed": "Nie udało się wznowić subskrypcji. Spróbuj ponownie.",
   "@resumeSubscriptionFailed": {},
+  "resumesOn": "Wznawia się {date}",
+  "@resumesOn": {},
   "retryBtn": "Ponów",
   "@retryBtn": {},
   "reviewLeaveReviewBtn": "Napisz recenzję",

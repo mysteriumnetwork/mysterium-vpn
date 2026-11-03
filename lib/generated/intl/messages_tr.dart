@@ -29,68 +29,95 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(amount, period) => "${amount}/ay — ${period} faturalanır";
 
-  static String m4(location) => "${location} konumuna bağlan";
+  static String m4(duration) => "+${duration}";
 
-  static String m5(couponCode) => "${couponCode} panoya kopyalandı!";
+  static String m5(count) =>
+      "${Intl.plural(count, zero: '${count} bonus gün', one: '${count} bonus gün', other: '${count} bonus gün')}";
 
-  static String m6(email) => "${email} adresine bir e-posta gönderdik";
+  static String m6(duration, interval) =>
+      "İlk abonelik dönemin ${duration} içeriyor. Sonrasında planın ${interval} standart fiyattan yenilenir.";
 
-  static String m7(email) => "“${email}” ile ödeme yaptığın bir aboneliğin zaten olabilir";
+  static String m7(duration) =>
+      "İlk abonelik dönemin ${duration} içeriyor. Sonrasında planın standart fiyattan yenilenir.";
 
-  static String m8(errorCode) => "Bağlanılamadı. Lütfen tekrar dene [hata: ${errorCode}]";
+  static String m8(duration) => "Abonelik dönemin ${duration} içeriyor.";
 
-  static String m9(plan) => "${plan} al";
+  static String m9(count) =>
+      "${Intl.plural(count, zero: '${count} bonus ay', one: '${count} bonus ay', other: '${count} bonus ay')}";
 
-  static String m10(plan) => "${plan} planını al";
+  static String m10(count) =>
+      "${Intl.plural(count, zero: '${count} bonus hafta', one: '${count} bonus hafta', other: '${count} bonus hafta')}";
 
-  static String m11(count) => "IP havuzu: ${count}";
+  static String m11(count) =>
+      "${Intl.plural(count, zero: '${count} bonus yıl', one: '${count} bonus yıl', other: '${count} bonus yıl')}";
 
-  static String m12(location) =>
+  static String m12(count) =>
+      "${Intl.plural(count, zero: '${count} ayda bir', one: '${count} ayda bir', other: '${count} ayda bir')}";
+
+  static String m13(location) => "${location} konumuna bağlan";
+
+  static String m14(couponCode) => "${couponCode} panoya kopyalandı!";
+
+  static String m15(email) => "${email} adresine bir e-posta gönderdik";
+
+  static String m16(email) => "“${email}” ile ödeme yaptığın bir aboneliğin zaten olabilir";
+
+  static String m17(errorCode) => "Bağlanılamadı. Lütfen tekrar dene [hata: ${errorCode}]";
+
+  static String m18(plan) => "${plan} al";
+
+  static String m19(plan) => "${plan} planını al";
+
+  static String m20(count) => "IP havuzu: ${count}";
+
+  static String m21(location) =>
       "${location} içinde alternatif IP yok. Bir dahaki sefere farklı bir IP almak için başka bir ülke veya şehir seç.";
 
-  static String m13(location) =>
+  static String m22(location) =>
       "${location} içinde alternatif IP yok. Bir dahaki sefere farklı bir IP almak için başka bir ülke seç.";
 
-  static String m14(count) =>
+  static String m23(count) =>
       "${Intl.plural(count, zero: '${count} Şehir', one: '${count} Şehir', other: '${count} Şehir')}";
 
-  static String m15(count) =>
+  static String m24(count) =>
       "${Intl.plural(count, zero: '${count} IP', one: '${count} IP', other: '${count} IP')}";
 
-  static String m16(count) =>
+  static String m25(count) =>
       "${Intl.plural(count, zero: '${count} Eyalet', one: '${count} Eyalet', other: '${count} Eyalet')}";
 
-  static String m17(location) => "${location} kullanılamıyor";
+  static String m26(location) => "${location} kullanılamıyor";
 
-  static String m18(location) => "${location} güncellenemedi";
+  static String m27(location) => "${location} güncellenemedi";
 
-  static String m19(location) => "${location} güncellendi";
+  static String m28(location) => "${location} güncellendi";
 
-  static String m20(date) => "Sonraki Faturalandırma: ${date}";
+  static String m29(date) => "Sonraki Faturalandırma: ${date}";
 
-  static String m21(count) =>
+  static String m30(count) =>
       "${Intl.plural(count, zero: '${count} ay duraklat', one: '${count} ay duraklat', other: '${count} ay duraklat')}";
 
-  static String m22(date) => "${date} tarihine kadar duraklatıldı";
+  static String m31(date) => "${date} tarihine kadar duraklatıldı";
 
-  static String m23(location) => "${location} yenile";
+  static String m32(location) => "${location} yenile";
 
-  static String m24(date) => "${date} tarihinde yenilenir";
+  static String m33(date) => "${date} tarihinde yenilenir";
 
-  static String m25(count) =>
+  static String m34(date) => "${date} tarihinde devam eder";
+
+  static String m35(count) =>
       "${Intl.plural(count, zero: 'Tekrar gönder', one: 'Tekrar gönder', other: 'Tekrar gönder (${count})')}";
 
-  static String m26(percent) => "%${percent} tasarruf";
+  static String m36(percent) => "%${percent} tasarruf";
 
-  static String m27(percent, planId) => "${planId} planıyla %${percent} tasarruf";
+  static String m37(percent, planId) => "${planId} planıyla %${percent} tasarruf";
 
-  static String m28(plan) => "${plan} planına yükselt";
+  static String m38(plan) => "${plan} planına yükselt";
 
-  static String m29(plan) => "${plan} planına yükselt";
+  static String m39(plan) => "${plan} planına yükselt";
 
-  static String m30(location) => "${location} konumuna geç";
+  static String m40(location) => "${location} konumuna geç";
 
-  static String m31(word) => "${word} yaz";
+  static String m41(word) => "${word} yaz";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -128,6 +155,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "billedInTotal": m2,
     "billedPerMonth": m3,
     "blockerSettingLbl": MessageLookupByLibrary.simpleMessage("Engelleyici"),
+    "bonusDurationBadge": m4,
+    "bonusDurationDays": m5,
+    "bonusDurationExplanation": m6,
+    "bonusDurationExplanationNoInterval": m7,
+    "bonusDurationExplanationNoRenewal": m8,
+    "bonusDurationMonths": m9,
+    "bonusDurationWeeks": m10,
+    "bonusDurationYears": m11,
+    "bonusRenewalInterval": m12,
     "buttonUpdateApp": MessageLookupByLibrary.simpleMessage("Şimdi güncelle"),
     "bypassRestrictionsReason": MessageLookupByLibrary.simpleMessage("Kısıtlamaları aş"),
     "cancelBtn": MessageLookupByLibrary.simpleMessage("İptal"),
@@ -180,7 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm": MessageLookupByLibrary.simpleMessage("Onayla"),
     "connect": MessageLookupByLibrary.simpleMessage("Bağlan"),
     "connectBestServer": MessageLookupByLibrary.simpleMessage("En iyi sunucu"),
-    "connectToLocationBtn": m4,
+    "connectToLocationBtn": m13,
     "connected": MessageLookupByLibrary.simpleMessage("Bağlandı"),
     "connectedSince": MessageLookupByLibrary.simpleMessage("Bağlantı süresi"),
     "connecting": MessageLookupByLibrary.simpleMessage("Bağlanıyor"),
@@ -210,7 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithEmail": MessageLookupByLibrary.simpleMessage("E-posta ile devam et"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage("Google ile devam et"),
     "copyLink": MessageLookupByLibrary.simpleMessage("Bağlantıyı kopyala ve tarayıcına yapıştır"),
-    "couponCodeCopied": m5,
+    "couponCodeCopied": m14,
     "dark": MessageLookupByLibrary.simpleMessage("Koyu"),
     "dataCentreComparisonCardItem1": MessageLookupByLibrary.simpleMessage("Kolayca tespit edilir"),
     "dataCentreComparisonCardItem2": MessageLookupByLibrary.simpleMessage("Sık sık engellenir"),
@@ -240,14 +276,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailIsNotValid": MessageLookupByLibrary.simpleMessage("E-posta adresi geçerli değil"),
     "emailIsRequired": MessageLookupByLibrary.simpleMessage("E-posta adresi gerekli"),
     "emailNotificationsSetting": MessageLookupByLibrary.simpleMessage("E-posta Bildirimleri"),
-    "emailSentTo": m6,
+    "emailSentTo": m15,
     "en": MessageLookupByLibrary.simpleMessage("İngilizce"),
     "es": MessageLookupByLibrary.simpleMessage("İspanyolca"),
-    "existingSubscriptionDesc": m7,
+    "existingSubscriptionDesc": m16,
     "existingSubscriptionTitle": MessageLookupByLibrary.simpleMessage(
       "Çıkış yapıp e-postanla deneyebilir veya bu uyarıyı yoksayabilirsin",
     ),
-    "failedToConnectError": m8,
+    "failedToConnectError": m17,
     "failedToSubmitFeedback": MessageLookupByLibrary.simpleMessage(
       "Geri bildirim gönderilemedi. Lütfen tekrar dene.",
     ),
@@ -298,8 +334,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getSubscriptionModalDesc": MessageLookupByLibrary.simpleMessage(
       "Bağlantını güvence altına al ve anında gizli gezinmenin keyfini çıkar",
     ),
-    "getSubscriptionModalTitle": m9,
-    "getSubscriptionPlanBtn": m10,
+    "getSubscriptionModalTitle": m18,
+    "getSubscriptionPlanBtn": m19,
     "gettingIPAddress": MessageLookupByLibrary.simpleMessage("IP adresi alınıyor..."),
     "goBackButton": MessageLookupByLibrary.simpleMessage("Geri dön"),
     "goToLoginBtn": MessageLookupByLibrary.simpleMessage("Girişe git"),
@@ -321,9 +357,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ipAddressLbl": MessageLookupByLibrary.simpleMessage("IP adresi"),
     "ipDetails": MessageLookupByLibrary.simpleMessage("IP ayrıntıları"),
     "ipPool": MessageLookupByLibrary.simpleMessage("IP havuzu"),
-    "ipPoolLabel": m11,
-    "ipRefreshExhaustedCity": m12,
-    "ipRefreshExhaustedCountry": m13,
+    "ipPoolLabel": m20,
+    "ipRefreshExhaustedCity": m21,
+    "ipRefreshExhaustedCountry": m22,
     "ipType": MessageLookupByLibrary.simpleMessage("IP türü"),
     "ipTypeDataCenter": MessageLookupByLibrary.simpleMessage("Veri merkezi IP\'leri"),
     "ipTypeDataCenterDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -356,17 +392,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bağlantı 30 dakika içinde sona erer ve yalnızca bir kez kullanılabilir.",
     ),
     "location": MessageLookupByLibrary.simpleMessage("Konum"),
-    "locationItemCityCount": m14,
-    "locationItemNodeCount": m15,
-    "locationItemStatesCount": m16,
+    "locationItemCityCount": m23,
+    "locationItemNodeCount": m24,
+    "locationItemStatesCount": m25,
     "locationLbl": MessageLookupByLibrary.simpleMessage("Konum"),
     "locationUnavailableAction": MessageLookupByLibrary.simpleMessage("En yakın IP\'ye bağlan"),
     "locationUnavailableSubtitle": MessageLookupByLibrary.simpleMessage(
       "En yakın IP\'ye bağlan - ya da manuel olarak seç",
     ),
-    "locationUnavailableTitle": m17,
-    "locationsUpdateFailed": m18,
-    "locationsUpdated": m19,
+    "locationUnavailableTitle": m26,
+    "locationsUpdateFailed": m27,
+    "locationsUpdated": m28,
     "loginSessionExpired": MessageLookupByLibrary.simpleMessage(
       "Oturumunun süresi doldu. Lütfen tekrar giriş yap.",
     ),
@@ -394,7 +430,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "navLocations": MessageLookupByLibrary.simpleMessage("Konumlar"),
     "navMap": MessageLookupByLibrary.simpleMessage("Harita"),
     "navProducts": MessageLookupByLibrary.simpleMessage("Ürünler"),
-    "nextBilling": m20,
+    "nextBilling": m29,
     "nextBillingDateLbl": MessageLookupByLibrary.simpleMessage("Sonraki fatura tarihi:"),
     "no": MessageLookupByLibrary.simpleMessage("Hayır"),
     "noActiveSubsDesc": MessageLookupByLibrary.simpleMessage("Etkin aboneliğin yok"),
@@ -438,7 +474,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pauseDurationRequiredError": MessageLookupByLibrary.simpleMessage(
       "Lütfen bir duraklatma süresi seç.",
     ),
-    "pauseForMonths": m21,
+    "pauseForMonths": m30,
     "pauseSubscriptionBtn": MessageLookupByLibrary.simpleMessage("Aboneliği duraklat"),
     "pauseSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "Aboneliğin duraklatılamadı. Lütfen tekrar dene.",
@@ -447,7 +483,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aboneliğini faturalandırma döngüsü başına bir kez duraklatabilirsin.",
     ),
     "paused": MessageLookupByLibrary.simpleMessage("Duraklatıldı"),
-    "pausedUntil": m22,
+    "pausedUntil": m31,
     "pendingTransactionMessage": MessageLookupByLibrary.simpleMessage(
       "Devam eden bir ödeme işlemin zaten var. Yeni bir işlem başlatmadan önce lütfen bunu tamamla.",
     ),
@@ -539,8 +575,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Yenile"),
     "refreshIP": MessageLookupByLibrary.simpleMessage("IP\'yi yenile"),
     "refreshIPAddress": MessageLookupByLibrary.simpleMessage("IP adresini yenile"),
-    "refreshLocationsTooltip": m23,
-    "renewsOn": m24,
+    "refreshLocationsTooltip": m32,
+    "renewsOn": m33,
     "resetAppDesc": MessageLookupByLibrary.simpleMessage("Bir şey çalışmadığında sıfırla"),
     "resetAppDialogContent": MessageLookupByLibrary.simpleMessage(
       "Uygulamayı sıfırlamaya devam edersen Mysterium VPN bağlantın kesilir.",
@@ -593,6 +629,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aboneliğin hemen devam edecek.",
     ),
     "resumeSubscriptionTitle": MessageLookupByLibrary.simpleMessage("Aboneliği sürdür?"),
+    "resumesOn": m34,
     "retryBtn": MessageLookupByLibrary.simpleMessage("Yeniden dene"),
     "reviewLeaveReviewBtn": MessageLookupByLibrary.simpleMessage("Yorum bırak"),
     "reviewPositiveTitle": MessageLookupByLibrary.simpleMessage(
@@ -607,7 +644,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Devam etmek için e-posta uygulaması seç",
     ),
     "semiAnnual": MessageLookupByLibrary.simpleMessage("altı ayda bir"),
-    "sendAgain": m25,
+    "sendAgain": m35,
     "serviceUnavailableError": MessageLookupByLibrary.simpleMessage(
       "Geçici ağ sorunları yaşıyoruz. Lütfen daha sonra tekrar dene..",
     ),
@@ -745,8 +782,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscriptionPlanResidentialIPsDesc": MessageLookupByLibrary.simpleMessage(
       "Normal bir ev kullanıcısı gibi görünerek streaming hizmetlerine erişmeni ve VPN tespitinden kaçınmanı sağlar.",
     ),
-    "subscriptionPlanSavePercent": m26,
-    "subscriptionPlanSaveWith": m27,
+    "subscriptionPlanSavePercent": m36,
+    "subscriptionPlanSaveWith": m37,
     "subscriptionPlanServers": MessageLookupByLibrary.simpleMessage("Sunucular"),
     "subscriptionPlanSupportedCountries": MessageLookupByLibrary.simpleMessage(
       "Desteklenen ülkeler",
@@ -760,17 +797,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "subscriptionResumed": MessageLookupByLibrary.simpleMessage("Aboneliğin yeniden etkin."),
     "subscriptionUpgrade": MessageLookupByLibrary.simpleMessage("Yükselt"),
-    "subscriptionUpgradeCTA": m28,
+    "subscriptionUpgradeCTA": m38,
     "subscriptionUpgradeModalDescription": MessageLookupByLibrary.simpleMessage(
       "7.500+ konut IP\'ye erişmek için",
     ),
-    "subscriptionUpgradeModalTitle": m29,
+    "subscriptionUpgradeModalTitle": m39,
     "subscriptionUpgradeSeeAllPlans": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
     "subscriptionVerificationFailed": MessageLookupByLibrary.simpleMessage(
       "Doğrulamayı Yeniden Dene",
     ),
     "subscripton": MessageLookupByLibrary.simpleMessage("Abonelik"),
-    "switchToLocationBtn": m30,
+    "switchToLocationBtn": m40,
     "system": MessageLookupByLibrary.simpleMessage("Sistem"),
     "takeBackTheInternetLbl": MessageLookupByLibrary.simpleMessage("İnterneti geri al."),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage("Şartlar ve Koşullar"),
@@ -832,7 +869,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "VPN tünelini başlatmak için izin vermen gerekiyor.",
     ),
     "tunnelSetupError": MessageLookupByLibrary.simpleMessage("Tünel kurulurken bir hata oluştu"),
-    "typeDelete": m31,
+    "typeDelete": m41,
     "typeFeedback": MessageLookupByLibrary.simpleMessage("Geri bildirimini buraya yaz..."),
     "udpBlockedConfirm": MessageLookupByLibrary.simpleMessage("OpenVPN\'e geç"),
     "udpBlockedDesc": MessageLookupByLibrary.simpleMessage(

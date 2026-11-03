@@ -84,6 +84,15 @@ class S {
     'billedInTotal': ['amount', 'period'],
     'billedPerMonth': ['amount', 'period'],
     'blockerSettingLbl': [],
+    'bonusDurationBadge': ['duration'],
+    'bonusDurationDays': ['count'],
+    'bonusDurationExplanation': ['duration', 'interval'],
+    'bonusDurationExplanationNoInterval': ['duration'],
+    'bonusDurationExplanationNoRenewal': ['duration'],
+    'bonusDurationMonths': ['count'],
+    'bonusDurationWeeks': ['count'],
+    'bonusDurationYears': ['count'],
+    'bonusRenewalInterval': ['count'],
     'buttonUpdateApp': [],
     'bypassRestrictionsReason': [],
     'cancelBtn': [],
@@ -388,6 +397,7 @@ class S {
     'resumeSubscriptionPromptDesc': [],
     'resumeSubscriptionTitle': [],
     'resumeSubscriptionFailed': [],
+    'resumesOn': ['date'],
     'retryBtn': [],
     'reviewLeaveReviewBtn': [],
     'reviewPositiveTitle': [],
@@ -756,6 +766,106 @@ class S {
   /// `Blocker`
   String get blockerSettingLbl {
     return Intl.message('Blocker', name: 'blockerSettingLbl', desc: '', args: []);
+  }
+
+  /// `+{duration}`
+  String bonusDurationBadge(Object duration) {
+    return Intl.message('+$duration', name: 'bonusDurationBadge', desc: '', args: [duration]);
+  }
+
+  /// `{count, plural, zero{{count} bonus days} one{{count} bonus day} other{{count} bonus days}}`
+  String bonusDurationDays(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count bonus days',
+      one: '$count bonus day',
+      other: '$count bonus days',
+      name: 'bonusDurationDays',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Your first subscription period includes {duration}. After that, your plan renews every {interval} at the standard price.`
+  String bonusDurationExplanation(Object duration, Object interval) {
+    return Intl.message(
+      'Your first subscription period includes $duration. After that, your plan renews every $interval at the standard price.',
+      name: 'bonusDurationExplanation',
+      desc: '',
+      args: [duration, interval],
+    );
+  }
+
+  /// `Your first subscription period includes {duration}. After that, your plan renews at the standard price.`
+  String bonusDurationExplanationNoInterval(Object duration) {
+    return Intl.message(
+      'Your first subscription period includes $duration. After that, your plan renews at the standard price.',
+      name: 'bonusDurationExplanationNoInterval',
+      desc: '',
+      args: [duration],
+    );
+  }
+
+  /// `Your subscription period includes {duration}.`
+  String bonusDurationExplanationNoRenewal(Object duration) {
+    return Intl.message(
+      'Your subscription period includes $duration.',
+      name: 'bonusDurationExplanationNoRenewal',
+      desc: '',
+      args: [duration],
+    );
+  }
+
+  /// `{count, plural, zero{{count} bonus months} one{{count} bonus month} other{{count} bonus months}}`
+  String bonusDurationMonths(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count bonus months',
+      one: '$count bonus month',
+      other: '$count bonus months',
+      name: 'bonusDurationMonths',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, zero{{count} bonus weeks} one{{count} bonus week} other{{count} bonus weeks}}`
+  String bonusDurationWeeks(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count bonus weeks',
+      one: '$count bonus week',
+      other: '$count bonus weeks',
+      name: 'bonusDurationWeeks',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, zero{{count} bonus years} one{{count} bonus year} other{{count} bonus years}}`
+  String bonusDurationYears(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count bonus years',
+      one: '$count bonus year',
+      other: '$count bonus years',
+      name: 'bonusDurationYears',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, zero{{count} months} one{{count} month} other{{count} months}}`
+  String bonusRenewalInterval(num count) {
+    return Intl.plural(
+      count,
+      zero: '$count months',
+      one: '$count month',
+      other: '$count months',
+      name: 'bonusRenewalInterval',
+      desc: '',
+      args: [count],
+    );
   }
 
   /// `Update now`
@@ -2888,6 +2998,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Resumes on {date}`
+  String resumesOn(Object date) {
+    return Intl.message('Resumes on $date', name: 'resumesOn', desc: '', args: [date]);
   }
 
   /// `Retry`

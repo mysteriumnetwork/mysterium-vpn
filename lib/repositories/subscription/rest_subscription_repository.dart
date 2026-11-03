@@ -11,6 +11,7 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/subscription/subscription_repository.dart';
@@ -269,6 +270,7 @@ class RestSubscriptionRepository extends SubscriptionRepository {
         throw Exception('No data found');
       }
       final data = res.data!;
+      final extra = data.extraDuration;
 
       return Subscription(
         id: data.subscriptionId,
@@ -284,6 +286,9 @@ class RestSubscriptionRepository extends SubscriptionRepository {
         pauseAllowed: data.pauseAllowed,
         pausedFrom: data.pausedFrom,
         pausedUntil: data.pausedUntil,
+        extraDuration: extra == null
+            ? null
+            : ExtraDuration(amount: extra.amount.toInt(), unit: _extraDurationUnit(extra.unit)),
         orderSummary: data.orderSummary == null
             ? null
             : OrderSummary(
@@ -375,3 +380,13 @@ class RestSubscriptionRepository extends SubscriptionRepository {
     await _apiSubscription.resume();
   }
 }
+
+typedef _ApiUnit = api.SubscriptionConfigResponsePlansInnerExtraDurationUnitEnum;
+
+// Exhaustive on purpose: a new wire unit must break the build, not the parse.
+ExtraDurationUnit _extraDurationUnit(_ApiUnit unit) => switch (unit) {
+  _ApiUnit.day => ExtraDurationUnit.day,
+  _ApiUnit.week => ExtraDurationUnit.week,
+  _ApiUnit.month => ExtraDurationUnit.month,
+  _ApiUnit.year => ExtraDurationUnit.year,
+};

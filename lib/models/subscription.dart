@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/payment_gateway.dart';
+import 'package:mysterium_vpn/models/extra_duration.dart';
 import 'package:mysterium_vpn/models/order_summary.dart';
 
 part 'subscription.freezed.dart';
@@ -24,6 +25,7 @@ abstract class Subscription with _$Subscription {
     DateTime? pausedUntil,
     String? storePlanId,
     DateTime? periodStart,
+    ExtraDuration? extraDuration,
     OrderSummary? orderSummary,
   }) = _Subscription;
 
@@ -78,23 +80,39 @@ abstract class Subscription with _$Subscription {
     return 'inactive';
   }
 
-  String? get durationInMonthsBasedOnPlanId {
-    final id = planId;
-    if (id == null || id.isEmpty) {
-      return null;
+  /// The bonus period, or `null` when there is none to show. A bonus only
+  /// counts when it adds at least one whole unit.
+  ExtraDuration? get bonusDuration {
+    final extra = extraDuration;
+    return extra != null && extra.amount > 0 ? extra : null;
+  }
+
+  /// Standard billing period in months, inferred from the plan id. `null` for
+  /// an unrecognised plan. Best-effort, for analytics only — anything shown to
+  /// the user reads `SubscriptionStore.billingPeriodMonths` instead.
+  int? get standardPeriodMonths {
+    // Segment-wise, not substring: a `contains('months') && contains('6')`
+    // ladder reads `plan_16_months` as 6.
+    final segments = planId?.split('_') ?? const [];
+
+    if (segments.contains('monthly')) {
+      return 1;
+    }
+    if (segments.contains('yearly')) {
+      return 12;
     }
 
-    if (id.contains('monthly')) {
-      return '1';
-    }
-    if (id.contains('years') && id.contains('2')) {
-      return '24';
-    }
-    if (id.contains('yearly')) {
-      return '12';
-    }
-    if (id.contains('months') && id.contains('6')) {
-      return '6';
+    for (var i = 0; i + 1 < segments.length; i++) {
+      final amount = int.tryParse(segments[i]);
+      if (amount == null) {
+        continue;
+      }
+      if (segments[i + 1] == 'years') {
+        return amount * 12;
+      }
+      if (segments[i + 1] == 'months') {
+        return amount;
+      }
     }
 
     return null;
