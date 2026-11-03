@@ -307,8 +307,11 @@ abstract class _VpnStore extends VpnGuard with Store {
     } else {
       _connectedAt = DateTime.now();
       _settings.setConnectedAt(_connectedAt!).ignore();
-      // Only a fresh connect — a tunnel already up at launch is not an outcome
-      // the user just caused, so it must not buzz.
+    }
+    // Only a connect started in this run is an outcome the user just caused.
+    // A tunnel already up at launch resolves its location after the status
+    // lands, so this is still null for a restored session.
+    if (_connectingLocation != null) {
       HapticLevel.success.fire();
     }
   }

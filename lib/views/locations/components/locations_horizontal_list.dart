@@ -14,6 +14,7 @@ class LocationsHorizontalList extends HookWidget {
     required this.onItemPressed,
     this.connectedLocation,
     this.connectingLocation,
+    this.isLoading = false,
     this.listConstraints = const BoxConstraints(maxHeight: 66),
     super.key,
   });
@@ -23,9 +24,13 @@ class LocationsHorizontalList extends HookWidget {
   final void Function(VPNLocation) onItemPressed;
   final VPNLocation? connectedLocation;
 
-  /// Location a connection is being established to (or torn down from). While
-  /// non-null every card is non-interactive, mirroring the expandable list.
+  /// Location a connection is being established to (or torn down from).
+  /// Only the matching card shows a spinner.
   final VPNLocation? connectingLocation;
+
+  /// A connection operation is in flight. Disables every card, including the
+  /// window before [connectingLocation] resolves.
+  final bool isLoading;
   final BoxConstraints listConstraints;
 
   @override
@@ -42,9 +47,8 @@ class LocationsHorizontalList extends HookWidget {
         separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.ms),
         itemBuilder: (_, index) {
           final item = items[index];
-          final isLoading = connectingLocation != null;
-          final isConnecting = isLoading && connectingLocation!.id == item.id;
-          final isConnected = connectedLocation != null && connectedLocation!.id == item.id;
+          final isConnecting = connectingLocation == item;
+          final isConnected = connectedLocation == item;
           return LocationCard(
             icon: CircleFlag(item.countryCode, size: 24),
             name: item.getName(context),

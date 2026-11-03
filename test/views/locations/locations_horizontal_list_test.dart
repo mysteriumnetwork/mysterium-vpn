@@ -28,6 +28,7 @@ void main() {
     required void Function(VPNLocation) onItemPressed,
     VPNLocation? connectedLocation,
     VPNLocation? connectingLocation,
+    bool isLoading = false,
   }) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -42,6 +43,7 @@ void main() {
             onItemPressed: onItemPressed,
             connectedLocation: connectedLocation,
             connectingLocation: connectingLocation,
+            isLoading: isLoading,
           ),
         ),
       ),
@@ -74,10 +76,58 @@ void main() {
 
   testWidgets('suppresses taps while a connection is in progress', (tester) async {
     final pressed = <VPNLocation>[];
-    await pumpList(tester, onItemPressed: pressed.add, connectingLocation: germany);
+    await pumpList(
+      tester,
+      onItemPressed: pressed.add,
+      connectingLocation: germany,
+      isLoading: true,
+    );
 
     await tester.tap(find.text('France'));
     expect(pressed, isEmpty);
+  });
+
+  // The location resolves after the operation starts, so the gap between them
+  // must still be non-interactive.
+  testWidgets('suppresses taps before the location resolves', (tester) async {
+    final pressed = <VPNLocation>[];
+    await pumpList(tester, onItemPressed: pressed.add, isLoading: true);
+
+    await tester.tap(find.text('France'));
+    expect(pressed, isEmpty);
+  });
+
+  // Recents can hold residential and datacenter entries for one country.
+  testWidgets('only the matching ipType shows the spinner', (tester) async {
+    const residentialGermany = VPNLocation(
+      id: 'de',
+      ipType: IPType.residential,
+      translations: {'en': 'Germany'},
+      countryCode: 'de',
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: DesignSystem.lightTheme,
+        locale: testLocale,
+        localizationsDelegates: testLocalizationsDelegates,
+        supportedLocales: testSupportedLocales,
+        home: const Scaffold(
+          body: LocationsHorizontalList(
+            title: 'Recent',
+            items: [germany, residentialGermany],
+            onItemPressed: _noop,
+            connectingLocation: residentialGermany,
+            isLoading: true,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    final spinners = tester
+        .widgetList<LocationCard>(find.byType(LocationCard))
+        .where((card) => card.status == LocationCardStatus.connecting);
+    expect(spinners.length, 1);
   });
 
   testWidgets('taps are delivered when idle', (tester) async {
@@ -95,3 +145,5 @@ void main() {
     expect(find.byType(LoadingIndicator), findsNothing);
   });
 }
+
+void _noop(VPNLocation _) {}

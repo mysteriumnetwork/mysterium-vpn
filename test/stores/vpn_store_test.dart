@@ -870,8 +870,43 @@ void main() {
         await store.disposeStore();
       });
 
-      test('stamps and persists a fresh connectedAt when no stamp is stored', () async {
+      // Launching onto a live tunnel with no stamp (e.g. upgrading from a
+      // build that never wrote one) must not feel like a connection.
+      test('a connect started in this run fires success feedback', () async {
+        stubConnectFlow();
+        when(anyToggleAction()).thenReturn(ConnectionAction.connect);
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        final store = buildStore();
+        await pumpEventQueue();
         final fired = recordHaptics();
+
+        await store.manageConnection(location: loc);
+        statusController.add(VpnConnectionStatus.connected);
+        await pumpEventQueue();
+
+        expect(fired, ['HapticFeedbackType.successNotification']);
+
+        await store.disposeStore();
+      });
+
+      test('an already-up tunnel with no stored stamp stays silent', () async {
+        final fired = recordHaptics();
+        when(
+          mockWireguardRepo.currentStatus(),
+        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+
+        final store = buildStore();
+        await pumpEventQueue();
+
+        expect(store.connectedAt, isNotNull);
+        expect(fired, isEmpty);
+
+        await store.disposeStore();
+      });
+
+      test('stamps and persists a fresh connectedAt when no stamp is stored', () async {
         when(
           mockWireguardRepo.currentStatus(),
         ).thenAnswer((_) async => VpnConnectionStatus.connected);
@@ -886,7 +921,6 @@ void main() {
           prefsService.getInt(StorageKeys.connectedAt.name),
           store.connectedAt!.millisecondsSinceEpoch,
         );
-        expect(fired, ['HapticFeedbackType.successNotification']);
 
         await store.disposeStore();
       });
