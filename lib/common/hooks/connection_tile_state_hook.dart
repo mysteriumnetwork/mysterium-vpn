@@ -59,11 +59,18 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final selected = selectedLocationStore.value;
     final display = connectionDisplayStore.displayLocation;
     final intentLocation = hasDiff ? selected : display;
+    // A live tunnel always offers disconnect: gating here would relabel the
+    // card's only button "Upgrade" and strand a connected user whose pending
+    // selection happens to be plan-gated.
+    if (vpnStore.isConnected) {
+      return false;
+    }
     return intentLocation != null &&
         LocationMode.from(
               location: intentLocation,
               isAuthenticated: isAuthenticated,
               residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+              cityLevelAllowed: subscriptionStore.cityLevelAllowed,
               unavailableLocations: unavailableLocationsStore.unavailableLocations,
               subscription: subscriptionStore.subscriptionFuture.value,
               isConnected: vpnStore.isConnected,

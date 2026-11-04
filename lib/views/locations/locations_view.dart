@@ -405,6 +405,9 @@ class _Locations extends HookConsumerWidget {
                           IPType.datacenter => LocationsDisclaimer.dataCenter(),
                           _ => LocationsDisclaimer.residential(),
                         },
+                      // Shown during search too — the rows stay gated, and this
+                      // card is the only thing that explains why.
+                      PlanUpgradeNotice(locationType: locationType),
                       ScrollableLocationsSliverList(
                         items: locations,
                         onItemPressed: onLocationTapped,

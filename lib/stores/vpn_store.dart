@@ -592,6 +592,16 @@ abstract class _VpnStore extends VpnGuard with Store {
     UserIntent? intent,
     String? targetIp,
   }) async {
+    // Ahead of the prerequisites so a gated location never costs the user an
+    // OS tunnel-permission prompt first. Logged-out and unsubscribed users
+    // have no resolved plan, so this is a no-op for them and they still reach
+    // the auth/subscribe checks below.
+    //
+    // Skipped on refresh: a live tunnel is proof enough, and blocking a
+    // refresh would strand a user who was connected before their plan changed.
+    if (!refreshIP) {
+      checkPlanSupportsLocation(location);
+    }
     await _validateConnectionPrerequisites();
     await _prepareConnection(location, intent, refreshIP, targetIp);
 
@@ -830,7 +840,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
       final connectedLocation = await _resolveConnectedLocation(location);
       await _connectToTunnel();
-      await _finalizeConnection(connectedLocation);
+      await _finalizeConnection(connectedLocation, requestedLocation: location);
 
       unawaited(_subscribeConnectionChanges(_vpnConfig!.id));
       unawaited(_udpBlockedCheck());
@@ -934,11 +944,21 @@ abstract class _VpnStore extends VpnGuard with Store {
     await _vpnRepository.connect(config: vpnConfig);
   }
 
-  Future<void> _finalizeConnection(VPNLocation connectedLocation) async {
+  Future<void> _finalizeConnection(
+    VPNLocation connectedLocation, {
+    VPNLocation? requestedLocation,
+  }) async {
+    // Recents remember what was asked for, not the node the backend assigned.
+    // Requesting a country and recording the city it landed in would put a
+    // city into recents that the plan may not be allowed to target, and would
+    // silently narrow what the next tap on that entry connects to.
+    final recentLocation = requestedLocation ?? connectedLocation;
+
     _resolveConnectionLocationFuture = ObservableFuture(
       _checkConnectionQuality(
         checkLocation: () => _updateConnectionIP(connectedLocation),
         location: connectedLocation,
+        recentLocation: recentLocation,
         hash: _vpnConfig?.hash ?? '',
       ),
     );
@@ -946,7 +966,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     await _resolveConnectionLocationFuture!;
 
     if (_vpnConnection?.location != null) {
-      await _recentLocationsStore.add(_vpnConnection!.location);
+      await _recentLocationsStore.add(recentLocation);
     }
   }
 
@@ -962,8 +982,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     required Future<void> Function() checkLocation,
     required VPNLocation location,
     required String hash,
+    VPNLocation? recentLocation,
   }) async {
-    await _recentLocationsStore.add(location);
+    await _recentLocationsStore.add(recentLocation ?? location);
     _connectionSession++;
     _vpnConnection = VpnConnection(
       connectionIP: '',

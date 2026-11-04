@@ -33,6 +33,7 @@ void main() {
         isLoading: true,
         vpnLocation: location,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.connecting);
     });
@@ -49,6 +50,7 @@ void main() {
         isLoading: true,
         vpnLocation: null,
         connectingLocation: location,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.connecting);
     });
@@ -66,6 +68,7 @@ void main() {
         isLoading: true,
         vpnLocation: other,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, isNot(LocationMode.connecting));
     });
@@ -84,6 +87,7 @@ void main() {
           isLoading: true,
           vpnLocation: null,
           connectingLocation: null,
+          cityLevelAllowed: true,
         );
         expect(result, isNot(LocationMode.connecting));
       },
@@ -103,6 +107,7 @@ void main() {
         isLoading: false,
         vpnLocation: location,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.connected);
     });
@@ -120,6 +125,7 @@ void main() {
         isLoading: false,
         vpnLocation: other,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, isNot(LocationMode.connected));
     });
@@ -138,6 +144,7 @@ void main() {
         isLoading: false,
         vpnLocation: null,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -154,6 +161,7 @@ void main() {
         isLoading: false,
         vpnLocation: null,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -170,6 +178,7 @@ void main() {
         isLoading: false,
         vpnLocation: null,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -189,6 +198,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         isSubscriptionLoading: true,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.loading);
     });
@@ -206,6 +216,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         isSubscriptionLoading: true,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -226,6 +237,7 @@ void main() {
           isLoading: false,
           vpnLocation: null,
           connectingLocation: null,
+          cityLevelAllowed: true,
         );
         expect(result, LocationMode.unsupportedByPlan);
       },
@@ -245,10 +257,62 @@ void main() {
           isLoading: false,
           vpnLocation: null,
           connectingLocation: null,
+          cityLevelAllowed: true,
         );
         expect(result, LocationMode.available);
       },
     );
+
+    test('returns unsupportedByPlan for a city when cityLevelAllowed is false', () {
+      final location = makeLocation(id: 'Berlin');
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: true,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: activeSubscription,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+        cityLevelAllowed: false,
+      );
+      expect(result, LocationMode.unsupportedByPlan);
+    });
+
+    test('country is never unsupportedByPlan when cityLevelAllowed is false', () {
+      final location = makeLocation();
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: true,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: activeSubscription,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+        cityLevelAllowed: false,
+      );
+      expect(result, LocationMode.available);
+    });
+
+    test('city gate wins over isAvailable false so the upgrade affordance survives', () {
+      final location = makeLocation(id: 'Berlin', isAvailable: false);
+      final result = LocationMode.from(
+        location: location,
+        isAuthenticated: true,
+        residentialIPsAllowed: true,
+        unavailableLocations: const {},
+        subscription: activeSubscription,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+        cityLevelAllowed: false,
+      );
+      expect(result, LocationMode.unsupportedByPlan);
+    });
   });
 
   group('LocationMode.from — unavailable', () {
@@ -264,6 +328,7 @@ void main() {
         isLoading: false,
         vpnLocation: null,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.unavailable);
     });
@@ -280,6 +345,7 @@ void main() {
         isLoading: false,
         vpnLocation: null,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.unavailable);
     });
@@ -298,6 +364,7 @@ void main() {
           isLoading: false,
           vpnLocation: null,
           connectingLocation: null,
+          cityLevelAllowed: true,
         );
         expect(result, LocationMode.unavailable);
       },
@@ -320,6 +387,7 @@ void main() {
           isLoading: false,
           vpnLocation: null,
           connectingLocation: null,
+          cityLevelAllowed: true,
         );
         expect(result, LocationMode.unsupportedByPlan);
       },
@@ -339,6 +407,7 @@ void main() {
         isLoading: false,
         vpnLocation: null,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.available);
     });
@@ -357,6 +426,7 @@ void main() {
           isLoading: false,
           vpnLocation: null,
           connectingLocation: null,
+          cityLevelAllowed: true,
         );
         expect(result, LocationMode.available);
       },
@@ -376,6 +446,7 @@ void main() {
         isLoading: true,
         vpnLocation: location,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.connecting);
     });
@@ -393,6 +464,7 @@ void main() {
         isLoading: false,
         vpnLocation: location,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.connected);
     });
@@ -409,6 +481,7 @@ void main() {
         isLoading: false,
         vpnLocation: location,
         connectingLocation: null,
+        cityLevelAllowed: true,
       );
       expect(result, LocationMode.connected);
     });

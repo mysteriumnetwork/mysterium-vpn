@@ -12,11 +12,27 @@ import 'package:mysterium_vpn/views/home/locations_map.dart';
 
 /// Resolves the best available VPN location when connecting from the map.
 /// Priority: residential (if allowed and available) > datacenter > original (triggers paywall).
+///
+/// A city marker on a plan without city targeting resolves to its country, so
+/// the map connects to something the plan covers instead of silently failing.
 VPNLocation resolveMapLocation({
   required VPNLocation location,
   required LocationsStore locationsStore,
   required bool residentialIPsAllowed,
+  required bool cityLevelAllowed,
 }) {
+  if (!location.isCountry && !cityLevelAllowed) {
+    final country = locationsStore.findParent(location);
+    if (country != null) {
+      return resolveMapLocation(
+        location: country,
+        locationsStore: locationsStore,
+        residentialIPsAllowed: residentialIPsAllowed,
+        cityLevelAllowed: true,
+      );
+    }
+  }
+
   if (location.ipType == IPType.datacenter) {
     return location;
   }
@@ -78,6 +94,7 @@ class HomeMap extends HookConsumerWidget {
         location: location,
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+        cityLevelAllowed: subscriptionStore.cityLevelAllowed,
       );
       selectedLocationStore.value = resolved;
     }
@@ -90,6 +107,7 @@ class HomeMap extends HookConsumerWidget {
         location: location,
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+        cityLevelAllowed: subscriptionStore.cityLevelAllowed,
       );
       if (vpnStore.isConnected && vpnStore.location == resolved) {
         return;

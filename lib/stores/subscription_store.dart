@@ -160,6 +160,23 @@ abstract class _SubscriptionStore with Store {
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
 
+  /// True once the active subscription's plan has been found in the config.
+  /// While false the plan's features are unknown, not absent.
+  @computed
+  bool get hasResolvedPlan => planMetadata != null;
+
+  /// Whether the plan allows picking a city/state rather than just a country.
+  ///
+  /// Null metadata means the plan itself is unresolved — an inactive
+  /// subscription, or a subscription-config fetch that failed — so it must not
+  /// gate a paying user whose config simply didn't load. Once the plan is
+  /// known, an absent field means the plan doesn't include city targeting.
+  @computed
+  bool get cityLevelAllowed {
+    final metadata = planMetadata;
+    return metadata == null || (metadata.locationTargetingAllowed ?? false);
+  }
+
   /// True when the Products tab should route the user to the web instead of
   /// the in-app upgrade picker: Windows (no active store sub), or an active
   /// subscription paid through any non-mobile gateway (Stripe/Adyen/PayPal/

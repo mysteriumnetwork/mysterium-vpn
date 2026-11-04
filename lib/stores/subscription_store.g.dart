@@ -67,6 +67,20 @@ mixin _$SubscriptionStore on _SubscriptionStore, Store {
     () => super.residentialIPsAllowed,
     name: '_SubscriptionStore.residentialIPsAllowed',
   )).value;
+  Computed<bool>? _$hasResolvedPlanComputed;
+
+  @override
+  bool get hasResolvedPlan => (_$hasResolvedPlanComputed ??= Computed<bool>(
+    () => super.hasResolvedPlan,
+    name: '_SubscriptionStore.hasResolvedPlan',
+  )).value;
+  Computed<bool>? _$cityLevelAllowedComputed;
+
+  @override
+  bool get cityLevelAllowed => (_$cityLevelAllowedComputed ??= Computed<bool>(
+    () => super.cityLevelAllowed,
+    name: '_SubscriptionStore.cityLevelAllowed',
+  )).value;
   Computed<bool>? _$useWebFlowComputed;
 
   @override
@@ -277,6 +291,8 @@ currentPlan: ${currentPlan},
 planMetadata: ${planMetadata},
 billingPeriodMonths: ${billingPeriodMonths},
 residentialIPsAllowed: ${residentialIPsAllowed},
+hasResolvedPlan: ${hasResolvedPlan},
+cityLevelAllowed: ${cityLevelAllowed},
 useWebFlow: ${useWebFlow},
 isStoreSubOnForeignPlatform: ${isStoreSubOnForeignPlatform},
 isOnMaxPlan: ${isOnMaxPlan},

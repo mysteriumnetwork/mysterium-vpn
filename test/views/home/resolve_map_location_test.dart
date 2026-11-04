@@ -11,13 +11,33 @@ import 'package:mysterium_vpn/views/home/home_map.dart';
 
 class _FakeLocationsStore extends Fake implements LocationsStore {
   ObservableFuture<VPNLocations> _dcFuture = ObservableFuture.value(VPNLocations());
+  ObservableFuture<VPNLocations> _residentialFuture = ObservableFuture.value(VPNLocations());
 
   void setDcLocations(Set<VPNLocation> locations) {
     _dcFuture = ObservableFuture.value(VPNLocations(locations: locations.toList()));
   }
 
+  void setResidentialLocations(Set<VPNLocation> locations) {
+    _residentialFuture = ObservableFuture.value(VPNLocations(locations: locations.toList()));
+  }
+
   @override
   ObservableFuture<VPNLocations> get dcLocationsFuture => _dcFuture;
+
+  @override
+  VPNLocation? findParent(VPNLocation location) {
+    if (location.isCountry) {
+      return null;
+    }
+    final locations = switch (location.ipType) {
+      IPType.datacenter => _dcFuture.value?.allLocations,
+      IPType.residential => _residentialFuture.value?.allLocations,
+      _ => null,
+    };
+    return locations
+        ?.where((it) => it.isCountry && it.countryCode == location.countryCode)
+        .firstOrNull;
+  }
 }
 
 void main() {
@@ -60,6 +80,7 @@ void main() {
         location: residential,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(residential));
@@ -75,6 +96,7 @@ void main() {
         location: residential,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(datacenter));
@@ -90,6 +112,7 @@ void main() {
         location: residential,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(datacenter));
@@ -104,6 +127,7 @@ void main() {
         location: residential,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(residential));
@@ -119,6 +143,7 @@ void main() {
         location: residential,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(residential));
@@ -132,6 +157,7 @@ void main() {
         location: datacenter,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(datacenter));
@@ -147,6 +173,7 @@ void main() {
         location: residentialUS,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
+        cityLevelAllowed: true,
       );
 
       // No DC match for US, so returns original residential.
@@ -162,6 +189,7 @@ void main() {
         location: residential,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(residential));
@@ -178,6 +206,7 @@ void main() {
         location: residentialCity,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(dcCity));
@@ -193,10 +222,40 @@ void main() {
         location: residentialCity,
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
+        cityLevelAllowed: true,
       );
 
       expect(result, same(dcCountry));
       expect(result.ipType, IPType.datacenter);
+    });
+
+    test('city resolves to its country when the plan has no city targeting', () {
+      final dcCity = makeLocation(id: 'new-york', ipType: IPType.datacenter);
+      final dcCountry = makeLocation(ipType: IPType.datacenter);
+      fakeLocationsStore.setDcLocations({dcCountry, dcCity});
+
+      final result = resolveMapLocation(
+        location: dcCity,
+        locationsStore: fakeLocationsStore,
+        residentialIPsAllowed: true,
+        cityLevelAllowed: false,
+      );
+
+      expect(result, same(dcCountry));
+    });
+
+    test('country is unaffected when the plan has no city targeting', () {
+      final dcCountry = makeLocation(ipType: IPType.datacenter);
+      fakeLocationsStore.setDcLocations({dcCountry});
+
+      final result = resolveMapLocation(
+        location: dcCountry,
+        locationsStore: fakeLocationsStore,
+        residentialIPsAllowed: true,
+        cityLevelAllowed: false,
+      );
+
+      expect(result, same(dcCountry));
     });
   });
 }

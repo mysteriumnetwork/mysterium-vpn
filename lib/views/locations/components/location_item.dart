@@ -44,7 +44,7 @@ class ExpandableLocationItem extends HookConsumerWidget {
 
     final children = location.children ?? const <VPNLocation>[];
 
-    final (:countryStatus, :items, :subtitle, :needsUpgrade, :showCitiesAndStates, :onConnect) =
+    final (:countryStatus, :items, :subtitle, :showCitiesAndStates, :onConnect) =
         useLocationItemState(location: location, onTap: onTap, ref: ref);
 
     final isExpanded = useMemoized(() {
@@ -82,7 +82,6 @@ class ExpandableLocationItem extends HookConsumerWidget {
       countryIcon: CircleFlag(location.countryCode, size: 24),
       items: items,
       status: countryStatus,
-      plusUpgrade: needsUpgrade,
       expanded: isExpanded,
       searchHighlight: query,
       onExpansionChanged: onExpansionChanged,

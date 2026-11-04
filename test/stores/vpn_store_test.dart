@@ -995,6 +995,85 @@ void main() {
         await vpnStore.manageConnection(location: loc);
       }
 
+      test('a country request is remembered as the country the backend assigned a city', () async {
+        // The backend answers a country-level request with the city it actually
+        // placed the node in; recents must still record the country the user
+        // picked, or a plan without city targeting ends up with an entry it
+        // cannot reconnect to.
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenAnswer(
+          (_) async => const VpnConfig(
+            id: 'config1',
+            config: 'cfg',
+            exitIp: '2.2.2.2',
+            hash: 'hash',
+            country: 'fr',
+            city: 'paris',
+            ipType: 'hosting',
+          ),
+        );
+
+        await connect(country);
+
+        verifyFetchVpnConfig(country: 'fr', city: null);
+        verify(mockRecentLocations.add(country)).called(greaterThanOrEqualTo(1));
+        verifyNever(mockRecentLocations.add(city));
+      });
+
+      test('a plan without city targeting blocks the connect before any request', () async {
+        when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+        when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+        stubToggleAction(ConnectionAction.connect);
+
+        await expectLater(
+          () => vpnStore.manageConnection(location: city),
+          throwsA(isA<PlanUpgradeRequiredException>()),
+        );
+
+        verifyNever(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        );
+        verifyNever(mockRecentLocations.add(any));
+      });
+
+      test('the same plan still allows the country', () async {
+        when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+        when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+
+        await connect(country);
+
+        verifyFetchVpnConfig(country: 'fr', city: null);
+      });
+
+      test('a city request is remembered as that city', () async {
+        await connect(city);
+
+        verifyFetchVpnConfig(country: 'fr', city: 'paris');
+        verify(mockRecentLocations.add(city)).called(greaterThanOrEqualTo(1));
+        verifyNever(mockRecentLocations.add(country));
+      });
+
       test('refresh after connecting to a country reconnects with city = null', () async {
         await connect(country);
         clearInteractions(mockWireguardRepo);

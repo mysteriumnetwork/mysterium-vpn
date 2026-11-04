@@ -50,6 +50,10 @@ void main() {
   // State captured by _HookHarness — reset before each test.
   LocationItemState? capturedState;
 
+  // Locations the hook asked to connect to, so gated rows can be told apart
+  // from connectable ones.
+  final tappedLocations = <VPNLocation>[];
+
   // Mocks — declared here, initialised in setUp.
   late MockVpnStore mockVpnStore;
   late MockSubscriptionStore mockSubscriptionStore;
@@ -59,6 +63,7 @@ void main() {
 
   setUp(() {
     capturedState = null;
+    tappedLocations.clear();
 
     mockVpnStore = MockVpnStore();
     mockSubscriptionStore = MockSubscriptionStore();
@@ -79,10 +84,15 @@ void main() {
     ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
 
     when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+    when(mockSubscriptionStore.cityLevelAllowed).thenReturn(true);
 
     when(mockUnavailableLocationsStore.unavailableLocations).thenReturn(const <VPNLocation>{});
 
     when(mockRemoteConfigStore.showCitiesAndStates).thenReturn(false);
+    // Invoking a gated row's callback enters the upgrade flow; keep it inert.
+    when(mockRemoteConfigStore.upgradeSubscriptionPage).thenReturn('https://example.test/upgrade');
+    when(mockRemoteConfigStore.gatewaysSupportingUpgrade).thenReturn(const <String>{});
+    when(mockAuthSessionStore.accessTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
     when(mockRemoteConfigStore.countriesWithStates).thenReturn(const <String>{});
   });
 
@@ -105,7 +115,7 @@ void main() {
       home: Consumer(
         builder: (ctx, ref, _) => _HookHarness(
           location: location,
-          onTap: (_) {},
+          onTap: tappedLocations.add,
           onState: (state) => capturedState = state,
         ),
       ),
@@ -125,7 +135,8 @@ void main() {
 
       expect(capturedState, isNotNull);
       expect(capturedState!.countryStatus, IpCardStatus.idle);
-      expect(capturedState!.needsUpgrade, isFalse);
+      capturedState!.onConnect!();
+      expect(tappedLocations, [location]);
     });
 
     testWidgets('connected for matching location', (tester) async {
@@ -153,7 +164,9 @@ void main() {
       expect(capturedState!.countryStatus, IpCardStatus.disabled);
     });
 
-    testWidgets('needsUpgrade for residential location without permission', (tester) async {
+    testWidgets('residential location without permission routes to upgrade, not connect', (
+      tester,
+    ) async {
       final location = makeLocation(ipType: IPType.residential);
 
       when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(false);
@@ -162,9 +175,10 @@ void main() {
       await tester.pump();
 
       expect(capturedState, isNotNull);
-      expect(capturedState!.needsUpgrade, isTrue);
-      // unsupportedByPlan maps to idle in countryStatus
+      // unsupportedByPlan maps to idle in countryStatus, and stays tappable —
+      // onConnect routes to the upgrade flow (covered by location_mode_test).
       expect(capturedState!.countryStatus, IpCardStatus.idle);
+      expect(capturedState!.onConnect, isNotNull);
     });
 
     testWidgets('no children results in empty items list', (tester) async {
@@ -192,6 +206,30 @@ void main() {
 
       expect(capturedState, isNotNull);
       expect(capturedState!.items.length, 2);
+    });
+
+    testWidgets('city rows stay tappable and undimmed when cityLevelAllowed is false', (
+      tester,
+    ) async {
+      final child = makeLocation(id: 'Berlin', nodeCount: 5);
+      final location = makeLocation(children: [child]);
+
+      when(mockRemoteConfigStore.showCitiesAndStates).thenReturn(true);
+      when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+
+      await tester.pumpWidget(buildHarness(location));
+      await tester.pump();
+
+      expect(capturedState, isNotNull);
+      expect(capturedState!.items.single.status, IpCardStatus.idle);
+      // Tappable, but routed to the upgrade flow instead of to connect.
+      expect(capturedState!.items.single.onTap, isNotNull);
+      capturedState!.items.single.onTap!();
+      expect(tappedLocations, isEmpty);
+      // The country itself is not gated by city-level access, so it still connects.
+      expect(capturedState!.countryStatus, IpCardStatus.idle);
+      capturedState!.onConnect!();
+      expect(tappedLocations, [location]);
     });
 
     testWidgets('updates from disabled to idle when isAvailable changes to true', (tester) async {

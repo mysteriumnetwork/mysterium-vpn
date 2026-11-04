@@ -10,6 +10,7 @@ useHandleToggleConnection() {
   final context = useContext();
   final handleSubscribe = useHandleSubscribe();
   final handleSetupTunnel = useHandleSetupTunnel();
+  final handleUpgradePlan = useHandleUpgradePlan();
 
   return useCallback(({
     VPNLocation? location,
@@ -42,6 +43,8 @@ useHandleToggleConnection() {
       }
     } on SubscriptionRequiredException catch (_) {
       handleSubscribe();
+    } on PlanUpgradeRequiredException catch (_) {
+      await handleUpgradePlan();
     } on TunnelSetupRequiredException catch (_) {
       final permissionsGiven = await handleSetupTunnel();
       if (permissionsGiven) {
@@ -54,7 +57,7 @@ useHandleToggleConnection() {
       // reports its own failures, so anything landing here is unexpected.
       ref.read(loggerPOD).warning('Connection toggle failed: $e', e, stackTrace);
     }
-  }, [handleSubscribe, handleSetupTunnel]);
+  }, [handleSubscribe, handleSetupTunnel, handleUpgradePlan]);
 }
 
 // ignore: avoid_positional_boolean_parameters
