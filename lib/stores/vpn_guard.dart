@@ -33,19 +33,22 @@ abstract class VpnGuard {
   /// still check [LocationMode] themselves to avoid a pointless round trip;
   /// this is the backstop for the ones that can't.
   void checkPlanSupportsLocation(VPNLocation? location) {
-    // An unresolved plan means its features are unknown, not absent — a failed
-    // subscription-config fetch must never block a paying user from connecting.
-    if (location == null || !_subscription.hasResolvedPlan) {
-      return;
-    }
-    if (LocationMode.isUnsupportedByPlan(
-      location: location,
-      residentialIPsAllowed: _subscription.residentialIPsAllowed,
-      cityLevelAllowed: _subscription.cityLevelAllowed,
-    )) {
+    if (location != null && !planSupportsLocation(location)) {
       throw const PlanUpgradeRequiredException();
     }
   }
+
+  /// Whether the active plan includes [location].
+  ///
+  /// An unresolved plan means its features are unknown, not absent — a failed
+  /// subscription-config fetch must never block a paying user from connecting.
+  bool planSupportsLocation(VPNLocation location) =>
+      !_subscription.hasResolvedPlan ||
+      !LocationMode.isUnsupportedByPlan(
+        location: location,
+        residentialIPsAllowed: _subscription.residentialIPsAllowed,
+        cityLevelAllowed: _subscription.cityLevelAllowed,
+      );
 
   Future<void> checkVpnGuards() async {
     await _session.accessTokenFuture;

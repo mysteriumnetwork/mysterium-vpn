@@ -952,7 +952,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     // Requesting a country and recording the city it landed in would put a
     // city into recents that the plan may not be allowed to target, and would
     // silently narrow what the next tap on that entry connects to.
-    final recentLocation = requestedLocation ?? connectedLocation;
+    final recentLocation = requestedLocation ?? _planTargetableLocation(connectedLocation);
 
     _resolveConnectionLocationFuture = ObservableFuture(
       _checkConnectionQuality(
@@ -968,6 +968,17 @@ abstract class _VpnStore extends VpnGuard with Store {
     if (_vpnConnection?.location != null) {
       await _recentLocationsStore.add(recentLocation);
     }
+  }
+
+  /// Narrows a location the backend chose for us to one the plan can target.
+  ///
+  /// An intent connect asks for no location at all, so without this the city
+  /// the backend picked lands in recents on a plan that only targets countries.
+  VPNLocation _planTargetableLocation(VPNLocation location) {
+    if (planSupportsLocation(location)) {
+      return location;
+    }
+    return _locationsStore.findParent(location) ?? location;
   }
 
   Future<void> _updateConnectionIP(VPNLocation connectedLocation) async {

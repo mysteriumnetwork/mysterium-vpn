@@ -1074,6 +1074,61 @@ void main() {
         verifyNever(mockRecentLocations.add(country));
       });
 
+      // The backend answers an intent connect with the node's city, so without
+      // narrowing it recents fills with cities a country-only plan can't retap.
+      void stubIntentConnect() {
+        when(mockUserIntents.userIntent).thenReturn(UserIntent.bestSpeed);
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenAnswer(
+          (_) async => const VpnConfig(
+            id: 'config1',
+            config: 'cfg',
+            exitIp: '2.2.2.2',
+            hash: 'hash',
+            country: 'fr',
+            city: 'paris',
+            ipType: 'hosting',
+          ),
+        );
+        stubToggleAction(ConnectionAction.connect);
+      }
+
+      test('an intent connect is remembered as the country without city targeting', () async {
+        when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+        when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+        when(mockLocationsStore.findParent(any)).thenReturn(country);
+        stubIntentConnect();
+
+        await vpnStore.manageConnection(intent: UserIntent.bestSpeed);
+
+        verify(mockRecentLocations.add(country)).called(greaterThanOrEqualTo(1));
+        verifyNever(mockRecentLocations.add(city));
+      });
+
+      test('an intent connect keeps the city when the plan targets cities', () async {
+        when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+        when(mockSubscriptionStore.cityLevelAllowed).thenReturn(true);
+        stubIntentConnect();
+
+        await vpnStore.manageConnection(intent: UserIntent.bestSpeed);
+
+        verify(mockRecentLocations.add(city)).called(greaterThanOrEqualTo(1));
+        verifyNever(mockRecentLocations.add(country));
+        verifyNever(mockLocationsStore.findParent(any));
+      });
+
       test('refresh after connecting to a country reconnects with city = null', () async {
         await connect(country);
         clearInteractions(mockWireguardRepo);
