@@ -201,6 +201,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "جارٍ الحصول على معلومات الخطة...",
     ),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("تحقق من بريدك الإلكتروني"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "عناوين IP على مستوى المدينة غير متاحة في خطتك الحالية.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("مسح البحث"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("إغلاق"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("الاتصالات"),
@@ -600,6 +603,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("كيف تعمل عناوين IP السكنية"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("عنوان IP سكني"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "عناوين IP السكنية غير متاحة في خطتك الحالية.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("استئناف"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "تعذّر استئناف اشتراكك. يُرجى المحاولة مرة أخرى.",

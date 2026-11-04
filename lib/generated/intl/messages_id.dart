@@ -201,6 +201,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkSubsStatusFailedTitle": MessageLookupByLibrary.simpleMessage("Info paket tidak tersedia"),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("Mengambil info paket..."),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("Cek emailmu"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP tingkat kota tidak tersedia di paketmu saat ini.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Hapus pencarian"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Tutup"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Komunikasi"),
@@ -606,6 +609,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residensial"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP residensial tidak tersedia di paketmu saat ini.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Lanjutkan"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "Langganan tidak bisa dilanjutkan. Coba lagi.",

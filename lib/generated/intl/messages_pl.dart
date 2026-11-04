@@ -208,6 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("Pobieranie informacji o planie…"),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("Sprawdź swoją pocztę"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP na poziomie miasta nie są dostępne w Twoim obecnym planie.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Wyczyść wyszukiwanie"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Zamknij"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Komunikacja"),
@@ -633,6 +636,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Jak działają IP mieszkaniowe",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP mieszkaniowe"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP mieszkaniowe nie są dostępne w Twoim obecnym planie.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Wznów"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "Nie udało się wznowić subskrypcji. Spróbuj ponownie.",

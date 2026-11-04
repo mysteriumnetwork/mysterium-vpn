@@ -119,6 +119,7 @@ class S {
     'checkSubsStatusFailedTitle': [],
     'checkSubsStatusTitle': [],
     'checkYourEmail': [],
+    'cityIpsNotAvailableOnPlan': [],
     'clearSearchBtn': [],
     'closeBtn': [],
     'communicationLbl': [],
@@ -393,6 +394,7 @@ class S {
     'residentialEducationSubtitle': [],
     'residentialEducationTitle': [],
     'residentialIpBadge': [],
+    'residentialIpsNotAvailableOnPlan': [],
     'resumeBtn': [],
     'resumeSubscriptionPromptDesc': [],
     'resumeSubscriptionTitle': [],
@@ -1046,6 +1048,16 @@ class S {
   /// `Check your email`
   String get checkYourEmail {
     return Intl.message('Check your email', name: 'checkYourEmail', desc: '', args: []);
+  }
+
+  /// `City-level IPs are not available on your current plan.`
+  String get cityIpsNotAvailableOnPlan {
+    return Intl.message(
+      'City-level IPs are not available on your current plan.',
+      name: 'cityIpsNotAvailableOnPlan',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Clear search`
@@ -2963,6 +2975,16 @@ class S {
   /// `Residential IP`
   String get residentialIpBadge {
     return Intl.message('Residential IP', name: 'residentialIpBadge', desc: '', args: []);
+  }
+
+  /// `Residential IPs are not available on your current plan.`
+  String get residentialIpsNotAvailableOnPlan {
+    return Intl.message(
+      'Residential IPs are not available on your current plan.',
+      name: 'residentialIpsNotAvailableOnPlan',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Resume`

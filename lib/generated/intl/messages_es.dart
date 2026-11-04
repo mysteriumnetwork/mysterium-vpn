@@ -204,6 +204,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Obteniendo información del plan...",
     ),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("Revisa tu correo"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Las IP por ciudad no están disponibles en tu plan actual.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Borrar búsqueda"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Cerrar"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Comunicaciones"),
@@ -633,6 +636,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Cómo funcionan las IP residenciales",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residencial"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Las IP residenciales no están disponibles en tu plan actual.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Reanudar"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "No se pudo reanudar tu suscripción. Inténtalo de nuevo.",
