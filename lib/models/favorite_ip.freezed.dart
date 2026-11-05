@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'favorite_ip.dart';
@@ -9,18 +9,14 @@ part of 'favorite_ip.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$FavoriteIp {
 
- String get ip; String get countryCode; String get city; IPType get ipType; DateTime get savedAt;// Display name captured at save time; empty for entries persisted before
-// the field existed (the country code is translated as a fallback).
- String get countryName;// Id of the location the user had picked when saving — the city id for a
-// city-level connection, the country code for a country-level one. Empty
-// for entries persisted before the field existed (treated as country).
- String get locationId;
+ String get ip; String get countryCode; String get city; IPType get ipType; DateTime get savedAt; String get countryName; String get locationId;
 /// Create a copy of FavoriteIp
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -33,16 +29,21 @@ $FavoriteIpCopyWith<FavoriteIp> get copyWith => _$FavoriteIpCopyWithImpl<Favorit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteIp&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.city, city) || other.city == city)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.savedAt, savedAt) || other.savedAt == savedAt)&&(identical(other.countryName, countryName) || other.countryName == countryName)&&(identical(other.locationId, locationId) || other.locationId == locationId));
+  final _this = this as FavoriteIp;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteIp&&(identical(other.ip, _this.ip) || other.ip == _this.ip)&&(identical(other.countryCode, _this.countryCode) || other.countryCode == _this.countryCode)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.ipType, _this.ipType) || other.ipType == _this.ipType)&&(identical(other.savedAt, _this.savedAt) || other.savedAt == _this.savedAt)&&(identical(other.countryName, _this.countryName) || other.countryName == _this.countryName)&&(identical(other.locationId, _this.locationId) || other.locationId == _this.locationId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ip,countryCode,city,ipType,savedAt,countryName,locationId);
+int get hashCode {
+  final _this = this as FavoriteIp;
+  return Object.hash(runtimeType,_this.ip,_this.countryCode,_this.city,_this.ipType,_this.savedAt,_this.countryName,_this.locationId);
+}
 
 @override
 String toString() {
-  return 'FavoriteIp(ip: $ip, countryCode: $countryCode, city: $city, ipType: $ipType, savedAt: $savedAt, countryName: $countryName, locationId: $locationId)';
+  final _this = this as FavoriteIp;
+  return 'FavoriteIp(ip: ${_this.ip}, countryCode: ${_this.countryCode}, city: ${_this.city}, ipType: ${_this.ipType}, savedAt: ${_this.savedAt}, countryName: ${_this.countryName}, locationId: ${_this.locationId})';
 }
 
 
@@ -71,7 +72,7 @@ class _$FavoriteIpCopyWithImpl<$Res>
 /// Create a copy of FavoriteIp
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? ip = null,Object? countryCode = null,Object? city = null,Object? ipType = null,Object? savedAt = null,Object? countryName = null,Object? locationId = null,}) {
-  return _then(_self.copyWith(
+  return _then(FavoriteIp(
 ip: null == ip ? _self.ip : ip // ignore: cast_nullable_to_non_nullable
 as String,countryCode: null == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
 as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
@@ -228,12 +229,7 @@ class _FavoriteIp implements FavoriteIp {
 @override final  String city;
 @override final  IPType ipType;
 @override final  DateTime savedAt;
-// Display name captured at save time; empty for entries persisted before
-// the field existed (the country code is translated as a fallback).
 @override@JsonKey() final  String countryName;
-// Id of the location the user had picked when saving — the city id for a
-// city-level connection, the country code for a country-level one. Empty
-// for entries persisted before the field existed (treated as country).
 @override@JsonKey() final  String locationId;
 
 /// Create a copy of FavoriteIp
@@ -249,16 +245,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavoriteIp&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.city, city) || other.city == city)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.savedAt, savedAt) || other.savedAt == savedAt)&&(identical(other.countryName, countryName) || other.countryName == countryName)&&(identical(other.locationId, locationId) || other.locationId == locationId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavoriteIp&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.city, city) || other.city == city)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.savedAt, savedAt) || other.savedAt == savedAt)&&(identical(other.countryName, countryName) || other.countryName == countryName)&&(identical(other.locationId, locationId) || other.locationId == locationId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ip,countryCode,city,ipType,savedAt,countryName,locationId);
+int get hashCode {
+    return Object.hash(runtimeType,ip,countryCode,city,ipType,savedAt,countryName,locationId);
+}
 
 @override
 String toString() {
-  return 'FavoriteIp(ip: $ip, countryCode: $countryCode, city: $city, ipType: $ipType, savedAt: $savedAt, countryName: $countryName, locationId: $locationId)';
+    return 'FavoriteIp(ip: $ip, countryCode: $countryCode, city: $city, ipType: $ipType, savedAt: $savedAt, countryName: $countryName, locationId: $locationId)';
 }
 
 

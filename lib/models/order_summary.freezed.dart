@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'order_summary.dart';
@@ -9,6 +9,7 @@ part of 'order_summary.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -27,16 +28,21 @@ $OrderSummaryCopyWith<OrderSummary> get copyWith => _$OrderSummaryCopyWithImpl<O
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderSummary&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount));
+  final _this = this as OrderSummary;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderSummary&&(identical(other.currency, _this.currency) || other.currency == _this.currency)&&(identical(other.totalPrice, _this.totalPrice) || other.totalPrice == _this.totalPrice)&&(identical(other.totalPriceBeforeDiscount, _this.totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == _this.totalPriceBeforeDiscount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currency,totalPrice,totalPriceBeforeDiscount);
+int get hashCode {
+  final _this = this as OrderSummary;
+  return Object.hash(runtimeType,_this.currency,_this.totalPrice,_this.totalPriceBeforeDiscount);
+}
 
 @override
 String toString() {
-  return 'OrderSummary(currency: $currency, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount)';
+  final _this = this as OrderSummary;
+  return 'OrderSummary(currency: ${_this.currency}, totalPrice: ${_this.totalPrice}, totalPriceBeforeDiscount: ${_this.totalPriceBeforeDiscount})';
 }
 
 
@@ -65,7 +71,7 @@ class _$OrderSummaryCopyWithImpl<$Res>
 /// Create a copy of OrderSummary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? currency = null,Object? totalPrice = null,Object? totalPriceBeforeDiscount = null,}) {
-  return _then(_self.copyWith(
+  return _then(OrderSummary(
 currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,totalPrice: null == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
 as String,totalPriceBeforeDiscount: null == totalPriceBeforeDiscount ? _self.totalPriceBeforeDiscount : totalPriceBeforeDiscount // ignore: cast_nullable_to_non_nullable
@@ -229,16 +235,18 @@ _$OrderSummaryCopyWith<_OrderSummary> get copyWith => __$OrderSummaryCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderSummary&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderSummary&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.totalPriceBeforeDiscount, totalPriceBeforeDiscount) || other.totalPriceBeforeDiscount == totalPriceBeforeDiscount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currency,totalPrice,totalPriceBeforeDiscount);
+int get hashCode {
+    return Object.hash(runtimeType,currency,totalPrice,totalPriceBeforeDiscount);
+}
 
 @override
 String toString() {
-  return 'OrderSummary(currency: $currency, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount)';
+    return 'OrderSummary(currency: $currency, totalPrice: $totalPrice, totalPriceBeforeDiscount: $totalPriceBeforeDiscount)';
 }
 
 

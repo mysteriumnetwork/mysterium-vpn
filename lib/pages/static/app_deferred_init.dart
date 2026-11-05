@@ -14,6 +14,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 final _appStartupPOD = FutureProvider<void>((ref) async {
@@ -32,7 +33,7 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
       const Duration(seconds: 10),
       onTimeout: () => logger.log('ConfigCat stores init timed out'),
     ),
-    if (Platform.isWindows) _initWindows(),
+    if (Platform.isWindows) _initWindows(ref),
   ]);
 
   // Construct pushNotificationsStorePOD here rather than in MyApp.build: its
@@ -94,9 +95,9 @@ Future<void> _initLatLngStore(Ref ref, Talker logger) async {
   }
 }
 
-Future<void> _initWindows() async {
+Future<void> _initWindows(Ref ref) async {
   try {
-    await Future.wait([_nativeWindowsInit(), _setupTrayIcon()]);
+    await Future.wait([_nativeWindowsInit(), _setupTrayIcon(ref)]);
     registerProtocolHandler(Env.appCustomSchemeUrl);
   } catch (e, stackTrace) {
     debugPrint('Windows init error (non-fatal): $e');
@@ -130,23 +131,71 @@ Future<void> _openvpnInitBackground(List<Object> args) async {
   }
 }
 
-Future<void> _setupTrayIcon() async {
+// Held for the app's lifetime: a collected TrayIcon drops the icon from the tray.
+TrayIcon? _trayIcon;
+
+Future<void> _setupTrayIcon(Ref ref) async {
   try {
-    await trayManager.setIcon(
-      Env.flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
-      iconPosition: TrayIconPosition.right,
-    );
-    await trayManager.setContextMenu(
-      Menu(
-        items: [
-          MenuItem(key: 'show_window', label: 'Open'),
-          MenuItem.separator(),
-          MenuItem(key: 'exit_app', label: 'Exit MysteriumVPN'),
-        ],
-      ),
-    );
+    final icon = TrayIcon.create();
+    final menu = Menu.create();
+    final showWindow = MenuItem.createWithLabelAndType('Open', MenuItemType.normal);
+    final exitApp = MenuItem.createWithLabelAndType('Exit MysteriumVPN', MenuItemType.normal);
+    if (icon == null || menu == null || showWindow == null || exitApp == null) {
+      return;
+    }
+
+    icon
+      ..icon = ImageAsset.fromAsset(
+        Env.flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
+      )
+      ..iconPosition = TrayIconPosition.right
+      ..addListener((event) {
+        if (event is TrayIconClickedEvent) {
+          _showMainWindow();
+        }
+      });
+
+    showWindow.addListener((event) {
+      if (event is MenuItemClickedEvent) {
+        _showMainWindow();
+      }
+    });
+    exitApp.addListener((event) {
+      if (event is! MenuItemClickedEvent) {
+        return;
+      }
+      ref.read(vpnStorePOD).disposeStore().whenComplete(() {
+        _trayIcon?.dispose();
+        exit(0);
+      });
+    });
+
+    menu
+      ..addItem(showWindow)
+      ..addSeparator()
+      ..addItem(exitApp);
+
+    // The native API's default trigger is none: a menu alone does not open it.
+    icon
+      ..setContextMenu(menu)
+      ..setContextMenuTrigger(ContextMenuTrigger.rightClicked)
+      ..setVisible(true);
+
+    _trayIcon = icon;
   } catch (e) {
     Sentry.captureException(e);
+  }
+}
+
+void _showMainWindow() {
+  final window = WindowManager.instance.getCurrent();
+  if (window == null) {
+    return;
+  }
+  if (window.isVisible) {
+    window.focus();
+  } else {
+    window.show();
   }
 }
 

@@ -38,7 +38,8 @@ void main() {
     when(logger.warning(any)).thenAnswer((_) async {});
 
     when(client.setDefaultUser(any)).thenAnswer((_) async {});
-    when(client.forceRefresh()).thenAnswer((_) async => RefreshResult(true, null));
+    when(client.forceRefresh())
+        .thenAnswer((_) async => RefreshResult(true, null, RefreshErrorCode.none));
     when(client.getAllValues()).thenAnswer((_) async => {});
   });
 
@@ -55,9 +56,8 @@ void main() {
     test('returns set of strings if key exists and is array', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'cancelSurveyOptions': '["ReasonA", "ReasonB"]'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'cancelSurveyOptions': '["ReasonA", "ReasonB"]'});
       await store.configFuture;
       expect(store.cancelSubscriptionReasonKeys, equals({'ReasonA', 'ReasonB'}));
     });
@@ -65,9 +65,8 @@ void main() {
     test('handles invalid JSON gracefully', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'cancelSurveyOptions': '{not valid json'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'cancelSurveyOptions': '{not valid json'});
       await store.configFuture;
       expect(() => store.cancelSubscriptionReasonKeys, throwsA(isA<MobXCaughtException>()));
     });
@@ -75,9 +74,8 @@ void main() {
     test('handles non-iterable values gracefully', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'cancelSurveyOptions': '"just a string"'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'cancelSurveyOptions': '"just a string"'});
 
       await store.configFuture;
       expect(store.cancelSubscriptionReasonKeys, isNull);
@@ -109,9 +107,8 @@ void main() {
 
   group('RemoteConfigStore.cancelSubscriptionPage', () {
     test('returns the config URL when present', () async {
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'cancelSubscriptionPage': 'https://example.com/cancel'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'cancelSubscriptionPage': 'https://example.com/cancel'});
       store = createStore();
       await store.configFuture;
       expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
@@ -125,9 +122,8 @@ void main() {
     });
 
     test('trims whitespace', () async {
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'cancelSubscriptionPage': '  https://example.com/cancel  '});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'cancelSubscriptionPage': '  https://example.com/cancel  '});
       store = createStore();
       await store.configFuture;
       expect(store.cancelSubscriptionPage, 'https://example.com/cancel');
@@ -210,9 +206,8 @@ void main() {
     });
 
     test('defaults to true when value has the wrong type', () async {
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'locationsPullToRefreshEnabled': 'nope'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'locationsPullToRefreshEnabled': 'nope'});
       store = createStore();
       await store.configFuture;
       expect(store.locationsPullToRefreshEnabled, isTrue);
@@ -318,9 +313,8 @@ void main() {
     });
 
     test('defaults to 30 when value has the wrong type', () async {
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': '15'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': '15'});
       store = createStore();
       await store.configFuture;
       expect(store.newsCenterRefreshIntervalMinutes, 30);
@@ -361,9 +355,8 @@ void main() {
     test('returns parsed set if valid JSON array is provided', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["stripe", "adyen", "paypal"]'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["stripe", "adyen", "paypal"]'});
       await store.configFuture;
       expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'paypal'}));
     });
@@ -371,9 +364,8 @@ void main() {
     test('lowercases all keys from the array', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["Stripe", "ADYEN", "PayPal"]'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["Stripe", "ADYEN", "PayPal"]'});
       await store.configFuture;
       expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'paypal'}));
     });
@@ -389,9 +381,8 @@ void main() {
     test('returns default set if JSON is invalid', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '{not valid json'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'gatewaysSupportingUpgrade': '{not valid json'});
       await store.configFuture;
       expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'primer'}));
     });
@@ -399,9 +390,8 @@ void main() {
     test('returns default set if JSON is not an array', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '"just a string"'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'gatewaysSupportingUpgrade': '"just a string"'});
       await store.configFuture;
       expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'adyen', 'primer'}));
     });
@@ -417,9 +407,8 @@ void main() {
     test('handles array with null values gracefully', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["stripe", null, "adyen"]'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'gatewaysSupportingUpgrade': '["stripe", null, "adyen"]'});
       await store.configFuture;
       expect(store.gatewaysSupportingUpgrade, equals({'stripe', 'null', 'adyen'}));
     });
@@ -449,9 +438,8 @@ void main() {
     test('returns default Uri if URL parsing fails with invalid scheme', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'checkoutWebRedirectUrl': ':::invalid:::'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'checkoutWebRedirectUrl': ':::invalid:::'});
       await store.configFuture;
 
       expect(store.checkoutWebRedirectUrl.path, contains('/checkout/payment-upgrade'));
@@ -461,9 +449,8 @@ void main() {
     test('handles relative path gracefully', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'checkoutWebRedirectUrl': '/checkout/custom'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'checkoutWebRedirectUrl': '/checkout/custom'});
       await store.configFuture;
 
       final uri = store.checkoutWebRedirectUrl;
@@ -576,27 +563,24 @@ void main() {
 
     test('returns config value when a positive int', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'residentialEducationConnectThreshold': 3});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'residentialEducationConnectThreshold': 3});
       await store.configFuture;
       expect(store.residentialEducationConnectThreshold, 3);
     });
 
     test('falls back to default when value is zero or negative', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'residentialEducationConnectThreshold': 0});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'residentialEducationConnectThreshold': 0});
       await store.configFuture;
       expect(store.residentialEducationConnectThreshold, 2);
     });
 
     test('falls back to default when value is not an int', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'residentialEducationConnectThreshold': '3'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'residentialEducationConnectThreshold': '3'});
       await store.configFuture;
       expect(store.residentialEducationConnectThreshold, 2);
     });
@@ -612,27 +596,24 @@ void main() {
 
     test('interprets the config value as minutes', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'residentialReminderIntervalMinutes': 2});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'residentialReminderIntervalMinutes': 2});
       await store.configFuture;
       expect(store.residentialReminderInterval, const Duration(minutes: 2));
     });
 
     test('falls back to default when value is zero or negative', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'residentialReminderIntervalMinutes': 0});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'residentialReminderIntervalMinutes': 0});
       await store.configFuture;
       expect(store.residentialReminderInterval, const Duration(days: 30));
     });
 
     test('falls back to default when value is not an int', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'residentialReminderIntervalMinutes': '5'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'residentialReminderIntervalMinutes': '5'});
       await store.configFuture;
       expect(store.residentialReminderInterval, const Duration(days: 30));
     });
@@ -734,9 +715,8 @@ void main() {
 
     test('returns defaults when JSON is malformed', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'reviewPromptConfig': '{not valid json'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'reviewPromptConfig': '{not valid json'});
       await store.configFuture;
       expect(store.reviewPromptConfig.minAppOpens, 5);
     });
@@ -754,9 +734,8 @@ void main() {
     test('returns true if config has true value', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'canShowSubscriptionOnboardingFlow': true});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'canShowSubscriptionOnboardingFlow': true});
       await store.configFuture;
       expect(store.canShowSubscriptionOnboardingFlow, isTrue);
     });
@@ -764,9 +743,8 @@ void main() {
     test('returns false if config has false value (kill switch flipped)', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'canShowSubscriptionOnboardingFlow': false});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'canShowSubscriptionOnboardingFlow': false});
       await store.configFuture;
       expect(store.canShowSubscriptionOnboardingFlow, isFalse);
     });
@@ -814,9 +792,8 @@ void main() {
     test('is independent of showCitiesAndStates', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'showApiVersion': false, 'showCitiesAndStates': true});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'showApiVersion': false, 'showCitiesAndStates': true});
       await store.configFuture;
       expect(store.showApiVersion, isFalse);
       expect(store.showCitiesAndStates, isTrue);
@@ -885,9 +862,8 @@ void main() {
     test('returns the configured value', () async {
       store = createStore();
 
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'minWindowsStandAloneBuildNumber': '2.5.0'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'minWindowsStandAloneBuildNumber': '2.5.0'});
       await store.configFuture;
       expect(store.minWindowsStandAloneBuildNumber, '2.5.0');
     });
@@ -943,9 +919,8 @@ void main() {
 
     test('a partial payload keeps defaults for the fields it omits', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"enabled":true}'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'tunnelHealthConfig': '{"enabled":true}'});
       await store.configFuture;
       final config = store.tunnelHealthConfig;
       expect(config.enabled, isTrue);
@@ -1012,18 +987,16 @@ void main() {
 
     test('reads a list of control IPs from the payload', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","5.6.7.8"]}'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["1.2.3.4","5.6.7.8"]}'});
       await store.configFuture;
       expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4', '5.6.7.8']);
     });
 
     test('accepts a bare string for the single-address form', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":"1.2.3.4"}'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":"1.2.3.4"}'});
       await store.configFuture;
       expect(store.tunnelHealthConfig.controlIps, ['1.2.3.4']);
     });
@@ -1039,18 +1012,16 @@ void main() {
 
     test('an all-unparseable list falls back, since it gates the check', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["not-an-ip"]}'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'tunnelHealthConfig': '{"controlIps":["not-an-ip"]}'});
       await store.configFuture;
       expect(store.tunnelHealthConfig.controlIps, kDefaultControlIps);
     });
 
     test('malformed JSON yields the defaults rather than throwing', () async {
       store = createStore();
-      when(
-        client.getAllValues(),
-      ).thenAnswer((_) async => {'tunnelHealthConfig': 'not json at all'});
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'tunnelHealthConfig': 'not json at all'});
       await store.configFuture;
       final config = store.tunnelHealthConfig;
       expect(config.enabled, isFalse);

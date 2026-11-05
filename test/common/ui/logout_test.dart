@@ -41,9 +41,8 @@ void main() {
 
   test('logs out anyway when the teardown hangs, and reports the timeout', () async {
     // Never completes: the real hazard is a wedged platform channel.
-    when(
-      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
-    ).thenAnswer((_) => Completer<void>().future);
+    when(vpnStore.disconnectTunnel(reason: anyNamed('reason')))
+        .thenAnswer((_) => Completer<void>().future);
 
     await run(timeout: const Duration(milliseconds: 10));
 
@@ -54,13 +53,11 @@ void main() {
   });
 
   test('a hung analytics call does not hold up the logout', () async {
-    when(
-      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
-    ).thenThrow(Exception('platform channel failed'));
+    when(vpnStore.disconnectTunnel(reason: anyNamed('reason')))
+        .thenThrow(Exception('platform channel failed'));
     // logEvent awaits a Firebase platform call; it must not gate logout.
-    when(
-      analytics.logEvent(any, parameters: anyNamed('parameters')),
-    ).thenAnswer((_) => Completer<void>().future);
+    when(analytics.logEvent(any, parameters: anyNamed('parameters')))
+        .thenAnswer((_) => Completer<void>().future);
 
     await run().timeout(const Duration(seconds: 2));
 
@@ -68,12 +65,10 @@ void main() {
   });
 
   test('a failing analytics call does not prevent the logout', () async {
-    when(
-      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
-    ).thenThrow(Exception('platform channel failed'));
-    when(
-      analytics.logEvent(any, parameters: anyNamed('parameters')),
-    ).thenAnswer((_) => Future<void>.error(Exception('analytics unavailable')));
+    when(vpnStore.disconnectTunnel(reason: anyNamed('reason')))
+        .thenThrow(Exception('platform channel failed'));
+    when(analytics.logEvent(any, parameters: anyNamed('parameters')))
+        .thenAnswer((_) => Future<void>.error(Exception('analytics unavailable')));
 
     await expectLater(run(), completes);
 
@@ -81,9 +76,8 @@ void main() {
   });
 
   test('logs out anyway when the teardown throws, and reports the error', () async {
-    when(
-      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
-    ).thenThrow(Exception('platform channel failed'));
+    when(vpnStore.disconnectTunnel(reason: anyNamed('reason')))
+        .thenThrow(Exception('platform channel failed'));
 
     await run();
 

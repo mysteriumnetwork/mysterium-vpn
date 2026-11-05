@@ -78,9 +78,8 @@ void main() {
     when(protocolStore.protocol).thenReturn(ProtocolType.wireguard);
     now = DateTime.utc(2026, 10, 6, 12);
 
-    when(
-      config.tunnelHealthConfig,
-    ).thenReturn(const TunnelHealthConfig(enabled: true, minBackgroundSeconds: 60));
+    when(config.tunnelHealthConfig)
+        .thenReturn(const TunnelHealthConfig(enabled: true, minBackgroundSeconds: 60));
 
     when(vpnStore.isConnected).thenReturn(true);
     when(vpnStore.connectedIpPoolCount).thenReturn(5);
@@ -251,9 +250,8 @@ void main() {
     });
 
     test('does not probe when the minimum is 0 (disabled)', () async {
-      when(
-        config.tunnelHealthConfig,
-      ).thenReturn(const TunnelHealthConfig(enabled: true, minBackgroundSeconds: 0));
+      when(config.tunnelHealthConfig)
+          .thenReturn(const TunnelHealthConfig(enabled: true, minBackgroundSeconds: 0));
       final store = build();
       await resumeAfter(store, const Duration(hours: 2));
 
@@ -487,9 +485,8 @@ void main() {
 
     test('skips the report when there is no session id but still prompts', () async {
       stubProbe(degraded);
-      when(
-        vpnStore.vpnConnection,
-      ).thenReturn(const VpnConnection(connectionIP: '10.0.0.1', location: location));
+      when(vpnStore.vpnConnection)
+          .thenReturn(const VpnConnection(connectionIP: '10.0.0.1', location: location));
       final store = build();
       await resumeAfter(store, const Duration(minutes: 10));
 

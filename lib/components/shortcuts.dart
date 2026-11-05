@@ -14,7 +14,7 @@ class ShortcutsWidget extends StatelessWidget {
     child: Actions(
       actions: <Type, Action<Intent>>{
         MinimizeIntent: CallbackAction<MinimizeIntent>(
-          onInvoke: (MinimizeIntent intent) => windowManager.minimize(),
+          onInvoke: (MinimizeIntent intent) => WindowManager.instance.getCurrent()?.minimize(),
         ),
       },
       child: child,

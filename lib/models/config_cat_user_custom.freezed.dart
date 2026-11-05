@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'config_cat_user_custom.dart';
@@ -9,6 +9,7 @@ part of 'config_cat_user_custom.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $ConfigCatUserCustomCopyWith<ConfigCatUserCustom> get copyWith => _$ConfigCatUse
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConfigCatUserCustom&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.version, version) || other.version == version)&&(identical(other.city, city) || other.city == city)&&(identical(other.subscriptionSource, subscriptionSource) || other.subscriptionSource == subscriptionSource)&&(identical(other.subscriptionPlan, subscriptionPlan) || other.subscriptionPlan == subscriptionPlan)&&(identical(other.expirationDate, expirationDate) || other.expirationDate == expirationDate)&&(identical(other.subscriptionDuration, subscriptionDuration) || other.subscriptionDuration == subscriptionDuration)&&(identical(other.recurring, recurring) || other.recurring == recurring));
+  final _this = this as ConfigCatUserCustom;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConfigCatUserCustom&&(identical(other.platform, _this.platform) || other.platform == _this.platform)&&(identical(other.version, _this.version) || other.version == _this.version)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.subscriptionSource, _this.subscriptionSource) || other.subscriptionSource == _this.subscriptionSource)&&(identical(other.subscriptionPlan, _this.subscriptionPlan) || other.subscriptionPlan == _this.subscriptionPlan)&&(identical(other.expirationDate, _this.expirationDate) || other.expirationDate == _this.expirationDate)&&(identical(other.subscriptionDuration, _this.subscriptionDuration) || other.subscriptionDuration == _this.subscriptionDuration)&&(identical(other.recurring, _this.recurring) || other.recurring == _this.recurring));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,platform,version,city,subscriptionSource,subscriptionPlan,expirationDate,subscriptionDuration,recurring);
+int get hashCode {
+  final _this = this as ConfigCatUserCustom;
+  return Object.hash(runtimeType,_this.platform,_this.version,_this.city,_this.subscriptionSource,_this.subscriptionPlan,_this.expirationDate,_this.subscriptionDuration,_this.recurring);
+}
 
 @override
 String toString() {
-  return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan, expirationDate: $expirationDate, subscriptionDuration: $subscriptionDuration, recurring: $recurring)';
+  final _this = this as ConfigCatUserCustom;
+  return 'ConfigCatUserCustom(platform: ${_this.platform}, version: ${_this.version}, city: ${_this.city}, subscriptionSource: ${_this.subscriptionSource}, subscriptionPlan: ${_this.subscriptionPlan}, expirationDate: ${_this.expirationDate}, subscriptionDuration: ${_this.subscriptionDuration}, recurring: ${_this.recurring})';
 }
 
 
@@ -66,7 +72,7 @@ class _$ConfigCatUserCustomCopyWithImpl<$Res>
 /// Create a copy of ConfigCatUserCustom
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? platform = null,Object? version = null,Object? city = freezed,Object? subscriptionSource = freezed,Object? subscriptionPlan = freezed,Object? expirationDate = freezed,Object? subscriptionDuration = freezed,Object? recurring = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ConfigCatUserCustom(
 platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
 as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
 as String,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
@@ -241,16 +247,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConfigCatUserCustom&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.version, version) || other.version == version)&&(identical(other.city, city) || other.city == city)&&(identical(other.subscriptionSource, subscriptionSource) || other.subscriptionSource == subscriptionSource)&&(identical(other.subscriptionPlan, subscriptionPlan) || other.subscriptionPlan == subscriptionPlan)&&(identical(other.expirationDate, expirationDate) || other.expirationDate == expirationDate)&&(identical(other.subscriptionDuration, subscriptionDuration) || other.subscriptionDuration == subscriptionDuration)&&(identical(other.recurring, recurring) || other.recurring == recurring));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConfigCatUserCustom&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.version, version) || other.version == version)&&(identical(other.city, city) || other.city == city)&&(identical(other.subscriptionSource, subscriptionSource) || other.subscriptionSource == subscriptionSource)&&(identical(other.subscriptionPlan, subscriptionPlan) || other.subscriptionPlan == subscriptionPlan)&&(identical(other.expirationDate, expirationDate) || other.expirationDate == expirationDate)&&(identical(other.subscriptionDuration, subscriptionDuration) || other.subscriptionDuration == subscriptionDuration)&&(identical(other.recurring, recurring) || other.recurring == recurring));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,platform,version,city,subscriptionSource,subscriptionPlan,expirationDate,subscriptionDuration,recurring);
+int get hashCode {
+    return Object.hash(runtimeType,platform,version,city,subscriptionSource,subscriptionPlan,expirationDate,subscriptionDuration,recurring);
+}
 
 @override
 String toString() {
-  return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan, expirationDate: $expirationDate, subscriptionDuration: $subscriptionDuration, recurring: $recurring)';
+    return 'ConfigCatUserCustom(platform: $platform, version: $version, city: $city, subscriptionSource: $subscriptionSource, subscriptionPlan: $subscriptionPlan, expirationDate: $expirationDate, subscriptionDuration: $subscriptionDuration, recurring: $recurring)';
 }
 
 

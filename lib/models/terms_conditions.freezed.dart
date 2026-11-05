@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'terms_conditions.dart';
@@ -9,6 +9,7 @@ part of 'terms_conditions.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $TermsAndConditionsCopyWith<TermsAndConditions> get copyWith => _$TermsAndCondit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TermsAndConditions&&(identical(other.content, content) || other.content == content)&&(identical(other.version, version) || other.version == version));
+  final _this = this as TermsAndConditions;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TermsAndConditions&&(identical(other.content, _this.content) || other.content == _this.content)&&(identical(other.version, _this.version) || other.version == _this.version));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,content,version);
+int get hashCode {
+  final _this = this as TermsAndConditions;
+  return Object.hash(runtimeType,_this.content,_this.version);
+}
 
 @override
 String toString() {
-  return 'TermsAndConditions(content: $content, version: $version)';
+  final _this = this as TermsAndConditions;
+  return 'TermsAndConditions(content: ${_this.content}, version: ${_this.version})';
 }
 
 
@@ -63,7 +69,7 @@ class _$TermsAndConditionsCopyWithImpl<$Res>
 /// Create a copy of TermsAndConditions
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? version = null,}) {
-  return _then(_self.copyWith(
+  return _then(TermsAndConditions(
 content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
 as String,
@@ -223,16 +229,18 @@ _$TermsAndConditionsCopyWith<_TermsAndConditions> get copyWith => __$TermsAndCon
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TermsAndConditions&&(identical(other.content, content) || other.content == content)&&(identical(other.version, version) || other.version == version));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TermsAndConditions&&(identical(other.content, content) || other.content == content)&&(identical(other.version, version) || other.version == version));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,content,version);
+int get hashCode {
+    return Object.hash(runtimeType,content,version);
+}
 
 @override
 String toString() {
-  return 'TermsAndConditions(content: $content, version: $version)';
+    return 'TermsAndConditions(content: $content, version: $version)';
 }
 
 
@@ -285,16 +293,21 @@ $TermsConsentCopyWith<TermsConsent> get copyWith => _$TermsConsentCopyWithImpl<T
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TermsConsent&&(identical(other.acceptedVersion, acceptedVersion) || other.acceptedVersion == acceptedVersion)&&(identical(other.latestVersion, latestVersion) || other.latestVersion == latestVersion));
+  final _this = this as TermsConsent;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TermsConsent&&(identical(other.acceptedVersion, _this.acceptedVersion) || other.acceptedVersion == _this.acceptedVersion)&&(identical(other.latestVersion, _this.latestVersion) || other.latestVersion == _this.latestVersion));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,acceptedVersion,latestVersion);
+int get hashCode {
+  final _this = this as TermsConsent;
+  return Object.hash(runtimeType,_this.acceptedVersion,_this.latestVersion);
+}
 
 @override
 String toString() {
-  return 'TermsConsent(acceptedVersion: $acceptedVersion, latestVersion: $latestVersion)';
+  final _this = this as TermsConsent;
+  return 'TermsConsent(acceptedVersion: ${_this.acceptedVersion}, latestVersion: ${_this.latestVersion})';
 }
 
 
@@ -323,7 +336,7 @@ class _$TermsConsentCopyWithImpl<$Res>
 /// Create a copy of TermsConsent
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? acceptedVersion = freezed,Object? latestVersion = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(TermsConsent(
 acceptedVersion: freezed == acceptedVersion ? _self.acceptedVersion : acceptedVersion // ignore: cast_nullable_to_non_nullable
 as String?,latestVersion: freezed == latestVersion ? _self.latestVersion : latestVersion // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -483,16 +496,18 @@ _$TermsConsentCopyWith<_TermsConsent> get copyWith => __$TermsConsentCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TermsConsent&&(identical(other.acceptedVersion, acceptedVersion) || other.acceptedVersion == acceptedVersion)&&(identical(other.latestVersion, latestVersion) || other.latestVersion == latestVersion));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TermsConsent&&(identical(other.acceptedVersion, acceptedVersion) || other.acceptedVersion == acceptedVersion)&&(identical(other.latestVersion, latestVersion) || other.latestVersion == latestVersion));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,acceptedVersion,latestVersion);
+int get hashCode {
+    return Object.hash(runtimeType,acceptedVersion,latestVersion);
+}
 
 @override
 String toString() {
-  return 'TermsConsent(acceptedVersion: $acceptedVersion, latestVersion: $latestVersion)';
+    return 'TermsConsent(acceptedVersion: $acceptedVersion, latestVersion: $latestVersion)';
 }
 
 

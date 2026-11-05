@@ -79,9 +79,8 @@ void main() {
     test('sets protocol and logs analytics when protocol picker is available', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
       when(mockLocalDBService.setProtocolType(any)).thenAnswer((_) async => {});
-      when(
-        mockAnalyticsStore.logEvent(any, parameters: anyNamed('parameters')),
-      ).thenAnswer((_) async => {});
+      when(mockAnalyticsStore.logEvent(any, parameters: anyNamed('parameters')))
+          .thenAnswer((_) async => {});
 
       await store.setProtocol(ProtocolType.openvpn);
 
@@ -108,9 +107,8 @@ void main() {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
       final exception = Exception('Database error');
       when(mockLocalDBService.setProtocolType(any)).thenThrow(exception);
-      when(
-        mockAnalyticsStore.logEvent(any, parameters: anyNamed('parameters')),
-      ).thenAnswer((_) async => {});
+      when(mockAnalyticsStore.logEvent(any, parameters: anyNamed('parameters')))
+          .thenAnswer((_) async => {});
 
       expect(() => store.setProtocol(ProtocolType.openvpn), throwsA(isA<Exception>()));
 
@@ -127,9 +125,8 @@ void main() {
     test('sets wireguard protocol successfully', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
       when(mockLocalDBService.setProtocolType(any)).thenAnswer((_) async => {});
-      when(
-        mockAnalyticsStore.logEvent(any, parameters: anyNamed('parameters')),
-      ).thenAnswer((_) async => {});
+      when(mockAnalyticsStore.logEvent(any, parameters: anyNamed('parameters')))
+          .thenAnswer((_) async => {});
 
       await store.setProtocol(ProtocolType.wireguard);
 

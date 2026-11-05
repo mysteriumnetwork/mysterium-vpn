@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localizely_sdk/localizely_sdk.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************

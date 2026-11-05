@@ -165,9 +165,10 @@ class CustomPlatformMenu extends ConsumerWidget {
                         label: 'Close',
                         shortcut: const SingleActivator(LogicalKeyboardKey.keyW, meta: true),
                         onSelected: isVisible
-                            ? () async {
-                                if (await windowManager.isVisible()) {
-                                  windowManager.hide();
+                            ? () {
+                                final window = WindowManager.instance.getCurrent();
+                                if (window != null && window.isVisible) {
+                                  window.hide();
                                 }
                               }
                             : null,
@@ -176,11 +177,12 @@ class CustomPlatformMenu extends ConsumerWidget {
                         label: 'Minimize',
                         shortcut: const SingleActivator(LogicalKeyboardKey.keyM, meta: true),
                         onSelected: isVisible
-                            ? () async {
-                                if (await windowManager.isMinimized()) {
+                            ? () {
+                                final window = WindowManager.instance.getCurrent();
+                                if (window == null || window.isMinimized) {
                                   return;
                                 }
-                                windowManager.minimize();
+                                window.minimize();
                               }
                             : null,
                       ),
@@ -200,9 +202,10 @@ class CustomPlatformMenu extends ConsumerWidget {
                           meta: true,
                           shift: true,
                         ),
-                        onSelected: () async {
-                          if (!(await windowManager.isVisible())) {
-                            windowManager.show();
+                        onSelected: () {
+                          final window = WindowManager.instance.getCurrent();
+                          if (window != null && !window.isVisible) {
+                            window.show();
                           }
                         },
                       ),
@@ -212,9 +215,10 @@ class CustomPlatformMenu extends ConsumerWidget {
                     members: <PlatformMenuItem>[
                       PlatformMenuItem(
                         label: 'Bring All to Front',
-                        onSelected: () async {
-                          if (!(await windowManager.isVisible())) {
-                            windowManager.show();
+                        onSelected: () {
+                          final window = WindowManager.instance.getCurrent();
+                          if (window != null && !window.isVisible) {
+                            window.show();
                           }
                         },
                       ),

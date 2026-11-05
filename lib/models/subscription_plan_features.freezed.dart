@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'subscription_plan_features.dart';
@@ -9,6 +9,7 @@ part of 'subscription_plan_features.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $SubscriptionPlanFeaturesCopyWith<SubscriptionPlanFeatures> get copyWith => _$Su
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubscriptionPlanFeatures&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.planIds, planIds)&&const DeepCollectionEquality().equals(other.previewFeatures, previewFeatures)&&const DeepCollectionEquality().equals(other.detailedFeatures, detailedFeatures));
+  final _this = this as SubscriptionPlanFeatures;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubscriptionPlanFeatures&&(identical(other.name, _this.name) || other.name == _this.name)&&const DeepCollectionEquality().equals(other.planIds, _this.planIds)&&const DeepCollectionEquality().equals(other.previewFeatures, _this.previewFeatures)&&const DeepCollectionEquality().equals(other.detailedFeatures, _this.detailedFeatures));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(planIds),const DeepCollectionEquality().hash(previewFeatures),const DeepCollectionEquality().hash(detailedFeatures));
+int get hashCode {
+  final _this = this as SubscriptionPlanFeatures;
+  return Object.hash(runtimeType,_this.name,const DeepCollectionEquality().hash(_this.planIds),const DeepCollectionEquality().hash(_this.previewFeatures),const DeepCollectionEquality().hash(_this.detailedFeatures));
+}
 
 @override
 String toString() {
-  return 'SubscriptionPlanFeatures(name: $name, planIds: $planIds, previewFeatures: $previewFeatures, detailedFeatures: $detailedFeatures)';
+  final _this = this as SubscriptionPlanFeatures;
+  return 'SubscriptionPlanFeatures(name: ${_this.name}, planIds: ${_this.planIds}, previewFeatures: ${_this.previewFeatures}, detailedFeatures: ${_this.detailedFeatures})';
 }
 
 
@@ -66,7 +72,7 @@ class _$SubscriptionPlanFeaturesCopyWithImpl<$Res>
 /// Create a copy of SubscriptionPlanFeatures
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? planIds = null,Object? previewFeatures = null,Object? detailedFeatures = null,}) {
-  return _then(_self.copyWith(
+  return _then(SubscriptionPlanFeatures(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,planIds: null == planIds ? _self.planIds : planIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,previewFeatures: null == previewFeatures ? _self.previewFeatures : previewFeatures // ignore: cast_nullable_to_non_nullable
@@ -212,7 +218,7 @@ return $default(_that.name,_that.planIds,_that.previewFeatures,_that.detailedFea
 @JsonSerializable()
 
 class _SubscriptionPlanFeatures extends SubscriptionPlanFeatures {
-   _SubscriptionPlanFeatures({required this.name, required final  Set<String> planIds, required final  Set<String> previewFeatures, required final  Map<String, dynamic> detailedFeatures}): _planIds = planIds,_previewFeatures = previewFeatures,_detailedFeatures = detailedFeatures,super._();
+   _SubscriptionPlanFeatures({required this.name, required  Set<String> planIds, required  Set<String> previewFeatures, required  Map<String, dynamic> detailedFeatures}): _planIds = planIds,_previewFeatures = previewFeatures,_detailedFeatures = detailedFeatures,super._();
   factory _SubscriptionPlanFeatures.fromJson(Map<String, dynamic> json) => _$SubscriptionPlanFeaturesFromJson(json);
 
 @override final  String name;
@@ -251,16 +257,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubscriptionPlanFeatures&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._planIds, _planIds)&&const DeepCollectionEquality().equals(other._previewFeatures, _previewFeatures)&&const DeepCollectionEquality().equals(other._detailedFeatures, _detailedFeatures));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubscriptionPlanFeatures&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.planIds, _planIds)&&const DeepCollectionEquality().equals(other.previewFeatures, _previewFeatures)&&const DeepCollectionEquality().equals(other.detailedFeatures, _detailedFeatures));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(_planIds),const DeepCollectionEquality().hash(_previewFeatures),const DeepCollectionEquality().hash(_detailedFeatures));
+int get hashCode {
+    return Object.hash(runtimeType,name,const DeepCollectionEquality().hash(_planIds),const DeepCollectionEquality().hash(_previewFeatures),const DeepCollectionEquality().hash(_detailedFeatures));
+}
 
 @override
 String toString() {
-  return 'SubscriptionPlanFeatures(name: $name, planIds: $planIds, previewFeatures: $previewFeatures, detailedFeatures: $detailedFeatures)';
+    return 'SubscriptionPlanFeatures(name: $name, planIds: $planIds, previewFeatures: $previewFeatures, detailedFeatures: $detailedFeatures)';
 }
 
 

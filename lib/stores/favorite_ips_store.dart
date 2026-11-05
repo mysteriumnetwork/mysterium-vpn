@@ -206,8 +206,9 @@ abstract class _FavoriteIpsStore with Store {
   /// for user-triggered refreshes, which must always hit the backend. On
   /// failure the previous map is kept so favorites stay tappable and connect
   /// surfaces the error.
-  Future<bool> refreshAvailability({bool force = false}) => _availabilityRefresh ??=
-      _refreshAvailability(force: force).whenComplete(() => _availabilityRefresh = null);
+  Future<bool> refreshAvailability({bool force = false}) =>
+      _availabilityRefresh ??= _refreshAvailability(force: force)
+          .whenComplete(() => _availabilityRefresh = null);
 
   @action
   Future<bool> _refreshAvailability({required bool force}) async {

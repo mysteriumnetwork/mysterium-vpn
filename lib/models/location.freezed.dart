@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'location.dart';
@@ -9,13 +9,14 @@ part of 'location.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$VPNLocations {
 
- Set<VPNLocation> get allLocations; Set<VPNLocation> get allLocationsFlattened; bool get isEmpty; List<VPNLocation> get locations; List<VPNLocation> get topLocations;
+ List<VPNLocation> get locations; List<VPNLocation> get topLocations;
 /// Create a copy of VPNLocations
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,21 @@ $VPNLocationsCopyWith<VPNLocations> get copyWith => _$VPNLocationsCopyWithImpl<V
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VPNLocations&&const DeepCollectionEquality().equals(other.allLocations, allLocations)&&const DeepCollectionEquality().equals(other.allLocationsFlattened, allLocationsFlattened)&&(identical(other.isEmpty, isEmpty) || other.isEmpty == isEmpty)&&const DeepCollectionEquality().equals(other.locations, locations)&&const DeepCollectionEquality().equals(other.topLocations, topLocations));
+  final _this = this as VPNLocations;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VPNLocations&&const DeepCollectionEquality().equals(other.allLocations, _this.allLocations)&&const DeepCollectionEquality().equals(other.allLocationsFlattened, _this.allLocationsFlattened)&&(identical(other.isEmpty, _this.isEmpty) || other.isEmpty == _this.isEmpty)&&const DeepCollectionEquality().equals(other.locations, _this.locations)&&const DeepCollectionEquality().equals(other.topLocations, _this.topLocations));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(allLocations),const DeepCollectionEquality().hash(allLocationsFlattened),isEmpty,const DeepCollectionEquality().hash(locations),const DeepCollectionEquality().hash(topLocations));
+int get hashCode {
+  final _this = this as VPNLocations;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.allLocations),const DeepCollectionEquality().hash(_this.allLocationsFlattened),_this.isEmpty,const DeepCollectionEquality().hash(_this.locations),const DeepCollectionEquality().hash(_this.topLocations));
+}
 
 @override
 String toString() {
-  return 'VPNLocations(allLocations: $allLocations, allLocationsFlattened: $allLocationsFlattened, isEmpty: $isEmpty, locations: $locations, topLocations: $topLocations)';
+  final _this = this as VPNLocations;
+  return 'VPNLocations(allLocations: ${_this.allLocations}, allLocationsFlattened: ${_this.allLocationsFlattened}, isEmpty: ${_this.isEmpty}, locations: ${_this.locations}, topLocations: ${_this.topLocations})';
 }
 
 
@@ -66,7 +72,7 @@ class _$VPNLocationsCopyWithImpl<$Res>
 /// Create a copy of VPNLocations
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? locations = null,Object? topLocations = null,}) {
-  return _then(_self.copyWith(
+  return _then(VPNLocations(
 locations: null == locations ? _self.locations : locations // ignore: cast_nullable_to_non_nullable
 as List<VPNLocation>,topLocations: null == topLocations ? _self.topLocations : topLocations // ignore: cast_nullable_to_non_nullable
 as List<VPNLocation>,
@@ -210,7 +216,7 @@ return $default(_that.locations,_that.topLocations);case _:
 @JsonSerializable()
 
 class _VPNLocations extends VPNLocations {
-   _VPNLocations({final  List<VPNLocation> locations = const [], final  List<VPNLocation> topLocations = const []}): _locations = locations,_topLocations = topLocations,super._();
+   _VPNLocations({ List<VPNLocation> locations = const [],  List<VPNLocation> topLocations = const []}): _locations = locations,_topLocations = topLocations,super._();
   factory _VPNLocations.fromJson(Map<String, dynamic> json) => _$VPNLocationsFromJson(json);
 
  final  List<VPNLocation> _locations;
@@ -241,16 +247,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VPNLocations&&const DeepCollectionEquality().equals(other._locations, _locations)&&const DeepCollectionEquality().equals(other._topLocations, _topLocations));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _VPNLocations&&const DeepCollectionEquality().equals(other.locations, _locations)&&const DeepCollectionEquality().equals(other.topLocations, _topLocations));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_locations),const DeepCollectionEquality().hash(_topLocations));
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_locations),const DeepCollectionEquality().hash(_topLocations));
+}
 
 @override
 String toString() {
-  return 'VPNLocations(locations: $locations, topLocations: $topLocations)';
+    return 'VPNLocations(locations: $locations, topLocations: $topLocations)';
 }
 
 
@@ -308,7 +316,8 @@ $VPNLocationCopyWith<VPNLocation> get copyWith => _$VPNLocationCopyWithImpl<VPNL
 
 @override
 String toString() {
-  return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount, isAvailable: $isAvailable)';
+  final _this = this as VPNLocation;
+  return 'VPNLocation(id: ${_this.id}, ipType: ${_this.ipType}, translations: ${_this.translations}, countryCode: ${_this.countryCode}, coordinates: ${_this.coordinates}, children: ${_this.children}, nodeCount: ${_this.nodeCount}, isAvailable: ${_this.isAvailable})';
 }
 
 
@@ -337,7 +346,7 @@ class _$VPNLocationCopyWithImpl<$Res>
 /// Create a copy of VPNLocation
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? ipType = null,Object? translations = null,Object? countryCode = null,Object? coordinates = freezed,Object? children = freezed,Object? nodeCount = freezed,Object? isAvailable = null,}) {
-  return _then(_self.copyWith(
+  return _then(VPNLocation(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,ipType: null == ipType ? _self.ipType : ipType // ignore: cast_nullable_to_non_nullable
 as IPType,translations: null == translations ? _self.translations : translations // ignore: cast_nullable_to_non_nullable
@@ -487,7 +496,7 @@ return $default(_that.id,_that.ipType,_that.translations,_that.countryCode,_that
 @JsonSerializable()
 
 class _VPNLocation extends VPNLocation {
-  const _VPNLocation({required this.id, required this.ipType, required final  Map<String, String> translations, required this.countryCode, @LatLngConverter() this.coordinates, final  List<VPNLocation>? children, this.nodeCount, this.isAvailable = true}): _translations = translations,_children = children,super._();
+  const _VPNLocation({required this.id, required this.ipType, required  Map<String, String> translations, required this.countryCode, @LatLngConverter() this.coordinates,  List<VPNLocation>? children, this.nodeCount, this.isAvailable = true}): _translations = translations,_children = children,super._();
   factory _VPNLocation.fromJson(Map<String, dynamic> json) => _$VPNLocationFromJson(json);
 
 @override final  String id;
@@ -528,7 +537,7 @@ Map<String, dynamic> toJson() {
 
 @override
 String toString() {
-  return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount, isAvailable: $isAvailable)';
+    return 'VPNLocation(id: $id, ipType: $ipType, translations: $translations, countryCode: $countryCode, coordinates: $coordinates, children: $children, nodeCount: $nodeCount, isAvailable: $isAvailable)';
 }
 
 

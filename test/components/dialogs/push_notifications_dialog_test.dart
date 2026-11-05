@@ -25,12 +25,10 @@ void main() {
     userPreferencesStore = MockUserPreferencesStore();
     analyticsStore = MockAnalyticsStore();
     when(analyticsStore.logPushNotificationsPromptShown()).thenAnswer((_) async {});
-    when(
-      analyticsStore.logPushNotificationsPromptDecision(accepted: anyNamed('accepted')),
-    ).thenAnswer((_) async {});
-    when(
-      userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')),
-    ).thenAnswer((_) async {});
+    when(analyticsStore.logPushNotificationsPromptDecision(accepted: anyNamed('accepted')))
+        .thenAnswer((_) async {});
+    when(userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')))
+        .thenAnswer((_) async {});
     when(userPreferencesStore.markPushPromptShown()).thenAnswer((_) async {});
   });
 
@@ -101,9 +99,8 @@ void main() {
 
   testWidgets('a second press while in flight is ignored and pops only the prompt', (tester) async {
     final gate = Completer<void>();
-    when(
-      userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')),
-    ).thenAnswer((_) => gate.future);
+    when(userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')))
+        .thenAnswer((_) => gate.future);
 
     await openDialog(tester);
 
@@ -122,9 +119,8 @@ void main() {
   });
 
   testWidgets('still closes when the decision throws', (tester) async {
-    when(
-      userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')),
-    ).thenThrow(Exception('boom'));
+    when(userPreferencesStore.setPushNotificationsShown(userAllowed: anyNamed('userAllowed')))
+        .thenThrow(Exception('boom'));
 
     await openDialog(tester);
     await tester.tap(find.text(S.current.allowPushNotificationsBtn));

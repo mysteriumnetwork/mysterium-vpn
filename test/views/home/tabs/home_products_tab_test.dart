@@ -25,9 +25,8 @@ void main() {
     // products_screen_variant_test.dart). This widget test only verifies that
     // each variant renders the right view, so we stub the variant directly and
     // keep `subscriptionFuture` on a stable default for the views that read it.
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
     when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.defaultUpgrade);
   });
 
@@ -35,9 +34,8 @@ void main() {
     overrides: [subscriptionStorePOD.overrideWithValue(subscriptionStore)],
     child: BeamerProvider(
       routerDelegate: BeamerDelegate(
-        locationBuilder: RoutesLocationBuilder(
-          routes: {'/': (_, _, _) => const SizedBox.shrink()},
-        ).call,
+        locationBuilder: RoutesLocationBuilder(routes: {'/': (_, _, _) => const SizedBox.shrink()})
+            .call,
       ),
       child: MaterialApp(
         theme: DesignSystem.lightTheme,
@@ -101,9 +99,8 @@ void main() {
         // Windows first-time buyer: manageOnWeb even though there is no active
         // subscription. Must NOT show the "you already have an active plan" alert.
         when(subscriptionStore.productsScreenVariant).thenReturn(ProductsScreenVariant.manageOnWeb);
-        when(
-          subscriptionStore.subscriptionFuture,
-        ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+        when(subscriptionStore.subscriptionFuture)
+            .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
         await tester.pumpWidget(buildHarness());
         await tester.pump();

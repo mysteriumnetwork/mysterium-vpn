@@ -63,9 +63,8 @@ void main() {
     remoteConfigStore = MockRemoteConfigStore();
     authSessionStore = MockAuthSessionStore();
     when(analyticsStore.logCancellationConfirmViewed()).thenAnswer((_) async {});
-    when(
-      analyticsStore.logCancellationStarted(entrypoint: anyNamed('entrypoint')),
-    ).thenAnswer((_) async {});
+    when(analyticsStore.logCancellationStarted(entrypoint: anyNamed('entrypoint')))
+        .thenAnswer((_) async {});
     when(
       analyticsStore.logCancellationDashboardOpened(
         source: anyNamed('source'),
@@ -209,9 +208,8 @@ void main() {
     // arrange
     when(cancelStore.isStoreSubscription()).thenReturn(true);
     when(subscriptionPurchaseStore.manageSubscription()).thenAnswer((_) async {});
-    when(
-      subscriptionStore.refreshSubscription(force: anyNamed('force')),
-    ).thenAnswer((_) async => Subscription(active: true));
+    when(subscriptionStore.refreshSubscription(force: anyNamed('force')))
+        .thenAnswer((_) async => Subscription(active: true));
     await openConfirmDialog(tester);
 
     // act
@@ -291,9 +289,8 @@ void main() {
       urlLauncher = _CapturingUrlLauncher();
       UrlLauncherPlatform.instance = urlLauncher;
       when(cancelStore.isStoreSubscription()).thenReturn(false);
-      when(
-        remoteConfigStore.cancelSubscriptionPage,
-      ).thenReturn('https://app.example.com/dashboard/cancel');
+      when(remoteConfigStore.cancelSubscriptionPage)
+          .thenReturn('https://app.example.com/dashboard/cancel');
       when(authSessionStore.accessToken).thenReturn('token-123');
     });
 
@@ -357,9 +354,8 @@ void main() {
     });
 
     testWidgets('preserves existing query params and skips empty access_token', (tester) async {
-      when(
-        remoteConfigStore.cancelSubscriptionPage,
-      ).thenReturn('https://app.example.com/dashboard/cancel?foo=bar&baz=1');
+      when(remoteConfigStore.cancelSubscriptionPage)
+          .thenReturn('https://app.example.com/dashboard/cancel?foo=bar&baz=1');
       when(authSessionStore.accessToken).thenReturn(null);
 
       await openWebLink(tester);
@@ -368,9 +364,8 @@ void main() {
     });
 
     testWidgets('merges access_token into existing query params', (tester) async {
-      when(
-        remoteConfigStore.cancelSubscriptionPage,
-      ).thenReturn('https://app.example.com/dashboard/cancel?foo=bar');
+      when(remoteConfigStore.cancelSubscriptionPage)
+          .thenReturn('https://app.example.com/dashboard/cancel?foo=bar');
 
       await openWebLink(tester);
 

@@ -65,36 +65,30 @@ void main() {
       Mocks.locationResidentialNL,
     ];
 
-    when(
-      mockLocations.dcLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: dcLocations)));
-    when(
-      mockLocations.residentialLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: residentialLocations)));
+    when(mockLocations.dcLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: dcLocations)));
+    when(mockLocations.residentialLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: residentialLocations)));
     when(mockQuery.searchTrimmed).thenReturn('');
   });
 
   group('value', () {
     test('returns empty list when future value is null', () {
       when(mockRepository.load()).thenAnswer((_) async => []);
-      when(
-        mockLocations.dcLocationsFuture,
-      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
-      when(
-        mockLocations.residentialLocationsFuture,
-      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
+      when(mockLocations.dcLocationsFuture)
+          .thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
+      when(mockLocations.residentialLocationsFuture)
+          .thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
 
       expect(store.value, isEmpty);
     });
 
     test('returns empty list when future value is empty', () {
       when(mockRepository.load()).thenAnswer((_) async => []);
-      when(
-        mockLocations.dcLocationsFuture,
-      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
-      when(
-        mockLocations.residentialLocationsFuture,
-      ).thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
+      when(mockLocations.dcLocationsFuture)
+          .thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
+      when(mockLocations.residentialLocationsFuture)
+          .thenAnswer((_) => ObservableFuture<VPNLocations>.error(''));
 
       expect(store.value, isEmpty);
     });
@@ -128,9 +122,8 @@ void main() {
       ];
 
       when(mockRepository.load()).thenAnswer((_) async => recentLocations);
-      when(
-        mockLocations.dcLocationsFuture,
-      ).thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: availableDCLocations)));
+      when(mockLocations.dcLocationsFuture)
+          .thenAnswer((_) => ObservableFuture.value(VPNLocations(locations: availableDCLocations)));
       when(mockLocations.residentialLocationsFuture).thenAnswer(
         (_) => ObservableFuture.value(VPNLocations(locations: availableResidentialLocations)),
       );
