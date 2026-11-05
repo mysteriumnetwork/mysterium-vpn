@@ -204,6 +204,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Obteniendo información del plan...",
     ),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("Revisa tu correo"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Las IP por ciudad no están disponibles en tu plan actual.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Borrar búsqueda"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Cerrar"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Comunicaciones"),
@@ -519,6 +522,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro anual"),
     "poland": MessageLookupByLibrary.simpleMessage("Polonia"),
     "preferences": MessageLookupByLibrary.simpleMessage("Preferencias"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("El precio incluye el IVA aplicable."),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Ver todos los planes"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Política de privacidad"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -633,6 +637,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Cómo funcionan las IP residenciales",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residencial"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Las IP residenciales no están disponibles en tu plan actual.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Reanudar"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "No se pudo reanudar tu suscripción. Inténtalo de nuevo.",

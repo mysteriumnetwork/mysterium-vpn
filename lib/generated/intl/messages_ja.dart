@@ -178,6 +178,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkSubsStatusFailedTitle": MessageLookupByLibrary.simpleMessage("プラン情報を取得できません"),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("プラン情報を取得中…"),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("メールをご確認ください"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "都市単位の IP は現在のプランではご利用いただけません。",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("検索をクリア"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("閉じる"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("お知らせ"),
@@ -445,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro 年間"),
     "poland": MessageLookupByLibrary.simpleMessage("ポーランド"),
     "preferences": MessageLookupByLibrary.simpleMessage("環境設定"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("価格には適用される付加価値税（VAT）が含まれます。"),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("すべてのプランを見る"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("プライバシーポリシー"),
     "processingPayment": MessageLookupByLibrary.simpleMessage("お支払いを処理中です。まもなく完了します…"),
@@ -527,6 +531,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("レジデンシャル IP の仕組み"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("レジデンシャル IP"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "レジデンシャル IP は現在のプランではご利用いただけません。",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("再開"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "サブスクリプションを再開できませんでした。もう一度お試しください。",

@@ -205,6 +205,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "प्लान जानकारी प्राप्त हो रही है…",
     ),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("अपना ईमेल देखें"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "शहर-स्तरीय IPs आपके मौजूदा प्लान में उपलब्ध नहीं हैं।",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("सर्च साफ़ करें"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("बंद करें"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("संचार"),
@@ -510,6 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro वार्षिक"),
     "poland": MessageLookupByLibrary.simpleMessage("पोलैंड"),
     "preferences": MessageLookupByLibrary.simpleMessage("प्राथमिकताएँ"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("कीमत में लागू VAT शामिल है।"),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("सभी प्लान देखें"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("गोपनीयता नीति"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -614,6 +618,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "आवासीय IPs कैसे काम करते हैं",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("आवासीय IP"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "आवासीय IPs आपके मौजूदा प्लान में उपलब्ध नहीं हैं।",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("फिर शुरू करें"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "आपकी सदस्यता फिर से शुरू नहीं हो सकी। कृपया फिर से प्रयास करें।",
