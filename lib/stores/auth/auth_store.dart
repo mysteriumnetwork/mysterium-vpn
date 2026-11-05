@@ -158,7 +158,13 @@ abstract class _AuthStore with Store {
       await _initializeAuthenticatedUser(user);
     } on ApiException catch (e, stackTrace) {
       // We want to make call to user details endpoint to introspect AccessToken, and if it's invalid when logout the user
-      if (e.code == 401) {
+      if (e.code == 401 || e.response?.statusCode == 401) {
+        if (_refreshInconclusive) {
+          // One shot: the next 401 counts, so a latched flag cannot strand us.
+          _refreshInconclusive = false;
+          _logger.warning('Access token refused, but the refresh never got a verdict');
+          return;
+        }
         _logger.error('User AccessToken invalid');
         await _authSessionStore.setUnauthenticated();
         return;
@@ -174,21 +180,36 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> authenticate(GrantType grantType, Future<TokenResponse> feature) async {
+    final TokenResponse authTokens;
     try {
-      authenticateFeature = ObservableFuture(feature);
-      final authTokens = await authenticateFeature;
-      await _authSessionStore.setAuthenticated(authTokens!.accessToken, authTokens.refreshToken);
-      _analyticsStore.setLogin(grantType);
+      final pending = ObservableFuture(feature);
+      authenticateFeature = pending;
+      authTokens = await pending;
     } on ApiException catch (e) {
       _emitError(AuthError(AuthErrorType.serverMessage, e.message));
+      return;
     } catch (e) {
       _emitError(const AuthError(AuthErrorType.authenticationFailed));
+      return;
     }
+
+    try {
+      await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+    } catch (e) {
+      // Already in memory, so an unwritable keychain is not a failed login.
+      _logger.warning('Could not persist new credentials: $e');
+    }
+    _analyticsStore.setLogin(grantType);
   }
 
   @action
   Future<void> _initializeAuthenticatedUser(AuthUser user) async {
-    await _authSessionStore.setAuthenticatedUser(user);
+    try {
+      await _authSessionStore.setAuthenticatedUser(user);
+    } catch (e) {
+      // Already in memory, so an unwritable keychain is not a failed sign-in.
+      _logger.warning('Could not persist the signed-in user: $e');
+    }
     _initializeAnalyticsStores(username: user.username, userId: user.userId);
 
     // Set auth user
@@ -346,22 +367,41 @@ abstract class _AuthStore with Store {
     }
   }
 
+  /// True while a refresh ended without a verdict from the server.
+  bool _refreshInconclusive = false;
+
+  /// Only the OAuth refusal codes mean the refresh token is dead.
+  bool _isSessionRejected(Object error) {
+    if (error is RefreshTokenNotFoundException) {
+      return true;
+    }
+    final status = error is ApiException ? error.response?.statusCode : null;
+    return status == 400 || status == 401;
+  }
+
   Future<void> refreshAuthToken() async {
+    _refreshInconclusive = false;
+    final TokenResponse authTokens;
     try {
       final refreshToken = await _authSessionStore.refreshTokenFuture;
       if (refreshToken == null) {
         throw RefreshTokenNotFoundException();
       }
 
-      final authTokens = await _authService.signInComplete(
+      authTokens = await _authService.signInComplete(
         tokenRequest: TokenRequest(
           deviceId: await _deviceIDStore.deviceIdFuture,
           grantType: GrantType.refreshToken,
           refreshToken: refreshToken,
         ),
       );
-      await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
     } catch (e) {
+      if (!_isSessionRejected(e)) {
+        // Unproven, not over: ending it here turned a flaky network into a logout.
+        _refreshInconclusive = true;
+        _logger.warning('Token refresh did not reach the server: $e');
+        rethrow;
+      }
       final authState = _authSessionStore.status;
       if (authState == AuthStatus.authenticated) {
         _emitError(const AuthError(AuthErrorType.sessionExpired));
@@ -369,6 +409,13 @@ abstract class _AuthStore with Store {
       await logout(invalidateRemotely: false);
 
       rethrow;
+    }
+
+    try {
+      await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
+    } catch (e) {
+      // Already in memory, so an unwritable keychain is not an expired session.
+      _logger.warning('Could not persist refreshed credentials: $e');
     }
   }
 }

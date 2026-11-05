@@ -1,6 +1,7 @@
 // Dart imports:
 import 'dart:async' show Future;
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -11,61 +12,92 @@ import 'package:retry/retry.dart';
 // Project imports:
 
 class SecureStorageService {
+  /// `whenUnlocked` fails with -25308 while the screen is locked.
+  static const _accessibility = KeychainAccessibility.first_unlock;
+
   static const _securedStorage = FlutterSecureStorage(
+    iOptions: IOSOptions(accountName: Env.accountName, accessibility: _accessibility),
+    mOptions: MacOsOptions(
+      accountName: Env.accountName,
+      synchronizable: true,
+      accessibility: _accessibility,
+    ),
+    wOptions: WindowsOptions(useBackwardCompatibility: true),
+  );
+
+  /// Lookups filter on `kSecAttrAccessible`; older items need the old options.
+  static const _legacyStorage = FlutterSecureStorage(
     iOptions: IOSOptions(accountName: Env.accountName),
     mOptions: MacOsOptions(accountName: Env.accountName, synchronizable: true),
     wOptions: WindowsOptions(useBackwardCompatibility: true),
   );
 
-  Future<Map<String, dynamic>> readAll() async {
+  /// Only Apple platforms carry a separate accessibility attribute.
+  static bool get _hasLegacyItems => Platform.isIOS || Platform.isMacOS;
+
+  Future<Map<String, dynamic>> readAll() async => {
+    if (_hasLegacyItems) ...await _readAll(_legacyStorage),
+    ...await _readAll(_securedStorage),
+  };
+
+  Future<Map<String, String>> _readAll(FlutterSecureStorage storage) async {
     try {
-      final allValues = await _securedStorage.readAll();
-      if (allValues.isEmpty) {
-        return {};
-      }
-      return allValues;
+      return await storage.readAll();
     } catch (e) {
       return {};
     }
   }
 
   Future<String> read(String key) async {
-    if (!await _securedStorage.containsKey(key: key)) {
-      throw KeyDoesntExistsException();
-    }
-    final result = await _securedStorage.read(key: key);
+    final result = await readOrNull(key);
     if (result == null) {
       throw KeyDoesntExistsException();
-    } else {
-      return result;
     }
+    return result;
   }
 
   Future<String?> readOrNull(String key) async {
-    if (!await checkExistance(key)) {
+    final value = await _read(_securedStorage, key);
+    return value ?? await _adoptLegacyItem(key);
+  }
+
+  Future<String?> _read(FlutterSecureStorage storage, String key) async {
+    try {
+      return await storage.read(key: key);
+    } catch (e) {
       return null;
-    }
-    final result = await _securedStorage.read(key: key);
-    if (result == null) {
-      return null;
-    } else {
-      return result;
     }
   }
 
-  Future<void> remove(String key) async {
-    if (await checkExistance(key)) {
-      await _remove(key: key);
+  /// Re-stores a pre-[_accessibility] item under the new one on first miss.
+  Future<String?> _adoptLegacyItem(String key) async {
+    if (!_hasLegacyItems) {
+      return null;
     }
+    final value = await _read(_legacyStorage, key);
+    if (value != null) {
+      try {
+        await write(key, value);
+      } catch (e) {
+        // The caller still gets the value; only its new home is unconfirmed.
+      }
+    }
+    return value;
+  }
+
+  /// Delete is a no-op when absent and ignores accessibility; no check needed.
+  Future<void> remove(String key) async {
+    await _remove(key: key);
   }
 
   Future<String?> removeAndReturnValue(String key) async {
-    if (await checkExistance(key)) {
-      final value = await _securedStorage.read(key: key);
+    final value =
+        await _read(_securedStorage, key) ??
+        (_hasLegacyItems ? await _read(_legacyStorage, key) : null);
+    if (value != null) {
       await _remove(key: key);
-      return value;
     }
-    return null;
+    return value;
   }
 
   Future<void> _remove({required String key}) async {
@@ -76,13 +108,9 @@ class SecureStorageService {
     );
   }
 
-  Future<bool> checkExistance(String key) async {
-    try {
-      return await _securedStorage.containsKey(key: key);
-    } catch (e) {
-      return false;
-    }
-  }
+  Future<bool> checkExistance(String key) async =>
+      await _read(_securedStorage, key) != null ||
+      (_hasLegacyItems && await _read(_legacyStorage, key) != null);
 
   Future<void> write(String key, String value) async {
     await retry(() => _write(key, value), maxAttempts: 3, maxDelay: const Duration(seconds: 3));
@@ -193,7 +221,7 @@ class SecureStorageService {
   }
 
   Future<void> removeSubscriptionPaymentInfo() async {
-    remove(StorageKeys.subscriptionPaymentInfo.name);
+    await remove(StorageKeys.subscriptionPaymentInfo.name);
   }
 
   Future<String?> getDeviceId() async {

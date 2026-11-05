@@ -1,5 +1,6 @@
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// Single source of truth for the persisted session: the tokens and identity
 /// in secure storage, plus the local user record they key into.
@@ -70,12 +71,26 @@ class LocalSessionRepository implements SessionRepository {
 
   @override
   Future<void> clear() async {
+    // Per key, so an unremovable entry cannot throw out of the logout itself.
     await Future.wait([
-      _secureStorage.removeAccessToken(),
-      _secureStorage.removeRefreshToken(),
-      _secureStorage.removeUserId(),
-      _secureStorage.removeUsername(),
+      _bestEffort(_secureStorage.removeAccessToken),
+      _bestEffort(_secureStorage.removeRefreshToken),
+      _bestEffort(_secureStorage.removeUserId),
+      _bestEffort(_secureStorage.removeUsername),
     ]);
+  }
+
+  Future<void> _bestEffort(Future<void> Function() remove) async {
+    try {
+      await remove();
+    } catch (e, stackTrace) {
+      // A credential outliving its logout is worth knowing about.
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+        hint: Hint.withMap({'message': 'Could not clear a credential on logout'}),
+      );
+    }
   }
 
   @override

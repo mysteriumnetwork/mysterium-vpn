@@ -59,7 +59,6 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   final dio = Dio(options);
 
   dio.interceptors.addAll([
-    ConnectionErrorsInterceptor(),
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         if (sessionStore.accessToken != null) {
@@ -71,6 +70,8 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
     ),
     RefreshTokenInterceptor(dio: dio, logger: logger),
     RetryRequestInterceptor(dio: dio),
+    // Behind the retries: it rejects, which ends the chain before they run.
+    ConnectionErrorsInterceptor(),
     if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
     ApiErrorsInterceptor(),
     if (kDebugMode)
@@ -121,8 +122,8 @@ final notifierDioPOD = Provider<Dio>((ref) {
   );
 
   dio.interceptors.addAll([
-    ConnectionErrorsInterceptor(),
     RetryRequestInterceptor(dio: dio),
+    ConnectionErrorsInterceptor(),
     if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
   ]);
 
