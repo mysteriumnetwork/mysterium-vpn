@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:window_manager/window_manager.dart';
 
 class CustomPlatformMenu extends ConsumerWidget {
   const CustomPlatformMenu({required this.child, required this.appName, super.key});
@@ -166,7 +166,7 @@ class CustomPlatformMenu extends ConsumerWidget {
                         shortcut: const SingleActivator(LogicalKeyboardKey.keyW, meta: true),
                         onSelected: isVisible
                             ? () {
-                                final window = WindowManager.instance.getCurrent();
+                                final window = mainWindow;
                                 if (window != null && window.isVisible) {
                                   window.hide();
                                 }
@@ -178,7 +178,7 @@ class CustomPlatformMenu extends ConsumerWidget {
                         shortcut: const SingleActivator(LogicalKeyboardKey.keyM, meta: true),
                         onSelected: isVisible
                             ? () {
-                                final window = WindowManager.instance.getCurrent();
+                                final window = mainWindow;
                                 if (window == null || window.isMinimized) {
                                   return;
                                 }
@@ -202,26 +202,13 @@ class CustomPlatformMenu extends ConsumerWidget {
                           meta: true,
                           shift: true,
                         ),
-                        onSelected: () {
-                          final window = WindowManager.instance.getCurrent();
-                          if (window != null && !window.isVisible) {
-                            window.show();
-                          }
-                        },
+                        onSelected: showMainWindow,
                       ),
                     ],
                   ),
-                  PlatformMenuItemGroup(
+                  const PlatformMenuItemGroup(
                     members: <PlatformMenuItem>[
-                      PlatformMenuItem(
-                        label: 'Bring All to Front',
-                        onSelected: () {
-                          final window = WindowManager.instance.getCurrent();
-                          if (window != null && !window.isVisible) {
-                            window.show();
-                          }
-                        },
-                      ),
+                      PlatformMenuItem(label: 'Bring All to Front', onSelected: showMainWindow),
                     ],
                   ),
                 ],

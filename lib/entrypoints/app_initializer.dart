@@ -163,7 +163,7 @@ class AppInitializer {
   // ─── Desktop window ──────────────────────────────────────────────────────
 
   Future<void> _initDesktop() async {
-    final window = WindowManager.instance.getCurrent();
+    final window = mainWindow;
     if (window == null) {
       return;
     }

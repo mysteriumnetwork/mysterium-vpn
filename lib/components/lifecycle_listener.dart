@@ -140,7 +140,7 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop> with Widg
   @override
   void initState() {
     super.initState();
-    _window = WindowManager.instance.getCurrent();
+    _window = mainWindow;
     _windowListenerId = _window?.addListener(_onWindowEvent);
     WidgetsBinding.instance.addObserver(this);
   }

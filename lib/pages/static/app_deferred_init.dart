@@ -4,8 +4,13 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/router/route_delegate.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -14,7 +19,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:url_protocol/url_protocol.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
 final _appStartupPOD = FutureProvider<void>((ref) async {
@@ -151,23 +155,20 @@ Future<void> _setupTrayIcon(Ref ref) async {
       ..iconPosition = TrayIconPosition.right
       ..addListener((event) {
         if (event is TrayIconClickedEvent) {
-          _showMainWindow();
+          showMainWindow();
         }
       });
 
     showWindow.addListener((event) {
       if (event is MenuItemClickedEvent) {
-        _showMainWindow();
+        showMainWindow();
       }
     });
     exitApp.addListener((event) {
       if (event is! MenuItemClickedEvent) {
         return;
       }
-      ref.read(vpnStorePOD).disposeStore().whenComplete(() {
-        _trayIcon?.dispose();
-        exit(0);
-      });
+      _confirmQuit(ref);
     });
 
     menu
@@ -187,16 +188,49 @@ Future<void> _setupTrayIcon(Ref ref) async {
   }
 }
 
-void _showMainWindow() {
-  final window = WindowManager.instance.getCurrent();
-  if (window == null) {
+bool _quitPromptOpen = false;
+
+/// Quitting kills the tunnel with the app, so it asks first — and says so when
+/// a session is live.
+void _confirmQuit(Ref ref) {
+  showMainWindow();
+  if (_quitPromptOpen) {
     return;
   }
-  if (window.isVisible) {
-    window.focus();
-  } else {
-    window.show();
+  final context = ref.read(routerDelegatePOD).navigatorKey.currentContext;
+  if (context == null) {
+    _quitApp(ref);
+    return;
   }
+  final vpnStore = ref.read(vpnStorePOD);
+  _quitPromptOpen = true;
+  shownConfirmationDialog(
+    context,
+    title: S.current.quitAppTitle,
+    supportingText: vpnStore.isConnected || vpnStore.isLoading
+        ? S.current.quitAppConnectedDesc
+        : S.current.quitAppDesc,
+    confirmText: S.current.quitBtn,
+    cancelText: S.current.cancelBtn,
+    onConfirm: () => _quitApp(ref),
+  ).whenComplete(() => _quitPromptOpen = false);
+}
+
+Future<void> _quitApp(Ref ref) async {
+  final vpnStore = ref.read(vpnStorePOD);
+  try {
+    if (vpnStore.isConnected || vpnStore.isLoading) {
+      await vpnStore
+          .disconnectTunnel(reason: VpnDisconnectReason.appInitiated)
+          .timeout(const Duration(seconds: 5));
+    }
+  } catch (e) {
+    // Never block the quit the user just confirmed.
+    ref.read(loggerPOD).warning('Disconnect on quit failed', e);
+  }
+  await vpnStore.disposeStore();
+  _trayIcon?.dispose();
+  exit(0);
 }
 
 class AppDeferredInitWidget extends ConsumerWidget {
