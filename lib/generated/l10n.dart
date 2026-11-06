@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localizely_sdk/localizely_sdk.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -70,6 +71,7 @@ class S {
     'allowPushNotificationsBtn': [],
     'and': [],
     'appearanceSettingLbl': [],
+    'cityIpsNotAvailableOnPlan': [],
     'hapticFeedbackSettingLbl': [],
     'hapticFeedbackSettingDesc': [],
     'appUpdateAvailableDesc': [],
@@ -331,6 +333,7 @@ class S {
     'plan_yearly_pro': [],
     'poland': [],
     'preferences': [],
+    'priceIncludesVat': [],
     'pricingPlanSeePlansBtn': [],
     'privacyPolicy': [],
     'processingPayment': [],
@@ -360,6 +363,10 @@ class S {
     'pushNotificationsSetting': [],
     'pushNotificationsSettingDesc': [],
     'qaToolboxLbl': [],
+    'quitAppConnectedDesc': [],
+    'quitAppDesc': [],
+    'quitAppTitle': [],
+    'quitBtn': [],
     'rateConnection': [],
     'rateConnectionDislike': [],
     'rateConnectionLike': [],
@@ -393,6 +400,7 @@ class S {
     'residentialEducationSubtitle': [],
     'residentialEducationTitle': [],
     'residentialIpBadge': [],
+    'residentialIpsNotAvailableOnPlan': [],
     'resumeBtn': [],
     'resumeSubscriptionPromptDesc': [],
     'resumeSubscriptionTitle': [],
@@ -661,6 +669,16 @@ class S {
   /// `Appearance`
   String get appearanceSettingLbl {
     return Intl.message('Appearance', name: 'appearanceSettingLbl', desc: '', args: []);
+  }
+
+  /// `City-level IPs are not available on your current plan.`
+  String get cityIpsNotAvailableOnPlan {
+    return Intl.message(
+      'City-level IPs are not available on your current plan.',
+      name: 'cityIpsNotAvailableOnPlan',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Haptic feedback`
@@ -2480,6 +2498,16 @@ class S {
     return Intl.message('Preferences', name: 'preferences', desc: '', args: []);
   }
 
+  /// `Price includes applicable VAT.`
+  String get priceIncludesVat {
+    return Intl.message(
+      'Price includes applicable VAT.',
+      name: 'priceIncludesVat',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `See all plans`
   String get pricingPlanSeePlansBtn {
     return Intl.message('See all plans', name: 'pricingPlanSeePlansBtn', desc: '', args: []);
@@ -2703,6 +2731,36 @@ class S {
   /// `QA Toolbox`
   String get qaToolboxLbl {
     return Intl.message('QA Toolbox', name: 'qaToolboxLbl', desc: '', args: []);
+  }
+
+  /// `You are connected. Quitting will close Mysterium VPN and disconnect your VPN.`
+  String get quitAppConnectedDesc {
+    return Intl.message(
+      'You are connected. Quitting will close Mysterium VPN and disconnect your VPN.',
+      name: 'quitAppConnectedDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mysterium VPN will close and stop running in the background.`
+  String get quitAppDesc {
+    return Intl.message(
+      'Mysterium VPN will close and stop running in the background.',
+      name: 'quitAppDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quit Mysterium VPN?`
+  String get quitAppTitle {
+    return Intl.message('Quit Mysterium VPN?', name: 'quitAppTitle', desc: '', args: []);
+  }
+
+  /// `Quit`
+  String get quitBtn {
+    return Intl.message('Quit', name: 'quitBtn', desc: '', args: []);
   }
 
   /// `How is your connection?`
@@ -2963,6 +3021,16 @@ class S {
   /// `Residential IP`
   String get residentialIpBadge {
     return Intl.message('Residential IP', name: 'residentialIpBadge', desc: '', args: []);
+  }
+
+  /// `Residential IPs are not available on your current plan.`
+  String get residentialIpsNotAvailableOnPlan {
+    return Intl.message(
+      'Residential IPs are not available on your current plan.',
+      name: 'residentialIpsNotAvailableOnPlan',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Resume`

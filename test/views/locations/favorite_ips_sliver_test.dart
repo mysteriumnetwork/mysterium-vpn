@@ -59,12 +59,10 @@ void main() {
     when(bannersStore.canShow(any)).thenReturn(true);
 
     // No live locations by default — cards fall back to the stored names.
-    when(
-      locationsStore.dcLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(VPNLocations()));
-    when(
-      locationsStore.residentialLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(VPNLocations()));
+    when(locationsStore.dcLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(VPNLocations()));
+    when(locationsStore.residentialLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(VPNLocations()));
 
     when(store.isEnabled).thenReturn(true);
     when(store.favorites).thenReturn([]);
@@ -246,9 +244,8 @@ void main() {
 
     // Observable the Observer must track: read via the stub during build.
     final residential = Observable(VPNLocations());
-    when(
-      locationsStore.residentialLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(residential.value));
+    when(locationsStore.residentialLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(residential.value));
 
     await pumpSliver(tester);
     expect(find.text('Germany'), findsNothing);

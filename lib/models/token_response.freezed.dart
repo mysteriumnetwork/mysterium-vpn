@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'token_response.dart';
@@ -9,6 +9,7 @@ part of 'token_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $TokenResponseCopyWith<TokenResponse> get copyWith => _$TokenResponseCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TokenResponse&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
+  final _this = this as TokenResponse;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TokenResponse&&(identical(other.userId, _this.userId) || other.userId == _this.userId)&&(identical(other.accessToken, _this.accessToken) || other.accessToken == _this.accessToken)&&(identical(other.refreshToken, _this.refreshToken) || other.refreshToken == _this.refreshToken));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,accessToken,refreshToken);
+int get hashCode {
+  final _this = this as TokenResponse;
+  return Object.hash(runtimeType,_this.userId,_this.accessToken,_this.refreshToken);
+}
 
 @override
 String toString() {
-  return 'TokenResponse(userId: $userId, accessToken: $accessToken, refreshToken: $refreshToken)';
+  final _this = this as TokenResponse;
+  return 'TokenResponse(userId: ${_this.userId}, accessToken: ${_this.accessToken}, refreshToken: ${_this.refreshToken})';
 }
 
 
@@ -66,7 +72,7 @@ class _$TokenResponseCopyWithImpl<$Res>
 /// Create a copy of TokenResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? accessToken = null,Object? refreshToken = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(TokenResponse(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: freezed == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TokenResponse&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TokenResponse&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,accessToken,refreshToken);
+int get hashCode {
+    return Object.hash(runtimeType,userId,accessToken,refreshToken);
+}
 
 @override
 String toString() {
-  return 'TokenResponse(userId: $userId, accessToken: $accessToken, refreshToken: $refreshToken)';
+    return 'TokenResponse(userId: $userId, accessToken: $accessToken, refreshToken: $refreshToken)';
 }
 
 

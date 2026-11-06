@@ -39,9 +39,8 @@ class _Item extends StatelessWidget {
             UserIntent.streaming => S.current.userIntentStreaming,
             UserIntent.p2p => S.current.userIntentP2P,
           },
-          style: Theme.of(
-            context,
-          ).textStyles.textXs.bold.copyWith(color: Theme.of(context).palette.textTooltip),
+          style: Theme.of(context).textStyles.textXs.bold
+              .copyWith(color: Theme.of(context).palette.textTooltip),
         ),
         CharacterSpan.space(),
         CharacterSpan.hyphen(),

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'token_request.dart';
@@ -9,6 +9,7 @@ part of 'token_request.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $TokenRequestCopyWith<TokenRequest> get copyWith => _$TokenRequestCopyWithImpl<T
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TokenRequest&&(identical(other.grantType, grantType) || other.grantType == grantType)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.codeVerifier, codeVerifier) || other.codeVerifier == codeVerifier)&&(identical(other.code, code) || other.code == code)&&(identical(other.googleIdToken, googleIdToken) || other.googleIdToken == googleIdToken)&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.authorization, authorization) || other.authorization == authorization));
+  final _this = this as TokenRequest;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TokenRequest&&(identical(other.grantType, _this.grantType) || other.grantType == _this.grantType)&&(identical(other.deviceId, _this.deviceId) || other.deviceId == _this.deviceId)&&(identical(other.clientId, _this.clientId) || other.clientId == _this.clientId)&&(identical(other.refreshToken, _this.refreshToken) || other.refreshToken == _this.refreshToken)&&(identical(other.codeVerifier, _this.codeVerifier) || other.codeVerifier == _this.codeVerifier)&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.googleIdToken, _this.googleIdToken) || other.googleIdToken == _this.googleIdToken)&&(identical(other.idToken, _this.idToken) || other.idToken == _this.idToken)&&(identical(other.authorization, _this.authorization) || other.authorization == _this.authorization));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,grantType,deviceId,clientId,refreshToken,codeVerifier,code,googleIdToken,idToken,authorization);
+int get hashCode {
+  final _this = this as TokenRequest;
+  return Object.hash(runtimeType,_this.grantType,_this.deviceId,_this.clientId,_this.refreshToken,_this.codeVerifier,_this.code,_this.googleIdToken,_this.idToken,_this.authorization);
+}
 
 @override
 String toString() {
-  return 'TokenRequest(grantType: $grantType, deviceId: $deviceId, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
+  final _this = this as TokenRequest;
+  return 'TokenRequest(grantType: ${_this.grantType}, deviceId: ${_this.deviceId}, clientId: ${_this.clientId}, refreshToken: ${_this.refreshToken}, codeVerifier: ${_this.codeVerifier}, code: ${_this.code}, googleIdToken: ${_this.googleIdToken}, idToken: ${_this.idToken}, authorization: ${_this.authorization})';
 }
 
 
@@ -66,7 +72,7 @@ class _$TokenRequestCopyWithImpl<$Res>
 /// Create a copy of TokenRequest
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? grantType = null,Object? deviceId = null,Object? clientId = null,Object? refreshToken = freezed,Object? codeVerifier = freezed,Object? code = freezed,Object? googleIdToken = freezed,Object? idToken = freezed,Object? authorization = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(TokenRequest(
 grantType: null == grantType ? _self.grantType : grantType // ignore: cast_nullable_to_non_nullable
 as GrantType,deviceId: null == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
 as String,clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
@@ -243,16 +249,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TokenRequest&&(identical(other.grantType, grantType) || other.grantType == grantType)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.codeVerifier, codeVerifier) || other.codeVerifier == codeVerifier)&&(identical(other.code, code) || other.code == code)&&(identical(other.googleIdToken, googleIdToken) || other.googleIdToken == googleIdToken)&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.authorization, authorization) || other.authorization == authorization));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TokenRequest&&(identical(other.grantType, grantType) || other.grantType == grantType)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.codeVerifier, codeVerifier) || other.codeVerifier == codeVerifier)&&(identical(other.code, code) || other.code == code)&&(identical(other.googleIdToken, googleIdToken) || other.googleIdToken == googleIdToken)&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.authorization, authorization) || other.authorization == authorization));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,grantType,deviceId,clientId,refreshToken,codeVerifier,code,googleIdToken,idToken,authorization);
+int get hashCode {
+    return Object.hash(runtimeType,grantType,deviceId,clientId,refreshToken,codeVerifier,code,googleIdToken,idToken,authorization);
+}
 
 @override
 String toString() {
-  return 'TokenRequest(grantType: $grantType, deviceId: $deviceId, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
+    return 'TokenRequest(grantType: $grantType, deviceId: $deviceId, clientId: $clientId, refreshToken: $refreshToken, codeVerifier: $codeVerifier, code: $code, googleIdToken: $googleIdToken, idToken: $idToken, authorization: $authorization)';
 }
 
 

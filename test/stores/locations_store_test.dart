@@ -47,9 +47,8 @@ void main() {
     mockQuery = MockLocationsQueryStore();
     mockLocaleStore = MockLocaleStore();
     mockAuthSessionStore = MockAuthSessionStore();
-    when(
-      mockAuthSessionStore.accessTokenFuture,
-    ).thenAnswer((_) => ObservableFuture.value('test-token'));
+    when(mockAuthSessionStore.accessTokenFuture)
+        .thenAnswer((_) => ObservableFuture.value('test-token'));
     when(mockAuthSessionStore.accessToken).thenReturn('test-token');
 
     mockResidential = const [
@@ -70,12 +69,10 @@ void main() {
     when(mockQuery.search).thenReturn('');
     when(mockQuery.searchTrimmed).thenReturn('');
     when(mockRemoteConfigStore.locationsRefreshInterval).thenReturn(const Duration(hours: 1));
-    when(
-      mockRepository.fetch(IPType.datacenter),
-    ).thenAnswer((_) async => VPNLocations(locations: mockDatacenter));
-    when(
-      mockRepository.fetch(IPType.residential),
-    ).thenAnswer((_) async => VPNLocations(locations: mockResidential));
+    when(mockRepository.fetch(IPType.datacenter))
+        .thenAnswer((_) async => VPNLocations(locations: mockDatacenter));
+    when(mockRepository.fetch(IPType.residential))
+        .thenAnswer((_) async => VPNLocations(locations: mockResidential));
     when(mockRepository.watch(any)).thenAnswer((_) => const Stream.empty());
     when(
       mockFilterService.filterLocations(

@@ -205,6 +205,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "प्लान जानकारी प्राप्त हो रही है…",
     ),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("अपना ईमेल देखें"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "शहर-स्तरीय IPs आपके मौजूदा प्लान में उपलब्ध नहीं हैं।",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("सर्च साफ़ करें"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("बंद करें"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("संचार"),
@@ -510,6 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro वार्षिक"),
     "poland": MessageLookupByLibrary.simpleMessage("पोलैंड"),
     "preferences": MessageLookupByLibrary.simpleMessage("प्राथमिकताएँ"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("कीमत में लागू VAT शामिल है।"),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("सभी प्लान देखें"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("गोपनीयता नीति"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -563,6 +567,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "उत्पाद अपडेट, टिप्स और खास ऑफ़र",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "आप कनेक्टेड हैं। बंद करने पर Mysterium VPN बंद हो जाएगा और आपका VPN डिस्कनेक्ट हो जाएगा।",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN बंद हो जाएगा और बैकग्राउंड में चलना बंद कर देगा।",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Mysterium VPN बंद करें?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("बंद करें"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("आपका कनेक्शन कैसा है?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("आपको क्या पसंद नहीं आया?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("आपको क्या पसंद आया?"),
@@ -614,6 +626,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "आवासीय IPs कैसे काम करते हैं",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("आवासीय IP"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "आवासीय IPs आपके मौजूदा प्लान में उपलब्ध नहीं हैं।",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("फिर शुरू करें"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "आपकी सदस्यता फिर से शुरू नहीं हो सकी। कृपया फिर से प्रयास करें।",

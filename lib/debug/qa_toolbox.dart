@@ -656,9 +656,8 @@ class QAToolbox extends HookConsumerWidget {
           'Log preview (from ${foundPath.split(r'\').last}):\n$logPreview',
           action: IconButton(
             icon: const Icon(Icons.copy, size: 16),
-            onPressed: () => Clipboard.setData(
-              ClipboardData(text: logs),
-            ).then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
+            onPressed: () => Clipboard.setData(ClipboardData(text: logs))
+                .then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
           ),
         );
       } else {

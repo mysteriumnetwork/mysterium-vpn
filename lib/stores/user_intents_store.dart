@@ -106,9 +106,8 @@ abstract class _UserIntentsStore with Store {
 
   Stream<Set<UserIntent>> _watchAPIIntents() async* {
     await _apiIntentsFuture;
-    yield* Stream.periodic(
-      _remoteConfigStore.userIntentsRefreshInterval,
-    ).asyncMap((_) => _apiService.fetchUserIntents());
+    yield* Stream.periodic(_remoteConfigStore.userIntentsRefreshInterval)
+        .asyncMap((_) => _apiService.fetchUserIntents());
   }
 
   Future<void> dispose() async {

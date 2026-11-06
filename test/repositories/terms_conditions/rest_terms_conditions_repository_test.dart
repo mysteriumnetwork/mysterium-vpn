@@ -45,9 +45,8 @@ void main() {
     });
 
     test('maps a user who has never accepted a version', () async {
-      when(
-        terms.userTerms(),
-      ).thenAnswer((_) async => response(UserTermsResponse(currentVersion: '2')));
+      when(terms.userTerms())
+          .thenAnswer((_) async => response(UserTermsResponse(currentVersion: '2')));
 
       final consent = await build().getConsent();
       expect(consent.acceptedVersion, isNull);
@@ -94,9 +93,8 @@ void main() {
     });
 
     test('returns null when the content or version is empty', () async {
-      when(
-        terms.terms(theme: anyNamed('theme')),
-      ).thenAnswer((_) async => response(NewscenterTermsResponse(content: '', version: '3')));
+      when(terms.terms(theme: anyNamed('theme')))
+          .thenAnswer((_) async => response(NewscenterTermsResponse(content: '', version: '3')));
 
       expect(await build().getLatestVersion('light'), isNull);
 
@@ -108,9 +106,8 @@ void main() {
     });
 
     test('returns null when the terms body is missing', () async {
-      when(
-        terms.terms(theme: anyNamed('theme')),
-      ).thenAnswer((_) async => response<NewscenterTermsResponse>(null));
+      when(terms.terms(theme: anyNamed('theme')))
+          .thenAnswer((_) async => response<NewscenterTermsResponse>(null));
 
       expect(await build().getLatestVersion('light'), isNull);
     });
@@ -126,16 +123,15 @@ void main() {
 
   group('acceptVersion', () {
     test('sends the version and completes', () async {
-      when(
-        terms.acceptTerms(authTermsRequest: anyNamed('authTermsRequest')),
-      ).thenAnswer((_) async => response(AuthTermsResponse(version: '2')));
+      when(terms.acceptTerms(authTermsRequest: anyNamed('authTermsRequest')))
+          .thenAnswer((_) async => response(AuthTermsResponse(version: '2')));
 
       await build().acceptVersion(acceptedVersion: '2');
 
       final request =
-          verify(
-                terms.acceptTerms(authTermsRequest: captureAnyNamed('authTermsRequest')),
-              ).captured.single
+          verify(terms.acceptTerms(authTermsRequest: captureAnyNamed('authTermsRequest')))
+                  .captured
+                  .single
               as AuthTermsRequest;
       expect(request.version, '2');
       verifyNever(logger.warning(any, any, any));

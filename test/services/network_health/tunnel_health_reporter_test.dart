@@ -21,9 +21,8 @@ void main() {
   setUp(() async {
     api = MockConnection();
     queue = TunnelHealthReportQueue(await initTestPrefs(), Talker());
-    when(
-      api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-    ).thenAnswer((_) async => Response(requestOptions: RequestOptions(), statusCode: 200));
+    when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+        .thenAnswer((_) async => Response(requestOptions: RequestOptions(), statusCode: 200));
   });
 
   RestTunnelHealthReporter build({
@@ -146,9 +145,8 @@ void main() {
     test('a transport failure is queued for retry', () async {
       // The report travels through the very tunnel it is reporting, so this is
       // the common case, not an edge one.
-      when(
-        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-      ).thenThrow(transportFailure(1));
+      when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+          .thenThrow(transportFailure(1));
 
       await reportAndSwallow();
 
@@ -157,9 +155,8 @@ void main() {
 
     test('no connectivity at request time is queued', () async {
       // ConnectionErrorsInterceptor rejects before the request leaves.
-      when(
-        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-      ).thenThrow(transportFailure(0));
+      when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+          .thenThrow(transportFailure(0));
 
       await reportAndSwallow();
 
@@ -168,9 +165,8 @@ void main() {
 
     test('a timeout is queued, since nothing reached the backend', () async {
       // ApiErrorsInterceptor maps a response-less failure to code 500.
-      when(
-        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-      ).thenThrow(transportFailure(500));
+      when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+          .thenThrow(transportFailure(500));
 
       await reportAndSwallow();
 
@@ -181,20 +177,19 @@ void main() {
       // ApiErrorsInterceptor drops `response` when it builds ApiException, so a
       // response-only check read every 4xx as a transport failure and queued
       // permanent rejections forever.
-      when(
-        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-      ).thenThrow(
-        ApiException(
-          RequestOptions(),
-          'rejected',
-          code: 400,
-          identifier: 'test',
-          endpoint: '/connection/report-broken-node',
-          severity: ExceptionSeverity.low,
-          // The response is what tells a rejection from a transport failure.
-          response: Response<void>(requestOptions: RequestOptions(), statusCode: 400),
-        ),
-      );
+      when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+          .thenThrow(
+            ApiException(
+              RequestOptions(),
+              'rejected',
+              code: 400,
+              identifier: 'test',
+              endpoint: '/connection/report-broken-node',
+              severity: ExceptionSeverity.low,
+              // The response is what tells a rejection from a transport failure.
+              response: Response<void>(requestOptions: RequestOptions(), statusCode: 400),
+            ),
+          );
 
       await reportAndSwallow();
 
@@ -202,15 +197,14 @@ void main() {
     });
 
     test('a rejected request is not queued — retrying would fail the same way', () async {
-      when(
-        api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-      ).thenThrow(
-        DioException.badResponse(
-          statusCode: 400,
-          requestOptions: RequestOptions(),
-          response: Response(requestOptions: RequestOptions(), statusCode: 400),
-        ),
-      );
+      when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+          .thenThrow(
+            DioException.badResponse(
+              statusCode: 400,
+              requestOptions: RequestOptions(),
+              response: Response(requestOptions: RequestOptions(), statusCode: 400),
+            ),
+          );
 
       await reportAndSwallow();
 
@@ -242,9 +236,8 @@ void main() {
   });
 
   test('a failing call propagates so the store can log it', () async {
-    when(
-      api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')),
-    ).thenThrow(DioException(requestOptions: RequestOptions()));
+    when(api.reportBrokenNode(reportBrokenNodeRequest: anyNamed('reportBrokenNodeRequest')))
+        .thenThrow(DioException(requestOptions: RequestOptions()));
 
     expect(
       () => build().report(

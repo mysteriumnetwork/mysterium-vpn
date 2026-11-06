@@ -203,9 +203,8 @@ void main() {
       final response = WireguardConnectResponse(wgConfig: 'cfg', hash: 'hash', id: 'id');
       await repository.init();
 
-      when(
-        mockApiService.fetchVpnConfig(request: anyNamed('request')),
-      ).thenAnswer((_) async => response);
+      when(mockApiService.fetchVpnConfig(request: anyNamed('request')))
+          .thenAnswer((_) async => response);
 
       final config = await repository.fetchVpnConfig(
         countryOriginate: 'US',
@@ -226,12 +225,11 @@ void main() {
       await repository.init();
 
       WireguardConnectRequest? captured;
-      when(mockApiService.fetchVpnConfig(request: anyNamed('request'))).thenAnswer((
-        invocation,
-      ) async {
-        captured = invocation.namedArguments[#request] as WireguardConnectRequest;
-        return response;
-      });
+      when(mockApiService.fetchVpnConfig(request: anyNamed('request')))
+          .thenAnswer((invocation) async {
+            captured = invocation.namedArguments[#request] as WireguardConnectRequest;
+            return response;
+          });
 
       await repository.fetchVpnConfig(
         countryOriginate: 'US',

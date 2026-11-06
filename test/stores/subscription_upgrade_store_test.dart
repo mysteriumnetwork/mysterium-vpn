@@ -44,9 +44,8 @@ void main() {
   test('purchasableProducts are sorted by duration ascending', () async {
     when(prodA.duration).thenReturn(12);
     when(prodB.duration).thenReturn(6);
-    when(
-      mockSubscriptionPlansStore.future,
-    ).thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
+    when(mockSubscriptionPlansStore.future)
+        .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     // access computed to ensure it reads the mocked future
     final result = store.purchasableProducts;
@@ -55,13 +54,11 @@ void main() {
   });
 
   test('currentProduct returns null when subscription gateway is off', () async {
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(false);
-    when(
-      mockSubscriptionPlansStore.future,
-    ).thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
+    when(mockSubscriptionPlansStore.future)
+        .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     final result = store.currentProduct;
 
@@ -71,18 +68,16 @@ void main() {
   test(
     'currentProduct picks product matching subscription planId when available and not expired',
     () async {
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(mockSubscription));
       when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
       when(mockSubscription.isExpired).thenReturn(false);
       when(mockSubscription.planId).thenReturn('plan-b');
 
       when(prodA.id).thenReturn('plan-a');
       when(prodB.id).thenReturn('plan-b');
-      when(
-        mockSubscriptionPlansStore.future,
-      ).thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
+      when(mockSubscriptionPlansStore.future)
+          .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
       final result = store.currentProduct;
 
@@ -91,9 +86,8 @@ void main() {
   );
 
   test('upgradeProduct returns last purchasable product when currentProduct is present', () async {
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
     when(mockSubscription.isExpired).thenReturn(false);
     when(mockSubscription.planId).thenReturn('plan-a');
@@ -103,9 +97,8 @@ void main() {
     when(prodB.duration).thenReturn(6);
     when(prodC.duration).thenReturn(12);
 
-    when(
-      mockSubscriptionPlansStore.future,
-    ).thenAnswer((_) => ObservableFuture.value([prodA, prodB, prodC]));
+    when(mockSubscriptionPlansStore.future)
+        .thenAnswer((_) => ObservableFuture.value([prodA, prodB, prodC]));
 
     // Add stubs for findConfig calls - must stub ALL products in the list
     final configA = MockSubscriptionPlanFeatures();
@@ -123,9 +116,8 @@ void main() {
   });
 
   test('upgradeDiscountPercent uses current.periodDiscountPercentage(upgrade)', () async {
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(mockSubscription));
     when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
     when(mockSubscription.isExpired).thenReturn(false);
     when(mockSubscription.planId).thenReturn('plan-a');
@@ -133,9 +125,8 @@ void main() {
     when(prodA.duration).thenReturn(1);
     when(prodB.duration).thenReturn(6);
 
-    when(
-      mockSubscriptionPlansStore.future,
-    ).thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
+    when(mockSubscriptionPlansStore.future)
+        .thenAnswer((_) => ObservableFuture.value([prodA, prodB]));
 
     // Add stubs for findConfig calls
     final configA = MockSubscriptionPlanFeatures();
@@ -182,9 +173,8 @@ void main() {
     test('no current plan + yearly product returns monthly of same tier', () {
       final noActiveSub = MockSubscription();
       when(noActiveSub.isGatewayOnCurrentPlatform).thenReturn(false);
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(noActiveSub));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(noActiveSub));
       when(mockSubscriptionPlansStore.future).thenAnswer(
         (_) => ObservableFuture.value([basicMonthly, basicYearly, plusMonthly, plusYearly]),
       );
@@ -207,12 +197,10 @@ void main() {
     test('no current plan + monthly product returns null', () {
       final noActiveSub = MockSubscription();
       when(noActiveSub.isGatewayOnCurrentPlatform).thenReturn(false);
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(noActiveSub));
-      when(
-        mockSubscriptionPlansStore.future,
-      ).thenAnswer((_) => ObservableFuture.value([basicMonthly, basicYearly]));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(noActiveSub));
+      when(mockSubscriptionPlansStore.future)
+          .thenAnswer((_) => ObservableFuture.value([basicMonthly, basicYearly]));
 
       final basicConfig = MockSubscriptionPlanFeatures();
       when(basicConfig.name).thenReturn('Basic');
@@ -224,9 +212,8 @@ void main() {
     });
 
     test('current monthly plan + viewing yearly same tier returns current plan', () {
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(mockSubscription));
       when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
       when(mockSubscription.isExpired).thenReturn(false);
       when(mockSubscription.planId).thenReturn('basic-monthly');
@@ -252,9 +239,8 @@ void main() {
     });
 
     test('current yearly plan + viewing yearly returns current plan', () {
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(mockSubscription));
       when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
       when(mockSubscription.isExpired).thenReturn(false);
       when(mockSubscription.planId).thenReturn('basic-yearly');
@@ -278,9 +264,8 @@ void main() {
     });
 
     test('current plan + viewing different tier returns current plan', () {
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(mockSubscription));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(mockSubscription));
       when(mockSubscription.isGatewayOnCurrentPlatform).thenReturn(true);
       when(mockSubscription.isExpired).thenReturn(false);
       when(mockSubscription.planId).thenReturn('basic-monthly');

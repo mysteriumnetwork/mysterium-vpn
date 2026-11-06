@@ -66,18 +66,16 @@ void main() {
     );
 
     // Default stubs to prevent null errors during initStore
-    when(
-      mockApiService.createMarketingContact(country: anyNamed('country')),
-    ).thenAnswer((_) async => {});
+    when(mockApiService.createMarketingContact(country: anyNamed('country')))
+        .thenAnswer((_) async => {});
     when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
     when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
     when(mockPrompts.appOpenCount()).thenAnswer((_) async => 0);
     // Default: noneSubsOnboarding has already been shown so it doesn't fire in
     // unrelated tests. Tests that exercise the onboarding flow override this.
     when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => true);
-    when(
-      mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-    ).thenAnswer((_) async => false);
+    when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+        .thenAnswer((_) async => false);
     when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
     when(mockSubscriptionOnboardingStore.markShown()).thenAnswer((_) async {});
     // Default: FF is on so existing tests don't have to opt in. Tests that
@@ -117,9 +115,8 @@ void main() {
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => false);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => false);
 
       // Recreate store to trigger auth reaction
       store = buildStore();
@@ -140,9 +137,8 @@ void main() {
         mockAuthSessionStore.userFuture,
       ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: '1', username: 'test@test.com')));
 
-      when(
-        mockApiService.createMarketingContact(country: anyNamed('country')),
-      ).thenThrow(Exception('Network error'));
+      when(mockApiService.createMarketingContact(country: anyNamed('country')))
+          .thenThrow(Exception('Network error'));
 
       // Recreate store to trigger auth reaction
       store = buildStore();
@@ -309,9 +305,8 @@ void main() {
       // and has no active subscription.
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
       when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
       expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
 
@@ -326,9 +321,8 @@ void main() {
       () async {
         when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
         when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
-        when(
-          mockSubscriptionStore.subscriptionFuture,
-        ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+        when(mockSubscriptionStore.subscriptionFuture)
+            .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
         expect(await store.shouldShowNoneSubsOnboarding(), isTrue);
       },
@@ -354,9 +348,8 @@ void main() {
       // user; eligibility is re-evaluated on the next launch.
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(true);
       when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
 
       expect(await store.shouldShowNoneSubsOnboarding(), isFalse);
     });
@@ -365,9 +358,8 @@ void main() {
       // Onboarding would normally be eligible (not completed, no active sub).
       when(mockRemoteConfigStore.canShowNoSubsOnboardingFlow).thenReturn(false);
       when(mockPrompts.noneSubsOnboardingCompleted()).thenAnswer((_) async => false);
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
       // Marketing consent is eligible (3rd app open, no consent yet).
       store.getMarketingConsentFuture = ObservableFuture.value(false);
@@ -385,9 +377,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => true);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
@@ -395,24 +386,21 @@ void main() {
       verifyNever(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt());
     });
 
-    test(
-      'evaluatePromptToShow falls through to marketing consent when subscription onboarding is not eligible',
-      () async {
-        // arrange
-        when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
+    test('evaluatePromptToShow falls through to marketing consent when subscription onboarding is not eligible', () async {
+      // arrange
+      when(mockSubscriptionOnboardingStore.shouldShow()).thenAnswer((_) async => false);
 
-        store.getMarketingConsentFuture = ObservableFuture.value(false);
-        when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
-        when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
+      store.getMarketingConsentFuture = ObservableFuture.value(false);
+      when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
+      when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
 
-        // act
-        await store.evaluatePromptToShow();
+      // act
+      await store.evaluatePromptToShow();
 
-        // assert
-        expect(store.nextPromptToShow, UserPromptType.marketingConsent);
-        verifyNever(mockSubscriptionOnboardingStore.markShown());
-      },
-    );
+      // assert
+      expect(store.nextPromptToShow, UserPromptType.marketingConsent);
+      verifyNever(mockSubscriptionOnboardingStore.markShown());
+    });
 
     test('shouldShowSubscriptionOnboarding returns false when shouldShow returns false', () async {
       // arrange
@@ -468,9 +456,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => true);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
       expect(store.nextPromptToShow, UserPromptType.marketingConsent);
@@ -539,9 +526,8 @@ void main() {
     });
 
     test('createMarketingContact logs success event', () async {
-      when(
-        mockApiService.createMarketingContact(country: anyNamed('country')),
-      ).thenAnswer((_) async => {});
+      when(mockApiService.createMarketingContact(country: anyNamed('country')))
+          .thenAnswer((_) async => {});
 
       await store.createMarketingContact();
 
@@ -549,9 +535,8 @@ void main() {
     });
 
     test('createMarketingContact logs error event on failure', () async {
-      when(
-        mockApiService.createMarketingContact(country: anyNamed('country')),
-      ).thenThrow(Exception('fail'));
+      when(mockApiService.createMarketingContact(country: anyNamed('country')))
+          .thenThrow(Exception('fail'));
 
       await store.createMarketingContact();
 
@@ -651,9 +636,8 @@ void main() {
 
     test('getMarketingConsent waits for setMarketingConsentFuture', () async {
       var setCompleted = false;
-      when(
-        mockApiService.createMarketingContact(country: anyNamed('country')),
-      ).thenAnswer((_) async => setCompleted = true);
+      when(mockApiService.createMarketingContact(country: anyNamed('country')))
+          .thenAnswer((_) async => setCompleted = true);
       when(mockApiService.getMarketingContactStatus()).thenAnswer((_) async => true);
 
       // Setup authenticated state
@@ -700,9 +684,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => true);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
@@ -714,9 +697,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => true);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 
@@ -727,9 +709,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => false);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -740,9 +721,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(true);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => true);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => false);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -754,9 +734,8 @@ void main() {
         ..getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 3);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => false);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -768,9 +747,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 2);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => false);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => false);
 
       await store.evaluatePromptToShow();
 
@@ -781,9 +759,8 @@ void main() {
       store.getMarketingConsentFuture = ObservableFuture.value(false);
       when(mockPrompts.marketingConsentShown()).thenAnswer((_) async => false);
       when(mockPrompts.appOpenCount()).thenAnswer((_) async => 1);
-      when(
-        mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt(),
-      ).thenAnswer((_) async => true);
+      when(mockPushNotificationsStore.shouldShowPushNotificationsPermissionPrompt())
+          .thenAnswer((_) async => true);
 
       await store.evaluatePromptToShow();
 

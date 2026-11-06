@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'vpn_connection.dart';
@@ -9,6 +9,7 @@ part of 'vpn_connection.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $VpnConnectionCopyWith<VpnConnection> get copyWith => _$VpnConnectionCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.hash, hash) || other.hash == hash));
+  final _this = this as VpnConnection;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConnection&&(identical(other.connectionIP, _this.connectionIP) || other.connectionIP == _this.connectionIP)&&(identical(other.location, _this.location) || other.location == _this.location)&&(identical(other.sessionId, _this.sessionId) || other.sessionId == _this.sessionId)&&(identical(other.hash, _this.hash) || other.hash == _this.hash));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,connectionIP,location,sessionId,hash);
+int get hashCode {
+  final _this = this as VpnConnection;
+  return Object.hash(runtimeType,_this.connectionIP,_this.location,_this.sessionId,_this.hash);
+}
 
 @override
 String toString() {
-  return 'VpnConnection(connectionIP: $connectionIP, location: $location, sessionId: $sessionId, hash: $hash)';
+  final _this = this as VpnConnection;
+  return 'VpnConnection(connectionIP: ${_this.connectionIP}, location: ${_this.location}, sessionId: ${_this.sessionId}, hash: ${_this.hash})';
 }
 
 
@@ -63,7 +69,7 @@ class _$VpnConnectionCopyWithImpl<$Res>
 /// Create a copy of VpnConnection
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? connectionIP = null,Object? location = null,Object? sessionId = freezed,Object? hash = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(VpnConnection(
 connectionIP: null == connectionIP ? _self.connectionIP : connectionIP // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as VPNLocation,sessionId: freezed == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
@@ -236,16 +242,18 @@ _$VpnConnectionCopyWith<_VpnConnection> get copyWith => __$VpnConnectionCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.hash, hash) || other.hash == hash));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConnection&&(identical(other.connectionIP, connectionIP) || other.connectionIP == connectionIP)&&(identical(other.location, location) || other.location == location)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.hash, hash) || other.hash == hash));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,connectionIP,location,sessionId,hash);
+int get hashCode {
+    return Object.hash(runtimeType,connectionIP,location,sessionId,hash);
+}
 
 @override
 String toString() {
-  return 'VpnConnection(connectionIP: $connectionIP, location: $location, sessionId: $sessionId, hash: $hash)';
+    return 'VpnConnection(connectionIP: $connectionIP, location: $location, sessionId: $sessionId, hash: $hash)';
 }
 
 

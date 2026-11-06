@@ -45,9 +45,8 @@ void main() {
 
   test('returns null offer when expiry date is in the past', () async {
     when(remoteConfig.limitedTimeOfferId).thenReturn('summer-sale');
-    when(
-      remoteConfig.limitedTimeOfferExpiryDate,
-    ).thenReturn(DateTime.now().subtract(const Duration(days: 1)));
+    when(remoteConfig.limitedTimeOfferExpiryDate)
+        .thenReturn(DateTime.now().subtract(const Duration(days: 1)));
 
     final store = newStore();
     await store.future;

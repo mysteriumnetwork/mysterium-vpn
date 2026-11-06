@@ -52,9 +52,8 @@ void main() {
         failureReason: anyNamed('failureReason'),
       ),
     ).thenAnswer((_) async {});
-    when(
-      analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')),
-    ).thenAnswer((_) async {});
+    when(analyticsStore.logSubscriptionCancellationPauseDuration(months: anyNamed('months')))
+        .thenAnswer((_) async {});
     when(
       analyticsStore.logSubscriptionCancellationSurvey(
         reasons: anyNamed('reasons'),
@@ -146,9 +145,8 @@ void main() {
     });
 
     test('returns false when pauseAllowed is missing', () async {
-      when(
-        subscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
+      when(subscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
 
       expect(await store.canPauseSubscription(), isFalse);
     });
@@ -289,9 +287,8 @@ void main() {
       verify(
         analyticsStore.logSubscriptionCancellationSurvey(reasons: {}, feedback: 'too expensive'),
       ).called(1);
-      verify(
-        analyticsStore.logCancellationReasonSubmitted(reasons: {}, feedback: 'too expensive'),
-      ).called(1);
+      verify(analyticsStore.logCancellationReasonSubmitted(reasons: {}, feedback: 'too expensive'))
+          .called(1);
     });
 
     test('trims feedback before logging', () async {

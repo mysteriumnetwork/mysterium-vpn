@@ -19,9 +19,8 @@ void main() {
     locationsStore = MockLocationsStore();
     final empty = VPNLocations();
     when(locationsStore.dcLocationsFuture).thenAnswer((_) => ObservableFuture.value(empty));
-    when(
-      locationsStore.residentialLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(empty));
+    when(locationsStore.residentialLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(empty));
   });
 
   test('toggleAvailability(availability: false) marks a location unavailable', () {

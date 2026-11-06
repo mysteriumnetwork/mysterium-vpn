@@ -97,9 +97,8 @@ class _Container extends HookWidget {
       children: [
         Text(
           title,
-          style: Theme.of(
-            context,
-          ).textStyles.textMd.semibold.copyWith(color: Theme.of(context).palette.textTertiary),
+          style: Theme.of(context).textStyles.textMd.semibold
+              .copyWith(color: Theme.of(context).palette.textTertiary),
         ),
         child,
       ],

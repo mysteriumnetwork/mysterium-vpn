@@ -33,9 +33,8 @@ void main() {
   /// completer to settle it.
   Completer<Subscription> stubPendingSubscription() {
     final completer = Completer<Subscription>();
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture<Subscription>(completer.future));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture<Subscription>(completer.future));
     return completer;
   }
 
@@ -75,9 +74,9 @@ void main() {
     // when the user presses Refresh IP.
     final inFlight = Completer<Subscription>();
     when(subscription.subscriptionFuture).thenAnswer(
-      (_) => ObservableFuture.value(
-        Subscription(active: true, expired: false, recurring: true),
-      ).replace(inFlight.future),
+      (_) =>
+          ObservableFuture.value(Subscription(active: true, expired: false, recurring: true))
+              .replace(inFlight.future),
     );
 
     await newGuard().checkVpnGuards().timeout(
@@ -90,9 +89,8 @@ void main() {
 
   test('still refuses when the loaded entitlement does not grant access', () async {
     final inFlight = Completer<Subscription>();
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()).replace(inFlight.future));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()).replace(inFlight.future));
 
     final guarded = newGuard().checkVpnGuards();
     inFlight.complete(Subscription.empty());
@@ -101,9 +99,8 @@ void main() {
   });
 
   test('throws SubscriptionRequiredException when subscription is inactive', () async {
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
     await expectLater(newGuard().checkVpnGuards(), throwsA(isA<SubscriptionRequiredException>()));
   });
@@ -128,33 +125,29 @@ void main() {
   });
 
   test('reports paused ahead of inactive when the backend reports both', () async {
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: false, paused: true)));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription(active: false, paused: true)));
 
     await expectLater(newGuard().checkVpnGuards(), throwsA(isA<SubscriptionPausedException>()));
   });
 
   test('subscriptionGrantsVpnAccess is true while the subscription is pending', () {
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture(Completer<Subscription>().future));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture(Completer<Subscription>().future));
 
     expect(newGuard().subscriptionGrantsVpnAccess, isTrue);
   });
 
   test('subscriptionGrantsVpnAccess is false once a paused subscription loads', () {
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription(active: true, paused: true)));
 
     expect(newGuard().subscriptionGrantsVpnAccess, isFalse);
   });
 
   test('refreshes subscription on non-SubscriptionRequiredException errors', () async {
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.error(Exception('network')));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.error(Exception('network')));
     when(subscription.refreshSubscription()).thenAnswer((_) async => Subscription.empty());
 
     await expectLater(newGuard().checkVpnGuards(), throwsA(isA<Exception>()));
@@ -162,9 +155,8 @@ void main() {
   });
 
   test('does not refresh on SubscriptionRequiredException', () async {
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
     await expectLater(newGuard().checkVpnGuards(), throwsA(isA<SubscriptionRequiredException>()));
     verifyNever(subscription.refreshSubscription());

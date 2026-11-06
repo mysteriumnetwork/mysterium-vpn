@@ -31,9 +31,8 @@ void main() {
     when(remoteConfigStore.canShowSubscriptionOnboardingFlow).thenReturn(true);
     when(localDBService.subscriptionOnboardingShown()).thenAnswer((_) async => false);
     when(localDBService.setSubscriptionOnboardingShown()).thenAnswer((_) async {});
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
     store = SubscriptionOnboardingStore(
       analyticsStore: analyticsStore,
@@ -83,9 +82,8 @@ void main() {
 
   test('shouldShow returns false for inactive subscription', () async {
     // arrange
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
     // act
     final result = await store.shouldShow();
@@ -96,9 +94,8 @@ void main() {
 
   test('shouldShow returns false when subscription lookup fails', () async {
     // arrange
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
+    when(subscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture(Future<Subscription>.error(Exception('network'))));
 
     // act
     final result = await store.shouldShow();

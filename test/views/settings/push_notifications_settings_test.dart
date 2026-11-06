@@ -111,9 +111,8 @@ void main() {
     });
 
     testWidgets('a failing store call is surfaced, not evented', (tester) async {
-      when(
-        pushNotificationsStore.updatePushNotificationsPermissions(),
-      ).thenThrow(StateError('boom'));
+      when(pushNotificationsStore.updatePushNotificationsPermissions())
+          .thenThrow(StateError('boom'));
       await pumpAt(tester, const Size(1200, 900));
 
       await tester.tap(find.text(S.current.openSystemSettingsBtn));

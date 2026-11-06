@@ -2,6 +2,7 @@ export 'comparator_utils.dart';
 export 'debouncer.dart';
 export 'disposeable.dart';
 export 'ip_refresh_exhausted_message.dart';
+export 'main_window.dart';
 export 'mocks.dart';
 export 'payment_gateway.dart';
 export 'platform.dart';

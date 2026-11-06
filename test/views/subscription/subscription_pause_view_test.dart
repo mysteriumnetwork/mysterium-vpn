@@ -31,9 +31,8 @@ void main() {
     when(cancelStore.pauseSubscription(any)).thenAnswer((_) async => true);
     when(cancelStore.currentSubscriptionId()).thenReturn('sub-1');
     when(analyticsStore.logCancellationPauseOfferViewed()).thenAnswer((_) async {});
-    when(
-      analyticsStore.logCancellationPauseDeclined(subscriptionId: anyNamed('subscriptionId')),
-    ).thenAnswer((_) async {});
+    when(analyticsStore.logCancellationPauseDeclined(subscriptionId: anyNamed('subscriptionId')))
+        .thenAnswer((_) async {});
   });
 
   /// Opens the pause offer as a modal so Back / × can dismiss it.

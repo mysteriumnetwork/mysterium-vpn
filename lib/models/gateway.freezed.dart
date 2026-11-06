@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'gateway.dart';
@@ -9,6 +9,7 @@ part of 'gateway.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $GatewayCopyWith<Gateway> get copyWith => _$GatewayCopyWithImpl<Gateway>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Gateway&&(identical(other.name, name) || other.name == name)&&(identical(other.enabled, enabled) || other.enabled == enabled));
+  final _this = this as Gateway;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Gateway&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.enabled, _this.enabled) || other.enabled == _this.enabled));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,enabled);
+int get hashCode {
+  final _this = this as Gateway;
+  return Object.hash(runtimeType,_this.name,_this.enabled);
+}
 
 @override
 String toString() {
-  return 'Gateway(name: $name, enabled: $enabled)';
+  final _this = this as Gateway;
+  return 'Gateway(name: ${_this.name}, enabled: ${_this.enabled})';
 }
 
 
@@ -66,7 +72,7 @@ class _$GatewayCopyWithImpl<$Res>
 /// Create a copy of Gateway
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? enabled = null,}) {
-  return _then(_self.copyWith(
+  return _then(Gateway(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
 as bool,
@@ -229,16 +235,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Gateway&&(identical(other.name, name) || other.name == name)&&(identical(other.enabled, enabled) || other.enabled == enabled));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Gateway&&(identical(other.name, name) || other.name == name)&&(identical(other.enabled, enabled) || other.enabled == enabled));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,enabled);
+int get hashCode {
+    return Object.hash(runtimeType,name,enabled);
+}
 
 @override
 String toString() {
-  return 'Gateway(name: $name, enabled: $enabled)';
+    return 'Gateway(name: $name, enabled: $enabled)';
 }
 
 
