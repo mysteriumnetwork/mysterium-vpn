@@ -193,6 +193,9 @@ abstract class _AuthStore with Store {
       return;
     }
 
+    // A verdict arrived, so earlier uncertainty no longer shields a 401.
+    _refreshInconclusive = false;
+
     try {
       await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);
     } catch (e) {
@@ -384,7 +387,6 @@ abstract class _AuthStore with Store {
   }
 
   Future<void> refreshAuthToken() async {
-    _refreshInconclusive = false;
     final TokenResponse authTokens;
     try {
       var refreshToken = await _authSessionStore.refreshTokenFuture;
@@ -410,6 +412,7 @@ abstract class _AuthStore with Store {
         _logger.warning('Token refresh did not reach the server: $e');
         rethrow;
       }
+      _refreshInconclusive = false;
       final authState = _authSessionStore.status;
       if (authState == AuthStatus.authenticated) {
         _emitError(const AuthError(AuthErrorType.sessionExpired));
@@ -418,6 +421,9 @@ abstract class _AuthStore with Store {
 
       rethrow;
     }
+
+    // A verdict arrived, so earlier uncertainty no longer shields a 401.
+    _refreshInconclusive = false;
 
     try {
       await _authSessionStore.setAuthenticated(authTokens.accessToken, authTokens.refreshToken);

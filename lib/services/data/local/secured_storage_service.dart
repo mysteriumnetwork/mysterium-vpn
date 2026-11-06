@@ -36,6 +36,42 @@ class SecureStorageService {
   /// Only Apple platforms carry a separate accessibility attribute.
   static bool get _hasLegacyItems => Platform.isIOS || Platform.isMacOS;
 
+  /// The keys this service owns, for [migrateAccessibility].
+  static const _ownedKeys = <StorageKeys>[
+    StorageKeys.accessToken,
+    StorageKeys.refreshToken,
+    StorageKeys.userId,
+    StorageKeys.username,
+    StorageKeys.lastLoggedInUser,
+    StorageKeys.appLink,
+    StorageKeys.wireguardPublicKey,
+    StorageKeys.wireguardPrivateKey,
+    StorageKeys.codeChallenge,
+    StorageKeys.codeVerifier,
+    StorageKeys.subscriptionPaymentInfo,
+    StorageKeys.deviceId,
+  ];
+
+  static const _migrationMarker = 'accessibility_migrated';
+
+  /// Rewrites every owned key onto [_accessibility] once. The plugin reads
+  /// across accessibility levels, so an older item stays readable and would
+  /// never move on its own, leaving rarely written keys such as the device id
+  /// unreadable while the screen is locked. Throws if the keychain refuses, so
+  /// the marker stays unwritten and the next launch tries again.
+  Future<void> migrateAccessibility() async {
+    if (!_hasLegacyItems || await _read(_securedStorage, _migrationMarker) != null) {
+      return;
+    }
+    for (final key in _ownedKeys) {
+      final value = await _readOrFail(_securedStorage, key.name);
+      if (value != null) {
+        await write(key.name, value);
+      }
+    }
+    await write(_migrationMarker, _accessibility.name);
+  }
+
   Future<Map<String, dynamic>> readAll() async => {
     if (_hasLegacyItems) ...await _readAll(_legacyStorage),
     ...await _readAll(_securedStorage),

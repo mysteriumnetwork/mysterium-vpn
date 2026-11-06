@@ -485,6 +485,26 @@ void main() {
       verifyNever(sessionStore.setUnauthenticated());
     });
 
+    test('an in-flight refresh does not clear an earlier inconclusive verdict', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      // A second refresh starts but never gets an answer.
+      final pending = Completer<TokenResponse>();
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) => pending.future);
+      unawaited(store.refreshAuthToken());
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+
+      when(authService.currentUser()).thenThrow(refreshRejected);
+      await store.fetchAuthUser();
+
+      verifyNever(sessionStore.setUnauthenticated());
+      pending.complete(tokens);
+    });
+
     test('signs out again once a later refresh is conclusive', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
       when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
