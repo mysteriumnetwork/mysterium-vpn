@@ -120,6 +120,7 @@ void main() {
     (w) => w is Icon && w.icon == UntitledUI.sale_02,
     description: 'discount (sale_02) icon',
   );
+  final vatIcon = find.byIcon(UntitledUI.info_circle);
   final renewsOn = find.textContaining('Renews on');
   // The trailing actions of a recurring plan; their position marks the top row.
   final cancelAction = find.text('Cancel');
@@ -204,6 +205,24 @@ void main() {
 
       expect(find.text('Manage'), findsOneWidget);
       expect(find.text('Cancel'), findsOneWidget);
+    });
+
+    testWidgets('the VAT note is reachable from the prices', (tester) async {
+      await pumpAt(tester, const Size(390, 900));
+
+      await tester.tap(vatIcon);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Price includes applicable VAT.'), findsOneWidget);
+    });
+
+    testWidgets('no prices means no VAT note', (tester) async {
+      stubSubscription(recurringSubscription.copyWith(orderSummary: null));
+
+      await pumpAt(tester, const Size(390, 900));
+
+      expect(priceIcon, findsNothing);
+      expect(vatIcon, findsNothing);
     });
 
     testWidgets('an inactive subscription shows the see-plans action, not renewal copy', (
