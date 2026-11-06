@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/current_ip_coordinates_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -20,8 +21,17 @@ VPNLocation resolveMapLocation({
   required LocationsStore locationsStore,
   required bool residentialIPsAllowed,
   required bool cityLevelAllowed,
+  required bool hasResolvedPlan,
 }) {
-  if (!location.isCountry && !cityLevelAllowed) {
+  final cityGated =
+      !location.isCountry &&
+      LocationMode.isUnsupportedByPlan(
+        location: location,
+        hasResolvedPlan: hasResolvedPlan,
+        residentialIPsAllowed: true,
+        cityLevelAllowed: cityLevelAllowed,
+      );
+  if (cityGated) {
     final country = locationsStore.findParent(location);
     if (country != null) {
       return resolveMapLocation(
@@ -29,6 +39,7 @@ VPNLocation resolveMapLocation({
         locationsStore: locationsStore,
         residentialIPsAllowed: residentialIPsAllowed,
         cityLevelAllowed: true,
+        hasResolvedPlan: hasResolvedPlan,
       );
     }
   }
@@ -79,7 +90,6 @@ class HomeMap extends HookConsumerWidget {
         ...?locationsStore.dcLocationsFuture.value?.allLocations,
       ].distinctBy((it) => it.id).toList(),
     );
-    final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
     final myLocation = useCurrentIPCoordinates();
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
@@ -96,6 +106,7 @@ class HomeMap extends HookConsumerWidget {
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
         cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+        hasResolvedPlan: subscriptionStore.hasResolvedPlan,
       );
       selectedLocationStore.value = resolved;
     }
@@ -109,12 +120,9 @@ class HomeMap extends HookConsumerWidget {
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
         cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+        hasResolvedPlan: subscriptionStore.hasResolvedPlan,
       );
-      if (vpnStore.isConnected &&
-          connectionDecisionStore.isCurrentConnection(
-            requested: resolved,
-            current: vpnStore.location,
-          )) {
+      if (vpnStore.isConnected && resolved.covers(vpnStore.location)) {
         return;
       }
       handleToggleConnection(location: resolved);

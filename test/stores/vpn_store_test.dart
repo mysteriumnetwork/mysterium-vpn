@@ -1139,7 +1139,7 @@ void main() {
         stubToggleAction(ConnectionAction.connect);
 
         await expectLater(
-          () => vpnStore.manageConnection(location: city),
+          vpnStore.manageConnection(location: city),
           throwsA(isA<PlanUpgradeRequiredException>()),
         );
 
@@ -2283,6 +2283,33 @@ void main() {
               targetIp: anyNamed('targetIp'),
             ),
           ).called(1);
+          await store.disposeStore();
+        });
+
+        test('restores a session the plan no longer covers instead of stranding it', () async {
+          // A residential country has no parent to narrow to, so the retarget
+          // stays gated — the restore must not be held to the plan gate, or
+          // the teardown leaves the user with no tunnel and an upgrade modal.
+          const residentialFrance = VPNLocation(
+            id: 'fr',
+            ipType: IPType.residential,
+            translations: {},
+            countryCode: 'fr',
+          );
+          final store = buildStore();
+          await pumpEventQueue();
+          await store.manageConnection(location: residentialFrance);
+          wgStatus.add(VpnConnectionStatus.connected);
+          await pumpEventQueue();
+          expect(store.isConnected, true);
+
+          when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+          when(mockSubscriptionStore.cityLevelAllowed).thenReturn(true);
+          when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(false);
+
+          await store.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          verify(openVpnFetch(country: 'fr')).called(1);
           await store.disposeStore();
         });
 

@@ -84,6 +84,7 @@ void main() {
 
     when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
     when(mockSubscriptionStore.cityLevelAllowed).thenReturn(true);
+    when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
 
     when(mockUnavailableLocationsStore.unavailableLocations).thenReturn(const <VPNLocation>{});
 

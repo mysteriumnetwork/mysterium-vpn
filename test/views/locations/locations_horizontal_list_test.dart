@@ -144,6 +144,23 @@ void main() {
     expect(cardFor(tester, 'Germany').status, LocationCardStatus.selected);
     expect(find.byType(LoadingIndicator), findsNothing);
   });
+
+  testWidgets('a country entry stays selected while the tunnel sits on a city in it', (
+    tester,
+  ) async {
+    // Recents record the country the user asked for; the backend answers with
+    // a city, so exact equality would leave the entry looking idle.
+    const berlin = VPNLocation(
+      id: 'Berlin',
+      ipType: IPType.datacenter,
+      translations: {'en': 'Berlin'},
+      countryCode: 'de',
+    );
+    await pumpList(tester, onItemPressed: (_) {}, connectedLocation: berlin);
+
+    expect(cardFor(tester, 'Germany').status, LocationCardStatus.selected);
+    expect(cardFor(tester, 'France').status, LocationCardStatus.idle);
+  });
 }
 
 void _noop(VPNLocation _) {}

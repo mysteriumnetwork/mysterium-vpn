@@ -38,17 +38,26 @@ abstract class VpnGuard {
     }
   }
 
+  /// Waits for the subscription config so the plan is known before gating; on
+  /// a cold start it is still in flight when the connect begins.
+  Future<void> awaitPlanResolution() async {
+    try {
+      await _subscription.subscriptionConfigFuture;
+    } catch (_) {
+      // A config that won't load leaves the plan unknown, which gates nothing.
+    }
+  }
+
   /// Whether the active plan includes [location].
   ///
   /// An unresolved plan means its features are unknown, not absent — a failed
   /// subscription-config fetch must never block a paying user from connecting.
-  bool planSupportsLocation(VPNLocation location) =>
-      !_subscription.hasResolvedPlan ||
-      !LocationMode.isUnsupportedByPlan(
-        location: location,
-        residentialIPsAllowed: _subscription.residentialIPsAllowed,
-        cityLevelAllowed: _subscription.cityLevelAllowed,
-      );
+  bool planSupportsLocation(VPNLocation location) => !LocationMode.isUnsupportedByPlan(
+    location: location,
+    hasResolvedPlan: _subscription.hasResolvedPlan,
+    residentialIPsAllowed: _subscription.residentialIPsAllowed,
+    cityLevelAllowed: _subscription.cityLevelAllowed,
+  );
 
   Future<void> checkVpnGuards() async {
     await _session.accessTokenFuture;

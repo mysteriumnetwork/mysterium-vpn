@@ -280,60 +280,6 @@ void main() {
       });
     });
 
-    group('isCurrentConnection', () {
-      const texas = VPNLocation(
-        id: 'texas',
-        ipType: IPType.datacenter,
-        translations: {},
-        countryCode: 'US',
-      );
-      const us = VPNLocation(
-        id: 'US',
-        ipType: IPType.datacenter,
-        translations: {},
-        countryCode: 'US',
-      );
-
-      test('matches the connected location itself', () {
-        expect(store.isCurrentConnection(requested: texas, current: texas), isTrue);
-      });
-
-      test('matches the country the connected city sits in', () {
-        // What the map relies on: a city marker resolves to its country on a
-        // plan without city targeting, and that tap must stay inert.
-        expect(store.isCurrentConnection(requested: us, current: texas), isTrue);
-      });
-
-      test('does not match the other way round', () {
-        expect(store.isCurrentConnection(requested: texas, current: us), isFalse);
-      });
-
-      test('does not match across IP types', () {
-        const residentialUs = VPNLocation(
-          id: 'US',
-          ipType: IPType.residential,
-          translations: {},
-          countryCode: 'US',
-        );
-        expect(store.isCurrentConnection(requested: residentialUs, current: texas), isFalse);
-      });
-
-      test('does not match another country', () {
-        const france = VPNLocation(
-          id: 'FR',
-          ipType: IPType.datacenter,
-          translations: {},
-          countryCode: 'FR',
-        );
-        expect(store.isCurrentConnection(requested: france, current: texas), isFalse);
-      });
-
-      test('never matches when either side is missing', () {
-        expect(store.isCurrentConnection(requested: null, current: texas), isFalse);
-        expect(store.isCurrentConnection(requested: us, current: null), isFalse);
-      });
-    });
-
     group('determineConnectingLocation', () {
       const currentLocation = VPNLocation(
         id: 'us',

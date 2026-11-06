@@ -57,6 +57,7 @@ LocationItemState useLocationItemState({
       connectingLocation: vpnStore.connectingLocation,
       isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
       cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+      hasResolvedPlan: subscriptionStore.hasResolvedPlan,
     ),
     [location, location.isAvailable, subscription, isAuthenticated],
   );
@@ -102,6 +103,7 @@ LocationItemState useLocationItemState({
     final residentialAllowed = subscriptionStore.residentialIPsAllowed;
     final subscriptionLoading = subscriptionStore.isSubscriptionLoading;
     final cityLevelAllowed = subscriptionStore.cityLevelAllowed;
+    final hasResolvedPlan = subscriptionStore.hasResolvedPlan;
     return children.map((child) {
       final childMode = LocationMode.from(
         location: child,
@@ -115,6 +117,7 @@ LocationItemState useLocationItemState({
         connectingLocation: vpnStore.connectingLocation,
         isSubscriptionLoading: subscriptionLoading,
         cityLevelAllowed: cityLevelAllowed,
+        hasResolvedPlan: hasResolvedPlan,
       );
       final status = switch (childMode) {
         LocationMode.connecting => IpCardStatus.connecting,

@@ -378,7 +378,12 @@ abstract class _VpnStore extends VpnGuard with Store {
     // one signal that distinguishes a completed connect from a failed one —
     // _vpnConnection still holds the previous session after a failed attempt.
     final epochBefore = _userConnectEpoch;
-    await manageConnection(location: location, intent: intent, targetIp: targetIp);
+    await manageConnection(
+      location: location,
+      intent: intent,
+      targetIp: targetIp,
+      isSessionRestore: true,
+    );
     return _userConnectEpoch > epochBefore;
   }
 
@@ -540,6 +545,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     UserIntent? intent,
     bool isRetrying = false,
     bool refreshIP = false,
+    bool isSessionRestore = false,
     String? targetIp,
   }) async {
     if (_inFlightAction != null) {
@@ -568,6 +574,7 @@ abstract class _VpnStore extends VpnGuard with Store {
             intent: intent,
             isRetrying: isRetrying,
             refreshIP: refreshIP,
+            isSessionRestore: isSessionRestore,
             targetIp: targetIp,
           );
           break;
@@ -586,23 +593,21 @@ abstract class _VpnStore extends VpnGuard with Store {
     VPNLocation? location,
     bool refreshIP = false,
     bool isRetrying = false,
+    bool isSessionRestore = false,
     UserIntent? intent,
     String? targetIp,
   }) async {
-    // Ahead of the prerequisites so a gated location never costs the user an
-    // OS tunnel-permission prompt first. Logged-out and unsubscribed users
-    // have no resolved plan, so this is a no-op for them and they still reach
-    // the auth/subscribe checks below.
-    //
-    // Skipped on refresh: a live tunnel is proof enough, and blocking a
-    // refresh would strand a user who was connected before their plan changed.
-    if (!refreshIP) {
+    // Restoring a live session is never gated: the tunnel is proof enough, and
+    // blocking it would strand a user whose plan changed mid-session.
+    final gatePlan = !refreshIP && !isSessionRestore;
+    // Ahead of the prerequisites so a gated location costs no permission prompt.
+    if (gatePlan) {
       checkPlanSupportsLocation(location);
     }
     await _validateConnectionPrerequisites();
-    // Again: the first subscription load can settle inside the await above, so
-    // the plan may simply have been unknown on the way in.
-    if (!refreshIP) {
+    if (gatePlan) {
+      // The plan is often unknown on the way in, so decide again on the config.
+      await awaitPlanResolution();
       checkPlanSupportsLocation(location);
     }
     await _prepareConnection(location, intent, refreshIP, targetIp);
@@ -951,9 +956,6 @@ abstract class _VpnStore extends VpnGuard with Store {
     VPNLocation? requestedLocation,
   }) async {
     // Recents remember what was asked for, not the node the backend assigned.
-    // Requesting a country and recording the city it landed in would put a
-    // city into recents that the plan may not be allowed to target, and would
-    // silently narrow what the next tap on that entry connects to.
     final recentLocation = _planTargetableLocation(requestedLocation ?? connectedLocation);
 
     _resolveConnectionLocationFuture = ObservableFuture(
@@ -966,16 +968,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     );
 
     await _resolveConnectionLocationFuture!;
-
-    if (_vpnConnection?.location != null) {
-      await _recentLocationsStore.add(recentLocation);
-    }
   }
 
   /// Narrows a location the backend chose for us to one the plan can target.
-  ///
-  /// An intent connect asks for no location at all, so without this the city
-  /// the backend picked lands in recents on a plan that only targets countries.
   VPNLocation _planTargetableLocation(VPNLocation location) {
     if (planSupportsLocation(location)) {
       return location;
@@ -984,9 +979,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   /// Where to aim when reusing the live session — an IP refresh or a protocol
-  /// switch. Narrowed for the same reason: both tear the tunnel down first, so
-  /// re-requesting the backend's city on a country-only plan would fail the
-  /// plan guard and leave the user disconnected.
+  /// switch — narrowed to what the plan can target.
   VPNLocation? get _sessionRetargetLocation {
     final location = _requestedLocation ?? _vpnConnection?.location;
     return location == null ? null : _planTargetableLocation(location);

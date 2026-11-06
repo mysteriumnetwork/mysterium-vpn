@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -75,10 +76,8 @@ abstract class _ConnectionDecisionStore with Store {
 
     final currentIntent = _userIntentsStore.userIntent;
 
-    // Tapping the connected location, or the country (same IP type) it belongs
-    // to, disconnects — regardless of whether the user picked a country or a
-    // city. Tapping a different city, or a different IP type, switches instead.
-    if (isCurrentConnection(requested: requestedLocation, current: currentLocation)) {
+    // Tapping where you already are disconnects; anywhere else switches.
+    if (requestedLocation?.covers(currentLocation) ?? false) {
       return ConnectionAction.disconnect;
     }
 
@@ -89,23 +88,6 @@ abstract class _ConnectionDecisionStore with Store {
 
     // Different location/intent requested, reconnect
     return ConnectionAction.reconnect;
-  }
-
-  /// Whether [requested] aims at the live session — the connected location
-  /// itself, or the country (same IP type) it sits in.
-  ///
-  /// Shared with the map, where a city marker resolves to its country on a
-  /// plan without city targeting: the surface that suppresses a tap and the
-  /// one that turns it into a disconnect have to agree on what "already here"
-  /// means, or the tap tears the tunnel down instead of doing nothing.
-  bool isCurrentConnection({required VPNLocation? requested, required VPNLocation? current}) {
-    if (requested == null || current == null) {
-      return false;
-    }
-    return requested == current ||
-        (requested.isCountry &&
-            requested.ipType == current.ipType &&
-            requested.countryCode == current.countryCode);
   }
 
   VPNLocation? determineConnectingLocation({

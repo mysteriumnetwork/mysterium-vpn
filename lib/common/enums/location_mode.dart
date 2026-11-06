@@ -13,15 +13,19 @@ enum LocationMode {
   /// Whether the plan itself excludes [location], independent of availability
   /// or connection state.
   ///
-  /// Shared by the location lists and by the connect-path guard, so every
-  /// surface — lists, map, recents, favourites — gates identically.
+  /// An unresolved plan excludes nothing: its features are unknown, not absent.
   static bool isUnsupportedByPlan({
     required VPNLocation location,
+    required bool hasResolvedPlan,
     required bool residentialIPsAllowed,
     required bool cityLevelAllowed,
-  }) =>
-      (location.ipType == IPType.residential && !residentialIPsAllowed) ||
-      (!location.isCountry && !cityLevelAllowed);
+  }) {
+    if (!hasResolvedPlan) {
+      return false;
+    }
+    return (location.ipType == IPType.residential && !residentialIPsAllowed) ||
+        (!location.isCountry && !cityLevelAllowed);
+  }
 
   static LocationMode from({
     required VPNLocation location,
@@ -34,6 +38,7 @@ enum LocationMode {
     required VPNLocation? vpnLocation,
     required VPNLocation? connectingLocation,
     required bool cityLevelAllowed,
+    required bool hasResolvedPlan,
     bool isSubscriptionLoading = false,
   }) {
     if (isLoading && (location == vpnLocation || location == connectingLocation)) {
@@ -59,6 +64,7 @@ enum LocationMode {
     // residential still falls through to the availability check below.
     if (isUnsupportedByPlan(
       location: location,
+      hasResolvedPlan: hasResolvedPlan,
       residentialIPsAllowed: residentialIPsAllowed,
       cityLevelAllowed: cityLevelAllowed,
     )) {

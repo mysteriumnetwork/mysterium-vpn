@@ -81,6 +81,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(residential));
@@ -97,6 +98,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(datacenter));
@@ -113,6 +115,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(datacenter));
@@ -128,6 +131,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(residential));
@@ -144,6 +148,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(residential));
@@ -158,6 +163,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(datacenter));
@@ -174,6 +180,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       // No DC match for US, so returns original residential.
@@ -190,6 +197,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(residential));
@@ -207,6 +215,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(dcCity));
@@ -223,6 +232,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: false,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(dcCountry));
@@ -239,6 +249,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
         cityLevelAllowed: false,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(dcCountry));
@@ -253,6 +264,7 @@ void main() {
         locationsStore: fakeLocationsStore,
         residentialIPsAllowed: true,
         cityLevelAllowed: false,
+        hasResolvedPlan: true,
       );
 
       expect(result, same(dcCountry));

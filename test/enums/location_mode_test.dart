@@ -34,6 +34,7 @@ void main() {
         vpnLocation: location,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.connecting);
     });
@@ -51,6 +52,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: location,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.connecting);
     });
@@ -69,6 +71,7 @@ void main() {
         vpnLocation: other,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, isNot(LocationMode.connecting));
     });
@@ -86,6 +89,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, isNot(LocationMode.connecting));
     });
@@ -105,6 +109,7 @@ void main() {
         vpnLocation: location,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.connected);
     });
@@ -123,6 +128,7 @@ void main() {
         vpnLocation: other,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, isNot(LocationMode.connected));
     });
@@ -142,6 +148,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -159,6 +166,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -176,6 +184,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -196,6 +205,7 @@ void main() {
         connectingLocation: null,
         isSubscriptionLoading: true,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.loading);
     });
@@ -214,6 +224,7 @@ void main() {
         connectingLocation: null,
         isSubscriptionLoading: true,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unsubscribed);
     });
@@ -235,6 +246,7 @@ void main() {
           vpnLocation: null,
           connectingLocation: null,
           cityLevelAllowed: true,
+          hasResolvedPlan: true,
         );
         expect(result, LocationMode.unsupportedByPlan);
       },
@@ -255,10 +267,32 @@ void main() {
           vpnLocation: null,
           connectingLocation: null,
           cityLevelAllowed: true,
+          hasResolvedPlan: true,
         );
         expect(result, LocationMode.available);
       },
     );
+
+    test('an unresolved plan gates nothing, matching VpnGuard', () {
+      // A subscription-config fetch that failed leaves the plan unknown, not
+      // restrictive — gating here would show "Upgrade" to a paying user while
+      // the connect-path guard happily lets them through.
+      final residentialCity = makeLocation(id: 'Berlin', ipType: IPType.residential);
+      final result = LocationMode.from(
+        location: residentialCity,
+        isAuthenticated: true,
+        residentialIPsAllowed: false,
+        unavailableLocations: const {},
+        subscription: activeSubscription,
+        isConnected: false,
+        isLoading: false,
+        vpnLocation: null,
+        connectingLocation: null,
+        cityLevelAllowed: false,
+        hasResolvedPlan: false,
+      );
+      expect(result, LocationMode.available);
+    });
 
     test('returns unsupportedByPlan for a city when cityLevelAllowed is false', () {
       final location = makeLocation(id: 'Berlin');
@@ -273,6 +307,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: false,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unsupportedByPlan);
     });
@@ -290,6 +325,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: false,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.available);
     });
@@ -307,6 +343,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: false,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unsupportedByPlan);
     });
@@ -326,6 +363,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unavailable);
     });
@@ -343,6 +381,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unavailable);
     });
@@ -360,6 +399,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.unavailable);
     });
@@ -382,6 +422,7 @@ void main() {
           vpnLocation: null,
           connectingLocation: null,
           cityLevelAllowed: true,
+          hasResolvedPlan: true,
         );
         expect(result, LocationMode.unsupportedByPlan);
       },
@@ -402,6 +443,7 @@ void main() {
         vpnLocation: null,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.available);
     });
@@ -421,6 +463,7 @@ void main() {
           vpnLocation: null,
           connectingLocation: null,
           cityLevelAllowed: true,
+          hasResolvedPlan: true,
         );
         expect(result, LocationMode.available);
       },
@@ -441,6 +484,7 @@ void main() {
         vpnLocation: location,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.connecting);
     });
@@ -459,6 +503,7 @@ void main() {
         vpnLocation: location,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.connected);
     });
@@ -476,6 +521,7 @@ void main() {
         vpnLocation: location,
         connectingLocation: null,
         cityLevelAllowed: true,
+        hasResolvedPlan: true,
       );
       expect(result, LocationMode.connected);
     });
