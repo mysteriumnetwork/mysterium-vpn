@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'promotional_banner.dart';
@@ -9,6 +9,7 @@ part of 'promotional_banner.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $PromotionalBannerCopyWith<PromotionalBanner> get copyWith => _$PromotionalBanne
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PromotionalBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl)&&const DeepCollectionEquality().equals(other.localizedTitles, localizedTitles)&&(identical(other.redirectUrl, redirectUrl) || other.redirectUrl == redirectUrl)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+  final _this = this as PromotionalBanner;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PromotionalBanner&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.iconUrl, _this.iconUrl) || other.iconUrl == _this.iconUrl)&&const DeepCollectionEquality().equals(other.localizedTitles, _this.localizedTitles)&&(identical(other.redirectUrl, _this.redirectUrl) || other.redirectUrl == _this.redirectUrl)&&(identical(other.startDate, _this.startDate) || other.startDate == _this.startDate)&&(identical(other.endDate, _this.endDate) || other.endDate == _this.endDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,iconUrl,const DeepCollectionEquality().hash(localizedTitles),redirectUrl,startDate,endDate);
+int get hashCode {
+  final _this = this as PromotionalBanner;
+  return Object.hash(runtimeType,_this.id,_this.title,_this.iconUrl,const DeepCollectionEquality().hash(_this.localizedTitles),_this.redirectUrl,_this.startDate,_this.endDate);
+}
 
 @override
 String toString() {
-  return 'PromotionalBanner(id: $id, title: $title, iconUrl: $iconUrl, localizedTitles: $localizedTitles, redirectUrl: $redirectUrl, startDate: $startDate, endDate: $endDate)';
+  final _this = this as PromotionalBanner;
+  return 'PromotionalBanner(id: ${_this.id}, title: ${_this.title}, iconUrl: ${_this.iconUrl}, localizedTitles: ${_this.localizedTitles}, redirectUrl: ${_this.redirectUrl}, startDate: ${_this.startDate}, endDate: ${_this.endDate})';
 }
 
 
@@ -66,7 +72,7 @@ class _$PromotionalBannerCopyWithImpl<$Res>
 /// Create a copy of PromotionalBanner
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? iconUrl = freezed,Object? localizedTitles = freezed,Object? redirectUrl = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(PromotionalBanner(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,iconUrl: freezed == iconUrl ? _self.iconUrl : iconUrl // ignore: cast_nullable_to_non_nullable
@@ -215,7 +221,7 @@ return $default(_that.id,_that.title,_that.iconUrl,_that.localizedTitles,_that.r
 @JsonSerializable()
 
 class _PromotionalBanner implements PromotionalBanner {
-   _PromotionalBanner({required this.id, required this.title, this.iconUrl, final  Map<String, String>? localizedTitles, this.redirectUrl, this.startDate, this.endDate}): _localizedTitles = localizedTitles;
+   _PromotionalBanner({required this.id, required this.title, this.iconUrl,  Map<String, String>? localizedTitles, this.redirectUrl, this.startDate, this.endDate}): _localizedTitles = localizedTitles;
   factory _PromotionalBanner.fromJson(Map<String, dynamic> json) => _$PromotionalBannerFromJson(json);
 
 @override final  String id;
@@ -247,16 +253,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PromotionalBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl)&&const DeepCollectionEquality().equals(other._localizedTitles, _localizedTitles)&&(identical(other.redirectUrl, redirectUrl) || other.redirectUrl == redirectUrl)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PromotionalBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl)&&const DeepCollectionEquality().equals(other.localizedTitles, _localizedTitles)&&(identical(other.redirectUrl, redirectUrl) || other.redirectUrl == redirectUrl)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,iconUrl,const DeepCollectionEquality().hash(_localizedTitles),redirectUrl,startDate,endDate);
+int get hashCode {
+    return Object.hash(runtimeType,id,title,iconUrl,const DeepCollectionEquality().hash(_localizedTitles),redirectUrl,startDate,endDate);
+}
 
 @override
 String toString() {
-  return 'PromotionalBanner(id: $id, title: $title, iconUrl: $iconUrl, localizedTitles: $localizedTitles, redirectUrl: $redirectUrl, startDate: $startDate, endDate: $endDate)';
+    return 'PromotionalBanner(id: $id, title: $title, iconUrl: $iconUrl, localizedTitles: $localizedTitles, redirectUrl: $redirectUrl, startDate: $startDate, endDate: $endDate)';
 }
 
 

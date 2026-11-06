@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localizely_sdk/localizely_sdk.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -362,6 +363,10 @@ class S {
     'pushNotificationsSetting': [],
     'pushNotificationsSettingDesc': [],
     'qaToolboxLbl': [],
+    'quitAppConnectedDesc': [],
+    'quitAppDesc': [],
+    'quitAppTitle': [],
+    'quitBtn': [],
     'rateConnection': [],
     'rateConnectionDislike': [],
     'rateConnectionLike': [],
@@ -2726,6 +2731,36 @@ class S {
   /// `QA Toolbox`
   String get qaToolboxLbl {
     return Intl.message('QA Toolbox', name: 'qaToolboxLbl', desc: '', args: []);
+  }
+
+  /// `You are connected. Quitting will close Mysterium VPN and disconnect your VPN.`
+  String get quitAppConnectedDesc {
+    return Intl.message(
+      'You are connected. Quitting will close Mysterium VPN and disconnect your VPN.',
+      name: 'quitAppConnectedDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mysterium VPN will close and stop running in the background.`
+  String get quitAppDesc {
+    return Intl.message(
+      'Mysterium VPN will close and stop running in the background.',
+      name: 'quitAppDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quit Mysterium VPN?`
+  String get quitAppTitle {
+    return Intl.message('Quit Mysterium VPN?', name: 'quitAppTitle', desc: '', args: []);
+  }
+
+  /// `Quit`
+  String get quitBtn {
+    return Intl.message('Quit', name: 'quitBtn', desc: '', args: []);
   }
 
   /// `How is your connection?`

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'news_item.dart';
@@ -9,6 +9,7 @@ part of 'news_item.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $NewsItemCopyWith<NewsItem> get copyWith => _$NewsItemCopyWithImpl<NewsItem>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.category, category) || other.category == category)&&(identical(other.webViewUrl, webViewUrl) || other.webViewUrl == webViewUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  final _this = this as NewsItem;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsItem&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.summary, _this.summary) || other.summary == _this.summary)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.webViewUrl, _this.webViewUrl) || other.webViewUrl == _this.webViewUrl)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,summary,category,webViewUrl,createdAt,updatedAt);
+int get hashCode {
+  final _this = this as NewsItem;
+  return Object.hash(runtimeType,_this.id,_this.title,_this.summary,_this.category,_this.webViewUrl,_this.createdAt,_this.updatedAt);
+}
 
 @override
 String toString() {
-  return 'NewsItem(id: $id, title: $title, summary: $summary, category: $category, webViewUrl: $webViewUrl, createdAt: $createdAt, updatedAt: $updatedAt)';
+  final _this = this as NewsItem;
+  return 'NewsItem(id: ${_this.id}, title: ${_this.title}, summary: ${_this.summary}, category: ${_this.category}, webViewUrl: ${_this.webViewUrl}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$NewsItemCopyWithImpl<$Res>
 /// Create a copy of NewsItem
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? summary = null,Object? category = null,Object? webViewUrl = null,Object? createdAt = null,Object? updatedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(NewsItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
@@ -233,16 +239,18 @@ _$NewsItemCopyWith<_NewsItem> get copyWith => __$NewsItemCopyWithImpl<_NewsItem>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.category, category) || other.category == category)&&(identical(other.webViewUrl, webViewUrl) || other.webViewUrl == webViewUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.category, category) || other.category == category)&&(identical(other.webViewUrl, webViewUrl) || other.webViewUrl == webViewUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,summary,category,webViewUrl,createdAt,updatedAt);
+int get hashCode {
+    return Object.hash(runtimeType,id,title,summary,category,webViewUrl,createdAt,updatedAt);
+}
 
 @override
 String toString() {
-  return 'NewsItem(id: $id, title: $title, summary: $summary, category: $category, webViewUrl: $webViewUrl, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'NewsItem(id: $id, title: $title, summary: $summary, category: $category, webViewUrl: $webViewUrl, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 

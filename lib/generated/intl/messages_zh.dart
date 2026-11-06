@@ -442,6 +442,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "pushNotificationsSetting": MessageLookupByLibrary.simpleMessage("推送通知"),
     "pushNotificationsSettingDesc": MessageLookupByLibrary.simpleMessage("产品更新、技巧和特别优惠"),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "你已连接。退出将关闭 Mysterium VPN 并断开你的 VPN 连接。",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage("Mysterium VPN 将关闭并停止在后台运行。"),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("退出 Mysterium VPN？"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("退出"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("你的连接如何？"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("你不喜欢什么？"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("你喜欢什么？"),

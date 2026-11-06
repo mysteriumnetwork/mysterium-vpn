@@ -56,9 +56,9 @@ void main() {
   );
   final cancelledBonus = bonusSubscription.copyWith(recurring: false);
 
-  void stubSubscription(Subscription subscription) => when(
-    subscriptionStore.subscriptionFuture,
-  ).thenAnswer((_) => ObservableFuture.value(subscription));
+  void stubSubscription(Subscription subscription) =>
+      when(subscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(subscription));
 
   setUp(() {
     subscriptionStore = MockSubscriptionStore();
@@ -69,14 +69,12 @@ void main() {
     vpnStore = MockVpnStore();
 
     stubSubscription(recurringSubscription);
-    when(
-      subscriptionStore.refreshSubscription(force: anyNamed('force')),
-    ).thenAnswer((_) async => recurringSubscription);
+    when(subscriptionStore.refreshSubscription(force: anyNamed('force')))
+        .thenAnswer((_) async => recurringSubscription);
 
     when(authSessionStore.status).thenReturn(AuthStatus.authenticated);
-    when(
-      authSessionStore.user,
-    ).thenReturn(AuthUser(userId: 'user-1', username: 'someone@example.com'));
+    when(authSessionStore.user)
+        .thenReturn(AuthUser(userId: 'user-1', username: 'someone@example.com'));
 
     // Keep the card list short so geometry assertions stay unambiguous.
     when(remoteConfigStore.hideDeleteAccount).thenReturn(true);
@@ -94,9 +92,8 @@ void main() {
     ],
     child: BeamerProvider(
       routerDelegate: BeamerDelegate(
-        locationBuilder: RoutesLocationBuilder(
-          routes: {'/': (_, _, _) => const SizedBox.shrink()},
-        ).call,
+        locationBuilder: RoutesLocationBuilder(routes: {'/': (_, _, _) => const SizedBox.shrink()})
+            .call,
       ),
       child: MaterialApp(
         theme: DesignSystem.lightTheme,

@@ -73,13 +73,16 @@ void main() {
         expired: false,
         recurring: true,
         pauseAllowed: true,
+        duration: api.GetSubscriptionResponseDuration(
+          amount: 1,
+          unit: api.GetSubscriptionResponseDurationUnitEnum.month,
+        ),
         subscriptionId: 'sub-1',
         planId: 'plan_monthly',
         gateway: 'stripe',
       );
-      when(
-        apiSubscription.subscriptionStatus(),
-      ).thenAnswer((_) async => response(200, apiResponse));
+      when(apiSubscription.subscriptionStatus())
+          .thenAnswer((_) async => response(200, apiResponse));
 
       final sub = await service.fetchSubscriptionDetails();
 
@@ -97,6 +100,10 @@ void main() {
         expired: false,
         recurring: true,
         pauseAllowed: true,
+        duration: api.GetSubscriptionResponseDuration(
+          amount: 1,
+          unit: api.GetSubscriptionResponseDurationUnitEnum.month,
+        ),
         subscriptionId: 'sub-1',
         orderSummary: api.GetSubscriptionResponseOrderSummary(
           country: 'US',
@@ -113,9 +120,8 @@ void main() {
           discountUnits: 'usd',
         ),
       );
-      when(
-        apiSubscription.subscriptionStatus(),
-      ).thenAnswer((_) async => response(200, apiResponse));
+      when(apiSubscription.subscriptionStatus())
+          .thenAnswer((_) async => response(200, apiResponse));
 
       final sub = await service.fetchSubscriptionDetails();
 
@@ -140,6 +146,10 @@ void main() {
           expired: false,
           recurring: true,
           pauseAllowed: true,
+          duration: api.GetSubscriptionResponseDuration(
+            amount: 1,
+            unit: api.GetSubscriptionResponseDurationUnitEnum.month,
+          ),
           subscriptionId: 'sub-1',
           extraDuration: api.SubscriptionConfigResponsePlansInnerExtraDuration(
             amount: 3,
@@ -148,9 +158,8 @@ void main() {
             ),
           ),
         );
-        when(
-          apiSubscription.subscriptionStatus(),
-        ).thenAnswer((_) async => response(200, apiResponse));
+        when(apiSubscription.subscriptionStatus())
+            .thenAnswer((_) async => response(200, apiResponse));
 
         final sub = await service.fetchSubscriptionDetails();
 
@@ -166,11 +175,14 @@ void main() {
         expired: false,
         recurring: true,
         pauseAllowed: true,
+        duration: api.GetSubscriptionResponseDuration(
+          amount: 1,
+          unit: api.GetSubscriptionResponseDurationUnitEnum.month,
+        ),
         subscriptionId: 'sub-1',
       );
-      when(
-        apiSubscription.subscriptionStatus(),
-      ).thenAnswer((_) async => response(200, apiResponse));
+      when(apiSubscription.subscriptionStatus())
+          .thenAnswer((_) async => response(200, apiResponse));
 
       final sub = await service.fetchSubscriptionDetails();
 
@@ -212,9 +224,8 @@ void main() {
 
   group('fetchPauseDurations', () {
     test('returns durations as the API sent them', () async {
-      when(
-        apiSubscription.pauseDurations(),
-      ).thenAnswer((_) async => response(200, <String>['1', '3', '6']));
+      when(apiSubscription.pauseDurations())
+          .thenAnswer((_) async => response(200, <String>['1', '3', '6']));
 
       expect(await service.fetchPauseDurations(), ['1', '3', '6']);
     });

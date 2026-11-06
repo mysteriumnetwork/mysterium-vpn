@@ -31,9 +31,8 @@ void main() {
   });
 
   test('asUserProperties prefixes keys and snake-cases them', () async {
-    when(
-      client.getAllValues(),
-    ).thenAnswer((_) async => {'subscriptionFlow': 'A', 'tunnelConsent': 'B'});
+    when(client.getAllValues())
+        .thenAnswer((_) async => {'subscriptionFlow': 'A', 'tunnelConsent': 'B'});
 
     final store = ABTestingStore(client, logger, analytics);
     await store.setUser(ConfigCatUser(identifier: 'u1'));

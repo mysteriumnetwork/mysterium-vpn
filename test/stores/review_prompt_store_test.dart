@@ -122,17 +122,15 @@ void main() {
     });
 
     test('honours a lower cleanSessionsRequired (single clean session)', () {
-      when(
-        remoteConfig.reviewPromptConfig,
-      ).thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 1));
+      when(remoteConfig.reviewPromptConfig)
+          .thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 1));
       when(prefs.recentSessionOutcomes()).thenReturn([true]);
       expect(createStore().isEligible, isTrue);
     });
 
     test('skips the recent-sessions check when cleanSessionsRequired is 0', () {
-      when(
-        remoteConfig.reviewPromptConfig,
-      ).thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 0));
+      when(remoteConfig.reviewPromptConfig)
+          .thenReturn(const ReviewPromptConfig(cleanSessionsRequired: 0));
       // Even with a failure on record, the check is disabled.
       when(prefs.recentSessionOutcomes()).thenReturn([false]);
       expect(createStore().isEligible, isTrue);
@@ -198,24 +196,21 @@ void main() {
     });
 
     test('yearly_cap when cap reached within the year', () {
-      when(
-        prefs.promptShownTimestamps(),
-      ).thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
+      when(prefs.promptShownTimestamps())
+          .thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
       expect(createStore().suppressionReason, 'yearly_cap');
     });
 
     test('yearly cap is disabled when yearlyCap is 0', () {
       when(remoteConfig.reviewPromptConfig).thenReturn(const ReviewPromptConfig(yearlyCap: 0));
-      when(
-        prefs.promptShownTimestamps(),
-      ).thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
+      when(prefs.promptShownTimestamps())
+          .thenReturn([nowMs - 10 * dayMs, nowMs - 20 * dayMs, nowMs - 30 * dayMs]);
       expect(createStore().suppressionReason, isNull);
     });
 
     test('old displays outside the year do not count toward the cap', () {
-      when(
-        prefs.promptShownTimestamps(),
-      ).thenReturn([nowMs - 400 * dayMs, nowMs - 401 * dayMs, nowMs - 402 * dayMs]);
+      when(prefs.promptShownTimestamps())
+          .thenReturn([nowMs - 400 * dayMs, nowMs - 401 * dayMs, nowMs - 402 * dayMs]);
       expect(createStore().suppressionReason, isNull);
     });
 
@@ -393,9 +388,8 @@ void main() {
 
     test('cooldown durations are interpreted as minutes', () async {
       const minuteMs = 60 * 1000;
-      when(
-        remoteConfig.reviewPromptConfig,
-      ).thenReturn(const ReviewPromptConfig(cooldownDismissMinutes: 5));
+      when(remoteConfig.reviewPromptConfig)
+          .thenReturn(const ReviewPromptConfig(cooldownDismissMinutes: 5));
       await createStore().onDismiss();
       verify(prefs.setCooldownUntil(nowMs + 5 * minuteMs)).called(1);
     });
@@ -429,9 +423,8 @@ void main() {
     // Use a 0s stability window so the timer fires within the test, and report
     // the VPN as connected so the timer's re-check passes.
     void useInstantStableSession() {
-      when(
-        remoteConfig.reviewPromptConfig,
-      ).thenReturn(const ReviewPromptConfig(stableSessionSeconds: 0));
+      when(remoteConfig.reviewPromptConfig)
+          .thenReturn(const ReviewPromptConfig(stableSessionSeconds: 0));
       when(vpnStore.vpnStatus).thenReturn(VpnConnectionStatus.connected);
     }
 

@@ -35,9 +35,8 @@ void main() {
 
       when(mockPrompts.shownBanners()).thenAnswer((_) async => <BannerType>[]);
       mockUpdateAvailableStore = MockUpdateAvailableStore();
-      when(
-        mockSubscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: false)));
+      when(mockSubscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription(active: false)));
       when(mockSubscriptionStore.isSubscribed).thenReturn(true);
       when(mockAuthSessionStore.status).thenReturn(AuthStatus.unauthenticated);
       bannersStore = BannersStore(

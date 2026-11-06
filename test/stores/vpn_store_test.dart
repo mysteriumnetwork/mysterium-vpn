@@ -164,9 +164,8 @@ void main() {
     // VPN guards
     when(mockAuthSession.accessTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
     when(mockAuthSession.isAuthenticated).thenReturn(true);
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
 
     // determineConnectingLocation echoes the requested location, mirroring
     // real logic so refresh receives whatever _startConnection passes.
@@ -181,9 +180,8 @@ void main() {
     when(mockConnectionDecision.shouldResolveClosestLocation(any)).thenReturn(false);
 
     when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
-    when(
-      mockWireguardRepo.currentStatus(),
-    ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+    when(mockWireguardRepo.currentStatus())
+        .thenAnswer((_) async => VpnConnectionStatus.disconnected);
     when(mockWireguardRepo.connect(config: anyNamed('config'))).thenAnswer((_) async {});
     when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
     when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
@@ -274,9 +272,8 @@ void main() {
 
     test('setupTunnel calls repository and listens to status', () async {
       when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
-      when(
-        mockWireguardRepo.currentStatus(),
-      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockWireguardRepo.currentStatus())
+          .thenAnswer((_) async => VpnConnectionStatus.disconnected);
       when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
 
       await vpnStore.setupTunnel();
@@ -287,9 +284,8 @@ void main() {
 
     test('setupTunnel logs success', () async {
       when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
-      when(
-        mockWireguardRepo.currentStatus(),
-      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockWireguardRepo.currentStatus())
+          .thenAnswer((_) async => VpnConnectionStatus.disconnected);
       when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
 
       await vpnStore.setupTunnel();
@@ -298,9 +294,8 @@ void main() {
     });
 
     test('setupTunnel logs permission_denied when the OS prompt is refused', () async {
-      when(
-        mockWireguardRepo.setupTunnel(),
-      ).thenThrow(PlatformException(code: 'error', message: 'Permissions are not given'));
+      when(mockWireguardRepo.setupTunnel())
+          .thenThrow(PlatformException(code: 'error', message: 'Permissions are not given'));
 
       await expectLater(vpnStore.setupTunnel(), throwsA(isA<PlatformException>()));
 
@@ -315,16 +310,14 @@ void main() {
 
       await expectLater(vpnStore.setupTunnel(), throwsException);
 
-      verify(
-        mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_setup_failed', trigger: 'auto'),
-      ).called(1);
+      verify(mockAnalytics.logTunnelSetupFailed(reason: 'tunnel_setup_failed', trigger: 'auto'))
+          .called(1);
     });
 
     test('setupTunnel tags the permission-flow trigger when the dialog drove it', () async {
       when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async => Future.value());
-      when(
-        mockWireguardRepo.currentStatus(),
-      ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+      when(mockWireguardRepo.currentStatus())
+          .thenAnswer((_) async => VpnConnectionStatus.disconnected);
       when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
 
       await vpnStore.setupTunnel(trigger: tunnelSetupTriggerPermissionFlow);
@@ -600,68 +593,62 @@ void main() {
         await storeWithOpenVpn.disposeStore();
       });
 
-      test(
-        'fetchVpnConfiguration throws UnavailableLocationException and disables location on ApiException 2332',
-        () async {
-          const location = VPNLocation(
-            id: 'NY',
-            ipType: IPType.datacenter,
-            translations: {},
-            countryCode: 'US',
-          );
+      test('fetchVpnConfiguration throws UnavailableLocationException and disables location on ApiException 2332', () async {
+        const location = VPNLocation(
+          id: 'NY',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'US',
+        );
 
-          const intent = UserIntent.bestSpeed;
+        const intent = UserIntent.bestSpeed;
 
-          when(mockRealIPInfo.infoFuture).thenAnswer(
-            (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
-          );
+        when(mockRealIPInfo.infoFuture).thenAnswer(
+          (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
+        );
 
-          when(
-            mockWireguardRepo.fetchVpnConfig(
-              countryOriginate: anyNamed('countryOriginate'),
-              country: anyNamed('country'),
-              city: anyNamed('city'),
-              ipType: anyNamed('ipType'),
-              resetConnection: anyNamed('resetConnection'),
-              userIntent: anyNamed('userIntent'),
-              cluster: anyNamed('cluster'),
-              dnsAddress: anyNamed('dnsAddress'),
-            ),
-          ).thenAnswer(
-            (_) async => throw ApiException(
-              RequestOptions(),
-              'Location unavailable',
-              code: 2332,
-              identifier: 'LocationUnavailable',
-              endpoint: '/config',
-              severity: ExceptionSeverity.low,
-            ),
-          );
+        when(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            resetConnection: anyNamed('resetConnection'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        ).thenAnswer(
+          (_) async => throw ApiException(
+            RequestOptions(),
+            'Location unavailable',
+            code: 2332,
+            identifier: 'LocationUnavailable',
+            endpoint: '/config',
+            severity: ExceptionSeverity.low,
+          ),
+        );
 
-          await expectLater(
-            () async => vpnStore.fetchVpnConfiguration(
-              location: location,
-              intent: intent,
-              refreshIP: false,
-            ),
-            throwsA(isA<UnavailableLocationException>()),
-          );
+        await expectLater(
+          () async =>
+              vpnStore.fetchVpnConfiguration(location: location, intent: intent, refreshIP: false),
+          throwsA(isA<UnavailableLocationException>()),
+        );
 
-          verify(
-            mockUnavailableLocations.toggleAvailability(
-              argThat(
-                predicate<VPNLocation>(
-                  (loc) =>
-                      loc.id == location.id &&
-                      loc.ipType == location.ipType &&
-                      loc.countryCode == location.countryCode,
-                ),
+        verify(
+          mockUnavailableLocations.toggleAvailability(
+            argThat(
+              predicate<VPNLocation>(
+                (loc) =>
+                    loc.id == location.id &&
+                    loc.ipType == location.ipType &&
+                    loc.countryCode == location.countryCode,
               ),
-              availability: false,
             ),
-          ).called(1);
-        },
-      );
+            availability: false,
+          ),
+        ).called(1);
+      });
 
       test('a targeted (favorite IP) 2332 failure does NOT disable the country', () async {
         const location = VPNLocation(
@@ -778,9 +765,8 @@ void main() {
       test('connects using WireGuard repository', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
         when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
 
         // Verify WireGuard repo is being used
         await vpnStore.checkTunnelStatus();
@@ -793,9 +779,8 @@ void main() {
 
         final storeWithOpenVpn = buildStore();
 
-        when(
-          mockOpenVpnRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockOpenVpnRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
 
         // Verify OpenVPN repo is being used
         await storeWithOpenVpn.checkTunnelStatus();
@@ -837,9 +822,8 @@ void main() {
         final fired = recordHaptics();
         final storedAt = DateTime.now().subtract(const Duration(minutes: 5));
         await prefsService.setInt(StorageKeys.connectedAt.name, storedAt.millisecondsSinceEpoch);
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.connected);
 
         final store = buildStore();
         await pumpEventQueue();
@@ -853,9 +837,8 @@ void main() {
       });
 
       test('reaching connected resets the teardown reason', () async {
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
         when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
         final store = buildStore();
         await pumpEventQueue();
@@ -875,9 +858,8 @@ void main() {
       test('a connect started in this run fires success feedback', () async {
         stubConnectFlow();
         when(anyToggleAction()).thenReturn(ConnectionAction.connect);
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
         final store = buildStore();
         await pumpEventQueue();
         final fired = recordHaptics();
@@ -893,9 +875,8 @@ void main() {
 
       test('an already-up tunnel with no stored stamp stays silent', () async {
         final fired = recordHaptics();
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.connected);
 
         final store = buildStore();
         await pumpEventQueue();
@@ -907,9 +888,8 @@ void main() {
       });
 
       test('stamps and persists a fresh connectedAt when no stamp is stored', () async {
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.connected);
         final before = DateTime.now();
 
         final store = buildStore();
@@ -926,17 +906,15 @@ void main() {
       });
 
       test('clears connectedAt and the stored stamp on disconnect', () async {
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.connected);
 
         final store = buildStore();
         await pumpEventQueue();
         expect(store.connectedAt, isNotNull);
 
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
         statusController.add(VpnConnectionStatus.disconnected);
         await pumpEventQueue();
 
@@ -949,17 +927,15 @@ void main() {
       test('ignores a stale stored stamp when connecting after a disconnected launch', () async {
         final staleAt = DateTime.now().subtract(const Duration(hours: 2));
         await prefsService.setInt(StorageKeys.connectedAt.name, staleAt.millisecondsSinceEpoch);
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
 
         final store = buildStore();
         await pumpEventQueue();
         expect(store.connectedAt, isNull);
 
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.connected);
         statusController.add(VpnConnectionStatus.connected);
         await pumpEventQueue();
 
@@ -1127,9 +1103,8 @@ void main() {
       });
 
       test('connect timeout logs failure with a non-null error code and message', () async {
-        when(
-          mockWireguardRepo.connect(config: anyNamed('config')),
-        ).thenThrow(TimeoutException('connect timed out'));
+        when(mockWireguardRepo.connect(config: anyNamed('config')))
+            .thenThrow(TimeoutException('connect timed out'));
 
         await connect(country);
 
@@ -1273,12 +1248,10 @@ void main() {
 
         when(mockConnectionDecision.potentialLocation).thenReturn(connectedLocation);
         when(mockWireguardRepo.setupTunnel()).thenAnswer((_) async {});
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.connected);
-        when(
-          mockWireguardRepo.statusStream(),
-        ).thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.connected);
+        when(mockWireguardRepo.statusStream())
+            .thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
         when(mockExternalApi.getIPAddress()).thenAnswer((_) async => '2.2.2.2');
 
         final store = VpnStore(
@@ -1802,9 +1775,8 @@ void main() {
         when(mockWireguardRepo.init()).thenAnswer((_) async {});
         when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
         when(mockWireguardRepo.statusStream()).thenAnswer((_) => statusController.stream);
-        when(
-          mockWireguardRepo.currentStatus(),
-        ).thenAnswer((_) async => VpnConnectionStatus.disconnected);
+        when(mockWireguardRepo.currentStatus())
+            .thenAnswer((_) async => VpnConnectionStatus.disconnected);
         when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
         when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
         when(mockRecentLocations.future).thenAnswer((_) => ObservableFuture.value(<VPNLocation>[]));
@@ -1940,9 +1912,8 @@ void main() {
         when(mockAuthSession.status).thenReturn(AuthStatus.authenticated);
         when(mockAuthSession.isAuthenticated).thenReturn(true);
         when(mockAuthSession.accessTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
-        when(
-          mockSubscriptionStore.subscriptionFuture,
-        ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
+        when(mockSubscriptionStore.subscriptionFuture)
+            .thenAnswer((_) => ObservableFuture.value(Subscription(active: true)));
 
         when(mockRemoteConfig.shouldCheckUdp).thenReturn(true);
         when(mockVpnProtocolStore.isProtocolPickerAvailable).thenReturn(true);
@@ -2141,15 +2112,13 @@ void main() {
         when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) => tunnelCheck.future);
         // Needed by the auth reaction, which _initTunnel runs on construction.
         when(mockWireguardRepo.init()).thenAnswer((_) async {});
-        when(
-          mockWireguardRepo.statusStream(),
-        ).thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
+        when(mockWireguardRepo.statusStream())
+            .thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
       });
 
       test('a failed tunnel check surfaces an error instead of the permission prompt', () async {
-        when(
-          mockWireguardRepo.isTunnelConfigured(),
-        ).thenThrow(PlatformException(code: 'NATIVE_ERR', message: 'lookup failed'));
+        when(mockWireguardRepo.isTunnelConfigured())
+            .thenThrow(PlatformException(code: 'NATIVE_ERR', message: 'lookup failed'));
 
         await expectLater(
           vpnStore.manageConnection(location: location),

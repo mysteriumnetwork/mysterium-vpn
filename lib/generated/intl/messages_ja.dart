@@ -486,6 +486,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "pushNotificationsSetting": MessageLookupByLibrary.simpleMessage("プッシュ通知"),
     "pushNotificationsSettingDesc": MessageLookupByLibrary.simpleMessage("製品の最新情報、ヒント、特別オファー"),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "接続中です。終了すると Mysterium VPN が閉じ、VPN の接続も切断されます。",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage("Mysterium VPN を閉じて、バックグラウンドでの実行を停止します。"),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Mysterium VPN を終了しますか？"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("終了"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("接続の調子はいかがですか？"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("どこが気に入りませんでしたか？"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("どこが良かったですか？"),

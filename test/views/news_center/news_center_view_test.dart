@@ -107,9 +107,8 @@ void main() {
   });
 
   testWidgets('renders a card per item and filters by the selected tab', (tester) async {
-    when(
-      service.getFeed(),
-    ).thenAnswer((_) async => [newsItem(1, category: NewsCategory.incident), newsItem(2)]);
+    when(service.getFeed())
+        .thenAnswer((_) async => [newsItem(1, category: NewsCategory.incident), newsItem(2)]);
 
     await pump(tester);
     await tester.pumpAndSettle();
@@ -168,9 +167,9 @@ void main() {
     );
     expect(unreadDot, findsOneWidget);
 
-    ProviderScope.containerOf(
-      tester.element(find.byType(NewsCenterView)),
-    ).read(newsCenterStorePOD).markRead(1);
+    ProviderScope.containerOf(tester.element(find.byType(NewsCenterView)))
+        .read(newsCenterStorePOD)
+        .markRead(1);
     await tester.pumpAndSettle();
 
     expect(unreadDot, findsNothing);

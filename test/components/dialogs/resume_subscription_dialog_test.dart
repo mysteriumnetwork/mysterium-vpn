@@ -227,9 +227,8 @@ void main() {
   });
 
   testWidgets('falls back to a paused status when no subscription is loaded', (tester) async {
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture(Completer<Subscription>().future));
+    when(subscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture(Completer<Subscription>().future));
     when(subscriptionStore.resumeSubscription()).thenAnswer((_) async {});
 
     await openPrompt(tester);

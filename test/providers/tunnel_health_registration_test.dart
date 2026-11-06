@@ -73,9 +73,8 @@ void main() {
       const VpnConnection(connectionIP: '10.0.0.1', location: location, sessionId: 'sess-1'),
     );
     when(vpnStore.tunnelStatistics()).thenAnswer((_) async => null);
-    when(
-      probe.probe(exitIp: anyNamed('exitIp'), controlIps: anyNamed('controlIps')),
-    ).thenAnswer((_) async => degraded);
+    when(probe.probe(exitIp: anyNamed('exitIp'), controlIps: anyNamed('controlIps')))
+        .thenAnswer((_) async => degraded);
   });
 
   test('the provider builds a live store', () {

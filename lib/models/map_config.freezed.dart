@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'map_config.dart';
@@ -9,13 +9,14 @@ part of 'map_config.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$MapConfig {
 
- List<num> get zoomLevels; List<num> get tileZoomLevels; num get initialZoom; Map<String, String> get tileUrlTemplates;
+
 /// Create a copy of MapConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +27,21 @@ $MapConfigCopyWith<MapConfig> get copyWith => _$MapConfigCopyWithImpl<MapConfig>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MapConfig&&const DeepCollectionEquality().equals(other.zoomLevels, zoomLevels)&&const DeepCollectionEquality().equals(other.tileZoomLevels, tileZoomLevels)&&(identical(other.initialZoom, initialZoom) || other.initialZoom == initialZoom)&&const DeepCollectionEquality().equals(other.tileUrlTemplates, tileUrlTemplates));
+  final _this = this as MapConfig;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MapConfig&&const DeepCollectionEquality().equals(other.zoomLevels, _this.zoomLevels)&&const DeepCollectionEquality().equals(other.tileZoomLevels, _this.tileZoomLevels)&&(identical(other.initialZoom, _this.initialZoom) || other.initialZoom == _this.initialZoom)&&const DeepCollectionEquality().equals(other.tileUrlTemplates, _this.tileUrlTemplates));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(zoomLevels),const DeepCollectionEquality().hash(tileZoomLevels),initialZoom,const DeepCollectionEquality().hash(tileUrlTemplates));
+int get hashCode {
+  final _this = this as MapConfig;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.zoomLevels),const DeepCollectionEquality().hash(_this.tileZoomLevels),_this.initialZoom,const DeepCollectionEquality().hash(_this.tileUrlTemplates));
+}
 
 @override
 String toString() {
-  return 'MapConfig(zoomLevels: $zoomLevels, tileZoomLevels: $tileZoomLevels, initialZoom: $initialZoom, tileUrlTemplates: $tileUrlTemplates)';
+  final _this = this as MapConfig;
+  return 'MapConfig(zoomLevels: ${_this.zoomLevels}, tileZoomLevels: ${_this.tileZoomLevels}, initialZoom: ${_this.initialZoom}, tileUrlTemplates: ${_this.tileUrlTemplates})';
 }
 
 

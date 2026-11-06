@@ -85,9 +85,8 @@ void main() {
   });
 
   test('leaves speeds at zero when the interval is zero', () async {
-    when(
-      vpnStore.tunnelStatistics(),
-    ).thenAnswer((_) async => const TunnelStats(totalDownload: 1000000, totalUpload: 1000000));
+    when(vpnStore.tunnelStatistics())
+        .thenAnswer((_) async => const TunnelStats(totalDownload: 1000000, totalUpload: 1000000));
 
     store = NetworkStatisticsStore(vpnStore, pollInterval: Duration.zero);
     await Future<void>.delayed(tick * 3);

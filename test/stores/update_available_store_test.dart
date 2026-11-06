@@ -110,19 +110,16 @@ void main() async {
     },
   );
 
-  test(
-    'appUpdateAvailable returns true if newVersionFuture is used and store version is smaller but CC version is bigger',
-    () {
-      final store = UpdateAvailableStore(
-        mockRemoteConfigStore,
-        BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
-      );
-      when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
-      when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('6.0.0');
+  test('appUpdateAvailable returns true if newVersionFuture is used and store version is smaller but CC version is bigger', () {
+    final store = UpdateAvailableStore(
+      mockRemoteConfigStore,
+      BuildInfo(buildNumber: 0, buildVersion: '3.0.0'),
+    );
+    when(mockRemoteConfigStore.useStoreVersionChecker).thenReturn(true);
+    when(mockRemoteConfigStore.latestStableAppVersion).thenReturn('6.0.0');
 
-      store.updateAvailabilityFuture = ObservableFuture.value(UpdateAvailability.updateAvailable);
+    store.updateAvailabilityFuture = ObservableFuture.value(UpdateAvailability.updateAvailable);
 
-      expect(store.appUpdateAvailable, true);
-    },
-  );
+    expect(store.appUpdateAvailable, true);
+  });
 }

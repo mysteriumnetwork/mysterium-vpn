@@ -118,7 +118,6 @@ LocationItemState useLocationItemState({
         connectingLocation: vpnStore.connectingLocation,
         isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
       );
-      final childPlusUpgrade = childMode == LocationMode.unsupportedByPlan;
       final status = switch (childMode) {
         LocationMode.connecting => IpCardStatus.connecting,
         LocationMode.connected => IpCardStatus.selected,
@@ -130,7 +129,6 @@ LocationItemState useLocationItemState({
         name: child.getName(context),
         subtitle: S.current.locationItemNodeCount(child.nodeCount ?? 0),
         status: status,
-        plusUpgrade: childPlusUpgrade,
         onTap: switch (childMode) {
           LocationMode.unsupportedByPlan => handleUpgradePlan,
           LocationMode.unavailable || LocationMode.connecting || LocationMode.loading => null,

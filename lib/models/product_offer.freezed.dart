@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'product_offer.dart';
@@ -9,6 +9,7 @@ part of 'product_offer.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $ProductOfferCopyWith<ProductOffer> get copyWith => _$ProductOfferCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductOffer&&(identical(other.id, id) || other.id == id)&&(identical(other.price, price) || other.price == price)&&(identical(other.fullPrice, fullPrice) || other.fullPrice == fullPrice)&&(identical(other.durationUnit, durationUnit) || other.durationUnit == durationUnit)&&(identical(other.durationValue, durationValue) || other.durationValue == durationValue));
+  final _this = this as ProductOffer;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductOffer&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.price, _this.price) || other.price == _this.price)&&(identical(other.fullPrice, _this.fullPrice) || other.fullPrice == _this.fullPrice)&&(identical(other.durationUnit, _this.durationUnit) || other.durationUnit == _this.durationUnit)&&(identical(other.durationValue, _this.durationValue) || other.durationValue == _this.durationValue));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,price,fullPrice,durationUnit,durationValue);
+int get hashCode {
+  final _this = this as ProductOffer;
+  return Object.hash(runtimeType,_this.id,_this.price,_this.fullPrice,_this.durationUnit,_this.durationValue);
+}
 
 @override
 String toString() {
-  return 'ProductOffer(id: $id, price: $price, fullPrice: $fullPrice, durationUnit: $durationUnit, durationValue: $durationValue)';
+  final _this = this as ProductOffer;
+  return 'ProductOffer(id: ${_this.id}, price: ${_this.price}, fullPrice: ${_this.fullPrice}, durationUnit: ${_this.durationUnit}, durationValue: ${_this.durationValue})';
 }
 
 
@@ -66,7 +72,7 @@ class _$ProductOfferCopyWithImpl<$Res>
 /// Create a copy of ProductOffer
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? price = null,Object? fullPrice = null,Object? durationUnit = null,Object? durationValue = null,}) {
-  return _then(_self.copyWith(
+  return _then(ProductOffer(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,fullPrice: null == fullPrice ? _self.fullPrice : fullPrice // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductOffer&&(identical(other.id, id) || other.id == id)&&(identical(other.price, price) || other.price == price)&&(identical(other.fullPrice, fullPrice) || other.fullPrice == fullPrice)&&(identical(other.durationUnit, durationUnit) || other.durationUnit == durationUnit)&&(identical(other.durationValue, durationValue) || other.durationValue == durationValue));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductOffer&&(identical(other.id, id) || other.id == id)&&(identical(other.price, price) || other.price == price)&&(identical(other.fullPrice, fullPrice) || other.fullPrice == fullPrice)&&(identical(other.durationUnit, durationUnit) || other.durationUnit == durationUnit)&&(identical(other.durationValue, durationValue) || other.durationValue == durationValue));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,price,fullPrice,durationUnit,durationValue);
+int get hashCode {
+    return Object.hash(runtimeType,id,price,fullPrice,durationUnit,durationValue);
+}
 
 @override
 String toString() {
-  return 'ProductOffer(id: $id, price: $price, fullPrice: $fullPrice, durationUnit: $durationUnit, durationValue: $durationValue)';
+    return 'ProductOffer(id: $id, price: $price, fullPrice: $fullPrice, durationUnit: $durationUnit, durationValue: $durationValue)';
 }
 
 

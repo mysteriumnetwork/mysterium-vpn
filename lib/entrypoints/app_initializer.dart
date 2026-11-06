@@ -163,20 +163,22 @@ class AppInitializer {
   // ─── Desktop window ──────────────────────────────────────────────────────
 
   Future<void> _initDesktop() async {
-    await windowManager.ensureInitialized();
-    await windowManager.setPreventClose(true);
+    final window = mainWindow;
+    if (window == null) {
+      return;
+    }
     final minimumSize = switch (Env.flavor) {
       Flavor.dev => const Size(320, 600),
       Flavor.production => const Size(1040, 700),
     };
-    await windowManager.setMinimumSize(minimumSize);
-    final actualSize = await windowManager.getSize();
+    window.minimumSize = minimumSize.toNative();
+    final actualSize = window.size.toSize();
     final desiredSize = Size(
       max(minimumSize.width, actualSize.width),
       max(minimumSize.height, actualSize.height),
     );
     if (actualSize != desiredSize) {
-      await windowManager.setSize(desiredSize);
+      window.setSize(desiredSize.toNative(), false);
     }
   }
 

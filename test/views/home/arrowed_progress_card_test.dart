@@ -41,9 +41,8 @@ void main() {
     when(themeStore.isDarkMode).thenReturn(false);
 
     when(prompts.subscriptionOnboardingShown()).thenAnswer((_) async => false);
-    when(
-      subscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
     subscriptionOnboardingStore = SubscriptionOnboardingStore(
       analyticsStore: analyticsStore,

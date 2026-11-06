@@ -576,6 +576,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aktualizacje produktu, wskazówki i oferty specjalne",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "Masz aktywne połączenie. Zamknięcie zakończy Mysterium VPN i rozłączy VPN.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN zostanie zamknięty i przestanie działać w tle.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Zamknąć Mysterium VPN?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Zamknij"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Jak działa Twoje połączenie?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Co Ci się nie podobało?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Co Ci się podobało?"),

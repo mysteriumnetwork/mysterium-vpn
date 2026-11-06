@@ -64,9 +64,8 @@ void main() {
     when(mockRemoteConfigStore.configFuture).thenAnswer((_) => ObservableFuture.value(const {}));
 
     // Default: avoid constructor reaction inside SubscriptionPlansStore triggering refresh().
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
 
     when(mockSubscriptionStore.subscriptionConfigFuture).thenAnswer(
       (_) => ObservableFuture.value(
@@ -136,9 +135,8 @@ void main() {
         testPlatformGateway: 'apple',
       );
 
-      when(
-        mockSubscriptionStore.subscriptionConfigFuture,
-      ).thenAnswer((_) => ObservableFuture.value(null));
+      when(mockSubscriptionStore.subscriptionConfigFuture)
+          .thenAnswer((_) => ObservableFuture.value(null));
 
       final products = await store.future;
 
@@ -284,9 +282,8 @@ void main() {
 
     test('bestValueProducts returns products marked as best value', () async {
       when(mockRemoteConfigStore.planFeatures).thenReturn([featuresBasic, featuresPlus]);
-      when(
-        mockRemoteConfigStore.plansBestValue,
-      ).thenReturn({'plan_yearly_plus', 'plan_yearly_basic'});
+      when(mockRemoteConfigStore.plansBestValue)
+          .thenReturn({'plan_yearly_plus', 'plan_yearly_basic'});
 
       final store = SubscriptionPlansStore(
         mockService,

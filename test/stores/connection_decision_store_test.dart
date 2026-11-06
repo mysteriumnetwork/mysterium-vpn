@@ -46,13 +46,11 @@ void main() {
 
     when(mockRecentLocationsStore.future).thenAnswer((_) => ObservableFuture.value([]));
 
-    when(
-      mockLocationsStore.dcLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(vpnLocationsWithClosest));
+    when(mockLocationsStore.dcLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(vpnLocationsWithClosest));
 
-    when(
-      mockLocationsStore.residentialLocationsFuture,
-    ).thenAnswer((_) => ObservableFuture.value(vpnLocationsEmpty));
+    when(mockLocationsStore.residentialLocationsFuture)
+        .thenAnswer((_) => ObservableFuture.value(vpnLocationsEmpty));
 
     when(mockUserIntentsStore.userIntent).thenReturn(null);
 
@@ -73,9 +71,8 @@ void main() {
           countryCode: 'DE',
         );
 
-        when(
-          mockRecentLocationsStore.future,
-        ).thenAnswer((_) => ObservableFuture.value([recentLocation]));
+        when(mockRecentLocationsStore.future)
+            .thenAnswer((_) => ObservableFuture.value([recentLocation]));
 
         expect(store.potentialLocation, equals(recentLocation));
       });
@@ -87,12 +84,10 @@ void main() {
 
       test('returns null if no locations available', () {
         when(mockRecentLocationsStore.future).thenAnswer((_) => ObservableFuture.value([]));
-        when(
-          mockLocationsStore.dcLocationsFuture,
-        ).thenAnswer((_) => ObservableFuture.value(vpnLocationsEmpty));
-        when(
-          mockLocationsStore.residentialLocationsFuture,
-        ).thenAnswer((_) => ObservableFuture.value(vpnLocationsEmpty));
+        when(mockLocationsStore.dcLocationsFuture)
+            .thenAnswer((_) => ObservableFuture.value(vpnLocationsEmpty));
+        when(mockLocationsStore.residentialLocationsFuture)
+            .thenAnswer((_) => ObservableFuture.value(vpnLocationsEmpty));
 
         expect(store.potentialLocation, isNull);
       });

@@ -47,9 +47,8 @@ void main() {
   });
 
   test('clearPendingTransactions errors are swallowed', () async {
-    when(
-      service.clearPendingTransactions(),
-    ).thenAnswer((_) => Future.error(Exception('platform fail')));
+    when(service.clearPendingTransactions())
+        .thenAnswer((_) => Future.error(Exception('platform fail')));
 
     final store = newStore();
     await expectLater(store.refreshConfig(), completes);

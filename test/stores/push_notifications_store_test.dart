@@ -156,9 +156,8 @@ void main() {
 
       await store.setPushNotificationsShown(userAllowed: true);
 
-      verify(
-        analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: false),
-      ).called(1);
+      verify(analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: false))
+          .called(1);
     });
 
     test('a grant is left to the permission stream, not double-counted', () async {
@@ -233,9 +232,8 @@ void main() {
       permissionController.add(true);
       await Future<void>.delayed(Duration.zero);
 
-      verify(
-        analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true),
-      ).called(1);
+      verify(analyticsStore.logPushNotificationsPermissionsChanged(permissionsGranted: true))
+          .called(1);
     });
   });
 
@@ -258,9 +256,8 @@ void main() {
     });
 
     test('a failing report is evented so broken reporting is visible', () async {
-      when(
-        repository.reportEvent(any, any),
-      ).thenThrow(const NotifierException(category: 'server', statusCode: 503));
+      when(repository.reportEvent(any, any))
+          .thenThrow(const NotifierException(category: 'server', statusCode: 503));
 
       receivedController.add(notification(campaignId: 'campaign-1'));
       await pumpEventQueue();
@@ -275,9 +272,8 @@ void main() {
     });
 
     test('a failing report does not escape the listener', () async {
-      when(
-        repository.reportEvent(any, any),
-      ).thenThrow(const NotifierException(category: 'network'));
+      when(repository.reportEvent(any, any))
+          .thenThrow(const NotifierException(category: 'network'));
 
       receivedController.add(notification(campaignId: 'campaign-1'));
 
@@ -297,9 +293,8 @@ void main() {
       openedController.add(notification(campaignId: 'campaign-1'));
       await Future<void>.delayed(Duration.zero);
 
-      verify(
-        analyticsStore.logEvent(AnalyticsEvent.pushOpened, parameters: anyNamed('parameters')),
-      ).called(1);
+      verify(analyticsStore.logEvent(AnalyticsEvent.pushOpened, parameters: anyNamed('parameters')))
+          .called(1);
     });
 
     test('delegates an open event to the repository', () async {
@@ -373,9 +368,8 @@ void main() {
 
     test('an open still reports when a back-filled delivery fails', () async {
       final sent = notification(campaignId: 'campaign-1');
-      when(
-        repository.reportEvent(sent, NotifierEventType.delivered),
-      ).thenThrow(const NotifierException(category: 'network'));
+      when(repository.reportEvent(sent, NotifierEventType.delivered))
+          .thenThrow(const NotifierException(category: 'network'));
 
       openedController.add(sent);
       await pumpEventQueue();

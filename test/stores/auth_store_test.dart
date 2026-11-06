@@ -136,9 +136,8 @@ void main() {
   group('signInWithGoogle', () {
     test('drives signInComplete and exposes authenticatingType', () async {
       when(authService.signInWithGoogle()).thenAnswer((_) async => 'google-id-token');
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.signInWithGoogle();
       // Wait for the inner authenticate() future to resolve.
@@ -153,9 +152,8 @@ void main() {
     test('skips authenticate when signInWithGoogle returns null', () async {
       // signInWithGoogle declares non-null return but mocks may stub null.
       when(authService.signInWithGoogle()).thenAnswer((_) async => '');
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.signInWithGoogle();
       // Empty string is non-null so authenticate IS called — assert the
@@ -180,9 +178,8 @@ void main() {
   group('signInWithApple', () {
     test('drives signInComplete on success', () async {
       when(authService.signInWithApple()).thenAnswer((_) async => 'apple-authorization');
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.signInWithApple();
       await store.authenticateFeature;
@@ -213,9 +210,8 @@ void main() {
 
   group('logout', () {
     test('calls authService.logout with invalidateRemotely flag', () async {
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await store.logout();
 
@@ -223,9 +219,8 @@ void main() {
     });
 
     test('respects invalidateRemotely: false', () async {
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await store.logout(invalidateRemotely: false);
 
@@ -251,9 +246,8 @@ void main() {
 
   group('refreshAuthToken', () {
     test('uses the refresh token to obtain new credentials', () async {
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.refreshAuthToken();
 
@@ -263,9 +257,8 @@ void main() {
 
     test('logs out when no refresh token is stored', () async {
       when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<RefreshTokenNotFoundException>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
@@ -273,12 +266,10 @@ void main() {
 
     test('logs out when signInComplete fails while authenticated', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(Exception('expired'));
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(Exception('expired'));
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<Exception>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
@@ -286,12 +277,10 @@ void main() {
 
     test('still logs out (no snackbar) when not authenticated', () async {
       when(sessionStore.status).thenReturn(AuthStatus.unauthenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(Exception('expired'));
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(Exception('expired'));
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<Exception>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
