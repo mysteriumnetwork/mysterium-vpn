@@ -201,6 +201,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkSubsStatusFailedTitle": MessageLookupByLibrary.simpleMessage("Info paket tidak tersedia"),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("Mengambil info paket..."),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("Cek emailmu"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP tingkat kota tidak tersedia di paketmu saat ini.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Hapus pencarian"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Tutup"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Komunikasi"),
@@ -496,6 +499,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro tahunan"),
     "poland": MessageLookupByLibrary.simpleMessage("Polandia"),
     "preferences": MessageLookupByLibrary.simpleMessage("Preferensi"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage(
+      "Harga sudah termasuk PPN yang berlaku.",
+    ),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Lihat semua paket"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Kebijakan Privasi"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -549,6 +555,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pembaruan produk, tips, dan penawaran khusus",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu sedang terhubung. Keluar akan menutup Mysterium VPN dan memutuskan VPN kamu.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN akan ditutup dan berhenti berjalan di latar belakang.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Keluar dari Mysterium VPN?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Keluar"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bagaimana koneksimu?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Apa yang kurang kamu suka?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Apa yang kamu suka?"),
@@ -606,6 +620,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("Cara kerja IP residensial"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residensial"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IP residensial tidak tersedia di paketmu saat ini.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Lanjutkan"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "Langganan tidak bisa dilanjutkan. Coba lagi.",

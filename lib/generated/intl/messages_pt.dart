@@ -206,6 +206,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("Obtendo informações do plano..."),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("Verifique seu e-mail"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IPs por cidade não estão disponíveis no seu plano atual.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Limpar busca"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Fechar"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("Comunicações"),
@@ -515,6 +518,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro anual"),
     "poland": MessageLookupByLibrary.simpleMessage("Polônia"),
     "preferences": MessageLookupByLibrary.simpleMessage("Preferências"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("O preço inclui o IVA aplicável."),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Ver todos os planos"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Política de Privacidade"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -570,6 +574,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Novidades de produto, dicas e ofertas especiais",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "Você está conectado. Ao sair, o Mysterium VPN será fechado e sua VPN será desconectada.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "O Mysterium VPN será fechado e deixará de ser executado em segundo plano.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Sair do Mysterium VPN?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Sair"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Como está sua conexão?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Do que você não gostou?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Do que você gostou?"),
@@ -629,6 +641,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Como funcionam os IPs residenciais",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("IP residencial"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "IPs residenciais não estão disponíveis no seu plano atual.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Retomar"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "Não foi possível retomar a tua subscrição. Tente novamente.",

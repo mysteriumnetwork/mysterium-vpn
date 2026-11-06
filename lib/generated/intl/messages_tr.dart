@@ -208,6 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "checkSubsStatusTitle": MessageLookupByLibrary.simpleMessage("Plan bilgileri alınıyor..."),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("E-postanı kontrol et"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Şehir bazlı IP\'ler mevcut planında kullanılamıyor.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("Aramayı temizle"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("Kapat"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("İletişim"),
@@ -507,6 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro yıllık"),
     "poland": MessageLookupByLibrary.simpleMessage("Polonya"),
     "preferences": MessageLookupByLibrary.simpleMessage("Tercihler"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("Fiyata geçerli KDV dahildir."),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Gizlilik Politikası"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -564,6 +568,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ürün güncellemeleri, ipuçları ve özel teklifler",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "Bağlısın. Çıkarsan Mysterium VPN kapanacak ve VPN bağlantın kesilecek.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN kapanacak ve arka planda çalışmayı durduracak.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Mysterium VPN kapatılsın mı?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Çık"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bağlantın nasıl?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Neyi beğenmedin?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Neyi beğendin?"),
@@ -621,6 +633,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Konut IP\'leri nasıl çalışır",
     ),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("Konut IP\'si"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "Konut IP\'leri mevcut planında kullanılamıyor.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("Sürdür"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "Aboneliğin sürdürilemedi. Lütfen tekrar dene.",
