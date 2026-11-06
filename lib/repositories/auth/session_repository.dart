@@ -9,6 +9,10 @@ abstract class SessionRepository {
 
   Future<String?> refreshToken();
 
+  /// The stored refresh token, telling an absent key apart from a keychain
+  /// that refused the read.
+  Future<String?> refreshTokenOrFail();
+
   /// The stored identity, or null when either half is missing.
   Future<AuthUser?> user();
 
@@ -44,6 +48,9 @@ class LocalSessionRepository implements SessionRepository {
 
   @override
   Future<String?> refreshToken() => _secureStorage.getRefreshToken();
+
+  @override
+  Future<String?> refreshTokenOrFail() => _secureStorage.getRefreshTokenOrFail();
 
   @override
   Future<AuthUser?> user() async {

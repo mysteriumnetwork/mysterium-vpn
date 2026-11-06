@@ -383,7 +383,9 @@ abstract class _AuthStore with Store {
     _refreshInconclusive = false;
     final TokenResponse authTokens;
     try {
-      final refreshToken = await _authSessionStore.refreshTokenFuture;
+      // A null in memory can be a refused read, so storage gets the last word.
+      final refreshToken =
+          await _authSessionStore.refreshTokenFuture ?? await _session.refreshTokenOrFail();
       if (refreshToken == null) {
         throw RefreshTokenNotFoundException();
       }

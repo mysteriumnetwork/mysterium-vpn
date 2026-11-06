@@ -70,6 +70,24 @@ class SecureStorageService {
     }
   }
 
+  /// Like [readOrNull], but tells an absent key apart from a keychain that
+  /// refused the read, which must not be taken for a key that was never there.
+  Future<String?> readOrFail(String key) async {
+    final value = await _readOrFail(_securedStorage, key);
+    if (value != null || !_hasLegacyItems) {
+      return value;
+    }
+    return _readOrFail(_legacyStorage, key);
+  }
+
+  Future<String?> _readOrFail(FlutterSecureStorage storage, String key) async {
+    try {
+      return await storage.read(key: key);
+    } catch (e) {
+      throw StorageUnavailableException();
+    }
+  }
+
   /// Re-stores a pre-[_accessibility] item under the new one on first miss.
   Future<String?> _adoptLegacyItem(String key) async {
     if (!_hasLegacyItems) {
@@ -135,6 +153,8 @@ class SecureStorageService {
   Future<void> removeAccessToken() async => remove(StorageKeys.accessToken.name);
 
   Future<String?> getRefreshToken() async => readOrNull(StorageKeys.refreshToken.name);
+
+  Future<String?> getRefreshTokenOrFail() async => readOrFail(StorageKeys.refreshToken.name);
 
   Future<void> saveRefreshToken(String token) async => write(StorageKeys.refreshToken.name, token);
 

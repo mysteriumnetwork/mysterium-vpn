@@ -41,6 +41,7 @@ void main() {
   late MockTalker logger;
   late MockABTestingStore abTestingStore;
   late MockDeviceIDStore deviceIDStore;
+  late MockSecureStorageService secureStorage;
 
   late Directory hiveDir;
 
@@ -129,6 +130,7 @@ void main() {
     logger = MockTalker();
     abTestingStore = MockABTestingStore();
     deviceIDStore = MockDeviceIDStore();
+    secureStorage = MockSecureStorageService();
 
     when(appLinks.uriLinkStream).thenAnswer((_) => const Stream<Uri>.empty());
     when(deviceIDStore.deviceIdFuture).thenAnswer((_) => ObservableFuture.value('device-id'));
@@ -137,13 +139,11 @@ void main() {
     when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value('refresh'));
     when(sessionStore.status).thenReturn(AuthStatus.authenticated);
     when(analyticsStore.setLogin(any)).thenAnswer((_) async {});
+    when(secureStorage.getRefreshTokenOrFail()).thenAnswer((_) async => null);
 
     store = AuthStore(
       flow: LocalAuthFlowRepository(MockSecureStorageService()),
-      session: LocalSessionRepository(
-        secureStorage: MockSecureStorageService(),
-        db: LocalDBService(),
-      ),
+      session: LocalSessionRepository(secureStorage: secureStorage, db: LocalDBService()),
       authService: authService,
       authSessionStore: sessionStore,
       appLinks: appLinks,
@@ -328,6 +328,28 @@ void main() {
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
+    });
+
+    test('keeps the session when the refresh token cannot be read', () async {
+      when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(secureStorage.getRefreshTokenOrFail()).thenThrow(StorageUnavailableException());
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<StorageUnavailableException>()));
+
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+      expect(store.authError, isNull);
+    });
+
+    test('recovers a refresh token that memory lost', () async {
+      when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(secureStorage.getRefreshTokenOrFail()).thenAnswer((_) async => 'refresh');
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
+
+      await store.refreshAuthToken();
+
+      verify(sessionStore.setAuthenticated('access', 'refresh')).called(1);
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
     });
 
     test('keeps the session when the refresh never reaches the server', () async {
