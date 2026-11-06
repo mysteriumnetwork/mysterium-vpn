@@ -212,9 +212,8 @@ void main() {
   group('availability', () {
     test('refreshAvailability splits available and unavailable favorites', () async {
       saved = [fav('1.1.1.1'), fav('2.2.2.2')];
-      when(
-        mockAvailability.checkAvailability(any),
-      ).thenAnswer((_) async => {'1.1.1.1': true, '2.2.2.2': false});
+      when(mockAvailability.checkAvailability(any))
+          .thenAnswer((_) async => {'1.1.1.1': true, '2.2.2.2': false});
       final store = buildStore();
       await store.future;
 

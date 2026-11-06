@@ -8,9 +8,11 @@ import 'package:flutter_test/flutter_test.dart';
 /// fetch is ever run without it.
 void main() {
   final arbs =
-      Directory(
-          'lib/l10n',
-        ).listSync().whereType<File>().where((f) => f.path.endsWith('.arb')).toList()
+      Directory('lib/l10n')
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.arb'))
+          .toList()
         ..sort((a, b) => a.path.compareTo(b.path));
 
   final emptyArm = RegExp(r'\b(zero|one|two|few|many|other)\{\}');

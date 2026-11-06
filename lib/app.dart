@@ -31,7 +31,7 @@ class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(final BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final themeStore = ref.read(themeStorePOD);
     final routeInformationParser = ref.read(routeInformationParserPOD);
     final authStore = ref.read(authStorePOD);

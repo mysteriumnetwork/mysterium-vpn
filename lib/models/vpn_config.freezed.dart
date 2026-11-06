@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'vpn_config.dart';
@@ -9,13 +9,13 @@ part of 'vpn_config.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VpnConfig {
 
- String get id; String get config;// either wgConfig or ovpnConfig
- String get hash; String? get exitIp; String? get sessionId; bool? get limitExceeded; String? get ipType; String? get country; String? get city; String? get type;
+ String get id; String get config; String get hash; String? get exitIp; String? get sessionId; bool? get limitExceeded; String? get ipType; String? get country; String? get city; String? get type;
 /// Create a copy of VpnConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,21 @@ $VpnConfigCopyWith<VpnConfig> get copyWith => _$VpnConfigCopyWithImpl<VpnConfig>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
+  final _this = this as VpnConfig;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VpnConfig&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.config, _this.config) || other.config == _this.config)&&(identical(other.hash, _this.hash) || other.hash == _this.hash)&&(identical(other.exitIp, _this.exitIp) || other.exitIp == _this.exitIp)&&(identical(other.sessionId, _this.sessionId) || other.sessionId == _this.sessionId)&&(identical(other.limitExceeded, _this.limitExceeded) || other.limitExceeded == _this.limitExceeded)&&(identical(other.ipType, _this.ipType) || other.ipType == _this.ipType)&&(identical(other.country, _this.country) || other.country == _this.country)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.type, _this.type) || other.type == _this.type));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,config,hash,exitIp,sessionId,limitExceeded,ipType,country,city,type);
+int get hashCode {
+  final _this = this as VpnConfig;
+  return Object.hash(runtimeType,_this.id,_this.config,_this.hash,_this.exitIp,_this.sessionId,_this.limitExceeded,_this.ipType,_this.country,_this.city,_this.type);
+}
 
 @override
 String toString() {
-  return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, sessionId: $sessionId, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
+  final _this = this as VpnConfig;
+  return 'VpnConfig(id: ${_this.id}, config: ${_this.config}, hash: ${_this.hash}, exitIp: ${_this.exitIp}, sessionId: ${_this.sessionId}, limitExceeded: ${_this.limitExceeded}, ipType: ${_this.ipType}, country: ${_this.country}, city: ${_this.city}, type: ${_this.type})';
 }
 
 
@@ -64,7 +69,7 @@ class _$VpnConfigCopyWithImpl<$Res>
 /// Create a copy of VpnConfig
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? config = null,Object? hash = null,Object? exitIp = freezed,Object? sessionId = freezed,Object? limitExceeded = freezed,Object? ipType = freezed,Object? country = freezed,Object? city = freezed,Object? type = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(VpnConfig(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,config: null == config ? _self.config : config // ignore: cast_nullable_to_non_nullable
 as String,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
@@ -221,7 +226,6 @@ class _VpnConfig implements VpnConfig {
 
 @override final  String id;
 @override final  String config;
-// either wgConfig or ovpnConfig
 @override final  String hash;
 @override final  String? exitIp;
 @override final  String? sessionId;
@@ -241,16 +245,18 @@ _$VpnConfigCopyWith<_VpnConfig> get copyWith => __$VpnConfigCopyWithImpl<_VpnCon
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _VpnConfig&&(identical(other.id, id) || other.id == id)&&(identical(other.config, config) || other.config == config)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.exitIp, exitIp) || other.exitIp == exitIp)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&(identical(other.limitExceeded, limitExceeded) || other.limitExceeded == limitExceeded)&&(identical(other.ipType, ipType) || other.ipType == ipType)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.type, type) || other.type == type));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,config,hash,exitIp,sessionId,limitExceeded,ipType,country,city,type);
+int get hashCode {
+    return Object.hash(runtimeType,id,config,hash,exitIp,sessionId,limitExceeded,ipType,country,city,type);
+}
 
 @override
 String toString() {
-  return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, sessionId: $sessionId, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
+    return 'VpnConfig(id: $id, config: $config, hash: $hash, exitIp: $exitIp, sessionId: $sessionId, limitExceeded: $limitExceeded, ipType: $ipType, country: $country, city: $city, type: $type)';
 }
 
 

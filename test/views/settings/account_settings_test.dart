@@ -56,9 +56,9 @@ void main() {
   );
   final cancelledBonus = bonusSubscription.copyWith(recurring: false);
 
-  void stubSubscription(Subscription subscription) => when(
-    subscriptionStore.subscriptionFuture,
-  ).thenAnswer((_) => ObservableFuture.value(subscription));
+  void stubSubscription(Subscription subscription) =>
+      when(subscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(subscription));
 
   setUp(() {
     subscriptionStore = MockSubscriptionStore();
@@ -69,14 +69,12 @@ void main() {
     vpnStore = MockVpnStore();
 
     stubSubscription(recurringSubscription);
-    when(
-      subscriptionStore.refreshSubscription(force: anyNamed('force')),
-    ).thenAnswer((_) async => recurringSubscription);
+    when(subscriptionStore.refreshSubscription(force: anyNamed('force')))
+        .thenAnswer((_) async => recurringSubscription);
 
     when(authSessionStore.status).thenReturn(AuthStatus.authenticated);
-    when(
-      authSessionStore.user,
-    ).thenReturn(AuthUser(userId: 'user-1', username: 'someone@example.com'));
+    when(authSessionStore.user)
+        .thenReturn(AuthUser(userId: 'user-1', username: 'someone@example.com'));
 
     // Keep the card list short so geometry assertions stay unambiguous.
     when(remoteConfigStore.hideDeleteAccount).thenReturn(true);
@@ -94,9 +92,8 @@ void main() {
     ],
     child: BeamerProvider(
       routerDelegate: BeamerDelegate(
-        locationBuilder: RoutesLocationBuilder(
-          routes: {'/': (_, _, _) => const SizedBox.shrink()},
-        ).call,
+        locationBuilder: RoutesLocationBuilder(routes: {'/': (_, _, _) => const SizedBox.shrink()})
+            .call,
       ),
       child: MaterialApp(
         theme: DesignSystem.lightTheme,
@@ -123,6 +120,7 @@ void main() {
     (w) => w is Icon && w.icon == UntitledUI.sale_02,
     description: 'discount (sale_02) icon',
   );
+  final vatIcon = find.byIcon(UntitledUI.info_circle);
   final renewsOn = find.textContaining('Renews on');
   // The trailing actions of a recurring plan; their position marks the top row.
   final cancelAction = find.text('Cancel');
@@ -207,6 +205,24 @@ void main() {
 
       expect(find.text('Manage'), findsOneWidget);
       expect(find.text('Cancel'), findsOneWidget);
+    });
+
+    testWidgets('the VAT note is reachable from the prices', (tester) async {
+      await pumpAt(tester, const Size(390, 900));
+
+      await tester.tap(vatIcon);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Price includes applicable VAT.'), findsOneWidget);
+    });
+
+    testWidgets('no prices means no VAT note', (tester) async {
+      stubSubscription(recurringSubscription.copyWith(orderSummary: null));
+
+      await pumpAt(tester, const Size(390, 900));
+
+      expect(priceIcon, findsNothing);
+      expect(vatIcon, findsNothing);
     });
 
     testWidgets('an inactive subscription shows the see-plans action, not renewal copy', (

@@ -42,9 +42,8 @@ void main() {
   group('fetchVpnConfig', () {
     test('returns response data on success', () async {
       final wgResponse = WireguardConnectResponse(id: 'i', wgConfig: 'cfg', hash: 'h');
-      when(
-        connection.connect(wireguardConnectRequest: anyNamed('wireguardConnectRequest')),
-      ).thenAnswer((_) async => response(200, wgResponse));
+      when(connection.connect(wireguardConnectRequest: anyNamed('wireguardConnectRequest')))
+          .thenAnswer((_) async => response(200, wgResponse));
 
       final result = await service.fetchVpnConfig(request: wgRequest());
 
@@ -79,9 +78,8 @@ void main() {
 
   group('rateConnection', () {
     test('delegates to Connection.rateConnection', () async {
-      when(
-        connection.rateConnection(rateConnectionRequest: anyNamed('rateConnectionRequest')),
-      ).thenAnswer((_) async => response(200, null));
+      when(connection.rateConnection(rateConnectionRequest: anyNamed('rateConnectionRequest')))
+          .thenAnswer((_) async => response(200, null));
 
       await service.rateConnection(
         request: RateConnectionRequest(
@@ -91,15 +89,13 @@ void main() {
         ),
       );
 
-      verify(
-        connection.rateConnection(rateConnectionRequest: anyNamed('rateConnectionRequest')),
-      ).called(1);
+      verify(connection.rateConnection(rateConnectionRequest: anyNamed('rateConnectionRequest')))
+          .called(1);
     });
 
     test('rethrows on failure', () async {
-      when(
-        connection.rateConnection(rateConnectionRequest: anyNamed('rateConnectionRequest')),
-      ).thenThrow(Exception('boom'));
+      when(connection.rateConnection(rateConnectionRequest: anyNamed('rateConnectionRequest')))
+          .thenThrow(Exception('boom'));
 
       await expectLater(
         service.rateConnection(
@@ -116,21 +112,18 @@ void main() {
 
   group('marketing contact', () {
     test('createMarketingContact delegates with country', () async {
-      when(
-        email.createContactRequest(createContactRequest: anyNamed('createContactRequest')),
-      ).thenAnswer((_) async => response(200, null));
+      when(email.createContactRequest(createContactRequest: anyNamed('createContactRequest')))
+          .thenAnswer((_) async => response(200, null));
 
       await service.createMarketingContact(country: 'US');
 
-      verify(
-        email.createContactRequest(createContactRequest: anyNamed('createContactRequest')),
-      ).called(1);
+      verify(email.createContactRequest(createContactRequest: anyNamed('createContactRequest')))
+          .called(1);
     });
 
     test('getMarketingContactStatus returns false when consent is null', () async {
-      when(
-        email.contactStatusRequest(),
-      ).thenAnswer((_) async => response(200, ContactStatusResponse(status: 'ok')));
+      when(email.contactStatusRequest())
+          .thenAnswer((_) async => response(200, ContactStatusResponse(status: 'ok')));
 
       expect(await service.getMarketingContactStatus(), isFalse);
     });
@@ -144,23 +137,20 @@ void main() {
     });
 
     test('updateMarketingContact delegates with consent flag', () async {
-      when(
-        email.updateContactRequest(updateContactRequest: anyNamed('updateContactRequest')),
-      ).thenAnswer((_) async => response(200, null));
+      when(email.updateContactRequest(updateContactRequest: anyNamed('updateContactRequest')))
+          .thenAnswer((_) async => response(200, null));
 
       await service.updateMarketingContact(consent: true);
 
-      verify(
-        email.updateContactRequest(updateContactRequest: anyNamed('updateContactRequest')),
-      ).called(1);
+      verify(email.updateContactRequest(updateContactRequest: anyNamed('updateContactRequest')))
+          .called(1);
     });
   });
 
   group('fetchUserIntents', () {
     test('returns parsed UserIntent set, filtering out unknown values', () async {
-      when(
-        connection.userIntents(),
-      ).thenAnswer((_) async => response(200, ['streaming', 'mystery_value']));
+      when(connection.userIntents())
+          .thenAnswer((_) async => response(200, ['streaming', 'mystery_value']));
 
       final intents = await service.fetchUserIntents();
 
@@ -171,9 +161,8 @@ void main() {
   group('fetchOpenVpnConfig', () {
     test('returns response data on success', () async {
       final ovpn = OpenVpnConnectResponse(id: 'i', ovpnConfig: 'c', hash: 'h');
-      when(
-        connection.connectOpenvpn(openVpnConnectRequest: anyNamed('openVpnConnectRequest')),
-      ).thenAnswer((_) async => response(200, ovpn));
+      when(connection.connectOpenvpn(openVpnConnectRequest: anyNamed('openVpnConnectRequest')))
+          .thenAnswer((_) async => response(200, ovpn));
 
       final result = await service.fetchOpenVpnConfig(
         request: OpenVpnConnectRequest(osType: 'macos'),

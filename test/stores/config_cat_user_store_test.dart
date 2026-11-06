@@ -41,15 +41,13 @@ void main() {
     subscription = MockSubscriptionStore();
     logger = MockTalker();
 
-    when(
-      session.userFuture,
-    ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: 'u1', username: 'u@e.com')));
+    when(session.userFuture)
+        .thenAnswer((_) => ObservableFuture.value(AuthUser(userId: 'u1', username: 'u@e.com')));
     when(ipInfo.infoFuture).thenAnswer(
       (_) => ObservableFuture.value(const IPInfo(country: 'US', city: 'NY', ip: '1.1.1.1')),
     );
-    when(
-      subscription.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
+    when(subscription.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(Subscription.empty()));
   });
 
   test('builds a stringified user from session, IP info, and subscription', () async {

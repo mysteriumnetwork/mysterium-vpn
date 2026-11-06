@@ -95,9 +95,8 @@ void main() {
 
     when(mockRemoteConfigStore.hideReedemCode).thenReturn(false);
     when(mockAuthSessionStore.isAuthenticated).thenReturn(false);
-    when(
-      mockSubscriptionService.fetchSubscriptionDetails(),
-    ).thenAnswer((_) async => subscriptionExpired);
+    when(mockSubscriptionService.fetchSubscriptionDetails())
+        .thenAnswer((_) async => subscriptionExpired);
 
     // Stub config store with a fulfilled config by default.
     when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(config()));
@@ -144,9 +143,8 @@ void main() {
       );
       when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlan));
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(
-        mockSubscriptionService.fetchSubscriptionDetails(),
-      ).thenAnswer((_) async => Subscription(active: true, planId: 'plan_fav'));
+      when(mockSubscriptionService.fetchSubscriptionDetails())
+          .thenAnswer((_) async => Subscription(active: true, planId: 'plan_fav'));
       await subscriptionStore.refreshSubscription();
     }
 
@@ -208,9 +206,8 @@ void main() {
       );
       when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlan));
       when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-      when(
-        mockSubscriptionService.fetchSubscriptionDetails(),
-      ).thenAnswer((_) async => Subscription(active: active, planId: subscriptionPlanId));
+      when(mockSubscriptionService.fetchSubscriptionDetails())
+          .thenAnswer((_) async => Subscription(active: active, planId: subscriptionPlanId));
       await subscriptionStore.refreshSubscription();
     }
 
@@ -383,9 +380,8 @@ void main() {
 
         await subscriptionStore.refreshSubscription();
 
-        final captured = verify(
-          mockAnalyticsStore.setUserProperty(captureAny),
-        ).captured.cast<AnalyticsUserProperty>();
+        final captured = verify(mockAnalyticsStore.setUserProperty(captureAny)).captured
+            .cast<AnalyticsUserProperty>();
         // planId, validTo, userStatus, gateway.
         expect(captured.length, 4);
         final gatewayProp = captured.firstWhere(
@@ -406,9 +402,8 @@ void main() {
 
       test('returns false on non-iOS platform', () async {
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => Subscription.empty());
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -418,9 +413,8 @@ void main() {
       test('returns true when no active subscription on iOS', () async {
         subscriptionStore.testIsIOS = true;
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => Subscription.empty());
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -491,9 +485,8 @@ void main() {
         await _initEnvWithIosVersion(mockDeviceInfoPlugin, version: '14.0');
         subscriptionStore.testIsIOS = true;
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => Subscription.empty());
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -504,9 +497,8 @@ void main() {
         await _initEnvWithIosVersion(mockDeviceInfoPlugin, version: '18.3.1');
         subscriptionStore.testIsIOS = true;
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => Subscription.empty());
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => Subscription.empty());
 
         await subscriptionStore.refreshSubscription();
 
@@ -525,9 +517,8 @@ void main() {
     group('useWebFlow', () {
       Future<void> primeSubscription(Subscription subscription) async {
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => subscription);
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => subscription);
         await subscriptionStore.refreshSubscription();
       }
 
@@ -603,9 +594,8 @@ void main() {
     group('isStoreSubOnForeignPlatform', () {
       Future<void> primeSubscription(Subscription subscription) async {
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => subscription);
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => subscription);
         await subscriptionStore.refreshSubscription();
       }
 
@@ -745,9 +735,8 @@ void main() {
 
       Future<void> primeSubscription(Subscription subscription) async {
         when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
-        when(
-          mockSubscriptionService.fetchSubscriptionDetails(),
-        ).thenAnswer((_) async => subscription);
+        when(mockSubscriptionService.fetchSubscriptionDetails())
+            .thenAnswer((_) async => subscription);
         await subscriptionStore.refreshSubscription();
         await subscriptionStore.refreshSubscriptionConfig();
       }

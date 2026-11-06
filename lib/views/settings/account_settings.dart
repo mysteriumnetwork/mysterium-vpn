@@ -481,7 +481,8 @@ class _SubscriptionSubtitle extends StatelessWidget {
         if (_orderSummary?.hasDiscount ?? false)
           Row(
             children: [
-              SizedBox(width: theme.spacing.md),
+              // Minimum gutter only: at wider widths spaceBetween grows it.
+              SizedBox(width: theme.spacing.s),
               Icon(UntitledUI.sale_02, size: 20, color: theme.palette.iconPrimary),
               SizedBox(width: theme.spacing.xs),
               Text(
@@ -497,6 +498,8 @@ class _SubscriptionSubtitle extends StatelessWidget {
                   decorationColor: theme.palette.textTertiary,
                 ),
               ),
+              SizedBox(width: theme.spacing.xs),
+              TooltipIcon(message: S.current.priceIncludesVat, icon: UntitledUI.info_circle),
             ],
           ),
       ],

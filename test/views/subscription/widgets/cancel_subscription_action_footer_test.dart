@@ -22,9 +22,8 @@ void main() {
         localizationsDelegates: testLocalizationsDelegates,
         supportedLocales: testSupportedLocales,
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(viewPadding: EdgeInsets.only(bottom: bottomViewPadding)),
+          data: MediaQuery.of(context)
+              .copyWith(viewPadding: EdgeInsets.only(bottom: bottomViewPadding)),
           child: child!,
         ),
         home: CancelSubscriptionActionFooter(

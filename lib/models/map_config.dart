@@ -15,13 +15,9 @@ class MapConfig with _$MapConfig {
 
   factory MapConfig.fromJson(Map<String, dynamic> json) => _$MapConfigFromJson(json);
 
-  @override
   final List<num> zoomLevels;
-  @override
   final List<num> tileZoomLevels;
-  @override
   final num initialZoom;
-  @override
   final Map<String, String> tileUrlTemplates;
 
   Map<String, dynamic> toJson() => _$MapConfigToJson(this);

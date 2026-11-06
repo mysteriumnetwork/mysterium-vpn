@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:window_manager/window_manager.dart';
 
 class CustomPlatformMenu extends ConsumerWidget {
   const CustomPlatformMenu({required this.child, required this.appName, super.key});
@@ -165,9 +165,10 @@ class CustomPlatformMenu extends ConsumerWidget {
                         label: 'Close',
                         shortcut: const SingleActivator(LogicalKeyboardKey.keyW, meta: true),
                         onSelected: isVisible
-                            ? () async {
-                                if (await windowManager.isVisible()) {
-                                  windowManager.hide();
+                            ? () {
+                                final window = mainWindow;
+                                if (window != null && window.isVisible) {
+                                  window.hide();
                                 }
                               }
                             : null,
@@ -176,11 +177,12 @@ class CustomPlatformMenu extends ConsumerWidget {
                         label: 'Minimize',
                         shortcut: const SingleActivator(LogicalKeyboardKey.keyM, meta: true),
                         onSelected: isVisible
-                            ? () async {
-                                if (await windowManager.isMinimized()) {
+                            ? () {
+                                final window = mainWindow;
+                                if (window == null || window.isMinimized) {
                                   return;
                                 }
-                                windowManager.minimize();
+                                window.minimize();
                               }
                             : null,
                       ),
@@ -200,24 +202,13 @@ class CustomPlatformMenu extends ConsumerWidget {
                           meta: true,
                           shift: true,
                         ),
-                        onSelected: () async {
-                          if (!(await windowManager.isVisible())) {
-                            windowManager.show();
-                          }
-                        },
+                        onSelected: showMainWindow,
                       ),
                     ],
                   ),
-                  PlatformMenuItemGroup(
+                  const PlatformMenuItemGroup(
                     members: <PlatformMenuItem>[
-                      PlatformMenuItem(
-                        label: 'Bring All to Front',
-                        onSelected: () async {
-                          if (!(await windowManager.isVisible())) {
-                            windowManager.show();
-                          }
-                        },
-                      ),
+                      PlatformMenuItem(label: 'Bring All to Front', onSelected: showMainWindow),
                     ],
                   ),
                 ],

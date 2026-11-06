@@ -54,9 +54,8 @@ void main() {
 
   group('fetch', () {
     test('maps the API response to VPNLocations and caches it', () async {
-      when(
-        connection.connectionLocations(ipType: IPType.datacenter.key),
-      ).thenAnswer((_) async => ok([country('US'), country('DE')]));
+      when(connection.connectionLocations(ipType: IPType.datacenter.key))
+          .thenAnswer((_) async => ok([country('US'), country('DE')]));
 
       final result = await build().fetch(IPType.datacenter);
 
@@ -103,9 +102,8 @@ void main() {
     group('unauthenticated responses are not cached', () {
       test('when signed out before the request', () async {
         when(session.isAuthenticated).thenReturn(false);
-        when(
-          connection.connectionLocations(ipType: anyNamed('ipType')),
-        ).thenAnswer((_) async => ok([country('US')]));
+        when(connection.connectionLocations(ipType: anyNamed('ipType')))
+            .thenAnswer((_) async => ok([country('US')]));
 
         final result = await build().fetch(IPType.datacenter);
 
@@ -118,9 +116,8 @@ void main() {
         // lands — the post-request check is what catches this.
         var calls = 0;
         when(session.isAuthenticated).thenAnswer((_) => calls++ == 0);
-        when(
-          connection.connectionLocations(ipType: anyNamed('ipType')),
-        ).thenAnswer((_) async => ok([country('US')]));
+        when(connection.connectionLocations(ipType: anyNamed('ipType')))
+            .thenAnswer((_) async => ok([country('US')]));
 
         await build().fetch(IPType.datacenter);
 
@@ -134,9 +131,8 @@ void main() {
       // Only a non-empty cache is emitted synchronously.
       final cached = VPNLocations(locations: [Mocks.locationDatacenterUS]);
       when(db.getLocations(IPType.datacenter)).thenAnswer((_) async => cached);
-      when(
-        db.watchLocations(IPType.datacenter),
-      ).thenAnswer((_) => Stream<VPNLocations?>.fromIterable([VPNLocations()]));
+      when(db.watchLocations(IPType.datacenter))
+          .thenAnswer((_) => Stream<VPNLocations?>.fromIterable([VPNLocations()]));
 
       final emitted = await build().watch(IPType.datacenter).take(2).toList();
 
@@ -145,9 +141,8 @@ void main() {
 
     test('skips the synchronous emit when the cache is empty', () async {
       when(db.getLocations(IPType.datacenter)).thenAnswer((_) async => null);
-      when(
-        db.watchLocations(IPType.datacenter),
-      ).thenAnswer((_) => const Stream<VPNLocations?>.empty());
+      when(db.watchLocations(IPType.datacenter))
+          .thenAnswer((_) => const Stream<VPNLocations?>.empty());
 
       expect(await build().watch(IPType.datacenter).toList(), isEmpty);
     });

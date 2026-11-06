@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
 
 class ShortcutsWidget extends StatelessWidget {
   const ShortcutsWidget({required this.child, super.key});
@@ -14,7 +14,7 @@ class ShortcutsWidget extends StatelessWidget {
     child: Actions(
       actions: <Type, Action<Intent>>{
         MinimizeIntent: CallbackAction<MinimizeIntent>(
-          onInvoke: (MinimizeIntent intent) => windowManager.minimize(),
+          onInvoke: (MinimizeIntent intent) => mainWindow?.minimize(),
         ),
       },
       child: child,

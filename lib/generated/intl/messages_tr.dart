@@ -510,6 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro yıllık"),
     "poland": MessageLookupByLibrary.simpleMessage("Polonya"),
     "preferences": MessageLookupByLibrary.simpleMessage("Tercihler"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("Fiyata geçerli KDV dahildir."),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Tüm planları gör"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Gizlilik Politikası"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -567,6 +568,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ürün güncellemeleri, ipuçları ve özel teklifler",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "Bağlısın. Çıkarsan Mysterium VPN kapanacak ve VPN bağlantın kesilecek.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN kapanacak ve arka planda çalışmayı durduracak.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Mysterium VPN kapatılsın mı?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Çık"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bağlantın nasıl?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Neyi beğenmedin?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Neyi beğendin?"),

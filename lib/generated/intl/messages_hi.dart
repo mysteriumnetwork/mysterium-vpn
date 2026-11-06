@@ -513,6 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro वार्षिक"),
     "poland": MessageLookupByLibrary.simpleMessage("पोलैंड"),
     "preferences": MessageLookupByLibrary.simpleMessage("प्राथमिकताएँ"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("कीमत में लागू VAT शामिल है।"),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("सभी प्लान देखें"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("गोपनीयता नीति"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -566,6 +567,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "उत्पाद अपडेट, टिप्स और खास ऑफ़र",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "आप कनेक्टेड हैं। बंद करने पर Mysterium VPN बंद हो जाएगा और आपका VPN डिस्कनेक्ट हो जाएगा।",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN बंद हो जाएगा और बैकग्राउंड में चलना बंद कर देगा।",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Mysterium VPN बंद करें?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("बंद करें"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("आपका कनेक्शन कैसा है?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("आपको क्या पसंद नहीं आया?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("आपको क्या पसंद आया?"),

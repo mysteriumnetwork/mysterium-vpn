@@ -74,9 +74,8 @@ void main() {
   });
 
   testWidgets('still logs out when the teardown fails', (tester) async {
-    when(
-      vpnStore.disconnectTunnel(reason: anyNamed('reason')),
-    ).thenThrow(Exception('platform channel failed'));
+    when(vpnStore.disconnectTunnel(reason: anyNamed('reason')))
+        .thenThrow(Exception('platform channel failed'));
 
     await deleteAndRedirect(tester);
 

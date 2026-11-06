@@ -6,9 +6,8 @@ class Ping {
   /// By default, it performs 5 measurements with a timeout of 2 seconds per attempt.
   Ping(String host, int port, {int count = 5, Duration timeout = const Duration(seconds: 2)}) {
     // Launch all ping attempts concurrently
-    Future.wait(
-      List.generate(count, (_) => _pingOnce(host, port, timeout)),
-    ).then(_completer.complete);
+    Future.wait(List.generate(count, (_) => _pingOnce(host, port, timeout)))
+        .then(_completer.complete);
   }
 
   final Completer<List<Duration>> _completer = Completer();

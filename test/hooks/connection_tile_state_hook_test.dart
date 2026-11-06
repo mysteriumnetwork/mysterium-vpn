@@ -94,9 +94,8 @@ void main() {
 
     when(mockUnavailableLocationsStore.unavailableLocations).thenReturn(const {});
 
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(activeSubscription));
 
     when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
   });
@@ -119,9 +118,8 @@ void main() {
     ],
     child: BeamerProvider(
       routerDelegate: BeamerDelegate(
-        locationBuilder: RoutesLocationBuilder(
-          routes: {'/': (_, a, b) => const SizedBox.shrink()},
-        ).call,
+        locationBuilder: RoutesLocationBuilder(routes: {'/': (_, a, b) => const SizedBox.shrink()})
+            .call,
       ),
       child: MaterialApp(
         locale: testLocale,

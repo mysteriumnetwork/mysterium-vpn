@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -215,9 +216,8 @@ void main() {
 
   group('tunnelStatistics', () {
     test('maps the plugin counters onto TunnelStats', () async {
-      when(
-        service.tunnelStatistics(),
-      ).thenAnswer((_) async => const VPNStatistics(totalDownload: 54321, totalUpload: 12345));
+      when(service.tunnelStatistics())
+          .thenAnswer((_) async => const VPNStatistics(totalDownload: 54321, totalUpload: 12345));
 
       final stats = await repo.tunnelStatistics();
 

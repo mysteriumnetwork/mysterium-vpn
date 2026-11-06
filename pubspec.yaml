@@ -5,20 +5,20 @@ publish_to: "none"
 version: 2.4.12-dev
 
 environment:
-  sdk: ">=3.12.0 <4.0.0"
-  flutter: 3.44.7
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: 3.47.9
 
 dependencies:
-  app_links: 7.0.0
+  app_links: 7.2.2
   app_settings: 8.0.3
   auto_size_text: 3.0.0
   beamer: 1.7.0
   circle_flags: 5.0.1
   collection: 1.19.1
-  configcat_client: 4.1.1
+  configcat_client: 5.1.0
   connectivity_plus: 7.3.1
   crypto: 3.0.7
-  device_info_plus: 13.2.0
+  device_info_plus: 13.3.0
   dio: 5.9.2
   firebase_analytics: 12.5.0
   firebase_core: 4.14.0
@@ -33,56 +33,56 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_map: 8.3.1
-  flutter_mobx: 2.3.0
+  flutter_mobx: 2.4.0
   flutter_native_splash: 2.4.8
   flutter_portal: 1.1.4
-  flutter_secure_storage: 10.3.1
-  flutter_svg: 2.3.0
+  flutter_secure_storage: 11.2.0
+  flutter_svg: 2.3.2
   flutter_udid: 4.1.6
   flutter_widget_from_html_core: 0.17.4
   freezed_annotation: 3.1.0
-  google_fonts: 8.2.0
+  google_fonts: 9.0.0
   google_sign_in: 7.2.0
-  hive_ce: 2.19.3
-  hive_ce_flutter: 2.3.4
-  hooks_riverpod: 3.3.1
-  in_app_purchase: 3.3.0
-  in_app_purchase_android: 0.5.2
-  in_app_purchase_storekit: 0.4.11
+  hive_ce: 2.22.0
+  hive_ce_flutter: 2.5.0
+  hooks_riverpod: 3.4.3
+  in_app_purchase: 3.3.1
+  in_app_purchase_android: 0.5.5
+  in_app_purchase_storekit: 0.4.17
   in_app_review: 2.0.12
   in_app_update: 5.0.0
-  intl: 0.20.2
-  json_annotation: 4.11.0
+  intl: 0.20.3
+  json_annotation: 4.12.0
   latlong2: 0.10.1
-  localizely_sdk: 2.7.7
+  localizely_sdk: 2.8.1
   mail_launcher:
     path: ./packages/mail_launcher
-  mobx: 2.6.0
+  mobx: 2.7.0
   money2: 6.3.0
-  mqtt5_client: 5.0.0
+  mqtt5_client: 5.2.0
   mysterium_vpn_design:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-design.git
-      ref: 0.0.42
+      ref: 0.0.43
   open_store: 0.5.0
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: 0.1.4
-  package_info_plus: 10.2.1
+      ref: 0.1.5
+  package_info_plus: 10.2.2
   reactive_forms: 17.0.1
   retry: 3.1.2
-  sentry_flutter: 9.30.1
-  shared_preferences: 2.5.5
+  sentry_flutter: 10.3.0
+  shared_preferences: 2.5.6
   shimmer: 3.0.0
-  showcaseview: 5.0.2
-  sign_in_with_apple: 8.1.0
+  showcaseview: 5.1.0
+  sign_in_with_apple: 8.2.0
   sliver_tools: 0.2.12
   stack_trace: 1.12.1
-  talker: 5.1.19
-  talker_dio_logger: 5.1.19
-  tray_manager: 0.5.3
-  url_launcher: 6.3.2
+  talker: 5.2.0
+  talker_dio_logger: 5.2.0
+  tray_manager: 0.8.3
+  url_launcher: 6.3.3
   url_protocol:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
@@ -90,40 +90,34 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.109
+      ref: 1.0.113
   webview_flutter: 4.14.1
-  window_manager: 0.5.2
+  window_manager: 0.6.0
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: 0.9.16
+      ref: 0.9.17
 
 dev_dependencies:
-  build: ^4.0.0
-  build_runner: 2.13.0
+  build: ^4.0.11
+  build_runner: 2.16.2
   cider: 0.2.10
   flutter_gen_runner: 5.13.0+1
   flutter_lints: 6.0.0
   flutter_test:
     sdk: flutter
-  freezed: 3.2.5
-  hive_ce_generator: 1.11.0
+  freezed: 4.0.3
+  hive_ce_generator: 1.11.3
   integration_test:
     sdk: flutter
-  intl_utils: ^2.8.10
-  json_serializable: 6.13.0
-  mobx_codegen: 2.7.7
-  mockito: 5.6.4
+  intl_utils: ^2.8.17
+  json_serializable: 6.15.2
+  mobx_codegen: 2.7.8
+  mockito: 5.8.1
   msix: 3.18.0
   patrol: 4.8.0
   plugin_platform_interface: 2.1.8
   url_launcher_platform_interface: 2.3.2
-
-dependency_overrides:
-  # mockito >=5.6.5 needs analyzer ^13, incompatible with mobx_codegen 2.7.7 (analyzer <13).
-  # Override needed because wireguard_dart wrongly ships mockito 5.7.0 as a regular
-  # dependency — drop this once wireguard_dart moves it to dev_dependencies.
-  mockito: 5.6.4
 
 msix_config:
   display_name: Mysterium VPN

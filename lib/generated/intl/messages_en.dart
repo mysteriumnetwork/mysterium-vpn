@@ -504,6 +504,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro annual"),
     "poland": MessageLookupByLibrary.simpleMessage("Poland"),
     "preferences": MessageLookupByLibrary.simpleMessage("Preferences"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage("Price includes applicable VAT."),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("See all plans"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -555,6 +556,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Product updates, tips, and special offers",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "You are connected. Quitting will close Mysterium VPN and disconnect your VPN.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN will close and stop running in the background.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Quit Mysterium VPN?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Quit"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("How is your connection?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("What didn’t you like?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("What did you like?"),

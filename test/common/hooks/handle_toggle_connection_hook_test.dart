@@ -198,9 +198,8 @@ void main() {
       }
     });
     when(subscriptionStore.resumeSubscription()).thenAnswer((_) async {
-      when(
-        subscriptionStore.subscriptionFuture,
-      ).thenAnswer((_) => ObservableFuture.value(Subscription(active: true, id: 'sub-1')));
+      when(subscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription(active: true, id: 'sub-1')));
     });
 
     await pumpHost(tester);

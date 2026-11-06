@@ -79,9 +79,8 @@ void main() {
     when(mockVpnStore.location).thenReturn(null);
     when(mockVpnStore.connectingLocation).thenReturn(null);
 
-    when(
-      mockSubscriptionStore.subscriptionFuture,
-    ).thenAnswer((_) => ObservableFuture.value(activeSubscription));
+    when(mockSubscriptionStore.subscriptionFuture)
+        .thenAnswer((_) => ObservableFuture.value(activeSubscription));
 
     when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
     when(mockSubscriptionStore.cityLevelAllowed).thenReturn(true);

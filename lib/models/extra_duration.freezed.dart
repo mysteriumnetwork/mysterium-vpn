@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'extra_duration.dart';
@@ -9,6 +9,7 @@ part of 'extra_duration.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ExtraDurationCopyWith<ExtraDuration> get copyWith => _$ExtraDurationCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExtraDuration&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.unit, unit) || other.unit == unit));
+  final _this = this as ExtraDuration;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExtraDuration&&(identical(other.amount, _this.amount) || other.amount == _this.amount)&&(identical(other.unit, _this.unit) || other.unit == _this.unit));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,amount,unit);
+int get hashCode {
+  final _this = this as ExtraDuration;
+  return Object.hash(runtimeType,_this.amount,_this.unit);
+}
 
 @override
 String toString() {
-  return 'ExtraDuration(amount: $amount, unit: $unit)';
+  final _this = this as ExtraDuration;
+  return 'ExtraDuration(amount: ${_this.amount}, unit: ${_this.unit})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ExtraDurationCopyWithImpl<$Res>
 /// Create a copy of ExtraDuration
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? amount = null,Object? unit = null,}) {
-  return _then(_self.copyWith(
+  return _then(ExtraDuration(
 amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as int,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
 as ExtraDurationUnit,
@@ -223,16 +229,18 @@ _$ExtraDurationCopyWith<_ExtraDuration> get copyWith => __$ExtraDurationCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExtraDuration&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.unit, unit) || other.unit == unit));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExtraDuration&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.unit, unit) || other.unit == unit));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,amount,unit);
+int get hashCode {
+    return Object.hash(runtimeType,amount,unit);
+}
 
 @override
 String toString() {
-  return 'ExtraDuration(amount: $amount, unit: $unit)';
+    return 'ExtraDuration(amount: $amount, unit: $unit)';
 }
 
 

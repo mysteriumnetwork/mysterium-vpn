@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'ip_info.dart';
@@ -9,6 +9,7 @@ part of 'ip_info.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $IPInfoCopyWith<IPInfo> get copyWith => _$IPInfoCopyWithImpl<IPInfo>(this as IPI
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is IPInfo&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city));
+  final _this = this as IPInfo;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IPInfo&&(identical(other.ip, _this.ip) || other.ip == _this.ip)&&(identical(other.country, _this.country) || other.country == _this.country)&&(identical(other.city, _this.city) || other.city == _this.city));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ip,country,city);
+int get hashCode {
+  final _this = this as IPInfo;
+  return Object.hash(runtimeType,_this.ip,_this.country,_this.city);
+}
 
 @override
 String toString() {
-  return 'IPInfo(ip: $ip, country: $country, city: $city)';
+  final _this = this as IPInfo;
+  return 'IPInfo(ip: ${_this.ip}, country: ${_this.country}, city: ${_this.city})';
 }
 
 
@@ -66,7 +72,7 @@ class _$IPInfoCopyWithImpl<$Res>
 /// Create a copy of IPInfo
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? ip = null,Object? country = null,Object? city = null,}) {
-  return _then(_self.copyWith(
+  return _then(IPInfo(
 ip: null == ip ? _self.ip : ip // ignore: cast_nullable_to_non_nullable
 as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IPInfo&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _IPInfo&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ip,country,city);
+int get hashCode {
+    return Object.hash(runtimeType,ip,country,city);
+}
 
 @override
 String toString() {
-  return 'IPInfo(ip: $ip, country: $country, city: $city)';
+    return 'IPInfo(ip: $ip, country: $country, city: $city)';
 }
 
 

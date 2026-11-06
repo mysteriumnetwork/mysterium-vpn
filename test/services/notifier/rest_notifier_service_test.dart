@@ -49,9 +49,8 @@ void main() {
         platform: NotifierPlatform.android,
       );
 
-      final captured = verify(
-        dio.post<Object?>(captureAny, data: captureAnyNamed('data')),
-      ).captured;
+      final captured = verify(dio.post<Object?>(captureAny, data: captureAnyNamed('data')))
+          .captured;
       expect(captured[0], '/public/devices');
       expect(captured[1], {
         'externalUserId': 'user-1',
@@ -129,9 +128,8 @@ void main() {
     });
 
     test('a timeout surfaces a timeout failure with no status', () async {
-      when(
-        dio.post<Object?>(any, data: anyNamed('data')),
-      ).thenThrow(ofType(DioExceptionType.receiveTimeout));
+      when(dio.post<Object?>(any, data: anyNamed('data')))
+          .thenThrow(ofType(DioExceptionType.receiveTimeout));
 
       await expectLater(
         service.registerDevice(externalUserId: 'u', token: 't', platform: NotifierPlatform.android),
@@ -144,9 +142,8 @@ void main() {
     });
 
     test('a connection error surfaces a network failure', () async {
-      when(
-        dio.post<Object?>(any, data: anyNamed('data')),
-      ).thenThrow(ofType(DioExceptionType.connectionError));
+      when(dio.post<Object?>(any, data: anyNamed('data')))
+          .thenThrow(ofType(DioExceptionType.connectionError));
 
       await expectLater(
         service.registerDevice(externalUserId: 'u', token: 't', platform: NotifierPlatform.android),
@@ -170,9 +167,8 @@ void main() {
 
       await service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1');
 
-      final captured = verify(
-        dio.delete<Object?>(captureAny, data: captureAnyNamed('data')),
-      ).captured;
+      final captured = verify(dio.delete<Object?>(captureAny, data: captureAnyNamed('data')))
+          .captured;
       expect(captured[0], '/public/devices');
       expect(captured[1], {'token': 'fcm-token', 'externalUserId': 'user-1'});
     });
@@ -200,9 +196,8 @@ void main() {
     });
 
     test('maps a timeout to the timeout category', () async {
-      when(
-        dio.delete<Object?>(any, data: anyNamed('data')),
-      ).thenThrow(ofType(DioExceptionType.sendTimeout));
+      when(dio.delete<Object?>(any, data: anyNamed('data')))
+          .thenThrow(ofType(DioExceptionType.sendTimeout));
 
       await expectLater(
         service.deleteDevice(token: 'fcm-token', externalUserId: 'user-1'),
@@ -252,9 +247,8 @@ void main() {
 
       await service.recordEvent(token: 'fcm-token', type: NotifierEventType.delivered);
 
-      final captured = verify(
-        dio.post<Object?>(captureAny, data: captureAnyNamed('data')),
-      ).captured;
+      final captured = verify(dio.post<Object?>(captureAny, data: captureAnyNamed('data')))
+          .captured;
       expect(captured[0], '/public/events');
       expect(captured[1], {'token': 'fcm-token', 'type': 'delivered'});
     });

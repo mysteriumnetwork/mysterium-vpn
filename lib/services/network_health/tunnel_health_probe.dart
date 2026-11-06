@@ -188,9 +188,9 @@ class HttpTunnelHealthProbe implements TunnelHealthProbe {
 
   // Nothing is edge-cached today, but a cached response would silently turn
   // the tunnelled leg into a measurement of nothing.
-  Uri _bust(String url) => Uri.parse(
-    url,
-  ).replace(queryParameters: {'_': DateTime.now().microsecondsSinceEpoch.toString()});
+  Uri _bust(String url) =>
+      Uri.parse(url)
+          .replace(queryParameters: {'_': DateTime.now().microsecondsSinceEpoch.toString()});
 
   String? _plainIp(String body) {
     final trimmed = body.trim();

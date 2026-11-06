@@ -499,6 +499,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro tahunan"),
     "poland": MessageLookupByLibrary.simpleMessage("Polandia"),
     "preferences": MessageLookupByLibrary.simpleMessage("Preferensi"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage(
+      "Harga sudah termasuk PPN yang berlaku.",
+    ),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("Lihat semua paket"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Kebijakan Privasi"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -552,6 +555,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pembaruan produk, tips, dan penawaran khusus",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "Kamu sedang terhubung. Keluar akan menutup Mysterium VPN dan memutuskan VPN kamu.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "Mysterium VPN akan ditutup dan berhenti berjalan di latar belakang.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("Keluar dari Mysterium VPN?"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("Keluar"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("Bagaimana koneksimu?"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("Apa yang kurang kamu suka?"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("Apa yang kamu suka?"),
