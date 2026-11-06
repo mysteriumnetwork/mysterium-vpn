@@ -77,8 +77,8 @@ class RestAuthRepository extends AuthRepository {
     } on ApiException {
       rethrow;
     } catch (e, stackTrace) {
+      // No wipe here: callers decide, and a garbled response is not a verdict.
       _logger.handle(e, stackTrace);
-      removeLocalData();
       rethrow;
     }
   }
@@ -137,7 +137,12 @@ class RestAuthRepository extends AuthRepository {
 
     if (currentUsername != null && currentUsername.isNotEmpty) {
       _logger.info('User $currentUsername logged out');
-      await _securedStorage.saveLastLoggedInUser(username: currentUsername);
+      try {
+        await _securedStorage.saveLastLoggedInUser(username: currentUsername);
+      } catch (e) {
+        // Bookkeeping only; it must not replace the error that caused the logout.
+        _logger.warning('Could not record the last logged in user: $e');
+      }
     }
   }
 

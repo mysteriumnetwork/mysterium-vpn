@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_links/app_links.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:latlong2/latlong.dart';
@@ -39,6 +41,7 @@ void main() {
   late MockTalker logger;
   late MockABTestingStore abTestingStore;
   late MockDeviceIDStore deviceIDStore;
+  late MockSecureStorageService secureStorage;
 
   late Directory hiveDir;
 
@@ -50,6 +53,63 @@ void main() {
     identifier: 'identifier',
     endpoint: '/auth',
     severity: ExceptionSeverity.low,
+  );
+
+  // The refresh endpoint answered and refused the token.
+  final refreshRejected = ApiException(
+    RequestOptions(),
+    'invalid refresh token',
+    code: 401,
+    identifier: 'identifier',
+    endpoint: '/oauth/token',
+    severity: ExceptionSeverity.low,
+    response: dio.Response<dynamic>(requestOptions: RequestOptions(), statusCode: 401),
+  );
+
+  // The refusal arrives in the body, not the status line.
+  final refreshRefusedInBody = ApiException(
+    RequestOptions(),
+    'invalid refresh token',
+    code: 401,
+    identifier: 'identifier',
+    endpoint: '/oauth/token',
+    severity: ExceptionSeverity.low,
+    response: dio.Response<dynamic>(
+      requestOptions: RequestOptions(),
+      statusCode: 200,
+      data: <String, dynamic>{'status': 401},
+    ),
+  );
+
+  // Nothing answered: ConnectionErrorsInterceptor has no response to pass on.
+  final refreshUnreachable = ApiException(
+    RequestOptions(),
+    'Unable to connect to the server.',
+    code: 1,
+    identifier: 'identifier',
+    endpoint: '/oauth/token',
+    severity: ExceptionSeverity.low,
+  );
+
+  // A 4xx that says nothing about the refresh token.
+  final refreshRateLimited = ApiException(
+    RequestOptions(),
+    'too many requests',
+    code: 4029,
+    identifier: 'identifier',
+    endpoint: '/oauth/token',
+    severity: ExceptionSeverity.low,
+    response: dio.Response<dynamic>(requestOptions: RequestOptions(), statusCode: 429),
+  );
+
+  final refreshServerError = ApiException(
+    RequestOptions(),
+    'service unavailable',
+    code: 503,
+    identifier: 'identifier',
+    endpoint: '/oauth/token',
+    severity: ExceptionSeverity.high,
+    response: dio.Response<dynamic>(requestOptions: RequestOptions(), statusCode: 503),
   );
 
   // LocalDBService reads Hive boxes in its field initializers, so the boxes
@@ -85,6 +145,7 @@ void main() {
     logger = MockTalker();
     abTestingStore = MockABTestingStore();
     deviceIDStore = MockDeviceIDStore();
+    secureStorage = MockSecureStorageService();
 
     when(appLinks.uriLinkStream).thenAnswer((_) => const Stream<Uri>.empty());
     when(deviceIDStore.deviceIdFuture).thenAnswer((_) => ObservableFuture.value('device-id'));
@@ -93,13 +154,11 @@ void main() {
     when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value('refresh'));
     when(sessionStore.status).thenReturn(AuthStatus.authenticated);
     when(analyticsStore.setLogin(any)).thenAnswer((_) async {});
+    when(secureStorage.getRefreshTokenOrFail()).thenAnswer((_) async => null);
 
     store = AuthStore(
       flow: LocalAuthFlowRepository(MockSecureStorageService()),
-      session: LocalSessionRepository(
-        secureStorage: MockSecureStorageService(),
-        db: LocalDBService(),
-      ),
+      session: LocalSessionRepository(secureStorage: secureStorage, db: LocalDBService()),
       authService: authService,
       authSessionStore: sessionStore,
       appLinks: appLinks,
@@ -130,6 +189,17 @@ void main() {
 
       verifyNever(sessionStore.setAuthenticated(any, any));
       verifyNever(analyticsStore.setLogin(any));
+    });
+
+    test('records the login even when the credentials cannot be persisted', () async {
+      when(
+        sessionStore.setAuthenticated('access', 'refresh'),
+      ).thenThrow(PlatformException(code: '-25308', message: 'User interaction is not allowed.'));
+
+      await store.authenticate(GrantType.email, Future.value(tokens));
+
+      verify(analyticsStore.setLogin()).called(1);
+      expect(store.authError, isNull);
     });
   });
 
@@ -264,10 +334,104 @@ void main() {
       verify(authService.logout(invalidateRemotely: false)).called(1);
     });
 
-    test('logs out when signInComplete fails while authenticated', () async {
+    test('logs out when the server rejects the refresh token', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
       when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
-          .thenThrow(Exception('expired'));
+          .thenThrow(refreshRejected);
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+      verify(authService.logout(invalidateRemotely: false)).called(1);
+    });
+
+    test('does not revive a session that was logged out', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.unauthenticated);
+      when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(secureStorage.getRefreshTokenOrFail()).thenAnswer((_) async => 'refresh');
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<RefreshTokenNotFoundException>()));
+
+      verifyNever(secureStorage.getRefreshTokenOrFail());
+      verifyNever(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')));
+    });
+
+    test('logs out when the refusal is signalled only in the body', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRefusedInBody);
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      verify(authService.logout(invalidateRemotely: false)).called(1);
+    });
+
+    test('keeps the session when the refresh token cannot be read', () async {
+      when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(secureStorage.getRefreshTokenOrFail()).thenThrow(StorageUnavailableException());
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<StorageUnavailableException>()));
+
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+      expect(store.authError, isNull);
+    });
+
+    test('recovers a refresh token that memory lost', () async {
+      when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(secureStorage.getRefreshTokenOrFail()).thenAnswer((_) async => 'refresh');
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
+
+      await store.refreshAuthToken();
+
+      verify(sessionStore.setAuthenticated('access', 'refresh')).called(1);
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+    });
+
+    test('keeps the session when the refresh never reaches the server', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+      expect(store.authError, isNull);
+    });
+
+    test('keeps the session when the server fails to answer the refresh', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshServerError);
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+      expect(store.authError, isNull);
+    });
+
+    test('keeps the session when the refreshed credentials cannot be persisted', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
+      when(
+        sessionStore.setAuthenticated('access', 'refresh'),
+      ).thenThrow(PlatformException(code: '-25308', message: 'User interaction is not allowed.'));
+
+      await expectLater(store.refreshAuthToken(), completes);
+
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+      expect(store.authError, isNull);
+    });
+
+    test('still logs out (no snackbar) when not authenticated', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.unauthenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRejected);
       when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
           .thenAnswer((_) async {});
 
@@ -275,15 +439,88 @@ void main() {
       verify(authService.logout(invalidateRemotely: false)).called(1);
     });
 
-    test('still logs out (no snackbar) when not authenticated', () async {
-      when(sessionStore.status).thenReturn(AuthStatus.unauthenticated);
+    test('keeps the session when the refresh is rate limited', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
       when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
-          .thenThrow(Exception('expired'));
+          .thenThrow(refreshRateLimited);
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      verifyNever(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')));
+    });
+  });
+
+  group('fetchAuthUser', () {
+    test('signs out when the access token is refused', () async {
+      when(authService.currentUser()).thenThrow(refreshRejected);
+
+      await store.fetchAuthUser();
+
+      verify(sessionStore.setUnauthenticated()).called(1);
+    });
+
+    test('completes the sign-in when the user record cannot be persisted', () async {
+      when(authService.currentUser())
+          .thenAnswer((_) async => AuthUser(userId: 'u1', username: 'a@b.c'));
+      when(abTestingStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
+      when(
+        sessionStore.setAuthenticatedUser(any),
+      ).thenThrow(PlatformException(code: '-25308', message: 'User interaction is not allowed.'));
+
+      await store.fetchAuthUser();
+
+      expect(store.authError, isNull);
+      verify(analyticsStore.setUserProperty(any)).called(greaterThanOrEqualTo(1));
+    });
+
+    test('keeps the session on 401 when the refresh got no verdict', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      when(authService.currentUser()).thenThrow(refreshRejected);
+      await store.fetchAuthUser();
+
+      verifyNever(sessionStore.setUnauthenticated());
+    });
+
+    test('an in-flight refresh does not clear an earlier inconclusive verdict', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      // A second refresh starts but never gets an answer.
+      final pending = Completer<TokenResponse>();
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) => pending.future);
+      unawaited(store.refreshAuthToken());
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+
+      when(authService.currentUser()).thenThrow(refreshRejected);
+      await store.fetchAuthUser();
+
+      verifyNever(sessionStore.setUnauthenticated());
+      pending.complete(tokens);
+    });
+
+    test('signs out again once a later refresh is conclusive', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRejected);
       when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
           .thenAnswer((_) async {});
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
-      await expectLater(store.refreshAuthToken(), throwsA(isA<Exception>()));
-      verify(authService.logout(invalidateRemotely: false)).called(1);
+      when(authService.currentUser()).thenThrow(refreshRejected);
+      await store.fetchAuthUser();
+
+      verify(sessionStore.setUnauthenticated()).called(1);
     });
   });
 }
