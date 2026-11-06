@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/views/news_center/news_center_strings.dart';
 import 'package:mysterium_vpn/views/news_center/news_center_view.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker/talker.dart';
 
 import '../../support/news_fixtures.dart';
 import '../../support/test_localizations.dart';
@@ -46,6 +47,8 @@ void main() {
         overrides: [
           newsCenterServicePOD.overrideWithValue(service),
           analyticsStorePOD.overrideWithValue(analytics),
+          // Keeps the deliberate failure-path throw out of the test console.
+          loggerPOD.overrideWithValue(Talker(settings: TalkerSettings(useConsoleLogs: false))),
         ],
         child: MaterialApp(
           theme: DesignSystem.lightTheme,
