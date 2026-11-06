@@ -70,6 +70,12 @@ class RetryRequestInterceptor extends Interceptor {
   }
 
   bool evaluate(DioException error, int attempt) {
+    // Replaying a non-idempotent request duplicates its side effect, and a lost
+    // response is indistinguishable from a request the server never saw.
+    if (!_idempotentMethods.contains(error.requestOptions.method.toUpperCase())) {
+      return false;
+    }
+
     var shouldRetry = false;
     if (error.type == DioExceptionType.badResponse) {
       final statusCode = error.response?.statusCode;
@@ -113,6 +119,8 @@ extension OptionsX on Options {
     extra![_kDisableRetryKey] = value;
   }
 }
+
+const _idempotentMethods = {'GET', 'HEAD', 'OPTIONS'};
 
 const _retryableErrorTypes = [
   DioExceptionType.connectionError,

@@ -16,6 +16,7 @@ export 'plan_upgrade_required_exception.dart';
 export 'refresh_token_not_found_exception.dart';
 export 'request_pn_permissions_not_allowed.dart';
 export 'sign_in_aborted.dart';
+export 'storage_unavailable.dart';
 export 'store_not_available.dart';
 export 'subscription_paused_exception.dart';
 export 'subscription_required_exception.dart';

@@ -88,11 +88,21 @@ class AppInitializer {
     unawaited(_runDeferredInit());
   }
 
+  Future<void> _migrateSecureStorage() async {
+    try {
+      await providerContainer.read(secureStorageServicePOD).migrateAccessibility();
+    } catch (e) {
+      // A locked screen defers it to the next launch; nothing waits on it.
+      logger.warning('Keychain accessibility migration deferred: $e');
+    }
+  }
+
   Future<void> _runDeferredInit() async {
     final total = Stopwatch()..start();
     var firebaseInitMs = 0;
     // Fire-and-forget: `localizationRevision` repaints the tree when they land.
     unawaited(_updateLocalizelyTranslations());
+    unawaited(_migrateSecureStorage());
     try {
       firebaseInitMs = await _initFirebaseSDK();
       await _onFirebaseReady();

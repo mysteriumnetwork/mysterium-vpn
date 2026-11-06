@@ -6,6 +6,11 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 class ApiErrorsInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // Already mapped upstream; re-wrapping would lose its code and severity.
+    if (err is ApiException) {
+      return handler.reject(err);
+    }
+
     final endpoint = err.requestOptions.path;
 
     if (err.response?.data != null && err.response?.data is Map<String, dynamic>) {

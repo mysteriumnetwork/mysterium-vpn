@@ -13,4 +13,5 @@ bool isNonActionable(Object? error) =>
     error is TokenAlreadyUsedException ||
     error is OperationCancelledException ||
     error is SubscriptionRequiredException ||
-    error is RefreshTokenNotFoundException;
+    error is RefreshTokenNotFoundException ||
+    error is StorageUnavailableException;
