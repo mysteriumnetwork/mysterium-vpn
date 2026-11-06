@@ -79,6 +79,7 @@ class HomeMap extends HookConsumerWidget {
         ...?locationsStore.dcLocationsFuture.value?.allLocations,
       ].distinctBy((it) => it.id).toList(),
     );
+    final connectionDecisionStore = ref.watch(connectionDecisionStorePOD);
     final myLocation = useCurrentIPCoordinates();
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
@@ -109,7 +110,11 @@ class HomeMap extends HookConsumerWidget {
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
         cityLevelAllowed: subscriptionStore.cityLevelAllowed,
       );
-      if (vpnStore.isConnected && vpnStore.location == resolved) {
+      if (vpnStore.isConnected &&
+          connectionDecisionStore.isCurrentConnection(
+            requested: resolved,
+            current: vpnStore.location,
+          )) {
         return;
       }
       handleToggleConnection(location: resolved);

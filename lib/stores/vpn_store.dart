@@ -359,7 +359,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<bool> switchProtocolAndReconnect(ProtocolType protocol) async {
     // Captured up front — the teardown inside _applyProtocol clears all three.
     final wasConnected = isConnected;
-    final location = _requestedLocation ?? _vpnConnection?.location;
+    final location = _sessionRetargetLocation;
     final intent = _userIntentsStore.userIntent;
     final targetIp = _requestedTargetIp;
 
@@ -573,10 +573,7 @@ abstract class _VpnStore extends VpnGuard with Store {
           break;
 
         case ConnectionAction.refreshIP:
-          await _startConnection(
-            refreshIP: true,
-            location: _requestedLocation ?? _vpnConnection?.location,
-          );
+          await _startConnection(refreshIP: true, location: _sessionRetargetLocation);
           break;
       }
     } finally {
@@ -603,6 +600,11 @@ abstract class _VpnStore extends VpnGuard with Store {
       checkPlanSupportsLocation(location);
     }
     await _validateConnectionPrerequisites();
+    // Again: the first subscription load can settle inside the await above, so
+    // the plan may simply have been unknown on the way in.
+    if (!refreshIP) {
+      checkPlanSupportsLocation(location);
+    }
     await _prepareConnection(location, intent, refreshIP, targetIp);
 
     if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
@@ -952,7 +954,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     // Requesting a country and recording the city it landed in would put a
     // city into recents that the plan may not be allowed to target, and would
     // silently narrow what the next tap on that entry connects to.
-    final recentLocation = requestedLocation ?? _planTargetableLocation(connectedLocation);
+    final recentLocation = _planTargetableLocation(requestedLocation ?? connectedLocation);
 
     _resolveConnectionLocationFuture = ObservableFuture(
       _checkConnectionQuality(
@@ -979,6 +981,15 @@ abstract class _VpnStore extends VpnGuard with Store {
       return location;
     }
     return _locationsStore.findParent(location) ?? location;
+  }
+
+  /// Where to aim when reusing the live session — an IP refresh or a protocol
+  /// switch. Narrowed for the same reason: both tear the tunnel down first, so
+  /// re-requesting the backend's city on a country-only plan would fail the
+  /// plan guard and leave the user disconnected.
+  VPNLocation? get _sessionRetargetLocation {
+    final location = _requestedLocation ?? _vpnConnection?.location;
+    return location == null ? null : _planTargetableLocation(location);
   }
 
   Future<void> _updateConnectionIP(VPNLocation connectedLocation) async {

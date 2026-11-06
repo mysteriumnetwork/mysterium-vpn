@@ -1105,6 +1105,58 @@ void main() {
         verifyNever(mockLocationsStore.findParent(any));
       });
 
+      test('refreshing an intent connect keeps the country in recents', () async {
+        // Refresh re-targets the live session, so it hands the backend's city
+        // back in as an explicit request — it has to be narrowed too.
+        when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+        when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+        when(mockLocationsStore.findParent(any)).thenReturn(country);
+        stubIntentConnect();
+
+        await vpnStore.manageConnection(intent: UserIntent.bestSpeed);
+        clearInteractions(mockRecentLocations);
+        stubToggleAction(ConnectionAction.refreshIP);
+
+        await vpnStore.manageConnection(refreshIP: true);
+
+        verifyFetchVpnConfig(country: 'fr', city: null);
+        verify(mockRecentLocations.add(country)).called(greaterThanOrEqualTo(1));
+        verifyNever(mockRecentLocations.add(city));
+      });
+
+      test('a plan that only resolves inside the prerequisites still blocks the city', () async {
+        // The first subscription load can settle while checkVpnGuards awaits,
+        // so the plan is unknown going in and known coming out.
+        var planResolved = false;
+        when(mockSubscriptionStore.hasResolvedPlan).thenAnswer((_) => planResolved);
+        when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+        when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+        when(mockAuthSession.accessTokenFuture).thenAnswer((_) {
+          planResolved = true;
+          return ObservableFuture.value(null);
+        });
+        stubToggleAction(ConnectionAction.connect);
+
+        await expectLater(
+          () => vpnStore.manageConnection(location: city),
+          throwsA(isA<PlanUpgradeRequiredException>()),
+        );
+
+        verifyNever(
+          mockWireguardRepo.fetchVpnConfig(
+            countryOriginate: anyNamed('countryOriginate'),
+            country: anyNamed('country'),
+            city: anyNamed('city'),
+            ipType: anyNamed('ipType'),
+            userIntent: anyNamed('userIntent'),
+            cluster: anyNamed('cluster'),
+            resetConnection: anyNamed('resetConnection'),
+            dnsAddress: anyNamed('dnsAddress'),
+          ),
+        );
+      });
+
       test('refresh after connecting to a country reconnects with city = null', () async {
         await connect(country);
         clearInteractions(mockWireguardRepo);
@@ -2166,6 +2218,71 @@ void main() {
 
           verify(mockVpnProtocolStore.setProtocol(ProtocolType.openvpn)).called(1);
           verify(openVpnFetch(country: 'fr', city: 'paris')).called(1);
+          await store.disposeStore();
+        });
+
+        test('a country-only plan retargets the country after an intent connect', () async {
+          // The teardown happens first, so re-requesting the backend's city
+          // would fail the plan guard and leave the user with no tunnel.
+          const france = VPNLocation(
+            id: 'fr',
+            ipType: IPType.datacenter,
+            translations: {},
+            countryCode: 'fr',
+          );
+          when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
+          when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+          when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+          when(mockLocationsStore.findParent(any)).thenReturn(france);
+          when(mockUserIntents.userIntent).thenReturn(UserIntent.bestSpeed);
+          when(
+            mockWireguardRepo.fetchVpnConfig(
+              countryOriginate: anyNamed('countryOriginate'),
+              country: anyNamed('country'),
+              city: anyNamed('city'),
+              ipType: anyNamed('ipType'),
+              userIntent: anyNamed('userIntent'),
+              cluster: anyNamed('cluster'),
+              resetConnection: anyNamed('resetConnection'),
+              dnsAddress: anyNamed('dnsAddress'),
+              targetIp: anyNamed('targetIp'),
+            ),
+          ).thenAnswer(
+            (_) async => const VpnConfig(
+              id: 'config1',
+              config: 'cfg',
+              exitIp: '2.2.2.2',
+              hash: 'hash',
+              country: 'fr',
+              city: 'paris',
+              ipType: 'hosting',
+            ),
+          );
+
+          final store = buildStore();
+          await pumpEventQueue();
+          await store.manageConnection(intent: UserIntent.bestSpeed);
+          wgStatus.add(VpnConnectionStatus.connected);
+          await pumpEventQueue();
+          expect(store.isConnected, true);
+
+          await store.switchProtocolAndReconnect(ProtocolType.openvpn);
+
+          // Pinned directly: openVpnFetch's `city: null` would fall through to
+          // anyNamed and match the city this test exists to rule out.
+          verify(
+            mockOpenVpnRepo.fetchVpnConfig(
+              countryOriginate: anyNamed('countryOriginate'),
+              country: 'fr',
+              city: null,
+              ipType: anyNamed('ipType'),
+              userIntent: anyNamed('userIntent'),
+              cluster: anyNamed('cluster'),
+              resetConnection: anyNamed('resetConnection'),
+              dnsAddress: anyNamed('dnsAddress'),
+              targetIp: anyNamed('targetIp'),
+            ),
+          ).called(1);
           await store.disposeStore();
         });
 
