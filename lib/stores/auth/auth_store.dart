@@ -370,22 +370,28 @@ abstract class _AuthStore with Store {
   /// True while a refresh ended without a verdict from the server.
   bool _refreshInconclusive = false;
 
-  /// Only the OAuth refusal codes mean the refresh token is dead.
+  /// Only the OAuth refusal codes mean the refresh token is dead; this backend
+  /// signals 401 in the body as well as in the status line.
   bool _isSessionRejected(Object error) {
     if (error is RefreshTokenNotFoundException) {
       return true;
     }
-    final status = error is ApiException ? error.response?.statusCode : null;
-    return status == 400 || status == 401;
+    if (error is! ApiException) {
+      return false;
+    }
+    final status = error.response?.statusCode;
+    return status == 400 || status == 401 || error.code == 401;
   }
 
   Future<void> refreshAuthToken() async {
     _refreshInconclusive = false;
     final TokenResponse authTokens;
     try {
-      // A null in memory can be a refused read, so storage gets the last word.
-      final refreshToken =
-          await _authSessionStore.refreshTokenFuture ?? await _session.refreshTokenOrFail();
+      var refreshToken = await _authSessionStore.refreshTokenFuture;
+      if (refreshToken == null && _authSessionStore.status != AuthStatus.unauthenticated) {
+        // A null in memory can be a refused read, but never after a logout.
+        refreshToken = await _session.refreshTokenOrFail();
+      }
       if (refreshToken == null) {
         throw RefreshTokenNotFoundException();
       }

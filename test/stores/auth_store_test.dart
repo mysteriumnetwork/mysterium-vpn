@@ -66,6 +66,21 @@ void main() {
     response: dio.Response<dynamic>(requestOptions: RequestOptions(), statusCode: 401),
   );
 
+  // The refusal arrives in the body, not the status line.
+  final refreshRefusedInBody = ApiException(
+    RequestOptions(),
+    'invalid refresh token',
+    code: 401,
+    identifier: 'identifier',
+    endpoint: '/oauth/token',
+    severity: ExceptionSeverity.low,
+    response: dio.Response<dynamic>(
+      requestOptions: RequestOptions(),
+      statusCode: 200,
+      data: <String, dynamic>{'status': 401},
+    ),
+  );
+
   // Nothing answered: ConnectionErrorsInterceptor has no response to pass on.
   final refreshUnreachable = ApiException(
     RequestOptions(),
@@ -327,6 +342,31 @@ void main() {
           .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+      verify(authService.logout(invalidateRemotely: false)).called(1);
+    });
+
+    test('does not revive a session that was logged out', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.unauthenticated);
+      when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
+      when(secureStorage.getRefreshTokenOrFail()).thenAnswer((_) async => 'refresh');
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<RefreshTokenNotFoundException>()));
+
+      verifyNever(secureStorage.getRefreshTokenOrFail());
+      verifyNever(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')));
+    });
+
+    test('logs out when the refusal is signalled only in the body', () async {
+      when(sessionStore.status).thenReturn(AuthStatus.authenticated);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRefusedInBody);
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
+
+      await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
+
       verify(authService.logout(invalidateRemotely: false)).called(1);
     });
 
