@@ -36,9 +36,8 @@ void main() {
     when(remoteConfigStore.cancelSubscriptionReasonKeys).thenReturn(null);
     when(cancelStore.canPauseSubscription()).thenAnswer((_) async => false);
     when(cancelStore.isStoreSubscription()).thenReturn(false);
-    when(
-      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
-    ).thenAnswer((_) async => false);
+    when(cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')))
+        .thenAnswer((_) async => false);
     when(analyticsStore.logCancellationReasonSkipped()).thenAnswer((_) async {});
   });
 
@@ -156,9 +155,8 @@ void main() {
 
   testWidgets('continue with typed feedback submits other and feedback', (tester) async {
     // arrange
-    when(
-      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
-    ).thenAnswer((_) async => true);
+    when(cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')))
+        .thenAnswer((_) async => true);
     await pumpSurvey(tester);
 
     // act
@@ -168,9 +166,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // assert
-    verify(
-      cancelStore.setSurvey(reasons: {kCancelReasonOther}, feedback: 'too expensive'),
-    ).called(1);
+    verify(cancelStore.setSurvey(reasons: {kCancelReasonOther}, feedback: 'too expensive'))
+        .called(1);
     verifyNever(analyticsStore.logCancellationReasonSkipped());
     verify(cancelStore.canPauseSubscription()).called(1);
   });
@@ -233,9 +230,8 @@ void main() {
     // arrange — proceed() awaits the subscription fetch, which can reject.
     // Real feedback so the submit path isn't itself counted as a skip.
     when(cancelStore.canPauseSubscription()).thenThrow(Exception('offline'));
-    when(
-      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
-    ).thenAnswer((_) async => true);
+    when(cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')))
+        .thenAnswer((_) async => true);
     await pumpSurvey(tester);
     await tester.enterText(find.byType(TextField), 'too expensive');
     await tester.pump();
@@ -254,9 +250,8 @@ void main() {
   testWidgets('ignores skip while a survey submission is in flight', (tester) async {
     // arrange
     final gate = Completer<bool>();
-    when(
-      cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')),
-    ).thenAnswer((_) => gate.future);
+    when(cancelStore.setSurvey(reasons: anyNamed('reasons'), feedback: anyNamed('feedback')))
+        .thenAnswer((_) => gate.future);
     await pumpSurvey(tester);
 
     // act

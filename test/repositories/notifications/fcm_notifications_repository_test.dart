@@ -257,34 +257,30 @@ void main() {
     tearDown(() => repository.dispose());
 
     test('authorized maps to granted', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
 
       expect(await repository.refreshPermissionStatus(), isTrue);
       expect(repository.getPermissionStatus(), isTrue);
     });
 
     test('provisional maps to granted', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.provisional));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.provisional));
 
       expect(await repository.refreshPermissionStatus(), isTrue);
     });
 
     test('denied maps to not granted', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.denied));
 
       expect(await repository.refreshPermissionStatus(), isFalse);
     });
 
     test('notDetermined is not granted, but is reported as undetermined', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.notDetermined));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.notDetermined));
 
       // Null rather than false: never-asked must not read as a revocation.
       expect(await repository.refreshPermissionStatus(), isNull);
@@ -292,9 +288,8 @@ void main() {
     });
 
     test('a status change is emitted on the permission stream', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
 
       // The replayed current status comes first, then the change.
       final emitted = repository.getPermissionStatusStream().take(2).toList();
@@ -310,27 +305,23 @@ void main() {
     });
 
     test('an explicit denial reports false', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.denied));
 
       expect(await repository.refreshPermissionStatus(), isFalse);
     });
 
     test('canRequestPermission is true only while undetermined', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.notDetermined));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.notDetermined));
       expect(await repository.canRequestPermission(), isTrue);
 
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.denied));
       expect(await repository.canRequestPermission(), isFalse);
 
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
       expect(await repository.canRequestPermission(), isFalse);
     });
 
@@ -512,9 +503,8 @@ void main() {
     tearDown(() => repository.dispose());
 
     test('replays the current status to a late subscriber', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
       // The emission happens here, before anything is listening.
       await repository.refreshPermissionStatus();
 
@@ -522,27 +512,24 @@ void main() {
     });
 
     test('a late subscriber on a denied device sees false, not nothing', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.denied));
       await repository.refreshPermissionStatus();
 
       expect(await repository.getPermissionStatusStream().first, isFalse);
     });
 
     test('still delivers later changes after the replay', () async {
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.denied));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.denied));
       await repository.refreshPermissionStatus();
 
       final seen = <bool>[];
       final sub = repository.getPermissionStatusStream().listen(seen.add);
       await pumpEventQueue();
 
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
       await repository.refreshPermissionStatus();
       await pumpEventQueue();
 
@@ -902,9 +889,8 @@ void main() {
       await repository.primeTokenForTest();
 
       when(messaging.getToken()).thenAnswer((_) async => 'fcm-token');
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
 
       await repository.refreshPermissionStatus();
 
@@ -928,9 +914,8 @@ void main() {
       await repository.primeTokenForTest();
       clearInteractions(messaging);
 
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
       await repository.refreshPermissionStatus();
 
       verifyNever(messaging.getToken());
@@ -976,9 +961,8 @@ void main() {
     setUp(() {
       // Authorized means init takes the branch that fetches a token, which is
       // the call that hangs on Apple while APNs has not answered.
-      when(
-        messaging.getNotificationSettings(),
-      ).thenAnswer((_) async => settings(AuthorizationStatus.authorized));
+      when(messaging.getNotificationSettings())
+          .thenAnswer((_) async => settings(AuthorizationStatus.authorized));
       when(messaging.setAutoInitEnabled(any)).thenAnswer((_) async {});
       when(messaging.getToken()).thenAnswer((_) => Completer<String>().future);
       repository = build(stepTimeout: const Duration(milliseconds: 20));

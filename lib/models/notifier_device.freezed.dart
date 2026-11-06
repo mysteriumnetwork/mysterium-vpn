@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'notifier_device.dart';
@@ -9,6 +9,7 @@ part of 'notifier_device.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $NotifierRegistrationCopyWith<NotifierRegistration> get copyWith => _$NotifierRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.state, state) || other.state == state));
+  final _this = this as NotifierRegistration;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotifierRegistration&&(identical(other.externalUserId, _this.externalUserId) || other.externalUserId == _this.externalUserId)&&(identical(other.token, _this.token) || other.token == _this.token)&&(identical(other.platform, _this.platform) || other.platform == _this.platform)&&(identical(other.contractVersion, _this.contractVersion) || other.contractVersion == _this.contractVersion)&&(identical(other.state, _this.state) || other.state == _this.state));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,externalUserId,token,platform,contractVersion,state);
+int get hashCode {
+  final _this = this as NotifierRegistration;
+  return Object.hash(runtimeType,_this.externalUserId,_this.token,_this.platform,_this.contractVersion,_this.state);
+}
 
 @override
 String toString() {
-  return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, state: $state)';
+  final _this = this as NotifierRegistration;
+  return 'NotifierRegistration(externalUserId: ${_this.externalUserId}, token: ${_this.token}, platform: ${_this.platform}, contractVersion: ${_this.contractVersion}, state: ${_this.state})';
 }
 
 
@@ -66,7 +72,7 @@ class _$NotifierRegistrationCopyWithImpl<$Res>
 /// Create a copy of NotifierRegistration
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? externalUserId = null,Object? token = null,Object? platform = null,Object? contractVersion = null,Object? state = null,}) {
-  return _then(_self.copyWith(
+  return _then(NotifierRegistration(
 externalUserId: null == externalUserId ? _self.externalUserId : externalUserId // ignore: cast_nullable_to_non_nullable
 as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.state, state) || other.state == state));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotifierRegistration&&(identical(other.externalUserId, externalUserId) || other.externalUserId == externalUserId)&&(identical(other.token, token) || other.token == token)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.contractVersion, contractVersion) || other.contractVersion == contractVersion)&&(identical(other.state, state) || other.state == state));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,externalUserId,token,platform,contractVersion,state);
+int get hashCode {
+    return Object.hash(runtimeType,externalUserId,token,platform,contractVersion,state);
+}
 
 @override
 String toString() {
-  return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, state: $state)';
+    return 'NotifierRegistration(externalUserId: $externalUserId, token: $token, platform: $platform, contractVersion: $contractVersion, state: $state)';
 }
 
 

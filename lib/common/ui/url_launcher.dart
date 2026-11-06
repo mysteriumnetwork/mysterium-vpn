@@ -51,9 +51,9 @@ Future<bool> openUrlLink(
       // clipboard — the same trade `navigateToUrl` already makes.
       action: IconButton(
         icon: const Icon(Icons.copy, size: 16),
-        onPressed: () => Clipboard.setData(
-          ClipboardData(text: url.toString()),
-        ).then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
+        onPressed: () =>
+            Clipboard.setData(ClipboardData(text: url.toString()))
+                .then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
       ),
       type: SnackbarType.info,
     );

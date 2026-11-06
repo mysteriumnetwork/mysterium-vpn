@@ -110,9 +110,8 @@ void main() {
           userId: 'u1',
         ),
       ).called(1);
-      verify(
-        analytics.logEvent(AnalyticsEvent.returnStore, parameters: anyNamed('parameters')),
-      ).called(1);
+      verify(analytics.logEvent(AnalyticsEvent.returnStore, parameters: anyNamed('parameters')))
+          .called(1);
       expect(store.subscriptionStatus, isNull);
     });
 

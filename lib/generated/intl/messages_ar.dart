@@ -201,6 +201,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "جارٍ الحصول على معلومات الخطة...",
     ),
     "checkYourEmail": MessageLookupByLibrary.simpleMessage("تحقق من بريدك الإلكتروني"),
+    "cityIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "عناوين IP على مستوى المدينة غير متاحة في خطتك الحالية.",
+    ),
     "clearSearchBtn": MessageLookupByLibrary.simpleMessage("مسح البحث"),
     "closeBtn": MessageLookupByLibrary.simpleMessage("إغلاق"),
     "communicationLbl": MessageLookupByLibrary.simpleMessage("الاتصالات"),
@@ -502,6 +505,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "plan_yearly_pro": MessageLookupByLibrary.simpleMessage("Pro سنوي"),
     "poland": MessageLookupByLibrary.simpleMessage("بولندا"),
     "preferences": MessageLookupByLibrary.simpleMessage("التفضيلات"),
+    "priceIncludesVat": MessageLookupByLibrary.simpleMessage(
+      "السعر يشمل ضريبة القيمة المضافة المطبقة.",
+    ),
     "pricingPlanSeePlansBtn": MessageLookupByLibrary.simpleMessage("عرض جميع الخطط"),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
     "processingPayment": MessageLookupByLibrary.simpleMessage(
@@ -549,6 +555,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحديثات المنتج والنصائح والعروض الخاصة",
     ),
     "qaToolboxLbl": MessageLookupByLibrary.simpleMessage("QA Toolbox"),
+    "quitAppConnectedDesc": MessageLookupByLibrary.simpleMessage(
+      "أنت متصل. سيؤدي الإنهاء إلى إغلاق Mysterium VPN وقطع اتصال VPN.",
+    ),
+    "quitAppDesc": MessageLookupByLibrary.simpleMessage(
+      "سيتم إغلاق Mysterium VPN وإيقاف تشغيله في الخلفية.",
+    ),
+    "quitAppTitle": MessageLookupByLibrary.simpleMessage("إنهاء Mysterium VPN؟"),
+    "quitBtn": MessageLookupByLibrary.simpleMessage("إنهاء"),
     "rateConnection": MessageLookupByLibrary.simpleMessage("كيف هو اتصالك؟"),
     "rateConnectionDislike": MessageLookupByLibrary.simpleMessage("ما الذي لم يعجبك؟"),
     "rateConnectionLike": MessageLookupByLibrary.simpleMessage("ما الذي أعجبك؟"),
@@ -600,6 +614,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialEducationTitle": MessageLookupByLibrary.simpleMessage("كيف تعمل عناوين IP السكنية"),
     "residentialIpBadge": MessageLookupByLibrary.simpleMessage("عنوان IP سكني"),
+    "residentialIpsNotAvailableOnPlan": MessageLookupByLibrary.simpleMessage(
+      "عناوين IP السكنية غير متاحة في خطتك الحالية.",
+    ),
     "resumeBtn": MessageLookupByLibrary.simpleMessage("استئناف"),
     "resumeSubscriptionFailed": MessageLookupByLibrary.simpleMessage(
       "تعذّر استئناف اشتراكك. يُرجى المحاولة مرة أخرى.",

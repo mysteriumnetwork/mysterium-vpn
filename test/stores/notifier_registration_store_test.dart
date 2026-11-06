@@ -103,9 +103,8 @@ void main() {
         attributes: anyNamed('attributes'),
       ),
     ).thenAnswer((_) async {});
-    when(
-      service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
-    ).thenAnswer((_) async {});
+    when(service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')))
+        .thenAnswer((_) async {});
   }
 
   /// Revokes permission the way the repository reports it: the cached status
@@ -162,9 +161,8 @@ void main() {
 
     stubServiceSuccess();
 
-    when(
-      authSessionStore.userFuture,
-    ).thenAnswer((_) => ObservableFuture.value(AuthUser(userId: 'user-1', username: 'a@b.com')));
+    when(authSessionStore.userFuture)
+        .thenAnswer((_) => ObservableFuture.value(AuthUser(userId: 'user-1', username: 'a@b.com')));
     when(ipInfoStore.infoFuture).thenAnswer(
       (_) => ObservableFuture.value(const IPInfo(city: 'Berlin', country: 'DE', ip: '1.2.3.4')),
     );
@@ -470,9 +468,8 @@ void main() {
     test('reports a coarse error category and the status', () async {
       await start();
 
-      verify(
-        analyticsStore.logPushDeviceRegistrationFailed(errorCategory: 'server', status: 503),
-      ).called(1);
+      verify(analyticsStore.logPushDeviceRegistrationFailed(errorCategory: 'server', status: 503))
+          .called(1);
     });
 
     test('does not merge attributes after a failed registration', () async {
@@ -510,9 +507,8 @@ void main() {
     test('a NotifierException is evented but not reported as a bug', () async {
       await start();
 
-      verify(
-        analyticsStore.logPushDeviceRegistrationFailed(errorCategory: 'server', status: 503),
-      ).called(1);
+      verify(analyticsStore.logPushDeviceRegistrationFailed(errorCategory: 'server', status: 503))
+          .called(1);
       // Expected transport outcomes are retried, so reporting each one would
       // bury the Crashlytics dashboard.
       verifyNever(
@@ -555,9 +551,8 @@ void main() {
 
       await start();
 
-      verify(
-        analyticsStore.logPushAttributesMergeFailed(errorCategory: 'not_found', status: 404),
-      ).called(1);
+      verify(analyticsStore.logPushAttributesMergeFailed(errorCategory: 'not_found', status: 404))
+          .called(1);
     });
 
     test('a failing merge does not mark the registration pending', () async {
@@ -848,9 +843,8 @@ void main() {
 
       await revokePermission();
 
-      verify(
-        analyticsStore.logPushDeviceDeleteFailed(errorCategory: 'server', status: 503),
-      ).called(1);
+      verify(analyticsStore.logPushDeviceDeleteFailed(errorCategory: 'server', status: 503))
+          .called(1);
     });
 
     test('a failed delete is retried when connectivity returns', () async {

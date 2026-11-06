@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -47,9 +48,8 @@ void main() {
     when(subscriptions.subscriptionFuture).thenAnswer((_) => subscriptionFuture.value);
     when(locations.refreshAll(invalidate: anyNamed('invalidate'))).thenAnswer((_) async {});
     when(authSession.isAuthenticated).thenReturn(false);
-    when(
-      subscriptions.refreshSubscription(force: anyNamed('force')),
-    ).thenAnswer((_) async => Subscription.empty());
+    when(subscriptions.refreshSubscription(force: anyNamed('force')))
+        .thenAnswer((_) async => Subscription.empty());
     when(termsConditions.checkForUpdatedTermsConditions()).thenAnswer((_) async {});
   });
 
@@ -74,9 +74,8 @@ void main() {
 
   test('resume refresh logs errors without rethrowing', () async {
     final error = Exception('offline');
-    when(
-      subscriptions.refreshSubscription(force: anyNamed('force')),
-    ).thenAnswer((_) async => throw error);
+    when(subscriptions.refreshSubscription(force: anyNamed('force')))
+        .thenAnswer((_) async => throw error);
 
     final store = buildStore();
 

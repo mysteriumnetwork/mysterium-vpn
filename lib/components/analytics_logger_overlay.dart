@@ -219,9 +219,8 @@ class _LogListItem extends StatelessWidget {
         children: [
           Text(
             [value.timestamp.formatWithDay(), value.timestamp.formatWithTime()].join(', '),
-            style: TextStyles.of(
-              context,
-            ).textXs.regular.copyWith(fontSize: 10, color: theme.palette.textSecondary),
+            style: TextStyles.of(context).textXs.regular
+                .copyWith(fontSize: 10, color: theme.palette.textSecondary),
           ),
           Text(
             value.message,

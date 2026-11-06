@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_mixin
-import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
-import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
 class LifecycleListener extends StatelessWidget {
@@ -136,13 +133,15 @@ class _LifecycleDesktop extends ConsumerStatefulWidget {
   ConsumerState<_LifecycleDesktop> createState() => __LifecycleDesktopState();
 }
 
-class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
-    with WindowListener, TrayListener, WidgetsBindingObserver {
+class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop> with WidgetsBindingObserver {
+  Window? _window;
+  ListenerId? _windowListenerId;
+
   @override
   void initState() {
     super.initState();
-    windowManager.addListener(this);
-    trayManager.addListener(this);
+    _window = mainWindow;
+    _windowListenerId = _window?.addListener(_onWindowEvent);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -155,64 +154,35 @@ class __LifecycleDesktopState extends ConsumerState<_LifecycleDesktop>
 
   @override
   void dispose() {
-    windowManager.removeListener(this);
-    trayManager.removeListener(this);
+    final listenerId = _windowListenerId;
+    if (listenerId != null) {
+      _window?.removeListener(listenerId);
+    }
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
-  @override
-  Future<void> onWindowClose() async {
-    if (await windowManager.isPreventClose()) {
-      await windowManager.hide();
-    } else {
-      exit(0);
+  // Closing only hides; the tray menu's Exit is the one real way out.
+  void _onWindowEvent(WindowEvent event) {
+    if (event is WindowCloseRequestedEvent) {
+      event.request.cancel();
+      _window?.hide();
+      _setFocused(false);
+    } else if (event is WindowFocusedEvent || event is WindowRestoredEvent) {
+      widget.onResumed?.call();
+      _setFocused(true);
+    } else if (event is WindowBlurredEvent ||
+        event is WindowMinimizedEvent ||
+        event is WindowClosedEvent) {
+      _setFocused(false);
     }
   }
 
-  @override
-  void onWindowFocus() {
-    widget.onResumed?.call();
-  }
-
-  @override
-  void onWindowRestore() {
-    widget.onResumed?.call();
-  }
-
-  @override
-  Future<void> onTrayIconMouseDown() async {
-    windowManager.show();
-  }
-
-  @override
-  void onTrayIconRightMouseDown() {
-    trayManager.popUpContextMenu();
-  }
-
-  @override
-  Future<void> onTrayMenuItemClick(MenuItem menuItem) async {
-    if (menuItem.key == 'show_window') {
-      if (!await windowManager.isVisible()) {
-        windowManager.show();
-        trayManager.popUpContextMenu();
-      }
-    } else if (menuItem.key == 'exit_app') {
-      ref.read(vpnStorePOD).disposeStore().whenComplete(() async {
-        await trayManager.destroy();
-        exit(0);
-      });
+  void _setFocused(bool focused) {
+    if (!mounted) {
+      return;
     }
-  }
-
-  @override
-  void onWindowEvent(String eventType) {
-    if (eventType == 'closed' || eventType == 'minimized' || eventType == 'blur') {
-      ref.read(isAppWindowFocused.notifier).focused = false;
-    }
-    if (eventType == 'restored' || eventType == 'focus') {
-      ref.read(isAppWindowFocused.notifier).focused = true;
-    }
+    ref.read(isAppWindowFocused.notifier).focused = focused;
   }
 
   @override

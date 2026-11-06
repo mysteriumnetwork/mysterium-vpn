@@ -48,9 +48,8 @@ void main() {
     when(store.failure).thenReturn(failure);
     when(store.isLoading).thenReturn(isLoading);
     when(store.isAccepting).thenReturn(isAccepting);
-    when(
-      store.latestTermsConditions,
-    ).thenReturn(html.isEmpty ? null : TermsAndConditions(content: html, version: '2'));
+    when(store.latestTermsConditions)
+        .thenReturn(html.isEmpty ? null : TermsAndConditions(content: html, version: '2'));
   }
 
   testWidgets('shows the child when approval is not required', (tester) async {

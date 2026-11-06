@@ -4,8 +4,13 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/router/route_delegate.dart';
+import 'package:mysterium_vpn/common/utils/utils.dart';
+import 'package:mysterium_vpn/components/dialogs/dialogs.dart';
 import 'package:mysterium_vpn/entrypoints/app_initializer.dart';
 import 'package:mysterium_vpn/env.dart';
+import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/pages/static/splash_page.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
@@ -32,7 +37,7 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
       const Duration(seconds: 10),
       onTimeout: () => logger.log('ConfigCat stores init timed out'),
     ),
-    if (Platform.isWindows) _initWindows(),
+    if (Platform.isWindows) _initWindows(ref),
   ]);
 
   // Construct pushNotificationsStorePOD here rather than in MyApp.build: its
@@ -94,9 +99,9 @@ Future<void> _initLatLngStore(Ref ref, Talker logger) async {
   }
 }
 
-Future<void> _initWindows() async {
+Future<void> _initWindows(Ref ref) async {
   try {
-    await Future.wait([_nativeWindowsInit(), _setupTrayIcon()]);
+    await Future.wait([_nativeWindowsInit(), _setupTrayIcon(ref)]);
     registerProtocolHandler(Env.appCustomSchemeUrl);
   } catch (e, stackTrace) {
     debugPrint('Windows init error (non-fatal): $e');
@@ -130,24 +135,102 @@ Future<void> _openvpnInitBackground(List<Object> args) async {
   }
 }
 
-Future<void> _setupTrayIcon() async {
+// Held for the app's lifetime: a collected TrayIcon drops the icon from the tray.
+TrayIcon? _trayIcon;
+
+Future<void> _setupTrayIcon(Ref ref) async {
   try {
-    await trayManager.setIcon(
-      Env.flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
-      iconPosition: TrayIconPosition.right,
-    );
-    await trayManager.setContextMenu(
-      Menu(
-        items: [
-          MenuItem(key: 'show_window', label: 'Open'),
-          MenuItem.separator(),
-          MenuItem(key: 'exit_app', label: 'Exit MysteriumVPN'),
-        ],
-      ),
-    );
+    final icon = TrayIcon.create();
+    final menu = Menu.create();
+    final showWindow = MenuItem.createWithLabelAndType('Open', MenuItemType.normal);
+    final exitApp = MenuItem.createWithLabelAndType('Exit MysteriumVPN', MenuItemType.normal);
+    if (icon == null || menu == null || showWindow == null || exitApp == null) {
+      return;
+    }
+
+    icon
+      ..icon = ImageAsset.fromAsset(
+        Env.flavor.isDev ? 'assets/logo/dev/app_icon.ico' : 'assets/logo/prod/app_icon.ico',
+      )
+      ..iconPosition = TrayIconPosition.right
+      ..addListener((event) {
+        if (event is TrayIconClickedEvent) {
+          showMainWindow();
+        }
+      });
+
+    showWindow.addListener((event) {
+      if (event is MenuItemClickedEvent) {
+        showMainWindow();
+      }
+    });
+    exitApp.addListener((event) {
+      if (event is! MenuItemClickedEvent) {
+        return;
+      }
+      _confirmQuit(ref);
+    });
+
+    menu
+      ..addItem(showWindow)
+      ..addSeparator()
+      ..addItem(exitApp);
+
+    // The native API's default trigger is none: a menu alone does not open it.
+    icon
+      ..setContextMenu(menu)
+      ..setContextMenuTrigger(ContextMenuTrigger.rightClicked)
+      ..setVisible(true);
+
+    _trayIcon = icon;
   } catch (e) {
     Sentry.captureException(e);
   }
+}
+
+bool _quitPromptOpen = false;
+
+/// Quitting kills the tunnel with the app, so it asks first — and says so when
+/// a session is live.
+void _confirmQuit(Ref ref) {
+  showMainWindow();
+  if (_quitPromptOpen) {
+    return;
+  }
+  final context = ref.read(routerDelegatePOD).navigatorKey.currentContext;
+  if (context == null) {
+    _quitApp(ref);
+    return;
+  }
+  final vpnStore = ref.read(vpnStorePOD);
+  _quitPromptOpen = true;
+  shownConfirmationDialog(
+    context,
+    title: S.current.quitAppTitle,
+    supportingText: vpnStore.isConnected || vpnStore.isLoading
+        ? S.current.quitAppConnectedDesc
+        : S.current.quitAppDesc,
+    confirmText: S.current.quitBtn,
+    cancelText: S.current.cancelBtn,
+    onConfirm: () => _quitApp(ref),
+  ).whenComplete(() => _quitPromptOpen = false);
+}
+
+Future<void> _quitApp(Ref ref) async {
+  final vpnStore = ref.read(vpnStorePOD);
+  try {
+    if (vpnStore.isConnected || vpnStore.isLoading) {
+      await vpnStore
+          .disconnectTunnel(reason: VpnDisconnectReason.appInitiated)
+          .timeout(const Duration(seconds: 5));
+    }
+  } catch (e) {
+    // Never block the quit the user just confirmed.
+    ref.read(loggerPOD).warning('Disconnect on quit failed', e);
+  }
+  await vpnStore.disposeStore();
+  _trayIcon?.dispose();
+  exit(0);
 }
 
 class AppDeferredInitWidget extends ConsumerWidget {

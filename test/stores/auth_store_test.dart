@@ -191,9 +191,8 @@ void main() {
   group('signInWithGoogle', () {
     test('drives signInComplete and exposes authenticatingType', () async {
       when(authService.signInWithGoogle()).thenAnswer((_) async => 'google-id-token');
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.signInWithGoogle();
       // Wait for the inner authenticate() future to resolve.
@@ -208,9 +207,8 @@ void main() {
     test('skips authenticate when signInWithGoogle returns null', () async {
       // signInWithGoogle declares non-null return but mocks may stub null.
       when(authService.signInWithGoogle()).thenAnswer((_) async => '');
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.signInWithGoogle();
       // Empty string is non-null so authenticate IS called — assert the
@@ -235,9 +233,8 @@ void main() {
   group('signInWithApple', () {
     test('drives signInComplete on success', () async {
       when(authService.signInWithApple()).thenAnswer((_) async => 'apple-authorization');
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.signInWithApple();
       await store.authenticateFeature;
@@ -268,9 +265,8 @@ void main() {
 
   group('logout', () {
     test('calls authService.logout with invalidateRemotely flag', () async {
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await store.logout();
 
@@ -278,9 +274,8 @@ void main() {
     });
 
     test('respects invalidateRemotely: false', () async {
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await store.logout(invalidateRemotely: false);
 
@@ -306,9 +301,8 @@ void main() {
 
   group('refreshAuthToken', () {
     test('uses the refresh token to obtain new credentials', () async {
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
 
       await store.refreshAuthToken();
 
@@ -318,9 +312,8 @@ void main() {
 
     test('logs out when no refresh token is stored', () async {
       when(sessionStore.refreshTokenFuture).thenAnswer((_) => ObservableFuture.value(null));
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<RefreshTokenNotFoundException>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
@@ -328,12 +321,10 @@ void main() {
 
     test('logs out when the server rejects the refresh token', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshRejected);
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRejected);
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
@@ -341,9 +332,8 @@ void main() {
 
     test('keeps the session when the refresh never reaches the server', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshUnreachable);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
@@ -353,9 +343,8 @@ void main() {
 
     test('keeps the session when the server fails to answer the refresh', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshServerError);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshServerError);
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
@@ -365,9 +354,8 @@ void main() {
 
     test('keeps the session when the refreshed credentials cannot be persisted', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenAnswer((_) async => tokens);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenAnswer((_) async => tokens);
       when(
         sessionStore.setAuthenticated('access', 'refresh'),
       ).thenThrow(PlatformException(code: '-25308', message: 'User interaction is not allowed.'));
@@ -380,12 +368,10 @@ void main() {
 
     test('still logs out (no snackbar) when not authenticated', () async {
       when(sessionStore.status).thenReturn(AuthStatus.unauthenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshRejected);
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRejected);
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<Exception>()));
       verify(authService.logout(invalidateRemotely: false)).called(1);
@@ -393,9 +379,8 @@ void main() {
 
     test('keeps the session when the refresh is rate limited', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshRateLimited);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRateLimited);
 
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
@@ -413,9 +398,8 @@ void main() {
     });
 
     test('completes the sign-in when the user record cannot be persisted', () async {
-      when(
-        authService.currentUser(),
-      ).thenAnswer((_) async => AuthUser(userId: 'u1', username: 'a@b.c'));
+      when(authService.currentUser())
+          .thenAnswer((_) async => AuthUser(userId: 'u1', username: 'a@b.c'));
       when(abTestingStore.configFuture).thenAnswer((_) => ObservableFuture.value({}));
       when(
         sessionStore.setAuthenticatedUser(any),
@@ -429,9 +413,8 @@ void main() {
 
     test('keeps the session on 401 when the refresh got no verdict', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshUnreachable);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
       when(authService.currentUser()).thenThrow(refreshRejected);
@@ -442,17 +425,14 @@ void main() {
 
     test('signs out again once a later refresh is conclusive', () async {
       when(sessionStore.status).thenReturn(AuthStatus.authenticated);
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshUnreachable);
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshUnreachable);
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
-      when(
-        authService.signInComplete(tokenRequest: anyNamed('tokenRequest')),
-      ).thenThrow(refreshRejected);
-      when(
-        authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')),
-      ).thenAnswer((_) async {});
+      when(authService.signInComplete(tokenRequest: anyNamed('tokenRequest')))
+          .thenThrow(refreshRejected);
+      when(authService.logout(invalidateRemotely: anyNamed('invalidateRemotely')))
+          .thenAnswer((_) async {});
       await expectLater(store.refreshAuthToken(), throwsA(isA<ApiException>()));
 
       when(authService.currentUser()).thenThrow(refreshRejected);

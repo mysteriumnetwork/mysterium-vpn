@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'subscription.dart';
@@ -9,6 +9,7 @@ part of 'subscription.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SubscriptionCopyWith<Subscription> get copyWith => _$SubscriptionCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Subscription&&(identical(other.active, active) || other.active == active)&&(identical(other.id, id) || other.id == id)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.gateway, gateway) || other.gateway == gateway)&&(identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil)&&(identical(other.expired, expired) || other.expired == expired)&&(identical(other.recurring, recurring) || other.recurring == recurring)&&(identical(other.paused, paused) || other.paused == paused)&&(identical(other.pauseAllowed, pauseAllowed) || other.pauseAllowed == pauseAllowed)&&(identical(other.pausedFrom, pausedFrom) || other.pausedFrom == pausedFrom)&&(identical(other.pausedUntil, pausedUntil) || other.pausedUntil == pausedUntil)&&(identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId)&&(identical(other.periodStart, periodStart) || other.periodStart == periodStart)&&(identical(other.extraDuration, extraDuration) || other.extraDuration == extraDuration)&&(identical(other.orderSummary, orderSummary) || other.orderSummary == orderSummary));
+  final _this = this as Subscription;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Subscription&&(identical(other.active, _this.active) || other.active == _this.active)&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.planId, _this.planId) || other.planId == _this.planId)&&(identical(other.gateway, _this.gateway) || other.gateway == _this.gateway)&&(identical(other.activeUntil, _this.activeUntil) || other.activeUntil == _this.activeUntil)&&(identical(other.expired, _this.expired) || other.expired == _this.expired)&&(identical(other.recurring, _this.recurring) || other.recurring == _this.recurring)&&(identical(other.paused, _this.paused) || other.paused == _this.paused)&&(identical(other.pauseAllowed, _this.pauseAllowed) || other.pauseAllowed == _this.pauseAllowed)&&(identical(other.pausedFrom, _this.pausedFrom) || other.pausedFrom == _this.pausedFrom)&&(identical(other.pausedUntil, _this.pausedUntil) || other.pausedUntil == _this.pausedUntil)&&(identical(other.storePlanId, _this.storePlanId) || other.storePlanId == _this.storePlanId)&&(identical(other.periodStart, _this.periodStart) || other.periodStart == _this.periodStart)&&(identical(other.extraDuration, _this.extraDuration) || other.extraDuration == _this.extraDuration)&&(identical(other.orderSummary, _this.orderSummary) || other.orderSummary == _this.orderSummary));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,active,id,planId,gateway,activeUntil,expired,recurring,paused,pauseAllowed,pausedFrom,pausedUntil,storePlanId,periodStart,extraDuration,orderSummary);
+int get hashCode {
+  final _this = this as Subscription;
+  return Object.hash(runtimeType,_this.active,_this.id,_this.planId,_this.gateway,_this.activeUntil,_this.expired,_this.recurring,_this.paused,_this.pauseAllowed,_this.pausedFrom,_this.pausedUntil,_this.storePlanId,_this.periodStart,_this.extraDuration,_this.orderSummary);
+}
 
 @override
 String toString() {
-  return 'Subscription(active: $active, id: $id, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, paused: $paused, pauseAllowed: $pauseAllowed, pausedFrom: $pausedFrom, pausedUntil: $pausedUntil, storePlanId: $storePlanId, periodStart: $periodStart, extraDuration: $extraDuration, orderSummary: $orderSummary)';
+  final _this = this as Subscription;
+  return 'Subscription(active: ${_this.active}, id: ${_this.id}, planId: ${_this.planId}, gateway: ${_this.gateway}, activeUntil: ${_this.activeUntil}, expired: ${_this.expired}, recurring: ${_this.recurring}, paused: ${_this.paused}, pauseAllowed: ${_this.pauseAllowed}, pausedFrom: ${_this.pausedFrom}, pausedUntil: ${_this.pausedUntil}, storePlanId: ${_this.storePlanId}, periodStart: ${_this.periodStart}, extraDuration: ${_this.extraDuration}, orderSummary: ${_this.orderSummary})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SubscriptionCopyWithImpl<$Res>
 /// Create a copy of Subscription
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? active = null,Object? id = freezed,Object? planId = freezed,Object? gateway = freezed,Object? activeUntil = freezed,Object? expired = freezed,Object? recurring = freezed,Object? paused = freezed,Object? pauseAllowed = freezed,Object? pausedFrom = freezed,Object? pausedUntil = freezed,Object? storePlanId = freezed,Object? periodStart = freezed,Object? extraDuration = freezed,Object? orderSummary = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(Subscription(
 active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
 as bool,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,planId: freezed == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
@@ -273,16 +279,18 @@ _$SubscriptionCopyWith<_Subscription> get copyWith => __$SubscriptionCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Subscription&&(identical(other.active, active) || other.active == active)&&(identical(other.id, id) || other.id == id)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.gateway, gateway) || other.gateway == gateway)&&(identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil)&&(identical(other.expired, expired) || other.expired == expired)&&(identical(other.recurring, recurring) || other.recurring == recurring)&&(identical(other.paused, paused) || other.paused == paused)&&(identical(other.pauseAllowed, pauseAllowed) || other.pauseAllowed == pauseAllowed)&&(identical(other.pausedFrom, pausedFrom) || other.pausedFrom == pausedFrom)&&(identical(other.pausedUntil, pausedUntil) || other.pausedUntil == pausedUntil)&&(identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId)&&(identical(other.periodStart, periodStart) || other.periodStart == periodStart)&&(identical(other.extraDuration, extraDuration) || other.extraDuration == extraDuration)&&(identical(other.orderSummary, orderSummary) || other.orderSummary == orderSummary));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Subscription&&(identical(other.active, active) || other.active == active)&&(identical(other.id, id) || other.id == id)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.gateway, gateway) || other.gateway == gateway)&&(identical(other.activeUntil, activeUntil) || other.activeUntil == activeUntil)&&(identical(other.expired, expired) || other.expired == expired)&&(identical(other.recurring, recurring) || other.recurring == recurring)&&(identical(other.paused, paused) || other.paused == paused)&&(identical(other.pauseAllowed, pauseAllowed) || other.pauseAllowed == pauseAllowed)&&(identical(other.pausedFrom, pausedFrom) || other.pausedFrom == pausedFrom)&&(identical(other.pausedUntil, pausedUntil) || other.pausedUntil == pausedUntil)&&(identical(other.storePlanId, storePlanId) || other.storePlanId == storePlanId)&&(identical(other.periodStart, periodStart) || other.periodStart == periodStart)&&(identical(other.extraDuration, extraDuration) || other.extraDuration == extraDuration)&&(identical(other.orderSummary, orderSummary) || other.orderSummary == orderSummary));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,active,id,planId,gateway,activeUntil,expired,recurring,paused,pauseAllowed,pausedFrom,pausedUntil,storePlanId,periodStart,extraDuration,orderSummary);
+int get hashCode {
+    return Object.hash(runtimeType,active,id,planId,gateway,activeUntil,expired,recurring,paused,pauseAllowed,pausedFrom,pausedUntil,storePlanId,periodStart,extraDuration,orderSummary);
+}
 
 @override
 String toString() {
-  return 'Subscription(active: $active, id: $id, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, paused: $paused, pauseAllowed: $pauseAllowed, pausedFrom: $pausedFrom, pausedUntil: $pausedUntil, storePlanId: $storePlanId, periodStart: $periodStart, extraDuration: $extraDuration, orderSummary: $orderSummary)';
+    return 'Subscription(active: $active, id: $id, planId: $planId, gateway: $gateway, activeUntil: $activeUntil, expired: $expired, recurring: $recurring, paused: $paused, pauseAllowed: $pauseAllowed, pausedFrom: $pausedFrom, pausedUntil: $pausedUntil, storePlanId: $storePlanId, periodStart: $periodStart, extraDuration: $extraDuration, orderSummary: $orderSummary)';
 }
 
 
