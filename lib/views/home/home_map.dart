@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/current_ip_coordinates_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
@@ -12,11 +13,37 @@ import 'package:mysterium_vpn/views/home/locations_map.dart';
 
 /// Resolves the best available VPN location when connecting from the map.
 /// Priority: residential (if allowed and available) > datacenter > original (triggers paywall).
+///
+/// A city marker on a plan without city targeting resolves to its country, so
+/// the map connects to something the plan covers instead of silently failing.
 VPNLocation resolveMapLocation({
   required VPNLocation location,
   required LocationsStore locationsStore,
   required bool residentialIPsAllowed,
+  required bool cityLevelAllowed,
+  required bool hasResolvedPlan,
 }) {
+  final cityGated =
+      !location.isCountry &&
+      LocationMode.isUnsupportedByPlan(
+        location: location,
+        hasResolvedPlan: hasResolvedPlan,
+        residentialIPsAllowed: true,
+        cityLevelAllowed: cityLevelAllowed,
+      );
+  if (cityGated) {
+    final country = locationsStore.findParent(location);
+    if (country != null) {
+      return resolveMapLocation(
+        location: country,
+        locationsStore: locationsStore,
+        residentialIPsAllowed: residentialIPsAllowed,
+        cityLevelAllowed: true,
+        hasResolvedPlan: hasResolvedPlan,
+      );
+    }
+  }
+
   if (location.ipType == IPType.datacenter) {
     return location;
   }
@@ -78,6 +105,8 @@ class HomeMap extends HookConsumerWidget {
         location: location,
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+        cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+        hasResolvedPlan: subscriptionStore.hasResolvedPlan,
       );
       selectedLocationStore.value = resolved;
     }
@@ -90,8 +119,10 @@ class HomeMap extends HookConsumerWidget {
         location: location,
         locationsStore: locationsStore,
         residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+        cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+        hasResolvedPlan: subscriptionStore.hasResolvedPlan,
       );
-      if (vpnStore.isConnected && vpnStore.location == resolved) {
+      if (vpnStore.isConnected && resolved.covers(vpnStore.location)) {
         return;
       }
       handleToggleConnection(location: resolved);

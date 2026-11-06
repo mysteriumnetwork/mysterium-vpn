@@ -98,6 +98,7 @@ void main() {
         .thenAnswer((_) => ObservableFuture.value(activeSubscription));
 
     when(mockSubscriptionStore.residentialIPsAllowed).thenReturn(true);
+    when(mockSubscriptionStore.hasResolvedPlan).thenReturn(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -311,6 +312,48 @@ void main() {
 
       expect(capturedState!.status, isA<MainIpCardConnecting>());
       expect(capturedState!.connectingLabel.toLowerCase(), contains('disconnecting'));
+    });
+
+    testWidgets('a live tunnel keeps Disconnect even when the selection is gated', (tester) async {
+      // Relabelling the card's only button "Upgrade" would strand a connected
+      // user whose pending selection happens to be plan-gated.
+      const gatedCity = VPNLocation(
+        id: 'Berlin',
+        ipType: IPType.datacenter,
+        translations: {'en': 'Berlin'},
+        countryCode: 'DE',
+      );
+      when(mockConnectionDisplayStore.displayLocation).thenReturn(gatedCity);
+      when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+      when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+      when(mockVpnStore.isConnected).thenReturn(true);
+      when(mockConnectionDisplayStore.isConnected).thenReturn(true);
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(capturedState, isNotNull);
+      expect(capturedState!.disconnectLabel.toLowerCase(), contains('disconnect'));
+    });
+
+    testWidgets('an unresolved plan never relabels the button Upgrade', (tester) async {
+      // A config that failed to load leaves the plan unknown, not restrictive.
+      const gatedCity = VPNLocation(
+        id: 'Berlin',
+        ipType: IPType.datacenter,
+        translations: {'en': 'Berlin'},
+        countryCode: 'DE',
+      );
+      when(mockConnectionDisplayStore.displayLocation).thenReturn(gatedCity);
+      when(mockConnectionDisplayStore.isLocationAvailable).thenReturn(true);
+      when(mockSubscriptionStore.cityLevelAllowed).thenReturn(false);
+      when(mockSubscriptionStore.hasResolvedPlan).thenReturn(false);
+
+      await tester.pumpWidget(buildHarness());
+      await tester.pump();
+
+      expect(capturedState, isNotNull);
+      expect(capturedState!.connectLabel.toLowerCase(), isNot(contains('upgrade')));
     });
 
     testWidgets(

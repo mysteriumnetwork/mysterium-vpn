@@ -15,7 +15,6 @@ typedef LocationItemState = ({
   IpCardStatus countryStatus,
   List<IpCardItem> items,
   String subtitle,
-  bool needsUpgrade,
   bool showCitiesAndStates,
   VoidCallback? onConnect,
 });
@@ -42,30 +41,25 @@ LocationItemState useLocationItemState({
   final localeTag = activeLocale.toLanguageTag();
 
   final subscription = useComputedValue(() => subscriptionStore.subscriptionFuture.value);
-  final residentialIPsAllowed = useComputedValue(() => subscriptionStore.residentialIPsAllowed);
-  final isSubscriptionLoading = useComputedValue(() => subscriptionStore.isSubscriptionLoading);
 
+  // Plan flags are read inside the Computeds below rather than hoisted, so MobX
+  // tracks them and they stay out of the keys lists.
   final locationMode = useComputedValue(
     () => LocationMode.from(
       location: location,
       isAuthenticated: isAuthenticated,
-      residentialIPsAllowed: residentialIPsAllowed,
+      residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
       unavailableLocations: unavailableLocationsStore.unavailableLocations,
       subscription: subscription,
       isConnected: vpnStore.isConnected,
       isLoading: vpnStore.isLoading,
       vpnLocation: vpnStore.location,
       connectingLocation: vpnStore.connectingLocation,
-      isSubscriptionLoading: isSubscriptionLoading,
+      isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
+      cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+      hasResolvedPlan: subscriptionStore.hasResolvedPlan,
     ),
-    [
-      location,
-      location.isAvailable,
-      subscription,
-      residentialIPsAllowed,
-      isSubscriptionLoading,
-      isAuthenticated,
-    ],
+    [location, location.isAvailable, subscription, isAuthenticated],
   );
 
   // When a child city of this country is the active VPN location, surface the
@@ -105,18 +99,25 @@ LocationItemState useLocationItemState({
     if (!showCitiesAndStates) {
       return <IpCardItem>[];
     }
+    // Read once per recompute rather than once per child.
+    final residentialAllowed = subscriptionStore.residentialIPsAllowed;
+    final subscriptionLoading = subscriptionStore.isSubscriptionLoading;
+    final cityLevelAllowed = subscriptionStore.cityLevelAllowed;
+    final hasResolvedPlan = subscriptionStore.hasResolvedPlan;
     return children.map((child) {
       final childMode = LocationMode.from(
         location: child,
         isAuthenticated: isAuthenticated,
-        residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+        residentialIPsAllowed: residentialAllowed,
         unavailableLocations: unavailableLocationsStore.unavailableLocations,
         subscription: subscription,
         isConnected: vpnStore.isConnected,
         isLoading: vpnStore.isLoading,
         vpnLocation: vpnStore.location,
         connectingLocation: vpnStore.connectingLocation,
-        isSubscriptionLoading: subscriptionStore.isSubscriptionLoading,
+        isSubscriptionLoading: subscriptionLoading,
+        cityLevelAllowed: cityLevelAllowed,
+        hasResolvedPlan: hasResolvedPlan,
       );
       final status = switch (childMode) {
         LocationMode.connecting => IpCardStatus.connecting,
@@ -142,8 +143,6 @@ LocationItemState useLocationItemState({
     // tracked by MobX inside the closure).
   }, [children, showCitiesAndStates, subscription, isAuthenticated, localeTag]);
 
-  final needsUpgrade = locationMode == LocationMode.unsupportedByPlan;
-
   final onConnect = switch (locationMode) {
     LocationMode.unsupportedByPlan => handleUpgradePlan,
     LocationMode.unavailable || LocationMode.connecting || LocationMode.loading => null,
@@ -154,7 +153,6 @@ LocationItemState useLocationItemState({
     countryStatus: countryStatus,
     items: items,
     subtitle: subtitle,
-    needsUpgrade: needsUpgrade,
     showCitiesAndStates: showCitiesAndStates,
     onConnect: onConnect,
   );

@@ -1,5 +1,7 @@
 import 'package:mobx/mobx.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
 abstract class VpnGuard {
@@ -22,6 +24,40 @@ abstract class VpnGuard {
     }
     return future.value?.grantsVpnAccess ?? false;
   }
+
+  /// Throws when the active plan doesn't include [location].
+  ///
+  /// This is the single gate for every connect surface — lists, map, recents
+  /// and favourites all reach the tunnel through here, so none of them can
+  /// quietly bypass the plan. Surfaces that can show an upgrade affordance
+  /// still check [LocationMode] themselves to avoid a pointless round trip;
+  /// this is the backstop for the ones that can't.
+  void checkPlanSupportsLocation(VPNLocation? location) {
+    if (location != null && !planSupportsLocation(location)) {
+      throw const PlanUpgradeRequiredException();
+    }
+  }
+
+  /// Waits for the subscription config so the plan is known before gating; on
+  /// a cold start it is still in flight when the connect begins.
+  Future<void> awaitPlanResolution() async {
+    try {
+      await _subscription.subscriptionConfigFuture;
+    } catch (_) {
+      // A config that won't load leaves the plan unknown, which gates nothing.
+    }
+  }
+
+  /// Whether the active plan includes [location].
+  ///
+  /// An unresolved plan means its features are unknown, not absent — a failed
+  /// subscription-config fetch must never block a paying user from connecting.
+  bool planSupportsLocation(VPNLocation location) => !LocationMode.isUnsupportedByPlan(
+    location: location,
+    hasResolvedPlan: _subscription.hasResolvedPlan,
+    residentialIPsAllowed: _subscription.residentialIPsAllowed,
+    cityLevelAllowed: _subscription.cityLevelAllowed,
+  );
 
   Future<void> checkVpnGuards() async {
     await _session.accessTokenFuture;

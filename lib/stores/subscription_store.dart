@@ -160,6 +160,15 @@ abstract class _SubscriptionStore with Store {
   @computed
   bool get residentialIPsAllowed => planMetadata?.residentialIpsAllowed ?? false;
 
+  /// False while the plan is unknown — check [hasResolvedPlan] before gating.
+  @computed
+  bool get cityLevelAllowed => planMetadata?.locationTargetingAllowed ?? false;
+
+  /// Whether the active subscription's plan was found in the config. While
+  /// false the plan's features are unknown, not absent.
+  @computed
+  bool get hasResolvedPlan => planMetadata != null;
+
   /// True when the Products tab should route the user to the web instead of
   /// the in-app upgrade picker: Windows (no active store sub), or an active
   /// subscription paid through any non-mobile gateway (Stripe/Adyen/PayPal/

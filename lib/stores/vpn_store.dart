@@ -359,7 +359,7 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<bool> switchProtocolAndReconnect(ProtocolType protocol) async {
     // Captured up front — the teardown inside _applyProtocol clears all three.
     final wasConnected = isConnected;
-    final location = _requestedLocation ?? _vpnConnection?.location;
+    final location = _sessionRetargetLocation;
     final intent = _userIntentsStore.userIntent;
     final targetIp = _requestedTargetIp;
 
@@ -378,7 +378,12 @@ abstract class _VpnStore extends VpnGuard with Store {
     // one signal that distinguishes a completed connect from a failed one —
     // _vpnConnection still holds the previous session after a failed attempt.
     final epochBefore = _userConnectEpoch;
-    await manageConnection(location: location, intent: intent, targetIp: targetIp);
+    await manageConnection(
+      location: location,
+      intent: intent,
+      targetIp: targetIp,
+      isSessionRestore: true,
+    );
     return _userConnectEpoch > epochBefore;
   }
 
@@ -540,6 +545,7 @@ abstract class _VpnStore extends VpnGuard with Store {
     UserIntent? intent,
     bool isRetrying = false,
     bool refreshIP = false,
+    bool isSessionRestore = false,
     String? targetIp,
   }) async {
     if (_inFlightAction != null) {
@@ -568,15 +574,13 @@ abstract class _VpnStore extends VpnGuard with Store {
             intent: intent,
             isRetrying: isRetrying,
             refreshIP: refreshIP,
+            isSessionRestore: isSessionRestore,
             targetIp: targetIp,
           );
           break;
 
         case ConnectionAction.refreshIP:
-          await _startConnection(
-            refreshIP: true,
-            location: _requestedLocation ?? _vpnConnection?.location,
-          );
+          await _startConnection(refreshIP: true, location: _sessionRetargetLocation);
           break;
       }
     } finally {
@@ -589,10 +593,23 @@ abstract class _VpnStore extends VpnGuard with Store {
     VPNLocation? location,
     bool refreshIP = false,
     bool isRetrying = false,
+    bool isSessionRestore = false,
     UserIntent? intent,
     String? targetIp,
   }) async {
+    // Restoring a live session is never gated: the tunnel is proof enough, and
+    // blocking it would strand a user whose plan changed mid-session.
+    final gatePlan = !refreshIP && !isSessionRestore;
+    // Ahead of the prerequisites so a gated location costs no permission prompt.
+    if (gatePlan) {
+      checkPlanSupportsLocation(location);
+    }
     await _validateConnectionPrerequisites();
+    if (gatePlan) {
+      // The plan is often unknown on the way in, so decide again on the config.
+      await awaitPlanResolution();
+      checkPlanSupportsLocation(location);
+    }
     await _prepareConnection(location, intent, refreshIP, targetIp);
 
     if (_connectingLocation == null && _userIntentsStore.userIntent == null) {
@@ -830,7 +847,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
       final connectedLocation = await _resolveConnectedLocation(location);
       await _connectToTunnel();
-      await _finalizeConnection(connectedLocation);
+      await _finalizeConnection(connectedLocation, requestedLocation: location);
 
       unawaited(_subscribeConnectionChanges(_vpnConfig!.id));
       unawaited(_udpBlockedCheck());
@@ -934,20 +951,38 @@ abstract class _VpnStore extends VpnGuard with Store {
     await _vpnRepository.connect(config: vpnConfig);
   }
 
-  Future<void> _finalizeConnection(VPNLocation connectedLocation) async {
+  Future<void> _finalizeConnection(
+    VPNLocation connectedLocation, {
+    VPNLocation? requestedLocation,
+  }) async {
+    // Recents remember what was asked for, not the node the backend assigned.
+    final recentLocation = _planTargetableLocation(requestedLocation ?? connectedLocation);
+
     _resolveConnectionLocationFuture = ObservableFuture(
       _checkConnectionQuality(
         checkLocation: () => _updateConnectionIP(connectedLocation),
         location: connectedLocation,
+        recentLocation: recentLocation,
         hash: _vpnConfig?.hash ?? '',
       ),
     );
 
     await _resolveConnectionLocationFuture!;
+  }
 
-    if (_vpnConnection?.location != null) {
-      await _recentLocationsStore.add(_vpnConnection!.location);
+  /// Narrows a location the backend chose for us to one the plan can target.
+  VPNLocation _planTargetableLocation(VPNLocation location) {
+    if (planSupportsLocation(location)) {
+      return location;
     }
+    return _locationsStore.findParent(location) ?? location;
+  }
+
+  /// Where to aim when reusing the live session — an IP refresh or a protocol
+  /// switch — narrowed to what the plan can target.
+  VPNLocation? get _sessionRetargetLocation {
+    final location = _requestedLocation ?? _vpnConnection?.location;
+    return location == null ? null : _planTargetableLocation(location);
   }
 
   Future<void> _updateConnectionIP(VPNLocation connectedLocation) async {
@@ -962,8 +997,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     required Future<void> Function() checkLocation,
     required VPNLocation location,
     required String hash,
+    VPNLocation? recentLocation,
   }) async {
-    await _recentLocationsStore.add(location);
+    await _recentLocationsStore.add(recentLocation ?? location);
     _connectionSession++;
     _vpnConnection = VpnConnection(
       connectionIP: '',

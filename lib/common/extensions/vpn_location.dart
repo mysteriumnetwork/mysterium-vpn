@@ -5,6 +5,16 @@ import 'package:mysterium_vpn/l10n/tr_bridge.dart';
 import 'package:mysterium_vpn/models/models.dart';
 
 extension VPNLocationExtensions on VPNLocation {
+  /// Whether this location covers [other]: the same location, or the country
+  /// (same IP type) it sits in.
+  bool covers(VPNLocation? other) {
+    if (other == null) {
+      return false;
+    }
+    return this == other ||
+        (isCountry && ipType == other.ipType && countryCode == other.countryCode);
+  }
+
   String _getName(BuildContext context) {
     // Register a Localizations dependency so build-context callers rebuild on a
     // locale switch. Guarded: this also runs inside a Computed's initHook, where

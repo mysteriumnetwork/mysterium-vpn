@@ -10,6 +10,23 @@ enum LocationMode {
   unsubscribed,
   unsupportedByPlan;
 
+  /// Whether the plan itself excludes [location], independent of availability
+  /// or connection state.
+  ///
+  /// An unresolved plan excludes nothing: its features are unknown, not absent.
+  static bool isUnsupportedByPlan({
+    required VPNLocation location,
+    required bool hasResolvedPlan,
+    required bool residentialIPsAllowed,
+    required bool cityLevelAllowed,
+  }) {
+    if (!hasResolvedPlan) {
+      return false;
+    }
+    return (location.ipType == IPType.residential && !residentialIPsAllowed) ||
+        (!location.isCountry && !cityLevelAllowed);
+  }
+
   static LocationMode from({
     required VPNLocation location,
     required bool isAuthenticated,
@@ -20,6 +37,8 @@ enum LocationMode {
     required bool isLoading,
     required VPNLocation? vpnLocation,
     required VPNLocation? connectingLocation,
+    required bool cityLevelAllowed,
+    required bool hasResolvedPlan,
     bool isSubscriptionLoading = false,
   }) {
     if (isLoading && (location == vpnLocation || location == connectingLocation)) {
@@ -43,7 +62,12 @@ enum LocationMode {
     // returned `unavailable` for those we'd hide the upgrade affordance.
     // Genuine capacity-side unavailability for a plan that *does* include
     // residential still falls through to the availability check below.
-    if (location.ipType == IPType.residential && !residentialIPsAllowed) {
+    if (isUnsupportedByPlan(
+      location: location,
+      hasResolvedPlan: hasResolvedPlan,
+      residentialIPsAllowed: residentialIPsAllowed,
+      cityLevelAllowed: cityLevelAllowed,
+    )) {
       return LocationMode.unsupportedByPlan;
     }
     if (unavailableLocations.contains(location) || !location.isAvailable) {

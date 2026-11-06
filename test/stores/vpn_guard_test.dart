@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
@@ -160,5 +161,75 @@ void main() {
 
     await expectLater(newGuard().checkVpnGuards(), throwsA(isA<SubscriptionRequiredException>()));
     verifyNever(subscription.refreshSubscription());
+  });
+
+  group('checkPlanSupportsLocation', () {
+    const country = VPNLocation(
+      id: 'us',
+      ipType: IPType.datacenter,
+      translations: {},
+      countryCode: 'us',
+    );
+    const city = VPNLocation(
+      id: 'texas',
+      ipType: IPType.datacenter,
+      translations: {},
+      countryCode: 'us',
+    );
+    const residentialCountry = VPNLocation(
+      id: 'us',
+      ipType: IPType.residential,
+      translations: {},
+      countryCode: 'us',
+    );
+
+    void stubPlan({
+      bool resolved = true,
+      bool residentialIPsAllowed = true,
+      bool cityLevelAllowed = true,
+    }) {
+      when(subscription.hasResolvedPlan).thenReturn(resolved);
+      when(subscription.residentialIPsAllowed).thenReturn(residentialIPsAllowed);
+      when(subscription.cityLevelAllowed).thenReturn(cityLevelAllowed);
+    }
+
+    test('blocks a city when the plan has no city targeting', () {
+      stubPlan(cityLevelAllowed: false);
+
+      expect(
+        () => newGuard().checkPlanSupportsLocation(city),
+        throwsA(isA<PlanUpgradeRequiredException>()),
+      );
+    });
+
+    test('allows the country that city belongs to', () {
+      stubPlan(cityLevelAllowed: false);
+
+      expect(() => newGuard().checkPlanSupportsLocation(country), returnsNormally);
+    });
+
+    test('blocks a residential location when the plan has no residential IPs', () {
+      stubPlan(residentialIPsAllowed: false);
+
+      expect(
+        () => newGuard().checkPlanSupportsLocation(residentialCountry),
+        throwsA(isA<PlanUpgradeRequiredException>()),
+      );
+    });
+
+    test('allows everything while the plan is unresolved', () {
+      // A failed subscription-config fetch leaves every flag false; blocking
+      // then would lock a paying user out of connecting entirely.
+      stubPlan(resolved: false, residentialIPsAllowed: false, cityLevelAllowed: false);
+
+      expect(() => newGuard().checkPlanSupportsLocation(city), returnsNormally);
+      expect(() => newGuard().checkPlanSupportsLocation(residentialCountry), returnsNormally);
+    });
+
+    test('allows a null location (best server / intent connects)', () {
+      stubPlan(residentialIPsAllowed: false, cityLevelAllowed: false);
+
+      expect(() => newGuard().checkPlanSupportsLocation(null), returnsNormally);
+    });
   });
 }

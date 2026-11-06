@@ -47,8 +47,10 @@ class LocationsHorizontalList extends HookWidget {
         separatorBuilder: (_, _) => SizedBox(width: Theme.of(context).spacing.ms),
         itemBuilder: (_, index) {
           final item = items[index];
-          final isConnecting = connectingLocation == item;
-          final isConnected = connectedLocation == item;
+          // covers(): a country entry stays highlighted while the tunnel sits
+          // on a city inside it.
+          final isConnecting = item.covers(connectingLocation);
+          final isConnected = item.covers(connectedLocation);
           return LocationCard(
             icon: CircleFlag(item.countryCode, size: 24),
             name: item.getName(context),

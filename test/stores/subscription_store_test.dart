@@ -173,6 +173,81 @@ void main() {
     });
   });
 
+  group('plan location gating', () {
+    Future<void> primeWithMetadata(
+      vpn_api.SubscriptionConfigResponsePlansInnerMetadata metadata,
+    ) async {
+      final configWithPlan = vpn_api.SubscriptionConfigResponse(
+        gateways: const [],
+        plans: [
+          vpn_api.SubscriptionConfigResponsePlansInner(
+            id: 'plan_loc',
+            interval: vpn_api.SubscriptionConfigResponsePlansInnerInterval(
+              unit: vpn_api.SubscriptionConfigResponsePlansInnerIntervalUnitEnum.values.firstWhere(
+                (u) => u.value == 'month',
+              ),
+              amount: 1,
+            ),
+            price: vpn_api.SubscriptionConfigResponsePlansInnerPrice(USD: 0),
+            prices: const [],
+            supportedGateways: const ['stripe'],
+            metadata: metadata,
+          ),
+        ],
+        countries: const [],
+        stripePublishableKey: '',
+        stripeReturnUrl: '',
+      );
+      when(mockConfigStore.future).thenAnswer((_) => ObservableFuture.value(configWithPlan));
+      when(mockAuthSessionStore.isAuthenticated).thenReturn(true);
+      when(mockSubscriptionService.fetchSubscriptionDetails())
+          .thenAnswer((_) async => Subscription(active: true, planId: 'plan_loc'));
+      await subscriptionStore.refreshSubscription();
+    }
+
+    test('an unresolved plan reports neither capability nor resolution', () {
+      // Both flags read false, which is why callers must check hasResolvedPlan
+      // rather than treat false as "the plan says no".
+      expect(subscriptionStore.hasResolvedPlan, isFalse);
+      expect(subscriptionStore.cityLevelAllowed, isFalse);
+      expect(subscriptionStore.residentialIPsAllowed, isFalse);
+    });
+
+    test('location_targeting_allowed is read from plan metadata', () async {
+      await primeWithMetadata(
+        vpn_api.SubscriptionConfigResponsePlansInnerMetadata(
+          locationTargetingAllowed: true,
+          residentialIpsAllowed: true,
+        ),
+      );
+
+      expect(subscriptionStore.hasResolvedPlan, isTrue);
+      expect(subscriptionStore.cityLevelAllowed, isTrue);
+      expect(subscriptionStore.residentialIPsAllowed, isTrue);
+    });
+
+    test('an explicit false gates city targeting', () async {
+      await primeWithMetadata(
+        vpn_api.SubscriptionConfigResponsePlansInnerMetadata(
+          locationTargetingAllowed: false,
+          residentialIpsAllowed: false,
+        ),
+      );
+
+      expect(subscriptionStore.hasResolvedPlan, isTrue);
+      expect(subscriptionStore.cityLevelAllowed, isFalse);
+      expect(subscriptionStore.residentialIPsAllowed, isFalse);
+    });
+
+    test('a resolved plan with empty metadata gates both, like favorite IPs', () async {
+      await primeWithMetadata(vpn_api.SubscriptionConfigResponsePlansInnerMetadata());
+
+      expect(subscriptionStore.hasResolvedPlan, isTrue);
+      expect(subscriptionStore.cityLevelAllowed, isFalse);
+      expect(subscriptionStore.residentialIPsAllowed, isFalse);
+    });
+  });
+
   // The account-settings widget tests stub billingPeriodMonths, so only these
   // exercise the lookup that supplies the tooltip's billing claim.
   group('billingPeriodMonths', () {

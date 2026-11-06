@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -75,15 +76,8 @@ abstract class _ConnectionDecisionStore with Store {
 
     final currentIntent = _userIntentsStore.userIntent;
 
-    // Tapping the connected location, or the country (same IP type) it belongs
-    // to, disconnects — regardless of whether the user picked a country or a
-    // city. Tapping a different city, or a different IP type, switches instead.
-    if (requestedLocation != null &&
-        currentLocation != null &&
-        (requestedLocation == currentLocation ||
-            (requestedLocation.isCountry &&
-                requestedLocation.ipType == currentLocation.ipType &&
-                requestedLocation.countryCode == currentLocation.countryCode))) {
+    // Tapping where you already are disconnects; anywhere else switches.
+    if (requestedLocation?.covers(currentLocation) ?? false) {
       return ConnectionAction.disconnect;
     }
 

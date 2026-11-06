@@ -78,5 +78,8 @@
 	<true/>
 	<key>FlutterDeepLinkingEnabled</key>
 	<false/>
+	<!-- Impeller corrupts the glyph atlas on macOS; drop once on Flutter 3.48+ (flutter#193927). -->
+	<key>FLTEnableImpeller</key>
+	<false/>
 </dict>
 </plist>

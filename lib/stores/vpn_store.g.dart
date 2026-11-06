@@ -450,6 +450,7 @@ mixin _$VpnStore on _VpnStore, Store {
     UserIntent? intent,
     bool isRetrying = false,
     bool refreshIP = false,
+    bool isSessionRestore = false,
     String? targetIp,
   }) {
     return _$manageConnectionAsyncAction.run(
@@ -458,6 +459,7 @@ mixin _$VpnStore on _VpnStore, Store {
         intent: intent,
         isRetrying: isRetrying,
         refreshIP: refreshIP,
+        isSessionRestore: isSessionRestore,
         targetIp: targetIp,
       ),
     );
@@ -473,6 +475,7 @@ mixin _$VpnStore on _VpnStore, Store {
     VPNLocation? location,
     bool refreshIP = false,
     bool isRetrying = false,
+    bool isSessionRestore = false,
     UserIntent? intent,
     String? targetIp,
   }) {
@@ -481,6 +484,7 @@ mixin _$VpnStore on _VpnStore, Store {
         location: location,
         refreshIP: refreshIP,
         isRetrying: isRetrying,
+        isSessionRestore: isSessionRestore,
         intent: intent,
         targetIp: targetIp,
       ),

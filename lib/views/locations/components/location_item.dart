@@ -44,7 +44,7 @@ class ExpandableLocationItem extends HookConsumerWidget {
 
     final children = location.children ?? const <VPNLocation>[];
 
-    final (:countryStatus, :items, :subtitle, needsUpgrade: _, :showCitiesAndStates, :onConnect) =
+    final (:countryStatus, :items, :subtitle, :showCitiesAndStates, :onConnect) =
         useLocationItemState(location: location, onTap: onTap, ref: ref);
 
     final isExpanded = useMemoized(() {

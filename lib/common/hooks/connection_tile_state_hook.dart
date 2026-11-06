@@ -6,7 +6,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
-import 'package:mysterium_vpn/common/hooks/is_authenticated_hook.dart';
 import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -32,7 +31,7 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
   final subscriptionStore = ref.watch(subscriptionStorePOD);
   final handleToggleConnection = useHandleToggleConnection();
   final handleUpgradePlan = useHandleUpgradePlan();
-  final isAuthenticated = useIsAuthenticated();
+  final authSessionStore = ref.watch(authSessionStorePOD);
 
   final hasDifferentSelection = useComputedValue(
     () => connectionDisplayStore.hasDifferentSelection,
@@ -59,11 +58,19 @@ ConnectionTileState useConnectionTileState(WidgetRef ref) {
     final selected = selectedLocationStore.value;
     final display = connectionDisplayStore.displayLocation;
     final intentLocation = hasDiff ? selected : display;
+    // A live tunnel always offers disconnect: gating here would relabel the
+    // card's only button "Upgrade" and strand a connected user whose pending
+    // selection happens to be plan-gated.
+    if (vpnStore.isConnected) {
+      return false;
+    }
     return intentLocation != null &&
         LocationMode.from(
               location: intentLocation,
-              isAuthenticated: isAuthenticated,
+              isAuthenticated: authSessionStore.status == AuthStatus.authenticated,
               residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+              cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+              hasResolvedPlan: subscriptionStore.hasResolvedPlan,
               unavailableLocations: unavailableLocationsStore.unavailableLocations,
               subscription: subscriptionStore.subscriptionFuture.value,
               isConnected: vpnStore.isConnected,

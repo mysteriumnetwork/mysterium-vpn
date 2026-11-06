@@ -12,6 +12,7 @@ export 'notifier_exception.dart';
 export 'operation_cancelled.dart';
 export 'package_not_found.dart';
 export 'pkce_pair_not_found.dart';
+export 'plan_upgrade_required_exception.dart';
 export 'refresh_token_not_found_exception.dart';
 export 'request_pn_permissions_not_allowed.dart';
 export 'sign_in_aborted.dart';
