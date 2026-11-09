@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart' hide UserData;
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -38,6 +37,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     this._authSessionStore,
     this._ipInfoStore,
     this._subscriptionStore,
+    this._remoteConfigStore,
     this._repository,
     this._service,
     this._registration,
@@ -53,6 +53,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _ipInfoStore;
   final SubscriptionStore _subscriptionStore;
+  final RemoteConfigStore _remoteConfigStore;
   final NotificationsRepository _repository;
   final NotifierService _service;
   final NotifierRegistrationRepository _registration;
@@ -251,7 +252,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   Future<void> syncRegistration() => _serialized(_syncRegistration);
 
   Future<void> _syncRegistration() async {
-    if (!Env.notifierConfigured) {
+    if (!_remoteConfigStore.notifierEnabled) {
       return;
     }
 
@@ -293,6 +294,12 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     }
 
     if (stored != null && !stored.isPending && stored.matches(desired) && _registeredThisLaunch) {
+      return;
+    }
+
+    // The deletes above are network round trips; the switch can close while one
+    // is in flight, so the gate at the top of this method may now be stale.
+    if (!_remoteConfigStore.notifierEnabled) {
       return;
     }
 
@@ -360,14 +367,17 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// A failure leaves the record as [NotifierSyncState.pendingDelete], which
   /// the triggers in [syncRegistration] pick up.
   Future<bool> _delete(NotifierRegistration stored) async {
-    if (!Env.notifierConfigured) {
+    // Marked before both the gate and the request. Before the request, because
+    // a process death mid-DELETE would otherwise leave a settled record for a
+    // signed-out user, and the auth reaction skips logout on a signed-out
+    // launch. Before the gate, because a revoke while the switch is off must
+    // still leave the delete owed — the mark is local, so suppressing it would
+    // strand the record as settled with nothing to retry it.
+    await _mark(stored, NotifierSyncState.pendingDelete);
+
+    if (!_remoteConfigStore.notifierEnabled) {
       return false;
     }
-
-    // Marked before the request: a process death mid-DELETE would otherwise
-    // leave a settled record for a signed-out user, and the auth reaction skips
-    // logout on a signed-out launch, so nothing would ever retry it.
-    await _mark(stored, NotifierSyncState.pendingDelete);
     try {
       await _service.deleteDevice(token: stored.token, externalUserId: stored.externalUserId);
       await _guard('clearing Notifier registration state', _registration.clear);
@@ -431,7 +441,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// Merges user attributes so Notifier segments can target them. Only after a
   /// settled registration — the endpoint 404s for a user Notifier has not seen.
   Future<void> _syncAttributes([NotifierRegistration? known]) async {
-    if (!Env.notifierConfigured) {
+    if (!_remoteConfigStore.notifierEnabled) {
       return;
     }
     final stored = known ?? _registration.read();

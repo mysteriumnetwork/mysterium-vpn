@@ -68,6 +68,7 @@ enum _FeatureToggleKey {
   showApiVersion,
   favoriteLocationsEnabled,
   tunnelHealthConfig,
+  pushNotificationsEnabled,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -315,6 +316,21 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     }
     return true;
   }
+
+  /// Kill switch for Notifier traffic. Does not gate permission prompts or FCM,
+  /// and does not unsubscribe devices already registered with Notifier.
+  @computed
+  bool get pushNotificationsEnabled {
+    final value = config[_FeatureToggleKey.pushNotificationsEnabled.name];
+    if (value is bool) {
+      return value;
+    }
+    return true;
+  }
+
+  /// Notifier is reachable only when it is both built in and switched on.
+  @computed
+  bool get notifierEnabled => Env.notifierConfigured && pushNotificationsEnabled;
 
   /// How long the app must stay backgrounded before the News Center feed is
   /// auto-refreshed on resume, in minutes. `0` disables the auto-refresh.

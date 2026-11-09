@@ -598,6 +598,7 @@ final notifierRegistrationStorePOD = Provider<NotifierRegistrationStore>((ref) {
     ref.watch(authSessionStorePOD),
     ref.watch(realIPInfoStorePOD),
     ref.watch(subscriptionStorePOD),
+    ref.watch(remoteConfigStorePOD),
     ref.watch(pushNotificationsRepositoryPOD),
     ref.watch(notifierServicePOD),
     ref.watch(notifierRegistrationRepositoryPOD),
