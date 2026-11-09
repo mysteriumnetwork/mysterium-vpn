@@ -1190,6 +1190,31 @@ void main() {
       expectNoRegisterCall();
     });
 
+    test('does not register when the flag closes while a delete is in flight', () async {
+      await prefs.setNotifierRegistration(
+        registration(externalUserId: 'old-user', state: NotifierSyncState.pendingDelete),
+      );
+      // The switch closes mid-DELETE, after the gate at the top of
+      // _syncRegistration has already let this sync through.
+      when(
+        service.deleteDevice(token: anyNamed('token'), externalUserId: anyNamed('externalUserId')),
+      ).thenAnswer((_) async => setFlag(enabled: false));
+
+      await start();
+
+      expectNoRegisterCall();
+    });
+
+    test('keeps the delete owed when permission is revoked while the flag is off', () async {
+      await start();
+      setFlag(enabled: false);
+
+      await revokePermission();
+
+      expectNoDeleteCall();
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
+    });
+
     // A settled record from a previous launch, so `_syncAttributes` reaches its
     // gate rather than returning early on `stored == null`.
     test('does not merge attributes for a stored record when the flag is off', () async {

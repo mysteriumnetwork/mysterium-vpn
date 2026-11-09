@@ -297,6 +297,12 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
 
+    // The deletes above are network round trips; the switch can close while one
+    // is in flight, so the gate at the top of this method may now be stale.
+    if (!_remoteConfigStore.notifierEnabled) {
+      return;
+    }
+
     NotifierRegistration? registered;
     try {
       _analyticsStore.logEvent(AnalyticsEvent.pushDeviceRegistrationStarted);
@@ -361,14 +367,17 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// A failure leaves the record as [NotifierSyncState.pendingDelete], which
   /// the triggers in [syncRegistration] pick up.
   Future<bool> _delete(NotifierRegistration stored) async {
+    // Marked before both the gate and the request. Before the request, because
+    // a process death mid-DELETE would otherwise leave a settled record for a
+    // signed-out user, and the auth reaction skips logout on a signed-out
+    // launch. Before the gate, because a revoke while the switch is off must
+    // still leave the delete owed — the mark is local, so suppressing it would
+    // strand the record as settled with nothing to retry it.
+    await _mark(stored, NotifierSyncState.pendingDelete);
+
     if (!_remoteConfigStore.notifierEnabled) {
       return false;
     }
-
-    // Marked before the request: a process death mid-DELETE would otherwise
-    // leave a settled record for a signed-out user, and the auth reaction skips
-    // logout on a signed-out launch, so nothing would ever retry it.
-    await _mark(stored, NotifierSyncState.pendingDelete);
     try {
       await _service.deleteDevice(token: stored.token, externalUserId: stored.externalUserId);
       await _guard('clearing Notifier registration state', _registration.clear);
