@@ -290,6 +290,44 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.pushNotificationsEnabled', () {
+    test('returns the config value when present (false acts as a kill switch)', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pushNotificationsEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pushNotificationsEnabled, isFalse);
+    });
+
+    test('returns true when the config says true', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pushNotificationsEnabled': true});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pushNotificationsEnabled, isTrue);
+    });
+
+    test('defaults to true when not in config', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pushNotificationsEnabled, isTrue);
+    });
+
+    test('defaults to true when value has the wrong type', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pushNotificationsEnabled': 'yes'});
+      store = createStore();
+      await store.configFuture;
+      expect(store.pushNotificationsEnabled, isTrue);
+    });
+
+    // Env.notifierConfigured is true under .env.dev, so the flag decides here.
+    test('notifierEnabled follows the flag', () async {
+      when(client.getAllValues()).thenAnswer((_) async => {'pushNotificationsEnabled': false});
+      store = createStore();
+      await store.configFuture;
+      expect(store.notifierEnabled, isFalse);
+    });
+  });
+
   group('RemoteConfigStore.newsCenterRefreshIntervalMinutes', () {
     test('returns the config value when present (0 disables auto-refresh)', () async {
       when(client.getAllValues()).thenAnswer((_) async => {'newsCenterRefreshIntervalMinutes': 0});

@@ -8,7 +8,6 @@ import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
-import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart' hide UserData;
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -38,6 +37,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
     this._authSessionStore,
     this._ipInfoStore,
     this._subscriptionStore,
+    this._remoteConfigStore,
     this._repository,
     this._service,
     this._registration,
@@ -53,6 +53,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   final AuthSessionStore _authSessionStore;
   final RealIPInfoStore _ipInfoStore;
   final SubscriptionStore _subscriptionStore;
+  final RemoteConfigStore _remoteConfigStore;
   final NotificationsRepository _repository;
   final NotifierService _service;
   final NotifierRegistrationRepository _registration;
@@ -251,7 +252,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   Future<void> syncRegistration() => _serialized(_syncRegistration);
 
   Future<void> _syncRegistration() async {
-    if (!Env.notifierConfigured) {
+    if (!_remoteConfigStore.notifierEnabled) {
       return;
     }
 
@@ -360,7 +361,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// A failure leaves the record as [NotifierSyncState.pendingDelete], which
   /// the triggers in [syncRegistration] pick up.
   Future<bool> _delete(NotifierRegistration stored) async {
-    if (!Env.notifierConfigured) {
+    if (!_remoteConfigStore.notifierEnabled) {
       return false;
     }
 
@@ -431,7 +432,7 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   /// Merges user attributes so Notifier segments can target them. Only after a
   /// settled registration — the endpoint 404s for a user Notifier has not seen.
   Future<void> _syncAttributes([NotifierRegistration? known]) async {
-    if (!Env.notifierConfigured) {
+    if (!_remoteConfigStore.notifierEnabled) {
       return;
     }
     final stored = known ?? _registration.read();

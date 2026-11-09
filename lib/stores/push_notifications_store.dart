@@ -17,9 +17,9 @@ class PushNotificationsStore = _PushNotificationsStore with _$PushNotificationsS
 /// Device-level push concerns: notification permission, the prompt cooldown,
 /// and surfacing received/opened notifications.
 ///
-/// Deliberately knows nothing about Notifier — event reporting goes through the
-/// repository, which owns the device token, and registration lives in
-/// [NotifierRegistrationStore].
+/// Owns no Notifier state — event reporting goes through the repository, which
+/// owns the device token, and registration lives in [NotifierRegistrationStore].
+/// It does gate reporting on [RemoteConfigStore.notifierEnabled].
 abstract class _PushNotificationsStore with Store, Disposeable {
   _PushNotificationsStore(
     this._logger,
@@ -163,6 +163,9 @@ abstract class _PushNotificationsStore with Store, Disposeable {
   /// listener — a throw here would escape into the zone as an unhandled error,
   /// so contain it regardless.
   Future<void> _report(PushNotification notification, NotifierEventType type) async {
+    if (!_remoteConfigStore.notifierEnabled) {
+      return;
+    }
     try {
       await _notificationsRepository.reportEvent(notification, type);
     } catch (e) {

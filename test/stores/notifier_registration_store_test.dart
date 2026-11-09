@@ -26,6 +26,7 @@ import 'notifier_registration_store_test.mocks.dart';
   MockSpec<NotifierService>(),
   MockSpec<AnalyticsStore>(),
   MockSpec<Connectivity>(),
+  MockSpec<RemoteConfigStore>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ void main() {
   late MockNotifierService service;
   late MockAnalyticsStore analyticsStore;
   late MockConnectivity connectivity;
+  late MockRemoteConfigStore remoteConfigStore;
   late SharedPreferenceService prefs;
 
   late StreamController<String> tokenController;
@@ -53,6 +55,7 @@ void main() {
       authSessionStore,
       ipInfoStore,
       subscriptionStore,
+      remoteConfigStore,
       repository,
       service,
       LocalNotifierRegistrationRepository(prefs),
@@ -133,6 +136,9 @@ void main() {
     ),
   ).thenThrow(failure);
 
+  void setFlag({required bool enabled}) =>
+      when(remoteConfigStore.notifierEnabled).thenReturn(enabled);
+
   setUp(() async {
     authSessionStore = MockAuthSessionStore();
     ipInfoStore = MockRealIPInfoStore();
@@ -141,6 +147,9 @@ void main() {
     service = MockNotifierService();
     analyticsStore = MockAnalyticsStore();
     connectivity = MockConnectivity();
+
+    remoteConfigStore = MockRemoteConfigStore();
+    setFlag(enabled: true);
 
     SharedPreferences.setMockInitialValues({});
     prefs = SharedPreferenceService();
@@ -362,6 +371,7 @@ void main() {
         authSessionStore,
         ipInfoStore,
         subscriptionStore,
+        remoteConfigStore,
         repository,
         service,
         LocalNotifierRegistrationRepository(prefs),
@@ -1171,6 +1181,52 @@ void main() {
           attributes: anyNamed('attributes'),
         ),
       ).called(1);
+    });
+  });
+  group('NotifierRegistrationStore feature flag', () {
+    test('does not register the device when the flag is off', () async {
+      setFlag(enabled: false);
+      await start();
+      expectNoRegisterCall();
+    });
+
+    // A settled record from a previous launch, so `_syncAttributes` reaches its
+    // gate rather than returning early on `stored == null`.
+    test('does not merge attributes for a stored record when the flag is off', () async {
+      await prefs.setNotifierRegistration(registration());
+      final ip = Completer<IPInfo>();
+      final location = ObservableFuture(ip.future);
+      when(ipInfoStore.infoFuture).thenAnswer((_) => location);
+      setFlag(enabled: false);
+
+      await start();
+      ip.complete(const IPInfo(city: 'Paris', country: 'FR', ip: '5.6.7.8'));
+      await pumpEventQueue();
+
+      verifyNever(
+        service.mergeAttributes(
+          externalUserId: anyNamed('externalUserId'),
+          attributes: anyNamed('attributes'),
+        ),
+      );
+    });
+
+    test('leaves the delete owed on logout when the flag is off', () async {
+      await start();
+      verify(
+        service.registerDevice(
+          externalUserId: anyNamed('externalUserId'),
+          token: anyNamed('token'),
+          platform: anyNamed('platform'),
+        ),
+      ).called(1);
+
+      setFlag(enabled: false);
+      await store!.handleLogout();
+      await pumpEventQueue();
+
+      expectNoDeleteCall();
+      expect(prefs.getNotifierRegistration()?.state, NotifierSyncState.pendingDelete);
     });
   });
 }

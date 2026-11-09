@@ -203,6 +203,20 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.newsCenterEnabled,
     name: 'RemoteConfigStoreBase.newsCenterEnabled',
   )).value;
+  Computed<bool>? _$pushNotificationsEnabledComputed;
+
+  @override
+  bool get pushNotificationsEnabled => (_$pushNotificationsEnabledComputed ??= Computed<bool>(
+    () => super.pushNotificationsEnabled,
+    name: 'RemoteConfigStoreBase.pushNotificationsEnabled',
+  )).value;
+  Computed<bool>? _$notifierEnabledComputed;
+
+  @override
+  bool get notifierEnabled => (_$notifierEnabledComputed ??= Computed<bool>(
+    () => super.notifierEnabled,
+    name: 'RemoteConfigStoreBase.notifierEnabled',
+  )).value;
   Computed<int>? _$newsCenterRefreshIntervalMinutesComputed;
 
   @override
@@ -459,6 +473,8 @@ locationsPullToRefreshEnabled: ${locationsPullToRefreshEnabled},
 favoriteLocationsEnabled: ${favoriteLocationsEnabled},
 termsConditionsEnabled: ${termsConditionsEnabled},
 newsCenterEnabled: ${newsCenterEnabled},
+pushNotificationsEnabled: ${pushNotificationsEnabled},
+notifierEnabled: ${notifierEnabled},
 newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 tunnelHealthConfig: ${tunnelHealthConfig},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},

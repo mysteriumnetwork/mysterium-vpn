@@ -73,6 +73,7 @@ void main() {
     when(prompts.pushPromptLastShownAt()).thenAnswer((_) async => null);
     when(prompts.setPushPromptLastShownAt(any)).thenAnswer((_) async {});
     when(remoteConfigStore.pushNotifPermissionPromptCooldown).thenReturn(24);
+    when(remoteConfigStore.notifierEnabled).thenReturn(true);
 
     store = build();
   });
@@ -396,5 +397,29 @@ void main() {
     await store.dispose();
     store = build(supportsPush: false);
     expect(store.supportsPushNotifications, isFalse);
+  });
+  group('PushNotificationsStore feature flag', () {
+    test('does not report delivered or open events when the flag is off', () async {
+      when(remoteConfigStore.notifierEnabled).thenReturn(false);
+      final push = notification(campaignId: 'camp_1');
+
+      receivedController.add(push);
+      await pumpEventQueue();
+      openedController.add(push);
+      await pumpEventQueue();
+
+      verifyNever(repository.reportEvent(any, any));
+    });
+
+    test('still logs local analytics when the flag is off', () async {
+      when(remoteConfigStore.notifierEnabled).thenReturn(false);
+
+      receivedController.add(notification(campaignId: 'camp_1'));
+      await pumpEventQueue();
+
+      verify(
+        analyticsStore.logEvent(AnalyticsEvent.pushReceived, parameters: anyNamed('parameters')),
+      ).called(1);
+    });
   });
 }
