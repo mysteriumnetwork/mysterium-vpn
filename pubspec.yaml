@@ -17,7 +17,7 @@ dependencies:
   collection: 1.19.1
   configcat_client: 5.1.0
   connectivity_plus: 7.3.1
-  crypto: 3.0.7
+  crypto: 3.0.8
   device_info_plus: 13.3.0
   dio: 5.9.2
   firebase_analytics: 12.5.0
