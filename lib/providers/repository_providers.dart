@@ -83,6 +83,14 @@ final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
   ),
 );
 
+final vlessRepositoryPOD = Provider<VlessRepository>(
+  (ref) => VlessRepository(
+    service: ref.watch(vlessServicePOD),
+    logger: ref.watch(loggerPOD),
+    apiService: ref.watch(apiServicePOD),
+  ),
+);
+
 final notifierRegistrationRepositoryPOD = Provider<NotifierRegistrationRepository>(
   (ref) => LocalNotifierRegistrationRepository(ref.watch(sharedPreferenceServicePOD)),
 );

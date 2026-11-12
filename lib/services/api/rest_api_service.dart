@@ -181,6 +181,26 @@ class RestApiService extends ApiService {
   }
 
   @override
+  Future<VlessConnectResponse> fetchVlessConfig({required VlessConnectRequest request}) async {
+    try {
+      final response = await _apiConnection.connectVless(vlessConnectRequest: request);
+      if (response.data == null) {
+        throw Exception("vless config wasn't created");
+      }
+
+      return response.data!;
+    } on ApiException catch (e) {
+      if (e.errorCode == DeviceLimitReachedException.code) {
+        throw const DeviceLimitReachedException();
+      }
+      rethrow;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
   Future<OpenVpnConnectResponse> fetchOpenVpnConfig({
     required OpenVpnConnectRequest request,
   }) async {

@@ -24,6 +24,7 @@ import '../support/test_prefs.dart';
   MockSpec<LocalDBService>(),
   MockSpec<WireguardRepository>(),
   MockSpec<OpenVpnRepository>(),
+  MockSpec<VlessRepository>(),
   MockSpec<ExternalApiService>(),
   MockSpec<MQTTService>(),
   MockSpec<LocationsStore>(),
@@ -54,6 +55,7 @@ void main() {
   late VpnStore vpnStore;
   late MockWireguardRepository mockWireguardRepo;
   late MockOpenVpnRepository mockOpenVpnRepo;
+  late MockVlessRepository mockVlessRepo;
   late MockExternalApiService mockExternalApi;
   late MockMQTTService mockMqtt;
   late MockLocationsStore mockLocationsStore;
@@ -95,6 +97,7 @@ void main() {
     connectionsLimitStore: mockConnectionsLimit,
     wireguardRepository: mockWireguardRepo,
     openVpnRepository: mockOpenVpnRepo,
+    vlessRepository: mockVlessRepo,
     connectionDecisionStore: mockConnectionDecision,
     protocolStore: mockVpnProtocolStore,
     ipRefreshExhaustionStore: IpRefreshExhaustionStore(mockAnalytics),
@@ -105,6 +108,7 @@ void main() {
     prefsService = await initTestPrefs();
     mockWireguardRepo = MockWireguardRepository();
     mockOpenVpnRepo = MockOpenVpnRepository();
+    mockVlessRepo = MockVlessRepository();
     mockExternalApi = MockExternalApiService();
     mockMqtt = MockMQTTService();
     mockLocationsStore = MockLocationsStore();
@@ -1463,6 +1467,7 @@ void main() {
           connectionsLimitStore: mockConnectionsLimit,
           wireguardRepository: mockWireguardRepo,
           openVpnRepository: mockOpenVpnRepo,
+          vlessRepository: mockVlessRepo,
           connectionDecisionStore: mockConnectionDecision,
           protocolStore: mockVpnProtocolStore,
           ipRefreshExhaustionStore: exhaustionStore,
@@ -2055,6 +2060,7 @@ void main() {
 
       late StreamController<VpnConnectionStatus> wgStatus;
       late StreamController<VpnConnectionStatus> ovpnStatus;
+      late StreamController<VpnConnectionStatus> vlessStatus;
 
       void stubConnectFlow(VpnRepository repo) {
         when(repo.init()).thenAnswer((_) async {});
@@ -2094,6 +2100,7 @@ void main() {
       setUp(() {
         wgStatus = StreamController<VpnConnectionStatus>.broadcast();
         ovpnStatus = StreamController<VpnConnectionStatus>.broadcast();
+        vlessStatus = StreamController<VpnConnectionStatus>.broadcast();
 
         when(mockAuthSession.status).thenReturn(AuthStatus.authenticated);
         when(mockAuthSession.isAuthenticated).thenReturn(true);
@@ -2106,8 +2113,10 @@ void main() {
 
         stubConnectFlow(mockWireguardRepo);
         stubConnectFlow(mockOpenVpnRepo);
+        stubConnectFlow(mockVlessRepo);
         when(mockWireguardRepo.statusStream()).thenAnswer((_) => wgStatus.stream);
         when(mockOpenVpnRepo.statusStream()).thenAnswer((_) => ovpnStatus.stream);
+        when(mockVlessRepo.statusStream()).thenAnswer((_) => vlessStatus.stream);
 
         when(anyToggleAction()).thenReturn(ConnectionAction.connect);
         when(
@@ -2141,6 +2150,7 @@ void main() {
       tearDown(() async {
         await wgStatus.close();
         await ovpnStatus.close();
+        await vlessStatus.close();
       });
 
       /// One matcher for the OpenVPN config fetch; only the pinned arguments
@@ -2157,6 +2167,18 @@ void main() {
             dnsAddress: anyNamed('dnsAddress'),
             targetIp: targetIp ?? anyNamed('targetIp'),
           );
+
+      Future<VpnConfig> vlessFetch({String? country, String? city}) => mockVlessRepo.fetchVpnConfig(
+        countryOriginate: anyNamed('countryOriginate'),
+        country: country ?? anyNamed('country'),
+        city: city ?? anyNamed('city'),
+        ipType: anyNamed('ipType'),
+        userIntent: anyNamed('userIntent'),
+        cluster: anyNamed('cluster'),
+        resetConnection: anyNamed('resetConnection'),
+        dnsAddress: anyNamed('dnsAddress'),
+        targetIp: anyNamed('targetIp'),
+      );
 
       test('skips the STUN check entirely when the protocol is OpenVPN', () async {
         when(mockVpnProtocolStore.protocol).thenReturn(ProtocolType.openvpn);
@@ -2218,6 +2240,19 @@ void main() {
 
           verify(mockVpnProtocolStore.setProtocol(ProtocolType.openvpn)).called(1);
           verify(openVpnFetch(country: 'fr', city: 'paris')).called(1);
+          await store.disposeStore();
+        });
+
+        // The selection used to be a two-way ternary, which handed any protocol
+        // that was not WireGuard to the OpenVPN repository.
+        test('reconnects over VLESS, not OpenVPN', () async {
+          final store = await connectedOverWireguard();
+
+          await store.switchProtocolAndReconnect(ProtocolType.vless);
+
+          verify(mockVpnProtocolStore.setProtocol(ProtocolType.vless)).called(1);
+          verify(vlessFetch(country: 'fr', city: 'paris')).called(1);
+          verifyNever(openVpnFetch());
           await store.disposeStore();
         });
 

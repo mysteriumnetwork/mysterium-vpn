@@ -25,6 +25,7 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:vless_dart/vless_dart.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -43,6 +44,7 @@ final inAppPurchasePOD = Provider((ref) => InAppPurchase.instance);
 
 final wireguardServicePOD = Provider((ref) => WireguardDart());
 final openVpnServicePOD = Provider((ref) => OpenVPNDart());
+final vlessServicePOD = Provider((ref) => VlessDart());
 
 final appLinksPOD = Provider((ref) => AppLinks());
 
