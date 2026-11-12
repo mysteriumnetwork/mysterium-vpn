@@ -74,7 +74,13 @@ abstract class _VpnProtocolStore with Store {
   ObservableFuture<ProtocolType> protocolFuture = ObservableFuture.value(_defaultProtocol);
 
   @computed
-  ProtocolType get protocol => protocolFuture.value ?? _defaultProtocol;
+  ProtocolType get protocol {
+    final selected = protocolFuture.value ?? _defaultProtocol;
+    // The stored choice outlives the gates that allowed it. Without this a flag
+    // turned off mid-session leaves VpnStore on VLESS and hands the picker a
+    // value that is no longer in [availableProtocols].
+    return _isAvailable(selected) ? selected : _defaultProtocol;
+  }
 
   // Enabled via remote config
   @computed

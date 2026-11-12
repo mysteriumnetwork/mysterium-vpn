@@ -119,6 +119,22 @@ void main() {
 
       expect(await store.getProtocol(), ProtocolType.vless);
     });
+
+    test('the live selection falls back when the flag is turned off', () async {
+      // The kill switch has to reach a session that already chose VLESS, not
+      // just the next launch: VpnStore reads `protocol` to pick its repository
+      // and the picker reads it as the selected value.
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
+      await store.setProtocol(ProtocolType.vless);
+      expect(store.protocol, ProtocolType.vless);
+
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
+
+      expect(store.protocol, ProtocolType.wireguard);
+      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
+    });
   });
 
   group('getProtocol', () {
