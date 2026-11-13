@@ -156,6 +156,20 @@ void main() {
       verify(service.connect(_vlessUri)).called(1);
     });
 
+    test('carries the selected resolver into the plugin', () async {
+      // The vless:// URI has no DNS field and the response carries none, so
+      // this is the only path by which the content blockers reach the tunnel.
+      await repo.connect(config: _vlessUri, dnsAddress: '1.1.1.3');
+
+      verify(service.connect(_vlessUri, dnsAddress: '1.1.1.3')).called(1);
+    });
+
+    test('leaves the plugin on its defaults when no resolver is selected', () async {
+      await repo.connect(config: _vlessUri);
+
+      verify(service.connect(_vlessUri)).called(1);
+    });
+
     test('wraps non-timeout errors in VpnConnectException', () async {
       when(service.connect(any)).thenThrow(Exception('handshake failed'));
 
@@ -169,6 +183,15 @@ void main() {
 
       expect(await repo.disconnect(), isFalse);
       verifyNever(service.disconnect());
+    });
+
+    test('disconnect stops a tunnel that is still connecting', () async {
+      // A protocol switch or a revoked subscription tears down mid-connect; the
+      // native profile keeps starting unless the stop reaches it.
+      when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connecting);
+
+      expect(await repo.disconnect(), isTrue);
+      verify(service.disconnect()).called(1);
     });
 
     test('disconnect calls service.disconnect when connected', () async {

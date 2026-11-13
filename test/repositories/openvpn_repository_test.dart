@@ -85,6 +85,13 @@ void main() {
       verifyNever(service.disconnect());
     });
 
+    test('disconnect stops a tunnel that is still connecting', () async {
+      when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connecting);
+
+      expect(await repo.disconnect(), isTrue);
+      verify(service.disconnect()).called(1);
+    });
+
     test('disconnect calls service.disconnect when connected', () async {
       when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connected);
 

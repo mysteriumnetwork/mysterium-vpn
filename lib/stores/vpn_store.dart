@@ -967,7 +967,7 @@ abstract class _VpnStore extends VpnGuard with Store {
 
   @action
   Future<void> _connectTunnel({required String vpnConfig}) async {
-    await _vpnRepository.connect(config: vpnConfig);
+    await _vpnRepository.connect(config: vpnConfig, dnsAddress: _dnsStore.dnsAddress);
   }
 
   Future<void> _finalizeConnection(

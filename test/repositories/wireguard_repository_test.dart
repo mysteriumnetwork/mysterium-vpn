@@ -85,6 +85,14 @@ void main() {
       verify(mockService.disconnect()).called(1);
     });
 
+    test('disconnect stops a tunnel that is still connecting', () async {
+      when(mockService.status()).thenAnswer((_) async => ConnectionStatus.connecting);
+      when(mockService.disconnect()).thenAnswer((_) async {});
+
+      expect(await repository.disconnect(), isTrue);
+      verify(mockService.disconnect()).called(1);
+    });
+
     test('disconnect returns false if not connected', () async {
       when(mockService.status()).thenAnswer((_) async => ConnectionStatus.disconnected);
 

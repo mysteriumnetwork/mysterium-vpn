@@ -186,7 +186,8 @@ void main() {
     when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) async => true);
     when(mockWireguardRepo.currentStatus())
         .thenAnswer((_) async => VpnConnectionStatus.disconnected);
-    when(mockWireguardRepo.connect(config: anyNamed('config'))).thenAnswer((_) async {});
+    when(mockWireguardRepo.connect(config: anyNamed('config'), dnsAddress: anyNamed('dnsAddress')))
+        .thenAnswer((_) async {});
     when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
     when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
 
@@ -1293,8 +1294,9 @@ void main() {
       });
 
       test('connect timeout logs failure with a non-null error code and message', () async {
-        when(mockWireguardRepo.connect(config: anyNamed('config')))
-            .thenThrow(TimeoutException('connect timed out'));
+        when(
+          mockWireguardRepo.connect(config: anyNamed('config'), dnsAddress: anyNamed('dnsAddress')),
+        ).thenThrow(TimeoutException('connect timed out'));
 
         await connect(country);
 
@@ -2066,7 +2068,9 @@ void main() {
         when(repo.init()).thenAnswer((_) async {});
         when(repo.isTunnelConfigured()).thenAnswer((_) async => true);
         when(repo.currentStatus()).thenAnswer((_) async => VpnConnectionStatus.disconnected);
-        when(repo.connect(config: 'cfg')).thenAnswer((_) async {});
+        // Typed as the interface, so `anyNamed` is unavailable here: both
+        // values are the ones the shared mocks hand the store.
+        when(repo.connect(config: 'cfg', dnsAddress: '1.1.1.1')).thenAnswer((_) async {});
         when(repo.disconnect()).thenAnswer((_) async => true);
         when(repo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
         when(repo.udpBlockedCheck()).thenAnswer((_) async {});

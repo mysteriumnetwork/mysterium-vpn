@@ -2111,11 +2111,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.0"
-      resolved-ref: cf8b5175d875ed3e554676906c648c78985f96e6
+      ref: "0.2.0"
+      resolved-ref: "99cfe42092f037cec209e6e0c34f367d7d71a058"
       url: "https://github.com/mysteriumnetwork/vless_dart.git"
     source: git
-    version: "0.1.0"
+    version: "0.2.0"
   vm_service:
     dependency: transitive
     description:

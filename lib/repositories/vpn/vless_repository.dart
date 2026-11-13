@@ -43,10 +43,13 @@ class VlessRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<void> connect({required String config}) async {
+  Future<void> connect({required String config, String? dnsAddress}) async {
     try {
+      // The `vless://` URI carries no resolver, so unlike WireGuard and OpenVPN
+      // the selection cannot come back from the API: it is applied here or not
+      // at all, and the content blockers are exactly this selection.
       await _service
-          .connect(config)
+          .connect(config, dnsAddress: dnsAddress)
           .timeout(
             const Duration(seconds: vpnConnectionTimeoutSeconds),
             onTimeout: () {
@@ -67,7 +70,7 @@ class VlessRepository extends BaseVpnRepository {
   @override
   Future<bool> disconnect() async {
     final status = await currentStatus();
-    if (status == VpnConnectionStatus.connected) {
+    if (stoppable(status)) {
       await _service.disconnect();
       return true;
     }
