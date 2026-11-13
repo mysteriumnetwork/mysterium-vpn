@@ -194,6 +194,36 @@ void main() {
       verify(service.disconnect()).called(1);
     });
 
+    test('disconnect stops a connect the platform has not acknowledged yet', () async {
+      // The plugin spends the start of every connect saving preferences, and
+      // reports `disconnected` throughout; only it can cancel that.
+      final started = Completer<void>();
+      final release = Completer<void>();
+      when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.disconnected);
+      when(service.connect(any, dnsAddress: anyNamed('dnsAddress'))).thenAnswer((_) {
+        started.complete();
+        return release.future;
+      });
+
+      final connecting = repo.connect(config: _vlessUri);
+      await started.future;
+
+      expect(await repo.disconnect(), isTrue);
+      verify(service.disconnect()).called(1);
+
+      release.completeError(Exception('Failed to connect VPN: Connect cancelled'));
+      await expectLater(connecting, throwsA(isA<OperationCancelledException>()));
+    });
+
+    test('a connect that fails on its own is still a connection error', () async {
+      // Only a teardown turns a failure into a cancellation; this one has none.
+      when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.disconnected);
+      when(service.connect(any)).thenThrow(Exception('handshake failed'));
+
+      await expectLater(repo.connect(config: _vlessUri), throwsA(isA<VpnConnectException>()));
+      expect(await repo.disconnect(), isFalse);
+    });
+
     test('disconnect calls service.disconnect when connected', () async {
       when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connected);
 

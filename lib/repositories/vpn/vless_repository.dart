@@ -23,6 +23,17 @@ class VlessRepository extends BaseVpnRepository {
 
   final VlessDart _service;
 
+  /// Set while [connect] is in flight. The platform reports `disconnected`
+  /// until the profile is saved and the tunnel actually starts, so a teardown
+  /// in that window would otherwise never reach the plugin — and cancelling a
+  /// connect that has not started yet is something only the plugin can do.
+  bool _connectPending = false;
+
+  /// Set when [disconnect] cancelled a pending connect, so the failure that
+  /// cancellation provokes is reported as such instead of as a connection
+  /// error with a snackbar and a crash report.
+  bool _connectCancelled = false;
+
   @override
   Future<void> init() async {
     await _service.initialize(
@@ -44,6 +55,8 @@ class VlessRepository extends BaseVpnRepository {
 
   @override
   Future<void> connect({required String config, String? dnsAddress}) async {
+    _connectPending = true;
+    _connectCancelled = false;
     try {
       // The `vless://` URI carries no resolver, so unlike WireGuard and OpenVPN
       // the selection cannot come back from the API: it is applied here or not
@@ -62,19 +75,29 @@ class VlessRepository extends BaseVpnRepository {
       logger.handle(e, stackTrace);
       rethrow;
     } catch (e, stackTrace) {
+      if (_connectCancelled) {
+        logger.info('VLESS connect cancelled by a teardown');
+        throw OperationCancelledException();
+      }
       logger.handle(e, stackTrace);
       throw VpnConnectException(e.toString());
+    } finally {
+      _connectPending = false;
     }
   }
 
   @override
   Future<bool> disconnect() async {
-    final status = await currentStatus();
-    if (stoppable(status)) {
-      await _service.disconnect();
-      return true;
+    // Read before the status round-trip: the connect can finish during it,
+    // leaving a stale `disconnected` to decide against a tunnel that is by
+    // then already coming up.
+    final cancellingConnect = _connectPending;
+    if (!cancellingConnect && !stoppable(await currentStatus())) {
+      return false;
     }
-    return false;
+    _connectCancelled = cancellingConnect;
+    await _service.disconnect();
+    return true;
   }
 
   @override
