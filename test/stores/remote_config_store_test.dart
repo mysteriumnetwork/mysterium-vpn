@@ -894,6 +894,30 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.vlessEnabled', () {
+    test('defaults to false when the key is absent', () async {
+      store = createStore();
+      await store.configFuture;
+      expect(store.vlessEnabled, isFalse);
+    });
+
+    test('returns the configured value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'vlessEnabled': true});
+      await store.configFuture;
+      expect(store.vlessEnabled, isTrue);
+    });
+
+    test('throws on a wrong-typed value', () async {
+      store = createStore();
+
+      when(client.getAllValues()).thenAnswer((_) async => {'vlessEnabled': 'yes'});
+      await store.configFuture;
+      expect(() => store.vlessEnabled, throwsA(isA<MobXCaughtException>()));
+    });
+  });
+
   // The single Windows min-version key since the Microsoft Store build was
   // retired; it now gates every Windows user, not just standalone installs.
   group('RemoteConfigStore.minWindowsStandAloneBuildNumber', () {

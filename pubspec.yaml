@@ -87,10 +87,14 @@ dependencies:
     git:
       url: https://github.com/KristijanMitrik/flutter_url_protocol
       ref: main
+  vless_dart:
+    git:
+      url: https://github.com/mysteriumnetwork/vless_dart.git
+      ref: 0.2.0
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.113
+      ref: 1.0.114
   webview_flutter: 4.14.1
   window_manager: 0.6.0
   wireguard_dart:

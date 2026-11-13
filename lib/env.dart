@@ -44,6 +44,8 @@ abstract class Env {
   static final Flavor flavor = Flavor.fromEnvironment();
   static const String openVpnExtensionId = String.fromEnvironment('OPENVPN_EXTENSION_ID');
   static const String openVpnExtensionName = String.fromEnvironment('OPENVPN_EXTENSION_NAME');
+  static const String vlessExtensionId = String.fromEnvironment('VLESS_EXTENSION_ID');
+  static const String vlessExtensionName = String.fromEnvironment('VLESS_EXTENSION_NAME');
   static late final PackageInfo _packageInfo;
   static BuildInfo _buildInfo = BuildInfo(buildNumber: 0, buildVersion: '0.0.0');
   static late final String _userAgent;
@@ -155,6 +157,8 @@ abstract class Env {
     'ENV_APP': flavor.name,
     'OPENVPN_EXTENSION_ID': openVpnExtensionId,
     'OPENVPN_EXTENSION_NAME': openVpnExtensionName,
+    'VLESS_EXTENSION_ID': vlessExtensionId,
+    'VLESS_EXTENSION_NAME': vlessExtensionName,
     'MANAGE_DEVICES_PAGE': manageDevicesPage,
     'APP_CUSTOM_SCHEME_URL': appCustomSchemeUrl,
     'NOTIFIER_BASE_URL': notifierBaseUrl,

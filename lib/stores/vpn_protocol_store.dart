@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -39,11 +41,46 @@ abstract class _VpnProtocolStore with Store {
   ReactionDisposer? _authReactionDisposer;
   final AuthSessionStore _authSessionStore;
 
+  @visibleForTesting
+  bool testIsIOS = false;
+
+  @visibleForTesting
+  bool testIsMacOS = false;
+
+  @visibleForTesting
+  bool testIsAndroid = false;
+
+  @visibleForTesting
+  bool testIsWindows = false;
+
+  /// When any `testIsX` is set, host `Platform` is ignored.
+  bool get _useTestPlatform => testIsIOS || testIsMacOS || testIsAndroid || testIsWindows;
+
+  bool get _isApple =>
+      _useTestPlatform ? testIsIOS || testIsMacOS : Platform.isIOS || Platform.isMacOS;
+
+  /// VLESS ships only on iOS and macOS, and only once the flag is on. Picking
+  /// it anywhere else reaches a plugin that has no implementation.
+  bool _isAvailable(ProtocolType protocol) => switch (protocol) {
+    ProtocolType.wireguard || ProtocolType.openvpn => true,
+    ProtocolType.vless => _isApple && _remoteConfigStore.vlessEnabled,
+  };
+
+  /// What the picker should offer. Always contains [_defaultProtocol].
+  @computed
+  List<ProtocolType> get availableProtocols => ProtocolType.values.where(_isAvailable).toList();
+
   @observable
   ObservableFuture<ProtocolType> protocolFuture = ObservableFuture.value(_defaultProtocol);
 
   @computed
-  ProtocolType get protocol => protocolFuture.value ?? _defaultProtocol;
+  ProtocolType get protocol {
+    final selected = protocolFuture.value ?? _defaultProtocol;
+    // The stored choice outlives the gates that allowed it. Without this a flag
+    // turned off mid-session leaves VpnStore on VLESS and hands the picker a
+    // value that is no longer in [availableProtocols].
+    return _isAvailable(selected) ? selected : _defaultProtocol;
+  }
 
   // Enabled via remote config
   @computed
@@ -55,7 +92,11 @@ abstract class _VpnProtocolStore with Store {
       if (!_remoteConfigStore.isProtocolPickerAvailable) {
         return _defaultProtocol;
       }
-      final protocol = await _settings.protocolType();
+      final stored = await _settings.protocolType();
+      // The flag is a kill switch: a user left on VLESS when it is turned off,
+      // or restoring a backup onto another platform, falls back instead of
+      // reaching a tunnel that is not there.
+      final protocol = _isAvailable(stored) ? stored : _defaultProtocol;
       _analyticsStore.setUserProperty(
         AnalyticsUserProperty.fromEnum(name: AnalyticsUserPropName.protocol, value: protocol.name),
       );
@@ -75,7 +116,7 @@ abstract class _VpnProtocolStore with Store {
 
   @action
   Future<void> setProtocol(ProtocolType newProtocol) async {
-    if (!_remoteConfigStore.isProtocolPickerAvailable) {
+    if (!_remoteConfigStore.isProtocolPickerAvailable || !_isAvailable(newProtocol)) {
       return;
     }
     try {

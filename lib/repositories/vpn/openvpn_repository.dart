@@ -41,7 +41,7 @@ class OpenVpnRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<void> connect({required String config}) async {
+  Future<void> connect({required String config, String? dnsAddress}) async {
     try {
       var finalConfig = config;
       if (Platform.isWindows) {
@@ -82,7 +82,7 @@ class OpenVpnRepository extends BaseVpnRepository {
   @override
   Future<bool> disconnect() async {
     final status = await currentStatus();
-    if (status == VpnConnectionStatus.connected) {
+    if (stoppable(status)) {
       _service.disconnect();
       return true;
     }

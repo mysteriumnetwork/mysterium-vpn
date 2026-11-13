@@ -12,4 +12,5 @@ abstract class ApiService {
   Future<void> disconnect();
   Future<Set<UserIntent>> fetchUserIntents();
   Future<OpenVpnConnectResponse> fetchOpenVpnConfig({required OpenVpnConnectRequest request});
+  Future<VlessConnectResponse> fetchVlessConfig({required VlessConnectRequest request});
 }
