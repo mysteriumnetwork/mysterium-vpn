@@ -4,7 +4,11 @@ import 'package:mysterium_vpn/models/models.dart';
 
 abstract class VpnRepository {
   Future<void> setupTunnel();
-  Future<void> connect({required String config});
+
+  /// [dnsAddress] is the resolver the user selected, which the content
+  /// blockers steer. Protocols whose server-issued config already carries it
+  /// ignore the argument.
+  Future<void> connect({required String config, String? dnsAddress});
   Future<bool> disconnect();
   Future<bool> isTunnelConfigured();
   Stream<VpnConnectionStatus> statusStream();

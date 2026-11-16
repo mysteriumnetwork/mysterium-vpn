@@ -67,7 +67,7 @@ class WireguardRepository extends BaseVpnRepository {
   }
 
   @override
-  Future<void> connect({required String config}) async {
+  Future<void> connect({required String config, String? dnsAddress}) async {
     try {
       final key = await _getWireguardKey();
       final replaced = config.replaceFirst('%private_key%', key.privateKey);
@@ -92,7 +92,7 @@ class WireguardRepository extends BaseVpnRepository {
   @override
   Future<bool> disconnect() async {
     final status = await currentStatus();
-    if (status == VpnConnectionStatus.connected) {
+    if (stoppable(status)) {
       await _service.disconnect();
       return true;
     }

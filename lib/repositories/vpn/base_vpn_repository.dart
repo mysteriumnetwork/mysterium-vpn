@@ -21,6 +21,15 @@ abstract class BaseVpnRepository implements VpnRepository {
   Future<bool> singleFlightTunnelCheck(Future<bool> Function() check) =>
       _tunnelCheck ??= check().whenComplete(() => _tunnelCheck = null);
 
+  /// Whether a teardown request should still reach the platform.
+  ///
+  /// `connecting` counts: the native profile keeps starting on its own, so a
+  /// switch or a revoked subscription that only stopped a `connected` tunnel
+  /// left the old one coming up after the teardown was asked for.
+  @protected
+  bool stoppable(VpnConnectionStatus status) =>
+      status == VpnConnectionStatus.connected || status == VpnConnectionStatus.connecting;
+
   /// Rate the VPN connection by sending the relevant data to the API.
   @override
   Future<void> rateConnection({

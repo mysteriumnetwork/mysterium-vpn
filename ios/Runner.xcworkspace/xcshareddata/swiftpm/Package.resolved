@@ -181,6 +181,24 @@
       }
     },
     {
+      "identity" : "tun2sockskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EbrahimTahernejad/Tun2SocksKit",
+      "state" : {
+        "revision" : "6cd93d0583db031d576ff1796f832f65f3aee06a",
+        "version" : "5.15.0"
+      }
+    },
+    {
+      "identity" : "vless-apple",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mysteriumnetwork/vless-apple",
+      "state" : {
+        "revision" : "965bc5e7c21b88d52f0ae59957a030b6200213c5",
+        "version" : "1.2.0"
+      }
+    },
+    {
       "identity" : "wireguard-apple",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mysteriumnetwork/wireguard-apple.git",

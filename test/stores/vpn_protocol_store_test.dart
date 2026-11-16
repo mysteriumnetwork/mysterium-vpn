@@ -42,6 +42,101 @@ void main() {
     await store.disposeStore();
   });
 
+  group('VLESS availability', () {
+    setUp(() {
+      when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
+    });
+
+    test('always offers the default protocol, whatever the gates say', () {
+      // availableProtocols feeds the picker's item list while `protocol` feeds
+      // its selected value; a gate that could drop the default would render a
+      // selection that is not in the list.
+      store.testIsAndroid = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
+
+      expect(store.availableProtocols, contains(ProtocolType.wireguard));
+    });
+
+    test('is offered on Apple platforms once the flag is on', () {
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+
+      expect(store.availableProtocols, contains(ProtocolType.vless));
+    });
+
+    test('is hidden when the flag is off', () {
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
+
+      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
+      expect(store.availableProtocols, containsAll([ProtocolType.wireguard, ProtocolType.openvpn]));
+    });
+
+    test('is hidden on Android even with the flag on', () {
+      store.testIsAndroid = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+
+      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
+      expect(store.availableProtocols, containsAll([ProtocolType.wireguard, ProtocolType.openvpn]));
+    });
+
+    test('is hidden on Windows even with the flag on', () {
+      store.testIsWindows = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+
+      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
+    });
+
+    test('is offered on macOS once the flag is on', () {
+      store.testIsMacOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+
+      expect(store.availableProtocols, contains(ProtocolType.vless));
+    });
+
+    test('setProtocol refuses VLESS when it is not available', () async {
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
+
+      await store.setProtocol(ProtocolType.vless);
+
+      verifyNever(mockLocalDBService.setProtocolType(any));
+      expect(store.protocol, ProtocolType.wireguard);
+    });
+
+    test('a stored VLESS falls back when the flag is turned off', () async {
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
+
+      expect(await store.getProtocol(), ProtocolType.wireguard);
+    });
+
+    test('a stored VLESS is kept while the flag is on', () async {
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
+
+      expect(await store.getProtocol(), ProtocolType.vless);
+    });
+
+    test('the live selection falls back when the flag is turned off', () async {
+      // The kill switch has to reach a session that already chose VLESS, not
+      // just the next launch: VpnStore reads `protocol` to pick its repository
+      // and the picker reads it as the selected value.
+      store.testIsIOS = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+      when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
+      await store.setProtocol(ProtocolType.vless);
+      expect(store.protocol, ProtocolType.vless);
+
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
+
+      expect(store.protocol, ProtocolType.wireguard);
+      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
+    });
+  });
+
   group('getProtocol', () {
     test('returns protocol from localDB when successful', () async {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
