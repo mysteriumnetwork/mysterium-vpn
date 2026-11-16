@@ -80,16 +80,21 @@ class RestApiService extends ApiService {
       _logger.info('Sent STUN Binding Request to $serverAddress:$serverPort');
 
       // Listen for response
-      socket.listen((RawSocketEvent event) {
-        if (event == RawSocketEvent.read) {
-          final datagram = socket.receive();
-          if (datagram != null) {
-            _logger.info('Received response from server: ${datagram.data}');
-            socket.close(); // Close the socket after receiving the response
-            isSocketClosed = true; // Mark the socket as closed
+      socket.listen(
+        onError: (Object e, StackTrace stack) {
+          _logger.warning('STUN socket failed', e, stack);
+        },
+        (RawSocketEvent event) {
+          if (event == RawSocketEvent.read) {
+            final datagram = socket.receive();
+            if (datagram != null) {
+              _logger.info('Received response from server: ${datagram.data}');
+              socket.close(); // Close the socket after receiving the response
+              isSocketClosed = true; // Mark the socket as closed
+            }
           }
-        }
-      });
+        },
+      );
 
       // Set up a timeout for receiving the response
       await Future.delayed(const Duration(seconds: 5), () {

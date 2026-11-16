@@ -30,13 +30,24 @@ void main() async {
 /// Attach error handlers as early as practical in the startup flow so
 /// crashes during app initialization are not silently swallowed.
 void _setupErrorHandlers(AppInitializer initializer) {
+  // SentryFlutter.init installed these; chain to them or Sentry goes blind to
+  // every framework and unhandled async error.
+  final sentryFlutterOnError = FlutterError.onError;
+  final sentryPlatformOnError = PlatformDispatcher.instance.onError;
+
   FlutterError.onError = (details) {
-    final diagnostics = details.toDiagnosticsNode(style: DiagnosticsTreeStyle.error).toStringDeep();
+    // toStringDeep walks the whole diagnostics tree — too costly for release,
+    // where this runs on the UI thread, which is Android's main thread.
+    final diagnostics = kDebugMode || Env.flavor.isDev
+        ? details.toDiagnosticsNode(style: DiagnosticsTreeStyle.error).toStringDeep()
+        : details.summary.toString();
     initializer.logger.handle(details.exception, details.stack, diagnostics);
+    sentryFlutterOnError?.call(details);
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {
     initializer.logger.handle(error, stack, 'fatal');
+    sentryPlatformOnError?.call(error, stack);
     return true;
   };
 }

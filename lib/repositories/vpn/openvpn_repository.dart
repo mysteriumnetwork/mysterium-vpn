@@ -31,13 +31,8 @@ class OpenVpnRepository extends BaseVpnRepository {
 
   @override
   Future<void> setupTunnel() async {
-    try {
-      await _service.setupTunnel();
-      logger.info('OpenVPN tunnel setup completed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.setupTunnel();
+    logger.info('OpenVPN tunnel setup completed');
   }
 
   @override
@@ -70,8 +65,7 @@ class OpenVpnRepository extends BaseVpnRepository {
               );
             },
           );
-    } on TimeoutException catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+    } on TimeoutException {
       rethrow;
     } catch (e, stackTrace) {
       logger.handle(e, stackTrace);
@@ -123,13 +117,8 @@ class OpenVpnRepository extends BaseVpnRepository {
 
   @override
   Future<void> removeTunnelConfiguration() async {
-    try {
-      await _service.removeTunnelConfiguration();
-      logger.info('OpenVPN tunnel configuration removed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.removeTunnelConfiguration();
+    logger.info('OpenVPN tunnel configuration removed');
   }
 
   @override
@@ -144,38 +133,28 @@ class OpenVpnRepository extends BaseVpnRepository {
     required String dnsAddress,
     String? targetIp,
   }) async {
-    try {
-      final response = await apiService.fetchOpenVpnConfig(
-        request: OpenVpnConnectRequest(
-          countryOriginate: countryOriginate,
-          country: country,
-          city: city,
-          ipType: ipType,
-          resetConnection: resetConnection,
-          osType: Platform.operatingSystem,
-          userIntent: userIntent,
-          cluster: cluster,
-          dns: dnsAddress,
-          targetIp: targetIp,
-        ),
-      );
-      return VpnConfig.fromOpenVpn(response);
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    final response = await apiService.fetchOpenVpnConfig(
+      request: OpenVpnConnectRequest(
+        countryOriginate: countryOriginate,
+        country: country,
+        city: city,
+        ipType: ipType,
+        resetConnection: resetConnection,
+        osType: Platform.operatingSystem,
+        userIntent: userIntent,
+        cluster: cluster,
+        dns: dnsAddress,
+        targetIp: targetIp,
+      ),
+    );
+    return VpnConfig.fromOpenVpn(response);
   }
 
   @override
   Future<void> resetApp() async {
-    try {
-      if (Platform.isAndroid || Platform.isWindows) {
-        return;
-      }
-      await removeTunnelConfiguration();
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
+    if (Platform.isAndroid || Platform.isWindows) {
+      return;
     }
+    await removeTunnelConfiguration();
   }
 }

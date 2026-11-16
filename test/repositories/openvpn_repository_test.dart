@@ -172,7 +172,8 @@ void main() {
       verify(api.rateConnection(request: anyNamed('request'))).called(1);
     });
 
-    test('rateConnection logs and rethrows on failure', () async {
+    // Repositories rethrow without reporting; the store that catches decides.
+    test('rateConnection rethrows on failure without reporting it', () async {
       when(api.rateConnection(request: anyNamed('request'))).thenThrow(Exception('boom'));
 
       await expectLater(
@@ -185,7 +186,7 @@ void main() {
         ),
         throwsA(isA<Exception>()),
       );
-      verify(logger.handle(any)).called(1);
+      verifyNever(logger.handle(any));
     });
 
     test('notifyApiVpnDisconnected swallows errors', () async {

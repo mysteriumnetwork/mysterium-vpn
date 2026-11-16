@@ -49,21 +49,17 @@ class MQTTService {
       ..resubscribeOnAutoReconnect = true
       ..useWebSocket = true
       ..keepAlivePeriod = 50
+      // One breadcrumb per side of a flap. onConnected fires on auto-reconnects
+      // too, so logging onAutoReconnect/onAutoReconnected as well tripled the
+      // volume — and every breadcrumb is a platform hop on the main thread.
+      // onFailedConnectionAttempt is omitted: the client never calls it while
+      // autoReconnect is set.
       ..onConnected = () {
         _logger.debug('MQTT connected');
         _subscriptions.forEach(_subscribeReal);
       }
-      ..onAutoReconnect = () {
-        _logger.verbose('MQTT reconnecting..');
-      }
-      ..onAutoReconnected = () {
-        _logger.verbose('MQTT reconnected');
-      }
       ..onDisconnected = () {
-        _logger.verbose('MQTT disconnected');
-      }
-      ..onFailedConnectionAttempt = (attempt) {
-        _logger.warning('MQTT connecting.. Attempt $attempt');
+        _logger.debug('MQTT disconnected');
       };
     if (kDebugMode) {
       _mqtt.logging(on: false);
@@ -87,7 +83,7 @@ class MQTTService {
     try {
       await _mqtt.connect(_username, _password);
     } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
+      _logger.warning('MQTT connect failed', e, stackTrace);
       rethrow;
     }
   }
@@ -100,7 +96,7 @@ class MQTTService {
     try {
       _mqtt.disconnect();
     } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
+      _logger.warning('MQTT disconnect failed', e, stackTrace);
       rethrow;
     }
   }
@@ -118,7 +114,9 @@ class MQTTService {
   ///
   /// [topic] - The MQTT topic to listen to.
   ///
-  /// Returns a stream of message payloads as strings.
+  /// Returns a stream of message payloads as strings. The stream never emits
+  /// errors — broker failures are reported and swallowed in [_subscribeReal],
+  /// and the next onConnected re-attaches.
   Stream<String> subscribe(String topic) {
     if (!_experimentFlag()) {
       return const Stream<String>.empty();
@@ -150,9 +148,13 @@ class MQTTService {
       return;
     }
 
+    // null means the broker refused the subscription on a live connection
+    // (not-connected throws instead). Retried by the next onConnected, since
+    // the topic stays registered in _subscriptions.
     final sub = _mqtt.subscribe(topic, MqttQos.atLeastOnce);
     if (sub == null) {
-      throw MQQTException();
+      _logger.warning('MQTT subscribe refused for $topic');
+      return;
     }
 
     // filter and map the messages
@@ -173,7 +175,11 @@ class MQTTService {
     // listen instead of addStream: onConnected re-fires on every reconnect and
     // addStream on a never-done stream cannot be called twice
     _forwards[topic]?.cancel();
-    final forward = stream.listen(subject.add);
+    final forward = stream.listen(
+      subject.add,
+      onError: (Object e, StackTrace stack) =>
+          _logger.warning('MQTT stream failed for $topic', e, stack),
+    );
     _forwards[topic] = forward;
 
     // make sure to unsubscribe when the stream is cancelled
@@ -195,7 +201,7 @@ class MQTTService {
     try {
       return MqttUtilities.bytesToStringAsString(message.payload.message!);
     } catch (e, stack) {
-      _logger.handle(e, stack);
+      _logger.warning('MQTT payload is not valid UTF-8', e, stack);
       return null;
     }
   }

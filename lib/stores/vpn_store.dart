@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
-import 'package:mysterium_vpn/common/extensions/string.dart';
+import 'package:mysterium_vpn/common/extensions/extensions.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
@@ -501,7 +501,9 @@ abstract class _VpnStore extends VpnGuard with Store {
     // so the old listener can't clobber _connectionStatus after the swap.
     await _connectionStatusStream?.cancel();
     final stream = _vpnRepository.statusStream();
-    _connectionStatusStream = stream.listen((status) async {
+    _connectionStatusStream = stream.listenSafely(logger: _logger, context: 'Tunnel status', (
+      status,
+    ) async {
       // The stream can deliver a stale non-connected event while the tunnel is
       // already connected (race between the connect handshake and the status
       // stream). Poll the real status and short-circuit so we don't clobber

@@ -263,7 +263,7 @@ final authServicePOD = Provider<AuthRepository>((ref) {
 /// Plain Talker. The Crashlytics-forwarding observer is attached later by
 /// AppInitializer; keeping it Firebase-free here lets the many providers
 /// that transitively watch loggerPOD be built before Firebase is up.
-final loggerPOD = Provider<Talker>((ref) => Talker());
+final loggerPOD = Provider<Talker>((ref) => Talker(settings: appTalkerSettings()));
 
 final remoteConfigClientPOD = Provider<ConfigCatClient>(
   (ref) => ConfigCatClient.get(

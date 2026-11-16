@@ -84,7 +84,13 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     bool fatal = false,
   }) async {
     if (_firebaseReady) {
-      await _crashlytics.recordError(err, stack, reason: reason, printDetails: true, fatal: fatal);
+      await _crashlytics.recordError(
+        err,
+        stack,
+        reason: reason,
+        printDetails: kDebugMode || Env.flavor.isDev,
+        fatal: fatal,
+      );
     }
     super.logError(err: err, stack: stack, reason: reason, fatal: fatal).ignore();
   }

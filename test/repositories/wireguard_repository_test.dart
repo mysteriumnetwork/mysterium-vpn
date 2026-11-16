@@ -63,7 +63,7 @@ void main() {
       verify(mockService.connect(cfg: 'cfg with priv')).called(1);
     });
 
-    test('connect rethrows TimeoutException', () async {
+    test('connect rethrows TimeoutException without reporting it', () async {
       const config = 'cfg with %private_key%';
       await repository.init();
 
@@ -72,7 +72,7 @@ void main() {
       );
 
       await expectLater(repository.connect(config: config), throwsA(isA<TimeoutException>()));
-      verify(mockLogger.handle(any, any)).called(1);
+      verifyNever(mockLogger.handle(any, any));
     });
 
     test('disconnect calls service if status is connected', () async {

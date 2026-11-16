@@ -71,47 +71,32 @@ class RestAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<TokenResponse> signInComplete({required TokenRequest tokenRequest}) async {
-    try {
-      return await signIn(tokenRequest);
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      // No wipe here: callers decide, and a garbled response is not a verdict.
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
+  // No wipe on failure: callers decide, and a garbled response is not a verdict.
+  Future<TokenResponse> signInComplete({required TokenRequest tokenRequest}) =>
+      signIn(tokenRequest);
 
   @override
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair}) async {
-    try {
-      await removeLocalData();
+    await removeLocalData();
 
-      final response = await _apiAuth.requestMagicLink(
-        magicLinkRequest: MagicLinkRequest(
-          email: email,
-          clientId: MagicLinkRequestClientIdEnum.app,
-          codeChallenge: pkcePair.codeChallenge,
-          codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
-        ),
-      );
-      if (response.statusCode != 200) {
-        throw Exception('Login failed');
-      }
-
-      final result = response.data;
-      if (result == null || result.code == null) {
-        return null;
-      }
-
-      return result.code;
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
+    final response = await _apiAuth.requestMagicLink(
+      magicLinkRequest: MagicLinkRequest(
+        email: email,
+        clientId: MagicLinkRequestClientIdEnum.app,
+        codeChallenge: pkcePair.codeChallenge,
+        codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
+      ),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Login failed');
     }
+
+    final result = response.data;
+    if (result == null || result.code == null) {
+      return null;
+    }
+
+    return result.code;
   }
 
   @override
@@ -166,29 +151,23 @@ class RestAuthRepository extends AuthRepository {
         ),
       );
       return credential.identityToken!;
-    } catch (e, stackTrace) {
+    } catch (e) {
       if (e is SignInWithAppleAuthorizationException && e.code == AuthorizationErrorCode.canceled) {
         throw SignInAborted();
       }
-      _logger.handle(e, stackTrace);
       rethrow;
     }
   }
 
   @override
   Future<String> signInWithGoogle() async {
-    try {
-      if (!googleSignIn.supportsAuthenticate()) {
-        throw NotAvailableException();
-      }
-      final googleUser = await googleSignIn.authenticate(
-        scopeHint: ['https://www.googleapis.com/auth/userinfo.email'],
-      );
-      final googleAuth = googleUser.authentication;
-      return googleAuth.idToken!;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
+    if (!googleSignIn.supportsAuthenticate()) {
+      throw NotAvailableException();
     }
+    final googleUser = await googleSignIn.authenticate(
+      scopeHint: ['https://www.googleapis.com/auth/userinfo.email'],
+    );
+    final googleAuth = googleUser.authentication;
+    return googleAuth.idToken!;
   }
 }
