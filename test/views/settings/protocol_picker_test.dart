@@ -33,6 +33,10 @@ void main() {
 
     when(vpnStore.disconnectTunnel(reason: anyNamed('reason'))).thenAnswer((_) async {});
     when(vpnProtocolStore.protocol).thenReturn(ProtocolType.wireguard);
+    // The picker renders this list, not ProtocolType.values: VLESS is gated
+    // by platform and flag. Default to the two that are always offered.
+    when(vpnProtocolStore.availableProtocols)
+        .thenReturn(const [ProtocolType.wireguard, ProtocolType.openvpn]);
     when(vpnProtocolStore.setProtocol(any)).thenAnswer((_) async {});
     when(authSessionStore.isAuthenticated).thenReturn(true);
   });
@@ -128,6 +132,33 @@ void main() {
 
     expect(find.text('Switching VPN protocol'), findsNothing);
     verify(vpnProtocolStore.setProtocol(ProtocolType.openvpn)).called(1);
+  });
+
+  // The gate itself lives in VpnProtocolStore; these pin that the picker
+  // renders what the store offers rather than the full enum, which is the only
+  // thing standing between a flagged-off VLESS and a user selecting it.
+  group('VLESS gating', () {
+    Future<void> openSheet(WidgetTester tester) async {
+      await pumpAt(tester, const Size(390, 844));
+      await tester.tap(find.text('VPN protocol'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('offers VLESS when the store lists it', (tester) async {
+      when(vpnProtocolStore.availableProtocols)
+          .thenReturn(const [ProtocolType.wireguard, ProtocolType.openvpn, ProtocolType.vless]);
+
+      await openSheet(tester);
+
+      expect(find.text('VLESS'), findsOneWidget);
+    });
+
+    testWidgets('hides VLESS when the store leaves it out', (tester) async {
+      await openSheet(tester);
+
+      expect(find.text('OpenVPN'), findsOneWidget, reason: 'picker sheet should be open');
+      expect(find.text('VLESS'), findsNothing);
+    });
   });
 
   // Tablet and up swap the sheet for an `EasyDropdown`, a branch the mobile

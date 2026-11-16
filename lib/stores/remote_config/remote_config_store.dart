@@ -43,6 +43,7 @@ enum _FeatureToggleKey {
   limitedTimeOfferExpiryDate,
   limitedTimeOfferId,
   isProtocolPickerAvailable,
+  vlessEnabled,
   planFeatures,
   plansBestValue,
   upgradeSubscriptionPage,
@@ -480,6 +481,16 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
   bool get isProtocolPickerAvailable {
     if (config.containsKey(_FeatureToggleKey.isProtocolPickerAvailable.name)) {
       return config[_FeatureToggleKey.isProtocolPickerAvailable.name] as bool;
+    }
+    return false;
+  }
+
+  /// Gates VLESS in the protocol picker. Off by default: the tunnel only
+  /// exists on iOS and macOS, and this is the kill switch for the rollout.
+  @computed
+  bool get vlessEnabled {
+    if (config.containsKey(_FeatureToggleKey.vlessEnabled.name)) {
+      return config[_FeatureToggleKey.vlessEnabled.name] as bool;
     }
     return false;
   }

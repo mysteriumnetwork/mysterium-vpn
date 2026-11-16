@@ -308,6 +308,13 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
     () => super.isProtocolPickerAvailable,
     name: 'RemoteConfigStoreBase.isProtocolPickerAvailable',
   )).value;
+  Computed<bool>? _$vlessEnabledComputed;
+
+  @override
+  bool get vlessEnabled => (_$vlessEnabledComputed ??= Computed<bool>(
+    () => super.vlessEnabled,
+    name: 'RemoteConfigStoreBase.vlessEnabled',
+  )).value;
   Computed<List<SubscriptionPlanFeatures>>? _$planFeaturesComputed;
 
   @override
@@ -487,6 +494,7 @@ mapConfig: ${mapConfig},
 limitedTimeOfferId: ${limitedTimeOfferId},
 limitedTimeOfferExpiryDate: ${limitedTimeOfferExpiryDate},
 isProtocolPickerAvailable: ${isProtocolPickerAvailable},
+vlessEnabled: ${vlessEnabled},
 planFeatures: ${planFeatures},
 plansBestValue: ${plansBestValue},
 upgradeSubscriptionPage: ${upgradeSubscriptionPage},

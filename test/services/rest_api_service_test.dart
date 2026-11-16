@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/services/api/rest_api_service.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
@@ -169,6 +171,57 @@ void main() {
       );
 
       expect(result, ovpn);
+    });
+  });
+
+  group('fetchVlessConfig', () {
+    VlessConnectResponse vless() => VlessConnectResponse(
+      id: 'i',
+      vlessUri: 'vless://uuid@host:443?type=ws&security=tls',
+      hash: 'h',
+      exitIp: '188.166.27.193',
+    );
+
+    test('returns response data on success', () async {
+      final expected = vless();
+      when(connection.connectVless(vlessConnectRequest: anyNamed('vlessConnectRequest')))
+          .thenAnswer((_) async => response(200, expected));
+
+      final result = await service.fetchVlessConfig(request: VlessConnectRequest(osType: 'macos'));
+
+      expect(result, expected);
+    });
+
+    test('throws when the body carries no config', () async {
+      when(connection.connectVless(vlessConnectRequest: anyNamed('vlessConnectRequest')))
+          .thenAnswer(
+            (_) async =>
+                Response<VlessConnectResponse>(requestOptions: RequestOptions(), statusCode: 200),
+          );
+
+      await expectLater(
+        service.fetchVlessConfig(request: VlessConnectRequest(osType: 'macos')),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('maps the device-limit error code to DeviceLimitReachedException', () async {
+      when(connection.connectVless(vlessConnectRequest: anyNamed('vlessConnectRequest'))).thenThrow(
+        ApiException(
+          RequestOptions(),
+          'limit',
+          code: 403,
+          identifier: 'device_limit',
+          endpoint: '/connection/connect-vless',
+          severity: ExceptionSeverity.high,
+          errorCode: DeviceLimitReachedException.code,
+        ),
+      );
+
+      await expectLater(
+        service.fetchVlessConfig(request: VlessConnectRequest(osType: 'macos')),
+        throwsA(isA<DeviceLimitReachedException>()),
+      );
     });
   });
 }
