@@ -462,10 +462,19 @@ void main() {
       final store = build();
       await resumeAfter(store, const Duration(minutes: 10));
 
-      expect(captureParams(AnalyticsEvent.tunnelHealthDegraded)['stats_read'], isFalse);
+      expect(captureParams(AnalyticsEvent.tunnelHealthDegraded)['stats_outcome'], 'null');
     });
 
-    test('stats_read is true when they were read', () async {
+    test('stats_outcome names a throwing read separately from an empty one', () async {
+      when(vpnStore.tunnelStatistics()).thenThrow(Exception('platform channel down'));
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      expect(captureParams(AnalyticsEvent.tunnelHealthDegraded)['stats_outcome'], 'error');
+    });
+
+    test('stats_outcome is ok when they were read', () async {
       when(vpnStore.tunnelStatistics()).thenAnswer(
         (_) async => TunnelStats(totalDownload: 10, totalUpload: 10, latestHandshake: now),
       );
@@ -474,8 +483,38 @@ void main() {
       await resumeAfter(store, const Duration(minutes: 10));
 
       final params = captureParams(AnalyticsEvent.tunnelHealthDegraded);
-      expect(params['stats_read'], isTrue);
+      expect(params['stats_outcome'], 'ok');
       expect(params['handshake_age_s'], 0);
+    });
+
+    // Matching a prompt to its verdict on timestamp breaks when the dialog
+    // waits in the queue, so all three events carry the same id instead.
+    test('the verdict and the prompt it raises share a prompt_id', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final degradedParams = captureParams(AnalyticsEvent.tunnelHealthDegraded);
+      store
+        ..onDialogShown()
+        ..onAction(refreshed: true);
+
+      expect(degradedParams['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthAction)['prompt_id'], 1);
+    });
+
+    // A second verdict for a session already claimed raises no prompt, so
+    // tagging it would point at a dialog that never describes it.
+    test('a verdict that raises no prompt carries no prompt_id', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+      clearInteractions(analytics);
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthDegraded);
+      expect(params.containsKey('prompt_id'), isFalse);
     });
 
     // A prompt with no action to offer would otherwise look like a user who
@@ -484,7 +523,8 @@ void main() {
       when(vpnStore.connectedIpPoolCount).thenReturn(1);
       build().onDialogShown();
 
-      expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['can_refresh'], isFalse);
+      final params = captureParams(AnalyticsEvent.tunnelHealthDialogShown);
+      expect(params['can_refresh'], isFalse);
     });
   });
 

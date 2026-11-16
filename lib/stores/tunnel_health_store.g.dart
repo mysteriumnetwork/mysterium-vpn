@@ -64,7 +64,7 @@ mixin _$TunnelHealthStore on _TunnelHealthStore, Store {
       DateTime? handshake,
       int? rxDelta,
       TunnelHealthSample sample,
-      bool statsRead,
+      String statsOutcome,
       int? txDelta,
       TunnelHealthVerdict verdict,
     })
@@ -86,7 +86,7 @@ mixin _$TunnelHealthStore on _TunnelHealthStore, Store {
       DateTime? handshake,
       int? rxDelta,
       TunnelHealthSample sample,
-      bool statsRead,
+      String statsOutcome,
       int? txDelta,
       TunnelHealthVerdict verdict,
     })

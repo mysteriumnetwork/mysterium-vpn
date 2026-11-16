@@ -285,8 +285,8 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     final sample = await _probe.probe(exitIp: exitIp, controlIps: settings.controlIps);
     final after = connected ? await _readStats() : null;
 
-    final tx = _bytes(before, after, upload: true);
-    final rx = _bytes(before, after, upload: false);
+    final tx = _bytes(before?.stats, after?.stats, upload: true);
+    final rx = _bytes(before?.stats, after?.stats, upload: false);
 
     return (
       verdict: classifyTunnelHealth(
@@ -299,20 +299,36 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       sample: sample,
       txDelta: tx,
       rxDelta: rx,
-      handshake: after?.latestHandshake,
-      // False means the platform call failed, not that the tunnel was idle.
-      // Both counters go missing together, and an unreadable pair is what
-      // pushes `_carriedData` — and so the verdict — to degraded.
-      statsRead: before != null && after != null,
+      handshake: after?.stats?.latestHandshake,
+      statsOutcome: _statsOutcome(before, after),
     );
   }
 
-  Future<TunnelStats?> _readStats() async {
+  /// The first thing that went wrong across the pair, since a delta needs both.
+  /// `skipped` means there was no tunnel to read from.
+  String _statsOutcome(_StatsRead? before, _StatsRead? after) {
+    if (before == null || after == null) {
+      return 'skipped';
+    }
+    return before.outcome == 'ok' ? after.outcome : before.outcome;
+  }
+
+  /// Reads the counters and says why it could not, when it could not.
+  ///
+  /// The reason is the point: on some platform and protocol pairs the counters
+  /// never arrive at all, and an unreadable pair is what pushes `_carriedData`
+  /// — and so the verdict — to degraded. Swallowing the cause made "we could
+  /// not measure" indistinguishable from "the tunnel is broken".
+  Future<_StatsRead> _readStats() async {
     try {
-      return await _vpnStore.tunnelStatistics().timeout(_statsTimeout);
+      final stats = await _vpnStore.tunnelStatistics().timeout(_statsTimeout);
+      return (stats: stats, outcome: stats == null ? 'null' : 'ok');
+    } on TimeoutException catch (e) {
+      _logger.warning('Tunnel stats timed out for health check: $e');
+      return (stats: null, outcome: 'timeout');
     } catch (e) {
       _logger.warning('Tunnel stats unavailable for health check: $e');
-      return null;
+      return (stats: null, outcome: 'error');
     }
   }
 
@@ -347,7 +363,28 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     final sessionId = connection?.sessionId;
     final gateKey = _gateKey;
 
-    _analytics.logEvent(AnalyticsEvent.tunnelHealthDegraded, parameters: _params(evaluation));
+    // Claimed before the event is logged, so the verdict and the prompt it
+    // raises carry the same id. Claimed here rather than when the view opens
+    // the dialog: it can sit in the dialog queue behind another one, and a
+    // second degradation meanwhile would otherwise pass this gate and prompt
+    // twice for one session.
+    final claimed = gateKey != null && _dialogShownSessions.add(gateKey);
+    if (claimed) {
+      // Recorded before the counter so the reaction can read it, and so the
+      // view can tell whether the connection it is about to describe is still
+      // the one that was diagnosed.
+      degradedSession = gateKey;
+      degradationEpoch++;
+    }
+    final promptId = claimed ? degradationEpoch : null;
+
+    _analytics.logEvent(
+      AnalyticsEvent.tunnelHealthDegraded,
+      // Joins the verdict to the prompt it raised. Matching the two on
+      // timestamp breaks whenever the dialog waits in the queue, which is what
+      // made one platform report more taps than prompts.
+      parameters: {..._params(evaluation), 'prompt_id': ?promptId},
+    );
 
     if (sessionId != null && _reportedSessions.add(sessionId)) {
       unawaited(
@@ -360,17 +397,6 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
             )
             .catchError((Object e) => _logger.warning('Broken node report failed: $e')),
       );
-    }
-
-    // Claimed here rather than when the view opens the dialog: it can sit in
-    // the dialog queue behind another one, and a second degradation meanwhile
-    // would otherwise pass this gate and prompt twice for one session.
-    if (gateKey != null && _dialogShownSessions.add(gateKey)) {
-      // Recorded before the counter so the reaction can read it, and so the
-      // view can tell whether the connection it is about to describe is still
-      // the one that was diagnosed.
-      degradedSession = gateKey;
-      degradationEpoch++;
     }
   }
 
@@ -386,12 +412,12 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
     AnalyticsEvent.tunnelHealthDialogShown,
     // The dialog hides its action when there is nowhere to move to, so without
     // this every such prompt reads as a user who declined the refresh.
-    parameters: {'can_refresh': canRefreshIp},
+    parameters: {'can_refresh': canRefreshIp, 'prompt_id': degradationEpoch},
   );
 
   void onAction({required bool refreshed}) => _analytics.logEvent(
     AnalyticsEvent.tunnelHealthAction,
-    parameters: {'action': refreshed ? 'refresh' : 'close'},
+    parameters: {'action': refreshed ? 'refresh' : 'close', 'prompt_id': degradationEpoch},
   );
 
   /// A healthy verdict raises nothing and logs no analytics, so without this
@@ -443,7 +469,7 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   Map<String, dynamic> _params(_Evaluation e) => {
     ..._dimensions,
     'verdict': e.verdict.name,
-    'stats_read': e.statsRead,
+    'stats_outcome': e.statsOutcome,
     'tunnelled_ms': ?e.sample.tunnelled.elapsed?.inMilliseconds,
     'direct_ms': ?e.sample.direct.elapsed?.inMilliseconds,
     'tx_delta': ?e.txDelta,
@@ -481,5 +507,8 @@ typedef _Evaluation = ({
   int? txDelta,
   int? rxDelta,
   DateTime? handshake,
-  bool statsRead,
+  String statsOutcome,
 });
+
+/// A counter read, paired with why it failed when it did.
+typedef _StatsRead = ({TunnelStats? stats, String outcome});
