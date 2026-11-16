@@ -21,6 +21,8 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
+import 'package:mysterium_vpn/services/discovery/discovery_adapter.dart';
+import 'package:mysterium_vpn/services/discovery/domain_discovery.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
@@ -34,6 +36,20 @@ import 'package:wireguard_dart/wireguard_dart.dart';
 final sharedPreferenceServicePOD = Provider<SharedPreferenceService>(
   (ref) => SharedPreferenceService(),
 );
+
+final domainDiscoveryPOD = Provider<DomainDiscovery>((ref) {
+  final prefs = ref.watch(sharedPreferenceServicePOD);
+  final discovery = DomainDiscovery(
+    logger: ref.watch(loggerPOD),
+    read: prefs.getString,
+    write: prefs.setString,
+    browserHosts: {
+      Uri.parse(Env.webAppUrl.contains('://') ? Env.webAppUrl : 'https://${Env.webAppUrl}').host,
+    },
+  );
+  ref.onDispose(discovery.close);
+  return discovery;
+});
 
 final secureStorageServicePOD = Provider<SecureStorageService>((ref) => SecureStorageService());
 
@@ -57,6 +73,11 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
   final logger = ref.watch(loggerPOD);
   final sessionStore = ref.watch(authSessionStorePOD);
   final dio = Dio(options);
+  dio.httpClientAdapter = DiscoveryAdapter(
+    dio.httpClientAdapter,
+    ref.watch(domainDiscoveryPOD),
+    logger: ref.watch(loggerPOD),
+  );
 
   dio.interceptors.addAll([
     InterceptorsWrapper(
@@ -121,6 +142,11 @@ final notifierDioPOD = Provider<Dio>((ref) {
     ),
   );
 
+  dio.httpClientAdapter = DiscoveryAdapter(
+    dio.httpClientAdapter,
+    ref.watch(domainDiscoveryPOD),
+    logger: ref.watch(loggerPOD),
+  );
   dio.interceptors.addAll([
     RetryRequestInterceptor(dio: dio),
     ConnectionErrorsInterceptor(),
@@ -183,6 +209,11 @@ final externalApiServicePOD = Provider<ExternalApiService>((ref) {
 
 final externalNetworkServicePOD = Provider<NetworkService>((ref) {
   final dio = Dio(ref.watch(dioOptionsPOD));
+  dio.httpClientAdapter = DiscoveryAdapter(
+    dio.httpClientAdapter,
+    ref.watch(domainDiscoveryPOD),
+    logger: ref.watch(loggerPOD),
+  );
   dio.interceptors.addAll([RetryRequestInterceptor(dio: dio)]);
 
   return DioNetworkService(dio);
