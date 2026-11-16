@@ -13,6 +13,10 @@ import 'package:url_launcher/url_launcher.dart';
 /// Analytics store for ref-less utils; set at app init (mirrors [snackbarKey]).
 AnalyticsStore? analyticsStoreRef;
 
+Future<Uri> Function(Uri)? webUrlResolver;
+
+Future<Uri> resolveWebUrl(Uri uri) async => await webUrlResolver?.call(uri) ?? uri;
+
 /// Drops query params (may hold secrets like `access_token`) for analytics.
 String sanitizeRedirectUrl(Uri url) =>
     Uri(scheme: url.scheme, host: url.host, port: url.port, path: url.path).toString();
@@ -29,14 +33,15 @@ Future<bool> openUrlLink(
   required RedirectSource source,
   LaunchMode mode = LaunchMode.platformDefault,
 }) async {
+  final target = await resolveWebUrl(url);
   var succeeded = true;
   final parameters = <String, dynamic>{
     'source': source.formattedName,
-    'target_url': sanitizeRedirectUrl(url),
+    'target_url': sanitizeRedirectUrl(target),
     'redirect_success': true,
   };
   try {
-    final launched = await canLaunchUrl(url) && await launchUrl(url, mode: mode);
+    final launched = await canLaunchUrl(target) && await launchUrl(target, mode: mode);
     if (!launched) {
       throw Exception('Could not launch URL');
     }
@@ -44,7 +49,10 @@ Future<bool> openUrlLink(
     succeeded = false;
     parameters['redirect_success'] = false;
     // Strip the unsanitized URL (and its access_token) out of the error text.
-    parameters['error_reason'] = e.toString().replaceAll(url.toString(), sanitizeRedirectUrl(url));
+    parameters['error_reason'] = e.toString().replaceAll(
+      target.toString(),
+      sanitizeRedirectUrl(target),
+    );
     showSnackbar(
       S.current.copyLink,
       // Copies the url as-is, so an authenticated one puts its token on the
@@ -52,7 +60,7 @@ Future<bool> openUrlLink(
       action: IconButton(
         icon: const Icon(Icons.copy, size: 16),
         onPressed: () =>
-            Clipboard.setData(ClipboardData(text: url.toString()))
+            Clipboard.setData(ClipboardData(text: target.toString()))
                 .then((value) => showSnackbar(S.current.linkCopied, type: SnackbarType.success)),
       ),
       type: SnackbarType.info,

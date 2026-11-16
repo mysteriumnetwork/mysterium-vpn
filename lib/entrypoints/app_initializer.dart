@@ -82,6 +82,7 @@ class AppInitializer {
 
     // Expose the analytics store to ref-less utils (e.g. openUrlLink).
     analyticsStoreRef = providerContainer.read(analyticsStorePOD);
+    webUrlResolver = providerContainer.read(domainDiscoveryPOD).resolveBrowserUrl;
 
     // Firebase runs past the first frame; the splash awaits via
     // deferredInitFuturePOD.

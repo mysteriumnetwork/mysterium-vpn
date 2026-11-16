@@ -120,8 +120,12 @@ class InAppWebViewScreen extends HookWidget {
               }
             },
           ),
-        )
-        ..loadRequest(uri);
+        );
+      resolveWebUrl(uri).then((target) async {
+        if (context.mounted) {
+          await controller.loadRequest(target);
+        }
+      }).ignore();
       return controller;
     });
 
