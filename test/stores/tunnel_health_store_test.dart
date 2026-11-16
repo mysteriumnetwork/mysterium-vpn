@@ -397,6 +397,61 @@ void main() {
     });
   });
 
+  group('analytics parameters', () {
+    const offline = TunnelHealthSample(
+      tunnelled: (elapsed: null, ip: null, error: 'timeout'),
+      direct: (elapsed: null, ip: null, error: 'timeout'),
+      bypassVerified: false,
+      controlReachable: false,
+    );
+
+    Map<String, dynamic> captureParams(AnalyticsEvent event) =>
+        verify(analytics.logEvent(event, parameters: captureAnyNamed('parameters'))).captured.single
+            as Map<String, dynamic>;
+
+    test('no-network carries the same dimensions as degraded', () async {
+      stubProbe(offline);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthNoNetwork);
+      expect(params['protocol'], 'wireguard');
+      expect(params['ip_type'], 'datacenter');
+      expect(params['verdict'], 'noNetwork');
+      expect(params['connected'], isTrue);
+      expect(params['control_reachable'], isFalse);
+    });
+
+    test('an unconfirmed verdict records what the confirming probe saw', () async {
+      var call = 0;
+      when(anyProbe()).thenAnswer((_) async => call++ == 0 ? degraded : healthy);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthSuppressed);
+      expect(params['reason'], 'unconfirmed');
+      // Without this, a recovery and an inconclusive confirm are the same row.
+      expect(params['confirm_verdict'], 'healthy');
+    });
+
+    test('a first-probe suppression carries no confirming verdict', () async {
+      stubProbe(
+        const TunnelHealthSample(
+          tunnelled: (elapsed: null, ip: null, error: 'timeout'),
+          direct: (elapsed: Duration(milliseconds: 200), ip: '203.0.113.9', error: null),
+          bypassVerified: false,
+          controlReachable: true,
+        ),
+      );
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthSuppressed);
+      expect(params['reason'], 'bypassUnavailable');
+      expect(params.containsKey('confirm_verdict'), isFalse);
+    });
+  });
+
   group('refresh availability', () {
     test('an unknown pool size still offers a refresh', () {
       when(vpnStore.connectedIpPoolCount).thenReturn(0);

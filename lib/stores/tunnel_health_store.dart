@@ -237,12 +237,14 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
         return;
       }
       if (second.verdict != first.verdict) {
-        _logSuppressed('unconfirmed');
+        // The confirming verdict too: "recovered" and "the confirm was itself
+        // inconclusive" are opposite outcomes sharing one bucket otherwise.
+        _logSuppressed('unconfirmed', confirmVerdict: second.verdict.name);
         return;
       }
 
       if (second.verdict == TunnelHealthVerdict.noNetwork) {
-        _onNoNetwork(controlReachable: second.sample.controlReachable);
+        _onNoNetwork(second);
         return;
       }
       _onDegraded(second);
@@ -254,15 +256,17 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// Ungated on purpose: there is no session id to key on while disconnected,
   /// and the confirm step already filters blips.
   @action
-  void _onNoNetwork({required bool controlReachable}) {
+  void _onNoNetwork(_Evaluation evaluation) {
     _analytics.logEvent(
       AnalyticsEvent.tunnelHealthNoNetwork,
       parameters: {
+        // Same shape as the degraded event, so the two read side by side.
+        ..._params(evaluation),
         'connected': _vpnStore.isConnected,
         // A control IP that has moved turns every degraded tunnel into this
         // verdict; without the flag that is indistinguishable from a genuine
         // outage in the dashboard.
-        'control_reachable': controlReachable,
+        'control_reachable': evaluation.sample.controlReachable,
       },
     );
     noNetworkEpoch++;
@@ -411,8 +415,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   String _leg(TunnelHealthLeg leg) =>
       leg.elapsed != null ? '${leg.elapsed!.inMilliseconds}ms' : 'FAIL(${leg.error})';
 
-  void _logSuppressed(String reason) =>
-      _analytics.logEvent(AnalyticsEvent.tunnelHealthSuppressed, parameters: {'reason': reason});
+  void _logSuppressed(String reason, {String? confirmVerdict}) => _analytics.logEvent(
+    AnalyticsEvent.tunnelHealthSuppressed,
+    parameters: {'reason': reason, 'confirm_verdict': ?confirmVerdict},
+  );
 
   // Nulls are dropped: the analytics sink stringifies values, so a missing
   // leg would otherwise ship the literal "null" for the field you most want.

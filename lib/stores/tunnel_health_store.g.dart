@@ -59,12 +59,21 @@ mixin _$TunnelHealthStore on _TunnelHealthStore, Store {
   );
 
   @override
-  void _onNoNetwork({required bool controlReachable}) {
+  void _onNoNetwork(
+    ({
+      DateTime? handshake,
+      int? rxDelta,
+      TunnelHealthSample sample,
+      int? txDelta,
+      TunnelHealthVerdict verdict,
+    })
+    evaluation,
+  ) {
     final _$actionInfo = _$_TunnelHealthStoreActionController.startAction(
       name: '_TunnelHealthStore._onNoNetwork',
     );
     try {
-      return super._onNoNetwork(controlReachable: controlReachable);
+      return super._onNoNetwork(evaluation);
     } finally {
       _$_TunnelHealthStoreActionController.endAction(_$actionInfo);
     }
