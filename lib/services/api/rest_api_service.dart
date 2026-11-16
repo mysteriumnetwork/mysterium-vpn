@@ -34,21 +34,13 @@ class RestApiService extends ApiService {
         throw const DeviceLimitReachedException();
       }
       rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
     }
   }
 
   @override
   Future<void> disconnectAllDevices() async {
-    try {
-      await _apiConnection.disconnectAll();
-      _logger.info('All devices disconnected');
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
+    await _apiConnection.disconnectAll();
+    _logger.info('All devices disconnected');
   }
 
   @override
@@ -114,75 +106,42 @@ class RestApiService extends ApiService {
 
   @override
   Future<void> rateConnection({required RateConnectionRequest request}) async {
-    try {
-      await _apiConnection.rateConnection(rateConnectionRequest: request);
-      _logger.info('Connection rated successfully');
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
+    await _apiConnection.rateConnection(rateConnectionRequest: request);
+    _logger.info('Connection rated successfully');
   }
 
   @override
   Future<void> createMarketingContact({required String? country}) async {
-    try {
-      await _apiEmailMarketing.createContactRequest(
-        createContactRequest: CreateContactRequest(country: country),
-      );
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
+    await _apiEmailMarketing.createContactRequest(
+      createContactRequest: CreateContactRequest(country: country),
+    );
   }
 
   @override
   Future<void> disconnect() async {
-    try {
-      await _apiConnection.disconnect();
-      _logger.info('Disconnected successfully');
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
+    await _apiConnection.disconnect();
+    _logger.info('Disconnected successfully');
   }
 
   @override
   Future<bool> getMarketingContactStatus() async {
-    try {
-      final res = await _apiEmailMarketing.contactStatusRequest();
-      return res.data?.consent ?? false;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
+    final res = await _apiEmailMarketing.contactStatusRequest();
+    return res.data?.consent ?? false;
   }
 
   @override
-  Future<void> updateMarketingContact({required bool consent}) {
-    try {
-      return _apiEmailMarketing.updateContactRequest(
-        updateContactRequest: UpdateContactRequest(consent: consent),
-      );
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
+  Future<void> updateMarketingContact({required bool consent}) => _apiEmailMarketing
+      .updateContactRequest(updateContactRequest: UpdateContactRequest(consent: consent));
 
   @override
   Future<Set<UserIntent>> fetchUserIntents() async {
-    try {
-      final res = await _apiConnection.userIntents();
-      final data = res.data ?? const <String>[];
+    final res = await _apiConnection.userIntents();
+    final data = res.data ?? const <String>[];
 
-      return data
-          .map((it) => UserIntent.values.firstWhereOrNull((value) => value.key == it))
-          .nonNulls
-          .toSet();
-    } catch (e, stack) {
-      _logger.handle(e, stack);
-      rethrow;
-    }
+    return data
+        .map((it) => UserIntent.values.firstWhereOrNull((value) => value.key == it))
+        .nonNulls
+        .toSet();
   }
 
   @override
@@ -217,9 +176,6 @@ class RestApiService extends ApiService {
       if (e.errorCode == DeviceLimitReachedException.code) {
         throw const DeviceLimitReachedException();
       }
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
       rethrow;
     }
   }

@@ -84,7 +84,9 @@ class WireguardRepository extends BaseVpnRepository {
     } on TimeoutException {
       rethrow;
     } catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+      // Wrapped below, which drops the stack — so this is the only place it
+      // survives. A node refusing a connection is expected, not a crash.
+      logger.warning('WireGuard connect failed', e, stackTrace);
       throw VpnConnectException(e.toString());
     }
   }
