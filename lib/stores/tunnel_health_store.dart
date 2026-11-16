@@ -222,6 +222,7 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       }
       // Only the degraded path needs a tunnel; noNetwork is valid either way.
       if (first.verdict == TunnelHealthVerdict.degraded && !_vpnStore.isConnected) {
+        _logSuppressed('disconnected during confirm');
         return;
       }
 
@@ -230,6 +231,7 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       // The confirming probe can take seconds; a logout in that window must not
       // attribute analytics to a session the user already left.
       if (_disposed) {
+        _logSuppressed('disposed during confirm');
         return;
       }
       if (_gateKey != startedOn) {

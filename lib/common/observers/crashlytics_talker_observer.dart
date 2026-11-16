@@ -7,8 +7,12 @@ import 'package:talker/talker.dart';
 /// Forwards Talker errors to Crashlytics as **non-fatal** issues.
 ///
 /// Nothing that reaches here is a crash — the app caught it and carried on.
-/// Real crashes come from Crashlytics' own handlers, so marking these fatal
-/// only buries the crash-free rate under expected failures.
+/// That includes the global handlers in `main.dart`: `PlatformDispatcher`'s
+/// returns `true` and `FlutterError`'s never terminates the app, so reporting
+/// either as fatal misstates the crash-free rate. Real crashes still arrive
+/// through Crashlytics' own native handlers, which this does not touch.
+/// Errors that escaped every `catch` stay findable by the `reason` their
+/// caller sets — see `_setupErrorHandlers`.
 class CrashlyticsLoggerObserver extends TalkerObserver {
   CrashlyticsLoggerObserver({required this.analyticsStore});
 
@@ -30,12 +34,15 @@ class CrashlyticsLoggerObserver extends TalkerObserver {
   }
 
   // TalkerError populates `error`, TalkerException populates `exception`.
+  // `message` is the caller's third argument, which is how an error that
+  // escaped every handler is told apart from one a `catch` reported.
   @override
-  Future<void> onError(TalkerError err) async => _report(err.error, err.stackTrace);
+  Future<void> onError(TalkerError err) async =>
+      _report(err.error, err.stackTrace, reason: err.message);
 
   @override
   Future<void> onException(TalkerException err) async =>
-      _report(err.exception, err.stackTrace, reason: err.exception.toString());
+      _report(err.exception, err.stackTrace, reason: err.message ?? err.exception.toString());
 
   Future<void> _report(Object? error, StackTrace? stack, {String? reason}) async {
     // Counts first: the throttle collapses repeats, which would distort them.

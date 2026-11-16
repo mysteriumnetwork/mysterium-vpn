@@ -57,7 +57,11 @@ final authStorePOD = Provider<AuthStore>((ref) {
 });
 
 final mqttConnectionStorePOD = Provider<MqttConnectionStore>((ref) {
-  final store = MqttConnectionStore(mqtt: ref.watch(vpnApiMQTTPOD), logger: ref.watch(loggerPOD));
+  final store = MqttConnectionStore(
+    mqtt: ref.watch(vpnApiMQTTPOD),
+    analytics: ref.watch(analyticsStorePOD),
+    logger: ref.watch(loggerPOD),
+  );
   ref.onDispose(store.dispose);
 
   return store;

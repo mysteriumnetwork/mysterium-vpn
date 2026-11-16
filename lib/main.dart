@@ -46,7 +46,9 @@ void _setupErrorHandlers(AppInitializer initializer) {
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {
-    initializer.logger.handle(error, stack, 'fatal');
+    // Reported non-fatal — this returns true, so the app carries on — but the
+    // reason marks it as having escaped every handler.
+    initializer.logger.handle(error, stack, 'Unhandled async error');
     sentryPlatformOnError?.call(error, stack);
     return true;
   };

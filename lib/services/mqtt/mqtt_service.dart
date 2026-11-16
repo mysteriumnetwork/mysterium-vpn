@@ -57,9 +57,11 @@ class MQTTService {
       ..onConnected = () {
         _logger.debug('MQTT connected');
         _subscriptions.forEach(_subscribeReal);
+        onConnectionChanged?.call(connected: true);
       }
       ..onDisconnected = () {
         _logger.debug('MQTT disconnected');
+        onConnectionChanged?.call(connected: false);
       };
     if (kDebugMode) {
       _mqtt.logging(on: false);
@@ -75,6 +77,10 @@ class MQTTService {
   final Map<String, StreamController<String>> _subscriptions = {};
   final Map<String, StreamSubscription<String>> _forwards = {};
 
+  /// Notified on every transition, auto-reconnects included, so the owner can
+  /// tell a deliberate close from a dropped socket.
+  void Function({required bool connected})? onConnectionChanged;
+
   Future<void> start() async {
     if (!_experimentFlag()) {
       return;
@@ -88,8 +94,14 @@ class MQTTService {
     }
   }
 
+  /// Closes the connection, from any state but already-disconnected.
+  ///
+  /// Narrowing this to `connected` made it a no-op mid-handshake and while
+  /// auto-reconnecting, so a backgrounding left the socket to open anyway and
+  /// the retry loop to run on. `disconnect()` is null-safe throughout and
+  /// destroys the event bus that drives auto-reconnect.
   void stop() {
-    if (_mqtt.connectionStatus!.state != MqttConnectionState.connected) {
+    if (_mqtt.connectionStatus?.state == MqttConnectionState.disconnected) {
       return;
     }
 

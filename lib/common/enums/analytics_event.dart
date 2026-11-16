@@ -213,6 +213,7 @@ enum AnalyticsEvent {
   tunnelHealthSuppressed,
   tunnelHealthDialogShown,
   tunnelHealthAction,
+  mqttReconnects,
   marketingConsentPromptShown,
   termsAcceptancePromptShown,
   termsAcceptanceTermsOpened,
