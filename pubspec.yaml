@@ -100,7 +100,7 @@ dependencies:
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: 0.9.17
+      ref: fix/tunnel-statistics-visibility
 
 dev_dependencies:
   build: ^4.0.11

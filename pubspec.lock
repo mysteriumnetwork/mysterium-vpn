@@ -2233,8 +2233,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.9.17"
-      resolved-ref: b642e425b77d16dfa523364eb25ace8465818dde
+      ref: "fix/tunnel-statistics-visibility"
+      resolved-ref: fa55bdb6a1f93b69f2e47522c95a8a3b1870d02f
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"
