@@ -300,6 +300,10 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
       txDelta: tx,
       rxDelta: rx,
       handshake: after?.latestHandshake,
+      // False means the platform call failed, not that the tunnel was idle.
+      // Both counters go missing together, and an unreadable pair is what
+      // pushes `_carriedData` — and so the verdict — to degraded.
+      statsRead: before != null && after != null,
     );
   }
 
@@ -378,7 +382,12 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// Called by the view once the dialog is actually on screen. The session was
   /// already claimed when the prompt was queued; this only records that it was
   /// shown.
-  void onDialogShown() => _analytics.logEvent(AnalyticsEvent.tunnelHealthDialogShown);
+  void onDialogShown() => _analytics.logEvent(
+    AnalyticsEvent.tunnelHealthDialogShown,
+    // The dialog hides its action when there is nowhere to move to, so without
+    // this every such prompt reads as a user who declined the refresh.
+    parameters: {'can_refresh': canRefreshIp},
+  );
 
   void onAction({required bool refreshed}) => _analytics.logEvent(
     AnalyticsEvent.tunnelHealthAction,
@@ -419,20 +428,27 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
 
   void _logSuppressed(String reason, {String? confirmVerdict}) => _analytics.logEvent(
     AnalyticsEvent.tunnelHealthSuppressed,
-    parameters: {'reason': reason, 'confirm_verdict': ?confirmVerdict},
+    parameters: {..._dimensions, 'reason': reason, 'confirm_verdict': ?confirmVerdict},
   );
+
+  /// Carried by every tunnel-health event, so a suppressed check can be sliced
+  /// the same way as a confirmed one.
+  Map<String, dynamic> get _dimensions => {
+    'protocol': _protocolStore.protocol.name,
+    'ip_type': ?_vpnStore.vpnConnection?.location.ipType.name,
+  };
 
   // Nulls are dropped: the analytics sink stringifies values, so a missing
   // leg would otherwise ship the literal "null" for the field you most want.
   Map<String, dynamic> _params(_Evaluation e) => {
+    ..._dimensions,
     'verdict': e.verdict.name,
+    'stats_read': e.statsRead,
     'tunnelled_ms': ?e.sample.tunnelled.elapsed?.inMilliseconds,
     'direct_ms': ?e.sample.direct.elapsed?.inMilliseconds,
     'tx_delta': ?e.txDelta,
     'rx_delta': ?e.rxDelta,
     'handshake_age_s': ?_handshakeAge(e.handshake),
-    'protocol': _protocolStore.protocol.name,
-    'ip_type': ?_vpnStore.vpnConnection?.location.ipType.name,
   };
 
   int? _handshakeAge(DateTime? handshake) =>
@@ -465,4 +481,5 @@ typedef _Evaluation = ({
   int? txDelta,
   int? rxDelta,
   DateTime? handshake,
+  bool statsRead,
 });

@@ -449,6 +449,42 @@ void main() {
       final params = captureParams(AnalyticsEvent.tunnelHealthSuppressed);
       expect(params['reason'], 'bypassUnavailable');
       expect(params.containsKey('confirm_verdict'), isFalse);
+      // Suppressed checks outnumber confirmed ones, so they need the same
+      // dimensions or the biggest bucket cannot be sliced at all.
+      expect(params['protocol'], 'wireguard');
+      expect(params['ip_type'], 'datacenter');
+    });
+
+    // An unreadable counter pair is what forces the degraded verdict, so the
+    // two have to be told apart in the data.
+    test('stats_read is false when the platform counters were unavailable', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      expect(captureParams(AnalyticsEvent.tunnelHealthDegraded)['stats_read'], isFalse);
+    });
+
+    test('stats_read is true when they were read', () async {
+      when(vpnStore.tunnelStatistics()).thenAnswer(
+        (_) async => TunnelStats(totalDownload: 10, totalUpload: 10, latestHandshake: now),
+      );
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthDegraded);
+      expect(params['stats_read'], isTrue);
+      expect(params['handshake_age_s'], 0);
+    });
+
+    // A prompt with no action to offer would otherwise look like a user who
+    // was offered a refresh and declined it.
+    test('the dialog event records whether a refresh was offered', () async {
+      when(vpnStore.connectedIpPoolCount).thenReturn(1);
+      build().onDialogShown();
+
+      expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['can_refresh'], isFalse);
     });
   });
 

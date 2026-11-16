@@ -199,9 +199,6 @@ class RestApiService extends ApiService {
         throw const DeviceLimitReachedException();
       }
       rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
     }
   }
 

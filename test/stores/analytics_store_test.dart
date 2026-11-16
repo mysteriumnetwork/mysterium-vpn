@@ -23,6 +23,9 @@ class _FakeAnalyticsStore with AnalyticsStore {
 
   @override
   Future<void> setConsents() async {}
+
+  /// `ga4Parameters` is protected, so it is reached through the mixin here.
+  Map<String, String>? shapeParams(Map<String, dynamic>? parameters) => ga4Parameters(parameters);
 }
 
 void main() {
@@ -645,6 +648,21 @@ void main() {
       final log = await entry;
       expect(log.message, AnalyticsEvent.productsTabViewed.formattedName);
       expect(log.params, {'redirected_to_login': true});
+    });
+  });
+  group('GA4 parameters', () {
+    // Desktop reports through the Measurement Protocol, which keeps JSON
+    // types, so the same field used to arrive as both `true` and `1`.
+    test('are stringified and truncated so every sink sends one shape', () {
+      final params = store.shapeParams({'connected': true, 'count': 2, 'name': 'x' * 150});
+
+      expect(params!['connected'], 'true');
+      expect(params['count'], '2');
+      expect(params['name']!.length, 100);
+    });
+
+    test('a null map stays null rather than becoming an empty one', () {
+      expect(store.shapeParams(null), isNull);
     });
   });
 }

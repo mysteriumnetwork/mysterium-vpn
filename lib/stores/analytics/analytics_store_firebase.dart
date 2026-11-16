@@ -123,9 +123,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     if (_firebaseReady) {
       await _analytics.logEvent(
         name: event.name.toSnakeCase.truncate(40),
-        parameters: parameters?.map(
-          (key, value) => MapEntry(key.truncate(40), value.toString().truncate(100)),
-        ),
+        parameters: ga4Parameters(parameters),
       );
     }
 
