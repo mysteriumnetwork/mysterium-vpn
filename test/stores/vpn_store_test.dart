@@ -2417,6 +2417,18 @@ void main() {
         translations: {},
         countryCode: 'de',
       );
+      const residential = VPNLocation(
+        id: 'alberthain',
+        ipType: IPType.residential,
+        translations: {},
+        countryCode: 'DE',
+      );
+      const datacenter = VPNLocation(
+        id: 'berlin',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'DE',
+      );
 
       late Completer<bool> tunnelCheck;
 
@@ -2432,6 +2444,90 @@ void main() {
         when(mockWireguardRepo.statusStream())
             .thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
       });
+
+      for (final firstLocation in [residential, datacenter]) {
+        for (final pauseAtPrerequisites in [true, false]) {
+          final nextLocation = firstLocation == residential ? datacenter : residential;
+          final phase = pauseAtPrerequisites ? 'prerequisites' : 'tunnel status';
+
+          test('keeps ${firstLocation.id}/${firstLocation.ipType.key} when '
+              '${nextLocation.id}/${nextLocation.ipType.key} is selected during $phase', () async {
+            // v2.4.11 let overlapping attempts overwrite the shared location,
+            // mixing an intended Datacenter request with Residential metadata.
+            // Hold actual asynchronous boundaries rather than relying on timing.
+            final entered = Completer<void>();
+            final statusCheck = Completer<VpnConnectionStatus>();
+            if (pauseAtPrerequisites) {
+              when(mockWireguardRepo.isTunnelConfigured()).thenAnswer((_) {
+                if (!entered.isCompleted) {
+                  entered.complete();
+                }
+                return tunnelCheck.future;
+              });
+            } else {
+              tunnelCheck.complete(true);
+              when(mockWireguardRepo.currentStatus()).thenAnswer((_) {
+                if (!entered.isCompleted) {
+                  entered.complete();
+                }
+                return statusCheck.future;
+              });
+            }
+
+            final first = vpnStore.manageConnection(location: firstLocation);
+            await entered.future;
+            final overlapping = vpnStore.manageConnection(location: nextLocation);
+            await pumpEventQueue();
+
+            if (!tunnelCheck.isCompleted) {
+              tunnelCheck.complete(true);
+            }
+            statusCheck.complete(VpnConnectionStatus.disconnected);
+            await Future.wait([first, overlapping]);
+
+            verify(
+              mockWireguardRepo.fetchVpnConfig(
+                countryOriginate: anyNamed('countryOriginate'),
+                country: 'DE',
+                city: firstLocation.id,
+                ipType: firstLocation.ipType.key,
+                userIntent: anyNamed('userIntent'),
+                cluster: anyNamed('cluster'),
+                resetConnection: anyNamed('resetConnection'),
+                dnsAddress: anyNamed('dnsAddress'),
+              ),
+            ).called(1);
+            verify(anyToggleAction()).called(1);
+            verifyNever(
+              mockWireguardRepo.fetchVpnConfig(
+                countryOriginate: anyNamed('countryOriginate'),
+                country: anyNamed('country'),
+                city: nextLocation.id,
+                ipType: anyNamed('ipType'),
+                userIntent: anyNamed('userIntent'),
+                cluster: anyNamed('cluster'),
+                resetConnection: anyNamed('resetConnection'),
+                dnsAddress: anyNamed('dnsAddress'),
+              ),
+            );
+
+            // A later deliberate selection must work after the first settles.
+            await vpnStore.manageConnection(location: nextLocation);
+            verify(
+              mockWireguardRepo.fetchVpnConfig(
+                countryOriginate: anyNamed('countryOriginate'),
+                country: 'DE',
+                city: nextLocation.id,
+                ipType: nextLocation.ipType.key,
+                userIntent: anyNamed('userIntent'),
+                cluster: anyNamed('cluster'),
+                resetConnection: anyNamed('resetConnection'),
+                dnsAddress: anyNamed('dnsAddress'),
+              ),
+            ).called(1);
+          });
+        }
+      }
 
       test('a failed tunnel check surfaces an error instead of the permission prompt', () async {
         when(mockWireguardRepo.isTunnelConfigured())
