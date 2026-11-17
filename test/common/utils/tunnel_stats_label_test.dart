@@ -16,6 +16,13 @@ void main() {
     expect(tunnelStatsLabel(protocol: 'wireguard', stats: null, now: now), 'Protocol: wireguard');
   });
 
+  test('reports unavailable statistics while connected', () {
+    expect(
+      tunnelStatsLabel(protocol: 'wireguard', stats: null, now: now, connected: true),
+      'Protocol: wireguard · no stats',
+    );
+  });
+
   test('renders rate, totals and handshake age on one line', () {
     final label = tunnelStatsLabel(
       protocol: 'wireguard',
