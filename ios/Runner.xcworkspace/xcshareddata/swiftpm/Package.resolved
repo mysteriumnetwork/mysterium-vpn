@@ -190,9 +190,9 @@
       }
     },
     {
-      "identity" : "vless-apple",
+      "identity" : "vless-core",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mysteriumnetwork/vless-apple",
+      "location" : "https://github.com/mysteriumnetwork/vless-core",
       "state" : {
         "revision" : "965bc5e7c21b88d52f0ae59957a030b6200213c5",
         "version" : "1.2.0"
