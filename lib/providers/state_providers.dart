@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
@@ -140,7 +141,18 @@ final vpnStorePOD = Provider<VpnStore>((ref) {
   return vpnStore;
 });
 
-final selectedLocationStorePOD = Provider<SelectedLocationStore>((ref) => SelectedLocationStore());
+final selectedLocationStorePOD = Provider<SelectedLocationStore>((ref) {
+  final store = SelectedLocationStore();
+  final query = ref.watch(locationsQueryStorePOD);
+  final dispose = reaction((_) => query.tab, (tab) {
+    final ipType = tab.ipType;
+    if (ipType != null && store.value?.ipType != ipType) {
+      store.value = null;
+    }
+  });
+  ref.onDispose(dispose.call);
+  return store;
+});
 
 final locationsQueryStorePOD = Provider<LocationsQueryStore>((ref) {
   final settings = ref.watch(appSettingsRepositoryPOD);
