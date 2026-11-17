@@ -38,6 +38,7 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
 
     final vpnStatus = useComputedValue(() => vpnStore.vpnStatus);
     final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
+    final isDisconnecting = useComputedValue(() => vpnStore.isDisconnecting);
     final isLoading = useComputedValue(() => connectionDisplayStore.isLoading);
     final connectionIP = useComputedValue(() => connectionDisplayStore.connectionIP);
     // The dialog describes the CURRENT connection — a pending selection of a
@@ -118,7 +119,10 @@ class _ConnectionDetailsPage extends HookConsumerWidget {
       [handleToggleConnection, connectionDisplayStore],
     );
 
-    final barStatus = vpnStatus.toBarStatus(isFetchingConfig: isFetchingConfig);
+    final barStatus = vpnStatus.toBarStatus(
+      isFetchingConfig: isFetchingConfig,
+      isDisconnecting: isDisconnecting,
+    );
     final (:country, :city) = locationDisplayNames(
       context,
       location: currentLocation,
