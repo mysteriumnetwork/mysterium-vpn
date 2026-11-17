@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -5,269 +7,169 @@ import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/home/home_map.dart';
 
-// ---------------------------------------------------------------------------
-// Minimal fake that satisfies the single property resolveMapLocation reads.
-// ---------------------------------------------------------------------------
-
-class _FakeLocationsStore extends Fake implements LocationsStore {
-  ObservableFuture<VPNLocations> _dcFuture = ObservableFuture.value(VPNLocations());
-  ObservableFuture<VPNLocations> _residentialFuture = ObservableFuture.value(VPNLocations());
-
-  void setDcLocations(Set<VPNLocation> locations) {
-    _dcFuture = ObservableFuture.value(VPNLocations(locations: locations.toList()));
-  }
-
-  void setResidentialLocations(Set<VPNLocation> locations) {
-    _residentialFuture = ObservableFuture.value(VPNLocations(locations: locations.toList()));
-  }
+class _Locations extends Fake implements LocationsStore {
+  ObservableFuture<VPNLocations> dc = ObservableFuture.value(VPNLocations());
+  ObservableFuture<VPNLocations> residential = ObservableFuture.value(VPNLocations());
 
   @override
-  ObservableFuture<VPNLocations> get dcLocationsFuture => _dcFuture;
+  ObservableFuture<VPNLocations> get dcLocationsFuture => dc;
+
+  @override
+  ObservableFuture<VPNLocations> get residentialLocationsFuture => residential;
 
   @override
   VPNLocation? findParent(VPNLocation location) {
-    if (location.isCountry) {
-      return null;
-    }
-    final locations = switch (location.ipType) {
-      IPType.datacenter => _dcFuture.value?.allLocations,
-      IPType.residential => _residentialFuture.value?.allLocations,
-      _ => null,
-    };
-    return locations
-        ?.where((it) => it.isCountry && it.countryCode == location.countryCode)
+    final catalog = location.ipType == IPType.datacenter ? dc : residential;
+    return catalog.value?.allLocations
+        .where((it) => it.isCountry && it.countryCode == location.countryCode)
         .firstOrNull;
   }
 }
 
 void main() {
-  // ---------------------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------------------
-
-  VPNLocation makeLocation({
-    String id = 'US',
-    IPType ipType = IPType.residential,
-    String countryCode = 'US',
-    bool isAvailable = true,
-    int? nodeCount,
-    List<VPNLocation>? children,
-  }) => VPNLocation(
-    id: id,
-    ipType: ipType,
-    translations: const {'en': 'United States'},
-    countryCode: countryCode,
-    isAvailable: isAvailable,
-    nodeCount: nodeCount ?? 10,
-    children: children,
+  const dcCountry = VPNLocation(
+    id: 'DE',
+    ipType: IPType.datacenter,
+    translations: {},
+    countryCode: 'DE',
   );
-
-  late _FakeLocationsStore fakeLocationsStore;
+  const residentialCountry = VPNLocation(
+    id: 'DE',
+    ipType: IPType.residential,
+    translations: {},
+    countryCode: 'DE',
+  );
+  const dcCity = VPNLocation(
+    id: 'berlin',
+    ipType: IPType.datacenter,
+    translations: {},
+    countryCode: 'DE',
+  );
+  const residentialCity = VPNLocation(
+    id: 'berlin',
+    ipType: IPType.residential,
+    translations: {},
+    countryCode: 'DE',
+  );
+  late _Locations locations;
 
   setUp(() {
-    fakeLocationsStore = _FakeLocationsStore();
+    locations = _Locations()
+      ..dc = ObservableFuture.value(
+        VPNLocations(
+          locations: [
+            dcCountry.copyWith(children: [dcCity]),
+          ],
+        ),
+      )
+      ..residential = ObservableFuture.value(
+        VPNLocations(
+          locations: [
+            residentialCountry.copyWith(children: [residentialCity]),
+          ],
+        ),
+      );
   });
 
-  // ---------------------------------------------------------------------------
-  // Test cases
-  // ---------------------------------------------------------------------------
+  VPNLocation? resolve(
+    VPNLocation marker,
+    IPType type, {
+    bool cityLevelAllowed = true,
+    bool hasResolvedPlan = true,
+  }) => resolveMapLocation(
+    location: marker,
+    ipType: type,
+    locationsStore: locations,
+    cityLevelAllowed: cityLevelAllowed,
+    hasResolvedPlan: hasResolvedPlan,
+  );
 
   group('resolveMapLocation', () {
-    test('returns residential when allowed and available', () {
-      final residential = makeLocation();
-
-      final result = resolveMapLocation(
-        location: residential,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: true,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(residential));
-      expect(result.ipType, IPType.residential);
+    test('Datacenter tab sends hosting even when the marker was residential', () {
+      final target = resolve(residentialCountry, IPType.datacenter);
+      expect(target, dcCountry);
+      final request = ConnectionRequest(location: target);
+      expect(request.country(null), 'DE');
+      expect(request.city, isNull);
+      expect(request.ipType(IPType.residential)?.key, 'hosting');
     });
 
-    test('falls back to datacenter when residential not allowed', () {
-      final residential = makeLocation();
-      final datacenter = makeLocation(ipType: IPType.datacenter);
-      fakeLocationsStore.setDcLocations({datacenter});
-
-      final result = resolveMapLocation(
-        location: residential,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: false,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(datacenter));
-      expect(result.ipType, IPType.datacenter);
+    test('Residential tab sends residential even when the marker was Datacenter', () {
+      final target = resolve(dcCountry, IPType.residential);
+      expect(target, residentialCountry);
+      expect(ConnectionRequest(location: target).ipType(IPType.datacenter)?.key, 'residential');
     });
 
-    test('falls back to datacenter when residential not available', () {
-      final residential = makeLocation(isAvailable: false);
-      final datacenter = makeLocation(ipType: IPType.datacenter);
-      fakeLocationsStore.setDcLocations({datacenter});
-
-      final result = resolveMapLocation(
-        location: residential,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: true,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(datacenter));
-      expect(result.ipType, IPType.datacenter);
+    test('preserves an explicit Datacenter city and its request metadata', () {
+      final target = resolve(dcCity, IPType.datacenter);
+      expect(target, same(dcCity));
+      final request = ConnectionRequest(location: target);
+      expect(request.city, 'berlin');
+      expect(request.ipType(IPType.residential)?.key, 'hosting');
     });
 
-    test('returns original residential when neither type is available (triggers paywall)', () {
-      final residential = makeLocation(isAvailable: false);
-      // No datacenter locations at all.
-
-      final result = resolveMapLocation(
-        location: residential,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: true,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
+    test('matches a stale city marker by both city and country in the chosen catalog', () {
+      locations.dc = ObservableFuture.value(
+        VPNLocations(
+          locations: [
+            dcCity.copyWith(countryCode: 'US'),
+            dcCity,
+          ],
+        ),
       );
-
-      expect(result, same(residential));
-      expect(result.ipType, IPType.residential);
+      expect(resolve(residentialCity, IPType.datacenter), dcCity);
     });
 
-    test('returns original when datacenter exists but is unavailable', () {
-      final residential = makeLocation();
-      final datacenter = makeLocation(ipType: IPType.datacenter, isAvailable: false);
-      fakeLocationsStore.setDcLocations({datacenter});
-
-      final result = resolveMapLocation(
-        location: residential,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: false,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(residential));
-      expect(result.ipType, IPType.residential);
+    test('does not use residential when the Datacenter country is missing', () {
+      locations.dc = ObservableFuture.value(VPNLocations());
+      expect(resolve(residentialCountry, IPType.datacenter), isNull);
     });
 
-    test('returns datacenter location as-is without resolution', () {
-      final datacenter = makeLocation(ipType: IPType.datacenter);
-
-      final result = resolveMapLocation(
-        location: datacenter,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: false,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(datacenter));
-      expect(result.ipType, IPType.datacenter);
+    test('does not use Datacenter when the residential country is missing', () {
+      locations.residential = ObservableFuture.value(VPNLocations());
+      expect(resolve(dcCountry, IPType.residential), isNull);
     });
 
-    test('matches by country code — ignores other countries', () {
-      final residentialUS = makeLocation();
-      final datacenterDE = makeLocation(id: 'DE', ipType: IPType.datacenter, countryCode: 'DE');
-      fakeLocationsStore.setDcLocations({datacenterDE});
-
-      final result = resolveMapLocation(
-        location: residentialUS,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: false,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      // No DC match for US, so returns original residential.
-      expect(result, same(residentialUS));
+    test('does not use the other type while the chosen catalog is still loading', () {
+      final pending = Completer<VPNLocations>();
+      locations.dc = ObservableFuture(pending.future);
+      expect(resolve(residentialCountry, IPType.datacenter), isNull);
+      pending.complete(VPNLocations());
     });
 
-    test('residential prioritised when both types are available and plan allows', () {
-      final residential = makeLocation();
-      final datacenter = makeLocation(ipType: IPType.datacenter);
-      fakeLocationsStore.setDcLocations({datacenter});
-
-      final result = resolveMapLocation(
-        location: residential,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: true,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(residential));
-      expect(result.ipType, IPType.residential);
+    test('does not substitute another city or country for a missing typed city', () {
+      locations.dc = ObservableFuture.value(VPNLocations(locations: [dcCountry]));
+      expect(resolve(residentialCity, IPType.datacenter), isNull);
     });
 
-    test('city-level location resolves to matching datacenter city', () {
-      final residentialCity = makeLocation(id: 'new-york');
-      final dcCity = makeLocation(id: 'new-york', ipType: IPType.datacenter);
-      final dcCountry = makeLocation(ipType: IPType.datacenter, children: [dcCity]);
-      fakeLocationsStore.setDcLocations({dcCountry});
-
-      final result = resolveMapLocation(
-        location: residentialCity,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: false,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(dcCity));
-      expect(result.ipType, IPType.datacenter);
+    test('an unavailable residential target never silently becomes Datacenter', () {
+      final unavailable = residentialCountry.copyWith(isAvailable: false);
+      expect(resolve(unavailable, IPType.residential), same(unavailable));
     });
 
-    test('city-level location falls back to datacenter country when no city match', () {
-      final residentialCity = makeLocation(id: 'new-york');
-      final dcCountry = makeLocation(ipType: IPType.datacenter);
-      fakeLocationsStore.setDcLocations({dcCountry});
+    for (final type in [IPType.datacenter, IPType.residential]) {
+      test('a city-gated plan resolves ${type.key} to its country in the same catalog', () {
+        final city = type == IPType.datacenter ? dcCity : residentialCity;
+        final target = resolve(city, type, cityLevelAllowed: false);
+        expect(target?.isCountry, isTrue);
+        expect(target?.ipType, type);
+        expect(ConnectionRequest(location: target).ipType(null), type);
+      });
+    }
 
-      final result = resolveMapLocation(
-        location: residentialCity,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: false,
-        cityLevelAllowed: true,
-        hasResolvedPlan: true,
+    test('a missing parent does not trigger a cross-type fallback', () {
+      locations.residential = ObservableFuture.value(VPNLocations());
+      expect(
+        resolve(residentialCity, IPType.residential, cityLevelAllowed: false),
+        residentialCity,
       );
-
-      expect(result, same(dcCountry));
-      expect(result.ipType, IPType.datacenter);
     });
 
-    test('city resolves to its country when the plan has no city targeting', () {
-      final dcCity = makeLocation(id: 'new-york', ipType: IPType.datacenter);
-      final dcCountry = makeLocation(ipType: IPType.datacenter);
-      fakeLocationsStore.setDcLocations({dcCountry, dcCity});
-
-      final result = resolveMapLocation(
-        location: dcCity,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: true,
-        cityLevelAllowed: false,
-        hasResolvedPlan: true,
+    test('an unresolved plan preserves the chosen city and IP type', () {
+      expect(
+        resolve(dcCity, IPType.datacenter, cityLevelAllowed: false, hasResolvedPlan: false),
+        dcCity,
       );
-
-      expect(result, same(dcCountry));
-    });
-
-    test('country is unaffected when the plan has no city targeting', () {
-      final dcCountry = makeLocation(ipType: IPType.datacenter);
-      fakeLocationsStore.setDcLocations({dcCountry});
-
-      final result = resolveMapLocation(
-        location: dcCountry,
-        locationsStore: fakeLocationsStore,
-        residentialIPsAllowed: true,
-        cityLevelAllowed: false,
-        hasResolvedPlan: true,
-      );
-
-      expect(result, same(dcCountry));
     });
   });
 }
