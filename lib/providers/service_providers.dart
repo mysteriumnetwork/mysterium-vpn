@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
+import 'package:mysterium_vpn/common/interceptors/transport_errors.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -71,6 +72,8 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
       },
     ),
     RefreshTokenInterceptor(dio: dio, logger: logger),
+    // Ahead of the retries: re-types the aborts they would otherwise skip.
+    TransportErrorsInterceptor(),
     RetryRequestInterceptor(dio: dio),
     // Behind the retries: it rejects, which ends the chain before they run.
     ConnectionErrorsInterceptor(),
@@ -124,6 +127,8 @@ final notifierDioPOD = Provider<Dio>((ref) {
   );
 
   dio.interceptors.addAll([
+    // Ahead of the retries: re-types the aborts they would otherwise skip.
+    TransportErrorsInterceptor(),
     RetryRequestInterceptor(dio: dio),
     ConnectionErrorsInterceptor(),
     if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
@@ -185,7 +190,7 @@ final externalApiServicePOD = Provider<ExternalApiService>((ref) {
 
 final externalNetworkServicePOD = Provider<NetworkService>((ref) {
   final dio = Dio(ref.watch(dioOptionsPOD));
-  dio.interceptors.addAll([RetryRequestInterceptor(dio: dio)]);
+  dio.interceptors.addAll([TransportErrorsInterceptor(), RetryRequestInterceptor(dio: dio)]);
 
   return DioNetworkService(dio);
 });
