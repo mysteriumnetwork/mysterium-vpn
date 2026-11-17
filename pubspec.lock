@@ -2111,8 +2111,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.2.0"
-      resolved-ref: "99cfe42092f037cec209e6e0c34f367d7d71a058"
+      ref: "feat/android-support"
+      resolved-ref: "37d824f560d04ce441ade7a9c464c42c2eedae05"
       url: "https://github.com/mysteriumnetwork/vless_dart.git"
     source: git
     version: "0.2.0"
@@ -2234,7 +2234,7 @@ packages:
     description:
       path: "."
       ref: "fix/tunnel-statistics-visibility"
-      resolved-ref: d75261716903a456fdbf119f5488ad5975774264
+      resolved-ref: b9c2122a0b7fcf1703761dff105d0a343e8f761c
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"

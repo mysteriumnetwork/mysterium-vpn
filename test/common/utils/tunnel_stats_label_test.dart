@@ -23,6 +23,19 @@ void main() {
     );
   });
 
+  test('names the reason statistics are unavailable', () {
+    expect(
+      tunnelStatsLabel(
+        protocol: 'wireguard',
+        stats: null,
+        now: now,
+        connected: true,
+        unavailableReason: 'timeout',
+      ),
+      'Protocol: wireguard · no stats (timeout)',
+    );
+  });
+
   test('renders rate, totals and handshake age on one line', () {
     final label = tunnelStatsLabel(
       protocol: 'wireguard',

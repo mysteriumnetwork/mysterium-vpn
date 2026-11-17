@@ -59,11 +59,13 @@ abstract class _VpnProtocolStore with Store {
   bool get _isApple =>
       _useTestPlatform ? testIsIOS || testIsMacOS : Platform.isIOS || Platform.isMacOS;
 
-  /// VLESS ships only on iOS and macOS, and only once the flag is on. Picking
-  /// it anywhere else reaches a plugin that has no implementation.
+  bool get _isAndroid => _useTestPlatform ? testIsAndroid : Platform.isAndroid;
+
+  /// VLESS ships on iOS, macOS and Android, and only once the flag is on.
+  /// Picking it anywhere else reaches a plugin that has no implementation.
   bool _isAvailable(ProtocolType protocol) => switch (protocol) {
     ProtocolType.wireguard || ProtocolType.openvpn => true,
-    ProtocolType.vless => _isApple && _remoteConfigStore.vlessEnabled,
+    ProtocolType.vless => (_isApple || _isAndroid) && _remoteConfigStore.vlessEnabled,
   };
 
   /// What the picker should offer. Always contains [_defaultProtocol].

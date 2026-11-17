@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -131,12 +129,13 @@ class WireguardRepository extends BaseVpnRepository {
             ? DateTime.fromMillisecondsSinceEpoch(stats.latestHandshake).toLocal()
             : null,
       );
-    } on MissingPluginException {
-      // No implementation on this platform — let the caller stop polling.
-      rethrow;
     } catch (e) {
+      // Rethrown rather than folded into the null above: "the platform
+      // reported nothing" and "the read failed" are different diagnoses, and
+      // callers map them to different outcomes. MissingPluginException rides
+      // the same path, which is how a poller learns to stop for good.
       logger.warning('Failed to read Wireguard tunnel statistics: $e');
-      return null;
+      rethrow;
     }
   }
 

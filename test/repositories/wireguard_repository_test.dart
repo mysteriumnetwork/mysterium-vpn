@@ -327,10 +327,12 @@ void main() {
       expect(await repository.tunnelStatistics(), isNull);
     });
 
-    test('returns null on a plugin failure', () async {
+    // Not folded into the null above: a read that failed and a platform that
+    // reported nothing are different diagnoses, and callers map them apart.
+    test('rethrows a plugin failure rather than reporting nothing', () async {
       when(mockService.getTunnelStatistics()).thenThrow(Exception('boom'));
 
-      expect(await repository.tunnelStatistics(), isNull);
+      await expectLater(repository.tunnelStatistics(), throwsA(isA<Exception>()));
     });
 
     test('rethrows MissingPluginException so the caller can stop polling', () async {

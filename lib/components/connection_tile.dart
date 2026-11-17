@@ -164,6 +164,7 @@ class _DevProtocolLabel extends HookConsumerWidget {
                 protocol: vpnProtocol.protocol.name,
                 now: DateTime.now(),
                 connected: isConnected,
+                unavailableReason: statistics?.statsIssue,
                 stats: statistics == null || read == null
                     ? null
                     : (
