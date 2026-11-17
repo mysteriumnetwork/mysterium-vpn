@@ -9,6 +9,12 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 class AppVersion extends HookConsumerWidget {
   const AppVersion({super.key});
 
+  /// Test builds carry the build number too: the version name repeats across
+  /// every CI build, so on its own it cannot identify which one is installed.
+  String get _versionLabel => Env.flavor.isDev
+      ? 'v.${Env.buildInfo.buildVersion} (${Env.buildInfo.buildNumber})'
+      : 'v.${Env.buildInfo.buildVersion}';
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final remoteConfig = ref.watch(remoteConfigStorePOD);
@@ -31,7 +37,7 @@ class AppVersion extends HookConsumerWidget {
         builder: (_) => Row(
           spacing: theme.spacing.sm,
           children: [
-            AppBadge(text: 'v.${Env.buildInfo.buildVersion}'),
+            AppBadge(text: _versionLabel),
             if (remoteConfig.showApiVersion && apiStore.lastHealthcheck != null)
               AppBadge(text: '${apiStore.lastHealthcheck?.version}'),
           ],

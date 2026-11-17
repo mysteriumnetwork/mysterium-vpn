@@ -2965,7 +2965,7 @@
 			repositoryURL = "https://github.com/mysteriumnetwork/vless-core";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.0;
+				minimumVersion = 1.3.0;
 			};
 		};
 		AA1A2B3C4D5E6F0000000011 /* XCRemoteSwiftPackageReference "wireguard-apple" */ = {
