@@ -13,7 +13,7 @@ dependencies:
   app_settings: 8.0.3
   auto_size_text: 3.0.0
   beamer: 1.7.0
-  circle_flags: 5.0.1
+  circle_flags: 7.0.0
   collection: 1.19.1
   configcat_client: 5.1.0
   connectivity_plus: 7.3.1
