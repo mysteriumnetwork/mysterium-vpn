@@ -80,9 +80,14 @@ class HomeMap extends HookConsumerWidget {
       ].distinctBy((it) => (it.id, it.countryCode)).toList();
     }, [followLocationTabs]);
     final myLocation = useCurrentIPCoordinates();
-    final connectedLocation = useComputedValue(
-      () => vpnStore.isConnected ? vpnStore.location : null,
-    );
+    final connectedLocation = useComputedValue(() {
+      final location = vpnStore.isConnected ? vpnStore.location : null;
+      // A pin from the previous catalog can overlap and intercept a tap on
+      // the current catalog's pin.
+      return !followLocationTabs || location?.ipType == locationsQueryStore.ipType
+          ? location
+          : null;
+    }, [followLocationTabs]);
     final handleToggleConnection = useHandleToggleConnection();
 
     void handleClearSelectedLocation() {
