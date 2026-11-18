@@ -141,7 +141,7 @@ void main() {
       verify(mqtt.stop()).called(2);
     });
 
-    test('a resume mid-handshake joins it instead of opening a second', () async {
+    test('a resume mid-handshake joins it, then replaces the voided attempt', () async {
       final handshake = Completer<void>();
       when(mqtt.start()).thenAnswer((_) => handshake.future);
 
@@ -149,10 +149,17 @@ void main() {
       store
         ..didChangeAppLifecycleState(AppLifecycleState.paused)
         ..didChangeAppLifecycleState(AppLifecycleState.resumed);
+
+      // Joined rather than raced: no second connection while one is in flight.
+      verify(mqtt.start()).called(1);
+
       handshake.complete();
       await pending;
       await Future<void>.delayed(Duration.zero);
 
+      // The pause cleared what that attempt needed to finish, so it is replaced
+      // once it settles. Accepting it would leave MQTT down for the whole
+      // foreground period, with nothing left to retry.
       verify(mqtt.start()).called(1);
     });
   });
@@ -162,6 +169,7 @@ void main() {
       await initForeground();
 
       store
+        ..handleConnectionChanged(connected: true)
         ..handleConnectionChanged(connected: false)
         ..handleConnectionChanged(connected: true)
         ..handleConnectionChanged(connected: false);
@@ -202,9 +210,25 @@ void main() {
 
     test('dispose reports what the last foreground period accrued', () async {
       await initForeground();
-      store.handleConnectionChanged(connected: false);
+      store
+        ..handleConnectionChanged(connected: true)
+        ..handleConnectionChanged(connected: false);
 
       await store.dispose();
+
+      expect(captureDropParams()['count'], 1);
+    });
+
+    // The client signals a retry sequence more than once; only the transition
+    // that started it is a drop.
+    test('a repeated disconnect signal is one drop', () async {
+      await initForeground();
+
+      store
+        ..handleConnectionChanged(connected: true)
+        ..handleConnectionChanged(connected: false)
+        ..handleConnectionChanged(connected: false)
+        ..didChangeAppLifecycleState(AppLifecycleState.paused);
 
       expect(captureDropParams()['count'], 1);
     });

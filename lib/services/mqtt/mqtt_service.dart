@@ -50,8 +50,8 @@ class MQTTService {
       ..useWebSocket = true
       ..keepAlivePeriod = 50
       // One breadcrumb per side of a flap. onConnected fires on auto-reconnects
-      // too, so logging onAutoReconnect/onAutoReconnected as well tripled the
-      // volume — and every breadcrumb is a platform hop on the main thread.
+      // too, so logging onAutoReconnect as well tripled the volume — and every
+      // breadcrumb is a platform hop on the main thread.
       // onFailedConnectionAttempt is omitted: the client never calls it while
       // autoReconnect is set.
       ..onConnected = () {
@@ -62,7 +62,11 @@ class MQTTService {
       ..onDisconnected = () {
         _logger.debug('MQTT disconnected');
         onConnectionChanged?.call(connected: false);
-      };
+      }
+      // Forwarded unlogged. An unsolicited drop never reaches onDisconnected
+      // while autoReconnect is set: the client fires MqttAutoReconnect instead
+      // and returns, so this is the only signal a dropped socket gives.
+      ..onAutoReconnect = () => onConnectionChanged?.call(connected: false);
     if (kDebugMode) {
       _mqtt.logging(on: false);
     }

@@ -36,10 +36,18 @@ class MqttConnectionStore with WidgetsBindingObserver, BackgroundDurationObserve
   /// than opening a second connection.
   Future<void>? _connecting;
 
+  /// Set when a shutdown lands mid-handshake. The client cannot cancel one, and
+  /// `stop()` clears the handler it needs to finish, so what settles afterwards
+  /// is void rather than merely failed — and a resume must not accept it.
+  bool _attemptVoided = false;
+
   /// Drops nobody asked for, and when the current foreground run began.
   /// Reported once per foreground period rather than once per flap: every
   /// event is a platform hop on the main thread.
   int _unwantedDrops = 0;
+
+  /// Last state the broker reported, so a drop is counted on the transition.
+  bool _connected = false;
   DateTime? _foregroundSince;
 
   /// [lifecycleState] defaults to the binding's. Injectable because a plain
@@ -71,6 +79,12 @@ class MqttConnectionStore with WidgetsBindingObserver, BackgroundDurationObserve
     _wantConnected = true;
     _foregroundSince ??= clock();
     await (_connecting ??= _start());
+    // Retried once: joining a voided attempt and stopping there would leave
+    // MQTT down for the whole foreground period, since nothing else retries.
+    if (_wantConnected && _attemptVoided) {
+      _attemptVoided = false;
+      await (_connecting ??= _start());
+    }
     // The intent can have flipped while the handshake ran, and the stop it
     // asked for was a no-op against a client that had not connected yet.
     if (!_wantConnected) {
@@ -92,6 +106,9 @@ class MqttConnectionStore with WidgetsBindingObserver, BackgroundDurationObserve
   @visibleForTesting
   void disconnect() {
     _wantConnected = false;
+    if (_connecting != null) {
+      _attemptVoided = true;
+    }
     try {
       _mqtt.stop();
     } catch (e, stack) {
@@ -101,11 +118,15 @@ class MqttConnectionStore with WidgetsBindingObserver, BackgroundDurationObserve
 
   /// Counts drops rather than reconnects: `onConnected` fires on auto-reconnects
   /// too, so counting those would also tally every deliberate open.
+  ///
+  /// Only connected-to-disconnected transitions count, so a retry sequence that
+  /// signals more than once still reads as the single drop that started it.
   @visibleForTesting
   void handleConnectionChanged({required bool connected}) {
-    if (!connected && _wantConnected) {
+    if (!connected && _connected && _wantConnected) {
       _unwantedDrops++;
     }
+    _connected = connected;
   }
 
   void _reportDrops() {

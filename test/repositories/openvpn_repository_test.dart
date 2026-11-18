@@ -247,10 +247,12 @@ void main() {
       expect(repo.tunnelStatistics(), throwsA(isA<MissingPluginException>()));
     });
 
-    test('returns null on a plugin failure', () async {
+    // Not folded into a null: a read that failed and a platform that reported
+    // nothing are different diagnoses, and tunnel health records them apart.
+    test('rethrows a plugin failure rather than reporting nothing', () async {
       when(service.tunnelStatistics()).thenThrow(Exception('boom'));
 
-      expect(await repo.tunnelStatistics(), isNull);
+      await expectLater(repo.tunnelStatistics(), throwsA(isA<Exception>()));
     });
   });
 }

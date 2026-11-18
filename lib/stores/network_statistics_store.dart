@@ -78,19 +78,33 @@ abstract class _NetworkStatisticsStore with Store {
           uploadSpeed = _mbps(stats.totalUpload - prevStats.totalUpload, seconds);
           downloadSpeed = _mbps(stats.totalDownload - prevStats.totalDownload, seconds);
         }
-        _tunnelStatistics = stats;
-        _statsIssue = stats == null ? 'none' : null;
+        if (stats == null) {
+          _onReadFailed('none');
+        } else {
+          _tunnelStatistics = stats;
+          _statsIssue = null;
+        }
       } on MissingPluginException {
         // Platform has no implementation; polling will never succeed.
-        _statsIssue = 'unsupported';
+        _onReadFailed('unsupported');
         _stopped = true;
       } on TimeoutException {
-        _statsIssue = 'timeout';
+        _onReadFailed('timeout');
       } catch (_) {
         // Transient failure (e.g. tunnel down mid-poll) — keep polling.
-        _statsIssue = 'error';
+        _onReadFailed('error');
       }
     }
+  }
+
+  /// Drops the last sample along with the speeds, not just the reason. Keeping
+  /// them would show stale counters in place of the failure, and make the next
+  /// successful sample a delta against an outdated baseline.
+  void _onReadFailed(String issue) {
+    _statsIssue = issue;
+    _tunnelStatistics = null;
+    uploadSpeed = 0;
+    downloadSpeed = 0;
   }
 
   /// Bytes moved over [seconds], as Mbps. A tunnel restart resets the platform

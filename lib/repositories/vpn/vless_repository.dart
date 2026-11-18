@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -120,11 +118,12 @@ class VlessRepository extends BaseVpnRepository {
       _warnOnFootprint(stats.footprintBytes);
       // VLESS has no handshake, so latestHandshake stays null.
       return TunnelStats(totalDownload: stats.totalDownload, totalUpload: stats.totalUpload);
-    } on MissingPluginException {
-      rethrow;
     } catch (e) {
+      // Rethrown rather than folded into the null above, as WireGuard does:
+      // "the platform reported nothing" and "the read failed" are different
+      // diagnoses, and tunnel health records them as different outcomes.
       logger.warning('Failed to read VLESS tunnel statistics: $e');
-      return null;
+      rethrow;
     }
   }
 

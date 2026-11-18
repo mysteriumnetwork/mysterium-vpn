@@ -496,10 +496,27 @@ void main() {
 
       final degradedParams = captureParams(AnalyticsEvent.tunnelHealthDegraded);
       store
-        ..onDialogShown()
-        ..onAction(refreshed: true);
+        ..onDialogShown(promptId: 1)
+        ..onAction(refreshed: true, promptId: 1);
 
       expect(degradedParams['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthAction)['prompt_id'], 1);
+    });
+
+    // The epoch advances when a later resume diagnoses a replacement session,
+    // which can happen while an earlier dialog is still open. Its events must
+    // stay joined to the verdict that raised them, not to the newest one.
+    test('the prompt events use the id captured when the prompt was queued', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      store
+        ..degradationEpoch = 7
+        ..onDialogShown(promptId: 1)
+        ..onAction(refreshed: false, promptId: 1);
+
       expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['prompt_id'], 1);
       expect(captureParams(AnalyticsEvent.tunnelHealthAction)['prompt_id'], 1);
     });
@@ -521,7 +538,7 @@ void main() {
     // was offered a refresh and declined it.
     test('the dialog event records whether a refresh was offered', () async {
       when(vpnStore.connectedIpPoolCount).thenReturn(1);
-      build().onDialogShown();
+      build().onDialogShown(promptId: 1);
 
       final params = captureParams(AnalyticsEvent.tunnelHealthDialogShown);
       expect(params['can_refresh'], isFalse);
@@ -630,7 +647,7 @@ void main() {
       final store = build();
 
       await resumeAfter(store, const Duration(minutes: 10));
-      store.onDialogShown();
+      store.onDialogShown(promptId: 1);
       await resumeAfter(store, const Duration(minutes: 10));
 
       expect(store.degradationEpoch, 1);

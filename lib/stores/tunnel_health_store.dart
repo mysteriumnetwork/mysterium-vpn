@@ -408,16 +408,21 @@ abstract class _TunnelHealthStore with Store, WidgetsBindingObserver, Background
   /// Called by the view once the dialog is actually on screen. The session was
   /// already claimed when the prompt was queued; this only records that it was
   /// shown.
-  void onDialogShown() => _analytics.logEvent(
+  ///
+  /// [promptId] is the epoch captured when the prompt was queued, not the
+  /// current one: a resume can diagnose a replacement session while this dialog
+  /// is open, and the two events must stay joined to the verdict that raised
+  /// them.
+  void onDialogShown({required int promptId}) => _analytics.logEvent(
     AnalyticsEvent.tunnelHealthDialogShown,
     // The dialog hides its action when there is nowhere to move to, so without
     // this every such prompt reads as a user who declined the refresh.
-    parameters: {'can_refresh': canRefreshIp, 'prompt_id': degradationEpoch},
+    parameters: {'can_refresh': canRefreshIp, 'prompt_id': promptId},
   );
 
-  void onAction({required bool refreshed}) => _analytics.logEvent(
+  void onAction({required bool refreshed, required int promptId}) => _analytics.logEvent(
     AnalyticsEvent.tunnelHealthAction,
-    parameters: {'action': refreshed ? 'refresh' : 'close', 'prompt_id': degradationEpoch},
+    parameters: {'action': refreshed ? 'refresh' : 'close', 'prompt_id': promptId},
   );
 
   /// A healthy verdict raises nothing and logs no analytics, so without this
