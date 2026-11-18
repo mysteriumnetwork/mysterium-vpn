@@ -817,10 +817,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_udid
-      sha256: f23555e9d34d5a7dc70fdfa3ab8915b401786879d278568b3c0e801af9a14d2e
+      sha256: c8435aecdef14130bc3ffbd713e5ca6609196234caa8bd583122636be9bdc9eb
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.6"
+    version: "4.2.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
