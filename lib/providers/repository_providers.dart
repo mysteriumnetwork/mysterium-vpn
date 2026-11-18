@@ -61,7 +61,6 @@ final locationsRepositoryPOD = Provider<LocationsRepository>(
   (ref) => RestLocationsRepository(
     connection: ref.watch(vpnApiPOD).getConnection(),
     db: ref.watch(localDBServicePOD),
-    logger: ref.watch(loggerPOD),
     session: ref.watch(authSessionStorePOD),
   ),
 );

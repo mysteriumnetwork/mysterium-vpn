@@ -437,7 +437,7 @@
 				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage" */,
 				AA1A2B3C4D5E6F0000000011 /* XCRemoteSwiftPackageReference "wireguard-apple" */,
 				AA1A2B3C4D5E6F0000000014 /* XCRemoteSwiftPackageReference "OpenVPNAdapter" */,
-				97BE525930A4B9B300A2A1A9 /* XCRemoteSwiftPackageReference "vless-apple" */,
+				97BE525930A4B9B300A2A1A9 /* XCRemoteSwiftPackageReference "vless-core" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
@@ -2960,12 +2960,12 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		97BE525930A4B9B300A2A1A9 /* XCRemoteSwiftPackageReference "vless-apple" */ = {
+		97BE525930A4B9B300A2A1A9 /* XCRemoteSwiftPackageReference "vless-core" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mysteriumnetwork/vless-apple";
+			repositoryURL = "https://github.com/mysteriumnetwork/vless-core";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.0;
+				minimumVersion = 1.3.0;
 			};
 		};
 		AA1A2B3C4D5E6F0000000011 /* XCRemoteSwiftPackageReference "wireguard-apple" */ = {
@@ -2993,7 +2993,7 @@
 		};
 		97BE525A30A4B9B300A2A1A9 /* vless-tunnel-support */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 97BE525930A4B9B300A2A1A9 /* XCRemoteSwiftPackageReference "vless-apple" */;
+			package = 97BE525930A4B9B300A2A1A9 /* XCRemoteSwiftPackageReference "vless-core" */;
 			productName = "vless-tunnel-support";
 		};
 		AA1A2B3C4D5E6F0000000012 /* WireGuardKit */ = {

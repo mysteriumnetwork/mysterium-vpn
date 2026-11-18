@@ -11,17 +11,27 @@ typedef TunnelStatsReadout = ({
 /// One-line QA readout shown under the connection tile in dev builds:
 /// `Protocol: wireguard · now ↓ 12.50 ↑ 3.25 Mbps · total ↓ 40.0 ↑ 10.0 MB · hs 7s`.
 ///
-/// Falls back to the protocol alone when [stats] is null — disconnected, or a
-/// platform that reports nothing. A null handshake renders as `hs —`: OpenVPN
-/// has no equivalent, and WireGuard has none before the first one lands.
+/// Falls back to the protocol alone when [stats] is null while disconnected,
+/// and to `no stats (<[unavailableReason]>)` when [connected] — a platform that
+/// reports nothing, one whose read fails and one that hangs would otherwise be
+/// indistinguishable from an idle tunnel, since all four draw zeros.
+/// A null handshake renders as `hs —`: OpenVPN has no equivalent, and
+/// WireGuard has none before the first one lands.
 String tunnelStatsLabel({
   required String protocol,
   required TunnelStatsReadout? stats,
   required DateTime now,
+  bool connected = false,
+  String? unavailableReason,
 }) {
   final label = 'Protocol: $protocol';
   if (stats == null) {
-    return label;
+    if (!connected) {
+      return label;
+    }
+    return unavailableReason == null
+        ? '$label · no stats'
+        : '$label · no stats ($unavailableReason)';
   }
 
   final handshake = stats.latestHandshake;

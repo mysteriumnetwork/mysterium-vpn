@@ -154,27 +154,35 @@ class _DevProtocolLabel extends HookConsumerWidget {
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Observer(
-          builder: (context) => Text(
-            tunnelStatsLabel(
-              protocol: vpnProtocol.protocol.name,
-              now: DateTime.now(),
-              stats: statistics == null
-                  ? null
-                  : (
-                      downloadMbps: statistics.downloadSpeed,
-                      uploadMbps: statistics.uploadSpeed,
-                      totalDownloadMb: statistics.totalDownloadInMB,
-                      totalUploadMb: statistics.totalUploadInMB,
-                      latestHandshake: statistics.latestHandshake,
-                    ),
-            ),
-            maxLines: 1,
-            style: TextStyle(
-              fontSize: 8,
-              color: palette.textSecondary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          builder: (context) {
+            // Null until a read succeeds. Passed through rather than read via
+            // the store's coalescing getters, which turn "the platform
+            // reported nothing" into the same zeros an idle tunnel shows.
+            final read = statistics?.tunnelStatistics;
+            return Text(
+              tunnelStatsLabel(
+                protocol: vpnProtocol.protocol.name,
+                now: DateTime.now(),
+                connected: isConnected,
+                unavailableReason: statistics?.statsIssue,
+                stats: statistics == null || read == null
+                    ? null
+                    : (
+                        downloadMbps: statistics.downloadSpeed,
+                        uploadMbps: statistics.uploadSpeed,
+                        totalDownloadMb: statistics.totalDownloadInMB,
+                        totalUploadMb: statistics.totalUploadInMB,
+                        latestHandshake: statistics.latestHandshake,
+                      ),
+              ),
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 8,
+                color: palette.textSecondary,
+                fontWeight: FontWeight.w800,
+              ),
+            );
+          },
         ),
       ),
     );

@@ -60,10 +60,12 @@ void main() {
       verify(connection.disconnect()).called(1);
     });
 
-    test('disconnect logs and rethrows on failure', () async {
+    // Reported by whoever handles the rethrow, not here as well — and never
+    // as a fatal, which is what `handle` makes it.
+    test('disconnect rethrows without reporting', () async {
       when(connection.disconnect()).thenThrow(Exception('boom'));
       await expectLater(service.disconnect(), throwsA(isA<Exception>()));
-      verify(logger.handle(any, any)).called(1);
+      verifyNever(logger.handle(any, any));
     });
 
     test('disconnectAllDevices delegates and logs', () async {

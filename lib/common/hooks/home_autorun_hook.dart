@@ -179,7 +179,10 @@ void useHomeAutorun() {
         }),
         // Tunnel found degraded on resume. A reaction on a counter for the same
         // reason as the UDP one above.
-        reaction((_) => tunnelHealthStore.degradationEpoch, (int _) {
+        // The epoch is captured here, with the session: a later degradation can
+        // advance it while this dialog is open, and the shown/action pair would
+        // then report a prompt id the verdict never carried.
+        reaction((_) => tunnelHealthStore.degradationEpoch, (int promptId) {
           final diagnosed = tunnelHealthStore.degradedSession;
           controller.add(() async {
             if (!context.mounted) {
@@ -192,12 +195,12 @@ void useHomeAutorun() {
             if (!tunnelHealthStore.isCurrentSession(diagnosed)) {
               return null;
             }
-            tunnelHealthStore.onDialogShown();
+            tunnelHealthStore.onDialogShown(promptId: promptId);
             final refresh = await showTunnelDegradedDialog(
               context,
               canRefresh: tunnelHealthStore.canRefreshIp,
             );
-            tunnelHealthStore.onAction(refreshed: refresh);
+            tunnelHealthStore.onAction(refreshed: refresh, promptId: promptId);
             if (!refresh) {
               return null;
             }

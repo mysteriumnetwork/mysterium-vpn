@@ -84,7 +84,13 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     bool fatal = false,
   }) async {
     if (_firebaseReady) {
-      await _crashlytics.recordError(err, stack, reason: reason, printDetails: true, fatal: fatal);
+      await _crashlytics.recordError(
+        err,
+        stack,
+        reason: reason,
+        printDetails: kDebugMode || Env.flavor.isDev,
+        fatal: fatal,
+      );
     }
     super.logError(err: err, stack: stack, reason: reason, fatal: fatal).ignore();
   }
@@ -117,9 +123,7 @@ abstract class _AnalyticsStoreFirebase with AnalyticsStore, Store {
     if (_firebaseReady) {
       await _analytics.logEvent(
         name: event.name.toSnakeCase.truncate(40),
-        parameters: parameters?.map(
-          (key, value) => MapEntry(key.truncate(40), value.toString().truncate(100)),
-        ),
+        parameters: ga4Parameters(parameters),
       );
     }
 

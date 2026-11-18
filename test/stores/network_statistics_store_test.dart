@@ -52,6 +52,32 @@ void main() {
     expect(store.uploadSpeed, closeTo(800, 0.001));
   });
 
+  // Keeping them would show stale counters in place of the failure, and make
+  // the next successful sample a delta against an outdated baseline.
+  test('drops the last sample and the speeds when a read fails', () async {
+    var calls = 0;
+    when(vpnStore.tunnelStatistics()).thenAnswer((_) async {
+      calls++;
+      if (calls <= 3) {
+        return TunnelStats(totalDownload: calls * 1000000, totalUpload: calls * 500000);
+      }
+      throw Exception('tunnel went away mid-poll');
+    });
+
+    store = NetworkStatisticsStore(vpnStore, pollInterval: tick);
+    await Future<void>.delayed(tick * 3 + tick ~/ 2);
+    expect(store.downloadSpeed, greaterThan(0));
+
+    await Future<void>.delayed(tick * 4);
+
+    expect(store.statsIssue, 'error');
+    expect(store.totalDownload, 0);
+    expect(store.totalUpload, 0);
+    expect(store.downloadSpeed, 0);
+    expect(store.uploadSpeed, 0);
+    expect(store.latestHandshake, isNull);
+  });
+
   test('keeps polling after a transient failure', () async {
     var calls = 0;
     when(vpnStore.tunnelStatistics()).thenAnswer((_) async {

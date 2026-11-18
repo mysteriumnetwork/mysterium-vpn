@@ -23,19 +23,24 @@ abstract class _MqttStore with Store {
   HealthcheckMessage? lastHealthcheck;
 
   Future<void> initStore() async {
+    // Callers discard this future, so a rethrow here can only surface as an
+    // unhandled error; report and carry on instead.
     try {
-      _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen((event) {
-        lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
-      });
+      _healthcheckSub ??= _mqtt.subscribe('healthcheck').listen(_onHealthcheck);
     } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
+      _logger.warning('MQTT healthcheck subscribe failed', e, stackTrace);
+    }
+  }
+
+  void _onHealthcheck(String event) {
+    try {
+      lastHealthcheck = HealthcheckMessage.fromJson(json.decode(event) as Map<String, dynamic>);
+    } catch (e, stackTrace) {
+      _logger.warning('MQTT healthcheck payload is malformed', e, stackTrace);
     }
   }
 
   void dispose() {
-    if (_healthcheckSub != null) {
-      _healthcheckSub!.cancel();
-    }
+    _healthcheckSub?.cancel();
   }
 }

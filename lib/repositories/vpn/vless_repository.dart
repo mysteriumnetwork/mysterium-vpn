@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -44,13 +42,8 @@ class VlessRepository extends BaseVpnRepository {
 
   @override
   Future<void> setupTunnel() async {
-    try {
-      await _service.setupTunnel();
-      logger.info('VLESS tunnel setup completed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.setupTunnel();
+    logger.info('VLESS tunnel setup completed');
   }
 
   @override
@@ -71,15 +64,17 @@ class VlessRepository extends BaseVpnRepository {
               );
             },
           );
-    } on TimeoutException catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+    } on TimeoutException {
       rethrow;
     } catch (e, stackTrace) {
       if (_connectCancelled) {
         logger.info('VLESS connect cancelled by a teardown');
         throw OperationCancelledException();
       }
-      logger.handle(e, stackTrace);
+      // Wrapped below, which keeps the message but drops the stack — so this
+      // is the only place it survives. A node refusing a connection is
+      // expected, so it is a warning rather than a crash report.
+      logger.warning('VLESS connect failed', e, stackTrace);
       throw VpnConnectException(e.toString());
     } finally {
       _connectPending = false;
@@ -123,18 +118,19 @@ class VlessRepository extends BaseVpnRepository {
       _warnOnFootprint(stats.footprintBytes);
       // VLESS has no handshake, so latestHandshake stays null.
       return TunnelStats(totalDownload: stats.totalDownload, totalUpload: stats.totalUpload);
-    } on MissingPluginException {
-      rethrow;
     } catch (e) {
+      // Rethrown rather than folded into the null above, as WireGuard does:
+      // "the platform reported nothing" and "the read failed" are different
+      // diagnoses, and tunnel health records them as different outcomes.
       logger.warning('Failed to read VLESS tunnel statistics: $e');
-      return null;
+      rethrow;
     }
   }
 
   /// iOS terminates a Network Extension past roughly 50 MB of phys_footprint,
   /// which the extension measures and reports; the app cannot see it otherwise.
   /// Logged rather than surfaced so a tunnel nearing the limit is visible in
-  /// Sentry breadcrumbs before jetsam kills it.
+  /// Crashlytics breadcrumbs before jetsam kills it.
   void _warnOnFootprint(int? footprintBytes) {
     if (footprintBytes == null || footprintBytes < _footprintWarnBytes) {
       return;
@@ -145,13 +141,8 @@ class VlessRepository extends BaseVpnRepository {
 
   @override
   Future<void> removeTunnelConfiguration() async {
-    try {
-      await _service.removeTunnelConfiguration();
-      logger.info('VLESS tunnel configuration removed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.removeTunnelConfiguration();
+    logger.info('VLESS tunnel configuration removed');
   }
 
   @override
@@ -166,38 +157,28 @@ class VlessRepository extends BaseVpnRepository {
     required String dnsAddress,
     String? targetIp,
   }) async {
-    try {
-      final response = await apiService.fetchVlessConfig(
-        request: VlessConnectRequest(
-          countryOriginate: countryOriginate,
-          country: country,
-          city: city,
-          ipType: ipType,
-          resetConnection: resetConnection,
-          osType: Platform.operatingSystem,
-          userIntent: userIntent,
-          cluster: cluster,
-          dns: dnsAddress,
-          targetIp: targetIp,
-        ),
-      );
-      return VpnConfig.fromVless(response);
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    final response = await apiService.fetchVlessConfig(
+      request: VlessConnectRequest(
+        countryOriginate: countryOriginate,
+        country: country,
+        city: city,
+        ipType: ipType,
+        resetConnection: resetConnection,
+        osType: Platform.operatingSystem,
+        userIntent: userIntent,
+        cluster: cluster,
+        dns: dnsAddress,
+        targetIp: targetIp,
+      ),
+    );
+    return VpnConfig.fromVless(response);
   }
 
   @override
   Future<void> resetApp() async {
-    try {
-      if (Platform.isAndroid || Platform.isWindows) {
-        return;
-      }
-      await removeTunnelConfiguration();
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
+    if (Platform.isAndroid || Platform.isWindows) {
+      return;
     }
+    await removeTunnelConfiguration();
   }
 }

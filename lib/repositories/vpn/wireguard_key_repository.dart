@@ -18,35 +18,27 @@ class WireguardKeyRepository {
   final AnalyticsEventLogger analyticsLogger;
 
   Future<KeyPair> getWireguardKey() async {
-    try {
-      final wireguardKey = await _getKeyFromStorage();
-      if (wireguardKey != null) {
-        return wireguardKey;
-      } else {
-        analyticsLogger(
-          AnalyticsEvent.wireguardKeyUnavailable,
-          parameters: {
-            'description': 'Wireguard keys not found in secure storage, generating new keys',
-            'method': 'getWireguardKey',
-          },
-        );
-        final key = await _generateWireguardKey();
-        await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
-        return key;
-      }
-    } catch (_) {
-      rethrow;
+    final wireguardKey = await _getKeyFromStorage();
+    if (wireguardKey != null) {
+      return wireguardKey;
+    } else {
+      analyticsLogger(
+        AnalyticsEvent.wireguardKeyUnavailable,
+        parameters: {
+          'description': 'Wireguard keys not found in secure storage, generating new keys',
+          'method': 'getWireguardKey',
+        },
+      );
+      final key = await _generateWireguardKey();
+      await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
+      return key;
     }
   }
 
   Future<KeyPair> regenerateWireguardKeys() async {
-    try {
-      final key = await _generateWireguardKey();
-      await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
-      return key;
-    } catch (_) {
-      rethrow;
-    }
+    final key = await _generateWireguardKey();
+    await _saveWireguardKey(publicKey: key.publicKey, privateKey: key.privateKey);
+    return key;
   }
 
   Future<KeyPair?> _getKeyFromStorage() async {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -54,19 +55,12 @@ final _appStartupPOD = FutureProvider<void>((ref) async {
 
   // Start MQTT here — after the Future.wait above, remote config is loaded so
   // `mqttExperiment` holds its real value (not the default false). Not awaited:
-  // connecting must not gate app startup.
-  _initMqtt(ref, logger);
+  // connecting must not gate app startup. The store then follows the app
+  // lifecycle, so a backgrounded app isn't left auto-reconnecting.
+  unawaited(ref.read(mqttConnectionStorePOD).init());
 
   ref.read(loggerPOD).log('App fully initialized — ${Env.flavor.name} / ${Env.baseUrl}');
 });
-
-Future<void> _initMqtt(Ref ref, Talker talker) async {
-  try {
-    await ref.read(vpnApiMQTTPOD).start();
-  } catch (e) {
-    talker.log('MQTT init error (non-fatal): $e');
-  }
-}
 
 Future<void> _initRemoteConfig(Ref ref, Talker talker) async {
   try {

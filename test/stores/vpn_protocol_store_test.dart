@@ -72,9 +72,16 @@ void main() {
       expect(store.availableProtocols, containsAll([ProtocolType.wireguard, ProtocolType.openvpn]));
     });
 
-    test('is hidden on Android even with the flag on', () {
+    test('is offered on Android once the flag is on', () {
       store.testIsAndroid = true;
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
+
+      expect(store.availableProtocols, contains(ProtocolType.vless));
+    });
+
+    test('is hidden on Android when the flag is off', () {
+      store.testIsAndroid = true;
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
 
       expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
       expect(store.availableProtocols, containsAll([ProtocolType.wireguard, ProtocolType.openvpn]));

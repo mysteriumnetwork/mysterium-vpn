@@ -39,23 +39,18 @@ abstract class BaseVpnRepository implements VpnRepository {
     required String? reasons,
     required RateConnectionMode mode,
   }) async {
-    try {
-      await apiService.rateConnection(
-        request: RateConnectionRequest(
-          mode: switch (mode) {
-            RateConnectionMode.like => RateConnectionRequestModeEnum.like,
-            RateConnectionMode.dislike => RateConnectionRequestModeEnum.dislike,
-          },
-          reasons: reasons,
-          feedback: feedback,
-          country: country,
-          ipType: ipType,
-        ),
-      );
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await apiService.rateConnection(
+      request: RateConnectionRequest(
+        mode: switch (mode) {
+          RateConnectionMode.like => RateConnectionRequestModeEnum.like,
+          RateConnectionMode.dislike => RateConnectionRequestModeEnum.dislike,
+        },
+        reasons: reasons,
+        feedback: feedback,
+        country: country,
+        ipType: ipType,
+      ),
+    );
   }
 
   /// Notify the API that the user has disconnected from the VPN tunnel.

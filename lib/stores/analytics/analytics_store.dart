@@ -65,6 +65,15 @@ mixin AnalyticsStore {
 
   List<NavigatorObserver> navigationObservers();
 
+  /// GA4 parameters, stringified and truncated to GA4's limits.
+  ///
+  /// Shared by every sink. Desktop reports through the Measurement Protocol,
+  /// which preserves JSON types, so the same field used to arrive as both
+  /// `true` and `1` depending on the platform — and desktop truncated nothing.
+  @protected
+  Map<String, String>? ga4Parameters(Map<String, dynamic>? parameters) =>
+      parameters?.map((key, value) => MapEntry(key.truncate(40), value.toString().truncate(100)));
+
   Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) async {
     _logStreamController.add(
       AnalyticsLogEntry(

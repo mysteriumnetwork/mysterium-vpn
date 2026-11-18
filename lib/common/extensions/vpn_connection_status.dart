@@ -3,9 +3,14 @@ import 'package:mysterium_vpn/generated/l10n.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 extension VpnConnectionStatusView on VpnConnectionStatus {
-  /// Maps to the design-system connection state; fetching config renders as
-  /// "getting IP" regardless of the raw tunnel status.
-  BarStatus toBarStatus({required bool isFetchingConfig}) {
+  /// Maps to the design-system connection state. A teardown in flight wins over
+  /// everything else so the bar and the main card report it for the same span;
+  /// otherwise fetching config renders as "getting IP" regardless of the raw
+  /// tunnel status.
+  BarStatus toBarStatus({required bool isFetchingConfig, required bool isDisconnecting}) {
+    if (isDisconnecting) {
+      return BarStatus.disconnecting;
+    }
     if (isFetchingConfig) {
       return BarStatus.gettingIp;
     }

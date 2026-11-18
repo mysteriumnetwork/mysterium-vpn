@@ -17,6 +17,7 @@ export 'latlng_store.dart';
 export 'locale_store.dart';
 export 'locations_query_store.dart';
 export 'locations_store.dart';
+export 'mqtt_connection_store.dart';
 export 'mqtt_store.dart';
 export 'network_statistics_store.dart';
 export 'news_center_refresh_store.dart';

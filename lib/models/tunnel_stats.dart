@@ -24,4 +24,8 @@ class TunnelStats {
 
   @override
   int get hashCode => Object.hash(totalDownload, totalUpload, latestHandshake);
+
+  @override
+  String toString() =>
+      'TunnelStats(totalDownload: $totalDownload, totalUpload: $totalUpload, latestHandshake: $latestHandshake)';
 }
