@@ -90,7 +90,7 @@ dependencies:
   vless_dart:
     git:
       url: https://github.com/mysteriumnetwork/vless_dart.git
-      ref: feat/android-support
+      ref: 0.3.0
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
@@ -100,7 +100,7 @@ dependencies:
   wireguard_dart:
     git:
       url: https://github.com/mysteriumnetwork/wireguard_dart.git
-      ref: fix/tunnel-statistics-visibility
+      ref: 0.9.18
 
 dev_dependencies:
   build: ^4.0.11
