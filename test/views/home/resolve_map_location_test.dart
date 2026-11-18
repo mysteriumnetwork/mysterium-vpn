@@ -73,15 +73,17 @@ void main() {
 
   VPNLocation? resolve(
     VPNLocation marker,
-    IPType type, {
+    IPType? type, {
     bool cityLevelAllowed = true,
     bool hasResolvedPlan = true,
+    bool residentialIPsAllowed = true,
   }) => resolveMapLocation(
     location: marker,
     ipType: type,
     locationsStore: locations,
     cityLevelAllowed: cityLevelAllowed,
     hasResolvedPlan: hasResolvedPlan,
+    residentialIPsAllowed: residentialIPsAllowed,
   );
 
   group('resolveMapLocation', () {
@@ -147,6 +149,13 @@ void main() {
       expect(resolve(unavailable, IPType.residential), same(unavailable));
     });
 
+    test('a plan without residential access keeps an explicit Residential selection', () {
+      expect(
+        resolve(residentialCountry, IPType.residential, residentialIPsAllowed: false),
+        residentialCountry,
+      );
+    });
+
     for (final type in [IPType.datacenter, IPType.residential]) {
       test('a city-gated plan resolves ${type.key} to its country in the same catalog', () {
         final city = type == IPType.datacenter ? dcCity : residentialCity;
@@ -170,6 +179,34 @@ void main() {
         resolve(dcCity, IPType.datacenter, cityLevelAllowed: false, hasResolvedPlan: false),
         dcCity,
       );
+    });
+  });
+
+  group('standalone map', () {
+    test('uses Datacenter when the plan does not allow Residential', () {
+      final target = resolve(residentialCountry, null, residentialIPsAllowed: false);
+      expect(target, dcCountry);
+      expect(ConnectionRequest(location: target).ipType(null)?.key, 'hosting');
+    });
+
+    test('keeps Residential when the plan allows it and the location is available', () {
+      expect(resolve(residentialCountry, null), residentialCountry);
+    });
+
+    test('prefers the matching Datacenter city when Residential is unavailable', () {
+      expect(resolve(residentialCity.copyWith(isAvailable: false), null), dcCity);
+    });
+
+    test('a plan without city targeting falls back to a Datacenter country', () {
+      expect(
+        resolve(residentialCity, null, cityLevelAllowed: false, residentialIPsAllowed: false),
+        dcCountry,
+      );
+    });
+
+    test('preserves Residential as the upgrade target without a Datacenter alternative', () {
+      locations.dc = ObservableFuture.value(VPNLocations());
+      expect(resolve(residentialCountry, null, residentialIPsAllowed: false), residentialCountry);
     });
   });
 }

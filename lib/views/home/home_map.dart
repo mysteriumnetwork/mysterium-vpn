@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/list.dart';
 import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/common/hooks/current_ip_coordinates_hook.dart';
 import 'package:mysterium_vpn/common/hooks/hooks.dart';
@@ -10,24 +11,25 @@ import 'package:mysterium_vpn/providers/state_providers.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 import 'package:mysterium_vpn/views/home/locations_map.dart';
 
-/// Resolves a map marker within the selected IP type. A marker from an older
-/// tab must never silently connect through the other network type.
-/// City-gated plans can still connect to the country in that same catalog.
+/// A typed tab keeps the selected IP type, even for a stale marker.
+/// The standalone map (no [ipType]) can fall back to Datacenter.
 VPNLocation? resolveMapLocation({
   required VPNLocation location,
-  required IPType ipType,
+  required IPType? ipType,
   required LocationsStore locationsStore,
   required bool cityLevelAllowed,
   required bool hasResolvedPlan,
+  bool residentialIPsAllowed = true,
 }) {
-  final catalog = ipType == IPType.datacenter
-      ? locationsStore.dcLocationsFuture
-      : locationsStore.residentialLocationsFuture;
-  final target = location.ipType == ipType
-      ? location
-      : catalog.value?.allLocationsFlattened
-            .where((it) => it.id == location.id && it.countryCode == location.countryCode)
-            .firstOrNull;
+  VPNLocation? target = location;
+  if (ipType != null && location.ipType != ipType) {
+    final catalog = ipType == IPType.datacenter
+        ? locationsStore.dcLocationsFuture
+        : locationsStore.residentialLocationsFuture;
+    target = catalog.value?.allLocationsFlattened
+        .where((it) => it.id == location.id && it.countryCode == location.countryCode)
+        .firstOrNull;
+  }
   if (target == null) {
     return null;
   }
@@ -40,11 +42,25 @@ VPNLocation? resolveMapLocation({
         residentialIPsAllowed: true,
         cityLevelAllowed: cityLevelAllowed,
       );
-  return cityGated ? locationsStore.findParent(target) ?? target : target;
+  final resolved = cityGated ? locationsStore.findParent(target) ?? target : target;
+  if (ipType != null ||
+      resolved.ipType != IPType.residential ||
+      (residentialIPsAllowed && resolved.isAvailable)) {
+    return resolved;
+  }
+
+  final alternatives = locationsStore.dcLocationsFuture.value?.allLocationsFlattened.where(
+    (it) => it.countryCode == resolved.countryCode && it.isAvailable,
+  );
+  return alternatives?.where((it) => it.id == resolved.id).firstOrNull ??
+      alternatives?.where((it) => it.isCountry).firstOrNull ??
+      resolved;
 }
 
 class HomeMap extends HookConsumerWidget {
-  const HomeMap({super.key});
+  const HomeMap({required this.followLocationTabs, super.key});
+
+  final bool followLocationTabs;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,9 +70,15 @@ class HomeMap extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final subscriptionStore = ref.watch(subscriptionStorePOD);
     final selectedLocation = useComputedValue(() => selectedLocationStore.value);
-    final locations = useComputedValue(
-      () => locationsStore.locationsFuture.value?.allLocations.toList() ?? <VPNLocation>[],
-    );
+    final locations = useComputedValue(() {
+      if (followLocationTabs) {
+        return locationsStore.locationsFuture.value?.allLocations.toList() ?? <VPNLocation>[];
+      }
+      return [
+        ...?locationsStore.residentialLocationsFuture.value?.allLocations,
+        ...?locationsStore.dcLocationsFuture.value?.allLocations,
+      ].distinctBy((it) => (it.id, it.countryCode)).toList();
+    }, [followLocationTabs]);
     final myLocation = useCurrentIPCoordinates();
     final connectedLocation = useComputedValue(
       () => vpnStore.isConnected ? vpnStore.location : null,
@@ -67,28 +89,24 @@ class HomeMap extends HookConsumerWidget {
       selectedLocationStore.value = null;
     }
 
+    VPNLocation? resolve(VPNLocation location) => resolveMapLocation(
+      location: location,
+      locationsStore: locationsStore,
+      ipType: followLocationTabs ? locationsQueryStore.ipType : null,
+      cityLevelAllowed: subscriptionStore.cityLevelAllowed,
+      hasResolvedPlan: subscriptionStore.hasResolvedPlan,
+      residentialIPsAllowed: subscriptionStore.residentialIPsAllowed,
+    );
+
     void handleSelectLocation(VPNLocation location) {
-      final resolved = resolveMapLocation(
-        location: location,
-        locationsStore: locationsStore,
-        ipType: locationsQueryStore.ipType,
-        cityLevelAllowed: subscriptionStore.cityLevelAllowed,
-        hasResolvedPlan: subscriptionStore.hasResolvedPlan,
-      );
-      selectedLocationStore.value = resolved;
+      selectedLocationStore.value = resolve(location);
     }
 
     void handleDoubleTapLocation(VPNLocation location) {
       if (vpnStore.isLoading) {
         return;
       }
-      final resolved = resolveMapLocation(
-        location: location,
-        locationsStore: locationsStore,
-        ipType: locationsQueryStore.ipType,
-        cityLevelAllowed: subscriptionStore.cityLevelAllowed,
-        hasResolvedPlan: subscriptionStore.hasResolvedPlan,
-      );
+      final resolved = resolve(location);
       if (resolved == null || (vpnStore.isConnected && resolved.covers(vpnStore.location))) {
         return;
       }
