@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   app_links: 7.2.2
-  app_settings: 8.0.3
+  app_settings: 9.0.1
   auto_size_text: 3.0.0
   beamer: 1.7.0
   circle_flags: 5.0.1
