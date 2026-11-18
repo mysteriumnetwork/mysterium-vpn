@@ -58,7 +58,7 @@ dependencies:
   mail_launcher:
     path: ./packages/mail_launcher
   mobx: 2.7.0
-  money2: 6.3.0
+  money2: 6.3.1
   mqtt5_client: 5.2.0
   mysterium_vpn_design:
     git:
