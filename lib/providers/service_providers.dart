@@ -288,6 +288,7 @@ final authServicePOD = Provider<AuthRepository>((ref) {
     networkService: networkService,
     authSession: authSessionStore,
     logger: logger,
+    resolveWebUrl: ref.watch(domainDiscoveryPOD).resolveBrowserUrl,
   );
 });
 

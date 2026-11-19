@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -20,8 +21,10 @@ class RestAuthRepository extends AuthRepository {
     required Talker logger,
     required SecureStorageService securedStorage,
     required LocalDBService localDb,
+    Future<Uri> Function(Uri)? resolveWebUrl,
   }) : _securedStorage = securedStorage,
        _localDb = localDb,
+       _resolveWebUrl = resolveWebUrl,
        _apiAuth = api.getAuthentication(),
        _networkService = networkService,
        _authSession = authSession,
@@ -35,6 +38,7 @@ class RestAuthRepository extends AuthRepository {
   final AuthSessionGateway _authSession;
   final SecureStorageService _securedStorage;
   final LocalDBService _localDb;
+  final Future<Uri> Function(Uri)? _resolveWebUrl;
   final Talker _logger;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   late final Future<void> _ensureInitialized;
@@ -88,14 +92,29 @@ class RestAuthRepository extends AuthRepository {
     try {
       await removeLocalData();
 
-      final response = await _apiAuth.requestMagicLink(
+      Future<dio.Response<MagicLinkResponse>> request(String? origin) => _apiAuth.requestMagicLink(
         magicLinkRequest: MagicLinkRequest(
           email: email,
           clientId: MagicLinkRequestClientIdEnum.app,
+          preferredOrigin: origin,
           codeChallenge: pkcePair.codeChallenge,
           codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
         ),
       );
+
+      final origin = await _preferredOrigin();
+      dio.Response<MagicLinkResponse> response;
+      try {
+        response = await request(origin);
+      } on ApiException catch (e) {
+        final status = e.response?.statusCode;
+        if (origin == null || (status != 400 && status != 422)) {
+          rethrow;
+        }
+        // Origin may not be allow-listed yet; a link to the default beats no link.
+        _logger.warning('Magic link rejected with preferred origin $origin; retrying without');
+        response = await request(null);
+      }
       if (response.statusCode != 200) {
         throw Exception('Login failed');
       }
@@ -111,6 +130,20 @@ class RestAuthRepository extends AuthRepository {
     } catch (e, stackTrace) {
       _logger.handle(e, stackTrace);
       rethrow;
+    }
+  }
+
+  /// Reachable web-app origin for the magic link; null lets the backend use its default.
+  Future<String?> _preferredOrigin() async {
+    final resolve = _resolveWebUrl;
+    if (resolve == null || Env.webAppUrl.isEmpty) {
+      return null;
+    }
+    try {
+      return (await resolve(Uri.https(Env.webAppUrl))).origin;
+    } catch (e, stackTrace) {
+      _logger.handle(e, stackTrace);
+      return null;
     }
   }
 

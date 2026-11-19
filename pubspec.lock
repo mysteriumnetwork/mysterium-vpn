@@ -325,10 +325,10 @@ packages:
     dependency: transitive
     description:
       name: copy_with_extension
-      sha256: d14c803803aaf6604766ee979229574210b3a2843b40129fa29723011a925bec
+      sha256: "9a832fe40e5a5fcbe58e094d2c857ac6b185f34ec200241051daebe48b1b0403"
       url: "https://pub.dev"
     source: hosted
-    version: "15.0.0"
+    version: "18.0.0"
   crypto:
     dependency: "direct main"
     description:
@@ -2135,11 +2135,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.113"
-      resolved-ref: a1c47d5f0ea388b7ac9844c4ad6fbcb142935bfe
+      ref: "1.0.115"
+      resolved-ref: "8cd50c682cd494a2445e6da457427f013d94938b"
       url: "https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git"
     source: git
-    version: "1.0.112+92"
+    version: "1.0.115+95"
   watcher:
     dependency: transitive
     description:
