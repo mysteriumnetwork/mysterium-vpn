@@ -83,21 +83,20 @@ List<Marker> _useLocationMarkers({
         ),
       };
 
-      final sorted = {
-        ...cities,
-        ...countries.whereNot(
-          (it) =>
-              it.countryCode == connectedLocation?.countryCode ||
-              it.countryCode == selectedLocation?.countryCode,
-        ),
-        ?selectedLocation,
-        if (connectedLocation != null && connectedLocation != selectedLocation) connectedLocation,
-      };
+      final connectedPin = cities.lookup(connectedLocation) ?? connectedLocation;
+      final selectedPin = cities.lookup(selectedLocation) ?? selectedLocation;
+      final ordered = [
+        ...cities.whereNot((it) => it == connectedPin || it == selectedPin),
+        ...countries.whereNot((it) => it.covers(connectedPin) || it.covers(selectedPin)),
+        ?connectedPin,
+        // When pins overlap, the selected target should receive the tap.
+        if (selectedPin != null && selectedPin != connectedPin) selectedPin,
+      ];
 
       final markers = <Marker>[];
       Marker? labelMarker;
 
-      for (final it in sorted) {
+      for (final it in ordered) {
         final point = it.isCountry
             ? latLngStore.coordinatesForCountry(it.countryCode)
             : latLngStore.coordinatesForCity(it);
@@ -106,8 +105,8 @@ List<Marker> _useLocationMarkers({
           continue;
         }
 
-        final isConnected = connectedLocation?.id == it.id;
-        final isSelected = selectedLocation?.id == it.id;
+        final isConnected = connectedLocation == it;
+        final isSelected = selectedLocation == it;
         final isActive = isConnected || isSelected;
         // Connected location is never labelled even if also selected.
         final hasLabel = isSelected && !isConnected;
@@ -166,8 +165,8 @@ List<Marker> _useLocationMarkers({
       onLocationPressedRef,
       latLngStore,
       data,
-      selectedLocation?.id,
-      connectedLocation?.id,
+      selectedLocation,
+      connectedLocation,
       remoteConfigStore.showCitiesAndStates,
       remoteConfigStore.countriesWithCitiesOnMap,
     ],

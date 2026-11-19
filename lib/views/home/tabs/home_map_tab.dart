@@ -38,7 +38,7 @@ class HomeMapTab extends HookConsumerWidget {
         Expanded(
           child: Stack(
             children: [
-              const Positioned.fill(child: HomeConnectionView()),
+              const Positioned.fill(child: HomeConnectionView(followLocationTabs: false)),
               Positioned(
                 left: theme.spacing.md,
                 right: theme.spacing.md,
