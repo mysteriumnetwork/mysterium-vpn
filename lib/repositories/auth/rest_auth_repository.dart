@@ -127,7 +127,11 @@ class RestAuthRepository extends AuthRepository {
     try {
       return (await resolve(Uri.https(Env.webAppUrl))).origin;
     } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
+      _logger.warning(
+        'Resolving the web app origin failed; using the backend default',
+        e,
+        stackTrace,
+      );
       return null;
     }
   }
