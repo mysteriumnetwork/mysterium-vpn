@@ -16,6 +16,7 @@ import 'package:mysterium_vpn/pages/subscription_upgrade_modal_page.dart';
 import 'package:mysterium_vpn/providers/repository_providers.dart';
 import 'package:mysterium_vpn/providers/service_providers.dart';
 import 'package:mysterium_vpn/providers/state_providers.dart';
+import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:mysterium_vpn/stores/subscription_onboarding_store.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -403,10 +404,12 @@ class QAToolbox extends HookConsumerWidget {
   );
 
   Future<void> _fetchAndCopyConfig(_FetchConfigChoice choice, WidgetRef ref) async {
-    final repository = choice.isWireguard
-        ? ref.read(wireguardRepositoryPOD)
-        : ref.read(openVpnRepositoryPOD);
-    final label = choice.isWireguard ? 'WireGuard' : 'OpenVPN';
+    final repository = switch (choice.protocol) {
+      _FetchProtocol.wireguard => ref.read(wireguardRepositoryPOD) as VpnRepository,
+      _FetchProtocol.openvpn => ref.read(openVpnRepositoryPOD),
+      _FetchProtocol.vless => ref.read(vlessRepositoryPOD),
+    };
+    final label = choice.protocol.label;
     try {
       final config = await repository.fetchVpnConfig(
         countryOriginate: null,
@@ -673,15 +676,25 @@ class QAToolbox extends HookConsumerWidget {
   }
 }
 
+enum _FetchProtocol {
+  wireguard('WireGuard'),
+  openvpn('OpenVPN'),
+  vless('VLESS');
+
+  const _FetchProtocol(this.label);
+
+  final String label;
+}
+
 class _FetchConfigChoice {
   const _FetchConfigChoice({
-    required this.isWireguard,
+    required this.protocol,
     required this.ipType,
     required this.country,
     required this.city,
   });
 
-  final bool isWireguard;
+  final _FetchProtocol protocol;
   final IPType ipType;
   final String? country;
   final String? city;
@@ -695,7 +708,7 @@ class _FetchConfigDialog extends StatefulWidget {
 }
 
 class _FetchConfigDialogState extends State<_FetchConfigDialog> {
-  bool _isWireguard = true;
+  _FetchProtocol _protocol = _FetchProtocol.wireguard;
   IPType _ipType = IPType.datacenter;
   final _countryController = TextEditingController();
   final _cityController = TextEditingController();
@@ -722,13 +735,14 @@ class _FetchConfigDialogState extends State<_FetchConfigDialog> {
         children: [
           const Text('Protocol'),
           const SizedBox(height: 8),
-          SegmentedButton<bool>(
-            segments: const [
-              ButtonSegment(value: true, label: Text('WireGuard')),
-              ButtonSegment(value: false, label: Text('OpenVPN')),
+          SegmentedButton<_FetchProtocol>(
+            showSelectedIcon: false,
+            segments: [
+              for (final protocol in _FetchProtocol.values)
+                ButtonSegment(value: protocol, label: Text(protocol.label)),
             ],
-            selected: {_isWireguard},
-            onSelectionChanged: (selection) => setState(() => _isWireguard = selection.first),
+            selected: {_protocol},
+            onSelectionChanged: (selection) => setState(() => _protocol = selection.first),
           ),
           const SizedBox(height: 16),
           const Text('IP type'),
@@ -766,7 +780,7 @@ class _FetchConfigDialogState extends State<_FetchConfigDialog> {
       TextButton(
         onPressed: () => Navigator.of(context).pop(
           _FetchConfigChoice(
-            isWireguard: _isWireguard,
+            protocol: _protocol,
             ipType: _ipType,
             country: _trimmedOrNull(_countryController)?.toUpperCase(),
             city: _trimmedOrNull(_cityController),

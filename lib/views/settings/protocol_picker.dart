@@ -30,7 +30,7 @@ class ProtocolPicker extends ConsumerWidget {
         title: S.current.vpnProtocolSettingLbl,
         position: position,
         value: vpnProtocolStore.protocol,
-        items: ProtocolType.values,
+        items: vpnProtocolStore.availableProtocols,
         labelOf: (p) => p.label,
         onChanged: (newProtocol) => _changeProtocol(
           context,

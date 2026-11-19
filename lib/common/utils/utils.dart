@@ -1,7 +1,10 @@
 export 'comparator_utils.dart';
 export 'debouncer.dart';
 export 'disposeable.dart';
+export 'error_handlers.dart';
+export 'error_report_throttle.dart';
 export 'ip_refresh_exhausted_message.dart';
+export 'logger_settings.dart';
 export 'main_window.dart';
 export 'mocks.dart';
 export 'payment_gateway.dart';

@@ -26,10 +26,12 @@ class FakeMqttClient extends MqttServerClient {
   @override
   MqttConnectionStatus? get connectionStatus => MqttConnectionStatus()..state = state;
 
+  bool refuseSubscribe = false;
+
   @override
   MqttSubscription? subscribe(String topic, MqttQos qosLevel) {
     subscribeCalls++;
-    return MqttSubscription(MqttSubscriptionTopic(topic));
+    return refuseSubscribe ? null : MqttSubscription(MqttSubscriptionTopic(topic));
   }
 
   @override
@@ -84,6 +86,29 @@ void main() {
     await Future<void>.delayed(Duration.zero);
 
     expect(received, ['hello']);
+  });
+
+  test('a refused subscribe does not throw out of the service', () {
+    final service = newService();
+    client.refuseSubscribe = true;
+
+    expect(() => service.subscribe('healthcheck').listen((_) {}), returnsNormally);
+  });
+
+  test('a refused subscribe re-attaches on the next onConnected', () async {
+    final service = newService();
+    client.refuseSubscribe = true;
+    final received = <String>[];
+    service.subscribe('healthcheck').listen(received.add);
+
+    client
+      ..emit('healthcheck', 'dropped')
+      ..refuseSubscribe = false
+      ..onConnected!()
+      ..emit('healthcheck', 'delivered');
+    await Future<void>.delayed(Duration.zero);
+
+    expect(received, ['delivered']);
   });
 
   test('reconnect re-fires onConnected without crashing and keeps delivering', () async {

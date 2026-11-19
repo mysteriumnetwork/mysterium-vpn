@@ -61,7 +61,6 @@ final locationsRepositoryPOD = Provider<LocationsRepository>(
   (ref) => RestLocationsRepository(
     connection: ref.watch(vpnApiPOD).getConnection(),
     db: ref.watch(localDBServicePOD),
-    logger: ref.watch(loggerPOD),
     session: ref.watch(authSessionStorePOD),
   ),
 );
@@ -78,6 +77,14 @@ final wireguardRepositoryPOD = Provider<WireguardRepository>(
 final openVpnRepositoryPOD = Provider<OpenVpnRepository>(
   (ref) => OpenVpnRepository(
     service: ref.watch(openVpnServicePOD),
+    logger: ref.watch(loggerPOD),
+    apiService: ref.watch(apiServicePOD),
+  ),
+);
+
+final vlessRepositoryPOD = Provider<VlessRepository>(
+  (ref) => VlessRepository(
+    service: ref.watch(vlessServicePOD),
     logger: ref.watch(loggerPOD),
     apiService: ref.watch(apiServicePOD),
   ),

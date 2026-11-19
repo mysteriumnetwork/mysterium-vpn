@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -58,21 +56,16 @@ class WireguardRepository extends BaseVpnRepository {
 
   @override
   Future<void> setupTunnel() async {
-    try {
-      await _service.setupTunnel(
-        bundleId: Env.bundleId,
-        win32ServiceName: win32ServiceName,
-        tunnelName: Env.tunnelName,
-      );
-      logger.info('Wireguard tunnel setup completed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.setupTunnel(
+      bundleId: Env.bundleId,
+      win32ServiceName: win32ServiceName,
+      tunnelName: Env.tunnelName,
+    );
+    logger.info('Wireguard tunnel setup completed');
   }
 
   @override
-  Future<void> connect({required String config}) async {
+  Future<void> connect({required String config, String? dnsAddress}) async {
     try {
       final key = await _getWireguardKey();
       final replaced = config.replaceFirst('%private_key%', key.privateKey);
@@ -86,11 +79,12 @@ class WireguardRepository extends BaseVpnRepository {
               );
             },
           );
-    } on TimeoutException catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+    } on TimeoutException {
       rethrow;
     } catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+      // Wrapped below, which drops the stack — so this is the only place it
+      // survives. A node refusing a connection is expected, not a crash.
+      logger.warning('WireGuard connect failed', e, stackTrace);
       throw VpnConnectException(e.toString());
     }
   }
@@ -98,7 +92,7 @@ class WireguardRepository extends BaseVpnRepository {
   @override
   Future<bool> disconnect() async {
     final status = await currentStatus();
-    if (status == VpnConnectionStatus.connected) {
+    if (stoppable(status)) {
       await _service.disconnect();
       return true;
     }
@@ -135,24 +129,20 @@ class WireguardRepository extends BaseVpnRepository {
             ? DateTime.fromMillisecondsSinceEpoch(stats.latestHandshake).toLocal()
             : null,
       );
-    } on MissingPluginException {
-      // No implementation on this platform — let the caller stop polling.
-      rethrow;
     } catch (e) {
+      // Rethrown rather than folded into the null above: "the platform
+      // reported nothing" and "the read failed" are different diagnoses, and
+      // callers map them to different outcomes. MissingPluginException rides
+      // the same path, which is how a poller learns to stop for good.
       logger.warning('Failed to read Wireguard tunnel statistics: $e');
-      return null;
+      rethrow;
     }
   }
 
   @override
   Future<void> removeTunnelConfiguration() async {
-    try {
-      await _service.removeTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName);
-      logger.info('Wireguard tunnel configuration removed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.removeTunnelConfiguration(bundleId: Env.bundleId, tunnelName: Env.tunnelName);
+    logger.info('Wireguard tunnel configuration removed');
   }
 
   @override
@@ -167,47 +157,37 @@ class WireguardRepository extends BaseVpnRepository {
     required String dnsAddress,
     String? targetIp,
   }) async {
-    try {
-      final key = await _getWireguardKey();
-      final response = await apiService.fetchVpnConfig(
-        request: WireguardConnectRequest(
-          publicKey: key.publicKey,
-          countryOriginate: countryOriginate,
-          country: country,
-          city: city,
-          ipType: ipType,
-          resetConnection: resetConnection,
-          osType: Platform.operatingSystem,
-          userIntent: userIntent,
-          cluster: cluster,
-          dns: dnsAddress,
-          targetIp: targetIp,
-        ),
-      );
-      return VpnConfig.fromWireguard(response);
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    final key = await _getWireguardKey();
+    final response = await apiService.fetchVpnConfig(
+      request: WireguardConnectRequest(
+        publicKey: key.publicKey,
+        countryOriginate: countryOriginate,
+        country: country,
+        city: city,
+        ipType: ipType,
+        resetConnection: resetConnection,
+        osType: Platform.operatingSystem,
+        userIntent: userIntent,
+        cluster: cluster,
+        dns: dnsAddress,
+        targetIp: targetIp,
+      ),
+    );
+    return VpnConfig.fromWireguard(response);
   }
 
   @override
   Future<void> resetApp() async {
-    try {
-      if (!await isTunnelConfigured()) {
-        /// If tunnel is not configured, no need to reset the app
-        return;
-      }
-      if (Platform.isAndroid) {
-        return;
-      } else if (Platform.isWindows) {
-        await _regenerateWireguardKey();
-      } else {
-        await removeTunnelConfiguration();
-      }
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
+    if (!await isTunnelConfigured()) {
+      /// If tunnel is not configured, no need to reset the app
+      return;
+    }
+    if (Platform.isAndroid) {
+      return;
+    } else if (Platform.isWindows) {
+      await _regenerateWireguardKey();
+    } else {
+      await removeTunnelConfiguration();
     }
   }
 }

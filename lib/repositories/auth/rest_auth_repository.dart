@@ -75,62 +75,47 @@ class RestAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<TokenResponse> signInComplete({required TokenRequest tokenRequest}) async {
-    try {
-      return await signIn(tokenRequest);
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      // No wipe here: callers decide, and a garbled response is not a verdict.
-      _logger.handle(e, stackTrace);
-      rethrow;
-    }
-  }
+  // No wipe on failure: callers decide, and a garbled response is not a verdict.
+  Future<TokenResponse> signInComplete({required TokenRequest tokenRequest}) =>
+      signIn(tokenRequest);
 
   @override
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair}) async {
+    await removeLocalData();
+
+    Future<dio.Response<MagicLinkResponse>> request(String? origin) => _apiAuth.requestMagicLink(
+      magicLinkRequest: MagicLinkRequest(
+        email: email,
+        clientId: MagicLinkRequestClientIdEnum.app,
+        preferredOrigin: origin,
+        codeChallenge: pkcePair.codeChallenge,
+        codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
+      ),
+    );
+
+    final origin = await _preferredOrigin();
+    dio.Response<MagicLinkResponse> response;
     try {
-      await removeLocalData();
-
-      Future<dio.Response<MagicLinkResponse>> request(String? origin) => _apiAuth.requestMagicLink(
-        magicLinkRequest: MagicLinkRequest(
-          email: email,
-          clientId: MagicLinkRequestClientIdEnum.app,
-          preferredOrigin: origin,
-          codeChallenge: pkcePair.codeChallenge,
-          codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
-        ),
-      );
-
-      final origin = await _preferredOrigin();
-      dio.Response<MagicLinkResponse> response;
-      try {
-        response = await request(origin);
-      } on ApiException catch (e) {
-        final status = e.response?.statusCode;
-        if (origin == null || (status != 400 && status != 422)) {
-          rethrow;
-        }
-        // Origin may not be allow-listed yet; a link to the default beats no link.
-        _logger.warning('Magic link rejected with preferred origin $origin; retrying without');
-        response = await request(null);
+      response = await request(origin);
+    } on ApiException catch (e) {
+      final status = e.response?.statusCode;
+      if (origin == null || (status != 400 && status != 422)) {
+        rethrow;
       }
-      if (response.statusCode != 200) {
-        throw Exception('Login failed');
-      }
-
-      final result = response.data;
-      if (result == null || result.code == null) {
-        return null;
-      }
-
-      return result.code;
-    } on ApiException {
-      rethrow;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
+      // Origin may not be allow-listed yet; a link to the default beats no link.
+      _logger.warning('Magic link rejected with preferred origin $origin; retrying without');
+      response = await request(null);
     }
+    if (response.statusCode != 200) {
+      throw Exception('Login failed');
+    }
+
+    final result = response.data;
+    if (result == null || result.code == null) {
+      return null;
+    }
+
+    return result.code;
   }
 
   /// Reachable web-app origin for the magic link; null lets the backend use its default.
@@ -199,29 +184,23 @@ class RestAuthRepository extends AuthRepository {
         ),
       );
       return credential.identityToken!;
-    } catch (e, stackTrace) {
+    } catch (e) {
       if (e is SignInWithAppleAuthorizationException && e.code == AuthorizationErrorCode.canceled) {
         throw SignInAborted();
       }
-      _logger.handle(e, stackTrace);
       rethrow;
     }
   }
 
   @override
   Future<String> signInWithGoogle() async {
-    try {
-      if (!googleSignIn.supportsAuthenticate()) {
-        throw NotAvailableException();
-      }
-      final googleUser = await googleSignIn.authenticate(
-        scopeHint: ['https://www.googleapis.com/auth/userinfo.email'],
-      );
-      final googleAuth = googleUser.authentication;
-      return googleAuth.idToken!;
-    } catch (e, stackTrace) {
-      _logger.handle(e, stackTrace);
-      rethrow;
+    if (!googleSignIn.supportsAuthenticate()) {
+      throw NotAvailableException();
     }
+    final googleUser = await googleSignIn.authenticate(
+      scopeHint: ['https://www.googleapis.com/auth/userinfo.email'],
+    );
+    final googleAuth = googleUser.authentication;
+    return googleAuth.idToken!;
   }
 }

@@ -101,6 +101,26 @@ mixin _$NetworkStatisticsStore on _NetworkStatisticsStore, Store {
     });
   }
 
+  late final _$_statsIssueAtom = Atom(
+    name: '_NetworkStatisticsStore._statsIssue',
+    context: context,
+  );
+
+  String? get statsIssue {
+    _$_statsIssueAtom.reportRead();
+    return super._statsIssue;
+  }
+
+  @override
+  String? get _statsIssue => statsIssue;
+
+  @override
+  set _statsIssue(String? value) {
+    _$_statsIssueAtom.reportWrite(value, super._statsIssue, () {
+      super._statsIssue = value;
+    });
+  }
+
   late final _$_getTunnelStatisticsAsyncAction = AsyncAction(
     '_NetworkStatisticsStore._getTunnelStatistics',
     context: context,

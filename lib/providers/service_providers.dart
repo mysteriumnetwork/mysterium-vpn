@@ -14,6 +14,7 @@ import 'package:mysterium_vpn/common/interceptors/connection_errors.dart';
 import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
+import 'package:mysterium_vpn/common/interceptors/transport_errors.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -27,6 +28,7 @@ import 'package:mysterium_vpn/services/services.dart';
 import 'package:openvpn_dart/openvpn_dart.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:vless_dart/vless_dart.dart';
 import 'package:vpn_api/vpn_api.dart';
 import 'package:wireguard_dart/wireguard_dart.dart';
 
@@ -59,6 +61,7 @@ final inAppPurchasePOD = Provider((ref) => InAppPurchase.instance);
 
 final wireguardServicePOD = Provider((ref) => WireguardDart());
 final openVpnServicePOD = Provider((ref) => OpenVPNDart());
+final vlessServicePOD = Provider((ref) => VlessDart());
 
 final appLinksPOD = Provider((ref) => AppLinks());
 
@@ -90,6 +93,8 @@ final vpnApiDioPOD = Provider<Dio>((ref) {
       },
     ),
     RefreshTokenInterceptor(dio: dio, logger: logger),
+    // Ahead of the retries: re-types the aborts they would otherwise skip.
+    TransportErrorsInterceptor(),
     RetryRequestInterceptor(dio: dio),
     // Behind the retries: it rejects, which ends the chain before they run.
     ConnectionErrorsInterceptor(),
@@ -148,6 +153,8 @@ final notifierDioPOD = Provider<Dio>((ref) {
     logger: ref.watch(loggerPOD),
   );
   dio.interceptors.addAll([
+    // Ahead of the retries: re-types the aborts they would otherwise skip.
+    TransportErrorsInterceptor(),
     RetryRequestInterceptor(dio: dio),
     ConnectionErrorsInterceptor(),
     if (kDebugMode || Env.flavor == Flavor.dev) DioNetworkLoggerInterceptor(),
@@ -214,7 +221,7 @@ final externalNetworkServicePOD = Provider<NetworkService>((ref) {
     ref.watch(domainDiscoveryPOD),
     logger: ref.watch(loggerPOD),
   );
-  dio.interceptors.addAll([RetryRequestInterceptor(dio: dio)]);
+  dio.interceptors.addAll([TransportErrorsInterceptor(), RetryRequestInterceptor(dio: dio)]);
 
   return DioNetworkService(dio);
 });
@@ -295,7 +302,7 @@ final authServicePOD = Provider<AuthRepository>((ref) {
 /// Plain Talker. The Crashlytics-forwarding observer is attached later by
 /// AppInitializer; keeping it Firebase-free here lets the many providers
 /// that transitively watch loggerPOD be built before Firebase is up.
-final loggerPOD = Provider<Talker>((ref) => Talker());
+final loggerPOD = Provider<Talker>((ref) => Talker(settings: appTalkerSettings()));
 
 final remoteConfigClientPOD = Provider<ConfigCatClient>(
   (ref) => ConfigCatClient.get(

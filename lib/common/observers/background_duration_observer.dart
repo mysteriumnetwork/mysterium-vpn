@@ -27,6 +27,18 @@ mixin BackgroundDurationObserver on WidgetsBindingObserver {
   /// The app left the foreground. Only fires on the first non-`resumed` state.
   void onLeftForeground() {}
 
+  /// Seeds the clock for an observer registered after startup.
+  ///
+  /// No lifecycle callback is replayed on registration, so an observer added
+  /// from deferred init while the app is already backgrounded would look
+  /// foregrounded until a full cycle completes. Does not call
+  /// [onLeftForeground]: nothing was started yet, so there is nothing to undo.
+  void seedBackgroundState(AppLifecycleState? state) {
+    if (_backgroundedAt == null && state != null && state != AppLifecycleState.resumed) {
+      _backgroundedAt = clock();
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {

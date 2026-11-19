@@ -7,7 +7,7 @@ part 'vpn_config.freezed.dart';
 abstract class VpnConfig with _$VpnConfig {
   const factory VpnConfig({
     required String id,
-    required String config, // either wgConfig or ovpnConfig
+    required String config, // wgConfig, ovpnConfig, or a vless:// URI
     required String hash,
     String? exitIp,
     String? sessionId,
@@ -15,7 +15,7 @@ abstract class VpnConfig with _$VpnConfig {
     String? ipType,
     String? country,
     String? city,
-    String? type, // "wireguard" or "openvpn"
+    String? type, // "wireguard", "openvpn" or "vless"
   }) = _VpnConfig;
 
   /// Factory to map WireguardConnectResponse to VpnConfig
@@ -30,6 +30,22 @@ abstract class VpnConfig with _$VpnConfig {
     country: wg.country,
     city: wg.city,
     type: 'wireguard',
+  );
+
+  /// Factory to map VlessConnectResponse to VpnConfig
+  ///
+  /// `config` carries the raw `vless://` URI; vless_dart parses it.
+  factory VpnConfig.fromVless(VlessConnectResponse vless) => VpnConfig(
+    id: vless.id,
+    config: vless.vlessUri,
+    hash: vless.hash,
+    exitIp: vless.exitIp,
+    sessionId: vless.sessionId,
+    limitExceeded: vless.limitExceeded,
+    ipType: vless.ipType,
+    country: vless.country,
+    city: vless.city,
+    type: 'vless',
   );
 
   /// Factory to map OpenVpnConnectResponse to VpnConfig

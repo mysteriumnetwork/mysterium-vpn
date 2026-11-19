@@ -99,7 +99,7 @@ abstract class _AuthStore with Store {
   Future<void> initAuth() async {
     try {
       email = await _flow.lastLoggedInUser();
-      _appLinks.uriLinkStream.listen((appLink) async {
+      _appLinks.uriLinkStream.listenSafely(logger: _logger, context: 'Deep link', (appLink) async {
         if (_authSessionStore.isAuthenticated) {
           return;
         }

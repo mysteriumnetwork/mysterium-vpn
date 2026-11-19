@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
@@ -190,11 +192,11 @@ void main() {
       expect(sub.bonusDuration, isNull);
     });
 
-    test('rethrows arbitrary errors after logging', () async {
+    test('rethrows arbitrary errors without reporting them', () async {
       when(apiSubscription.subscriptionStatus()).thenThrow(Exception('boom'));
 
       await expectLater(service.fetchSubscriptionDetails(), throwsA(isA<Exception>()));
-      verify(logger.handle(any, any)).called(1);
+      verifyNever(logger.handle(any, any));
     });
   });
 
@@ -230,11 +232,196 @@ void main() {
       expect(await service.fetchPauseDurations(), ['1', '3', '6']);
     });
 
-    test('rethrows arbitrary errors after logging', () async {
+    test('rethrows arbitrary errors without reporting them', () async {
       when(apiSubscription.pauseDurations()).thenThrow(Exception('boom'));
 
       await expectLater(service.fetchPauseDurations(), throwsA(isA<Exception>()));
-      verify(logger.handle(any, any)).called(1);
+      verifyNever(logger.handle(any, any));
     });
   });
+
+  group('getProductsDetails intro offers', () {
+    late _RecordingRepository repo;
+
+    setUp(() {
+      repo = _RecordingRepository(
+        api: vpnApi,
+        inAppPurchase: inAppPurchase,
+        logger: logger,
+        secureStorage: MockSecureStorageService(),
+      );
+    });
+
+    api.SubscriptionConfigResponsePlansInner plan(String id) =>
+        api.SubscriptionConfigResponsePlansInner(
+          id: id,
+          appleProductId: id,
+          interval: api.SubscriptionConfigResponsePlansInnerInterval(
+            unit: api.SubscriptionConfigResponsePlansInnerIntervalUnitEnum.values.firstWhere(
+              (u) => u.value == 'month',
+            ),
+            amount: 1,
+          ),
+          price: api.SubscriptionConfigResponsePlansInnerPrice(USD: 0),
+          prices: const [],
+          supportedGateways: const ['apple'],
+          metadata: api.SubscriptionConfigResponsePlansInnerMetadata(),
+        );
+
+    api.SubscriptionConfigResponse configFor(List<String> ids) => api.SubscriptionConfigResponse(
+      gateways: const [],
+      plans: ids.map(plan).toList(),
+      countries: const [],
+      stripePublishableKey: '',
+      stripeReturnUrl: '',
+    );
+
+    const monthly = SK2SubscriptionPeriod(value: 1, unit: SK2SubscriptionPeriodUnit.month);
+
+    SK2SubscriptionOffer introOffer({double price = 5}) => SK2SubscriptionOffer(
+      price: price,
+      type: SK2SubscriptionOfferType.introductory,
+      period: monthly,
+      periodCount: 1,
+      paymentMode: SK2SubscriptionOfferPaymentMode.payAsYouGo,
+    );
+
+    AppStoreProduct2Details appleProduct(
+      String id, {
+      required String groupId,
+      List<SK2SubscriptionOffer> offers = const [],
+      double price = 10,
+    }) => AppStoreProduct2Details.fromSK2Product(
+      SK2Product(
+        id: id,
+        displayName: id,
+        description: id,
+        price: price,
+        displayPrice: '\$$price',
+        type: SK2ProductType.autoRenewable,
+        priceLocale: SK2PriceLocale(currencyCode: 'USD', currencySymbol: r'$'),
+        subscription: SK2SubscriptionInfo(
+          subscriptionGroupID: groupId,
+          promotionalOffers: offers,
+          subscriptionPeriod: monthly,
+        ),
+      ),
+    );
+
+    void stubStore(List<ProductDetails> products) {
+      when(inAppPurchase.queryProductDetails(any)).thenAnswer(
+        (_) async => ProductDetailsResponse(productDetails: products, notFoundIDs: const []),
+      );
+    }
+
+    test('resolves eligibility once for every plan in the same subscription group', () async {
+      stubStore([
+        appleProduct('plan_monthly', groupId: 'grp_1', offers: [introOffer()]),
+        appleProduct('plan_yearly', groupId: 'grp_1', offers: [introOffer()]),
+        appleProduct('plan_yearly_basic', groupId: 'grp_1', offers: [introOffer()]),
+      ]);
+
+      await repo.getProductsDetails(
+        configFor(['plan_monthly', 'plan_yearly', 'plan_yearly_basic']),
+        null,
+      );
+
+      expect(repo.eligibilityCalls, hasLength(1));
+    });
+
+    test('resolves eligibility once per subscription group', () async {
+      stubStore([
+        appleProduct('plan_monthly', groupId: 'grp_1', offers: [introOffer()]),
+        appleProduct('plan_yearly', groupId: 'grp_1', offers: [introOffer()]),
+        appleProduct('plan_lifetime', groupId: 'grp_2', offers: [introOffer()]),
+      ]);
+
+      await repo.getProductsDetails(
+        configFor(['plan_monthly', 'plan_yearly', 'plan_lifetime']),
+        null,
+      );
+
+      expect(repo.eligibilityCalls, hasLength(2));
+    });
+
+    test('skips the lookup entirely when a plan has no promotional offers', () async {
+      stubStore([appleProduct('plan_monthly', groupId: 'grp_1')]);
+
+      final details = await repo.getProductsDetails(configFor(['plan_monthly']), null);
+
+      expect(repo.eligibilityCalls, isEmpty);
+      expect(details.single.hasIntroductoryPrice, isFalse);
+    });
+
+    test('surfaces the introductory offer and price when the user is eligible', () async {
+      stubStore([
+        appleProduct('plan_yearly_basic', groupId: 'grp_1', offers: [introOffer()]),
+      ]);
+
+      final details = await repo.getProductsDetails(configFor(['plan_yearly_basic']), null);
+
+      expect(details.single.offers, hasLength(1));
+      expect(details.single.introductoryPrice, 5);
+      expect(details.single.hasIntroductoryPrice, isTrue);
+    });
+
+    test('hides the introductory offer and price when the user is not eligible', () async {
+      repo.eligible = false;
+      stubStore([
+        appleProduct('plan_yearly_basic', groupId: 'grp_1', offers: [introOffer()]),
+      ]);
+
+      final details = await repo.getProductsDetails(configFor(['plan_yearly_basic']), null);
+
+      expect(details.single.offers, isEmpty);
+      expect(details.single.hasIntroductoryPrice, isFalse);
+    });
+  });
+
+  group('isEligibleForIntroOffer', () {
+    test('returns false off Apple platforms without touching StoreKit', () async {
+      final repo = RestSubscriptionRepository(
+        api: vpnApi,
+        inAppPurchase: inAppPurchase,
+        logger: logger,
+        secureStorage: MockSecureStorageService(),
+        isApplePlatform: () => false,
+      );
+
+      expect(await repo.isEligibleForIntroOffer('plan_yearly_basic'), isFalse);
+      verifyNever(logger.warning(any));
+    });
+
+    test('reports a StoreKit failure as a warning, never as a handled crash', () async {
+      final repo = RestSubscriptionRepository(
+        api: vpnApi,
+        inAppPurchase: inAppPurchase,
+        logger: logger,
+        secureStorage: MockSecureStorageService(),
+        isApplePlatform: () => true,
+      );
+
+      expect(await repo.isEligibleForIntroOffer('plan_yearly_basic'), isFalse);
+      verify(logger.warning(any)).called(1);
+      verifyNever(logger.handle(any, any));
+    });
+  });
+}
+
+class _RecordingRepository extends RestSubscriptionRepository {
+  _RecordingRepository({
+    required super.api,
+    required super.inAppPurchase,
+    required super.logger,
+    required super.secureStorage,
+  });
+
+  final List<String> eligibilityCalls = [];
+  bool eligible = true;
+
+  @override
+  Future<bool> isEligibleForIntroOffer(String productId) async {
+    eligibilityCalls.add(productId);
+    return eligible;
+  }
 }

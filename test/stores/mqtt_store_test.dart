@@ -51,12 +51,37 @@ void main() {
     store.dispose();
   });
 
-  test('initStore logs and rethrows on subscription errors', () async {
+  // Callers discard initStore's future, so anything it throws becomes an
+  // unhandled error and is reported as a fatal crash.
+  test('initStore reports a failed subscription without throwing', () async {
     when(mqtt.subscribe('healthcheck')).thenThrow(Exception('mqtt down'));
 
     final store = newStore();
-    await expectLater(store.initStore(), throwsA(isA<Exception>()));
-    verify(logger.handle(any, any)).called(1);
+    await expectLater(store.initStore(), completes);
+
+    verify(logger.warning(any, any, any)).called(1);
+    verifyNever(logger.handle(any, any));
+  });
+
+  test('a malformed payload is reported and the subscription survives', () async {
+    final controller = StreamController<String>();
+    when(mqtt.subscribe('healthcheck')).thenAnswer((_) => controller.stream);
+
+    final store = newStore();
+    await store.initStore();
+
+    controller.add('not json at all');
+    await Future<void>.delayed(Duration.zero);
+
+    expect(store.lastHealthcheck, isNull);
+    verify(logger.warning(any, any, any)).called(1);
+
+    controller.add(jsonEncode({'status': 'ok', 'version': '1.0.0', 'sha': 'abc123'}));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(store.lastHealthcheck, isNotNull);
+    await controller.close();
+    store.dispose();
   });
 
   test('dispose cancels the active subscription', () async {

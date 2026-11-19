@@ -42,7 +42,7 @@ class AppInitializer {
   }
 
   late final ProviderContainer providerContainer;
-  Talker logger = Talker();
+  Talker logger = Talker(settings: appTalkerSettings());
 
   final Completer<void> _deferredInit = Completer<void>();
 

@@ -21,6 +21,15 @@ abstract class BaseVpnRepository implements VpnRepository {
   Future<bool> singleFlightTunnelCheck(Future<bool> Function() check) =>
       _tunnelCheck ??= check().whenComplete(() => _tunnelCheck = null);
 
+  /// Whether a teardown request should still reach the platform.
+  ///
+  /// `connecting` counts: the native profile keeps starting on its own, so a
+  /// switch or a revoked subscription that only stopped a `connected` tunnel
+  /// left the old one coming up after the teardown was asked for.
+  @protected
+  bool stoppable(VpnConnectionStatus status) =>
+      status == VpnConnectionStatus.connected || status == VpnConnectionStatus.connecting;
+
   /// Rate the VPN connection by sending the relevant data to the API.
   @override
   Future<void> rateConnection({
@@ -30,23 +39,18 @@ abstract class BaseVpnRepository implements VpnRepository {
     required String? reasons,
     required RateConnectionMode mode,
   }) async {
-    try {
-      await apiService.rateConnection(
-        request: RateConnectionRequest(
-          mode: switch (mode) {
-            RateConnectionMode.like => RateConnectionRequestModeEnum.like,
-            RateConnectionMode.dislike => RateConnectionRequestModeEnum.dislike,
-          },
-          reasons: reasons,
-          feedback: feedback,
-          country: country,
-          ipType: ipType,
-        ),
-      );
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await apiService.rateConnection(
+      request: RateConnectionRequest(
+        mode: switch (mode) {
+          RateConnectionMode.like => RateConnectionRequestModeEnum.like,
+          RateConnectionMode.dislike => RateConnectionRequestModeEnum.dislike,
+        },
+        reasons: reasons,
+        feedback: feedback,
+        country: country,
+        ipType: ipType,
+      ),
+    );
   }
 
   /// Notify the API that the user has disconnected from the VPN tunnel.

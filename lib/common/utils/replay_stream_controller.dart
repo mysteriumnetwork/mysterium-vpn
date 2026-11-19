@@ -1,6 +1,13 @@
 import 'dart:async';
 
 class ReplayStreamController<T> {
+  ReplayStreamController({this.maxBufferedEvents = 500});
+
+  /// The buffer only feeds the QA log overlay, so it is capped: analytics and
+  /// error reporting append to it for the life of the process, and an
+  /// unbounded list there is retained garbage on the reporting path.
+  final int maxBufferedEvents;
+
   final _buffer = <T>[];
   final _controller = StreamController<T>.broadcast();
 
@@ -14,6 +21,9 @@ class ReplayStreamController<T> {
   }
 
   void add(T event) {
+    if (_buffer.length >= maxBufferedEvents) {
+      _buffer.removeAt(0);
+    }
     _buffer.add(event);
     _controller.add(event);
   }

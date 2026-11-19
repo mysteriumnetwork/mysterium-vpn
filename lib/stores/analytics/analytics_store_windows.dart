@@ -49,7 +49,7 @@ abstract class _AnalyticsStoreWindows with AnalyticsStore, Store {
   @override
   @action
   Future<void> logEvent(AnalyticsEvent event, {Map<String, dynamic>? parameters}) async {
-    _session.logEvent(event.formattedName, parameters);
+    _session.logEvent(event.formattedName, ga4Parameters(parameters));
     super.logEvent(event, parameters: parameters).ignore();
   }
 

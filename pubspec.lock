@@ -298,7 +298,7 @@ packages:
     source: hosted
     version: "7.3.1"
   connectivity_plus_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: connectivity_plus_platform_interface
       sha256: "3c09627c536d22fd24691a905cdd8b14520de69da52c7a97499c8be5284a32ed"
@@ -2123,6 +2123,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
+  vless_dart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "0.3.0"
+      resolved-ref: c9c4c11ac8f9bb9ade085b00e74e6706bc9458ac
+      url: "https://github.com/mysteriumnetwork/vless_dart.git"
+    source: git
+    version: "0.3.0"
   vm_service:
     dependency: transitive
     description:
@@ -2240,8 +2249,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.9.17"
-      resolved-ref: b642e425b77d16dfa523364eb25ace8465818dde
+      ref: "0.9.18"
+      resolved-ref: "31c3f0d5f836de44683e4446b8a30f786db79078"
       url: "https://github.com/mysteriumnetwork/wireguard_dart.git"
     source: git
     version: "0.4.5"

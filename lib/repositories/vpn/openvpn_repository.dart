@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
@@ -31,17 +29,12 @@ class OpenVpnRepository extends BaseVpnRepository {
 
   @override
   Future<void> setupTunnel() async {
-    try {
-      await _service.setupTunnel();
-      logger.info('OpenVPN tunnel setup completed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.setupTunnel();
+    logger.info('OpenVPN tunnel setup completed');
   }
 
   @override
-  Future<void> connect({required String config}) async {
+  Future<void> connect({required String config, String? dnsAddress}) async {
     try {
       var finalConfig = config;
       if (Platform.isWindows) {
@@ -70,11 +63,12 @@ class OpenVpnRepository extends BaseVpnRepository {
               );
             },
           );
-    } on TimeoutException catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+    } on TimeoutException {
       rethrow;
     } catch (e, stackTrace) {
-      logger.handle(e, stackTrace);
+      // Wrapped below, which drops the stack — so this is the only place it
+      // survives. A node refusing a connection is expected, not a crash.
+      logger.warning('OpenVPN connect failed', e, stackTrace);
       throw VpnConnectException(e.toString());
     }
   }
@@ -82,7 +76,7 @@ class OpenVpnRepository extends BaseVpnRepository {
   @override
   Future<bool> disconnect() async {
     final status = await currentStatus();
-    if (status == VpnConnectionStatus.connected) {
+    if (stoppable(status)) {
       _service.disconnect();
       return true;
     }
@@ -111,25 +105,19 @@ class OpenVpnRepository extends BaseVpnRepository {
       }
       // OpenVPN has no handshake, so latestHandshake stays null.
       return TunnelStats(totalDownload: stats.totalDownload, totalUpload: stats.totalUpload);
-    } on MissingPluginException {
-      // No implementation on this platform — let the caller stop polling. The
-      // plugin currently maps this to null itself, so this is a contract guard.
-      rethrow;
     } catch (e) {
+      // Rethrown rather than folded into the null above, as WireGuard does:
+      // "the platform reported nothing" and "the read failed" are different
+      // diagnoses, and tunnel health records them as different outcomes.
       logger.warning('Failed to read OpenVPN tunnel statistics: $e');
-      return null;
+      rethrow;
     }
   }
 
   @override
   Future<void> removeTunnelConfiguration() async {
-    try {
-      await _service.removeTunnelConfiguration();
-      logger.info('OpenVPN tunnel configuration removed');
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    await _service.removeTunnelConfiguration();
+    logger.info('OpenVPN tunnel configuration removed');
   }
 
   @override
@@ -144,38 +132,28 @@ class OpenVpnRepository extends BaseVpnRepository {
     required String dnsAddress,
     String? targetIp,
   }) async {
-    try {
-      final response = await apiService.fetchOpenVpnConfig(
-        request: OpenVpnConnectRequest(
-          countryOriginate: countryOriginate,
-          country: country,
-          city: city,
-          ipType: ipType,
-          resetConnection: resetConnection,
-          osType: Platform.operatingSystem,
-          userIntent: userIntent,
-          cluster: cluster,
-          dns: dnsAddress,
-          targetIp: targetIp,
-        ),
-      );
-      return VpnConfig.fromOpenVpn(response);
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
-    }
+    final response = await apiService.fetchOpenVpnConfig(
+      request: OpenVpnConnectRequest(
+        countryOriginate: countryOriginate,
+        country: country,
+        city: city,
+        ipType: ipType,
+        resetConnection: resetConnection,
+        osType: Platform.operatingSystem,
+        userIntent: userIntent,
+        cluster: cluster,
+        dns: dnsAddress,
+        targetIp: targetIp,
+      ),
+    );
+    return VpnConfig.fromOpenVpn(response);
   }
 
   @override
   Future<void> resetApp() async {
-    try {
-      if (Platform.isAndroid || Platform.isWindows) {
-        return;
-      }
-      await removeTunnelConfiguration();
-    } catch (e) {
-      logger.handle(e);
-      rethrow;
+    if (Platform.isAndroid || Platform.isWindows) {
+      return;
     }
+    await removeTunnelConfiguration();
   }
 }

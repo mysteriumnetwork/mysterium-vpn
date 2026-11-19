@@ -397,6 +397,154 @@ void main() {
     });
   });
 
+  group('analytics parameters', () {
+    const offline = TunnelHealthSample(
+      tunnelled: (elapsed: null, ip: null, error: 'timeout'),
+      direct: (elapsed: null, ip: null, error: 'timeout'),
+      bypassVerified: false,
+      controlReachable: false,
+    );
+
+    Map<String, dynamic> captureParams(AnalyticsEvent event) =>
+        verify(analytics.logEvent(event, parameters: captureAnyNamed('parameters'))).captured.single
+            as Map<String, dynamic>;
+
+    test('no-network carries the same dimensions as degraded', () async {
+      stubProbe(offline);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthNoNetwork);
+      expect(params['protocol'], 'wireguard');
+      expect(params['ip_type'], 'datacenter');
+      expect(params['verdict'], 'noNetwork');
+      expect(params['connected'], isTrue);
+      expect(params['control_reachable'], isFalse);
+    });
+
+    test('an unconfirmed verdict records what the confirming probe saw', () async {
+      var call = 0;
+      when(anyProbe()).thenAnswer((_) async => call++ == 0 ? degraded : healthy);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthSuppressed);
+      expect(params['reason'], 'unconfirmed');
+      // Without this, a recovery and an inconclusive confirm are the same row.
+      expect(params['confirm_verdict'], 'healthy');
+    });
+
+    test('a first-probe suppression carries no confirming verdict', () async {
+      stubProbe(
+        const TunnelHealthSample(
+          tunnelled: (elapsed: null, ip: null, error: 'timeout'),
+          direct: (elapsed: Duration(milliseconds: 200), ip: '203.0.113.9', error: null),
+          bypassVerified: false,
+          controlReachable: true,
+        ),
+      );
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthSuppressed);
+      expect(params['reason'], 'bypassUnavailable');
+      expect(params.containsKey('confirm_verdict'), isFalse);
+      // Suppressed checks outnumber confirmed ones, so they need the same
+      // dimensions or the biggest bucket cannot be sliced at all.
+      expect(params['protocol'], 'wireguard');
+      expect(params['ip_type'], 'datacenter');
+    });
+
+    // An unreadable counter pair is what forces the degraded verdict, so the
+    // two have to be told apart in the data.
+    test('stats_read is false when the platform counters were unavailable', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      expect(captureParams(AnalyticsEvent.tunnelHealthDegraded)['stats_outcome'], 'null');
+    });
+
+    test('stats_outcome names a throwing read separately from an empty one', () async {
+      when(vpnStore.tunnelStatistics()).thenThrow(Exception('platform channel down'));
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      expect(captureParams(AnalyticsEvent.tunnelHealthDegraded)['stats_outcome'], 'error');
+    });
+
+    test('stats_outcome is ok when they were read', () async {
+      when(vpnStore.tunnelStatistics()).thenAnswer(
+        (_) async => TunnelStats(totalDownload: 10, totalUpload: 10, latestHandshake: now),
+      );
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthDegraded);
+      expect(params['stats_outcome'], 'ok');
+      expect(params['handshake_age_s'], 0);
+    });
+
+    // Matching a prompt to its verdict on timestamp breaks when the dialog
+    // waits in the queue, so all three events carry the same id instead.
+    test('the verdict and the prompt it raises share a prompt_id', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final degradedParams = captureParams(AnalyticsEvent.tunnelHealthDegraded);
+      store
+        ..onDialogShown(promptId: 1)
+        ..onAction(refreshed: true, promptId: 1);
+
+      expect(degradedParams['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthAction)['prompt_id'], 1);
+    });
+
+    // The epoch advances when a later resume diagnoses a replacement session,
+    // which can happen while an earlier dialog is still open. Its events must
+    // stay joined to the verdict that raised them, not to the newest one.
+    test('the prompt events use the id captured when the prompt was queued', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      store
+        ..degradationEpoch = 7
+        ..onDialogShown(promptId: 1)
+        ..onAction(refreshed: false, promptId: 1);
+
+      expect(captureParams(AnalyticsEvent.tunnelHealthDialogShown)['prompt_id'], 1);
+      expect(captureParams(AnalyticsEvent.tunnelHealthAction)['prompt_id'], 1);
+    });
+
+    // A second verdict for a session already claimed raises no prompt, so
+    // tagging it would point at a dialog that never describes it.
+    test('a verdict that raises no prompt carries no prompt_id', () async {
+      stubProbe(degraded);
+      final store = build();
+      await resumeAfter(store, const Duration(minutes: 10));
+      clearInteractions(analytics);
+      await resumeAfter(store, const Duration(minutes: 10));
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthDegraded);
+      expect(params.containsKey('prompt_id'), isFalse);
+    });
+
+    // A prompt with no action to offer would otherwise look like a user who
+    // was offered a refresh and declined it.
+    test('the dialog event records whether a refresh was offered', () async {
+      when(vpnStore.connectedIpPoolCount).thenReturn(1);
+      build().onDialogShown(promptId: 1);
+
+      final params = captureParams(AnalyticsEvent.tunnelHealthDialogShown);
+      expect(params['can_refresh'], isFalse);
+    });
+  });
+
   group('refresh availability', () {
     test('an unknown pool size still offers a refresh', () {
       when(vpnStore.connectedIpPoolCount).thenReturn(0);
@@ -499,7 +647,7 @@ void main() {
       final store = build();
 
       await resumeAfter(store, const Duration(minutes: 10));
-      store.onDialogShown();
+      store.onDialogShown(promptId: 1);
       await resumeAfter(store, const Duration(minutes: 10));
 
       expect(store.degradationEpoch, 1);

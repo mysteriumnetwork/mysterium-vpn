@@ -13,8 +13,12 @@ class ConnectionStatusBar extends HookConsumerWidget {
     final vpnStore = ref.watch(vpnStorePOD);
     final connectionStatus = useComputedValue(() => vpnStore.vpnStatus);
     final isFetchingConfig = useComputedValue(() => vpnStore.isFetchingConfig);
+    final isDisconnecting = useComputedValue(() => vpnStore.isDisconnecting);
 
-    final status = connectionStatus.toBarStatus(isFetchingConfig: isFetchingConfig);
+    final status = connectionStatus.toBarStatus(
+      isFetchingConfig: isFetchingConfig,
+      isDisconnecting: isDisconnecting,
+    );
     return ConnectionBar(label: status.localizedLabel, status: status);
   }
 }

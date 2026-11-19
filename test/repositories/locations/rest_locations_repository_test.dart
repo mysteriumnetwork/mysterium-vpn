@@ -9,7 +9,6 @@ import 'package:mysterium_vpn/models/models.dart' hide Response;
 import 'package:mysterium_vpn/repositories/repositories.dart';
 import 'package:mysterium_vpn/services/data/storage.dart';
 import 'package:mysterium_vpn/services/services.dart';
-import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 import 'rest_locations_repository_test.mocks.dart';
@@ -17,17 +16,15 @@ import 'rest_locations_repository_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<Connection>(),
   MockSpec<LocalDBService>(),
-  MockSpec<Talker>(unsupportedMembers: {#configure}),
   MockSpec<AuthSessionGateway>(),
 ])
 void main() {
   late MockConnection connection;
   late MockLocalDBService db;
-  late MockTalker logger;
   late MockAuthSessionGateway session;
 
   RestLocationsRepository build() =>
-      RestLocationsRepository(connection: connection, db: db, logger: logger, session: session);
+      RestLocationsRepository(connection: connection, db: db, session: session);
 
   ConnectionLocation country(String code) => ConnectionLocation(
     country: code,
@@ -46,7 +43,6 @@ void main() {
   setUp(() {
     connection = MockConnection();
     db = MockLocalDBService();
-    logger = MockTalker();
     session = MockAuthSessionGateway();
     when(session.isAuthenticated).thenReturn(true);
     when(db.setLocations(any, type: anyNamed('type'))).thenAnswer((_) async {});
@@ -82,7 +78,7 @@ void main() {
       verifyNever(db.setLocations(any, type: anyNamed('type')));
     });
 
-    test('rethrows an ApiException without logging it as a failure', () async {
+    test('rethrows an ApiException and leaves the cache untouched', () async {
       when(connection.connectionLocations(ipType: anyNamed('ipType'))).thenThrow(
         ApiException(
           RequestOptions(),
@@ -95,7 +91,6 @@ void main() {
       );
 
       await expectLater(build().fetch(IPType.datacenter), throwsA(isA<ApiException>()));
-      verifyNever(logger.handle(any));
       verifyNever(db.setLocations(any, type: anyNamed('type')));
     });
 
