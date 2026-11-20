@@ -219,7 +219,15 @@ enum AnalyticsEvent {
   termsAcceptanceTermsOpened,
   termsAcceptanceClicked,
   termsAcceptanceSuccess,
-  termsAcceptanceError;
+  termsAcceptanceError,
+  // Signed domain discovery. Reported on state transitions, never per request:
+  // a block opens an episode, a recovery closes it. Parameters carry hosts
+  // only — never a path, query or token.
+  domainBlockDetected,
+  domainFailoverSucceeded,
+  domainFailoverExhausted,
+  domainDiscoveryRecovered,
+  domainDiscoveryUnavailable;
 
   String get formattedName => name.toSnakeCase;
 }

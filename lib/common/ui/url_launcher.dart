@@ -13,9 +13,17 @@ import 'package:url_launcher/url_launcher.dart';
 /// Analytics store for ref-less utils; set at app init (mirrors [snackbarKey]).
 AnalyticsStore? analyticsStoreRef;
 
+/// Resolves a web-app URL to one that is actually reachable; set at app init.
 Future<Uri> Function(Uri)? webUrlResolver;
 
+/// Reports that the URL really opened for a web-app link failed to load, so
+/// the next resolution can pick something else.
+Future<void> Function(Uri original, Uri target)? webUrlFailureReporter;
+
 Future<Uri> resolveWebUrl(Uri uri) async => await webUrlResolver?.call(uri) ?? uri;
+
+Future<void> reportWebUrlFailure(Uri original, Uri target) async =>
+    webUrlFailureReporter?.call(original, target);
 
 /// Drops query params (may hold secrets like `access_token`) for analytics.
 String sanitizeRedirectUrl(Uri url) =>

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cryptography/cryptography.dart';
 import 'package:dio/dio.dart';
 import 'package:json_canonicalizer/json_canonicalizer.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/discovery/discovery_config.dart';
 import 'package:mysterium_vpn/services/discovery/discovery_verifier.dart';
 import 'package:mysterium_vpn/services/discovery/domain_discovery.dart';
@@ -38,6 +39,14 @@ ResponseBody jsonResponse(String body, [int status = 200]) => ResponseBody.fromS
   },
 );
 
+ResponseBody htmlResponse(String body, [int status = 403]) => ResponseBody.fromString(
+  body,
+  status,
+  headers: {
+    Headers.contentTypeHeader: ['text/html; charset=utf-8'],
+  },
+);
+
 class DiscoveryTestAdapter implements HttpClientAdapter {
   DiscoveryTestAdapter(this.handler);
   final Future<ResponseBody> Function(RequestOptions, Stream<Uint8List>?) handler;
@@ -65,6 +74,9 @@ DomainDiscovery testDiscovery(
   Map<String, String>? storage,
   DateTime Function()? now,
   Talker? logger,
+  Future<bool> Function()? online,
+  DiscoveryTuning Function()? tuning,
+  DiscoveryReporter? report,
 }) {
   final values = storage ?? <String, String>{};
   final dio = Dio()..httpClientAdapter = adapter;
@@ -76,6 +88,9 @@ DomainDiscovery testDiscovery(
     },
     client: dio,
     logger: logger,
+    online: online,
+    tuning: tuning,
+    report: report,
     verifier: testVerifier,
     now: now,
     browserHosts: {appHost},

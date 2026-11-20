@@ -4,7 +4,9 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
+import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/discovery/discovery_adapter.dart';
 import 'package:talker/talker.dart';
 
@@ -81,12 +83,19 @@ void main() {
   });
 
   test('idempotent requests fail over on blocking and server responses', () async {
-    for (final status in [403, 451, 503]) {
+    // 451 is unambiguous whatever the body; 403 and 5xx only count as blocking
+    // when the body is not the JSON our own backend answers with.
+    final blocking = <ResponseBody Function()>[
+      () => jsonResponse('{}', 451),
+      () => htmlResponse('<html>blocked</html>'),
+      () => htmlResponse('<html>bad gateway</html>', 503),
+    ];
+    for (final blocked in blocking) {
       final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
       final discovery = testDiscovery(source);
       addTearDown(discovery.close);
       final transport = DiscoveryTestAdapter(
-        (request, _) async => jsonResponse('{}', request.uri.host == apiHost ? status : 200),
+        (request, _) async => request.uri.host == apiHost ? blocked() : jsonResponse('{}'),
       );
       final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
       expect((await dio.get<Object?>('https://$apiHost/api/v1/test')).statusCode, 200);
@@ -185,10 +194,123 @@ void main() {
       throwsA(isA<DioException>()),
     );
     expect(source.calls, isEmpty);
-    final unrelated = DiscoveryTestAdapter((_, _) async => jsonResponse('{}', 503));
+    // Non-JSON, so it counts as blocking and does reach the refresh path: the
+    // point here is that an unmapped host is still never rewritten.
+    final unrelated = DiscoveryTestAdapter(
+      (_, _) async => htmlResponse('<html>gateway</html>', 503),
+    );
     dio.httpClientAdapter = DiscoveryAdapter(unrelated, discovery);
     await expectLater(dio.get<Object?>('https://other.example/test'), throwsA(isA<DioException>()));
     expect(source.calls.length, 1);
     expect(unrelated.calls.map((request) => request.uri.host), ['other.example']);
+  });
+
+  test('a JSON 403 is the backend answering, not a censor', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source);
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter((_, _) async => jsonResponse('{"error":"denied"}', 403));
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    final response = await dio.get<Object?>(
+      'https://$apiHost/api/v1/test',
+      options: Options(validateStatus: (_) => true),
+    );
+
+    expect(response.statusCode, 403);
+    expect(transport.calls.length, 1);
+    // An authorization failure must not put the domain in cooldown.
+    expect(discovery.degraded, isFalse);
+  });
+
+  test('an HTML 403 is a block page and fails over', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source);
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async => request.uri.host == apiHost
+          ? htmlResponse('<html>blocked by your provider</html>')
+          : jsonResponse('{"ok":true}'),
+    );
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    expect((await dio.get<Object?>('https://$apiHost/api/v1/test')).statusCode, 200);
+
+    expect(transport.calls.length, 2);
+    expect(discovery.degraded, isTrue);
+  });
+
+  test('a receive timeout fails over without calling the domain blocked', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source);
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter((request, _) async {
+      if (request.uri.host == apiHost) {
+        throw DioException.receiveTimeout(
+          timeout: const Duration(seconds: 1),
+          requestOptions: request,
+        );
+      }
+      return jsonResponse('{"ok":true}');
+    });
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    expect((await dio.get<Object?>('https://$apiHost/api/v1/test')).statusCode, 200);
+
+    // Still worth trying elsewhere, but a slow connection is not a block: it
+    // must not cost every later link tap a probe.
+    expect(transport.calls.length, 2);
+    expect(discovery.degraded, isFalse);
+  });
+
+  test('the kill switch stops the adapter failing over or fetching config', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source, tuning: () => const DiscoveryTuning(enabled: false));
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async => request.uri.host == apiHost
+          ? htmlResponse('<html>blocked</html>')
+          : jsonResponse('{"ok":true}'),
+    );
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    final response = await dio.get<Object?>(
+      'https://$apiHost/api/v1/test',
+      options: Options(validateStatus: (_) => true),
+    );
+
+    expect(response.statusCode, 403);
+    expect(transport.calls.map((it) => it.uri.host), [apiHost]);
+    expect(source.calls, isEmpty);
+  });
+
+  test('exhausting every domain is reported, a non-replayable request is not', () async {
+    final events = <AnalyticsEvent>[];
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source, report: (event, _) => events.add(event));
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async => htmlResponse('<html>blocked</html>'),
+    );
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    await dio.get<Object?>(
+      'https://$apiHost/api/v1/test',
+      options: Options(validateStatus: (_) => true),
+    );
+
+    expect(events, contains(AnalyticsEvent.domainFailoverExhausted));
+    expect(events.where((it) => it == AnalyticsEvent.domainFailoverExhausted).length, 1);
+
+    events.clear();
+    // Retries are off, so the request stops after one domain: candidates were
+    // never exhausted and reporting it that way would be a lie.
+    await dio.post<Object?>(
+      'https://$apiHost/api/v1/test',
+      data: {'a': 1},
+      options: Options(validateStatus: (_) => true)..disableRetry = true,
+    );
+
+    expect(events, isNot(contains(AnalyticsEvent.domainFailoverExhausted)));
   });
 }

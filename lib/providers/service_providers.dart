@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:configcat_client/configcat_client.dart';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +16,7 @@ import 'package:mysterium_vpn/common/interceptors/refresh_token.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/common/interceptors/test_flags_interceptor.dart';
 import 'package:mysterium_vpn/common/interceptors/transport_errors.dart';
+import 'package:mysterium_vpn/common/ui/url_launcher.dart';
 import 'package:mysterium_vpn/common/utils/utils.dart';
 import 'package:mysterium_vpn/debug/network_logger/dio_network_logger_interceptor.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -45,9 +47,13 @@ final domainDiscoveryPOD = Provider<DomainDiscovery>((ref) {
     logger: ref.watch(loggerPOD),
     read: prefs.getString,
     write: prefs.setString,
-    browserHosts: {
-      Uri.parse(Env.webAppUrl.contains('://') ? Env.webAppUrl : 'https://${Env.webAppUrl}').host,
-    },
+    // read, not watch: watching would tear down this service and all three
+    // Dio instances built on it if the config store were ever invalidated.
+    tuning: () => ref.read(remoteConfigStorePOD).domainDiscoveryConfig,
+    online: () async => (await Connectivity().checkConnectivity()).hasConnectivity,
+    report: (event, parameters) =>
+        analyticsStoreRef?.logEvent(event, parameters: parameters).ignore(),
+    browserHosts: {Env.webAppUri.host},
   );
   ref.onDispose(discovery.close);
   return discovery;

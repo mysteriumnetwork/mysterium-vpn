@@ -82,7 +82,9 @@ class AppInitializer {
 
     // Expose the analytics store to ref-less utils (e.g. openUrlLink).
     analyticsStoreRef = providerContainer.read(analyticsStorePOD);
-    webUrlResolver = providerContainer.read(domainDiscoveryPOD).resolveBrowserUrl;
+    final discovery = providerContainer.read(domainDiscoveryPOD);
+    webUrlResolver = discovery.resolveBrowserUrl;
+    webUrlFailureReporter = discovery.recordBrowserFailure;
 
     // Firebase runs past the first frame; the splash awaits via
     // deferredInitFuturePOD.
@@ -104,6 +106,9 @@ class AppInitializer {
     // Fire-and-forget: `localizationRevision` repaints the tree when they land.
     unawaited(_updateLocalizelyTranslations());
     unawaited(_migrateSecureStorage());
+    // Past the first frame and never awaited: a blocked web host has no other
+    // signal, but checking for one must not sit in front of anything.
+    unawaited(providerContainer.read(domainDiscoveryPOD).warmBrowserHosts());
     try {
       firebaseInitMs = await _initFirebaseSDK();
       await _onFirebaseReady();

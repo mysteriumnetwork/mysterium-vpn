@@ -946,6 +946,75 @@ void main() {
     });
   });
 
+  group('RemoteConfigStore.domainDiscoveryConfig', () {
+    void expectDefaults(DiscoveryTuning tuning) {
+      expect(tuning.enabled, isTrue);
+      expect(tuning.checkInterval, const Duration(minutes: 30));
+      expect(tuning.cooldown, const Duration(minutes: 30));
+      expect(tuning.refreshInterval, const Duration(hours: 1));
+    }
+
+    test('returns defaults when the key is absent — discovery ships on', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer((_) async => {});
+      await store.configFuture;
+      expectDefaults(store.domainDiscoveryConfig);
+    });
+
+    test('reads every field from a full payload', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          'domainDiscoveryConfig':
+              '{"enabled":false,"checkIntervalMinutes":5,"cooldownMinutes":10,'
+              '"refreshIntervalMinutes":15}',
+        },
+      );
+      await store.configFuture;
+      final tuning = store.domainDiscoveryConfig;
+      expect(tuning.enabled, isFalse);
+      expect(tuning.checkInterval, const Duration(minutes: 5));
+      expect(tuning.cooldown, const Duration(minutes: 10));
+      expect(tuning.refreshInterval, const Duration(minutes: 15));
+    });
+
+    test('each wrong-typed field falls back on its own', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          'domainDiscoveryConfig':
+              '{"enabled":"no","checkIntervalMinutes":"5","cooldownMinutes":true,'
+              '"refreshIntervalMinutes":1.5}',
+        },
+      );
+      await store.configFuture;
+      expectDefaults(store.domainDiscoveryConfig);
+    });
+
+    test('out-of-range intervals fall back, and a zero check interval does not', () async {
+      store = createStore();
+      when(client.getAllValues()).thenAnswer(
+        (_) async => {
+          'domainDiscoveryConfig':
+              '{"checkIntervalMinutes":0,"cooldownMinutes":-5,"refreshIntervalMinutes":2000}',
+        },
+      );
+      await store.configFuture;
+      final tuning = store.domainDiscoveryConfig;
+      expect(tuning.checkInterval, Duration.zero);
+      expect(tuning.cooldown, const Duration(minutes: 30));
+      expect(tuning.refreshInterval, const Duration(hours: 1));
+    });
+
+    test('an undecodable payload yields the defaults', () async {
+      store = createStore();
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'domainDiscoveryConfig': 'not json at all'});
+      await store.configFuture;
+      expectDefaults(store.domainDiscoveryConfig);
+    });
+  });
+
   group('RemoteConfigStore.tunnelHealthConfig', () {
     void expectDefaults(TunnelHealthConfig config) {
       expect(config.enabled, isFalse);

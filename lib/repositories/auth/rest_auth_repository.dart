@@ -45,7 +45,14 @@ class RestAuthRepository extends AuthRepository {
 
   Future<void> _init() async {
     _ensureInitialized = Platform.isWindows ? Future.value() : googleSignIn.initialize();
-    await _ensureInitialized;
+    try {
+      await _ensureInitialized;
+    } catch (e) {
+      // Nothing awaits this constructor, so an unhandled rejection here takes
+      // down the zone. The same future is awaited by signInWithGoogle, which is
+      // where a missing Google platform actually matters.
+      _logger.warning('Google Sign-In initialisation failed: $e');
+    }
   }
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
@@ -119,13 +126,18 @@ class RestAuthRepository extends AuthRepository {
   }
 
   /// Reachable web-app origin for the magic link; null lets the backend use its default.
+  ///
+  /// Null is also the answer when discovery hands back the origin the backend
+  /// already defaults to, so an unblocked user sends exactly the request they
+  /// sent before this existed.
   Future<String?> _preferredOrigin() async {
     final resolve = _resolveWebUrl;
     if (resolve == null || Env.webAppUrl.isEmpty) {
       return null;
     }
     try {
-      return (await resolve(Uri.https(Env.webAppUrl))).origin;
+      final resolved = (await resolve(Env.webAppUri)).origin;
+      return resolved == Env.webAppUri.origin ? null : resolved;
     } catch (e, stackTrace) {
       _logger.warning(
         'Resolving the web app origin failed; using the backend default',

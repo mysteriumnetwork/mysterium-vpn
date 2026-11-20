@@ -33,6 +33,22 @@ void main() {
     );
   });
 
+  test('the bundled production config is not about to expire', () async {
+    final source = File('test/services/discovery/fixtures/production.json').readAsStringSync();
+    final config = await DiscoveryConfig.parse(source, allowExpired: true);
+
+    final left = config.expiresAt.difference(DateTime.now());
+
+    expect(
+      left,
+      greaterThan(const Duration(days: 30)),
+      reason:
+          'the signed discovery config expires in ${left.inDays} days. Re-sign and republish it, '
+          'then refresh test/services/discovery/fixtures/production.json — once it lapses, new '
+          'installs get no failover at all.',
+    );
+  });
+
   test('matches Python jcs canonical bytes and signature across Unicode and numbers', () async {
     final fixture = jsonDecode(
       File('test/services/discovery/fixtures/python-jcs.json').readAsStringSync(),
