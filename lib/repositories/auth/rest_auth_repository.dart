@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/env.dart';
@@ -20,8 +21,10 @@ class RestAuthRepository extends AuthRepository {
     required Talker logger,
     required SecureStorageService securedStorage,
     required LocalDBService localDb,
+    Future<Uri> Function(Uri)? resolveWebUrl,
   }) : _securedStorage = securedStorage,
        _localDb = localDb,
+       _resolveWebUrl = resolveWebUrl,
        _apiAuth = api.getAuthentication(),
        _networkService = networkService,
        _authSession = authSession,
@@ -35,13 +38,21 @@ class RestAuthRepository extends AuthRepository {
   final AuthSessionGateway _authSession;
   final SecureStorageService _securedStorage;
   final LocalDBService _localDb;
+  final Future<Uri> Function(Uri)? _resolveWebUrl;
   final Talker _logger;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   late final Future<void> _ensureInitialized;
 
   Future<void> _init() async {
     _ensureInitialized = Platform.isWindows ? Future.value() : googleSignIn.initialize();
-    await _ensureInitialized;
+    try {
+      await _ensureInitialized;
+    } catch (e) {
+      // Nothing awaits this constructor, so an unhandled rejection here takes
+      // down the zone. The same future is awaited by signInWithGoogle, which is
+      // where a missing Google platform actually matters.
+      _logger.warning('Google Sign-In initialisation failed: $e');
+    }
   }
 
   // TODO(Waldz): Fix schema for this endpoint (JSON encoding needed)
@@ -79,14 +90,29 @@ class RestAuthRepository extends AuthRepository {
   Future<String?> signInWithEmail({required String email, required PkcePair pkcePair}) async {
     await removeLocalData();
 
-    final response = await _apiAuth.requestMagicLink(
+    Future<dio.Response<MagicLinkResponse>> request(String? origin) => _apiAuth.requestMagicLink(
       magicLinkRequest: MagicLinkRequest(
         email: email,
         clientId: MagicLinkRequestClientIdEnum.app,
+        preferredOrigin: origin,
         codeChallenge: pkcePair.codeChallenge,
         codeChallengeMethod: MagicLinkRequestCodeChallengeMethodEnum.s256,
       ),
     );
+
+    final origin = await _preferredOrigin();
+    dio.Response<MagicLinkResponse> response;
+    try {
+      response = await request(origin);
+    } on ApiException catch (e) {
+      final status = e.response?.statusCode;
+      if (origin == null || (status != 400 && status != 422)) {
+        rethrow;
+      }
+      // Origin may not be allow-listed yet; a link to the default beats no link.
+      _logger.warning('Magic link rejected with preferred origin $origin; retrying without');
+      response = await request(null);
+    }
     if (response.statusCode != 200) {
       throw Exception('Login failed');
     }
@@ -97,6 +123,29 @@ class RestAuthRepository extends AuthRepository {
     }
 
     return result.code;
+  }
+
+  /// Reachable web-app origin for the magic link; null lets the backend use its default.
+  ///
+  /// Null is also the answer when discovery hands back the origin the backend
+  /// already defaults to, so an unblocked user sends exactly the request they
+  /// sent before this existed.
+  Future<String?> _preferredOrigin() async {
+    final resolve = _resolveWebUrl;
+    if (resolve == null || Env.webAppUrl.isEmpty) {
+      return null;
+    }
+    try {
+      final resolved = (await resolve(Env.webAppUri)).origin;
+      return resolved == Env.webAppUri.origin ? null : resolved;
+    } catch (e, stackTrace) {
+      _logger.warning(
+        'Resolving the web app origin failed; using the backend default',
+        e,
+        stackTrace,
+      );
+      return null;
+    }
   }
 
   @override

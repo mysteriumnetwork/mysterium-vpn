@@ -3,6 +3,7 @@ export './converters//lat_lng_converter.dart';
 export 'auth_user.dart';
 export 'config_cat_user_custom.dart';
 export 'connection_request.dart';
+export 'discovery_tuning.dart';
 export 'extra_duration.dart';
 export 'favorite_ip.dart';
 export 'gateway.dart';

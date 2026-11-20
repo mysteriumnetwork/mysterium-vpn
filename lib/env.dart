@@ -123,6 +123,12 @@ abstract class Env {
     };
   }
 
+  /// [webAppUrl] as a URI. The dart-define is normally a bare host, but it is
+  /// tolerated with a scheme so every caller derives the same origin.
+  static final Uri webAppUri = Uri.parse(
+    webAppUrl.contains('://') ? webAppUrl : 'https://$webAppUrl',
+  );
+
   static String stringify() =>
       'baseUrl: $baseUrl, webAppUrl: $webAppUrl, sentryDsn: $sentryDsn, manageSubscriptionPage: $manageSubscriptionPage, upgradeSubscriptionPage: $upgradeSubscriptionPage, cancelSubscriptionPage: $cancelSubscriptionPage, accountName: $accountName, appName: $appName, appleClientId: $appleClientId, appleRedirectUri: $appleRedirectUri, tunnelName: $tunnelName, remoteConfigSdkKey: $remoteConfigSdkKey, abTestingSdkKey: $abTestingSdkKey, textsSdkKey: $textsSdkKey, measurementId: $measurementId, apiSecret: $apiSecret, isAutomated: $isAutomated, openVpnExtensionId: $openVpnExtensionId, openVpnExtensionName: $openVpnExtensionName, manageDevicesPage: $manageDevicesPage, flavor: ${flavor.name}, notifierBaseUrl: $notifierBaseUrl, localizelyDistributionId: $localizelyDistributionId';
 

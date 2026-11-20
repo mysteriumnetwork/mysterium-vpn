@@ -93,6 +93,7 @@
         },
         {
             "name": "Windows-debug-prod",
+            "deviceId": "windows",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
@@ -108,6 +109,7 @@
         },
         {
             "name": "Windows-debug-test",
+            "deviceId": "windows",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
@@ -123,6 +125,7 @@
         },
         {
             "name": "Windows-profile",
+            "deviceId": "windows",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
@@ -138,6 +141,7 @@
         },
         {
             "name": "Windows-release",
+            "deviceId": "windows",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",

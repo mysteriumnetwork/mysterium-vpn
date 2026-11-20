@@ -50,6 +50,41 @@ const _iosNavigationCancelled = -999;
 ///
 /// Shared by every in-app webview so the chrome, the loading overlay and the
 /// safe-area handling live in one place.
+/// Keeps a hosted page pointed at a domain that actually loads.
+///
+/// The widget only ever knows the URL it was handed, while the one that really
+/// loaded may be a discovery fallback. Both are needed: failures are recorded
+/// against the original's origin, which is the key the ranking reads back.
+class WebViewTarget {
+  WebViewTarget(this.original);
+
+  /// The URL the caller asked for.
+  final Uri original;
+
+  /// The URL last loaded, which may be a fallback. Null until first resolved.
+  Uri? current;
+
+  Future<void>? _reported;
+
+  /// The URL to load now, waiting on any failure report still in flight.
+  ///
+  /// The wait is the point: resolving before the report lands reads state it
+  /// has not written yet and picks the same dead host again.
+  Future<Uri> resolve() async {
+    final reported = _reported;
+    _reported = null;
+    await reported;
+    return current = await resolveWebUrl(original);
+  }
+
+  /// Reports whatever failed, without resolving — the user may close the page
+  /// rather than retry, and probing for a replacement nobody asked for can cost
+  /// a config fetch and several seconds of health checks.
+  ///
+  /// Coalesced: repeated errors join the report already in flight.
+  void recover() => _reported ??= reportWebUrlFailure(original, current ?? original);
+}
+
 class InAppWebViewScreen extends HookWidget {
   const InAppWebViewScreen({
     required this.uri,
@@ -79,6 +114,8 @@ class InAppWebViewScreen extends HookWidget {
     final pageTitle = useState('');
     final closed = useRef(false);
 
+    final target = useMemoized(() => WebViewTarget(uri));
+
     final controller = useMemoized(() {
       final controller = WebViewController();
       controller
@@ -93,6 +130,9 @@ class InAppWebViewScreen extends HookWidget {
                   (error.isForMainFrame ?? true) && error.errorCode != _iosNavigationCancelled;
               if (fatal) {
                 load.value = _Load.failed;
+                // Free signal: the page we actually opened is unreachable, so
+                // tell discovery before the user asks for anything else.
+                target.recover();
               }
             },
             onPageFinished: (url) async {
@@ -120,8 +160,12 @@ class InAppWebViewScreen extends HookWidget {
               }
             },
           ),
-        )
-        ..loadRequest(uri);
+        );
+      target.resolve().then((resolved) async {
+        if (context.mounted) {
+          await controller.loadRequest(resolved);
+        }
+      }).ignore();
       return controller;
     });
 
@@ -151,9 +195,14 @@ class InAppWebViewScreen extends HookWidget {
                         child: Center(
                           child: load.value == _Load.failed
                               ? _LoadFailed(
-                                  onRetry: () {
+                                  onRetry: () async {
                                     load.value = _Load.loading;
-                                    controller.reload();
+                                    // Reloading would refetch the same dead
+                                    // host; resolve again instead.
+                                    final next = await target.resolve();
+                                    if (context.mounted) {
+                                      await controller.loadRequest(next);
+                                    }
                                   },
                                 )
                               : const LoadingIndicator(),

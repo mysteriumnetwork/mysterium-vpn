@@ -56,6 +56,50 @@ void main() {
     });
   });
 
+  group('openUrlLink discovery resolution', () {
+    tearDown(() {
+      webUrlResolver = null;
+      analyticsStoreRef = null;
+    });
+
+    test('opens the resolved URL, not the one it was handed', () async {
+      final launcher = installFakeUrlLauncher();
+      webUrlResolver = (uri) async => uri.replace(host: 'unblocked-app.mysteriumvpn.com');
+
+      await openUrlLink(
+        Uri.parse('https://app.mysteriumvpn.com/account'),
+        source: RedirectSource.external,
+      );
+
+      expect(launcher.launchedUrl, 'https://unblocked-app.mysteriumvpn.com/account');
+    });
+
+    test('reports the resolved target to analytics', () async {
+      installFakeUrlLauncher();
+      final analytics = _FakeAnalyticsStore();
+      addTearDown(analytics.dispose);
+      analyticsStoreRef = analytics;
+      webUrlResolver = (uri) async => uri.replace(host: 'unblocked-app.mysteriumvpn.com');
+      final next = analytics.watchLogs().first;
+
+      await openUrlLink(
+        Uri.parse('https://app.mysteriumvpn.com/account?access_token=secret'),
+        source: RedirectSource.external,
+      );
+
+      final log = await next;
+      expect(log.params?['target_url'], 'https://unblocked-app.mysteriumvpn.com/account');
+    });
+
+    test('a URL with no resolver set is opened unchanged', () async {
+      final launcher = installFakeUrlLauncher();
+
+      await openUrlLink(Uri.parse('https://example.com/p'), source: RedirectSource.external);
+
+      expect(launcher.launchedUrl, 'https://example.com/p');
+    });
+  });
+
   group('openUrlLink logging', () {
     late _FakeAnalyticsStore analytics;
 
