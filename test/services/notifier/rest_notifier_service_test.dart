@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -222,6 +225,34 @@ void main() {
       });
     });
 
+    // Through a real Dio, because the mock above captures the map rather than
+    // the bytes: Notifier types each attribute from the JSON it receives, and a
+    // dropped null would leave a stale value on the profile instead of
+    // deleting it.
+    test('encodes native JSON types and keeps nulls in the body', () async {
+      final adapter = _CapturingAdapter();
+      final service = RestNotifierService(
+        dio: Dio(BaseOptions(baseUrl: 'https://notifier.test'))..httpClientAdapter = adapter,
+        logger: Talker(),
+      );
+
+      await service.mergeAttributes(
+        externalUserId: 'user-1',
+        attributes: const {
+          'subscription_active': true,
+          'subscription_duration': 12,
+          'subscription_exp_date': 1797584564,
+          'country': null,
+        },
+      );
+
+      expect(
+        adapter.body,
+        '{"attributes":{"subscription_active":true,"subscription_duration":12,'
+        '"subscription_exp_date":1797584564,"country":null}}',
+      );
+    });
+
     test('URL-encodes an external id containing path-unsafe characters', () async {
       when(dio.put<Object?>(any, data: anyNamed('data'))).thenAnswer((_) async => ok());
 
@@ -272,4 +303,25 @@ void main() {
       });
     });
   });
+}
+
+/// Captures the encoded request body so a test can assert the bytes Notifier
+/// receives rather than the map handed to Dio.
+class _CapturingAdapter implements HttpClientAdapter {
+  String? body;
+
+  @override
+  Future<ResponseBody> fetch(
+    RequestOptions options,
+    Stream<Uint8List>? requestStream,
+    Future<void>? cancelFuture,
+  ) async {
+    if (requestStream != null) {
+      body = utf8.decode(await requestStream.expand((chunk) => chunk).toList());
+    }
+    return ResponseBody.fromString('', 200);
+  }
+
+  @override
+  void close({bool force = false}) {}
 }

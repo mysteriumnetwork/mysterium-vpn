@@ -532,23 +532,91 @@ void main() {
   });
 
   group('attributes', () {
+    /// The payload of the latest merge. `verify` consumes the recorded
+    /// interactions, so call this once per test.
+    Map<String, Object?> capturedAttributes() =>
+        verify(
+              service.mergeAttributes(
+                externalUserId: anyNamed('externalUserId'),
+                attributes: captureAnyNamed('attributes'),
+              ),
+            ).captured.last
+            as Map<String, Object?>;
+
     test('merges location and subscription attributes after registering', () async {
       await start();
 
-      final captured =
-          verify(
-                service.mergeAttributes(
-                  externalUserId: 'user-1',
-                  attributes: captureAnyNamed('attributes'),
-                ),
-              ).captured.first
-              as Map<String, Object?>;
+      final captured = capturedAttributes();
 
       expect(captured['country'], 'DE');
       expect(captured['city'], 'Berlin');
       expect(captured['subscription_plan'], 'plan_monthly');
-      expect(captured['subscription_active'], 'true');
-      expect(captured.containsKey('subscription_exp_date'), isTrue);
+      expect(captured['subscription_gateway'], 'Credit Card');
+    });
+
+    // Notifier types each attribute from what the body carries, so a stringified
+    // payload would have it holding "true" and "1" as text forever.
+    test('values keep their JSON type', () async {
+      await start();
+
+      final captured = capturedAttributes();
+
+      expect(captured['subscription_active'], isTrue);
+      expect(captured['subscription_recurring'], isTrue);
+      expect(captured['subscription_expired'], isFalse);
+      expect(captured['subscription_duration'], 1);
+    });
+
+    test('dates are sent as epoch seconds, unquoted', () async {
+      when(subscriptionStore.subscriptionFuture).thenAnswer(
+        (_) => ObservableFuture.value(
+          Subscription(
+            active: true,
+            planId: 'plan_monthly',
+            gateway: 'stripe',
+            periodStart: DateTime.utc(2026, 11, 18, 9, 2, 44),
+            activeUntil: DateTime.utc(2026, 12, 18, 9, 2, 44),
+          ),
+        ),
+      );
+
+      await start();
+
+      final captured = capturedAttributes();
+
+      expect(captured['subscription_start_date'], 1794992564);
+      expect(captured['subscription_exp_date'], 1797584564);
+    });
+
+    // A real null deletes the attribute on Notifier's side; the old 'null'
+    // sentinel left the string "null" parked on the profile.
+    test('an absent value is sent as null, not omitted and not stringified', () async {
+      when(ipInfoStore.infoFuture).thenAnswer((_) => ObservableFuture.value(null));
+      // Pending, so `.value` is null — the app before the first fetch settles.
+      when(subscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture(Completer<Subscription>().future));
+
+      await start();
+
+      final captured = capturedAttributes();
+
+      expect(captured, hasLength(10));
+      expect(captured.values, everyElement(isNull));
+    });
+
+    test('a subscription with no gateway sends null rather than an empty name', () async {
+      when(subscriptionStore.subscriptionFuture)
+          .thenAnswer((_) => ObservableFuture.value(Subscription(active: false, expired: true)));
+
+      await start();
+
+      final captured = capturedAttributes();
+
+      expect(captured['subscription_gateway'], isNull);
+      expect(captured['subscription_plan'], isNull);
+      // Still reported: only the genuinely absent values are nulled out.
+      expect(captured['subscription_active'], isFalse);
+      expect(captured['subscription_expired'], isTrue);
     });
 
     test('a failing merge is evented so mistargeting is visible', () async {

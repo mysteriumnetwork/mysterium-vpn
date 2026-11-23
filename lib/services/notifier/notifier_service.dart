@@ -31,6 +31,9 @@ abstract class NotifierService {
 
   /// `PUT /public/users/{externalId}/attributes` — shallow JSONB merge.
   ///
+  /// Each value is stored with the JSON type it arrives as, so send booleans
+  /// and numbers unquoted. A `null` deletes that attribute.
+  ///
   /// 404s for a user Notifier has never seen, so only call this after a
   /// successful [registerDevice].
   Future<void> mergeAttributes({
