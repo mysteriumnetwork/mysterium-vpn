@@ -109,16 +109,15 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
   void _setupReactions() {
     _disposers.addAll([
       _createAuthReaction(),
-      // Serialized: a settled record from a previous launch makes these fire as
-      // soon as the data resolves, which otherwise races this launch's
-      // re-register and sends the merge first.
-      reaction(
-        (_) => _ipInfoStore.infoFuture.value.toLocationData(),
+      // Tracks the payload itself rather than its sources, so it fires only
+      // when a value Notifier actually holds changes. Serialized: a settled
+      // record from a previous launch makes it fire as soon as the data
+      // resolves, which otherwise races this launch's re-register and sends
+      // the merge first.
+      reaction<Map<String, Object?>>(
+        (_) => _currentAttributes(),
         (_) async => _serialized(_syncAttributes),
-      ),
-      reaction(
-        (_) => _subscriptionStore.subscriptionFuture.value.toSubscriptionData(),
-        (_) async => _serialized(_syncAttributes),
+        equals: const DeepCollectionEquality().equals,
       ),
     ]);
   }
@@ -455,22 +454,9 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       return;
     }
 
-    final location = _ipInfoStore.infoFuture.value.toLocationData();
-    final subscription = _subscriptionStore.subscriptionFuture.value.toSubscriptionData();
-    final attributes = <String, Object?>{
-      'country': location.country,
-      'city': location.city,
-      'subscription_duration': subscription.duration,
-      'subscription_exp_date': subscription.expirationDate,
-      'subscription_gateway': subscription.gateway,
-      'subscription_plan': subscription.plan,
-      'subscription_recurring': subscription.recurring,
-      'subscription_active': subscription.active,
-      'subscription_start_date': subscription.startDate,
-      'subscription_expired': subscription.expired,
-    };
+    final attributes = _currentAttributes();
 
-    // The location and subscription reactions both land here, often in the same
+    // The reaction and the post-register sync both land here, often in the same
     // MobX batch and with an identical payload. Skip the request when nothing
     // changed rather than sending the same full map two or three times a launch.
     if (const DeepCollectionEquality().equals(_sentAttributes, attributes)) {
@@ -489,6 +475,33 @@ abstract class _NotifierRegistrationStore with Store, Disposeable, WidgetsBindin
       });
     }
   }
+
+  /// The attribute payload for the current session.
+  ///
+  /// Values keep their JSON type, because Notifier types each attribute from
+  /// the body, and an absent one is a real `null`, which deletes it instead of
+  /// parking a `"null"` string. ConfigCat's string-only user map is built
+  /// separately from the same two stores.
+  Map<String, Object?> _currentAttributes() {
+    final location = _ipInfoStore.infoFuture.value;
+    final subscription = _subscriptionStore.subscriptionFuture.value;
+    return {
+      'country': location?.country,
+      'city': location?.city,
+      'subscription_duration': subscription?.standardPeriodMonths,
+      'subscription_exp_date': _epochSeconds(subscription?.activeUntil),
+      // `gatewayName` renders '' with no gateway; null deletes it instead.
+      'subscription_gateway': subscription?.gateway == null ? null : subscription!.gatewayName,
+      'subscription_plan': subscription?.planId,
+      'subscription_recurring': subscription?.recurring,
+      'subscription_active': subscription?.active,
+      'subscription_start_date': _epochSeconds(subscription?.periodStart),
+      'subscription_expired': subscription?.expired,
+    };
+  }
+
+  /// Dates go as epoch seconds — Notifier does not filter segments on them.
+  int? _epochSeconds(DateTime? time) => time == null ? null : time.millisecondsSinceEpoch ~/ 1000;
 
   /// Null unless every required value is present — authenticated user id, FCM
   /// token and a platform Notifier supports.
