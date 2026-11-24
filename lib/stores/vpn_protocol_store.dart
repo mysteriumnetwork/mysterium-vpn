@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
@@ -41,31 +40,15 @@ abstract class _VpnProtocolStore with Store {
   ReactionDisposer? _authReactionDisposer;
   final AuthSessionStore _authSessionStore;
 
-  @visibleForTesting
-  bool testIsIOS = false;
-
-  @visibleForTesting
-  bool testIsMacOS = false;
-
-  @visibleForTesting
-  bool testIsAndroid = false;
-
-  @visibleForTesting
-  bool testIsWindows = false;
-
-  /// When any `testIsX` is set, host `Platform` is ignored.
-  bool get _useTestPlatform => testIsIOS || testIsMacOS || testIsAndroid || testIsWindows;
-
-  bool get _isApple =>
-      _useTestPlatform ? testIsIOS || testIsMacOS : Platform.isIOS || Platform.isMacOS;
-
-  bool get _isAndroid => _useTestPlatform ? testIsAndroid : Platform.isAndroid;
-
-  /// VLESS ships on iOS, macOS and Android, and only once the flag is on.
-  /// Picking it anywhere else reaches a plugin that has no implementation.
+  /// One remote-config gate each. WireGuard is the fallback and is always
+  /// offered; without it the picker could be left with nothing.
+  ///
+  /// No platform conditions: every protocol ships on the same four platforms,
+  /// and the Linux target is a build check that releases nothing.
   bool _isAvailable(ProtocolType protocol) => switch (protocol) {
-    ProtocolType.wireguard || ProtocolType.openvpn => true,
-    ProtocolType.vless => (_isApple || _isAndroid) && _remoteConfigStore.vlessEnabled,
+    ProtocolType.wireguard => true,
+    ProtocolType.openvpn => _remoteConfigStore.isProtocolPickerAvailable,
+    ProtocolType.vless => _remoteConfigStore.vlessEnabled,
   };
 
   /// What the picker should offer. Always contains [_defaultProtocol].
