@@ -25,6 +25,11 @@ on:
       protocol_activation:
         required: true
         type: string
+      identity_name:
+        # Default matches msix's own fallback (com.flutter.<app name>), so prod identity is unchanged.
+        required: false
+        type: string
+        default: "com.flutter.mysteriumvpn"
 
 jobs:
   release:
@@ -83,6 +88,7 @@ jobs:
           fvm dart run msix:create `
             --build-windows false --install-certificate false --output-name "MysteriumVPN" `
             --display-name "${{ inputs.application_name }}" --logo-path "${{ inputs.application_logo }}" `
+            --identity-name "${{ inputs.identity_name }}" `
             --sign-msix false --publisher "$certificate_publisher" --protocol-activation "${{ inputs.protocol_activation }}"
 
       - name: Sign Windows Installer (GlobalSign HSM certificate in Azure Key Vault)
