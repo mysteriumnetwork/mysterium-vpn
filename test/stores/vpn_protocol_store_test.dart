@@ -42,67 +42,51 @@ void main() {
     await store.disposeStore();
   });
 
-  group('VLESS availability', () {
+  group('protocol availability', () {
     setUp(() {
       when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(true);
+      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
     });
 
     test('always offers the default protocol, whatever the gates say', () {
       // availableProtocols feeds the picker's item list while `protocol` feeds
       // its selected value; a gate that could drop the default would render a
       // selection that is not in the list.
-      store.testIsAndroid = true;
+      when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(false);
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
 
       expect(store.availableProtocols, contains(ProtocolType.wireguard));
     });
 
-    test('is offered on Apple platforms once the flag is on', () {
-      store.testIsIOS = true;
+    test('offers VLESS once its flag is on', () {
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
 
       expect(store.availableProtocols, contains(ProtocolType.vless));
     });
 
-    test('is hidden when the flag is off', () {
-      store.testIsIOS = true;
-      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
-
+    test('hides VLESS when its flag is off', () {
       expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
       expect(store.availableProtocols, containsAll([ProtocolType.wireguard, ProtocolType.openvpn]));
     });
 
-    test('is offered on Android once the flag is on', () {
-      store.testIsAndroid = true;
+    test('offers OpenVPN only while the picker flag is on', () {
+      expect(store.availableProtocols, contains(ProtocolType.openvpn));
+
+      when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(false);
+
+      expect(store.availableProtocols, isNot(contains(ProtocolType.openvpn)));
+    });
+
+    // The two flags are independent: VLESS must not inherit OpenVPN's gate.
+    test('offers VLESS with its own flag on while the picker flag is off', () {
+      when(mockRemoteConfigStore.isProtocolPickerAvailable).thenReturn(false);
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
 
       expect(store.availableProtocols, contains(ProtocolType.vless));
-    });
-
-    test('is hidden on Android when the flag is off', () {
-      store.testIsAndroid = true;
-      when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
-
-      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
-      expect(store.availableProtocols, containsAll([ProtocolType.wireguard, ProtocolType.openvpn]));
-    });
-
-    test('is hidden on Windows even with the flag on', () {
-      store.testIsWindows = true;
-      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
-
-      expect(store.availableProtocols, isNot(contains(ProtocolType.vless)));
-    });
-
-    test('is offered on macOS once the flag is on', () {
-      store.testIsMacOS = true;
-      when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
-
-      expect(store.availableProtocols, contains(ProtocolType.vless));
+      expect(store.availableProtocols, isNot(contains(ProtocolType.openvpn)));
     });
 
     test('setProtocol refuses VLESS when it is not available', () async {
-      store.testIsIOS = true;
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
 
       await store.setProtocol(ProtocolType.vless);
@@ -112,7 +96,6 @@ void main() {
     });
 
     test('a stored VLESS falls back when the flag is turned off', () async {
-      store.testIsIOS = true;
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(false);
       when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
 
@@ -120,7 +103,6 @@ void main() {
     });
 
     test('a stored VLESS is kept while the flag is on', () async {
-      store.testIsIOS = true;
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
       when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
 
@@ -131,7 +113,6 @@ void main() {
       // The kill switch has to reach a session that already chose VLESS, not
       // just the next launch: VpnStore reads `protocol` to pick its repository
       // and the picker reads it as the selected value.
-      store.testIsIOS = true;
       when(mockRemoteConfigStore.vlessEnabled).thenReturn(true);
       when(mockLocalDBService.protocolType()).thenAnswer((_) async => ProtocolType.vless);
       await store.setProtocol(ProtocolType.vless);

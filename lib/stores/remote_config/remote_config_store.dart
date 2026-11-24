@@ -506,8 +506,9 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     return false;
   }
 
-  /// Gates VLESS in the protocol picker. Off by default: the tunnel exists
-  /// on iOS, macOS and Android, and this is the kill switch for the rollout.
+  /// Gates VLESS in the protocol picker. Off by default: the tunnel exists on
+  /// iOS, macOS, Android and Windows, and this is the kill switch for the
+  /// rollout.
   @computed
   bool get vlessEnabled {
     if (config.containsKey(_FeatureToggleKey.vlessEnabled.name)) {
