@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobx/mobx.dart' hide when;
@@ -2410,6 +2411,135 @@ void main() {
       });
     });
 
+    group('teardown wait', () {
+      const location = VPNLocation(
+        id: 'de',
+        ipType: IPType.datacenter,
+        translations: {},
+        countryCode: 'de',
+      );
+
+      setUp(() {
+        stubConnectFlow();
+        when(anyToggleAction()).thenReturn(ConnectionAction.connect);
+        when(mockWireguardRepo.init()).thenAnswer((_) async {});
+        when(mockWireguardRepo.statusStream())
+            .thenAnswer((_) => const Stream<VpnConnectionStatus>.empty());
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+      });
+
+      test('gives up on a tunnel that never reports down, instead of spinning', () {
+        // Spinning here left _inFlightAction set for the rest of the process,
+        // so every later tap was dropped and the card stayed on "Disconnecting".
+        FakeAsync().run((async) {
+          when(mockWireguardRepo.currentStatus())
+              .thenAnswer((_) async => VpnConnectionStatus.connected);
+
+          var settled = false;
+          unawaited(
+            vpnStore.manageConnection(location: location).whenComplete(() {
+              settled = true;
+            }),
+          );
+
+          async.elapse(const Duration(seconds: 9));
+          expect(settled, isFalse, reason: 'must not give up before the deadline');
+
+          async.elapse(const Duration(seconds: 5));
+          expect(settled, isTrue, reason: 'must give up once the deadline passes');
+          expect(vpnStore.isLoading, isFalse);
+        });
+      });
+
+      test('gives up on a platform teardown that never returns', () {
+        // The teardown call itself is a platform channel: unbounded, it held
+        // _inFlightAction and every later tap was dropped.
+        FakeAsync().run((async) {
+          when(anyToggleAction()).thenReturn(ConnectionAction.disconnect);
+          when(mockWireguardRepo.disconnect()).thenAnswer((_) => Completer<bool>().future);
+
+          var settled = false;
+          unawaited(
+            vpnStore.manageConnection().whenComplete(() {
+              settled = true;
+            }),
+          );
+
+          async.elapse(const Duration(seconds: 9));
+          expect(settled, isFalse, reason: 'must not give up before the deadline');
+
+          async.elapse(const Duration(seconds: 5));
+          expect(settled, isTrue, reason: 'must give up once the deadline passes');
+          expect(vpnStore.isDisconnecting, isFalse);
+          // The user asked for the session to end, so the cleanup still runs.
+          verify(mockWireguardRepo.notifyApiVpnDisconnected()).called(1);
+        });
+      });
+
+      test('reports disconnected when the stream never delivers the final event', () async {
+        // The platform enters teardown and stops reporting. Without this the
+        // card stayed on "Disconnecting" with the toggle disabled, and only a
+        // reinstall cleared it.
+        final statuses = StreamController<VpnConnectionStatus>.broadcast();
+        addTearDown(statuses.close);
+        var platformStatus = VpnConnectionStatus.connected;
+        when(mockWireguardRepo.currentStatus()).thenAnswer((_) async => platformStatus);
+        when(mockWireguardRepo.statusStream()).thenAnswer((_) => statuses.stream);
+        when(mockAuthSession.status).thenReturn(AuthStatus.authenticated);
+        when(anyToggleAction()).thenReturn(ConnectionAction.disconnect);
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async {
+          platformStatus = VpnConnectionStatus.disconnecting;
+          statuses.add(VpnConnectionStatus.disconnecting);
+          return true;
+        });
+
+        final store = buildStore();
+        addTearDown(store.disposeStore);
+        // The listener attaches asynchronously; a broadcast stream drops
+        // anything emitted before it does.
+        await pumpEventQueue();
+        statuses.add(VpnConnectionStatus.connected);
+        await pumpEventQueue();
+        expect(store.vpnStatus, VpnConnectionStatus.connected);
+
+        await store.manageConnection();
+        // Lets the `disconnecting` event queued during the teardown land.
+        await pumpEventQueue();
+
+        expect(store.vpnStatus, VpnConnectionStatus.disconnected);
+        expect(store.isDisconnecting, isFalse);
+        expect(store.isLoading, isFalse);
+      });
+
+      test('polls with a delay rather than hammering the platform channel', () {
+        // Zero-delay polling is what saturates the main thread during teardown.
+        FakeAsync().run((async) {
+          when(mockWireguardRepo.currentStatus())
+              .thenAnswer((_) async => VpnConnectionStatus.connected);
+
+          unawaited(vpnStore.manageConnection(location: location));
+          async.elapse(const Duration(seconds: 1));
+
+          // ~250ms apart: a handful of reads in a second, not thousands.
+          verify(mockWireguardRepo.currentStatus()).called(lessThan(10));
+        });
+      });
+
+      test('connects as soon as the tunnel reports down', () async {
+        var calls = 0;
+        when(mockWireguardRepo.currentStatus()).thenAnswer((_) async {
+          calls++;
+          return calls <= 2 ? VpnConnectionStatus.connected : VpnConnectionStatus.disconnected;
+        });
+
+        await vpnStore.manageConnection(location: location).timeout(const Duration(seconds: 5));
+
+        verify(
+          mockWireguardRepo.connect(config: anyNamed('config'), dnsAddress: anyNamed('dnsAddress')),
+        ).called(1);
+      });
+    });
+
     group('concurrent connect attempts', () {
       const location = VPNLocation(
         id: 'de',
@@ -2458,13 +2588,13 @@ void main() {
       });
 
       test('stays disconnecting until the teardown finishes, never connecting', () async {
-        // The tunnel reports `disconnected` before notifyApiVpnDisconnected
-        // returns; isLoading stays true across that gap, so without the action
-        // the card relabels itself "Connecting" mid-teardown.
+        // The platform reports nothing between the tap and its first status
+        // event; isLoading is already true across that gap, so without the
+        // action the card relabels itself "Connecting" mid-teardown.
         when(anyToggleAction()).thenReturn(ConnectionAction.disconnect);
-        final notify = Completer<void>();
-        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
-        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) => notify.future);
+        final teardown = Completer<bool>();
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) => teardown.future);
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async {});
 
         final disconnecting = vpnStore.manageConnection();
         await pumpEventQueue();
@@ -2472,11 +2602,26 @@ void main() {
         expect(vpnStore.isLoading, isTrue);
         expect(vpnStore.isDisconnecting, isTrue);
 
-        notify.complete();
+        teardown.complete(true);
         await disconnecting;
 
         expect(vpnStore.isLoading, isFalse);
         expect(vpnStore.isDisconnecting, isFalse);
+      });
+
+      test('does not wait on the API notification', () async {
+        // A hung notification must not hold the card on "Disconnecting".
+        when(anyToggleAction()).thenReturn(ConnectionAction.disconnect);
+        when(mockWireguardRepo.disconnect()).thenAnswer((_) async => true);
+        final notify = Completer<void>();
+        when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) => notify.future);
+
+        await vpnStore.manageConnection().timeout(const Duration(seconds: 5));
+
+        expect(vpnStore.isDisconnecting, isFalse);
+        expect(vpnStore.isLoading, isFalse);
+        verify(mockWireguardRepo.notifyApiVpnDisconnected()).called(1);
+        notify.complete();
       });
 
       test('reports loading while the prerequisites are still being checked', () async {

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
+import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/services/services.dart';
 import 'package:talker/talker.dart';
@@ -119,7 +120,8 @@ class RestApiService extends ApiService {
 
   @override
   Future<void> disconnect() async {
-    await _apiConnection.disconnect();
+    // Carries no session id: a replay would tear down whatever session is next.
+    await _apiConnection.disconnect(extra: kNoRetryExtra);
     _logger.info('Disconnected successfully');
   }
 

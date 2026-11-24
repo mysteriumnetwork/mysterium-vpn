@@ -25,6 +25,12 @@ part 'vpn_store.g.dart';
 const String tunnelSetupTriggerAuto = 'auto';
 const String tunnelSetupTriggerPermissionFlow = 'permission_flow';
 
+/// How long the store waits on the platform during a teardown, and how often it
+/// polls while waiting. Bounded on purpose: a platform that never answers used
+/// to wedge the toggle for the rest of the process.
+const _teardownPollInterval = Duration(milliseconds: 250);
+const _teardownDeadline = Duration(seconds: 10);
+
 // ignore: library_private_types_in_public_api
 class VpnStore = _VpnStore with _$VpnStore;
 
@@ -220,9 +226,9 @@ abstract class _VpnStore extends VpnGuard with Store {
       isFetchingLocation ||
       _connectionStatus == VpnConnectionStatus.disconnecting;
 
-  /// Whether the work in flight is a teardown. The tunnel reports
-  /// `disconnected` before [disconnectTunnel] has notified the API, so the raw
-  /// status stops saying `disconnecting` while the teardown is still running.
+  /// Whether the work in flight is a teardown. The platform reports nothing
+  /// between the tap and its first status event, and [isLoading] is already
+  /// true — without the action the card relabels itself "Connecting" there.
   @computed
   bool get isDisconnecting =>
       _connectionStatus == VpnConnectionStatus.disconnecting ||
@@ -534,6 +540,11 @@ abstract class _VpnStore extends VpnGuard with Store {
       }
       if (status == VpnConnectionStatus.disconnecting) {
         _clearConnectionData();
+        // A teardown cannot start from `disconnected`, so the event is stale.
+        // Writing it re-sticks the UI with nothing left to clear it.
+        if (_connectionStatus == VpnConnectionStatus.disconnected) {
+          return;
+        }
       }
       _connectionStatus = status;
     });
@@ -551,9 +562,9 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<VpnConnectionStatus> checkTunnelStatus() async {
     try {
       return await _vpnRepository.currentStatus();
-    } catch (e) {
-      _logger.handle(e);
-      Sentry.captureException(e);
+    } catch (e, stackTrace) {
+      // Polled during teardown, where reporting inline is what pins the main thread.
+      _logger.warning('Tunnel status check failed', e, stackTrace);
       return VpnConnectionStatus.unknown;
     }
   }
@@ -717,11 +728,25 @@ abstract class _VpnStore extends VpnGuard with Store {
     }
   }
 
+  /// Connects anyway once the deadline passes: the platform re-establishes from
+  /// whatever state it is in, so giving up beats stranding the toggle.
   Future<void> _waitForDisconnection() async {
-    await Future.doWhile(() async {
-      final status = await checkTunnelStatus();
-      return status != VpnConnectionStatus.disconnected;
-    });
+    // `timeout` abandons the wait but cannot cancel it; the loop reads this.
+    var waiting = true;
+    try {
+      await Future.doWhile(() async {
+        if (await checkTunnelStatus() == VpnConnectionStatus.disconnected) {
+          return false;
+        }
+        await Future<void>.delayed(_teardownPollInterval);
+        return waiting;
+      }).timeout(_teardownDeadline);
+    } on TimeoutException {
+      waiting = false;
+      _logger.warning(
+        'Tunnel still not down after ${_teardownDeadline.inSeconds}s, connecting anyway',
+      );
+    }
   }
 
   Future<void> _executeConnection(bool refreshIP, {String? targetIp}) async {
@@ -1048,9 +1073,23 @@ abstract class _VpnStore extends VpnGuard with Store {
   Future<void> disconnectTunnel({required VpnDisconnectReason reason}) async {
     _disconnectReason = reason;
     final teardown = Stopwatch()..start();
-    final disconnectSucceeded = await _vpnRepository.disconnect();
+    // The last unbounded await on this path: a platform channel that never
+    // answers used to hold _inFlightAction, which drops every later tap.
+    // Counted as succeeded, since the user asked for the session to end.
+    final disconnectSucceeded = await _vpnRepository.disconnect().timeout(
+      _teardownDeadline,
+      onTimeout: () {
+        _logger.warning('Tunnel teardown did not return in ${_teardownDeadline.inSeconds}s');
+        return true;
+      },
+    );
     _logger.info('Tunnel teardown took ${teardown.elapsedMilliseconds}ms');
     _cancelSubscriptions();
+    if (disconnectSucceeded) {
+      // The stream's final `disconnected` does not always arrive, and until it
+      // does the card stays on "Disconnecting" with the toggle disabled.
+      _connectionStatus = VpnConnectionStatus.disconnected;
+    }
 
     if (disconnectSucceeded && reason != VpnDisconnectReason.reconnect) {
       _userIntentsStore.userIntent = null;
@@ -1058,9 +1097,8 @@ abstract class _VpnStore extends VpnGuard with Store {
       _requestedLocation = null;
       _requestedTargetIp = null;
       _ipRefreshExhaustionStore.onDisconnected();
-      final notify = Stopwatch()..start();
-      await _vpnRepository.notifyApiVpnDisconnected();
-      _logger.info('Disconnect notify took ${notify.elapsedMilliseconds}ms');
+      // Best-effort: awaiting it held the UI on "Disconnecting" for its retries.
+      _vpnRepository.notifyApiVpnDisconnected().ignore();
     }
   }
 
