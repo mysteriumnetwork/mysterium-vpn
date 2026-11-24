@@ -466,7 +466,7 @@ packages:
     source: hosted
     version: "2.0.1"
   fake_async:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: fake_async
       sha256: "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44"
@@ -2127,11 +2127,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.3.1"
-      resolved-ref: "46e6869fdc2be075245a8adb2dec1bd55573cd3e"
+      ref: "0.3.2"
+      resolved-ref: "32451ff233bfc11cb93c563f9eba92838fef7c9c"
       url: "https://github.com/mysteriumnetwork/vless_dart.git"
     source: git
-    version: "0.3.1"
+    version: "0.3.2"
   vm_service:
     dependency: transitive
     description:

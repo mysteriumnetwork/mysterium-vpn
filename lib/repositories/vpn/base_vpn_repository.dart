@@ -6,6 +6,10 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker/talker.dart';
 import 'package:vpn_api/vpn_api.dart';
 
+/// Bounds the disconnect notification, so a late one cannot outlive a quick
+/// reconnect.
+const _notifyWindow = Duration(seconds: 5);
+
 abstract class BaseVpnRepository implements VpnRepository {
   BaseVpnRepository({required this.logger, required this.apiService});
 
@@ -54,13 +58,16 @@ abstract class BaseVpnRepository implements VpnRepository {
   }
 
   /// Notify the API that the user has disconnected from the VPN tunnel.
+  ///
+  /// Nothing waits on this, so it is bounded here: unbounded, it sat in the
+  /// retry and domain-failover machinery for minutes after the user moved on.
   @override
   Future<void> notifyApiVpnDisconnected() async {
     try {
-      await apiService.disconnect();
-    } catch (e) {
-      logger.handle(e);
-      Sentry.captureException(e);
+      await apiService.disconnect().timeout(_notifyWindow);
+    } catch (e, stackTrace) {
+      // Expected on a network still settling after the tunnel went down.
+      logger.warning('Failed to notify the API of the disconnect', e, stackTrace);
     }
   }
 

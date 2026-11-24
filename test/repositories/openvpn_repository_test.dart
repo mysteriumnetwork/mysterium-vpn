@@ -196,11 +196,13 @@ void main() {
       verifyNever(logger.handle(any));
     });
 
-    test('notifyApiVpnDisconnected swallows errors', () async {
+    // Nothing waits on it, and a failure on a settling network is expected.
+    test('notifyApiVpnDisconnected swallows errors as a warning', () async {
       when(api.disconnect()).thenThrow(Exception('boom'));
 
       await expectLater(repo.notifyApiVpnDisconnected(), completes);
-      verify(logger.handle(any)).called(1);
+      verify(logger.warning(any, any, any)).called(1);
+      verifyNever(logger.handle(any));
     });
 
     test('disconnectAllDevices delegates to apiService and rethrows on failure', () async {
