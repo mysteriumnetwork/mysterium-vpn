@@ -92,7 +92,7 @@ dependencies:
   vless_dart:
     git:
       url: https://github.com/mysteriumnetwork/vless_dart.git
-      ref: 0.4.1
+      ref: 0.4.2
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
