@@ -101,6 +101,24 @@ void main() {
       verify(service.disconnect()).called(1);
     });
 
+    // Quitting the app awaits this and then ends the process. Returning before
+    // the plugin had stopped the tunnel left OpenVPN running after the app.
+    test('disconnect completes only once the service has stopped the tunnel', () async {
+      final stopped = Completer<void>();
+      when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connected);
+      when(service.disconnect()).thenAnswer((_) => stopped.future);
+
+      var completed = false;
+      final pending = repo.disconnect().then((_) => completed = true);
+
+      await pumpEventQueue();
+      expect(completed, isFalse);
+
+      stopped.complete();
+      await pending;
+      expect(completed, isTrue);
+    });
+
     test('currentStatus maps ConnectionStatus → VpnConnectionStatus', () async {
       when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connected);
 
