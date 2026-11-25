@@ -77,7 +77,7 @@ class OpenVpnRepository extends BaseVpnRepository {
   Future<bool> disconnect() async {
     final status = await currentStatus();
     if (stoppable(status)) {
-      _service.disconnect();
+      await _service.disconnect();
       return true;
     }
     return false;

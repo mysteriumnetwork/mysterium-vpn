@@ -70,7 +70,7 @@ dependencies:
   openvpn_dart:
     git:
       url: https://github.com/mysteriumnetwork/openvpn_dart.git
-      ref: 0.1.5
+      ref: 0.1.7
   package_info_plus: 10.2.2
   reactive_forms: 17.0.1
   retry: 3.1.2

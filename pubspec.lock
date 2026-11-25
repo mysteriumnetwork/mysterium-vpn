@@ -1440,8 +1440,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.5"
-      resolved-ref: "981b0f3eac718f5d343638deec206e7cd1923aa7"
+      ref: "0.1.7"
+      resolved-ref: "435fd97a51a9b1fb71148c0a697da04f32fc10f1"
       url: "https://github.com/mysteriumnetwork/openvpn_dart.git"
     source: git
     version: "0.0.1"

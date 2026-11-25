@@ -54,7 +54,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         
         let configuration = OpenVPNConfiguration()
         configuration.fileContent = ovpnFileContent
-        configuration.tunPersist = false
+        // Keep the tunnel's routes and DNS in place while OpenVPN reconnects.
+        // Without this they are removed for the length of every reconnect, and
+        // traffic goes out over the normal network until the tunnel is back.
+        configuration.tunPersist = true
         
         // Apply OpenVPN configuration
         do {
