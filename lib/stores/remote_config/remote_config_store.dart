@@ -70,6 +70,7 @@ enum _FeatureToggleKey {
   favoriteLocationsEnabled,
   tunnelHealthConfig,
   pushNotificationsEnabled,
+  domainDiscoveryConfig,
 }
 
 class RemoteConfigStore = RemoteConfigStoreBase with _$RemoteConfigStore;
@@ -363,6 +364,30 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
       }
     }
     return const TunnelHealthConfig();
+  }
+
+  Object? _discoveryRaw;
+  DiscoveryTuning _discoveryTuning = const DiscoveryTuning();
+
+  /// Tunables for signed domain discovery, as one JSON value. Undecodable
+  /// payloads log and yield the defaults.
+  // Not @computed: read on every request, so the decode is memoised by hand.
+  DiscoveryTuning get domainDiscoveryConfig {
+    final raw = config[_FeatureToggleKey.domainDiscoveryConfig.name];
+    if (raw == _discoveryRaw) {
+      return _discoveryTuning;
+    }
+    _discoveryRaw = raw;
+    if (raw == null) {
+      return _discoveryTuning = const DiscoveryTuning();
+    }
+    try {
+      final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
+      return _discoveryTuning = DiscoveryTuning.fromJson(decoded);
+    } catch (e) {
+      logger.warning('Could not decode domainDiscoveryConfig: $e');
+      return _discoveryTuning = const DiscoveryTuning();
+    }
   }
 
   /// Whether the per-tab refresh icon button on the locations list is enabled.

@@ -18,6 +18,7 @@ dependencies:
   configcat_client: 5.1.0
   connectivity_plus: 7.3.1
   crypto: 3.0.7
+  cryptography: 2.9.0
   device_info_plus: 13.3.0
   dio: 5.9.2
   firebase_analytics: 12.5.0
@@ -53,6 +54,7 @@ dependencies:
   in_app_update: 5.0.0
   intl: 0.20.3
   json_annotation: 4.12.0
+  json_canonicalizer: 1.1.0
   latlong2: 0.10.1
   localizely_sdk: 2.8.1
   mail_launcher:
@@ -94,7 +96,7 @@ dependencies:
   vpn_api:
     git:
       url: https://github.com/mysteriumnetwork/mysterium-vpn-api-client-dart.git
-      ref: 1.0.114
+      ref: 1.0.115
   webview_flutter: 4.14.1
   window_manager: 0.6.0
   wireguard_dart:

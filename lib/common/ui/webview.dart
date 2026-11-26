@@ -45,6 +45,48 @@ enum _Load { loading, done, failed }
 /// There is no [WebResourceErrorType] for it, so the raw code is the only seam.
 const _iosNavigationCancelled = -999;
 
+/// Tracks a hosted page whose loaded URL may be a discovery fallback of the
+/// one the caller asked for.
+class WebViewTarget {
+  WebViewTarget(this.original);
+
+  final Uri original;
+
+  /// The URL last loaded. Null until first resolved.
+  Uri? current;
+
+  Future<void>? _reported;
+
+  Future<Uri> resolve() async => current = await resolveWebUrl(original);
+
+  /// Reports [failed] when it is the page this target loaded. Errors further
+  /// along a hosted flow, on someone else's site, say nothing about our domain.
+  void recover(Uri? failed) {
+    final loaded = current ?? original;
+    if (failed?.host == loaded.host) {
+      _reported ??= reportWebUrlFailure(original, loaded);
+    }
+  }
+
+  /// Where a retry should go: a new URL once the domain has changed, or null
+  /// to reload the failed page in place.
+  Future<Uri?> retarget() async {
+    final previous = current;
+    final reported = _reported;
+    _reported = null;
+    // Resolving before the report lands would pick the same dead host.
+    await reported;
+    final next = await resolve();
+    return next.host == previous?.host ? null : next;
+  }
+
+  /// [url] as the caller knows it: a fallback host mapped back to the original.
+  Uri canonical(Uri url) {
+    final loaded = current;
+    return loaded != null && url.host == loaded.host ? url.replace(host: original.host) : url;
+  }
+}
+
 /// In-app webview modal: an opaque toolbar (title + close) above a webview that
 /// fills the space below it.
 ///
@@ -79,6 +121,8 @@ class InAppWebViewScreen extends HookWidget {
     final pageTitle = useState('');
     final closed = useRef(false);
 
+    final target = useMemoized(() => WebViewTarget(uri));
+
     final controller = useMemoized(() {
       final controller = WebViewController();
       controller
@@ -93,6 +137,7 @@ class InAppWebViewScreen extends HookWidget {
                   (error.isForMainFrame ?? true) && error.errorCode != _iosNavigationCancelled;
               if (fatal) {
                 load.value = _Load.failed;
+                target.recover(Uri.tryParse(error.url ?? ''));
               }
             },
             onPageFinished: (url) async {
@@ -103,7 +148,8 @@ class InAppWebViewScreen extends HookWidget {
                 return;
               }
               load.value = _Load.done;
-              if (!closed.value && (shouldClose?.call(Uri.parse(url)) ?? false)) {
+              final finished = target.canonical(Uri.parse(url));
+              if (!closed.value && (shouldClose?.call(finished) ?? false)) {
                 closed.value = true;
                 // maybePop + isCurrent: this fires from a platform callback, so
                 // the modal may already be leaving, and popping then takes the
@@ -120,8 +166,12 @@ class InAppWebViewScreen extends HookWidget {
               }
             },
           ),
-        )
-        ..loadRequest(uri);
+        );
+      target.resolve().then((resolved) async {
+        if (context.mounted) {
+          await controller.loadRequest(resolved);
+        }
+      }).ignore();
       return controller;
     });
 
@@ -151,9 +201,17 @@ class InAppWebViewScreen extends HookWidget {
                         child: Center(
                           child: load.value == _Load.failed
                               ? _LoadFailed(
-                                  onRetry: () {
+                                  onRetry: () async {
                                     load.value = _Load.loading;
-                                    controller.reload();
+                                    final next = await target.retarget();
+                                    if (!context.mounted) {
+                                      return;
+                                    }
+                                    // Reload keeps a multi-step flow on its
+                                    // page; only a new domain starts over.
+                                    await (next == null
+                                        ? controller.reload()
+                                        : controller.loadRequest(next));
                                   },
                                 )
                               : const LoadingIndicator(),
