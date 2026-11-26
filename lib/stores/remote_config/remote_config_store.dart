@@ -366,24 +366,28 @@ abstract class RemoteConfigStoreBase extends ConfigCatStore with Store {
     return const TunnelHealthConfig();
   }
 
-  /// Tunables for signed domain discovery and API failover, as one JSON value.
-  /// A payload that cannot be decoded logs and yields the defaults, which match
-  /// the constants the feature ships with.
-  @computed
+  Object? _discoveryRaw;
+  DiscoveryTuning _discoveryTuning = const DiscoveryTuning();
+
+  /// Tunables for signed domain discovery, as one JSON value. Undecodable
+  /// payloads log and yield the defaults.
+  // Not @computed: read on every request, so the decode is memoised by hand.
   DiscoveryTuning get domainDiscoveryConfig {
-    // One read: `config` is itself an unobserved computed, so it is not
-    // memoised and containsKey + [] would evaluate it twice.
     final raw = config[_FeatureToggleKey.domainDiscoveryConfig.name];
-    if (raw != null) {
-      try {
-        final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
-        return DiscoveryTuning.fromJson(decoded);
-      } catch (e) {
-        // Expected failure for a malformed remote payload — not a crash.
-        logger.warning('Could not decode domainDiscoveryConfig: $e');
-      }
+    if (raw == _discoveryRaw) {
+      return _discoveryTuning;
     }
-    return const DiscoveryTuning();
+    _discoveryRaw = raw;
+    if (raw == null) {
+      return _discoveryTuning = const DiscoveryTuning();
+    }
+    try {
+      final decoded = jsonDecode(raw.toString()) as Map<String, dynamic>;
+      return _discoveryTuning = DiscoveryTuning.fromJson(decoded);
+    } catch (e) {
+      logger.warning('Could not decode domainDiscoveryConfig: $e');
+      return _discoveryTuning = const DiscoveryTuning();
+    }
   }
 
   /// Whether the per-tab refresh icon button on the locations list is enabled.

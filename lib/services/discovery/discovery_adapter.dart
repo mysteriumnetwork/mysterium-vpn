@@ -29,8 +29,7 @@ class DiscoveryAdapter implements HttpClientAdapter {
 
     var refreshed = false;
     var consumed = false;
-    // Whether anything in this request looked like blocking rather than a
-    // flaky network, which is what makes a fallback worth remembering.
+    // Set once anything in this request looked like blocking, not a flaky link.
     var blocked = false;
     var cancelled = false;
     unawaited(
@@ -54,9 +53,7 @@ class DiscoveryAdapter implements HttpClientAdapter {
           '(${tried.length == 1 ? 'cached selection' : 'retry'})',
         );
       }
-      // Only a rewritten host needs a fresh options object: cloning the
-      // headers on every primary-host request is work the common case does not
-      // need, and an explicit Host header only matters once the host changed.
+      // Only a rewritten host needs fresh options and its Host header dropped.
       final attempt = isFallback
           ? options.copyWith(
               path: candidate.toString(),
@@ -81,16 +78,14 @@ class DiscoveryAdapter implements HttpClientAdapter {
           throw DioException.requestCancelled(requestOptions: options, reason: 'Cancelled');
         }
         await _bufferResponse(response, attempt);
-        if (!_blockedResponse(response)) {
+        if (!_blockedResponse(response) && !_unavailableResponse(response)) {
           if (isFallback) {
             _logger?.info(
               '[discovery] API ${options.method} fallback response: '
               '${original.origin} -> ${candidate.origin} (HTTP ${response.statusCode})',
             );
           }
-          // A success on a fallback is only worth remembering when a block
-          // put us there: otherwise one slow request would move the origin onto
-          // a fallback and make every later link tap pay for a probe.
+          // A fallback is only worth remembering when a block put us there.
           if (!isFallback || blocked) {
             await _discovery.record(original, candidate, success: true);
           }
@@ -100,8 +95,8 @@ class DiscoveryAdapter implements HttpClientAdapter {
         if (cancelled ||
             error.type == DioExceptionType.cancel ||
             (options.cancelToken?.isCancelled ?? false) ||
-            !_transportFailure(error)) {
-          rethrow;
+            !retryableTransport(error)) {
+          throw _restore(error, options);
         }
         failure = error;
         response = null;
@@ -120,20 +115,17 @@ class DiscoveryAdapter implements HttpClientAdapter {
       _logger?.warning(
         '[discovery] API ${options.method} endpoint failed: ${candidate.origin} ($reason)',
       );
-      if (response != null ? _blockedResponse(response) : _blockedTransport(failure!)) {
+      if (response != null ? _blockedResponse(response) : blockedByTransport(failure!)) {
         blocked = true;
         await _discovery.record(
           original,
           candidate,
           success: false,
-          reason: response != null
-              ? responseLabel(response.statusCode)
-              : transportLabel(failure!.type),
+          reason: response != null ? responseLabel(response.statusCode) : transportLabel(failure!),
         );
       }
-      // The same set as _blockedTransport: a failure that never reached the
-      // wire is both safe to replay and the signature of interference.
-      final beforeSend = failure != null && _blockedTransport(failure);
+      // A block fails before anything is sent, so it is safe to replay.
+      final beforeSend = failure != null && blockedByTransport(failure);
       // Preserve no-retry and consumed-body semantics for requests with side effects.
       final canReplay =
           !cancelled &&
@@ -156,15 +148,13 @@ class DiscoveryAdapter implements HttpClientAdapter {
           '[discovery] API ${options.method} failover stopped for ${original.origin}: '
           '${!canReplay ? 'request cannot be replayed safely' : 'no untried fallback domains'}',
         );
-        // Only a request that actually ran out of domains is exhausted. One we
-        // could not replay stopped for its own reasons.
-        if (canReplay && candidates.isEmpty) {
-          _discovery.reportExhausted(original, tried.length);
+        if (canReplay && candidates.isEmpty && blocked) {
+          await _discovery.reportExhausted(original, tried.length);
         }
         if (response != null) {
           return response;
         }
-        throw failure!;
+        throw _restore(failure!, options);
       }
       if (response != null) {
         await response.stream.listen(null).cancel();
@@ -191,9 +181,13 @@ class DiscoveryAdapter implements HttpClientAdapter {
   bool _blockedResponse(ResponseBody response) =>
       blockedByResponse(response.statusCode, Headers.fromMap(response.headers));
 
-  bool _blockedTransport(DioException error) => blockingTransport.contains(error.type);
+  bool _unavailableResponse(ResponseBody response) =>
+      unavailableResponse(response.statusCode, Headers.fromMap(response.headers));
 
-  bool _transportFailure(DioException error) => retryableTransport.contains(error.type);
+  // Callers retry and report from the error's options, so they must be the
+  // caller's own and not a fallback attempt's rewritten URL.
+  DioException _restore(DioException error, RequestOptions options) =>
+      identical(error.requestOptions, options) ? error : error.copyWith(requestOptions: options);
 
   @override
   void close({bool force = false}) => _inner.close(force: force);

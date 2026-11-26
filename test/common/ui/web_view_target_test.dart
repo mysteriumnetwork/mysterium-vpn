@@ -19,19 +19,31 @@ void main() {
     expect(target.current, fallback);
   });
 
-  test('reports the URL that actually failed against the original', () async {
+  test('reports the page it loaded against the original', () async {
     webUrlResolver = (_) async => fallback;
     (Uri, Uri)? reported;
     webUrlFailureReporter = (first, second) async => reported = (first, second);
     final target = WebViewTarget(original);
     await target.resolve();
 
-    target.recover();
+    target.recover(fallback.replace(path: '/account/billing'));
+    await target.retarget();
+
+    expect(reported, (original, fallback));
+  });
+
+  test('an error on another site is not held against our domain', () async {
+    var reports = 0;
+    webUrlFailureReporter = (_, _) async => reports++;
+    final target = WebViewTarget(original);
     await target.resolve();
 
-    // Keyed by the original: recording it under the fallback's own origin would
-    // write a record nothing ever reads back.
-    expect(reported, (original, fallback));
+    target
+      ..recover(Uri.parse('https://checkout.stripe.com/pay'))
+      ..recover(null);
+    await target.retarget();
+
+    expect(reports, 0);
   });
 
   test('a retry waits for the report before resolving again', () async {
@@ -40,53 +52,54 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 10));
       order.add('reported');
     };
+    final target = WebViewTarget(original)..recover(original);
+    // Reporting alone resolves nothing: the user may close the page instead.
+    expect(order, isEmpty);
     webUrlResolver = (_) async {
       order.add('resolved');
       return fallback;
     };
-    final target = WebViewTarget(original)..recover();
 
-    // Reporting alone resolves nothing: the user may close the page instead.
-    expect(order, isEmpty);
+    await target.retarget();
 
-    await target.resolve();
-
-    // Resolving first would re-read state the report had not written yet, and
-    // the retry would reload the same dead host.
     expect(order, ['reported', 'resolved']);
   });
 
-  test('falls back to the original when nothing has been resolved yet', () async {
-    (Uri, Uri)? reported;
-    webUrlFailureReporter = (first, second) async => reported = (first, second);
-
-    WebViewTarget(original).recover();
-    await pumpEventQueue();
-
-    expect(reported, (original, original));
-  });
-
-  test('repeated failures join one report instead of starting a chain each', () async {
+  test('repeated failures join one report', () async {
     var reports = 0;
     webUrlFailureReporter = (_, _) async {
       reports++;
       await Future<void>.delayed(const Duration(milliseconds: 10));
     };
-    webUrlResolver = (_) async => fallback;
     final target = WebViewTarget(original);
 
     for (var error = 0; error < 3; error++) {
-      target.recover();
+      target.recover(original);
     }
-    await target.resolve();
+    await target.retarget();
 
-    // Each error otherwise starts its own config fetch and probe set.
     expect(reports, 1);
   });
 
-  test('resolving without a failure does not wait on anything', () async {
+  test('a retry reloads in place unless the domain changed', () async {
+    final target = WebViewTarget(original);
+    await target.resolve();
+
+    expect(await target.retarget(), isNull);
+
     webUrlResolver = (_) async => fallback;
 
-    expect(await WebViewTarget(original).resolve(), fallback);
+    expect(await target.retarget(), fallback);
+  });
+
+  test('shows callers the original host for pages on a fallback', () async {
+    webUrlResolver = (_) async => fallback;
+    final target = WebViewTarget(original);
+    await target.resolve();
+
+    expect(target.canonical(fallback.replace(path: '/login')), original.replace(path: '/login'));
+
+    final elsewhere = Uri.parse('https://trustpilot.com/login');
+    expect(target.canonical(elsewhere), elsewhere);
   });
 }

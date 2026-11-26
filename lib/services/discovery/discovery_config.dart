@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:mysterium_vpn/services/discovery/discovery_verifier.dart';
 
 class DiscoveryConfig {
-  DiscoveryConfig._(this.json, this.expiresAt, this.mappings);
+  DiscoveryConfig._(this.json, this.version, this.expiresAt, this.mappings);
 
   static Future<DiscoveryConfig> parse(
     String source, {
@@ -45,10 +45,11 @@ class DiscoveryConfig {
       }
       domains[entry.key] = List<String>.unmodifiable(hosts.cast<String>());
     }
-    return DiscoveryConfig._(json, expiresAt, Map.unmodifiable(domains));
+    return DiscoveryConfig._(json, version, expiresAt, Map.unmodifiable(domains));
   }
 
   final Map<String, dynamic> json;
+  final int version;
   final DateTime expiresAt;
   final Map<String, List<String>> mappings;
 

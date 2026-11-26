@@ -233,14 +233,6 @@ mixin _$RemoteConfigStore on RemoteConfigStoreBase, Store {
         () => super.tunnelHealthConfig,
         name: 'RemoteConfigStoreBase.tunnelHealthConfig',
       )).value;
-  Computed<DiscoveryTuning>? _$domainDiscoveryConfigComputed;
-
-  @override
-  DiscoveryTuning get domainDiscoveryConfig =>
-      (_$domainDiscoveryConfigComputed ??= Computed<DiscoveryTuning>(
-        () => super.domainDiscoveryConfig,
-        name: 'RemoteConfigStoreBase.domainDiscoveryConfig',
-      )).value;
   Computed<bool>? _$locationsRefreshButtonEnabledComputed;
 
   @override
@@ -492,7 +484,6 @@ pushNotificationsEnabled: ${pushNotificationsEnabled},
 notifierEnabled: ${notifierEnabled},
 newsCenterRefreshIntervalMinutes: ${newsCenterRefreshIntervalMinutes},
 tunnelHealthConfig: ${tunnelHealthConfig},
-domainDiscoveryConfig: ${domainDiscoveryConfig},
 locationsRefreshButtonEnabled: ${locationsRefreshButtonEnabled},
 countriesWithCitiesOnMap: ${countriesWithCitiesOnMap},
 showUserIntents: ${showUserIntents},

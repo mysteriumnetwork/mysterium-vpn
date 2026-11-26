@@ -1,40 +1,38 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
-/// Transport failures that look like interference rather than a weak
-/// connection. A send or receive timeout means bytes were already moving, so
-/// it is worth another domain but is not evidence of a block.
-const blockingTransport = {
+const _blockingTypes = {
   DioExceptionType.connectionTimeout,
   DioExceptionType.connectionError,
   DioExceptionType.badCertificate,
 };
 
-/// Everything worth trying another domain for: the blocking set plus the
-/// timeouts. Kept derived so the two can never drift apart silently.
-const retryableTransport = {
-  ...blockingTransport,
-  DioExceptionType.sendTimeout,
-  DioExceptionType.receiveTimeout,
-};
+const _timeoutTypes = {DioExceptionType.sendTimeout, DioExceptionType.receiveTimeout};
 
-/// Whether an HTTP answer is a censor rather than our own backend.
-///
-/// `451` says so outright. `403` and `5xx` are ambiguous — the Notifier returns
-/// `403` for ordinary auth failures — so they only count when the body is not
-/// the JSON our API always answers with. A missing content type counts as a
-/// block, since our backend never omits it.
-bool blockedByResponse(int status, Headers headers) {
-  if (status == 451) {
-    return true;
-  }
-  if (status != 403 && status < 500) {
-    return false;
-  }
-  final contentType = headers[Headers.contentTypeHeader]?.join(',').toLowerCase();
-  return contentType == null || !contentType.contains(Headers.jsonContentType);
-}
+/// Interference rather than a weak link. Every case fails before the request
+/// is sent, so it is also safe to replay.
+bool blockedByTransport(DioException error) =>
+    _blockingTypes.contains(error.type) || _tlsHandshake(error.error);
 
-/// Coarse analytics label for a failed response. Never an exception message.
+/// Worth another domain: a block, or a timeout that proves nothing.
+bool retryableTransport(DioException error) =>
+    blockedByTransport(error) || _timeoutTypes.contains(error.type);
+
+// dio leaves these unmapped, so they arrive as the wrapped error.
+bool _tlsHandshake(Object? error) => error is HandshakeException || error is CertificateException;
+
+bool _json(Headers headers) =>
+    headers[Headers.contentTypeHeader]?.join(',').toLowerCase().contains(Headers.jsonContentType) ??
+    false;
+
+/// A censor, not our backend: `451`, or a `403` that is not our JSON.
+bool blockedByResponse(int status, Headers headers) =>
+    status == 451 || (status == 403 && !_json(headers));
+
+/// Our own edge failing: worth another domain, but not evidence of a block.
+bool unavailableResponse(int status, Headers headers) => status >= 500 && !_json(headers);
+
 String responseLabel(int status) => switch (status) {
   451 => 'http_451',
   403 => 'http_403',
@@ -42,12 +40,12 @@ String responseLabel(int status) => switch (status) {
   _ => 'http_$status',
 };
 
-/// Coarse analytics label for a transport failure.
-String transportLabel(DioExceptionType type) => switch (type) {
+String transportLabel(DioException error) => switch (error.type) {
+  _ when _tlsHandshake(error.error) => 'tls_handshake',
   DioExceptionType.connectionTimeout ||
   DioExceptionType.sendTimeout ||
   DioExceptionType.receiveTimeout => 'timeout',
   DioExceptionType.connectionError => 'connection_error',
   DioExceptionType.badCertificate => 'bad_certificate',
-  _ => type.name,
+  _ => error.type.name,
 };

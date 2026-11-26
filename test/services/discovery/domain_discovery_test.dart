@@ -142,7 +142,12 @@ void main() {
           ? jsonResponse('{}', 403)
           : jsonResponse('{"status":"OK"}');
     });
-    final service = testDiscovery(adapter, logger: logger);
+    // No re-check due, so the fallback is probed before the primary.
+    final service = testDiscovery(
+      adapter,
+      logger: logger,
+      tuning: () => const DiscoveryTuning(checkInterval: Duration.zero),
+    );
     addTearDown(service.close);
     // Only a degraded service probes at all, so give it something to go on.
     final apiOrigin = Uri.https(apiHost);
@@ -208,7 +213,11 @@ void main() {
           : jsonResponse('{"status":"OK"}');
     });
     final logger = Talker(settings: TalkerSettings(useConsoleLogs: false));
-    final service = testDiscovery(adapter, logger: logger);
+    final service = testDiscovery(
+      adapter,
+      logger: logger,
+      tuning: () => const DiscoveryTuning(checkInterval: Duration.zero),
+    );
     addTearDown(service.close);
     final apiOrigin = Uri.https(apiHost);
     // The API failing over is the evidence that makes the browser path engage.
@@ -455,5 +464,141 @@ void main() {
     await later.warmBrowserHosts();
 
     expect(adapter.calls.length, probes + 1);
+  });
+
+  test('the kill switch is honoured on the very next read', () async {
+    var enabled = true;
+    final adapter = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final service = testDiscovery(adapter, tuning: () => DiscoveryTuning(enabled: enabled));
+    addTearDown(service.close);
+    final original = Uri.https(apiHost);
+    expect((await service.candidatesAfterFailure(original)).length, 2);
+
+    enabled = false;
+
+    expect(await service.cachedCandidates(original), [original]);
+  });
+
+  test('giving up never sends a link to a host the signed config does not list', () async {
+    final adapter = DiscoveryTestAdapter(
+      (options, _) async => options.uri.path.endsWith('config.json')
+          ? jsonResponse(await discoveryJson())
+          : htmlResponse('<html>down</html>', 503),
+    );
+    final service = testDiscovery(adapter);
+    addTearDown(service.close);
+    final original = Uri.https(appHost, '/account', {'access_token': 'secret'});
+    await service.candidatesAfterFailure(original);
+    await service.record(original, original.replace(host: 'dropped.example'), success: true);
+
+    final resolved = await service.resolveBrowserUrl(original);
+
+    expect(resolved.host, appHost);
+  });
+
+  test('an older signed config does not replace a newer one', () async {
+    var now = DateTime.utc(2026, 11, 16);
+    var served = await discoveryJson(version: 2);
+    final adapter = DiscoveryTestAdapter((_, _) async => jsonResponse(served));
+    final service = testDiscovery(adapter, now: () => now);
+    addTearDown(service.close);
+    final original = Uri.https(apiHost);
+    await service.candidatesAfterFailure(original);
+
+    served = await discoveryJson(
+      mappings: {
+        apiHost: ['rolled-back.example'],
+      },
+    );
+    now = now.add(const Duration(hours: 2));
+
+    expect((await service.candidatesAfterFailure(original)).last.host, alternativeApiHost);
+  });
+
+  test('a silent web host counts as blocked once a fallback answers', () async {
+    final adapter = DiscoveryTestAdapter((options, _) async {
+      if (options.uri.path.endsWith('config.json')) {
+        return jsonResponse(await discoveryJson());
+      }
+      if (options.uri.host == appHost) {
+        throw DioException.receiveTimeout(
+          timeout: const Duration(seconds: 1),
+          requestOptions: options,
+        );
+      }
+      return jsonResponse('{"status":"OK"}');
+    });
+    final service = testDiscovery(adapter);
+    addTearDown(service.close);
+
+    await service.warmBrowserHosts();
+
+    expect(service.degraded, isTrue);
+    expect((await service.resolveBrowserUrl(Uri.https(appHost))).host, alternativeAppHost);
+  });
+
+  test('a link tap re-checks the primary once the interval has passed', () async {
+    var now = DateTime.utc(2026, 11, 16);
+    var primaryUp = false;
+    final adapter = DiscoveryTestAdapter((options, _) async {
+      if (options.uri.path.endsWith('config.json')) {
+        return jsonResponse(await discoveryJson());
+      }
+      return options.uri.host == appHost && !primaryUp
+          ? htmlResponse('<html>blocked</html>')
+          : jsonResponse('{"status":"OK"}');
+    });
+    final service = testDiscovery(adapter, now: () => now);
+    addTearDown(service.close);
+    final original = Uri.https(appHost);
+    await service.warmBrowserHosts();
+    expect((await service.resolveBrowserUrl(original)).host, alternativeAppHost);
+
+    primaryUp = true;
+    expect((await service.resolveBrowserUrl(original)).host, alternativeAppHost);
+
+    now = now.add(const Duration(minutes: 31));
+
+    expect(await service.resolveBrowserUrl(original), original);
+    expect(service.degraded, isFalse);
+  });
+
+  test('a resolution never outlasts its cap', () async {
+    final adapter = DiscoveryTestAdapter((options, _) async {
+      if (options.uri.path.endsWith('config.json')) {
+        return jsonResponse(await discoveryJson());
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+      return htmlResponse('<html>blocked</html>');
+    });
+    final service = testDiscovery(adapter, resolveTimeout: const Duration(milliseconds: 100));
+    addTearDown(service.close);
+    final apiOrigin = Uri.https(apiHost);
+    await service.candidatesAfterFailure(apiOrigin);
+    await service.record(apiOrigin, apiOrigin.replace(host: alternativeApiHost), success: true);
+    final original = Uri.https(appHost);
+
+    final clock = Stopwatch()..start();
+    final resolved = await service.resolveBrowserUrl(original);
+
+    expect(clock.elapsed, lessThan(const Duration(milliseconds: 300)));
+    expect(resolved, original);
+  });
+
+  test('cooldowns are persisted as UTC instants', () async {
+    final storage = <String, String>{};
+    final adapter = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final service = testDiscovery(adapter, storage: storage, now: () => DateTime(2026, 11, 16, 12));
+    addTearDown(service.close);
+    final original = Uri.https(apiHost);
+    await service.candidatesAfterFailure(original);
+    await service.record(original, original, success: false);
+
+    final state = jsonDecode(storage[DomainDiscovery.cacheKey]!) as Map<String, dynamic>;
+    final records = state['records'] as Map<String, dynamic>;
+    final failed = (records[original.origin] as Map<String, dynamic>)['failed'];
+
+    expect(((failed as Map<String, dynamic>)[apiHost] as String).endsWith('Z'), isTrue);
+    expect((state['fetched_at'] as String).endsWith('Z'), isTrue);
   });
 }

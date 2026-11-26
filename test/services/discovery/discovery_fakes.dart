@@ -15,21 +15,22 @@ const alternativeApiHost = 'unblocked-api.mysteriumvpn.com';
 const appHost = 'app.mysteriumvpn.com';
 const alternativeAppHost = 'unblocked-app.mysteriumvpn.com';
 
-Future<String> discoveryJson({Map<String, List<String>>? mappings}) => signTestEnvelope({
-  'signed': {
-    'schema_version': 1,
-    'version': 1,
-    'issued_at': '2026-01-01T00:00:00Z',
-    'expires_at': '2099-01-01T00:00:00Z',
-    'mappings':
-        mappings ??
-        {
-          apiHost: [alternativeApiHost],
-          appHost: [alternativeAppHost],
-        },
-  },
-  'signatures': [],
-});
+Future<String> discoveryJson({Map<String, List<String>>? mappings, int version = 1}) =>
+    signTestEnvelope({
+      'signed': {
+        'schema_version': 1,
+        'version': version,
+        'issued_at': '2026-01-01T00:00:00Z',
+        'expires_at': '2099-01-01T00:00:00Z',
+        'mappings':
+            mappings ??
+            {
+              apiHost: [alternativeApiHost],
+              appHost: [alternativeAppHost],
+            },
+      },
+      'signatures': [],
+    });
 
 ResponseBody jsonResponse(String body, [int status = 200]) => ResponseBody.fromString(
   body,
@@ -77,6 +78,7 @@ DomainDiscovery testDiscovery(
   Future<bool> Function()? online,
   DiscoveryTuning Function()? tuning,
   DiscoveryReporter? report,
+  Duration? resolveTimeout,
 }) {
   final values = storage ?? <String, String>{};
   final dio = Dio()..httpClientAdapter = adapter;
@@ -91,6 +93,7 @@ DomainDiscovery testDiscovery(
     online: online,
     tuning: tuning,
     report: report,
+    resolveTimeout: resolveTimeout ?? DomainDiscovery.defaultResolveTimeout,
     verifier: testVerifier,
     now: now,
     browserHosts: {appHost},

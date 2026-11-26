@@ -313,4 +313,102 @@ void main() {
 
     expect(events, isNot(contains(AnalyticsEvent.domainFailoverExhausted)));
   });
+
+  test('a TLS handshake failure is a block and fails over a POST', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source);
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter((request, _) async {
+      if (request.uri.host == apiHost) {
+        throw const HandshakeException('CERTIFICATE_VERIFY_FAILED');
+      }
+      return jsonResponse('{"ok":true}');
+    });
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    final response = await dio.post<Object?>('https://$apiHost/api/v1/login', data: {'a': 1});
+
+    expect(response.statusCode, 200);
+    expect(transport.calls.map((it) => it.uri.host), [apiHost, alternativeApiHost]);
+    expect(discovery.degraded, isTrue);
+  });
+
+  test('an HTML 5xx fails over without calling the domain blocked', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source);
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async => request.uri.host == apiHost
+          ? htmlResponse('<html>bad gateway</html>', 502)
+          : jsonResponse('{"ok":true}'),
+    );
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    expect((await dio.get<Object?>('https://$apiHost/api/v1/test')).statusCode, 200);
+
+    expect(transport.calls.length, 2);
+    expect(discovery.degraded, isFalse);
+  });
+
+  test('when every domain fails the error still describes the original request', () async {
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source);
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async =>
+          throw DioException.connectionError(requestOptions: request, reason: 'refused'),
+    );
+    final dio = Dio(BaseOptions(baseUrl: 'https://$apiHost/api/v1'))
+      ..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    final error = await dio
+        .get<Object?>('/test', queryParameters: {'access_token': 'secret'})
+        .then<DioException?>((_) => null, onError: (Object e) => e as DioException);
+
+    expect(transport.calls.length, 2);
+    expect(error!.requestOptions.path, '/test');
+    expect(error.requestOptions.uri.host, apiHost);
+  });
+
+  test('an offline failure is not evidence of blocking', () async {
+    final events = <AnalyticsEvent>[];
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(
+      source,
+      online: () async => false,
+      report: (event, _) => events.add(event),
+    );
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async =>
+          throw DioException.connectionError(requestOptions: request, reason: 'Failed host lookup'),
+    );
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    await expectLater(dio.get<Object?>('https://$apiHost/test'), throwsA(isA<DioException>()));
+
+    expect(discovery.degraded, isFalse);
+    expect(events, isEmpty);
+    expect(source.calls, isEmpty);
+  });
+
+  test('exhaustion is reported once per episode and never for a host without fallbacks', () async {
+    final events = <AnalyticsEvent>[];
+    final source = DiscoveryTestAdapter((_, _) async => jsonResponse(await discoveryJson()));
+    final discovery = testDiscovery(source, report: (event, _) => events.add(event));
+    addTearDown(discovery.close);
+    final transport = DiscoveryTestAdapter(
+      (request, _) async =>
+          throw DioException.connectionError(requestOptions: request, reason: 'refused'),
+    );
+    final dio = Dio()..httpClientAdapter = DiscoveryAdapter(transport, discovery);
+
+    await expectLater(dio.get<Object?>('https://other.example/test'), throwsA(anything));
+    expect(events, isNot(contains(AnalyticsEvent.domainFailoverExhausted)));
+
+    await expectLater(dio.get<Object?>('https://$apiHost/test'), throwsA(anything));
+    await expectLater(dio.get<Object?>('https://$apiHost/test'), throwsA(anything));
+
+    expect(events.where((it) => it == AnalyticsEvent.domainFailoverExhausted).length, 1);
+  });
 }

@@ -1006,6 +1006,16 @@ void main() {
       expect(tuning.refreshInterval, const Duration(hours: 1));
     });
 
+    test('decodes the payload once while it is unchanged', () async {
+      store = createStore();
+      when(client.getAllValues())
+          .thenAnswer((_) async => {'domainDiscoveryConfig': '{"enabled":false}'});
+      await store.configFuture;
+
+      expect(identical(store.domainDiscoveryConfig, store.domainDiscoveryConfig), isTrue);
+      expect(store.domainDiscoveryConfig.enabled, isFalse);
+    });
+
     test('an undecodable payload yields the defaults', () async {
       store = createStore();
       when(client.getAllValues())
