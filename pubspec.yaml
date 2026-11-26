@@ -38,7 +38,7 @@ dependencies:
   flutter_portal: 1.1.4
   flutter_secure_storage: 11.2.0
   flutter_svg: 2.3.2
-  flutter_udid: 4.1.6
+  flutter_udid: 4.2.0
   flutter_widget_from_html_core: 0.17.4
   freezed_annotation: 3.1.0
   google_fonts: 9.0.0
