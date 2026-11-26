@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -216,11 +217,26 @@ void main() {
 
     // Nothing waits on it, and a failure on a settling network is expected.
     test('notifyApiVpnDisconnected swallows errors as a warning', () async {
-      when(api.disconnect()).thenThrow(Exception('boom'));
+      when(api.disconnect(within: anyNamed('within'))).thenThrow(Exception('boom'));
 
       await expectLater(repo.notifyApiVpnDisconnected(), completes);
       verify(logger.warning(any, any, any)).called(1);
       verifyNever(logger.handle(any));
+    });
+
+    test('notifyApiVpnDisconnected ends even if the request never does', () {
+      // The next connect waits on it, so it cannot depend on the HTTP layer.
+      FakeAsync().run((async) {
+        when(api.disconnect(within: anyNamed('within')))
+            .thenAnswer((_) => Completer<void>().future);
+        var done = false;
+        repo.notifyApiVpnDisconnected().then((_) => done = true);
+
+        async.elapse(const Duration(seconds: 5));
+        expect(done, isFalse);
+        async.elapse(const Duration(seconds: 2));
+        expect(done, isTrue);
+      });
     });
 
     test('disconnectAllDevices delegates to apiService and rethrows on failure', () async {

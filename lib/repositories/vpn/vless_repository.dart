@@ -8,12 +8,20 @@ import 'package:mysterium_vpn/env.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/repositories/vpn/base_vpn_repository.dart';
 import 'package:vless_dart/vless_dart.dart';
+import 'package:vless_dart/vpn_status.dart';
 import 'package:vpn_api/vpn_api.dart';
 
 /// VLESS over the `/connection/connect-vless` endpoint, tunnelled by
 /// `vless_dart`'s packet tunnel extension.
 /// Warn once the extension passes this; iOS jetsam kills it around 50 MB.
 const _footprintWarnBytes = 40 * 1024 * 1024;
+
+class _TunnelDidNotStart implements Exception {
+  const _TunnelDidNotStart();
+
+  @override
+  String toString() => 'the VLESS tunnel stopped before it came up';
+}
 
 class VlessRepository extends BaseVpnRepository {
   VlessRepository({required VlessDart service, required super.apiService, required super.logger})
@@ -31,6 +39,9 @@ class VlessRepository extends BaseVpnRepository {
   /// cancellation provokes is reported as such instead of as a connection
   /// error with a snackbar and a crash report.
   bool _connectCancelled = false;
+
+  /// The wait [connect] is in, which [disconnect] ends without the platform's help.
+  Completer<void>? _outcome;
 
   @override
   Future<void> init() async {
@@ -54,16 +65,7 @@ class VlessRepository extends BaseVpnRepository {
       // The `vless://` URI carries no resolver, so unlike WireGuard and OpenVPN
       // the selection cannot come back from the API: it is applied here or not
       // at all, and the content blockers are exactly this selection.
-      await _service
-          .connect(config, dnsAddress: dnsAddress)
-          .timeout(
-            const Duration(seconds: vpnConnectionTimeoutSeconds),
-            onTimeout: () {
-              throw TimeoutException(
-                'VLESS connection timed out after $vpnConnectionTimeoutSeconds seconds',
-              );
-            },
-          );
+      await _startTunnel(config, dnsAddress);
     } on TimeoutException {
       rethrow;
     } catch (e, stackTrace) {
@@ -81,6 +83,53 @@ class VlessRepository extends BaseVpnRepository {
     }
   }
 
+  /// The plugin answers on start requested; the outcome is on the status stream.
+  Future<void> _startTunnel(String config, String? dnsAddress) async {
+    final outcome = _outcome = Completer<void>();
+    // A failure can land before anything awaits it.
+    outcome.future.ignore();
+    void fail(Object error) {
+      if (!outcome.isCompleted) {
+        outcome.completeError(error);
+      }
+    }
+
+    var starting = false;
+    final statuses = _service.statusStream().listen(
+      (status) {
+        if (outcome.isCompleted) {
+          return;
+        }
+        if (status == ConnectionStatus.connected) {
+          outcome.complete();
+        } else if (status == ConnectionStatus.connecting) {
+          starting = true;
+        } else if (status == ConnectionStatus.disconnected && starting) {
+          fail(const _TunnelDidNotStart());
+        }
+      },
+      // Windows reports a failed start here, with the reason.
+      onError: fail,
+    );
+    // Not awaited: a teardown has to be able to end the wait before it answers.
+    unawaited(_service.connect(config, dnsAddress: dnsAddress).then((_) {}, onError: fail));
+    try {
+      await outcome.future.timeout(
+        const Duration(seconds: vpnConnectionTimeoutSeconds),
+        onTimeout: () {
+          // Left starting, it could come up after the error was shown.
+          unawaited(_service.disconnect().catchError((Object _) {}));
+          throw TimeoutException(
+            'VLESS connection timed out after $vpnConnectionTimeoutSeconds seconds',
+          );
+        },
+      );
+    } finally {
+      unawaited(statuses.cancel());
+      _outcome = null;
+    }
+  }
+
   @override
   Future<bool> disconnect() async {
     // Read before the status round-trip: the connect can finish during it,
@@ -91,6 +140,13 @@ class VlessRepository extends BaseVpnRepository {
       return false;
     }
     _connectCancelled = cancellingConnect;
+    if (cancellingConnect) {
+      // Not left to the stream: Android reports `connected` before it stops.
+      final outcome = _outcome;
+      if (outcome != null && !outcome.isCompleted) {
+        outcome.completeError(OperationCancelledException());
+      }
+    }
     await _service.disconnect();
     return true;
   }

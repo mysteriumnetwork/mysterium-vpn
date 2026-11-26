@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart' show CancelToken;
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/common/interceptors/retry_request.dart';
 import 'package:mysterium_vpn/models/models.dart';
@@ -119,9 +120,16 @@ class RestApiService extends ApiService {
   }
 
   @override
-  Future<void> disconnect() async {
+  Future<void> disconnect({Duration? within}) async {
     // Carries no session id: a replay would tear down whatever session is next.
-    await _apiConnection.disconnect(extra: kNoRetryExtra);
+    final request = CancelToken();
+    // Stops one not sent yet; one already on the wire cannot be recalled.
+    final deadline = within == null ? null : Timer(within, request.cancel);
+    try {
+      await _apiConnection.disconnect(extra: kNoRetryExtra, cancelToken: request);
+    } finally {
+      deadline?.cancel();
+    }
     _logger.info('Disconnected successfully');
   }
 

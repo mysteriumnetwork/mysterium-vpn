@@ -10,6 +10,9 @@ import 'package:vpn_api/vpn_api.dart';
 /// reconnect.
 const _notifyWindow = Duration(seconds: 5);
 
+/// The next connect waits on the notification, so it has to end regardless.
+const _notifyBackstop = Duration(seconds: 6);
+
 abstract class BaseVpnRepository implements VpnRepository {
   BaseVpnRepository({required this.logger, required this.apiService});
 
@@ -64,7 +67,8 @@ abstract class BaseVpnRepository implements VpnRepository {
   @override
   Future<void> notifyApiVpnDisconnected() async {
     try {
-      await apiService.disconnect().timeout(_notifyWindow);
+      // The request ends itself at the window; this is for one that does not.
+      await apiService.disconnect(within: _notifyWindow).timeout(_notifyBackstop);
     } catch (e, stackTrace) {
       // Expected on a network still settling after the tunnel went down.
       logger.warning('Failed to notify the API of the disconnect', e, stackTrace);

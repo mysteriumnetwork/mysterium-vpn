@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mysterium_vpn/common/constants/constants.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
 import 'package:mysterium_vpn/common/exceptions/exceptions.dart';
 import 'package:mysterium_vpn/repositories/vpn/vless_repository.dart';
@@ -39,13 +41,25 @@ void main() {
   late MockApiService api;
   late MockTalker logger;
   late VlessRepository repo;
+  late StreamController<ConnectionStatus> statuses;
 
   setUp(() {
     service = MockVlessDart();
     api = MockApiService();
     logger = MockTalker();
+    statuses = StreamController<ConnectionStatus>.broadcast();
+    when(service.statusStream()).thenAnswer((_) => statuses.stream);
     repo = VlessRepository(service: service, apiService: api, logger: logger);
   });
+
+  tearDown(() => statuses.close());
+
+  /// The plugin acknowledges the start, then the platform reports [outcome].
+  void tunnelReports(List<ConnectionStatus> outcome) {
+    when(service.connect(any, dnsAddress: anyNamed('dnsAddress'))).thenAnswer((_) async {
+      outcome.forEach(statuses.add);
+    });
+  }
 
   group('fetchVpnConfig', () {
     test('maps the response onto VpnConfig, carrying the raw URI', () async {
@@ -148,9 +162,9 @@ void main() {
   });
 
   group('connect', () {
-    test('passes the raw vless URI straight through', () async {
-      when(service.connect(any)).thenAnswer((_) async {});
+    setUp(() => tunnelReports([ConnectionStatus.connecting, ConnectionStatus.connected]));
 
+    test('passes the raw vless URI straight through', () async {
       await repo.connect(config: _vlessUri);
 
       verify(service.connect(_vlessUri)).called(1);
@@ -174,6 +188,121 @@ void main() {
       when(service.connect(any)).thenThrow(Exception('handshake failed'));
 
       await expectLater(repo.connect(config: _vlessUri), throwsA(isA<VpnConnectException>()));
+    });
+
+    test('does not return until the tunnel is up', () async {
+      // The plugin answers once the start is requested, which is not connected.
+      tunnelReports([ConnectionStatus.connecting]);
+      var done = false;
+      final connecting = repo.connect(config: _vlessUri).then((_) => done = true);
+      await pumpEventQueue();
+      expect(done, isFalse);
+
+      statuses.add(ConnectionStatus.connected);
+      await connecting;
+      expect(done, isTrue);
+    });
+
+    test('a tunnel that falls back to disconnected is a connection error', () async {
+      // An exit refusing the session is reported as nothing more than this.
+      tunnelReports([ConnectionStatus.connecting, ConnectionStatus.disconnected]);
+
+      await expectLater(repo.connect(config: _vlessUri), throwsA(isA<VpnConnectException>()));
+    });
+
+    test('a disconnected left over from the previous tunnel is not the verdict', () async {
+      tunnelReports([
+        ConnectionStatus.disconnected,
+        ConnectionStatus.connecting,
+        ConnectionStatus.connected,
+      ]);
+
+      await repo.connect(config: _vlessUri);
+    });
+
+    test('carries the reason the platform gives for a failed start', () async {
+      // Windows reports a failed start as an error on the status stream.
+      when(service.connect(any, dnsAddress: anyNamed('dnsAddress'))).thenAnswer((_) async {
+        statuses.addError(PlatformException(code: 'core_error', message: 'probe failed'));
+      });
+
+      await expectLater(
+        repo.connect(config: _vlessUri),
+        throwsA(
+          isA<VpnConnectException>().having((e) => e.message, 'message', contains('probe failed')),
+        ),
+      );
+    });
+
+    test('a teardown while the tunnel is coming up is a cancellation', () async {
+      tunnelReports([ConnectionStatus.connecting]);
+      when(service.getVPNStatus()).thenAnswer((_) async => ConnectionStatus.connecting);
+      when(service.disconnect())
+          .thenAnswer((_) async => statuses.add(ConnectionStatus.disconnected));
+
+      final cancelled = expectLater(
+        repo.connect(config: _vlessUri),
+        throwsA(isA<OperationCancelledException>()),
+      );
+      await pumpEventQueue();
+
+      expect(await repo.disconnect(), isTrue);
+      await cancelled;
+    });
+
+    test('gives up when the tunnel never reports an outcome', () {
+      FakeAsync().run((async) {
+        tunnelReports([ConnectionStatus.connecting]);
+        Object? error;
+        repo.connect(config: _vlessUri).catchError((Object e) => error = e);
+
+        async.elapse(const Duration(seconds: vpnConnectionTimeoutSeconds + 1));
+
+        expect(error, isA<TimeoutException>());
+        expect(statuses.hasListener, isFalse);
+        // Left starting, it could come up after the error was shown.
+        verify(service.disconnect()).called(1);
+      });
+    });
+
+    test('a teardown before the platform reports anything is a cancellation at once', () async {
+      // A start that never got as far as `connecting` has nothing to echo.
+      tunnelReports([]);
+
+      final cancelled = expectLater(
+        repo.connect(config: _vlessUri),
+        throwsA(isA<OperationCancelledException>()),
+      );
+      await pumpEventQueue();
+
+      expect(await repo.disconnect(), isTrue);
+      await cancelled;
+    });
+
+    test('a teardown wins when the platform reports connected before it stops', () async {
+      // Android finishes the start it is in, then runs the stop behind it.
+      tunnelReports([ConnectionStatus.connecting]);
+      when(service.disconnect()).thenAnswer((_) async {
+        statuses
+          ..add(ConnectionStatus.connected)
+          ..add(ConnectionStatus.disconnecting)
+          ..add(ConnectionStatus.disconnected);
+      });
+
+      final cancelled = expectLater(
+        repo.connect(config: _vlessUri),
+        throwsA(isA<OperationCancelledException>()),
+      );
+      await pumpEventQueue();
+
+      expect(await repo.disconnect(), isTrue);
+      await cancelled;
+    });
+
+    test('stops listening once the outcome is known', () async {
+      await repo.connect(config: _vlessUri);
+
+      expect(statuses.hasListener, isFalse);
     });
   });
 
@@ -205,14 +334,18 @@ void main() {
         return release.future;
       });
 
-      final connecting = repo.connect(config: _vlessUri);
+      final cancelled = expectLater(
+        repo.connect(config: _vlessUri),
+        throwsA(isA<OperationCancelledException>()),
+      );
       await started.future;
 
       expect(await repo.disconnect(), isTrue);
       verify(service.disconnect()).called(1);
 
+      // The plugin's own failure arrives afterwards and changes nothing.
       release.completeError(Exception('Failed to connect VPN: Connect cancelled'));
-      await expectLater(connecting, throwsA(isA<OperationCancelledException>()));
+      await cancelled;
     });
 
     test('a connect that fails on its own is still a connection error', () async {

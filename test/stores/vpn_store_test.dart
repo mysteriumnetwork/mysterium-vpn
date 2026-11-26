@@ -356,6 +356,72 @@ void main() {
       verify(mockWireguardRepo.notifyApiVpnDisconnected()).called(1);
     });
 
+    test('a connect waits for the disconnect notification still in flight', () async {
+      // It names no session, so landing after the new one would end it.
+      stubConnectFlow();
+      final notice = Completer<void>();
+      when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) => notice.future);
+      await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
+
+      VerificationResult fetched() => verify(
+        mockWireguardRepo.fetchVpnConfig(
+          countryOriginate: anyNamed('countryOriginate'),
+          country: anyNamed('country'),
+          city: anyNamed('city'),
+          ipType: anyNamed('ipType'),
+          userIntent: anyNamed('userIntent'),
+          cluster: anyNamed('cluster'),
+          resetConnection: anyNamed('resetConnection'),
+          dnsAddress: anyNamed('dnsAddress'),
+        ),
+      );
+
+      when(anyToggleAction()).thenReturn(ConnectionAction.connect);
+      final connecting = vpnStore.manageConnection(
+        location: const VPNLocation(
+          id: 'paris',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'fr',
+        ),
+      );
+      await pumpEventQueue();
+      verifyNever(
+        mockWireguardRepo.fetchVpnConfig(
+          countryOriginate: anyNamed('countryOriginate'),
+          country: anyNamed('country'),
+          city: anyNamed('city'),
+          ipType: anyNamed('ipType'),
+          userIntent: anyNamed('userIntent'),
+          cluster: anyNamed('cluster'),
+          resetConnection: anyNamed('resetConnection'),
+          dnsAddress: anyNamed('dnsAddress'),
+        ),
+      );
+
+      notice.complete();
+      await connecting;
+      fetched().called(1);
+    });
+
+    test('a failed disconnect notification does not fail the next connect', () async {
+      stubConnectFlow();
+      when(mockWireguardRepo.notifyApiVpnDisconnected()).thenAnswer((_) async => throw Exception());
+      await vpnStore.disconnectTunnel(reason: VpnDisconnectReason.user);
+
+      when(anyToggleAction()).thenReturn(ConnectionAction.connect);
+      await vpnStore.manageConnection(
+        location: const VPNLocation(
+          id: 'paris',
+          ipType: IPType.datacenter,
+          translations: {},
+          countryCode: 'fr',
+        ),
+      );
+
+      expect(vpnStore.connectionError, isNull);
+    });
+
     group('Protocol Switching', () {
       test('switches from WireGuard to OpenVPN when protocol changes', () async {
         // Start with WireGuard
