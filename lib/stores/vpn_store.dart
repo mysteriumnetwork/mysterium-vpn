@@ -157,6 +157,9 @@ abstract class _VpnStore extends VpnGuard with Store {
   @readonly
   DateTime? _connectedAt;
 
+  /// The disconnect notification still in flight, if any.
+  Future<void>? _disconnectNotice;
+
   /// Why the last teardown happened. Reset to [VpnDisconnectReason.user] on connect.
   @readonly
   VpnDisconnectReason _disconnectReason = VpnDisconnectReason.user;
@@ -750,6 +753,8 @@ abstract class _VpnStore extends VpnGuard with Store {
   }
 
   Future<void> _executeConnection(bool refreshIP, {String? targetIp}) async {
+    // It names no session, so landing after the new one would end it.
+    await _disconnectNotice;
     _stopwatch
       ..reset()
       ..start();
@@ -1098,7 +1103,7 @@ abstract class _VpnStore extends VpnGuard with Store {
       _requestedTargetIp = null;
       _ipRefreshExhaustionStore.onDisconnected();
       // Best-effort: awaiting it held the UI on "Disconnecting" for its retries.
-      _vpnRepository.notifyApiVpnDisconnected().ignore();
+      _disconnectNotice = _vpnRepository.notifyApiVpnDisconnected().catchError((Object _) {});
     }
   }
 

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -56,20 +59,64 @@ void main() {
 
   group('disconnect / disconnectAllDevices', () {
     test('disconnect delegates and opts out of retries', () async {
-      when(connection.disconnect(extra: anyNamed('extra')))
+      when(connection.disconnect(extra: anyNamed('extra'), cancelToken: anyNamed('cancelToken')))
           .thenAnswer((_) async => response(200, null));
 
       await service.disconnect();
 
       // No session id, so a replay would tear down whatever session is next.
-      final extra = verify(connection.disconnect(extra: captureAnyNamed('extra'))).captured.single;
+      final extra = verify(
+        connection.disconnect(
+          extra: captureAnyNamed('extra'),
+          cancelToken: anyNamed('cancelToken'),
+        ),
+      ).captured.single;
       expect(Options(extra: extra as Map<String, dynamic>).disableRetry, isTrue);
+    });
+
+    CancelToken sentToken() =>
+        verify(
+              connection.disconnect(
+                extra: anyNamed('extra'),
+                cancelToken: captureAnyNamed('cancelToken'),
+              ),
+            ).captured.single
+            as CancelToken;
+
+    test('disconnect cancels a request that outlives its window', () {
+      // Abandoning it is not enough: it would still land, after the next connect.
+      FakeAsync().run((async) {
+        when(connection.disconnect(extra: anyNamed('extra'), cancelToken: anyNamed('cancelToken')))
+            .thenAnswer((_) => Completer<Response<void>>().future);
+
+        service.disconnect(within: const Duration(seconds: 5)).ignore();
+        async.elapse(const Duration(seconds: 4));
+        final token = sentToken();
+        expect(token.isCancelled, isFalse);
+
+        async.elapse(const Duration(seconds: 2));
+        expect(token.isCancelled, isTrue);
+      });
+    });
+
+    test('disconnect leaves a request that answered in time alone', () {
+      FakeAsync().run((async) {
+        when(connection.disconnect(extra: anyNamed('extra'), cancelToken: anyNamed('cancelToken')))
+            .thenAnswer((_) async => response(200, null));
+
+        service.disconnect(within: const Duration(seconds: 5)).ignore();
+        async.elapse(const Duration(seconds: 10));
+
+        expect(sentToken().isCancelled, isFalse);
+        expect(async.pendingTimers, isEmpty);
+      });
     });
 
     // Reported by whoever handles the rethrow, not here as well — and never
     // as a fatal, which is what `handle` makes it.
     test('disconnect rethrows without reporting', () async {
-      when(connection.disconnect(extra: anyNamed('extra'))).thenThrow(Exception('boom'));
+      when(connection.disconnect(extra: anyNamed('extra'), cancelToken: anyNamed('cancelToken')))
+          .thenThrow(Exception('boom'));
       await expectLater(service.disconnect(), throwsA(isA<Exception>()));
       verifyNever(logger.handle(any, any));
     });

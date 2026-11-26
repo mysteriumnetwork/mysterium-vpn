@@ -105,11 +105,10 @@ void main() {
     test('notifyApiVpnDisconnected calls api if key initialized', () async {
       await repository.init();
 
-      when(mockApiService.disconnect()).thenAnswer((_) async {});
-
       await repository.notifyApiVpnDisconnected();
 
-      verify(mockApiService.disconnect()).called(1);
+      // Bounded, so a late one cannot end the session that follows.
+      verify(mockApiService.disconnect(within: const Duration(seconds: 5))).called(1);
     });
 
     test('setupTunnel calls service.setupTunnel', () async {

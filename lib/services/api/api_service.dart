@@ -9,7 +9,9 @@ abstract class ApiService {
   Future<void> createMarketingContact({required String? country});
   Future<void> updateMarketingContact({required bool consent});
   Future<bool> getMarketingContactStatus();
-  Future<void> disconnect();
+
+  /// Cancels the request once [within] has passed.
+  Future<void> disconnect({Duration? within});
   Future<Set<UserIntent>> fetchUserIntents();
   Future<OpenVpnConnectResponse> fetchOpenVpnConfig({required OpenVpnConnectRequest request});
   Future<VlessConnectResponse> fetchVlessConfig({required VlessConnectRequest request});
