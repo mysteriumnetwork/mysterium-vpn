@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:mysterium_vpn/common/enums/enums.dart';
+import 'package:mysterium_vpn/common/extensions/vpn_location.dart';
 import 'package:mysterium_vpn/models/models.dart';
 import 'package:mysterium_vpn/stores/stores.dart';
 
@@ -115,12 +116,6 @@ abstract class _ConnectionDisplayStore with Store {
     if (connected == VPNLocation.closest) {
       return false;
     }
-    if (selected.id == connected.id) {
-      return false;
-    }
-    if (selected.isCountry && selected.countryCode == connected.countryCode) {
-      return false;
-    }
-    return true;
+    return !selected.covers(connected);
   }
 }

@@ -113,6 +113,22 @@ void main() {
 
         expect(store.hasDifferentSelection, isTrue);
       });
+
+      for (final selected in [locationDE, cityDE]) {
+        test('switches IP type even when ${selected.id} matches the connected location', () {
+          when(mockVpnStore.isConnected).thenReturn(true);
+          when(mockSelectedLocationStore.value).thenReturn(selected);
+          when(mockVpnStore.location).thenReturn(selected.copyWith(ipType: IPType.residential));
+          expect(store.hasDifferentSelection, isTrue);
+        });
+      }
+
+      test('a Datacenter country does not cover a residential city in that country', () {
+        when(mockVpnStore.isConnected).thenReturn(true);
+        when(mockSelectedLocationStore.value).thenReturn(locationDE);
+        when(mockVpnStore.location).thenReturn(cityDE.copyWith(ipType: IPType.residential));
+        expect(store.hasDifferentSelection, isTrue);
+      });
     });
 
     group('connectedOrDisplayLocation', () {

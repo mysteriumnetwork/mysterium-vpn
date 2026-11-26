@@ -7,7 +7,9 @@ import 'package:mysterium_vpn/views/home/home_map.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class HomeConnectionView extends HookConsumerWidget {
-  const HomeConnectionView({super.key});
+  const HomeConnectionView({super.key, this.followLocationTabs = true});
+
+  final bool followLocationTabs;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +23,7 @@ class HomeConnectionView extends HookConsumerWidget {
         Expanded(
           child: Stack(
             children: [
-              const Positioned.fill(child: HomeMap()),
+              Positioned.fill(child: HomeMap(followLocationTabs: followLocationTabs)),
               Positioned(
                 left: 0,
                 right: 0,
