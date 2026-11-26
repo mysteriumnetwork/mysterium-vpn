@@ -1335,10 +1335,10 @@ packages:
     dependency: "direct main"
     description:
       name: money2
-      sha256: "695f317508beae72c392d0d62fd4c1f9ac1127e25117aaf2e75e20953139ffce"
+      sha256: "14a8cb675820662a6ee7297b594eb77dd322ebdae7a594848b175167c9460ad0"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.0"
+    version: "6.3.1"
   mqtt5_client:
     dependency: "direct main"
     description:
